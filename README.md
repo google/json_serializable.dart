@@ -1,8 +1,6 @@
-# json_serializable
+[![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
 
-## Overview
-
-`json_serializable` provides `source_gen` `Generator`s which generate code to
+Provides `source_gen` `Generator`s which generate code to
 make it simple to serialize to and from JSON.
 
 ## Example
