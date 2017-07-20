@@ -1,3 +1,8 @@
+## 0.1.1
+
+* Fail generation when undefined types are encountered.
+  Throw a helpful error.
+
 ## 0.1.0+1
 
 * Fix homepage in `pubspec.yaml`.

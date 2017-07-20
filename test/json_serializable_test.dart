@@ -41,6 +41,28 @@ void main() {
     });
   });
 
+  group('unknown types', () {
+    test('in constructor arguments', () async {
+      var element = await _getClassForCodeString('UnknownCtorParamType');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'At least one constructor argument has an invalid type: `number`.',
+              'Check names and imports.'));
+    });
+
+    test('in fields', () async {
+      var element = await _getClassForCodeString('UnknownFieldType');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'At least one field has an invalid type: `number`.',
+              'Check names and imports.'));
+    });
+  });
+
   test('class with final fields', () async {
     var element = await _getClassForCodeString('FinalFields');
     var generateResult = await _generator.generate(element, null);
@@ -208,5 +230,17 @@ class ParentObjectWithDynamicChildren {
   int number;
   String str;
   List<dynamic> children;
+}
+
+@JsonSerializable()
+class UnknownCtorParamType {
+  int number
+  
+  UnknownCtorParamType(Bob number) : this.number = number;
+}
+
+@JsonSerializable()
+class UnknownFieldType {
+  Bob number
 }
 ''';
