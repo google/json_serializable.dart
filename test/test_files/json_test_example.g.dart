@@ -7,45 +7,67 @@ part of source_gen.test.example;
 // Target: class KitchenSink
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink()
-  ..iterable = json['iterable']
-  ..dynamicIterable = json['dynamicIterable']
-  ..objectIterable = json['objectIterable']
-  ..intIterable = (json['intIterable'] as List)?.map((v0) => v0 as int)
-  ..dateTimeIterable = (json['dateTimeIterable'] as List)
-      ?.map((v0) => v0 == null ? null : DateTime.parse(v0))
+KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
+    iterable: json['iterable'],
+    dynamicIterable: json['dynamicIterable'],
+    objectIterable: json['objectIterable'],
+    intIterable: (json['intIterable'] as List)?.map((v0) => v0 as int),
+    dateTimeIterable: (json['dateTimeIterable'] as List)
+        ?.map((v0) => v0 == null ? null : DateTime.parse(v0)))
   ..list = json['list']
   ..dynamicList = json['dynamicList']
   ..objectList = json['objectList']
   ..intList = (json['intList'] as List)?.map((v0) => v0 as int)?.toList()
   ..dateTimeList = (json['dateTimeList'] as List)
       ?.map((v0) => v0 == null ? null : DateTime.parse(v0))
-      ?.toList();
+      ?.toList()
+  ..stopWatch = json['stopWatch'] as Stopwatch
+  ..stopwatchList =
+      (json['stopwatchList'] as List)?.map((v0) => v0 as Stopwatch)?.toList()
+  ..map = json['map'] as Map<dynamic, dynamic>
+  ..stringStringMap = json['stringStringMap'] as Map<String, String>
+  ..stringIntMap = json['stringIntMap'] as Map<String, int>
+  ..stringDateTimeMap = json['stringDateTimeMap'] as Map<String, DateTime>
+  ..intDateTimeMap = json['intDateTimeMap'] as Map<int, DateTime>;
 
 abstract class _$KitchenSinkSerializerMixin {
-  Iterable<dynamic> get iterable;
-  Iterable<dynamic> get dynamicIterable;
-  Iterable<Object> get objectIterable;
-  Iterable<int> get intIterable;
-  Iterable<DateTime> get dateTimeIterable;
   List<dynamic> get list;
   List<dynamic> get dynamicList;
   List<Object> get objectList;
   List<int> get intList;
   List<DateTime> get dateTimeList;
+  Stopwatch get stopWatch;
+  List<Stopwatch> get stopwatchList;
+  Map<dynamic, dynamic> get map;
+  Map<String, String> get stringStringMap;
+  Map<String, int> get stringIntMap;
+  Map<String, DateTime> get stringDateTimeMap;
+  Map<int, DateTime> get intDateTimeMap;
+  Iterable<dynamic> get iterable;
+  Iterable<dynamic> get dynamicIterable;
+  Iterable<Object> get objectIterable;
+  Iterable<int> get intIterable;
+  Iterable<DateTime> get dateTimeIterable;
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'iterable': iterable?.toList(),
-        'dynamicIterable': dynamicIterable?.toList(),
-        'objectIterable': objectIterable?.toList(),
-        'intIterable': intIterable?.toList(),
-        'dateTimeIterable':
-            dateTimeIterable?.map((v0) => v0?.toIso8601String())?.toList(),
         'list': list,
         'dynamicList': dynamicList,
         'objectList': objectList,
         'intList': intList,
         'dateTimeList':
-            dateTimeList?.map((v0) => v0?.toIso8601String())?.toList()
+            dateTimeList?.map((v0) => v0?.toIso8601String())?.toList(),
+        'stopWatch': stopWatch,
+        'stopwatchList': stopwatchList,
+        'map': map,
+        'stringStringMap': stringStringMap,
+        'stringIntMap': stringIntMap,
+        'stringDateTimeMap': stringDateTimeMap,
+        'intDateTimeMap': intDateTimeMap,
+        'iterable': iterable?.toList(),
+        'dynamicIterable': dynamicIterable?.toList(),
+        'objectIterable': objectIterable?.toList(),
+        'intIterable': intIterable?.toList(),
+        'dateTimeIterable':
+            dateTimeIterable?.map((v0) => v0?.toIso8601String())?.toList()
       };
 }
 

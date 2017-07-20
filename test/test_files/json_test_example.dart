@@ -13,22 +13,63 @@ part 'json_test_example.g.dart';
 
 @JsonSerializable()
 class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
-  KitchenSink();
+  // NOTE: exposing these as Iterable, but storing the values as List
+  // to make the equality test work trivially.
+  final Iterable _iterable;
+  final Iterable<dynamic> _dynamicIterable;
+  final Iterable<Object> _objectIterable;
+  final Iterable<int> _intIterable;
+  final Iterable<DateTime> _dateTimeIterable;
+
+  KitchenSink(
+      {Iterable iterable,
+      Iterable<dynamic> dynamicIterable,
+      Iterable<Object> objectIterable,
+      Iterable<int> intIterable,
+      Iterable<DateTime> dateTimeIterable})
+      : _iterable = iterable?.toList(),
+        _dynamicIterable = dynamicIterable?.toList(),
+        _objectIterable = objectIterable?.toList(),
+        _intIterable = intIterable?.toList(),
+        _dateTimeIterable = dateTimeIterable?.toList();
 
   factory KitchenSink.fromJson(Map<String, Object> json) =>
       _$KitchenSinkFromJson(json);
 
-  Iterable iterable;
-  Iterable<dynamic> dynamicIterable;
-  Iterable<Object> objectIterable;
-  Iterable<int> intIterable;
-  Iterable<DateTime> dateTimeIterable;
+  Iterable get iterable => _iterable;
+  Iterable<dynamic> get dynamicIterable => _dynamicIterable;
+  Iterable<Object> get objectIterable => _objectIterable;
+  Iterable<int> get intIterable => _intIterable;
+  Iterable<DateTime> get dateTimeIterable => _dateTimeIterable;
 
   List list;
   List<dynamic> dynamicList;
   List<Object> objectList;
   List<int> intList;
   List<DateTime> dateTimeList;
+
+  /// Intentionally unsafe
+  Stopwatch stopWatch;
+
+  /// Intentionally unsafe
+  List<Stopwatch> stopwatchList;
+
+  Map map;
+  Map<String, String> stringStringMap;
+  Map<String, int> stringIntMap;
+  Map<String, DateTime> stringDateTimeMap;
+
+  // Intentionally unsafe key
+  Map<int, DateTime> intDateTimeMap;
+
+  //TODO(kevmoo) - finish this...
+  bool operator ==(other) =>
+      other is KitchenSink &&
+      _deepEquals(iterable, other.iterable) &&
+      _deepEquals(dynamicIterable, other.dynamicIterable) &&
+      _deepEquals(dateTimeIterable, other.dateTimeIterable) &&
+      _deepEquals(dateTimeList, other.dateTimeList) &&
+      _deepEquals(stringDateTimeMap, other.stringDateTimeMap);
 }
 
 @JsonSerializable()
@@ -66,7 +107,7 @@ class Order extends Object with _$OrderSerializerMixin {
       other is Order &&
       count == other.count &&
       isRushed == other.isRushed &&
-      const DeepCollectionEquality().equals(items, other.items);
+      _deepEquals(items, other.items);
 }
 
 @JsonSerializable()
@@ -84,5 +125,7 @@ class Item extends Object with _$ItemSerializerMixin {
       other is Item &&
       price == other.price &&
       itemNumber == other.itemNumber &&
-      const DeepCollectionEquality().equals(saleDates, other.saleDates);
+      _deepEquals(saleDates, other.saleDates);
 }
+
+bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
