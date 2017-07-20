@@ -207,77 +207,88 @@ class JsonSerializableGenerator
       }
     }
 
-    if (_coreIterableChecker.isAssignableFromType(fieldType)) {
-      // This block will yield a regular list, which works fine for JSON
-      // Although it's possible that child elements may be marked unsafe
-
-      var isList = _coreListChecker.isAssignableFromType(fieldType);
-      var substitute = "v$depth";
-      var subFieldValue = _fieldToJsonMapValue(substitute,
-          _getIterableGenericType(fieldType as InterfaceType), depth + 1);
-
-      // In the case of trivial JSON types (int, String, etc), `subFieldValue`
-      // will be identical to `substitute` – so no explicit mapping is needed.
-      // If they are not equal, then we to write out the substitution.
-      if (subFieldValue != substitute) {
-        // TODO: the type could be imported from a library with a prefix!
-        expression = "${expression}?.map(($substitute) => $subFieldValue)";
-
-        // expression now represents an Iterable (even if it started as a List
-        // ...resetting `isList` to `false`.
-        isList = false;
-      }
-
-      if (!isList) {
-        // Then we need to add `?.toList()
-        expression += "?.toList()";
-      }
-
-      return expression;
-    } else if (_coreMapChecker.isAssignableFromType(fieldType)) {
-      var args = _getTypeArguments(fieldType, _coreMapChecker);
-      assert(args.length == 2);
-
-      var keyArg = args.first;
-      var valueType = args.last;
-
-      // We're not going to handle converting key types at the moment
-      // So the only safe types for key are dynamic/Object/String
-      var safeKey = keyArg.isDynamic ||
-          keyArg.isObject ||
-          _coreStringChecker.isExactlyType(keyArg);
-
-      var safeValue = false;
-      if (valueType.isDynamic || valueType.isObject) {
-        safeValue = true;
-      } else {
-        safeValue = _stringBoolNumChecker.isAssignableFromType(valueType);
-      }
-
-      if (safeKey) {
-        if (safeValue) {
-          return expression;
-        }
-
-        // convert
-
-        var substitute = "v$depth";
-        var subFieldValue =
-            _fieldToJsonMapValue(substitute, valueType, depth + 1);
-
-        // In this case, we're going to create a new Map with matching reified
-        // types.
-        return "$expression == null ? null :"
-            "new Map<String, dynamic>.fromIterables("
-            "$expression.keys,"
-            "$expression.values.map(($substitute) => $subFieldValue))";
-      }
-    } else if (fieldType.isDynamic ||
+    if (fieldType.isDynamic ||
         fieldType.isObject ||
         _stringBoolNumChecker.isAssignableFromType(fieldType)) {
       return expression;
     }
 
+    if (_coreIterableChecker.isAssignableFromType(fieldType)) {
+      return _listFieldToJsonMapValue(expression, fieldType, depth);
+    }
+
+    if (_coreMapChecker.isAssignableFromType(fieldType)) {
+      return _mapFieldToJsonMapValue(expression, fieldType, depth);
+    }
+
+    return "$expression /* unsafe */";
+  }
+
+  String _listFieldToJsonMapValue(
+      String expression, DartType fieldType, int depth) {
+    assert(_coreListChecker.isAssignableFromType(fieldType));
+
+    // This block will yield a regular list, which works fine for JSON
+    // Although it's possible that child elements may be marked unsafe
+
+    var isList = _coreListChecker.isAssignableFromType(fieldType);
+    var substitute = "v$depth";
+    var subFieldValue = _fieldToJsonMapValue(substitute,
+        _getIterableGenericType(fieldType as InterfaceType), depth + 1);
+
+    // In the case of trivial JSON types (int, String, etc), `subFieldValue`
+    // will be identical to `substitute` – so no explicit mapping is needed.
+    // If they are not equal, then we to write out the substitution.
+    if (subFieldValue != substitute) {
+      // TODO: the type could be imported from a library with a prefix!
+      expression = "${expression}?.map(($substitute) => $subFieldValue)";
+
+      // expression now represents an Iterable (even if it started as a List
+      // ...resetting `isList` to `false`.
+      isList = false;
+    }
+
+    if (!isList) {
+      // If the static type is not a List, generate one.
+      expression += "?.toList()";
+    }
+
+    return expression;
+  }
+
+  String _mapFieldToJsonMapValue(
+      String expression, DartType fieldType, int depth) {
+    assert(_coreMapChecker.isAssignableFromType(fieldType));
+    var args = _getTypeArguments(fieldType, _coreMapChecker);
+    assert(args.length == 2);
+
+    var keyArg = args.first;
+    var valueType = args.last;
+
+    // We're not going to handle converting key types at the moment
+    // So the only safe types for key are dynamic/Object/String
+    var safeKey = keyArg.isDynamic ||
+        keyArg.isObject ||
+        _coreStringChecker.isExactlyType(keyArg);
+
+    var safeValue = valueType.isDynamic ||
+        valueType.isObject ||
+        _stringBoolNumChecker.isAssignableFromType(valueType);
+
+    if (safeKey) {
+      if (safeValue) {
+        return expression;
+      }
+
+      var substitute = "v$depth";
+      var subFieldValue =
+          _fieldToJsonMapValue(substitute, valueType, depth + 1);
+
+      return "$expression == null ? null :"
+          "new Map<String, dynamic>.fromIterables("
+          "$expression.keys,"
+          "$expression.values.map(($substitute) => $subFieldValue))";
+    }
     return "$expression /* unsafe */";
   }
 
