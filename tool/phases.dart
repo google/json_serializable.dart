@@ -7,7 +7,7 @@ import 'package:json_serializable/json_serializable.dart';
 import 'package:source_gen/source_gen.dart';
 
 final PhaseGroup phases = new PhaseGroup.singleAction(
-    new GeneratorBuilder(const [
+    new PartBuilder(const [
       const JsonSerializableGenerator(),
       const JsonLiteralGenerator()
     ]),

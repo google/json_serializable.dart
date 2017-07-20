@@ -43,7 +43,7 @@ class JsonSerializableGenerator
 
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, JsonSerializable annotation, _) async {
+      Element element, ConstantReader annotation, _) async {
     if (element is! ClassElement) {
       var friendlyName = friendlyNameForElement(element);
       throw new InvalidGenerationSourceError(
@@ -84,7 +84,7 @@ class JsonSerializableGenerator
 
     var buffer = new StringBuffer();
 
-    if (annotation.createFactory) {
+    if (annotation.read('createFactory').boolValue) {
       var toSkip = _writeFactory(buffer, classElement, fields, prefix);
 
       // If there are fields that are final – that are not set via the generated
@@ -94,7 +94,7 @@ class JsonSerializableGenerator
       }
     }
 
-    if (annotation.createToJson) {
+    if (annotation.read('createToJson').boolValue) {
       //
       // Generate the mixin class
       //
