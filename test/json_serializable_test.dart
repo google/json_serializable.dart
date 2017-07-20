@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('!browser')
-library source_gen.test.json_generator_test;
+library json_serializable.test.json_generator_test;
 
 import 'dart:async';
 
@@ -12,9 +12,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/generated/source.dart';
 import 'package:analyzer/src/generated/source_io.dart';
 import 'package:analyzer/src/string_source.dart';
+import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
-import 'package:source_gen/generators/json_serializable_generator.dart';
-import 'package:source_gen/src/utils.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
@@ -141,7 +140,7 @@ Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
 CompilationUnit _compUnit;
 
 const _testSource = r'''
-import 'package:source_gen/generators/json_serializable.dart';
+import 'package:json_serializable/json_serializable.dart';
 
 @JsonSerializable()
 const theAnswer = 42;

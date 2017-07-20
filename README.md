@@ -6,12 +6,12 @@ make it simple to serialize to and from JSON.
 ## Example
 
 Given a library `example.dart` with an `Person` class annotated with
-`@JsonSerializable`:
+`@JsonSerializable()`:
 
 ```dart
-library source_gen.example;
+library json_serializable.example;
 
-import 'package:source_gen/generators/json_serializable.dart';
+import 'package:json_serializable/annotations.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
@@ -30,14 +30,14 @@ class Person extends Object with _$PersonSerializerMixin {
 `source_gen` creates the corresponding part `example.g.dart`:
 
 ```dart
-part of source_gen.example;
+part of json_serializable.example;
 
-Person _$PersonFromJson(Map json) => new Person(
-    json['firstName'], json['lastName'],
-    middleName: json['middleName'],
-    dateOfBirth: json['date-of-birth'] == null
-        ? null
-        : DateTime.parse(json['date-of-birth']));
+Person _$PersonFromJson(Map json) =>
+    new Person(json['firstName'] as String, json['lastName'] as String,
+        middleName: json['middleName'] as String,
+        dateOfBirth: json['date-of-birth'] == null
+            ? null
+            : DateTime.parse(json['date-of-birth']));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;

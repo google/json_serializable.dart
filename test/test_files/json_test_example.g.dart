@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of source_gen.test.example;
+part of json_serializable.test.example;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
