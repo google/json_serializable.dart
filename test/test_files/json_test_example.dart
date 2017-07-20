@@ -13,6 +13,11 @@ part 'json_test_example.g.dart';
 
 @JsonSerializable()
 class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
+  // To ensure static members are not considered for serialization.
+  static const answer = 42;
+  static final reason = 42;
+  static int get understand => 42;
+
   // NOTE: exposing these as Iterable, but storing the values as List
   // to make the equality test work trivially.
   final Iterable _iterable;

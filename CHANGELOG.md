@@ -4,3 +4,4 @@
 * Add `/* unsafe */` comments to generated output likely to be unsafe.
 * Support (de)serializing values in `Map`.
 * Fix ordering of fields when they are initialized via constructor.
+* Don't use static members when calculating fields to (de)serialize.

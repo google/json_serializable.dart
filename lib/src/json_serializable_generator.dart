@@ -56,7 +56,7 @@ class JsonSerializableGenerator
 
     // Get all of the fields that need to be assigned
     // TODO: support overriding the field set with an annotation option
-    var fieldsList = classElement.fields.toList();
+    var fieldsList = classElement.fields.where((e) => !e.isStatic).toList();
 
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
