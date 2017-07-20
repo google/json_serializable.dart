@@ -27,7 +27,7 @@ String getPackagePath() {
   return _packagePathCache;
 }
 
-Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher ) =>
+Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
     throwsA(allOf(
         new isInstanceOf<InvalidGenerationSourceError>(),
         new FeatureMatcher<InvalidGenerationSourceError>(

@@ -168,7 +168,7 @@ class JsonSerializableGenerator
         .toList();
     if (undefinedArgs.isNotEmpty) {
       var description =
-      undefinedArgs.map((fe) => "`${fe.displayName}`").join(', ');
+          undefinedArgs.map((fe) => "`${fe.displayName}`").join(', ');
 
       throw new InvalidGenerationSourceError(
           'At least one constructor argument has an invalid type: $description.',
