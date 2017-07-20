@@ -1,38 +1,40 @@
 analyzer:
- strong-mode: true
- errors:
-   unused_element: error
-   unused_import: error
-   unused_local_variable: error
-   dead_code: error
+  strong-mode: true
+  errors:
+    unused_element: error
+    unused_import: error
+    unused_local_variable: error
+    dead_code: error
 linter:
   rules:
-     # Errors
-     - avoid_empty_else
-     - comment_references
-     - control_flow_in_finally
-     - empty_statements
-     #- hash_and_equals
-     - implementation_imports
-     - test_types_in_equals
-     - throw_in_finally
-     - unrelated_type_equality_checks
-     - valid_regexps
+    # Errors
+    - avoid_empty_else
+    - comment_references
+    - control_flow_in_finally
+    - empty_statements
+    #- hash_and_equals
+    - implementation_imports
+    - test_types_in_equals
+    - throw_in_finally
+    - unrelated_type_equality_checks
+    - valid_regexps
 
-     # Style
-     #- annotate_overrides
-     - avoid_init_to_null
-     - avoid_return_types_on_setters
-     - await_only_futures
-     - camel_case_types
-     - directives_ordering
-     - empty_catches
-     - empty_constructor_bodies
-     - library_names
-     - library_prefixes
-     - non_constant_identifier_names
-     - only_throw_errors
-     - prefer_final_fields
-     - prefer_is_not_empty
-     - slash_for_doc_comments
-     - type_init_formals
+    # Style
+    #- annotate_overrides
+    - avoid_init_to_null
+    - avoid_return_types_on_setters
+    - await_only_futures
+    - camel_case_types
+    - directives_ordering
+    - empty_catches
+    - empty_constructor_bodies
+    - library_names
+    - library_prefixes
+    - non_constant_identifier_names
+    - only_throw_errors
+    - prefer_final_fields
+    - prefer_is_not_empty
+    # Waiting for linter 0.1.33 to land in SDK
+    #- prefer_single_quotes
+    - slash_for_doc_comments
+    - type_init_formals
