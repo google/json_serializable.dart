@@ -7,7 +7,7 @@ library source_gen.test.example;
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:source_gen/generators/json_serializable.dart';
+import 'package:json_serializable/annotations.dart';
 
 part 'json_test_example.g.dart';
 

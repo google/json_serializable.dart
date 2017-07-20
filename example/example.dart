@@ -4,8 +4,7 @@
 
 library source_gen.example.example;
 
-import 'package:source_gen/generators/json_serializable.dart';
-import 'package:source_gen/generators/json_literal.dart';
+import 'package:json_serializable/annotations.dart';
 
 part 'example.g.dart';
 
