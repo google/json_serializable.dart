@@ -1,3 +1,7 @@
+## 0.1.0+1
+
+* Fix homepage in `pubspec.yaml`.
+
 ## 0.1.0
 
 * Split off from [source_gen](https://pub.dartlang.org/packages/source_gen).
