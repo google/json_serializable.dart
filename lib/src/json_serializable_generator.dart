@@ -9,10 +9,10 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/analyzer.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:source_gen/src/utils.dart' show friendlyNameForElement;
 
 import 'json_serializable.dart';
 import 'type_helper.dart';
+import 'utils.dart';
 
 // TODO: toJson option to omit null/empty values
 class JsonSerializableGenerator
