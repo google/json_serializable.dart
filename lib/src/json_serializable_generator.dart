@@ -58,7 +58,6 @@ class JsonSerializableGenerator
     // TODO: support overriding the field set with an annotation option
     var fieldsList = classElement.fields.where((e) => !e.isStatic).toList();
 
-    // Check for fields with undefined types – we want to error out early here
     var undefinedFields =
         fieldsList.where((fe) => fe.type.isUndefined).toList();
     if (undefinedFields.isNotEmpty) {

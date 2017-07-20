@@ -35,6 +35,7 @@ Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher ) =>
         new FeatureMatcher<InvalidGenerationSourceError>(
             'message', (e) => e.message, messageMatcher)));
 
+// TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {
   final dynamic Function(T value) _feature;
 
