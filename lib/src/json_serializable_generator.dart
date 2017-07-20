@@ -320,12 +320,8 @@ class JsonSerializableGenerator
       {ParameterElement ctorParam}) {
     name = _fieldToJsonMapKey(name, field);
     var result = "json['$name']";
-    DartType targetType;
-    if (ctorParam == null) {
-      targetType = field.type;
-    } else {
-      targetType = ctorParam.type;
-    }
+
+    var targetType = ctorParam?.type ?? field.type;
     return _writeAccessToJsonValue(result, targetType);
   }
 
