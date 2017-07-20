@@ -27,17 +27,22 @@ String getPackagePath() {
   return _packagePathCache;
 }
 
-final Matcher throwsInvalidGenerationSourceError =
-    throwsA(isInvalidGenerationSourceError);
+Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
+    throwsA(allOf(
+        new isInstanceOf<InvalidGenerationSourceError>(),
+        new FeatureMatcher<InvalidGenerationSourceError>(
+            'todo', (e) => e.todo, todoMatcher),
+        new FeatureMatcher<InvalidGenerationSourceError>(
+            'message', (e) => e.message, messageMatcher)));
 
-const Matcher isInvalidGenerationSourceError =
-    const _InvalidGenerationSourceError();
+// TODO(kevmoo) add this to pkg/matcher – is nice!
+class FeatureMatcher<T> extends CustomMatcher {
+  final dynamic Function(T value) _feature;
 
-class _InvalidGenerationSourceError extends TypeMatcher {
-  const _InvalidGenerationSourceError() : super("InvalidGenerationSourceError");
+  FeatureMatcher(String name, this._feature, matcher)
+      : super("`$name`", "`$name`", matcher);
 
-  @override
-  bool matches(item, Map matchState) => item is InvalidGenerationSourceError;
+  featureValueOf(covariant T actual) => _feature(actual);
 }
 
 /// Returns all of the declarations in [unit], including [unit] as the first

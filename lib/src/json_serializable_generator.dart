@@ -58,6 +58,17 @@ class JsonSerializableGenerator
     // TODO: support overriding the field set with an annotation option
     var fieldsList = classElement.fields.where((e) => !e.isStatic).toList();
 
+    var undefinedFields =
+        fieldsList.where((fe) => fe.type.isUndefined).toList();
+    if (undefinedFields.isNotEmpty) {
+      var description =
+          undefinedFields.map((fe) => "`${fe.displayName}`").join(', ');
+
+      throw new InvalidGenerationSourceError(
+          'At least one field has an invalid type: $description.',
+          todo: 'Check names and imports.');
+    }
+
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
     fieldsList.sort((a, b) => a.nameOffset.compareTo(b.nameOffset));
@@ -149,6 +160,19 @@ class JsonSerializableGenerator
         ctorArguments.add(arg);
       }
       fieldsToSet.remove(arg.name);
+    }
+
+    var undefinedArgs = [ctorArguments, ctorNamedArguments]
+        .expand((l) => l)
+        .where((pe) => pe.type.isUndefined)
+        .toList();
+    if (undefinedArgs.isNotEmpty) {
+      var description =
+          undefinedArgs.map((fe) => "`${fe.displayName}`").join(', ');
+
+      throw new InvalidGenerationSourceError(
+          'At least one constructor argument has an invalid type: $description.',
+          todo: 'Check names and imports.');
     }
 
     // these are fields to skip – now to find them
@@ -296,15 +320,13 @@ class JsonSerializableGenerator
       {ParameterElement ctorParam}) {
     name = _fieldToJsonMapKey(name, field);
     var result = "json['$name']";
-    return _writeAccessToJsonValue(result, field.type, ctorParam: ctorParam);
+
+    var targetType = ctorParam?.type ?? field.type;
+    return _writeAccessToJsonValue(result, targetType);
   }
 
   String _writeAccessToJsonValue(String varExpression, DartType searchType,
-      {ParameterElement ctorParam, int depth: 0}) {
-    if (ctorParam != null) {
-      searchType = ctorParam.type as InterfaceType;
-    }
-
+      {int depth: 0}) {
     for (var helper in _typeHelpers) {
       if (helper.canDeserialize(searchType)) {
         return "$varExpression == null ? null : "
