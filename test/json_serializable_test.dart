@@ -9,8 +9,6 @@ import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/generated/source.dart';
-import 'package:analyzer/src/generated/source_io.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
@@ -25,17 +23,21 @@ void main() {
     test('const field', () async {
       var element = await _getClassForCodeString('theAnswer');
 
-      expect(_generator.generate(element, null),
-          throwsInvalidGenerationSourceError);
-      // TODO: validate the properties on the thrown error
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Generator cannot target `const dynamic theAnswer`.',
+              'Remove the JsonSerializable annotation from `const dynamic theAnswer`.'));
     });
 
     test('method', () async {
       var element = await _getClassForCodeString('annotatedMethod');
 
-      expect(_generator.generate(element, null),
-          throwsInvalidGenerationSourceError);
-      // TODO: validate the properties on the thrown error
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Generator cannot target `annotatedMethod`.',
+              'Remove the JsonSerializable annotation from `annotatedMethod`.'));
     });
   });
 
@@ -126,14 +128,14 @@ Future<Element> _getClassForCodeString(String name) async {
 }
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
-  Source source = new StringSource(_testSource, 'test content');
+  var source = new StringSource(_testSource, 'test content');
 
   var foundFiles = await getDartFiles(projectPath,
       searchList: [p.join(getPackagePath(), 'test', 'test_files')]);
 
   var context = await getAnalysisContextForProjectPath(projectPath, foundFiles);
 
-  LibraryElement libElement = context.computeLibraryElement(source);
+  var libElement = context.computeLibraryElement(source);
   return context.resolveCompilationUnit(source, libElement);
 }
 
