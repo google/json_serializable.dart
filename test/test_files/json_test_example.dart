@@ -68,7 +68,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   Map<int, DateTime> intDateTimeMap;
 
   //TODO(kevmoo) - finish this...
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is KitchenSink &&
       _deepEquals(iterable, other.iterable) &&
       _deepEquals(dynamicIterable, other.dynamicIterable) &&
@@ -86,7 +86,7 @@ class Person extends Object with _$PersonSerializerMixin {
 
   factory Person.fromJson(Map json) => _$PersonFromJson(json);
 
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Person &&
       firstName == other.firstName &&
       middleName == other.middleName &&
@@ -104,11 +104,11 @@ class Order extends Object with _$OrderSerializerMixin {
 
   Order([Iterable<Item> items])
       : this.items = new UnmodifiableListView<Item>(
-            new List<Item>.unmodifiable(items ?? const []));
+            new List<Item>.unmodifiable(items ?? const <Item>[]));
 
-  factory Order.fromJson(json) => _$OrderFromJson(json);
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Order &&
       count == other.count &&
       isRushed == other.isRushed &&
@@ -126,7 +126,7 @@ class Item extends Object with _$ItemSerializerMixin {
 
   factory Item.fromJson(json) => _$ItemFromJson(json);
 
-  bool operator ==(other) =>
+  bool operator ==(Object other) =>
       other is Item &&
       price == other.price &&
       itemNumber == other.itemNumber &&

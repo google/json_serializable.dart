@@ -13,7 +13,6 @@ import 'package:analyzer/source/pub_package_map_provider.dart';
 import 'package:analyzer/src/dart/sdk/sdk.dart' show FolderBasedDartSdk;
 import 'package:analyzer/src/generated/engine.dart';
 import 'package:analyzer/src/generated/java_io.dart';
-import 'package:analyzer/src/generated/sdk.dart' show DartSdk;
 import 'package:analyzer/src/generated/source.dart';
 import 'package:analyzer/src/generated/source_io.dart';
 import 'package:cli_util/cli_util.dart' as cli;
@@ -26,7 +25,7 @@ Future<AnalysisContext> getAnalysisContextForProjectPath(
   var sdkPath = cli.getSdkPath();
 
   var resourceProvider = PhysicalResourceProvider.INSTANCE;
-  DartSdk sdk = new FolderBasedDartSdk(
+  var sdk = new FolderBasedDartSdk(
       resourceProvider, resourceProvider.getFolder(sdkPath));
 
   var packageResolver = _getPackageResolver(projectPath, sdk);
@@ -51,7 +50,7 @@ Future<AnalysisContext> getAnalysisContextForProjectPath(
   return context;
 }
 
-UriResolver _getPackageResolver(String projectPath, DartSdk sdk) {
+UriResolver _getPackageResolver(String projectPath, FolderBasedDartSdk sdk) {
   var dotPackagesPath = p.join(projectPath, '.packages');
 
   if (!FileSystemEntity.isFileSync(dotPackagesPath)) {
@@ -62,7 +61,7 @@ UriResolver _getPackageResolver(String projectPath, DartSdk sdk) {
   var pubPackageMapProvider =
       new PubPackageMapProvider(PhysicalResourceProvider.INSTANCE, sdk);
   var packageMapInfo = pubPackageMapProvider.computePackageMap(
-      PhysicalResourceProvider.INSTANCE.getResource(projectPath));
+      PhysicalResourceProvider.INSTANCE.getResource(projectPath) as Folder);
   var packageMap = packageMapInfo.packageMap;
   if (packageMap == null) {
     throw new StateError('An error occurred getting the package map.');

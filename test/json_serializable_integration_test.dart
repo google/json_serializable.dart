@@ -152,8 +152,9 @@ String _loudEncode(object) {
   } on JsonUnsupportedObjectError catch (e) {
     var error = e;
     do {
-      print(error.cause);
-      error = (error.cause is JsonUnsupportedObjectError) ? error.cause : null;
+      var cause = error.cause;
+      print(cause);
+      error = (cause is JsonUnsupportedObjectError) ? cause : null;
     } while (error != null);
     rethrow;
   }

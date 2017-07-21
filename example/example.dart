@@ -17,7 +17,7 @@ class Person extends Object with _$PersonSerializerMixin {
 
   Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
 
-  factory Person.fromJson(json) => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
 
 @JsonSerializable()
@@ -29,7 +29,7 @@ class Order extends Object with _$OrderSerializerMixin {
 
   Order();
 
-  factory Order.fromJson(json) => _$OrderFromJson(json);
+  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 }
 
 @JsonSerializable(createToJson: false)
@@ -40,7 +40,7 @@ class Item {
 
   Item();
 
-  factory Item.fromJson(json) => _$ItemFromJson(json);
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 }
 
 @JsonLiteral('data.json')

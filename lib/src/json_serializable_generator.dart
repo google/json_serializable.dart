@@ -76,7 +76,7 @@ class JsonSerializableGenerator
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
         fieldsList,
-        key: (f) => f.name);
+        key: (FieldElement f) => f.name);
 
     // Get the constructor to use for the factory
 
@@ -257,8 +257,8 @@ class JsonSerializableGenerator
 
     var isList = _coreListChecker.isAssignableFromType(fieldType);
     var substitute = "v$depth";
-    var subFieldValue = _fieldToJsonMapValue(substitute,
-        _getIterableGenericType(fieldType as InterfaceType), depth + 1);
+    var subFieldValue = _fieldToJsonMapValue(
+        substitute, _getIterableGenericType(fieldType), depth + 1);
 
     // In the case of trivial JSON types (int, String, etc), `subFieldValue`
     // will be identical to `substitute` – so no explicit mapping is needed.
@@ -335,8 +335,7 @@ class JsonSerializableGenerator
     }
 
     if (_coreIterableChecker.isAssignableFromType(searchType)) {
-      var iterableGenericType =
-          _getIterableGenericType(searchType as InterfaceType);
+      var iterableGenericType = _getIterableGenericType(searchType);
 
       var itemVal = "v$depth";
       var itemSubVal = _writeAccessToJsonValue(itemVal, iterableGenericType,
@@ -414,10 +413,10 @@ String _fieldToJsonMapKey(String fieldName, FieldElement field) {
   return fieldName;
 }
 
-DartType _getIterableGenericType(InterfaceType type) =>
+DartType _getIterableGenericType(DartType type) =>
     _getTypeArguments(type, _coreIterableChecker).single;
 
-List<DartType> _getTypeArguments(InterfaceType type, TypeChecker checker) {
+List<DartType> _getTypeArguments(DartType type, TypeChecker checker) {
   var iterableImplementation =
       _getImplementationType(type, checker) as InterfaceType;
 
