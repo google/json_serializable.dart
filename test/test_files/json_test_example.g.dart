@@ -8,15 +8,15 @@ part of json_serializable.test.example;
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
-    iterable: json['iterable'],
-    dynamicIterable: json['dynamicIterable'],
-    objectIterable: json['objectIterable'],
+    iterable: json['iterable'] as List,
+    dynamicIterable: json['dynamicIterable'] as List,
+    objectIterable: json['objectIterable'] as List,
     intIterable: (json['intIterable'] as List)?.map((v0) => v0 as int),
     dateTimeIterable: (json['dateTimeIterable'] as List)
         ?.map((v0) => v0 == null ? null : DateTime.parse(v0 as String)))
-  ..list = json['list']
-  ..dynamicList = json['dynamicList']
-  ..objectList = json['objectList']
+  ..list = json['list'] as List
+  ..dynamicList = json['dynamicList'] as List
+  ..objectList = json['objectList'] as List
   ..intList = (json['intList'] as List)?.map((v0) => v0 as int)?.toList()
   ..dateTimeList = (json['dateTimeList'] as List)
       ?.map((v0) => v0 == null ? null : DateTime.parse(v0 as String))

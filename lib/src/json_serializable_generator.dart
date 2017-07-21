@@ -357,7 +357,7 @@ class JsonSerializableGenerator
 
       // If `itemSubVal` is the same, then we don't need to do anything fancy
       if (itemVal == itemSubVal) {
-        return varExpression;
+        return '$varExpression as List';
       }
 
       var output = "($varExpression as List)?.map(($itemVal) => $itemSubVal)";
