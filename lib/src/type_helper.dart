@@ -104,6 +104,7 @@ class DateTimeHelper extends TypeHelper {
   @override
   bool canSerialize(DartType type) => _matchesType(type);
 
+  @override
   bool canDeserialize(DartType type) => _matchesType(type);
 
   bool _matchesType(DartType type) =>

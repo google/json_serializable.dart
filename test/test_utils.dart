@@ -42,6 +42,7 @@ class FeatureMatcher<T> extends CustomMatcher {
   FeatureMatcher(String name, this._feature, matcher)
       : super("`$name`", "`$name`", matcher);
 
+  @override
   featureValueOf(covariant T actual) => _feature(actual);
 }
 
