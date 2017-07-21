@@ -8,11 +8,9 @@ library json_serializable.test.json_generator_test;
 import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
-import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
