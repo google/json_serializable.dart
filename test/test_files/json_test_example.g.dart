@@ -24,14 +24,10 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..map = json['map'] as Map<String, dynamic>
   ..stringStringMap = json['stringStringMap'] == null
       ? null
-      : new Map<String, String>.fromIterables(
-          (json['stringStringMap'] as Map<String, dynamic>).keys,
-          (json['stringStringMap'] as Map).values.map((v0) => v0 as String))
+      : new Map<String, String>.from(json['stringStringMap'] as Map)
   ..stringIntMap = json['stringIntMap'] == null
       ? null
-      : new Map<String, int>.fromIterables(
-          (json['stringIntMap'] as Map<String, dynamic>).keys,
-          (json['stringIntMap'] as Map).values.map((v0) => v0 as int))
+      : new Map<String, int>.from(json['stringIntMap'] as Map)
   ..stringDateTimeMap = json['stringDateTimeMap'] == null
       ? null
       : new Map<String, DateTime>.fromIterables(

@@ -392,18 +392,18 @@ class JsonSerializableGenerator
         return "$varExpression as Map<String, dynamic>";
       }
 
+      if (_stringBoolNumChecker.isAssignableFromType(valueArg)) {
+        // No mapping of the values is required!
+        return "$varExpression == null ? null :"
+            "new Map<String, $valueArg>.from($varExpression as Map)";
+      }
+
       // In this case, we're going to create a new Map with matching reified
       // types.
 
       var itemVal = "v$depth";
       var itemSubVal =
           _writeAccessToJsonValue(itemVal, valueArg, depth: depth + 1);
-
-      if (itemVal == itemSubVal) {
-        // No mapping of the values is required!
-        return "$varExpression == null ? null :"
-            "new Map<String, $valueArg>.from($varExpression)";
-      }
 
       return "$varExpression == null ? null :"
           "new Map<String, $valueArg>.fromIterables("
