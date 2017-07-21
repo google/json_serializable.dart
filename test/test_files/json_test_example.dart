@@ -84,7 +84,7 @@ class Person extends Object with _$PersonSerializerMixin {
 
   Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
 
-  factory Person.fromJson(Map json) => _$PersonFromJson(json);
+  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
   bool operator ==(Object other) =>
       other is Person &&
@@ -124,7 +124,7 @@ class Item extends Object with _$ItemSerializerMixin {
 
   Item([this.price]);
 
-  factory Item.fromJson(json) => _$ItemFromJson(json);
+  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   bool operator ==(Object other) =>
       other is Item &&

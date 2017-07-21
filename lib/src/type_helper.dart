@@ -93,7 +93,8 @@ class JsonHelper extends TypeHelper {
   @override
   String deserialize(DartType targetType, String expression) {
     // TODO: the type could be imported from a library with a prefix!
-    return "new ${targetType.name}.fromJson($expression)";
+    // github.com/dart-lang/json_serializable/issues/19
+    return "new ${targetType.name}.fromJson($expression as Map<String, dynamic>)";
   }
 }
 
@@ -114,5 +115,7 @@ class DateTimeHelper extends TypeHelper {
 
   @override
   String deserialize(DartType targetType, String expression) =>
-      "DateTime.parse($expression)";
+      // TODO(kevmoo) `String` here is ignoring
+      // github.com/dart-lang/json_serializable/issues/19
+      "DateTime.parse($expression as String)";
 }

@@ -188,7 +188,8 @@ class JsonSerializableGenerator
     // Generate the static factory method
     //
     buffer.writeln();
-    buffer.writeln('$className ${prefix}FromJson(Map json) =>');
+    buffer
+        .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) =>');
     buffer.write('    new $className(');
     buffer.writeAll(
         ctorArguments.map((paramElement) => _jsonMapAccessToField(
@@ -378,15 +379,22 @@ class JsonSerializableGenerator
         return "$varExpression as Map<String, dynamic>";
       }
 
+      // In this case, we're going to create a new Map with matching reified
+      // types.
+
       var itemVal = "v$depth";
       var itemSubVal =
           _writeAccessToJsonValue(itemVal, valueArg, depth: depth + 1);
 
-      // In this case, we're going to create a new Map with matching reified
-      // types.
+      if (itemVal == itemSubVal) {
+        // No mapping of the values is required!
+        return "$varExpression == null ? null :"
+            "new Map<String, $valueArg>.from($varExpression)";
+      }
+
       return "$varExpression == null ? null :"
           "new Map<String, $valueArg>.fromIterables("
-          "($varExpression as Map).keys,"
+          "($varExpression as Map<String, dynamic>).keys,"
           "($varExpression as Map).values.map(($itemVal) => $itemSubVal))";
     } else if (searchType.isDynamic || searchType.isObject) {
       // just return it as-is. We'll hope it's safe.

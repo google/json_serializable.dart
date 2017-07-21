@@ -7,15 +7,16 @@ part of json_serializable.example;
 // Target: class Person
 // **************************************************************************
 
-Person _$PersonFromJson(Map json) =>
-    new Person(json['firstName'] as String, json['lastName'] as String,
-        middleName: json['middleName'] as String,
-        dateOfBirth: json['date-of-birth'] == null
-            ? null
-            : DateTime.parse(json['date-of-birth']))
-      ..orders = (json['orders'] as List)
-          ?.map((v0) => v0 == null ? null : new Order.fromJson(v0))
-          ?.toList();
+Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
+    json['firstName'] as String, json['lastName'] as String,
+    middleName: json['middleName'] as String,
+    dateOfBirth: json['date-of-birth'] == null
+        ? null
+        : DateTime.parse(json['date-of-birth'] as String))
+  ..orders = (json['orders'] as List)
+      ?.map((v0) =>
+          v0 == null ? null : new Order.fromJson(v0 as Map<String, dynamic>))
+      ?.toList();
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -37,11 +38,13 @@ abstract class _$PersonSerializerMixin {
 // Target: class Order
 // **************************************************************************
 
-Order _$OrderFromJson(Map json) => new Order()
+Order _$OrderFromJson(Map<String, dynamic> json) => new Order()
   ..count = json['count'] as int
   ..itemNumber = json['itemNumber'] as int
   ..isRushed = json['isRushed'] as bool
-  ..item = json['item'] == null ? null : new Item.fromJson(json['item']);
+  ..item = json['item'] == null
+      ? null
+      : new Item.fromJson(json['item'] as Map<String, dynamic>);
 
 abstract class _$OrderSerializerMixin {
   int get count;
@@ -61,7 +64,7 @@ abstract class _$OrderSerializerMixin {
 // Target: class Item
 // **************************************************************************
 
-Item _$ItemFromJson(Map json) => new Item()
+Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
   ..count = json['count'] as int
   ..itemNumber = json['itemNumber'] as int
   ..isRushed = json['isRushed'] as bool;
