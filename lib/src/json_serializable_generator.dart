@@ -14,6 +14,8 @@ import 'json_serializable.dart';
 import 'type_helper.dart';
 import 'utils.dart';
 
+final _substitute = "e";
+
 // TODO: toJson option to omit null/empty values
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
@@ -230,8 +232,7 @@ class JsonSerializableGenerator
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  String _fieldToJsonMapValue(String expression, DartType fieldType,
-      [int depth = 0]) {
+  String _fieldToJsonMapValue(String expression, DartType fieldType) {
     for (var helper in _typeHelpers) {
       if (helper.canSerialize(fieldType)) {
         return helper.serialize(fieldType, expression);
@@ -245,34 +246,32 @@ class JsonSerializableGenerator
     }
 
     if (_coreIterableChecker.isAssignableFromType(fieldType)) {
-      return _listFieldToJsonMapValue(expression, fieldType, depth);
+      return _listFieldToJsonMapValue(expression, fieldType);
     }
 
     if (_coreMapChecker.isAssignableFromType(fieldType)) {
-      return _mapFieldToJsonMapValue(expression, fieldType, depth);
+      return _mapFieldToJsonMapValue(expression, fieldType);
     }
 
     throw new _UnsupportedTypeError(fieldType, expression);
   }
 
-  String _listFieldToJsonMapValue(
-      String expression, DartType fieldType, int depth) {
+  String _listFieldToJsonMapValue(String expression, DartType fieldType) {
     assert(_coreIterableChecker.isAssignableFromType(fieldType));
 
     // This block will yield a regular list, which works fine for JSON
     // Although it's possible that child elements may be marked unsafe
 
     var isList = _coreListChecker.isAssignableFromType(fieldType);
-    var substitute = "v$depth";
-    var subFieldValue = _fieldToJsonMapValue(
-        substitute, _getIterableGenericType(fieldType), depth + 1);
+    var subFieldValue =
+        _fieldToJsonMapValue(_substitute, _getIterableGenericType(fieldType));
 
     // In the case of trivial JSON types (int, String, etc), `subFieldValue`
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
-    if (subFieldValue != substitute) {
+    if (subFieldValue != _substitute) {
       // TODO: the type could be imported from a library with a prefix!
-      expression = "${expression}?.map(($substitute) => $subFieldValue)";
+      expression = "${expression}?.map(($_substitute) => $subFieldValue)";
 
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
@@ -287,8 +286,7 @@ class JsonSerializableGenerator
     return expression;
   }
 
-  String _mapFieldToJsonMapValue(
-      String expression, DartType fieldType, int depth) {
+  String _mapFieldToJsonMapValue(String expression, DartType fieldType) {
     assert(_coreMapChecker.isAssignableFromType(fieldType));
     var args = _getTypeArguments(fieldType, _coreMapChecker);
     assert(args.length == 2);
@@ -311,14 +309,12 @@ class JsonSerializableGenerator
         return expression;
       }
 
-      var substitute = "v$depth";
-      var subFieldValue =
-          _fieldToJsonMapValue(substitute, valueType, depth + 1);
+      var subFieldValue = _fieldToJsonMapValue(_substitute, valueType);
 
       return "$expression == null ? null :"
           "new Map<String, dynamic>.fromIterables("
           "$expression.keys,"
-          "$expression.values.map(($substitute) => $subFieldValue))";
+          "$expression.values.map(($_substitute) => $subFieldValue))";
     }
     throw new _UnsupportedTypeError(fieldType, expression);
   }
@@ -339,8 +335,7 @@ class JsonSerializableGenerator
     }
   }
 
-  String _writeAccessToJsonValue(String varExpression, DartType searchType,
-      {int depth: 0}) {
+  String _writeAccessToJsonValue(String varExpression, DartType searchType) {
     for (var helper in _typeHelpers) {
       if (helper.canDeserialize(searchType)) {
         return "$varExpression == null ? null : "
@@ -351,16 +346,16 @@ class JsonSerializableGenerator
     if (_coreIterableChecker.isAssignableFromType(searchType)) {
       var iterableGenericType = _getIterableGenericType(searchType);
 
-      var itemVal = "v$depth";
-      var itemSubVal = _writeAccessToJsonValue(itemVal, iterableGenericType,
-          depth: depth + 1);
+      var itemSubVal =
+          _writeAccessToJsonValue(_substitute, iterableGenericType);
 
       // If `itemSubVal` is the same, then we don't need to do anything fancy
-      if (itemVal == itemSubVal) {
+      if (_substitute == itemSubVal) {
         return '$varExpression as List';
       }
 
-      var output = "($varExpression as List)?.map(($itemVal) => $itemSubVal)";
+      var output =
+          "($varExpression as List)?.map(($_substitute) => $itemSubVal)";
 
       if (_coreListChecker.isAssignableFromType(searchType)) {
         output += "?.toList()";
@@ -401,14 +396,12 @@ class JsonSerializableGenerator
       // In this case, we're going to create a new Map with matching reified
       // types.
 
-      var itemVal = "v$depth";
-      var itemSubVal =
-          _writeAccessToJsonValue(itemVal, valueArg, depth: depth + 1);
+      var itemSubVal = _writeAccessToJsonValue(_substitute, valueArg);
 
       return "$varExpression == null ? null :"
           "new Map<String, $valueArg>.fromIterables("
           "($varExpression as Map<String, dynamic>).keys,"
-          "($varExpression as Map).values.map(($itemVal) => $itemSubVal))";
+          "($varExpression as Map).values.map(($_substitute) => $itemSubVal))";
     } else if (searchType.isDynamic || searchType.isObject) {
       // just return it as-is. We'll hope it's safe.
       return varExpression;

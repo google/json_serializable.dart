@@ -139,7 +139,7 @@ void main() {
       var output = await _runForElementNamed('Person');
 
       expect(output,
-          contains("json['listOfInts'] as List)?.map((v0) => v0 as int)"));
+          contains("json['listOfInts'] as List)?.map((e) => e as int)"));
     });
   });
 

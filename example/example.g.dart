@@ -7,16 +7,16 @@ part of json_serializable.example;
 // Target: class Person
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
-    json['firstName'] as String, json['lastName'] as String,
-    middleName: json['middleName'] as String,
-    dateOfBirth: json['date-of-birth'] == null
-        ? null
-        : DateTime.parse(json['date-of-birth'] as String))
-  ..orders = (json['orders'] as List)
-      ?.map((v0) =>
-          v0 == null ? null : new Order.fromJson(v0 as Map<String, dynamic>))
-      ?.toList();
+Person _$PersonFromJson(Map<String, dynamic> json) =>
+    new Person(json['firstName'] as String, json['lastName'] as String,
+        middleName: json['middleName'] as String,
+        dateOfBirth: json['date-of-birth'] == null
+            ? null
+            : DateTime.parse(json['date-of-birth'] as String))
+      ..orders = (json['orders'] as List)
+          ?.map((e) =>
+              e == null ? null : new Order.fromJson(e as Map<String, dynamic>))
+          ?.toList();
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
