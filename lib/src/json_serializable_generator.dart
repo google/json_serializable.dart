@@ -250,7 +250,7 @@ class JsonSerializableGenerator
 
   String _listFieldToJsonMapValue(
       String expression, DartType fieldType, int depth) {
-    assert(_coreListChecker.isAssignableFromType(fieldType));
+    assert(_coreIterableChecker.isAssignableFromType(fieldType));
 
     // This block will yield a regular list, which works fine for JSON
     // Although it's possible that child elements may be marked unsafe
