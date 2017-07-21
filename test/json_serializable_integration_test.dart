@@ -114,7 +114,8 @@ void main() {
         'map',
         'stringStringMap',
         'stringIntMap',
-        'stringDateTimeMap'
+        'stringDateTimeMap',
+        'crazyComplex'
       ];
 
       expect(json.keys, orderedEquals(expectedOrder));
@@ -126,6 +127,28 @@ void main() {
         ..dateTimeList = <DateTime>[now, null]
         ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
 
+      roundTripItem(item);
+    });
+
+    test('complex nested type', () {
+      var item = new KitchenSink()
+        ..crazyComplex = [
+          null,
+          {},
+          {
+            "null": null,
+            "empty": {},
+            "items": {
+              "null": null,
+              "empty": [],
+              "items": [
+                null,
+                [],
+                [new DateTime.now()]
+              ]
+            }
+          }
+        ];
       roundTripItem(item);
     });
   });

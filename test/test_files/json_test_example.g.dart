@@ -34,7 +34,16 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
           (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
           (json['stringDateTimeMap'] as Map)
               .values
-              .map((v0) => v0 == null ? null : DateTime.parse(v0 as String)));
+              .map((v0) => v0 == null ? null : DateTime.parse(v0 as String)))
+  ..crazyComplex = (json['crazyComplex'] as List)
+      ?.map((v0) => v0 == null
+          ? null
+          : new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
+              (v0 as Map<String, dynamic>).keys,
+              (v0 as Map).values.map((v1) => v1 == null
+                  ? null
+                  : new Map<String, List<List<DateTime>>>.fromIterables((v1 as Map<String, dynamic>).keys, (v1 as Map).values.map((v2) => (v2 as List)?.map((v3) => (v3 as List)?.map((v4) => v4 == null ? null : DateTime.parse(v4 as String))?.toList())?.toList())))))
+      ?.toList();
 
 abstract class _$KitchenSinkSerializerMixin {
   Iterable<dynamic> get iterable;
@@ -51,6 +60,7 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, String> get stringStringMap;
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
+  List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'iterable': iterable?.toList(),
         'dynamicIterable': dynamicIterable?.toList(),
@@ -70,7 +80,22 @@ abstract class _$KitchenSinkSerializerMixin {
         'stringDateTimeMap': stringDateTimeMap == null
             ? null
             : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-                stringDateTimeMap.values.map((v0) => v0?.toIso8601String()))
+                stringDateTimeMap.values.map((v0) => v0?.toIso8601String())),
+        'crazyComplex': crazyComplex
+            ?.map((v0) => v0 == null
+                ? null
+                : new Map<String, dynamic>.fromIterables(
+                    v0.keys,
+                    v0.values.map((v1) => v1 == null
+                        ? null
+                        : new Map<String, dynamic>.fromIterables(
+                            v1.keys,
+                            v1.values.map((v2) => v2
+                                ?.map((v3) => v3
+                                    ?.map((v4) => v4?.toIso8601String())
+                                    ?.toList())
+                                ?.toList())))))
+            ?.toList()
       };
 }
 

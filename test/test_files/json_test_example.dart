@@ -58,6 +58,8 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   Map<String, int> stringIntMap;
   Map<String, DateTime> stringDateTimeMap;
 
+  List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex;
+
   //TODO(kevmoo) - finish this...
   bool operator ==(Object other) =>
       other is KitchenSink &&
@@ -65,7 +67,8 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
       _deepEquals(dynamicIterable, other.dynamicIterable) &&
       _deepEquals(dateTimeIterable, other.dateTimeIterable) &&
       _deepEquals(dateTimeList, other.dateTimeList) &&
-      _deepEquals(stringDateTimeMap, other.stringDateTimeMap);
+      _deepEquals(stringDateTimeMap, other.stringDateTimeMap) &&
+      _deepEquals(crazyComplex, other.crazyComplex);
 }
 
 @JsonSerializable()
