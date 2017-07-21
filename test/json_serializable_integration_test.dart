@@ -168,7 +168,7 @@ void _roundTripObject(object, factory(Map<String, dynamic> json)) {
 
 String _loudEncode(object) {
   try {
-    return JSON.encode(object.toJson());
+    return const JsonEncoder.withIndent(' ').convert(object.toJson());
   } on JsonUnsupportedObjectError catch (e) {
     var error = e;
     do {
