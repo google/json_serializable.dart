@@ -31,9 +31,9 @@ Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
     throwsA(allOf(
         new isInstanceOf<InvalidGenerationSourceError>(),
         new FeatureMatcher<InvalidGenerationSourceError>(
-            'todo', (e) => e.todo, todoMatcher),
+            'message', (e) => e.message, messageMatcher),
         new FeatureMatcher<InvalidGenerationSourceError>(
-            'message', (e) => e.message, messageMatcher)));
+            'todo', (e) => e.todo, todoMatcher)));
 
 // TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {
