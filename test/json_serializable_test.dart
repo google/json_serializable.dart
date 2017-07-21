@@ -63,6 +63,48 @@ void main() {
     });
   });
 
+  group('unserializable types', () {
+    test('for toJson', () async {
+      var element = await _getClassForCodeString('NoSerializeFieldType');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Could not generate `toJson` code for `Stopwatch watch`.',
+              'Make sure all of the types are serializable.'));
+    });
+
+    test('for fromJson', () async {
+      var element = await _getClassForCodeString('NoDeserializeFieldType');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Could not generate fromJson code for `Stopwatch watch`.',
+              'Make sure all of the types are serializable.'));
+    });
+
+    test('for toJson in Map key', () async {
+      var element = await _getClassForCodeString('NoSerializeBadKey');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Could not generate `toJson` code for `Map<int, DateTime> intDateTimeMap`.',
+              'Make sure all of the types are serializable.'));
+    });
+
+    test('for fromJson', () async {
+      var element = await _getClassForCodeString('NoDeserializeBadKey');
+
+      expect(
+          _generator.generate(element, null),
+          throwsInvalidGenerationSourceError(
+              'Could not generate fromJson code for `Map<int, DateTime> intDateTimeMap`.',
+              'Make sure all of the types are serializable.'));
+    });
+  });
+
   test('class with final fields', () async {
     var element = await _getClassForCodeString('FinalFields');
     var generateResult = await _generator.generate(element, null);
@@ -234,13 +276,33 @@ class ParentObjectWithDynamicChildren {
 
 @JsonSerializable()
 class UnknownCtorParamType {
-  int number
+  int number;
   
   UnknownCtorParamType(Bob number) : this.number = number;
 }
 
 @JsonSerializable()
 class UnknownFieldType {
-  Bob number
+  Bob number;
+}
+
+@JsonSerializable(createFactory: false)
+class NoSerializeFieldType {
+  Stopwatch watch;
+}
+
+@JsonSerializable(createToJson: false)
+class NoDeserializeFieldType {
+  Stopwatch watch;
+}
+
+@JsonSerializable(createFactory: false)
+class NoSerializeBadKey {
+  Map<int, DateTime> intDateTimeMap;
+}
+
+@JsonSerializable(createToJson: false)
+class NoDeserializeBadKey {
+  Map<int, DateTime> intDateTimeMap;
 }
 ''';

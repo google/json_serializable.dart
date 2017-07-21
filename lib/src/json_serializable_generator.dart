@@ -111,8 +111,14 @@ class JsonSerializableGenerator
 
       var pairs = <String>[];
       fields.forEach((fieldName, field) {
-        pairs.add("'${_fieldToJsonMapKey(fieldName, field)}': "
-            "${_fieldToJsonMapValue(fieldName, field.type)}");
+        try {
+          pairs.add("'${_fieldToJsonMapKey(fieldName, field)}': "
+              "${_fieldToJsonMapValue(fieldName, field.type)}");
+        } on _UnsupportedTypeError {
+          throw new InvalidGenerationSourceError(
+              "Could not generate `toJson` code for `${friendlyNameForElement(field)}`.",
+              todo: "Make sure all of the types are serializable.");
+        }
       });
       buffer.writeln(pairs.join(','));
 
@@ -246,7 +252,7 @@ class JsonSerializableGenerator
       return _mapFieldToJsonMapValue(expression, fieldType, depth);
     }
 
-    return "$expression /* unsafe */";
+    throw new _UnsupportedTypeError(fieldType, expression);
   }
 
   String _listFieldToJsonMapValue(
@@ -314,7 +320,7 @@ class JsonSerializableGenerator
           "$expression.keys,"
           "$expression.values.map(($substitute) => $subFieldValue))";
     }
-    return "$expression /* unsafe */";
+    throw new _UnsupportedTypeError(fieldType, expression);
   }
 
   String _jsonMapAccessToField(String name, FieldElement field,
@@ -323,7 +329,14 @@ class JsonSerializableGenerator
     var result = "json['$name']";
 
     var targetType = ctorParam?.type ?? field.type;
-    return _writeAccessToJsonValue(result, targetType);
+
+    try {
+      return _writeAccessToJsonValue(result, targetType);
+    } on _UnsupportedTypeError {
+      throw new InvalidGenerationSourceError(
+          "Could not generate fromJson code for `${friendlyNameForElement(field)}`.",
+          todo: "Make sure all of the types are serializable.");
+    }
   }
 
   String _writeAccessToJsonValue(String varExpression, DartType searchType,
@@ -370,7 +383,7 @@ class JsonSerializableGenerator
           _coreStringChecker.isExactlyType(keyArg);
 
       if (!safeKey) {
-        return "$varExpression /* unsafe key type */";
+        throw new _UnsupportedTypeError(keyArg, varExpression);
       }
 
       // this is the trivial case. Do a runtime cast to the known type of JSON
@@ -403,7 +416,7 @@ class JsonSerializableGenerator
       return "$varExpression as $searchType";
     }
 
-    return "$varExpression /* unsafe */";
+    throw new _UnsupportedTypeError(searchType, varExpression);
   }
 }
 
@@ -464,3 +477,10 @@ final _stringBoolNumChecker = new TypeChecker.any([
   new TypeChecker.fromUrl('dart:core#bool'),
   new TypeChecker.fromUrl('dart:core#num')
 ]);
+
+class _UnsupportedTypeError extends Error {
+  final String expression;
+  final DartType type;
+
+  _UnsupportedTypeError(this.type, this.expression);
+}

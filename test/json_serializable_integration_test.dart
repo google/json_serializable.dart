@@ -111,13 +111,10 @@ void main() {
         'objectList',
         'intList',
         'dateTimeList',
-        'stopWatch',
-        'stopwatchList',
         'map',
         'stringStringMap',
         'stringIntMap',
-        'stringDateTimeMap',
-        'intDateTimeMap'
+        'stringDateTimeMap'
       ];
 
       expect(json.keys, orderedEquals(expectedOrder));

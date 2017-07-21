@@ -53,19 +53,10 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   List<int> intList;
   List<DateTime> dateTimeList;
 
-  /// Intentionally unsafe
-  Stopwatch stopWatch;
-
-  /// Intentionally unsafe
-  List<Stopwatch> stopwatchList;
-
   Map map;
   Map<String, String> stringStringMap;
   Map<String, int> stringIntMap;
   Map<String, DateTime> stringDateTimeMap;
-
-  // Intentionally unsafe key
-  Map<int, DateTime> intDateTimeMap;
 
   //TODO(kevmoo) - finish this...
   bool operator ==(Object other) =>

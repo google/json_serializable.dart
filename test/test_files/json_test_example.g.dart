@@ -21,9 +21,6 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..dateTimeList = (json['dateTimeList'] as List)
       ?.map((v0) => v0 == null ? null : DateTime.parse(v0 as String))
       ?.toList()
-  ..stopWatch = json['stopWatch'] /* unsafe */
-  ..stopwatchList =
-      (json['stopwatchList'] as List)?.map((v0) => v0 /* unsafe */)?.toList()
   ..map = json['map'] as Map<String, dynamic>
   ..stringStringMap = json['stringStringMap'] == null
       ? null
@@ -41,8 +38,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
           (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
           (json['stringDateTimeMap'] as Map)
               .values
-              .map((v0) => v0 == null ? null : DateTime.parse(v0 as String)))
-  ..intDateTimeMap = json['intDateTimeMap'] /* unsafe key type */;
+              .map((v0) => v0 == null ? null : DateTime.parse(v0 as String)));
 
 abstract class _$KitchenSinkSerializerMixin {
   Iterable<dynamic> get iterable;
@@ -55,13 +51,10 @@ abstract class _$KitchenSinkSerializerMixin {
   List<Object> get objectList;
   List<int> get intList;
   List<DateTime> get dateTimeList;
-  Stopwatch get stopWatch;
-  List<Stopwatch> get stopwatchList;
   Map<dynamic, dynamic> get map;
   Map<String, String> get stringStringMap;
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
-  Map<int, DateTime> get intDateTimeMap;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'iterable': iterable?.toList(),
         'dynamicIterable': dynamicIterable?.toList(),
@@ -75,16 +68,13 @@ abstract class _$KitchenSinkSerializerMixin {
         'intList': intList,
         'dateTimeList':
             dateTimeList?.map((v0) => v0?.toIso8601String())?.toList(),
-        'stopWatch': stopWatch /* unsafe */,
-        'stopwatchList': stopwatchList?.map((v0) => v0 /* unsafe */)?.toList(),
         'map': map,
         'stringStringMap': stringStringMap,
         'stringIntMap': stringIntMap,
         'stringDateTimeMap': stringDateTimeMap == null
             ? null
             : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-                stringDateTimeMap.values.map((v0) => v0?.toIso8601String())),
-        'intDateTimeMap': intDateTimeMap /* unsafe */
+                stringDateTimeMap.values.map((v0) => v0?.toIso8601String()))
       };
 }
 
