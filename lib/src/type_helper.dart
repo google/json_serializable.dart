@@ -83,12 +83,12 @@ class JsonHelper extends TypeHelper {
     return false;
   }
 
-  /// Simply returns the [name] provided.
+  /// Simply returns the [expression] provided.
   ///
   /// By default, JSON encoding in from `dart:convert` calls `toJson` on
   /// provided objects.
   @override
-  String serialize(DartType targetType, String name) => name;
+  String serialize(DartType targetType, String expression) => expression;
 
   @override
   String deserialize(DartType targetType, String expression) {
@@ -111,8 +111,8 @@ class DateTimeHelper extends TypeHelper {
       const TypeChecker.fromUrl('dart:core#DateTime').isExactlyType(type);
 
   @override
-  String serialize(DartType targetType, String name) =>
-      "$name?.toIso8601String()";
+  String serialize(DartType targetType, String expression) =>
+      "$expression?.toIso8601String()";
 
   @override
   String deserialize(DartType targetType, String expression) =>
