@@ -2,6 +2,9 @@
 
 * **BREAKING** Fail generation for types that are not a JSON primitive or that
   do not explicitly supports JSON serialization. 
+  
+* **BREAKING** Removed `can` methods from `TypeHelper`. Return `null` from
+  `(de)serialize` if the provided type is not supported.
    
 * Eliminated all implicit casts in generated code. These would end up being
   runtime checks in most cases.

@@ -233,10 +233,12 @@ class JsonSerializableGenerator
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
   String _fieldToJsonMapValue(String expression, DartType fieldType) {
-    for (var helper in _typeHelpers) {
-      if (helper.canSerialize(fieldType)) {
-        return helper.serialize(fieldType, expression);
-      }
+    var result = _typeHelpers
+        .map((th) => th.serialize(fieldType, expression))
+        .firstWhere((t) => t != null, orElse: () => null);
+
+    if (result != null) {
+      return result;
     }
 
     if (fieldType.isDynamic ||
@@ -336,11 +338,12 @@ class JsonSerializableGenerator
   }
 
   String _writeAccessToJsonValue(String varExpression, DartType searchType) {
-    for (var helper in _typeHelpers) {
-      if (helper.canDeserialize(searchType)) {
-        return "$varExpression == null ? null : "
-            "${helper.deserialize(searchType, varExpression)}";
-      }
+    var result = _typeHelpers
+        .map((th) => th.deserialize(searchType, varExpression))
+        .firstWhere((t) => t != null, orElse: () => null);
+
+    if (result != null) {
+      return "$varExpression == null ? null : $result";
     }
 
     if (_coreIterableChecker.isAssignableFromType(searchType)) {
