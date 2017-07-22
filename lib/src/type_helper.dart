@@ -15,6 +15,8 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
   return implementation?.typeArguments;
 }
 
+typedef String TypeHelperGenerator(DartType t, String e);
+
 abstract class TypeHelper {
   const TypeHelper();
 
@@ -35,7 +37,7 @@ abstract class TypeHelper {
   /// ```.
   // TODO(kevmoo) – document `serializeNested`
   String serialize(DartType targetType, String expression,
-      String serializeNested(DartType t, String e));
+      TypeHelperGenerator serializeNested);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
   /// literal to into [targetType].
@@ -62,7 +64,7 @@ abstract class TypeHelper {
   /// ```.
   // TODO(kevmoo) – document `deserializeNested`
   String deserialize(DartType targetType, String expression,
-      String deserializeNested(DartType t, String e));
+      TypeHelperGenerator deserializeNested);
 }
 
 /// A [TypeChecker] for [String], [bool] and [num].

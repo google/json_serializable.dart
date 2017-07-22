@@ -10,7 +10,7 @@ class IterableHelper extends TypeHelper {
 
   @override
   String serialize(DartType targetType, String expression,
-      String serializeNested(DartType dartType, String expression)) {
+      TypeHelperGenerator serializeNested) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -44,7 +44,7 @@ class IterableHelper extends TypeHelper {
 
   @override
   String deserialize(DartType targetType, String expression,
-      String deserializeNested(DartType t, String e)) {
+      TypeHelperGenerator deserializeNested) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
     }

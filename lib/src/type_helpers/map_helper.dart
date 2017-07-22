@@ -10,7 +10,7 @@ class MapHelper extends TypeHelper {
 
   @override
   String serialize(DartType targetType, String expression,
-      String serializeNested(DartType t, String e)) {
+      TypeHelperGenerator serializeNested) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -47,7 +47,7 @@ class MapHelper extends TypeHelper {
 
   @override
   String deserialize(DartType targetType, String expression,
-      String deserializeNested(DartType t, String e)) {
+      TypeHelperGenerator deserializeNested) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
