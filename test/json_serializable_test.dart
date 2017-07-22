@@ -18,6 +18,10 @@ import 'src/io.dart';
 import 'test_utils.dart';
 
 void main() {
+  setUpAll(() async {
+    _compUnit = await _getCompilationUnitForString(getPackagePath());
+  });
+
   group('non-classes', () {
     test('const field', () async {
       expect(
@@ -154,9 +158,6 @@ void main() {
 const _generator = const JsonSerializableGenerator();
 
 Future<String> _runForElementNamed(String name) async {
-  if (_compUnit == null) {
-    _compUnit = await _getCompilationUnitForString(getPackagePath());
-  }
   var library = _compUnit.element.library;
   var element =
       getElementsFromLibraryElement(library).singleWhere((e) => e.name == name);
