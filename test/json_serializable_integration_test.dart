@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:test/test.dart';
 
 import 'test_files/json_test_example.dart';
+import 'test_files/kitchen_sink.dart';
 
 void main() {
   group('Person', () {

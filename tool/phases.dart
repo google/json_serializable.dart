@@ -12,4 +12,4 @@ final PhaseGroup phases = new PhaseGroup.singleAction(
       const JsonLiteralGenerator()
     ]),
     new InputSet('json_serializable',
-        const ['example/*.dart', 'test/test_files/json_test_example.dart']));
+        const ['example/*.dart', 'test/test_files/*.dart']));
