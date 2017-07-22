@@ -2,10 +2,18 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+
+/// If [type] is the [Type] or implements the [Type] represented by [checker],
+/// returns the generic arguments to the [checker] [Type] if there are any.
+///
+/// If the [checker] [Type] doesn't have generic arguments, `null` is returned.
+List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
+  var implementation = _getImplementationType(type, checker) as InterfaceType;
+
+  return implementation?.typeArguments;
+}
 
 abstract class TypeHelper {
   const TypeHelper();
@@ -25,7 +33,9 @@ abstract class TypeHelper {
   /// String serialize(DartType targetType, String expression) =>
   ///   "$expression.id";
   /// ```.
-  String serialize(DartType targetType, String expression);
+  // TODO(kevmoo) – document `serializeNested`
+  String serialize(DartType targetType, String expression,
+      String serializeNested(DartType t, String e));
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
   /// literal to into [targetType].
@@ -50,72 +60,41 @@ abstract class TypeHelper {
   /// String deserialize(DartType targetType, String expression) =>
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
-  String deserialize(DartType targetType, String expression);
+  // TODO(kevmoo) – document `deserializeNested`
+  String deserialize(DartType targetType, String expression,
+      String deserializeNested(DartType t, String e));
 }
 
-class JsonHelper extends TypeHelper {
-  const JsonHelper();
+/// A [TypeChecker] for [String], [bool] and [num].
+const simpleJsonTypeChecker = const TypeChecker.any(const [
+  const TypeChecker.fromRuntime(String),
+  const TypeChecker.fromRuntime(bool),
+  const TypeChecker.fromRuntime(num)
+]);
 
-  bool _canDeserialize(DartType type) {
-    if (type is! InterfaceType) return false;
+class UnsupportedTypeError extends Error {
+  final String expression;
+  final DartType type;
 
-    var classElement = type.element as ClassElement;
-
-    for (var ctor in classElement.constructors) {
-      if (ctor.name == 'fromJson') {
-        // TODO: validate that there are the right number and type of arguments
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  /// Simply returns the [expression] provided.
-  ///
-  /// By default, JSON encoding in from `dart:convert` calls `toJson` on
-  /// provided objects.
-  @override
-  String serialize(DartType targetType, String expression) {
-    // TODO(kevmoo): This should be checking for toJson method, but toJson might
-    //   be gone during generation, so we'll have to check for the annotation.
-    // In the mean time, just assume the `canSerialize` logic will work most of
-    //   the time.
-    if (!_canDeserialize(targetType)) {
-      return null;
-    }
-
-    return expression;
-  }
-
-  @override
-  String deserialize(DartType targetType, String expression) {
-    if (!_canDeserialize(targetType)) {
-      return null;
-    }
-
-    // TODO: the type could be imported from a library with a prefix!
-    // github.com/dart-lang/json_serializable/issues/19
-    return "new ${targetType.name}.fromJson($expression as Map<String, dynamic>)";
-  }
+  UnsupportedTypeError(this.type, this.expression);
 }
 
-class DateTimeHelper extends TypeHelper {
-  const DateTimeHelper();
+DartType _getImplementationType(DartType type, TypeChecker checker) {
+  if (checker.isExactlyType(type)) return type;
 
-  bool _matchesType(DartType type) =>
-      const TypeChecker.fromUrl('dart:core#DateTime').isExactlyType(type);
+  if (type is InterfaceType) {
+    var match = [type.interfaces, type.mixins]
+        .expand((e) => e)
+        .map((type) => _getImplementationType(type, checker))
+        .firstWhere((value) => value != null, orElse: () => null);
 
-  @override
-  String serialize(DartType targetType, String expression) =>
-      _matchesType(targetType) ? "$expression?.toIso8601String()" : null;
+    if (match != null) {
+      return match;
+    }
 
-  @override
-  String deserialize(DartType targetType, String expression) =>
-      _matchesType(targetType)
-          ?
-          // TODO(kevmoo) `String` here is ignoring
-          // github.com/dart-lang/json_serializable/issues/19
-          "DateTime.parse($expression as String)"
-          : null;
+    if (type.superclass != null) {
+      return _getImplementationType(type.superclass, checker);
+    }
+  }
+  return null;
 }

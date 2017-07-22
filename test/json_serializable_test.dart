@@ -9,7 +9,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/src/string_source.dart';
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/generators.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -179,7 +179,7 @@ Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
 CompilationUnit _compUnit;
 
 const _testSource = r'''
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/annotations.dart';
 
 @JsonSerializable()
 const theAnswer = 42;
