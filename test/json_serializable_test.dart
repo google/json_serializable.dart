@@ -190,7 +190,7 @@ void annotatedMethod() => null;
 @JsonSerializable()
 class Person {
   String firstName, lastName;
-  @JsonKey("h")
+  @JsonKey(name: "h")
   int height;
   DateTime dateOfBirth;
   dynamic dynamicType;

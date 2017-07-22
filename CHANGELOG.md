@@ -22,6 +22,9 @@
   * Added `(de)serializeNested` arguments to `(de)serialize` methods allowing
     generic types. This is (now) how support for `Iterable`, `List`, and `Map`
     is implemented.
+    
+* **BREAKING** `JsonKey.jsonName` was renamed to `name` and is now a named
+  parameter.
    
 * Eliminated all implicit casts in generated code. These would end up being
   runtime checks in most cases.

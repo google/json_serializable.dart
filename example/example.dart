@@ -12,7 +12,7 @@ part 'example.g.dart';
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName, middleName, lastName;
 
-  @JsonKey('date-of-birth')
+  @JsonKey(name: 'date-of-birth')
   final DateTime dateOfBirth;
   List<Order> orders;
 

@@ -11,11 +11,11 @@ class JsonSerializable {
         this.createToJson = createToJson;
 }
 
-/// Customizes the name of the JSON key for a field.
+/// Customizes the how an annotated field is serialized
 ///
-/// If omitted, the resulting JSON key will be the
-/// name of the field defined on the class.
+/// [name] allows the key in a JSON to have a value different than the field
+/// name.
 class JsonKey {
-  final String jsonName;
-  const JsonKey(this.jsonName);
+  final String name;
+  const JsonKey({this.name});
 }

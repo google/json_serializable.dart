@@ -123,7 +123,7 @@ class JsonSerializableGenerator
       var pairs = <String>[];
       fields.forEach((fieldName, field) {
         try {
-          pairs.add("'${_fieldToJsonMapKey(fieldName, field)}': "
+          pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
               "${_serialize(field.type, fieldName )}");
         } on UnsupportedTypeError {
           throw new InvalidGenerationSourceError(
@@ -251,7 +251,7 @@ class JsonSerializableGenerator
 
   String _deserializeForField(String name, FieldElement field,
       {ParameterElement ctorParam}) {
-    name = _fieldToJsonMapKey(name, field);
+    name = _fieldToJsonMapKey(field) ?? name;
 
     var targetType = ctorParam?.type ?? field.type;
 
@@ -271,15 +271,11 @@ class JsonSerializableGenerator
 }
 
 /// Returns the JSON map `key` to be used when (de)serializing [field].
-///
-/// [fieldName] is used, unless [field] is annotated with [JsonKey], in which
-/// case [JsonKey.jsonName] is used.
-String _fieldToJsonMapKey(String fieldName, FieldElement field) {
-  const $JsonKey = const TypeChecker.fromRuntime(JsonKey);
-  var jsonKey = $JsonKey.firstAnnotationOf(field);
-  if (jsonKey != null) {
-    var jsonName = jsonKey.getField('jsonName').toStringValue();
-    return jsonName;
-  }
-  return fieldName;
+String _fieldToJsonMapKey(FieldElement field) =>
+    _getJsonKeyReader(field)?.read('name')?.stringValue;
+
+ConstantReader _getJsonKeyReader(FieldElement element) {
+  var obj =
+      const TypeChecker.fromRuntime(JsonKey).firstAnnotationOfExact(element);
+  return obj == null ? null : new ConstantReader(obj);
 }
