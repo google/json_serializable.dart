@@ -26,7 +26,6 @@ void main() {
           throwsInvalidGenerationSourceError(
               'Generator cannot target `const dynamic theAnswer`.',
               'Remove the JsonSerializable annotation from `const dynamic theAnswer`.'));
-      // TODO: validate the properties on the thrown error
     });
 
     test('method', () async {
@@ -35,7 +34,6 @@ void main() {
           throwsInvalidGenerationSourceError(
               'Generator cannot target `annotatedMethod`.',
               'Remove the JsonSerializable annotation from `annotatedMethod`.'));
-      // TODO: validate the properties on the thrown error
     });
   });
   group('unknown types', () {
