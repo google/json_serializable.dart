@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:io';
 import 'package:analyzer/dart/element/element.dart';
 
 // Copied from pkg/source_gen - lib/src/utils.
@@ -36,4 +37,9 @@ String friendlyNameForElement(Element element) {
   }
 
   return names.join(' ');
+}
+
+/// Logs to STDERR with wrapper stars to make things readable during build.
+void log(object) {
+  stderr.writeln(['***', object, '***'].join('\n'));
 }
