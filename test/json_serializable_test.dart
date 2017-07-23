@@ -8,7 +8,6 @@ library json_serializable.test.json_generator_test;
 import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
@@ -21,42 +20,33 @@ import 'test_utils.dart';
 void main() {
   group('non-classes', () {
     test('const field', () async {
-      var element = await _getClassForCodeString('theAnswer');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('theAnswer'),
           throwsInvalidGenerationSourceError(
               'Generator cannot target `const dynamic theAnswer`.',
               'Remove the JsonSerializable annotation from `const dynamic theAnswer`.'));
     });
 
     test('method', () async {
-      var element = await _getClassForCodeString('annotatedMethod');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('annotatedMethod'),
           throwsInvalidGenerationSourceError(
               'Generator cannot target `annotatedMethod`.',
               'Remove the JsonSerializable annotation from `annotatedMethod`.'));
     });
   });
-
   group('unknown types', () {
     test('in constructor arguments', () async {
-      var element = await _getClassForCodeString('UnknownCtorParamType');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('UnknownCtorParamType'),
           throwsInvalidGenerationSourceError(
               'At least one constructor argument has an invalid type: `number`.',
               'Check names and imports.'));
     });
 
     test('in fields', () async {
-      var element = await _getClassForCodeString('UnknownFieldType');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('UnknownFieldType'),
           throwsInvalidGenerationSourceError(
               'At least one field has an invalid type: `number`.',
               'Check names and imports.'));
@@ -65,40 +55,32 @@ void main() {
 
   group('unserializable types', () {
     test('for toJson', () async {
-      var element = await _getClassForCodeString('NoSerializeFieldType');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('NoSerializeFieldType'),
           throwsInvalidGenerationSourceError(
               'Could not generate `toJson` code for `Stopwatch watch`.',
               'Make sure all of the types are serializable.'));
     });
 
     test('for fromJson', () async {
-      var element = await _getClassForCodeString('NoDeserializeFieldType');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('NoDeserializeFieldType'),
           throwsInvalidGenerationSourceError(
               'Could not generate fromJson code for `Stopwatch watch`.',
               'Make sure all of the types are serializable.'));
     });
 
     test('for toJson in Map key', () async {
-      var element = await _getClassForCodeString('NoSerializeBadKey');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('NoSerializeBadKey'),
           throwsInvalidGenerationSourceError(
               'Could not generate `toJson` code for `Map<int, DateTime> intDateTimeMap`.',
               'Make sure all of the types are serializable.'));
     });
 
     test('for fromJson', () async {
-      var element = await _getClassForCodeString('NoDeserializeBadKey');
-
       expect(
-          _generator.generate(element, null),
+          _runForElementNamed('NoDeserializeBadKey'),
           throwsInvalidGenerationSourceError(
               'Could not generate fromJson code for `Map<int, DateTime> intDateTimeMap`.',
               'Make sure all of the types are serializable.'));
@@ -106,22 +88,19 @@ void main() {
   });
 
   test('class with final fields', () async {
-    var element = await _getClassForCodeString('FinalFields');
-    var generateResult = await _generator.generate(element, null);
+    var generateResult = await _runForElementNamed('FinalFields');
     expect(generateResult, contains("Map<String, dynamic> toJson()"));
   });
 
   test('unannotated classes no-op', () async {
-    var element = await _getClassForCodeString('NoAnnotation');
-    var output = _generator.generate(element, null);
+    var output = await _runForElementNamed('NoAnnotation');
 
     expect(output, isNull);
   });
 
   group('valid inputs', () {
     test('class with no fields', () async {
-      var element = await _getClassForCodeString('Person');
-      var output = await _generator.generate(element, null);
+      var output = await _runForElementNamed('Person');
 
       expect(output, isNotNull);
 
@@ -130,9 +109,7 @@ void main() {
     });
 
     test('class with ctor params', () async {
-      var element = await _getClassForCodeString('Order');
-      var output = await _generator.generate(element, null);
-
+      var output = await _runForElementNamed('Order');
       expect(output, isNotNull);
 
       // TODO: test the actual output
@@ -140,31 +117,26 @@ void main() {
     });
 
     test('class with child json-able object', () async {
-      var element = await _getClassForCodeString('ParentObject');
-      var output = await _generator.generate(element, null);
+      var output = await _runForElementNamed('ParentObject');
 
       expect(output, contains('new ChildObject.fromJson'));
     });
 
     test('class with child list of json-able objects', () async {
-      var element = await _getClassForCodeString('ParentObjectWithChildren');
-      var output = await _generator.generate(element, null);
+      var output = await _runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
       expect(output, contains('new ChildObject.fromJson'));
     });
 
     test('class with child list of dynamic objects is left alone', () async {
-      var element =
-          await _getClassForCodeString('ParentObjectWithDynamicChildren');
-      var output = await _generator.generate(element, null);
+      var output = await _runForElementNamed('ParentObjectWithDynamicChildren');
 
       expect(output, contains('children = json[\'children\'] as List;'));
     });
 
     test('class with list of int is cast for strong mode', () async {
-      var element = await _getClassForCodeString('Person');
-      var output = await _generator.generate(element, null);
+      var output = await _runForElementNamed('Person');
 
       expect(output,
           contains("json['listOfInts'] as List)?.map((v0) => v0 as int)"));
@@ -172,8 +144,7 @@ void main() {
   });
 
   test('reads JsonKey annotations', () async {
-    var element = await _getClassForCodeString('Person');
-    var output = await _generator.generate(element, null);
+    var output = await _runForElementNamed('Person');
 
     expect(output, contains("'h': height,"));
     expect(output, contains("..height = json['h']"));
@@ -182,13 +153,14 @@ void main() {
 
 const _generator = const JsonSerializableGenerator();
 
-Future<Element> _getClassForCodeString(String name) async {
+Future<String> _runForElementNamed(String name) async {
   if (_compUnit == null) {
     _compUnit = await _getCompilationUnitForString(getPackagePath());
   }
-
-  return getElementsFromLibraryElement(_compUnit.element.library)
-      .singleWhere((e) => e.name == name);
+  var library = _compUnit.element.library;
+  var element =
+      getElementsFromLibraryElement(library).singleWhere((e) => e.name == name);
+  return _generator.generate(element, null);
 }
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
