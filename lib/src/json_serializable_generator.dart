@@ -288,7 +288,10 @@ bool _nullable(FieldElement field) =>
     _getJsonKeyReader(field)?.read('nullable')?.boolValue ?? true;
 
 ConstantReader _getJsonKeyReader(FieldElement element) {
-  var obj =
-      const TypeChecker.fromRuntime(JsonKey).firstAnnotationOfExact(element);
+  var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
+      _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+
   return obj == null ? null : new ConstantReader(obj);
 }
+
+final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);

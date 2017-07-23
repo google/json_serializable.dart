@@ -11,9 +11,9 @@ Bathtub _$BathtubFromJson(Map<String, dynamic> json) => new Bathtub(
     iterable: json['iterable'] as List,
     dynamicIterable: json['dynamicIterable'] as List,
     objectIterable: json['objectIterable'] as List,
-    intIterable: (json['intIterable'] as List)?.map((e) => e as int),
-    dateTimeIterable: (json['dateTimeIterable'] as List)
-        ?.map((e) => e == null ? null : DateTime.parse(e as String)))
+    intIterable: (json['intIterable'] as List).map((e) => e as int),
+    dateTimeIterable: (json['datetime-iterable'] as List)
+        .map((e) => DateTime.parse(e as String)))
   ..list = json['list'] as List
   ..dynamicList = json['dynamicList'] as List
   ..objectList = json['objectList'] as List
@@ -54,12 +54,12 @@ abstract class _$BathtubSerializerMixin {
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'iterable': iterable?.toList(),
-        'dynamicIterable': dynamicIterable?.toList(),
-        'objectIterable': objectIterable?.toList(),
-        'intIterable': intIterable?.toList(),
-        'dateTimeIterable':
-            dateTimeIterable?.map((e) => e?.toIso8601String())?.toList(),
+        'iterable': iterable.toList(),
+        'dynamicIterable': dynamicIterable.toList(),
+        'objectIterable': objectIterable.toList(),
+        'intIterable': intIterable.toList(),
+        'datetime-iterable':
+            dateTimeIterable.map((e) => e.toIso8601String()).toList(),
         'list': list,
         'dynamicList': dynamicList,
         'objectList': objectList,

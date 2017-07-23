@@ -12,7 +12,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
     dynamicIterable: json['dynamicIterable'] as List,
     objectIterable: json['objectIterable'] as List,
     intIterable: (json['intIterable'] as List)?.map((e) => e as int),
-    dateTimeIterable: (json['dateTimeIterable'] as List)
+    dateTimeIterable: (json['datetime-iterable'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String)))
   ..list = json['list'] as List
   ..dynamicList = json['dynamicList'] as List
@@ -66,7 +66,7 @@ abstract class _$KitchenSinkSerializerMixin {
         'dynamicIterable': dynamicIterable?.toList(),
         'objectIterable': objectIterable?.toList(),
         'intIterable': intIterable?.toList(),
-        'dateTimeIterable':
+        'datetime-iterable':
             dateTimeIterable?.map((e) => e?.toIso8601String())?.toList(),
         'list': list,
         'dynamicList': dynamicList,

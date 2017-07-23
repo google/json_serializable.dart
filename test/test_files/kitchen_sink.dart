@@ -47,6 +47,9 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
   Iterable<int> get intIterable => _intIterable;
+
+  // Added a one-off annotation on a property (not a field)
+  @JsonKey(name: 'datetime-iterable')
   Iterable<DateTime> get dateTimeIterable => _dateTimeIterable;
 
   List list;
@@ -62,15 +65,17 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
 
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex;
 
-  //TODO(kevmoo) - finish this...
-  bool operator ==(Object other) =>
-      other is KitchenSink &&
-      _deepEquals(iterable, other.iterable) &&
-      _deepEquals(dynamicIterable, other.dynamicIterable) &&
-      _deepEquals(dateTimeIterable, other.dateTimeIterable) &&
-      _deepEquals(dateTimeList, other.dateTimeList) &&
-      _deepEquals(stringDateTimeMap, other.stringDateTimeMap) &&
-      _deepEquals(crazyComplex, other.crazyComplex);
+  bool operator ==(Object other) => sinkEquals(this, other);
 }
+
+//TODO(kevmoo) - finish this...
+bool sinkEquals(KitchenSink a, other) =>
+    other is KitchenSink &&
+    _deepEquals(a.iterable, other.iterable) &&
+    _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
+    _deepEquals(a.dateTimeIterable, other.dateTimeIterable) &&
+    _deepEquals(a.dateTimeList, other.dateTimeList) &&
+    _deepEquals(a.stringDateTimeMap, other.stringDateTimeMap) &&
+    _deepEquals(a.crazyComplex, other.crazyComplex);
 
 bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);

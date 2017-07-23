@@ -4,21 +4,143 @@
 
 import 'package:test/test.dart';
 
+import 'test_files/bathtub.dart';
 import 'test_files/kitchen_sink.dart';
 import 'test_utils.dart';
 
 void main() {
-  roundTripItem(KitchenSink p) {
-    roundTripObject(p, (json) => new KitchenSink.fromJson(json));
+  group('KitchenSink', () {
+    roundTripItem(KitchenSink p) {
+      roundTripObject(p, (json) => new KitchenSink.fromJson(json));
+    }
+
+    test('null', () {
+      var item = new KitchenSink();
+      roundTripItem(item);
+    });
+
+    test("list and map of DateTime", () {
+      var now = new DateTime.now();
+      var item = new KitchenSink(dateTimeIterable: <DateTime>[now])
+        ..dateTimeList = <DateTime>[now, null]
+        ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
+
+      roundTripItem(item);
+    });
+
+    test('complex nested type', () {
+      var item = new KitchenSink()
+        ..crazyComplex = [
+          null,
+          {},
+          {
+            "null": null,
+            "empty": {},
+            "items": {
+              "null": null,
+              "empty": [],
+              "items": [
+                null,
+                [],
+                [new DateTime.now()]
+              ]
+            }
+          }
+        ];
+      roundTripItem(item);
+    });
+
+    _sharedTests(
+        (
+                {Iterable iterable,
+                Iterable<dynamic> dynamicIterable,
+                Iterable<Object> objectIterable,
+                Iterable<int> intIterable,
+                Iterable<DateTime> dateTimeIterable}) =>
+            new KitchenSink(
+                iterable: iterable,
+                dynamicIterable: dynamicIterable,
+                objectIterable: objectIterable,
+                intIterable: intIterable,
+                dateTimeIterable: dateTimeIterable),
+        (j) => new KitchenSink.fromJson(j));
+  });
+
+  group('BathTub', () {
+    test('with null values fails serialization', () {
+      expect(() => (new Bathtub()..stringDateTimeMap = null).toJson(),
+          throwsNoSuchMethodError);
+    });
+
+    test('with empty json fails deserialization', () {
+      expect(() => new Bathtub.fromJson({}), throwsNoSuchMethodError);
+    });
+
+    _sharedTests(
+        (
+                {Iterable iterable,
+                Iterable<dynamic> dynamicIterable,
+                Iterable<Object> objectIterable,
+                Iterable<int> intIterable,
+                Iterable<DateTime> dateTimeIterable}) =>
+            new Bathtub(
+                iterable: iterable,
+                dynamicIterable: dynamicIterable,
+                objectIterable: objectIterable,
+                intIterable: intIterable,
+                dateTimeIterable: dateTimeIterable),
+        (j) => new Bathtub.fromJson(j));
+  });
+}
+
+typedef KitchenSink KitchenSinkCtor(
+    {Iterable iterable,
+    Iterable<dynamic> dynamicIterable,
+    Iterable<Object> objectIterable,
+    Iterable<int> intIterable,
+    Iterable<DateTime> dateTimeIterable});
+
+void _sharedTests(
+    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+  roundTripSink(KitchenSink p) {
+    roundTripObject(p, fromJson);
   }
 
-  test('empty json', () {
-    var item = new KitchenSink();
-    roundTripItem(item);
+  test('empty', () {
+    var item = ctor();
+
+    roundTripSink(item);
+  });
+
+  test("list and map of DateTime - not null", () {
+    var now = new DateTime.now();
+    var item = ctor(dateTimeIterable: <DateTime>[now])
+      ..dateTimeList = <DateTime>[now, now]
+      ..stringDateTimeMap = <String, DateTime>{'value': now};
+
+    roundTripSink(item);
+  });
+
+  test('complex nested type - not null', () {
+    var item = ctor()
+      ..crazyComplex = [
+        {},
+        {
+          "empty": {},
+          "items": {
+            "empty": [],
+            "items": [
+              [],
+              [new DateTime.now()]
+            ]
+          }
+        }
+      ];
+    roundTripSink(item);
   });
 
   test('json keys should be defined in field/property order', () {
-    var item = new KitchenSink();
+    var item = ctor();
 
     var json = item.toJson();
 
@@ -27,7 +149,7 @@ void main() {
       'dynamicIterable',
       'objectIterable',
       'intIterable',
-      'dateTimeIterable',
+      'datetime-iterable',
       'list',
       'dynamicList',
       'objectList',
@@ -41,36 +163,5 @@ void main() {
     ];
 
     expect(json.keys, orderedEquals(expectedOrder));
-  });
-
-  test("list and map of DateTime", () {
-    var now = new DateTime.now();
-    var item = new KitchenSink(dateTimeIterable: <DateTime>[now])
-      ..dateTimeList = <DateTime>[now, null]
-      ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
-
-    roundTripItem(item);
-  });
-
-  test('complex nested type', () {
-    var item = new KitchenSink()
-      ..crazyComplex = [
-        null,
-        {},
-        {
-          "null": null,
-          "empty": {},
-          "items": {
-            "null": null,
-            "empty": [],
-            "items": [
-              null,
-              [],
-              [new DateTime.now()]
-            ]
-          }
-        }
-      ];
-    roundTripItem(item);
   });
 }
