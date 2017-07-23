@@ -5,7 +5,7 @@ class ValueHelper extends TypeHelper {
   const ValueHelper();
 
   @override
-  String serialize(DartType targetType, String expression, _) {
+  String serialize(DartType targetType, String expression, bool nullable, _) {
     if (targetType.isDynamic ||
         targetType.isObject ||
         simpleJsonTypeChecker.isAssignableFromType(targetType)) {
@@ -16,7 +16,7 @@ class ValueHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(DartType targetType, String expression, _) {
+  String deserialize(DartType targetType, String expression, bool nullable, _) {
     if (targetType.isDynamic || targetType.isObject) {
       // just return it as-is. We'll hope it's safe.
       return expression;

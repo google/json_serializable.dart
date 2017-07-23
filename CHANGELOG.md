@@ -4,28 +4,30 @@
 
   * `package:json_serializable/generators.dart` contains the `Generator` 
     implementations.
-  
+
   * `package:json_serializable/annotations.dart` contains the annotations.
     This library should be imported with your target classes.
-    
+
   * `package:json_serializable/type_helpers.dart` contains `TypeHelper` classes
     which allows custom generation for specific types. 
 
 * **BREAKING** Fail generation for types that are not a JSON primitive or that
   do not explicitly supports JSON serialization. 
-  
+
 * **BREAKING** `TypeHelper`:
 
   * Removed `can` methods. Return `null` from `(de)serialize` if the provided
     type is not supported.
-    
+
   * Added `(de)serializeNested` arguments to `(de)serialize` methods allowing
     generic types. This is (now) how support for `Iterable`, `List`, and `Map`
     is implemented.
-    
+
 * **BREAKING** `JsonKey.jsonName` was renamed to `name` and is now a named
   parameter.
-   
+
+* Added support for optional, non-nullable fields.
+
 * Eliminated all implicit casts in generated code. These would end up being
   runtime checks in most cases.
 

@@ -9,7 +9,7 @@ class MapHelper extends TypeHelper {
   const MapHelper();
 
   @override
-  String serialize(DartType targetType, String expression,
+  String serialize(DartType targetType, String expression, bool nullable,
       TypeHelperGenerator serializeNested) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
@@ -35,18 +35,23 @@ class MapHelper extends TypeHelper {
         return expression;
       }
 
-      var subFieldValue = serializeNested(valueType, _closureArg);
+      var subFieldValue = serializeNested(valueType, _closureArg, nullable);
 
-      return "$expression == null ? null :"
-          "new Map<String, dynamic>.fromIterables("
+      var result = "new Map<String, dynamic>.fromIterables("
           "$expression.keys,"
           "$expression.values.map(($_closureArg) => $subFieldValue))";
+
+      if (nullable) {
+        result = "$expression == null ? null :" + result;
+      }
+
+      return result;
     }
     throw new UnsupportedTypeError(targetType, expression);
   }
 
   @override
-  String deserialize(DartType targetType, String expression,
+  String deserialize(DartType targetType, String expression, bool nullable,
       TypeHelperGenerator deserializeNested) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
@@ -78,19 +83,30 @@ class MapHelper extends TypeHelper {
 
     if (simpleJsonTypeChecker.isAssignableFromType(valueArg)) {
       // No mapping of the values is required!
-      return "$expression == null ? null :"
-          "new Map<String, $valueArg>.from($expression as Map)";
+
+      var result = "new Map<String, $valueArg>.from($expression as Map)";
+
+      if (nullable) {
+        result = "$expression == null ? null :" + result;
+      }
+
+      return result;
     }
 
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    var itemSubVal = deserializeNested(valueArg, _closureArg);
+    var itemSubVal = deserializeNested(valueArg, _closureArg, nullable);
 
-    return "$expression == null ? null :"
-        "new Map<String, $valueArg>.fromIterables("
+    var result = "new Map<String, $valueArg>.fromIterables("
         "($expression as Map<String, dynamic>).keys,"
         "($expression as Map).values.map(($_closureArg) => $itemSubVal))";
+
+    if (nullable) {
+      result = "$expression == null ? null :" + result;
+    }
+
+    return result;
   }
 }
 

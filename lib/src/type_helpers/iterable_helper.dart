@@ -9,7 +9,7 @@ class IterableHelper extends TypeHelper {
   const IterableHelper();
 
   @override
-  String serialize(DartType targetType, String expression,
+  String serialize(DartType targetType, String expression, bool nullable,
       TypeHelperGenerator serializeNested) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
@@ -19,15 +19,18 @@ class IterableHelper extends TypeHelper {
     // Although it's possible that child elements may be marked unsafe
 
     var isList = _coreListChecker.isAssignableFromType(targetType);
-    var subFieldValue =
-        serializeNested(_getIterableGenericType(targetType), _closureArg);
+    var subFieldValue = serializeNested(
+        _getIterableGenericType(targetType), _closureArg, nullable);
+
+    var optionalQuestion = nullable ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subFieldValue`
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
     if (subFieldValue != _closureArg) {
       // TODO: the type could be imported from a library with a prefix!
-      expression = "${expression}?.map(($_closureArg) => $subFieldValue)";
+      expression =
+          "${expression}${optionalQuestion}.map(($_closureArg) => $subFieldValue)";
 
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
@@ -36,14 +39,14 @@ class IterableHelper extends TypeHelper {
 
     if (!isList) {
       // If the static type is not a List, generate one.
-      expression += "?.toList()";
+      expression += "${optionalQuestion}.toList()";
     }
 
     return expression;
   }
 
   @override
-  String deserialize(DartType targetType, String expression,
+  String deserialize(DartType targetType, String expression, bool nullable,
       TypeHelperGenerator deserializeNested) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
@@ -51,17 +54,21 @@ class IterableHelper extends TypeHelper {
 
     var iterableGenericType = _getIterableGenericType(targetType);
 
-    var itemSubVal = deserializeNested(iterableGenericType, _closureArg);
+    var itemSubVal =
+        deserializeNested(iterableGenericType, _closureArg, nullable);
 
     // If `itemSubVal` is the same, then we don't need to do anything fancy
     if (_closureArg == itemSubVal) {
       return '$expression as List';
     }
 
-    var output = "($expression as List)?.map(($_closureArg) => $itemSubVal)";
+    var optionalQuestion = nullable ? '?' : '';
+
+    var output =
+        "($expression as List)${optionalQuestion}.map(($_closureArg) => $itemSubVal)";
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
-      output += "?.toList()";
+      output += "${optionalQuestion}.toList()";
     }
 
     return output;

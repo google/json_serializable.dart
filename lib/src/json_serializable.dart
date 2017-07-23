@@ -17,5 +17,7 @@ class JsonSerializable {
 /// name.
 class JsonKey {
   final String name;
-  const JsonKey({this.name});
+  final bool nullable;
+  const JsonKey({this.name, bool nullable: true})
+      : this.nullable = nullable ?? true;
 }

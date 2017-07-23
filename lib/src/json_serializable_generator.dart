@@ -124,7 +124,7 @@ class JsonSerializableGenerator
       fields.forEach((fieldName, field) {
         try {
           pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
-              "${_serialize(field.type, fieldName )}");
+              "${_serialize(field.type, fieldName ,  _nullable(field))}");
         } on UnsupportedTypeError {
           throw new InvalidGenerationSourceError(
               "Could not generate `toJson` code for `${friendlyNameForElement(field)}`.",
@@ -244,10 +244,12 @@ class JsonSerializableGenerator
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  String _serialize(DartType targetType, String expression) => _allHelpers
-      .map((h) => h.serialize(targetType, expression, _serialize))
-      .firstWhere((r) => r != null,
-          orElse: () => throw new UnsupportedTypeError(targetType, expression));
+  String _serialize(DartType targetType, String expression, bool nullable) =>
+      _allHelpers
+          .map((h) => h.serialize(targetType, expression, nullable, _serialize))
+          .firstWhere((r) => r != null,
+              orElse: () =>
+                  throw new UnsupportedTypeError(targetType, expression));
 
   String _deserializeForField(String name, FieldElement field,
       {ParameterElement ctorParam}) {
@@ -256,7 +258,7 @@ class JsonSerializableGenerator
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _deserialize(targetType, "json['$name']");
+      return _deserialize(targetType, "json['$name']", _nullable(field));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
           "Could not generate fromJson code for `${friendlyNameForElement(field)}`.",
@@ -264,15 +266,26 @@ class JsonSerializableGenerator
     }
   }
 
-  String _deserialize(DartType targetType, String expression) => _allHelpers
-      .map((th) => th.deserialize(targetType, expression, _deserialize))
-      .firstWhere((r) => r != null,
-          orElse: () => throw new UnsupportedTypeError(targetType, expression));
+  String _deserialize(DartType targetType, String expression, bool nullable) =>
+      _allHelpers
+          .map((th) =>
+              th.deserialize(targetType, expression, nullable, _deserialize))
+          .firstWhere((r) => r != null,
+              orElse: () =>
+                  throw new UnsupportedTypeError(targetType, expression));
 }
 
-/// Returns the JSON map `key` to be used when (de)serializing [field].
+/// Returns the JSON map `key` to be used when (de)serializing [field], if any.
+///
+/// Otherwise, `null`;
 String _fieldToJsonMapKey(FieldElement field) =>
-    _getJsonKeyReader(field)?.read('name')?.stringValue;
+    _getJsonKeyReader(field)?.read('name')?.anyValue as String;
+
+/// Returns `true` if the field should be treated as potentially nullable.
+///
+/// If no [JsonKey] annotation is present on the field, `true` is returned.
+bool _nullable(FieldElement field) =>
+    _getJsonKeyReader(field)?.read('nullable')?.boolValue ?? true;
 
 ConstantReader _getJsonKeyReader(FieldElement element) {
   var obj =

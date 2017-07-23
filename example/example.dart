@@ -12,11 +12,18 @@ part 'example.g.dart';
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName, middleName, lastName;
 
-  @JsonKey(name: 'date-of-birth')
+  @JsonKey(name: 'date-of-birth', nullable: false)
   final DateTime dateOfBirth;
+
+  @JsonKey(name: 'last-order')
+  final DateTime lastOrder;
+
+  @JsonKey(nullable: false)
   List<Order> orders;
 
-  Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
+  Person(this.firstName, this.lastName, this.dateOfBirth,
+      {this.middleName, this.lastOrder, List<Order> orders})
+      : this.orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }

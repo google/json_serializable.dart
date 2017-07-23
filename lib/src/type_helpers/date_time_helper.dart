@@ -6,17 +6,37 @@ class DateTimeHelper extends TypeHelper {
   const DateTimeHelper();
 
   @override
-  String serialize(DartType targetType, String expression, _) =>
-      _matchesType(targetType) ? "$expression?.toIso8601String()" : null;
+  String serialize(DartType targetType, String expression, bool nullable, _) {
+    if (!_matchesType(targetType)) {
+      return null;
+    }
+
+    var buffer = new StringBuffer(expression);
+
+    if (nullable) {
+      buffer.write('?');
+    }
+
+    buffer.write(".toIso8601String()");
+
+    return buffer.toString();
+  }
 
   @override
-  String deserialize(DartType targetType, String expression, _) =>
-      _matchesType(targetType)
-          ?
-          // TODO(kevmoo) `String` here is ignoring
-          // github.com/dart-lang/json_serializable/issues/19
-          "$expression == null ? null : DateTime.parse($expression as String)"
-          : null;
+  String deserialize(DartType targetType, String expression, bool nullable, _) {
+    if (!_matchesType(targetType)) {
+      return null;
+    }
+
+    var buffer = new StringBuffer();
+
+    if (nullable) {
+      buffer.write("$expression == null ? null : ");
+    }
+
+    buffer.write("DateTime.parse($expression as String)");
+    return buffer.toString();
+  }
 }
 
 bool _matchesType(DartType type) =>

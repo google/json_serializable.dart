@@ -7,28 +7,31 @@ part of json_serializable.example;
 // Target: class Person
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) =>
-    new Person(json['firstName'] as String, json['lastName'] as String,
-        middleName: json['middleName'] as String,
-        dateOfBirth: json['date-of-birth'] == null
-            ? null
-            : DateTime.parse(json['date-of-birth'] as String))
-      ..orders = (json['orders'] as List)
-          ?.map((e) =>
-              e == null ? null : new Order.fromJson(e as Map<String, dynamic>))
-          ?.toList();
+Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
+    json['firstName'] as String,
+    json['lastName'] as String,
+    DateTime.parse(json['date-of-birth'] as String),
+    middleName: json['middleName'] as String,
+    lastOrder: json['last-order'] == null
+        ? null
+        : DateTime.parse(json['last-order'] as String),
+    orders: (json['orders'] as List)
+        .map((e) => new Order.fromJson(e as Map<String, dynamic>))
+        .toList());
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
   String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
+  DateTime get lastOrder;
   List<Order> get orders;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'firstName': firstName,
         'middleName': middleName,
         'lastName': lastName,
-        'date-of-birth': dateOfBirth?.toIso8601String(),
+        'date-of-birth': dateOfBirth.toIso8601String(),
+        'last-order': lastOrder?.toIso8601String(),
         'orders': orders
       };
 }
