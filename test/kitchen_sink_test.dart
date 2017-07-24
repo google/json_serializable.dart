@@ -17,6 +17,11 @@ void main() {
     test('null', () {
       var item = new KitchenSink();
       roundTripItem(item);
+
+      var encoded = item.toJson();
+      for (var key in _expectedOrder) {
+        expect(encoded, containsPair(key, isNull));
+      }
     });
 
     test("list and map of DateTime", () {
@@ -144,24 +149,24 @@ void _sharedTests(
 
     var json = item.toJson();
 
-    var expectedOrder = [
-      'iterable',
-      'dynamicIterable',
-      'objectIterable',
-      'intIterable',
-      'datetime-iterable',
-      'list',
-      'dynamicList',
-      'objectList',
-      'intList',
-      'dateTimeList',
-      'map',
-      'stringStringMap',
-      'stringIntMap',
-      'stringDateTimeMap',
-      'crazyComplex'
-    ];
-
-    expect(json.keys, orderedEquals(expectedOrder));
+    expect(json.keys, orderedEquals(_expectedOrder));
   });
 }
+
+const _expectedOrder = const [
+  'iterable',
+  'dynamicIterable',
+  'objectIterable',
+  'intIterable',
+  'datetime-iterable',
+  'list',
+  'dynamicList',
+  'objectList',
+  'intList',
+  'dateTimeList',
+  'map',
+  'stringStringMap',
+  'stringIntMap',
+  'stringDateTimeMap',
+  'crazyComplex'
+];
