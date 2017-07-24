@@ -11,7 +11,7 @@ class JsonSerializable {
         this.createToJson = createToJson;
 }
 
-/// Customizes the how an annotated field is serialized
+/// An annotation used to specify how a field is serialized.
 class JsonKey {
   /// The key in a JSON map to use when reading and writing values corresponding
   /// to the annotated fields.
