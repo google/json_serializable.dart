@@ -278,20 +278,33 @@ class JsonSerializableGenerator
 /// Returns the JSON map `key` to be used when (de)serializing [field], if any.
 ///
 /// Otherwise, `null`;
-String _fieldToJsonMapKey(FieldElement field) =>
-    _getJsonKeyReader(field)?.read('name')?.anyValue as String;
+String _fieldToJsonMapKey(FieldElement field) => _getJsonKeyReader(field).name;
 
 /// Returns `true` if the field should be treated as potentially nullable.
 ///
 /// If no [JsonKey] annotation is present on the field, `true` is returned.
-bool _nullable(FieldElement field) =>
-    _getJsonKeyReader(field)?.read('nullable')?.boolValue ?? true;
+bool _nullable(FieldElement field) => _getJsonKeyReader(field).nullable;
 
-ConstantReader _getJsonKeyReader(FieldElement element) {
-  var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
-      _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+JsonKey _getJsonKeyReader(FieldElement element) {
+  var key = _jsonKeyExpando[element];
 
-  return obj == null ? null : new ConstantReader(obj);
+  if (key == null) {
+    // If an annotation exists on `element` the source is a "real" field.
+    // If the result is `null`, check the getter – it is a property.
+    // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
+    var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
+        _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+
+    _jsonKeyExpando[element] = key = obj == null
+        ? const JsonKey()
+        : new JsonKey(
+            name: obj.getField('name').toStringValue(),
+            nullable: obj.getField('nullable').toBoolValue());
+  }
+
+  return key;
 }
+
+final _jsonKeyExpando = new Expando<JsonKey>();
 
 final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);
