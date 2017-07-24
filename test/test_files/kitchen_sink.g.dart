@@ -14,6 +14,9 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
     intIterable: (json['intIterable'] as List)?.map((e) => e as int),
     dateTimeIterable: (json['datetime-iterable'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String)))
+  ..dateTime = json['dateTime'] == null
+      ? null
+      : DateTime.parse(json['dateTime'] as String)
   ..list = json['list'] as List
   ..dynamicList = json['dynamicList'] as List
   ..objectList = json['objectList'] as List
@@ -40,12 +43,12 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
           ? null
           : new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
               (e as Map<String, dynamic>).keys,
-              (e as Map).values.map((e) => e == null
-                  ? null
-                  : new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+              (e as Map).values.map((e) =>
+                  e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
       ?.toList();
 
 abstract class _$KitchenSinkSerializerMixin {
+  DateTime get dateTime;
   Iterable<dynamic> get iterable;
   Iterable<dynamic> get dynamicIterable;
   Iterable<Object> get objectIterable;
@@ -62,6 +65,7 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'dateTime': dateTime?.toIso8601String(),
         'iterable': iterable?.toList(),
         'dynamicIterable': dynamicIterable?.toList(),
         'objectIterable': objectIterable?.toList(),

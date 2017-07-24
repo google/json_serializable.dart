@@ -82,7 +82,17 @@ class JsonSerializableGenerator
 
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
-    fieldsList.sort((a, b) => a.nameOffset.compareTo(b.nameOffset));
+    fieldsList.sort((FieldElement a, FieldElement b) {
+      int offsetFor(FieldElement e) {
+        if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
+          assert(e.nameOffset == -1);
+          return e.getter.nameOffset;
+        }
+        return e.nameOffset;
+      }
+
+      return offsetFor(a).compareTo(offsetFor(b));
+    });
 
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(

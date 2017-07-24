@@ -43,6 +43,8 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   factory KitchenSink.fromJson(Map<String, Object> json) =>
       _$KitchenSinkFromJson(json);
 
+  DateTime dateTime;
+
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
@@ -71,6 +73,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
 //TODO(kevmoo) - finish this...
 bool sinkEquals(KitchenSink a, other) =>
     other is KitchenSink &&
+    a.dateTime == other.dateTime &&
     _deepEquals(a.iterable, other.iterable) &&
     _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
     _deepEquals(a.dateTimeIterable, other.dateTimeIterable) &&

@@ -154,6 +154,7 @@ void _sharedTests(
 }
 
 const _expectedOrder = const [
+  'dateTime',
   'iterable',
   'dynamicIterable',
   'objectIterable',

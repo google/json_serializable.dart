@@ -44,6 +44,9 @@ class Bathtub extends Object
   factory Bathtub.fromJson(Map<String, Object> json) => _$BathtubFromJson(json);
 
   @JsonKey(nullable: false)
+  DateTime dateTime = new DateTime(1981, 6, 5);
+
+  @JsonKey(nullable: false)
   Iterable get iterable => _iterable;
   @JsonKey(nullable: false)
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
