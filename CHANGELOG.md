@@ -1,3 +1,8 @@
+## 0.2.0+1
+
+* When serializing classes that implement their own `fromJson` constructor,
+  honor their constructor parameter type.
+
 ## 0.2.0
 
 * **BREAKING** Types are now segmented into their own libraries.

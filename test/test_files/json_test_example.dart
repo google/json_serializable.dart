@@ -34,6 +34,7 @@ class Order extends Object with _$OrderSerializerMixin {
   int count;
   bool isRushed;
   final UnmodifiableListView<Item> items;
+  Platform platform;
 
   int get price => items.fold(0, (total, item) => item.price + total);
 
@@ -69,3 +70,24 @@ class Item extends Object with _$ItemSerializerMixin {
 }
 
 bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
+
+class Platform {
+  final String description;
+
+  static const Platform foo = const Platform._('foo');
+  static const Platform undefined = const Platform._('undefined');
+  const Platform._(this.description);
+
+  factory Platform.fromJson(String value) {
+    switch (value) {
+      case 'foo':
+        return foo;
+      case 'undefined':
+        return undefined;
+      default:
+        throw new ArgumentError.value(value, 'value', 'Not a supported value.');
+    }
+  }
+
+  String toJson() => description;
+}

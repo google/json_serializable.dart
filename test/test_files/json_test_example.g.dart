@@ -36,14 +36,22 @@ Order _$OrderFromJson(Map<String, dynamic> json) =>
     new Order((json['items'] as List)?.map(
         (e) => e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
       ..count = json['count'] as int
-      ..isRushed = json['isRushed'] as bool;
+      ..isRushed = json['isRushed'] as bool
+      ..platform = json['platform'] == null
+          ? null
+          : new Platform.fromJson(json['platform'] as String);
 
 abstract class _$OrderSerializerMixin {
   int get count;
   bool get isRushed;
   UnmodifiableListView<Item> get items;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'count': count, 'isRushed': isRushed, 'items': items};
+  Platform get platform;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'count': count,
+        'isRushed': isRushed,
+        'items': items,
+        'platform': platform
+      };
 }
 
 // **************************************************************************

@@ -28,10 +28,20 @@ class JsonHelper extends TypeHelper {
       return null;
     }
 
+    var classElement = targetType.element as ClassElement;
+    var fromJsonCtor =
+        classElement.constructors.firstWhere((ce) => ce.name == 'fromJson');
+    // TODO: should verify that this type is a valid JSON type...but for now...
+    var asCastType = fromJsonCtor.parameters.single.type;
+
+    var asCast = '';
+    if (!asCastType.isDynamic && !asCastType.isObject) {
+      asCast = ' as $asCastType';
+    }
+
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
-    var result =
-        "new ${targetType.name}.fromJson($expression as Map<String, dynamic>)";
+    var result = "new ${targetType.name}.fromJson($expression$asCast)";
 
     if (nullable) {
       result = "$expression == null ? null : " + result;
