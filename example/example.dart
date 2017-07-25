@@ -10,7 +10,10 @@ part 'example.g.dart';
 
 @JsonSerializable()
 class Person extends Object with _$PersonSerializerMixin {
-  final String firstName, middleName, lastName;
+  final String firstName;
+  @JsonKey(includeIfNull: false)
+  final String middleName;
+  final String lastName;
 
   @JsonKey(name: 'date-of-birth', nullable: false)
   final DateTime dateOfBirth;
@@ -28,7 +31,7 @@ class Person extends Object with _$PersonSerializerMixin {
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class Order extends Object with _$OrderSerializerMixin {
   int count;
   int itemNumber;

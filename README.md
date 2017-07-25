@@ -16,39 +16,65 @@ part 'example.g.dart';
 
 @JsonSerializable()
 class Person extends Object with _$PersonSerializerMixin {
-  final String firstName, middleName, lastName;
+  final String firstName;
+  @JsonKey(includeIfNull: false)
+  final String middleName;
+  final String lastName;
 
-  @JsonKey('date-of-birth')
+  @JsonKey(name: 'date-of-birth', nullable: false)
   final DateTime dateOfBirth;
 
-  Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
+  @JsonKey(name: 'last-order')
+  final DateTime lastOrder;
 
-  factory Person.fromJson(json) => _$PersonFromJson(json);
+  @JsonKey(nullable: false)
+  List<Order> orders;
+
+  Person(this.firstName, this.lastName, this.dateOfBirth,
+      {this.middleName, this.lastOrder, List<Order> orders})
+      : this.orders = orders ?? <Order>[];
+
+  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
 ```
 
 `source_gen` creates the corresponding part `example.g.dart`:
 
 ```dart
-part of json_serializable.example;
-
-Person _$PersonFromJson(Map json) =>
-    new Person(json['firstName'] as String, json['lastName'] as String,
-        middleName: json['middleName'] as String,
-        dateOfBirth: json['date-of-birth'] == null
-            ? null
-            : DateTime.parse(json['date-of-birth']));
+Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
+    json['firstName'] as String,
+    json['lastName'] as String,
+    DateTime.parse(json['date-of-birth'] as String),
+    middleName: json['middleName'] as String,
+    lastOrder: json['last-order'] == null
+        ? null
+        : DateTime.parse(json['last-order'] as String),
+    orders: (json['orders'] as List)
+        .map((e) => new Order.fromJson(e as Map<String, dynamic>))
+        .toList());
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
   String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'middleName': middleName,
-        'lastName': lastName,
-        'date-of-birth': dateOfBirth?.toIso8601String(),
-      };
+  DateTime get lastOrder;
+  List<Order> get orders;
+  Map<String, dynamic> toJson() {
+    var $map = <String, dynamic>{};
+    void $writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        $map[key] = value;
+      }
+    }
+
+    $map['firstName'] = firstName;
+    $writeNotNull('middleName', middleName);
+    $map['lastName'] = lastName;
+    $map['date-of-birth'] = dateOfBirth.toIso8601String();
+    $map['last-order'] = lastOrder?.toIso8601String();
+    $map['orders'] = orders;
+    return $map;
+  }
 }
 ```
