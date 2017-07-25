@@ -120,7 +120,8 @@ class JsonSerializableGenerator
       //
       buffer.writeln('abstract class ${prefix}SerializerMixin {');
 
-      // write fields
+      // write copies of the fields - this allows the toJson method to access
+      // the fields of the target class
       fields.forEach((name, field) {
         //TODO - handle aliased imports
         buffer.writeln('  ${field.type} get $name;');
@@ -129,71 +130,83 @@ class JsonSerializableGenerator
       buffer.writeln('  Map<String, dynamic> toJson() ');
       if (fieldsList.every((fe) => _jsonKeyFor(fe).includeIfNull)) {
         // write simple `toJson` method that includes all keys...
-        buffer.writeln('=> <String, dynamic>{');
-
-        var pairs = <String>[];
-        fields.forEach((fieldName, field) {
-          try {
-            pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
-                "${_serialize(field.type, fieldName, _nullable(field))}");
-          } on UnsupportedTypeError {
-            throw new InvalidGenerationSourceError(
-                "Could not generate `toJson` code for `${friendlyNameForElement(
-                  field)}`.",
-                todo: "Make sure all of the types are serializable.");
-          }
-        });
-        buffer.writeAll(pairs, ', ');
-
-        buffer.writeln('  };');
+        _writeToJsonSimple(buffer, fields);
       } else {
         // At least one field should be excluded if null
-        buffer.writeln('{');
-
-        buffer.writeln("var $toJsonMapVarName = <String, dynamic>{};");
-
-        buffer.writeln("""void $toJsonMapHelperName(String key, dynamic value) {
-        if (value != null) {
-          $toJsonMapVarName[key] = value;
-        }
-        }""");
-
-        fields.forEach((fieldName, field) {
-          try {
-            var jsonKey = _jsonKeyFor(field);
-            var safeJsonKeyString = _safeNameAccess(jsonKey.name ?? fieldName);
-
-            // If `fieldName` collides with one of the local helpers, prefix
-            // access with `this.`.
-            if (fieldName == toJsonMapVarName ||
-                fieldName == toJsonMapHelperName) {
-              fieldName = 'this.$fieldName';
-            }
-
-            if (jsonKey.includeIfNull) {
-              buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
-                  "${_serialize(field.type, fieldName, jsonKey.nullable)};");
-            } else {
-              buffer.writeln("$toJsonMapHelperName($safeJsonKeyString,"
-                  "${_serialize(field.type, fieldName, jsonKey.nullable)});");
-            }
-          } on UnsupportedTypeError {
-            throw new InvalidGenerationSourceError(
-                "Could not generate `toJson` code for `${friendlyNameForElement(
-                    field)}`.",
-                todo: "Make sure all of the types are serializable.");
-          }
-        });
-
-        buffer.writeln(r"return $map;");
-
-        buffer.writeln('}');
+        _writeToJsonWithNullChecks(buffer, fields);
       }
 
+      // end of the mixin class
       buffer.write('}');
     }
 
     return buffer.toString();
+  }
+
+  void _writeToJsonWithNullChecks(
+      StringBuffer buffer, Map<String, FieldElement> fields) {
+    buffer.writeln('{');
+
+    // TODO(kevmoo) We could write all values up to the null-excluded value
+    //   directly in this literal.
+    buffer.writeln("var $toJsonMapVarName = <String, dynamic>{};");
+
+    buffer.writeln("""void $toJsonMapHelperName(String key, dynamic value) {
+    if (value != null) {
+      $toJsonMapVarName[key] = value;
+    }
+    }""");
+
+    fields.forEach((fieldName, field) {
+      try {
+        var jsonKey = _jsonKeyFor(field);
+        var safeJsonKeyString = _safeNameAccess(jsonKey.name ?? fieldName);
+
+        // If `fieldName` collides with one of the local helpers, prefix
+        // access with `this.`.
+        if (fieldName == toJsonMapVarName || fieldName == toJsonMapHelperName) {
+          fieldName = 'this.$fieldName';
+        }
+
+        if (jsonKey.includeIfNull) {
+          buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
+              "${_serialize(field.type, fieldName, jsonKey.nullable)};");
+        } else {
+          buffer.writeln("$toJsonMapHelperName($safeJsonKeyString,"
+              "${_serialize(field.type, fieldName, jsonKey.nullable)});");
+        }
+      } on UnsupportedTypeError {
+        throw new InvalidGenerationSourceError(
+            "Could not generate `toJson` code for `${friendlyNameForElement(
+                field)}`.",
+            todo: "Make sure all of the types are serializable.");
+      }
+    });
+
+    buffer.writeln(r"return $map;");
+
+    buffer.writeln('}');
+  }
+
+  void _writeToJsonSimple(
+      StringBuffer buffer, Map<String, FieldElement> fields) {
+    buffer.writeln('=> <String, dynamic>{');
+
+    var pairs = <String>[];
+    fields.forEach((fieldName, field) {
+      try {
+        pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
+            "${_serialize(field.type, fieldName, _nullable(field))}");
+      } on UnsupportedTypeError {
+        throw new InvalidGenerationSourceError(
+            "Could not generate `toJson` code for `${friendlyNameForElement(
+              field)}`.",
+            todo: "Make sure all of the types are serializable.");
+      }
+    });
+    buffer.writeAll(pairs, ', ');
+
+    buffer.writeln('  };');
   }
 
   /// Returns the set of fields that are not written to via constructors.
