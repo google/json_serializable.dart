@@ -27,9 +27,14 @@ class JsonKey {
   /// must implement their own `null` validation.
   final bool nullable;
 
+  /// [true] if the generator should include the this field in the serialized
+  /// output, even if the value is `null`.
+  final bool includeIfNull;
+
   /// Creates a new [JsonKey].
   ///
   /// Only required when the default behavior is not desired.
-  const JsonKey({this.name, bool nullable: true})
-      : this.nullable = nullable ?? true;
+  const JsonKey({this.name, bool nullable: true, bool includeIfNull: true})
+      : this.nullable = nullable ?? true,
+        this.includeIfNull = includeIfNull ?? true;
 }

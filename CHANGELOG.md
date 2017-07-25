@@ -28,6 +28,8 @@
 
 * Added support for optional, non-nullable fields.
 
+* Added support for excluding `null` values when generating JSON.
+
 * Eliminated all implicit casts in generated code. These would end up being
   runtime checks in most cases.
 

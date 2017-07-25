@@ -19,7 +19,6 @@ import 'type_helpers/map_helper.dart';
 import 'type_helpers/value_helper.dart';
 import 'utils.dart';
 
-// TODO: toJson option to omit null/empty values
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
   static const _coreHelpers = const [
@@ -127,23 +126,60 @@ class JsonSerializableGenerator
         buffer.writeln('  ${field.type} get $name;');
       });
 
-      // write toJson method
-      buffer.writeln('  Map<String, dynamic> toJson() => <String, dynamic>{');
+      buffer.writeln('  Map<String, dynamic> toJson() ');
+      if (fieldsList.every((fe) => _jsonKeyFor(fe).includeIfNull)) {
+        // write simple `toJson` method that includes all keys...
+        buffer.writeln('=> <String, dynamic>{');
 
-      var pairs = <String>[];
-      fields.forEach((fieldName, field) {
-        try {
-          pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
-              "${_serialize(field.type, fieldName ,  _nullable(field))}");
-        } on UnsupportedTypeError {
-          throw new InvalidGenerationSourceError(
-              "Could not generate `toJson` code for `${friendlyNameForElement(field)}`.",
-              todo: "Make sure all of the types are serializable.");
+        var pairs = <String>[];
+        fields.forEach((fieldName, field) {
+          try {
+            pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
+                "${_serialize(field.type, fieldName, _nullable(field))}");
+          } on UnsupportedTypeError {
+            throw new InvalidGenerationSourceError(
+                "Could not generate `toJson` code for `${friendlyNameForElement(
+                  field)}`.",
+                todo: "Make sure all of the types are serializable.");
+          }
+        });
+        buffer.writeAll(pairs, ', ');
+
+        buffer.writeln('  };');
+      } else {
+        // At least one field should be excluded if null
+        buffer.writeln('{');
+
+        buffer.writeln(r"var $map = <String, dynamic>{};");
+
+        buffer.writeln(r"""void $writeNotNull(String key, dynamic value) {
+        if (value != null) {
+          $map[key] = value;
         }
-      });
-      buffer.writeln(pairs.join(','));
+        }""");
 
-      buffer.writeln('  };');
+        fields.forEach((fieldName, field) {
+          try {
+            var jsonKey = _jsonKeyFor(field);
+            if (jsonKey.includeIfNull) {
+              buffer.writeln("\$map['${jsonKey.name ?? fieldName}'] = "
+                  "${_serialize(field.type, fieldName, jsonKey.nullable)};");
+            } else {
+              buffer.writeln("\$writeNotNull('${jsonKey.name ?? fieldName}',"
+                  "${_serialize(field.type, fieldName, jsonKey.nullable)});");
+            }
+          } on UnsupportedTypeError {
+            throw new InvalidGenerationSourceError(
+                "Could not generate `toJson` code for `${friendlyNameForElement(
+                    field)}`.",
+                todo: "Make sure all of the types are serializable.");
+          }
+        });
+
+        buffer.writeln(r"return $map;");
+
+        buffer.writeln('}');
+      }
 
       buffer.write('}');
     }
@@ -288,14 +324,14 @@ class JsonSerializableGenerator
 /// Returns the JSON map `key` to be used when (de)serializing [field], if any.
 ///
 /// Otherwise, `null`;
-String _fieldToJsonMapKey(FieldElement field) => _getJsonKeyReader(field).name;
+String _fieldToJsonMapKey(FieldElement field) => _jsonKeyFor(field).name;
 
 /// Returns `true` if the field should be treated as potentially nullable.
 ///
 /// If no [JsonKey] annotation is present on the field, `true` is returned.
-bool _nullable(FieldElement field) => _getJsonKeyReader(field).nullable;
+bool _nullable(FieldElement field) => _jsonKeyFor(field).nullable;
 
-JsonKey _getJsonKeyReader(FieldElement element) {
+JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];
 
   if (key == null) {
@@ -309,7 +345,8 @@ JsonKey _getJsonKeyReader(FieldElement element) {
         ? const JsonKey()
         : new JsonKey(
             name: obj.getField('name').toStringValue(),
-            nullable: obj.getField('nullable').toBoolValue());
+            nullable: obj.getField('nullable').toBoolValue(),
+            includeIfNull: obj.getField('includeIfNull').toBoolValue());
   }
 
   return key;

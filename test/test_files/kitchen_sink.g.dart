@@ -64,28 +64,37 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'dateTime': dateTime?.toIso8601String(),
-        'iterable': iterable?.toList(),
-        'dynamicIterable': dynamicIterable?.toList(),
-        'objectIterable': objectIterable?.toList(),
-        'intIterable': intIterable?.toList(),
-        'datetime-iterable':
-            dateTimeIterable?.map((e) => e?.toIso8601String())?.toList(),
-        'list': list,
-        'dynamicList': dynamicList,
-        'objectList': objectList,
-        'intList': intList,
-        'dateTimeList':
-            dateTimeList?.map((e) => e?.toIso8601String())?.toList(),
-        'map': map,
-        'stringStringMap': stringStringMap,
-        'stringIntMap': stringIntMap,
-        'stringDateTimeMap': stringDateTimeMap == null
-            ? null
-            : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-                stringDateTimeMap.values.map((e) => e?.toIso8601String())),
-        'crazyComplex': crazyComplex
+  Map<String, dynamic> toJson() {
+    var $map = <String, dynamic>{};
+    void $writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        $map[key] = value;
+      }
+    }
+
+    $writeNotNull('dateTime', dateTime?.toIso8601String());
+    $writeNotNull('iterable', iterable?.toList());
+    $map['dynamicIterable'] = dynamicIterable?.toList();
+    $map['objectIterable'] = objectIterable?.toList();
+    $map['intIterable'] = intIterable?.toList();
+    $map['datetime-iterable'] =
+        dateTimeIterable?.map((e) => e?.toIso8601String())?.toList();
+    $map['list'] = list;
+    $map['dynamicList'] = dynamicList;
+    $map['objectList'] = objectList;
+    $map['intList'] = intList;
+    $writeNotNull('dateTimeList',
+        dateTimeList?.map((e) => e?.toIso8601String())?.toList());
+    $map['map'] = map;
+    $map['stringStringMap'] = stringStringMap;
+    $map['stringIntMap'] = stringIntMap;
+    $map['stringDateTimeMap'] = stringDateTimeMap == null
+        ? null
+        : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
+            stringDateTimeMap.values.map((e) => e?.toIso8601String()));
+    $writeNotNull(
+        'crazyComplex',
+        crazyComplex
             ?.map((e) => e == null
                 ? null
                 : new Map<String, dynamic>.fromIterables(
@@ -99,6 +108,7 @@ abstract class _$KitchenSinkSerializerMixin {
                                     ?.map((e) => e?.toIso8601String())
                                     ?.toList())
                                 ?.toList())))))
-            ?.toList()
-      };
+            ?.toList());
+    return $map;
+  }
 }

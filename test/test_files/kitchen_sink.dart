@@ -43,8 +43,10 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   factory KitchenSink.fromJson(Map<String, Object> json) =>
       _$KitchenSinkFromJson(json);
 
+  @JsonKey(includeIfNull: false)
   DateTime dateTime;
 
+  @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
@@ -58,6 +60,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   List<dynamic> dynamicList;
   List<Object> objectList;
   List<int> intList;
+  @JsonKey(includeIfNull: false)
   List<DateTime> dateTimeList;
 
   Map map;
@@ -65,6 +68,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   Map<String, int> stringIntMap;
   Map<String, DateTime> stringDateTimeMap;
 
+  @JsonKey(includeIfNull: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex;
 
   bool operator ==(Object other) => sinkEquals(this, other);

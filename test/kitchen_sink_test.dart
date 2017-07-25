@@ -14,12 +14,17 @@ void main() {
       roundTripObject(p, (json) => new KitchenSink.fromJson(json));
     }
 
-    test('null', () {
+    test('Fields with `!includeIfNull` should not be included when null', () {
       var item = new KitchenSink();
-      roundTripItem(item);
+
+      var expectedDefaultKeys = _expectedOrder.toSet()
+        ..removeAll(_excludeIfNullKeys);
 
       var encoded = item.toJson();
-      for (var key in _expectedOrder) {
+
+      expect(encoded.keys, orderedEquals(expectedDefaultKeys));
+
+      for (var key in expectedDefaultKeys) {
         expect(encoded, containsPair(key, isNull));
       }
     });
@@ -113,7 +118,6 @@ void _sharedTests(
 
   test('empty', () {
     var item = ctor();
-
     roundTripSink(item);
   });
 
@@ -144,14 +148,25 @@ void _sharedTests(
     roundTripSink(item);
   });
 
-  test('json keys should be defined in field/property order', () {
-    var item = ctor();
+  test('JSON keys should be defined in field/property order', () {
+    /// Explicitly setting values from [_excludeIfNullKeys] to ensure
+    /// they exist for KitchenSink where they are excluded when null
+    var item = ctor(iterable: [])
+      ..dateTime = new DateTime.now()
+      ..dateTimeList = []
+      ..crazyComplex = [];
 
     var json = item.toJson();
-
     expect(json.keys, orderedEquals(_expectedOrder));
   });
 }
+
+const _excludeIfNullKeys = const [
+  'dateTime',
+  'iterable',
+  'dateTimeList',
+  'crazyComplex'
+];
 
 const _expectedOrder = const [
   'dateTime',
