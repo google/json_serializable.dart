@@ -4,6 +4,8 @@
 
 import 'package:test/test.dart';
 
+import 'package:json_serializable/src/utils.dart';
+
 import 'test_files/bathtub.dart';
 import 'test_files/kitchen_sink.dart';
 import 'test_utils.dart';
@@ -154,21 +156,23 @@ void _sharedTests(
     var item = ctor(iterable: [])
       ..dateTime = new DateTime.now()
       ..dateTimeList = []
-      ..crazyComplex = [];
+      ..crazyComplex = []
+      ..$map = {};
 
     var json = item.toJson();
     expect(json.keys, orderedEquals(_expectedOrder));
   });
 }
 
-const _excludeIfNullKeys = const [
+final _excludeIfNullKeys = [
   'dateTime',
   'iterable',
   'dateTimeList',
-  'crazyComplex'
+  'crazyComplex',
+  toJsonMapVarName
 ];
 
-const _expectedOrder = const [
+final _expectedOrder = [
   'dateTime',
   'iterable',
   'dynamicIterable',
@@ -184,5 +188,8 @@ const _expectedOrder = const [
   'stringStringMap',
   'stringIntMap',
   'stringDateTimeMap',
-  'crazyComplex'
+  'crazyComplex',
+  toJsonMapVarName,
+  toJsonMapHelperName,
+  r'$string'
 ];

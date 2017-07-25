@@ -150,22 +150,31 @@ class JsonSerializableGenerator
         // At least one field should be excluded if null
         buffer.writeln('{');
 
-        buffer.writeln(r"var $map = <String, dynamic>{};");
+        buffer.writeln("var $toJsonMapVarName = <String, dynamic>{};");
 
-        buffer.writeln(r"""void $writeNotNull(String key, dynamic value) {
+        buffer.writeln("""void $toJsonMapHelperName(String key, dynamic value) {
         if (value != null) {
-          $map[key] = value;
+          $toJsonMapVarName[key] = value;
         }
         }""");
 
         fields.forEach((fieldName, field) {
           try {
             var jsonKey = _jsonKeyFor(field);
+            var safeJsonKeyString = _safeNameAccess(jsonKey.name ?? fieldName);
+
+            // If `fieldName` collides with one of the local helpers, prefix
+            // access with `this.`.
+            if (fieldName == toJsonMapVarName ||
+                fieldName == toJsonMapHelperName) {
+              fieldName = 'this.$fieldName';
+            }
+
             if (jsonKey.includeIfNull) {
-              buffer.writeln("\$map['${jsonKey.name ?? fieldName}'] = "
+              buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
                   "${_serialize(field.type, fieldName, jsonKey.nullable)};");
             } else {
-              buffer.writeln("\$writeNotNull('${jsonKey.name ?? fieldName}',"
+              buffer.writeln("$toJsonMapHelperName($safeJsonKeyString,"
                   "${_serialize(field.type, fieldName, jsonKey.nullable)});");
             }
           } on UnsupportedTypeError {
@@ -304,7 +313,8 @@ class JsonSerializableGenerator
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _deserialize(targetType, "json['$name']", _nullable(field));
+      var safeName = _safeNameAccess(name);
+      return _deserialize(targetType, "json[$safeName]", _nullable(field));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
           "Could not generate fromJson code for `${friendlyNameForElement(field)}`.",
@@ -320,6 +330,9 @@ class JsonSerializableGenerator
               orElse: () =>
                   throw new UnsupportedTypeError(targetType, expression));
 }
+
+String _safeNameAccess(String name) =>
+    name.contains(r'$') ? "r'$name'" : "'$name'";
 
 /// Returns the JSON map `key` to be used when (de)serializing [field], if any.
 ///

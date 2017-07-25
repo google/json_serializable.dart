@@ -81,5 +81,13 @@ class Bathtub extends Object
   @JsonKey(nullable: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex = [];
 
+  // Handle fields with names that collide with helper names
+  @JsonKey(nullable: false, includeIfNull: false)
+  Map<String, bool> $map = {};
+  @JsonKey(nullable: false)
+  bool $writeNotNull;
+  @JsonKey(nullable: false, name: r'$string')
+  String string;
+
   bool operator ==(Object other) => sinkEquals(this, other);
 }

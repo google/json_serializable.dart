@@ -36,7 +36,10 @@ Bathtub _$BathtubFromJson(Map<String, dynamic> json) => new Bathtub(
           (e as Map<String, dynamic>).keys,
           (e as Map).values.map((e) =>
               new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
-      .toList();
+      .toList()
+  ..$map = new Map<String, bool>.from(json[r'$map'] as Map)
+  ..$writeNotNull = json[r'$writeNotNull'] as bool
+  ..string = json[r'$string'] as String;
 
 abstract class _$BathtubSerializerMixin {
   DateTime get dateTime;
@@ -55,33 +58,48 @@ abstract class _$BathtubSerializerMixin {
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'dateTime': dateTime.toIso8601String(),
-        'iterable': iterable.toList(),
-        'dynamicIterable': dynamicIterable.toList(),
-        'objectIterable': objectIterable.toList(),
-        'intIterable': intIterable.toList(),
-        'datetime-iterable':
-            dateTimeIterable.map((e) => e.toIso8601String()).toList(),
-        'list': list,
-        'dynamicList': dynamicList,
-        'objectList': objectList,
-        'intList': intList,
-        'dateTimeList': dateTimeList.map((e) => e.toIso8601String()).toList(),
-        'map': map,
-        'stringStringMap': stringStringMap,
-        'stringIntMap': stringIntMap,
-        'stringDateTimeMap': new Map<String, dynamic>.fromIterables(
-            stringDateTimeMap.keys,
-            stringDateTimeMap.values.map((e) => e.toIso8601String())),
-        'crazyComplex': crazyComplex
-            .map((e) => new Map<String, dynamic>.fromIterables(
+  Map<String, bool> get $map;
+  bool get $writeNotNull;
+  String get string;
+  Map<String, dynamic> toJson() {
+    var $map = <String, dynamic>{};
+    void $writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        $map[key] = value;
+      }
+    }
+
+    $map['dateTime'] = dateTime.toIso8601String();
+    $map['iterable'] = iterable.toList();
+    $map['dynamicIterable'] = dynamicIterable.toList();
+    $map['objectIterable'] = objectIterable.toList();
+    $map['intIterable'] = intIterable.toList();
+    $map['datetime-iterable'] =
+        dateTimeIterable.map((e) => e.toIso8601String()).toList();
+    $map['list'] = list;
+    $map['dynamicList'] = dynamicList;
+    $map['objectList'] = objectList;
+    $map['intList'] = intList;
+    $map['dateTimeList'] =
+        dateTimeList.map((e) => e.toIso8601String()).toList();
+    $map['map'] = map;
+    $map['stringStringMap'] = stringStringMap;
+    $map['stringIntMap'] = stringIntMap;
+    $map['stringDateTimeMap'] = new Map<String, dynamic>.fromIterables(
+        stringDateTimeMap.keys,
+        stringDateTimeMap.values.map((e) => e.toIso8601String()));
+    $map['crazyComplex'] = crazyComplex
+        .map((e) => new Map<String, dynamic>.fromIterables(
+            e.keys,
+            e.values.map((e) => new Map<String, dynamic>.fromIterables(
                 e.keys,
-                e.values.map((e) => new Map<String, dynamic>.fromIterables(
-                    e.keys,
-                    e.values.map((e) => e
-                        .map((e) => e.map((e) => e.toIso8601String()).toList())
-                        .toList())))))
-            .toList()
-      };
+                e.values.map((e) => e
+                    .map((e) => e.map((e) => e.toIso8601String()).toList())
+                    .toList())))))
+        .toList();
+    $writeNotNull(r'$map', this.$map);
+    $map[r'$writeNotNull'] = this.$writeNotNull;
+    $map[r'$string'] = string;
+    return $map;
+  }
 }

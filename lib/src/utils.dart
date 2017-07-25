@@ -43,3 +43,6 @@ String friendlyNameForElement(Element element) {
 void log(object) {
   stderr.writeln(['***', object, '***'].join('\n'));
 }
+
+final toJsonMapVarName = r'$map';
+final toJsonMapHelperName = r'$writeNotNull';

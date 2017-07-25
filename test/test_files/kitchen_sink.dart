@@ -71,6 +71,13 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   @JsonKey(includeIfNull: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex;
 
+  // Handle fields with names that collide with helper names
+  @JsonKey(includeIfNull: false)
+  Map<String, bool> $map;
+  bool $writeNotNull;
+  @JsonKey(name: r'$string')
+  String string;
+
   bool operator ==(Object other) => sinkEquals(this, other);
 }
 
