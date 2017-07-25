@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:json_serializable/generators.dart';
+import 'package:json_serializable/src/utils.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
@@ -153,11 +154,25 @@ void main() {
     expect(output, contains("'h': height,"));
     expect(output, contains("..height = json['h']"));
   });
+
+  group("includeIfNull", () {
+    test("some", () async {
+      var output = await _runForElementNamed('IncludeIfNullAll');
+      expect(output, isNot(contains(toJsonMapVarName)));
+      expect(output, isNot(contains(toJsonMapHelperName)));
+    });
+
+    test("all", () async {
+      var output = await _runForElementNamed('IncludeIfNullOverride');
+      expect(output, contains("$toJsonMapVarName[\'number\'] = number;"));
+      expect(output, contains("$toJsonMapHelperName('str', str);"));
+    });
+  });
 }
 
 const _generator = const JsonSerializableGenerator();
 
-Future<String> _runForElementNamed(String name) async {
+Future<String> _runForElementNamed(String name) {
   var library = _compUnit.element.library;
   var element =
       getElementsFromLibraryElement(library).singleWhere((e) => e.name == name);
@@ -277,5 +292,19 @@ class NoSerializeBadKey {
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
   Map<int, DateTime> intDateTimeMap;
+}
+
+@JsonSerializable(createFactory: false)
+class IncludeIfNullAll {
+  @JsonKey(includeIfNull: true)
+  int number;
+  String str;
+}
+
+@JsonSerializable(createFactory: false, includeIfNull: false)
+class IncludeIfNullOverride {
+  @JsonKey(includeIfNull: true)
+  int number;
+  String str;
 }
 ''';

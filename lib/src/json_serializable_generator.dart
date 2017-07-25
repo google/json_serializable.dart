@@ -128,12 +128,13 @@ class JsonSerializableGenerator
       });
 
       buffer.writeln('  Map<String, dynamic> toJson() ');
-      if (fieldsList.every((fe) => _jsonKeyFor(fe).includeIfNull)) {
+      if (fieldsList
+          .every((e) => _includeIfNull(e, annotation.includeIfNull))) {
         // write simple `toJson` method that includes all keys...
         _writeToJsonSimple(buffer, fields);
       } else {
         // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, fields);
+        _writeToJsonWithNullChecks(buffer, fields, annotation.includeIfNull);
       }
 
       // end of the mixin class
@@ -143,8 +144,8 @@ class JsonSerializableGenerator
     return buffer.toString();
   }
 
-  void _writeToJsonWithNullChecks(
-      StringBuffer buffer, Map<String, FieldElement> fields) {
+  void _writeToJsonWithNullChecks(StringBuffer buffer,
+      Map<String, FieldElement> fields, bool includeIfNull) {
     buffer.writeln('{');
 
     // TODO(kevmoo) We could write all values up to the null-excluded value
@@ -159,8 +160,8 @@ class JsonSerializableGenerator
 
     fields.forEach((fieldName, field) {
       try {
-        var jsonKey = _jsonKeyFor(field);
-        var safeJsonKeyString = _safeNameAccess(jsonKey.name ?? fieldName);
+        var safeJsonKeyString =
+            _safeNameAccess(_fieldToJsonMapKey(field, fieldName));
 
         // If `fieldName` collides with one of the local helpers, prefix
         // access with `this.`.
@@ -168,12 +169,12 @@ class JsonSerializableGenerator
           fieldName = 'this.$fieldName';
         }
 
-        if (jsonKey.includeIfNull) {
+        if (_includeIfNull(field, includeIfNull)) {
           buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
-              "${_serialize(field.type, fieldName, jsonKey.nullable)};");
+              "${_serialize(field.type, fieldName,  _nullable(field))};");
         } else {
-          buffer.writeln("$toJsonMapHelperName($safeJsonKeyString,"
-              "${_serialize(field.type, fieldName, jsonKey.nullable)});");
+          buffer.writeln("$toJsonMapHelperName($safeJsonKeyString, "
+              "${_serialize(field.type, fieldName, _nullable(field))});");
         }
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(
@@ -195,7 +196,7 @@ class JsonSerializableGenerator
     var pairs = <String>[];
     fields.forEach((fieldName, field) {
       try {
-        pairs.add("'${_fieldToJsonMapKey(field) ?? fieldName}': "
+        pairs.add("'${_fieldToJsonMapKey(field, fieldName)}': "
             "${_serialize(field.type, fieldName, _nullable(field))}");
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(
@@ -321,7 +322,7 @@ class JsonSerializableGenerator
 
   String _deserializeForField(String name, FieldElement field,
       {ParameterElement ctorParam}) {
-    name = _fieldToJsonMapKey(field) ?? name;
+    name = _fieldToJsonMapKey(field, name);
 
     var targetType = ctorParam?.type ?? field.type;
 
@@ -350,12 +351,16 @@ String _safeNameAccess(String name) =>
 /// Returns the JSON map `key` to be used when (de)serializing [field], if any.
 ///
 /// Otherwise, `null`;
-String _fieldToJsonMapKey(FieldElement field) => _jsonKeyFor(field).name;
+String _fieldToJsonMapKey(FieldElement field, String ifNull) =>
+    _jsonKeyFor(field).name ?? ifNull;
 
 /// Returns `true` if the field should be treated as potentially nullable.
 ///
 /// If no [JsonKey] annotation is present on the field, `true` is returned.
 bool _nullable(FieldElement field) => _jsonKeyFor(field).nullable;
+
+bool _includeIfNull(FieldElement element, bool parentValue) =>
+    _jsonKeyFor(element).includeIfNull ?? parentValue;
 
 JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];

@@ -6,9 +6,17 @@ class JsonSerializable {
   final bool createFactory;
   final bool createToJson;
 
-  const JsonSerializable({bool createFactory: true, bool createToJson: true})
-      : this.createFactory = createFactory,
-        this.createToJson = createToJson;
+  /// Whether the generator should include the this field in the serialized
+  /// output, even if the value is `null`.
+  final bool includeIfNull;
+
+  const JsonSerializable(
+      {bool createFactory: true,
+      bool createToJson: true,
+      bool includeIfNull: true})
+      : this.createFactory = createFactory ?? true,
+        this.createToJson = createToJson ?? true,
+        this.includeIfNull = includeIfNull ?? true;
 }
 
 /// An annotation used to specify how a field is serialized.
@@ -29,12 +37,16 @@ class JsonKey {
 
   /// [true] if the generator should include the this field in the serialized
   /// output, even if the value is `null`.
+  ///
+  /// The default value, `null`, indicates that the behavior should be
+  /// acquired from the [JsonSerializable.includeIfNull] annotation on the
+  /// enclosing class.
   final bool includeIfNull;
 
   /// Creates a new [JsonKey].
   ///
   /// Only required when the default behavior is not desired.
-  const JsonKey({this.name, bool nullable: true, bool includeIfNull: true})
+  const JsonKey({this.name, bool nullable: true, bool includeIfNull})
       : this.nullable = nullable ?? true,
-        this.includeIfNull = includeIfNull ?? true;
+        this.includeIfNull = includeIfNull;
 }
