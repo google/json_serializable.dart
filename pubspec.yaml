@@ -19,4 +19,4 @@ dev_dependencies:
 
 dependency_overrides:
   source_gen:
-    git: git@github.com:dart-lang/source_gen.git
+    git: https://github.com/dart-lang/source_gen
