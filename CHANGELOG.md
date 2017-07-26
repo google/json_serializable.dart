@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Upgrade to `package:source_gen` v0.7.0
+
 ## 0.2.0+1
 
 * When serializing classes that implement their own `fromJson` constructor,
