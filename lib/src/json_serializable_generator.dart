@@ -53,7 +53,7 @@ class JsonSerializableGenerator
 
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, JsonSerializable annotation, _) async {
+      Element element, ConstantReader annotation, _) async {
     if (element is! ClassElement) {
       var friendlyName = friendlyNameForElement(element);
       throw new InvalidGenerationSourceError(
@@ -104,7 +104,7 @@ class JsonSerializableGenerator
 
     var buffer = new StringBuffer();
 
-    if (annotation.createFactory) {
+    if (annotation.read('createFactory').boolValue) {
       var toSkip = _writeFactory(buffer, classElement, fields, prefix);
 
       // If there are fields that are final – that are not set via the generated
@@ -114,7 +114,7 @@ class JsonSerializableGenerator
       }
     }
 
-    if (annotation.createToJson) {
+    if (annotation.read('createToJson').boolValue) {
       //
       // Generate the mixin class
       //
@@ -127,14 +127,15 @@ class JsonSerializableGenerator
         buffer.writeln('  ${field.type} get $name;');
       });
 
+      var includeIfNull = annotation.read('includeIfNull').boolValue;
+
       buffer.writeln('  Map<String, dynamic> toJson() ');
-      if (fieldsList
-          .every((e) => _includeIfNull(e, annotation.includeIfNull))) {
+      if (fieldsList.every((e) => _includeIfNull(e, includeIfNull))) {
         // write simple `toJson` method that includes all keys...
         _writeToJsonSimple(buffer, fields);
       } else {
         // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, fields, annotation.includeIfNull);
+        _writeToJsonWithNullChecks(buffer, fields, includeIfNull);
       }
 
       // end of the mixin class

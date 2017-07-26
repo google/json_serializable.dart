@@ -17,15 +17,15 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, JsonLiteral annotation, BuildStep buildStep) async {
-    if (p.isAbsolute(annotation.path)) {
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    if (p.isAbsolute(annotation.read('path').stringValue)) {
       throw new ArgumentError(
           '`annotation.path` must be relative path to the source file.');
     }
 
     var sourcePathDir = p.dirname(buildStep.inputId.path);
-    var fileId = new AssetId(
-        buildStep.inputId.package, p.join(sourcePathDir, annotation.path));
+    var fileId = new AssetId(buildStep.inputId.package,
+        p.join(sourcePathDir, annotation.read('path').stringValue));
     var content = JSON.decode(await buildStep.readAsString(fileId));
 
     var thing = JSON.encode(content);

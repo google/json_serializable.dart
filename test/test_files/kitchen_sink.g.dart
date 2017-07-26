@@ -4,7 +4,6 @@ part of json_serializable.test.kitche_sink;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
-// Target: class KitchenSink
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(

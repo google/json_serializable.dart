@@ -12,6 +12,7 @@ import 'package:analyzer/src/string_source.dart';
 import 'package:json_serializable/generators.dart';
 import 'package:json_serializable/src/utils.dart';
 import 'package:path/path.dart' as p;
+import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
@@ -97,12 +98,6 @@ void main() {
     expect(generateResult, contains("Map<String, dynamic> toJson()"));
   });
 
-  test('unannotated classes no-op', () async {
-    var output = await _runForElementNamed('NoAnnotation');
-
-    expect(output, isNull);
-  });
-
   group('valid inputs', () {
     test('class with no fields', () async {
       var output = await _runForElementNamed('Person');
@@ -172,11 +167,12 @@ void main() {
 
 const _generator = const JsonSerializableGenerator();
 
-Future<String> _runForElementNamed(String name) {
-  var library = _compUnit.element.library;
-  var element =
-      getElementsFromLibraryElement(library).singleWhere((e) => e.name == name);
-  return _generator.generate(element, null);
+Future<String> _runForElementNamed(String name) async {
+  var library = new LibraryReader(_compUnit.element.library);
+  var element = library.allElements.singleWhere((e) => e.name == name);
+  var annotation = _generator.typeChecker.firstAnnotationOf(element);
+  return _generator.generateForAnnotatedElement(
+      element, new ConstantReader(annotation), null);
 }
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
@@ -220,9 +216,6 @@ class Order {
   DateTime dateOfBirth;
 
   Order(this.height, String firstName, [this.lastName]);
-}
-
-class NoAnnotation {
 }
 
 @JsonSerializable()

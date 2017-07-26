@@ -4,7 +4,6 @@ part of json_serializable.test.example;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
-// Target: class Person
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) =>
@@ -27,11 +26,6 @@ abstract class _$PersonSerializerMixin {
       };
 }
 
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Order
-// **************************************************************************
-
 Order _$OrderFromJson(Map<String, dynamic> json) =>
     new Order((json['items'] as List)?.map(
         (e) => e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
@@ -53,11 +47,6 @@ abstract class _$OrderSerializerMixin {
         'platform': platform
       };
 }
-
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Item
-// **************************************************************************
 
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
   ..itemNumber = json['itemNumber'] as int

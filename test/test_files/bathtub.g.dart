@@ -4,7 +4,6 @@ part of json_serializable.test.bathtub;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
-// Target: class Bathtub
 // **************************************************************************
 
 Bathtub _$BathtubFromJson(Map<String, dynamic> json) => new Bathtub(

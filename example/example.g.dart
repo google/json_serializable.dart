@@ -4,7 +4,6 @@ part of json_serializable.example;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
-// Target: class Person
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
@@ -44,11 +43,6 @@ abstract class _$PersonSerializerMixin {
   }
 }
 
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Order
-// **************************************************************************
-
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order()
   ..count = json['count'] as int
   ..itemNumber = json['itemNumber'] as int
@@ -78,11 +72,6 @@ abstract class _$OrderSerializerMixin {
   }
 }
 
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Item
-// **************************************************************************
-
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
   ..count = json['count'] as int
   ..itemNumber = json['itemNumber'] as int
@@ -90,7 +79,6 @@ Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
 
 // **************************************************************************
 // Generator: JsonLiteralGenerator
-// Target: glossaryData
 // **************************************************************************
 
 final _$glossaryDataJsonLiteral = {
