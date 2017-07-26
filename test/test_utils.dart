@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
 import 'dart:mirrors';
 
 import 'package:analyzer/dart/ast/ast.dart';
@@ -42,6 +43,7 @@ class FeatureMatcher<T> extends CustomMatcher {
   FeatureMatcher(String name, this._feature, matcher)
       : super("`$name`", "`$name`", matcher);
 
+  @override
   featureValueOf(covariant T actual) => _feature(actual);
 }
 
@@ -69,4 +71,31 @@ Iterable<Element> _getElements(CompilationUnitMember member) {
   }
 
   return [element];
+}
+
+void roundTripObject(object, factory(Map<String, dynamic> json)) {
+  var json = loudEncode(object);
+
+  var person2 = factory(JSON.decode(json) as Map<String, dynamic>);
+
+  expect(person2, equals(object));
+
+  var json2 = loudEncode(person2);
+
+  expect(json2, equals(json));
+}
+
+/// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
+String loudEncode(object) {
+  try {
+    return const JsonEncoder.withIndent(' ').convert(object.toJson());
+  } on JsonUnsupportedObjectError catch (e) {
+    var error = e;
+    do {
+      var cause = error.cause;
+      print(cause);
+      error = (cause is JsonUnsupportedObjectError) ? cause : null;
+    } while (error != null);
+    rethrow;
+  }
 }

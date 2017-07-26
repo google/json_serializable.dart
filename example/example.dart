@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// ignore_for_file: annotate_overrides
 library json_serializable.example;
 
 import 'package:json_serializable/annotations.dart';
@@ -9,18 +10,28 @@ part 'example.g.dart';
 
 @JsonSerializable()
 class Person extends Object with _$PersonSerializerMixin {
-  final String firstName, middleName, lastName;
+  final String firstName;
+  @JsonKey(includeIfNull: false)
+  final String middleName;
+  final String lastName;
 
-  @JsonKey('date-of-birth')
+  @JsonKey(name: 'date-of-birth', nullable: false)
   final DateTime dateOfBirth;
+
+  @JsonKey(name: 'last-order')
+  final DateTime lastOrder;
+
+  @JsonKey(nullable: false)
   List<Order> orders;
 
-  Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
+  Person(this.firstName, this.lastName, this.dateOfBirth,
+      {this.middleName, this.lastOrder, List<Order> orders})
+      : this.orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class Order extends Object with _$OrderSerializerMixin {
   int count;
   int itemNumber;

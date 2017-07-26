@@ -4,39 +4,44 @@ part of json_serializable.example;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
-// Target: class Person
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
-    json['firstName'] as String, json['lastName'] as String,
+    json['firstName'] as String,
+    json['lastName'] as String,
+    DateTime.parse(json['date-of-birth'] as String),
     middleName: json['middleName'] as String,
-    dateOfBirth: json['date-of-birth'] == null
+    lastOrder: json['last-order'] == null
         ? null
-        : DateTime.parse(json['date-of-birth'] as String))
-  ..orders = (json['orders'] as List)
-      ?.map((v0) =>
-          v0 == null ? null : new Order.fromJson(v0 as Map<String, dynamic>))
-      ?.toList();
+        : DateTime.parse(json['last-order'] as String),
+    orders: (json['orders'] as List)
+        .map((e) => new Order.fromJson(e as Map<String, dynamic>))
+        .toList());
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
   String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
+  DateTime get lastOrder;
   List<Order> get orders;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'middleName': middleName,
-        'lastName': lastName,
-        'date-of-birth': dateOfBirth?.toIso8601String(),
-        'orders': orders
-      };
-}
+  Map<String, dynamic> toJson() {
+    var $map = <String, dynamic>{};
+    void $writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        $map[key] = value;
+      }
+    }
 
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Order
-// **************************************************************************
+    $map['firstName'] = firstName;
+    $writeNotNull('middleName', middleName);
+    $map['lastName'] = lastName;
+    $map['date-of-birth'] = dateOfBirth.toIso8601String();
+    $map['last-order'] = lastOrder?.toIso8601String();
+    $map['orders'] = orders;
+    return $map;
+  }
+}
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order()
   ..count = json['count'] as int
@@ -51,18 +56,21 @@ abstract class _$OrderSerializerMixin {
   int get itemNumber;
   bool get isRushed;
   Item get item;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'count': count,
-        'itemNumber': itemNumber,
-        'isRushed': isRushed,
-        'item': item
-      };
-}
+  Map<String, dynamic> toJson() {
+    var $map = <String, dynamic>{};
+    void $writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        $map[key] = value;
+      }
+    }
 
-// **************************************************************************
-// Generator: JsonSerializableGenerator
-// Target: class Item
-// **************************************************************************
+    $writeNotNull('count', count);
+    $writeNotNull('itemNumber', itemNumber);
+    $writeNotNull('isRushed', isRushed);
+    $writeNotNull('item', item);
+    return $map;
+  }
+}
 
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
   ..count = json['count'] as int
@@ -71,7 +79,6 @@ Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
 
 // **************************************************************************
 // Generator: JsonLiteralGenerator
-// Target: glossaryData
 // **************************************************************************
 
 final _$glossaryDataJsonLiteral = {

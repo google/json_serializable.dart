@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:build_runner/build_runner.dart';
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/generators.dart';
 import 'package:source_gen/source_gen.dart';
 
 final PhaseGroup phases = new PhaseGroup.singleAction(
@@ -12,4 +12,4 @@ final PhaseGroup phases = new PhaseGroup.singleAction(
       const JsonLiteralGenerator()
     ]),
     new InputSet('json_serializable',
-        const ['example/*.dart', 'test/test_files/json_test_example.dart']));
+        const ['example/*.dart', 'test/test_files/*.dart']));

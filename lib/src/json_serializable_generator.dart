@@ -12,14 +12,24 @@ import 'package:source_gen/source_gen.dart';
 
 import 'json_serializable.dart';
 import 'type_helper.dart';
+import 'type_helpers/date_time_helper.dart';
+import 'type_helpers/iterable_helper.dart';
+import 'type_helpers/json_helper.dart';
+import 'type_helpers/map_helper.dart';
+import 'type_helpers/value_helper.dart';
 import 'utils.dart';
 
-// TODO: toJson option to omit null/empty values
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
+  static const _coreHelpers = const [
+    const IterableHelper(),
+    const MapHelper(),
+    const ValueHelper()
+  ];
+
   static const _defaultHelpers = const [
     const JsonHelper(),
-    const DateTimeHelper()
+    const DateTimeHelper(),
   ];
 
   final List<TypeHelper> _typeHelpers;
@@ -71,7 +81,17 @@ class JsonSerializableGenerator
 
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
-    fieldsList.sort((a, b) => a.nameOffset.compareTo(b.nameOffset));
+    fieldsList.sort((FieldElement a, FieldElement b) {
+      int offsetFor(FieldElement e) {
+        if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
+          assert(e.nameOffset == -1);
+          return e.getter.nameOffset;
+        }
+        return e.nameOffset;
+      }
+
+      return offsetFor(a).compareTo(offsetFor(b));
+    });
 
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
@@ -100,34 +120,95 @@ class JsonSerializableGenerator
       //
       buffer.writeln('abstract class ${prefix}SerializerMixin {');
 
-      // write fields
+      // write copies of the fields - this allows the toJson method to access
+      // the fields of the target class
       fields.forEach((name, field) {
         //TODO - handle aliased imports
         buffer.writeln('  ${field.type} get $name;');
       });
 
-      // write toJson method
-      buffer.writeln('  Map<String, dynamic> toJson() => <String, dynamic>{');
+      var includeIfNull = annotation.read('includeIfNull').boolValue;
 
-      var pairs = <String>[];
-      fields.forEach((fieldName, field) {
-        try {
-          pairs.add("'${_fieldToJsonMapKey(fieldName, field)}': "
-              "${_fieldToJsonMapValue(fieldName, field.type)}");
-        } on _UnsupportedTypeError {
-          throw new InvalidGenerationSourceError(
-              "Could not generate `toJson` code for `${friendlyNameForElement(field)}`.",
-              todo: "Make sure all of the types are serializable.");
-        }
-      });
-      buffer.writeln(pairs.join(','));
+      buffer.writeln('  Map<String, dynamic> toJson() ');
+      if (fieldsList.every((e) => _includeIfNull(e, includeIfNull))) {
+        // write simple `toJson` method that includes all keys...
+        _writeToJsonSimple(buffer, fields);
+      } else {
+        // At least one field should be excluded if null
+        _writeToJsonWithNullChecks(buffer, fields, includeIfNull);
+      }
 
-      buffer.writeln('  };');
-
+      // end of the mixin class
       buffer.write('}');
     }
 
     return buffer.toString();
+  }
+
+  void _writeToJsonWithNullChecks(StringBuffer buffer,
+      Map<String, FieldElement> fields, bool includeIfNull) {
+    buffer.writeln('{');
+
+    // TODO(kevmoo) We could write all values up to the null-excluded value
+    //   directly in this literal.
+    buffer.writeln("var $toJsonMapVarName = <String, dynamic>{};");
+
+    buffer.writeln("""void $toJsonMapHelperName(String key, dynamic value) {
+    if (value != null) {
+      $toJsonMapVarName[key] = value;
+    }
+    }""");
+
+    fields.forEach((fieldName, field) {
+      try {
+        var safeJsonKeyString =
+            _safeNameAccess(_fieldToJsonMapKey(field, fieldName));
+
+        // If `fieldName` collides with one of the local helpers, prefix
+        // access with `this.`.
+        if (fieldName == toJsonMapVarName || fieldName == toJsonMapHelperName) {
+          fieldName = 'this.$fieldName';
+        }
+
+        if (_includeIfNull(field, includeIfNull)) {
+          buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
+              "${_serialize(field.type, fieldName,  _nullable(field))};");
+        } else {
+          buffer.writeln("$toJsonMapHelperName($safeJsonKeyString, "
+              "${_serialize(field.type, fieldName, _nullable(field))});");
+        }
+      } on UnsupportedTypeError {
+        throw new InvalidGenerationSourceError(
+            "Could not generate `toJson` code for `${friendlyNameForElement(
+                field)}`.",
+            todo: "Make sure all of the types are serializable.");
+      }
+    });
+
+    buffer.writeln(r"return $map;");
+
+    buffer.writeln('}');
+  }
+
+  void _writeToJsonSimple(
+      StringBuffer buffer, Map<String, FieldElement> fields) {
+    buffer.writeln('=> <String, dynamic>{');
+
+    var pairs = <String>[];
+    fields.forEach((fieldName, field) {
+      try {
+        pairs.add("'${_fieldToJsonMapKey(field, fieldName)}': "
+            "${_serialize(field.type, fieldName, _nullable(field))}");
+      } on UnsupportedTypeError {
+        throw new InvalidGenerationSourceError(
+            "Could not generate `toJson` code for `${friendlyNameForElement(
+              field)}`.",
+            todo: "Make sure all of the types are serializable.");
+      }
+    });
+    buffer.writeAll(pairs, ', ');
+
+    buffer.writeln('  };');
   }
 
   /// Returns the set of fields that are not written to via constructors.
@@ -198,7 +279,7 @@ class JsonSerializableGenerator
         .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) =>');
     buffer.write('    new $className(');
     buffer.writeAll(
-        ctorArguments.map((paramElement) => _jsonMapAccessToField(
+        ctorArguments.map((paramElement) => _deserializeForField(
             paramElement.name, fields[paramElement.name],
             ctorParam: paramElement)),
         ', ');
@@ -208,7 +289,7 @@ class JsonSerializableGenerator
     buffer.writeAll(
         ctorNamedArguments.map((paramElement) =>
             '${paramElement.name}: ' +
-            _jsonMapAccessToField(paramElement.name, fields[paramElement.name],
+            _deserializeForField(paramElement.name, fields[paramElement.name],
                 ctorParam: paramElement)),
         ', ');
 
@@ -219,7 +300,7 @@ class JsonSerializableGenerator
       fieldsToSet.forEach((name, field) {
         buffer.writeln();
         buffer.write("      ..${name} = ");
-        buffer.write(_jsonMapAccessToField(name, field));
+        buffer.write(_deserializeForField(name, field));
       });
       buffer.writeln(';');
     }
@@ -228,259 +309,81 @@ class JsonSerializableGenerator
     return finalFields;
   }
 
+  Iterable<TypeHelper> get _allHelpers =>
+      [_typeHelpers, _coreHelpers].expand((e) => e);
+
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  String _fieldToJsonMapValue(String expression, DartType fieldType,
-      [int depth = 0]) {
-    for (var helper in _typeHelpers) {
-      if (helper.canSerialize(fieldType)) {
-        return helper.serialize(fieldType, expression);
-      }
-    }
+  String _serialize(DartType targetType, String expression, bool nullable) =>
+      _allHelpers
+          .map((h) => h.serialize(targetType, expression, nullable, _serialize))
+          .firstWhere((r) => r != null,
+              orElse: () =>
+                  throw new UnsupportedTypeError(targetType, expression));
 
-    if (fieldType.isDynamic ||
-        fieldType.isObject ||
-        _stringBoolNumChecker.isAssignableFromType(fieldType)) {
-      return expression;
-    }
-
-    if (_coreIterableChecker.isAssignableFromType(fieldType)) {
-      return _listFieldToJsonMapValue(expression, fieldType, depth);
-    }
-
-    if (_coreMapChecker.isAssignableFromType(fieldType)) {
-      return _mapFieldToJsonMapValue(expression, fieldType, depth);
-    }
-
-    throw new _UnsupportedTypeError(fieldType, expression);
-  }
-
-  String _listFieldToJsonMapValue(
-      String expression, DartType fieldType, int depth) {
-    assert(_coreIterableChecker.isAssignableFromType(fieldType));
-
-    // This block will yield a regular list, which works fine for JSON
-    // Although it's possible that child elements may be marked unsafe
-
-    var isList = _coreListChecker.isAssignableFromType(fieldType);
-    var substitute = "v$depth";
-    var subFieldValue = _fieldToJsonMapValue(
-        substitute, _getIterableGenericType(fieldType), depth + 1);
-
-    // In the case of trivial JSON types (int, String, etc), `subFieldValue`
-    // will be identical to `substitute` – so no explicit mapping is needed.
-    // If they are not equal, then we to write out the substitution.
-    if (subFieldValue != substitute) {
-      // TODO: the type could be imported from a library with a prefix!
-      expression = "${expression}?.map(($substitute) => $subFieldValue)";
-
-      // expression now represents an Iterable (even if it started as a List
-      // ...resetting `isList` to `false`.
-      isList = false;
-    }
-
-    if (!isList) {
-      // If the static type is not a List, generate one.
-      expression += "?.toList()";
-    }
-
-    return expression;
-  }
-
-  String _mapFieldToJsonMapValue(
-      String expression, DartType fieldType, int depth) {
-    assert(_coreMapChecker.isAssignableFromType(fieldType));
-    var args = _getTypeArguments(fieldType, _coreMapChecker);
-    assert(args.length == 2);
-
-    var keyArg = args.first;
-    var valueType = args.last;
-
-    // We're not going to handle converting key types at the moment
-    // So the only safe types for key are dynamic/Object/String
-    var safeKey = keyArg.isDynamic ||
-        keyArg.isObject ||
-        _coreStringChecker.isExactlyType(keyArg);
-
-    var safeValue = valueType.isDynamic ||
-        valueType.isObject ||
-        _stringBoolNumChecker.isAssignableFromType(valueType);
-
-    if (safeKey) {
-      if (safeValue) {
-        return expression;
-      }
-
-      var substitute = "v$depth";
-      var subFieldValue =
-          _fieldToJsonMapValue(substitute, valueType, depth + 1);
-
-      return "$expression == null ? null :"
-          "new Map<String, dynamic>.fromIterables("
-          "$expression.keys,"
-          "$expression.values.map(($substitute) => $subFieldValue))";
-    }
-    throw new _UnsupportedTypeError(fieldType, expression);
-  }
-
-  String _jsonMapAccessToField(String name, FieldElement field,
+  String _deserializeForField(String name, FieldElement field,
       {ParameterElement ctorParam}) {
-    name = _fieldToJsonMapKey(name, field);
-    var result = "json['$name']";
+    name = _fieldToJsonMapKey(field, name);
 
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _writeAccessToJsonValue(result, targetType);
-    } on _UnsupportedTypeError {
+      var safeName = _safeNameAccess(name);
+      return _deserialize(targetType, "json[$safeName]", _nullable(field));
+    } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
           "Could not generate fromJson code for `${friendlyNameForElement(field)}`.",
           todo: "Make sure all of the types are serializable.");
     }
   }
 
-  String _writeAccessToJsonValue(String varExpression, DartType searchType,
-      {int depth: 0}) {
-    for (var helper in _typeHelpers) {
-      if (helper.canDeserialize(searchType)) {
-        return "$varExpression == null ? null : "
-            "${helper.deserialize(searchType, varExpression)}";
-      }
-    }
-
-    if (_coreIterableChecker.isAssignableFromType(searchType)) {
-      var iterableGenericType = _getIterableGenericType(searchType);
-
-      var itemVal = "v$depth";
-      var itemSubVal = _writeAccessToJsonValue(itemVal, iterableGenericType,
-          depth: depth + 1);
-
-      // If `itemSubVal` is the same, then we don't need to do anything fancy
-      if (itemVal == itemSubVal) {
-        return '$varExpression as List';
-      }
-
-      var output = "($varExpression as List)?.map(($itemVal) => $itemSubVal)";
-
-      if (_coreListChecker.isAssignableFromType(searchType)) {
-        output += "?.toList()";
-      }
-
-      return output;
-    } else if (_coreMapChecker.isAssignableFromType(searchType)) {
-      // Just pass through if
-      //    key:   dynamic, Object, String
-      //    value: dynamic, Object
-      var typeArgs = _getTypeArguments(searchType, _coreMapChecker);
-      assert(typeArgs.length == 2);
-      var keyArg = typeArgs.first;
-      var valueArg = typeArgs.last;
-
-      // We're not going to handle converting key types at the moment
-      // So the only safe types for key are dynamic/Object/String
-      var safeKey = keyArg.isDynamic ||
-          keyArg.isObject ||
-          _coreStringChecker.isExactlyType(keyArg);
-
-      if (!safeKey) {
-        throw new _UnsupportedTypeError(keyArg, varExpression);
-      }
-
-      // this is the trivial case. Do a runtime cast to the known type of JSON
-      // map values - `Map<String, dynamic>`
-      if (valueArg.isDynamic || valueArg.isObject) {
-        return "$varExpression as Map<String, dynamic>";
-      }
-
-      if (_stringBoolNumChecker.isAssignableFromType(valueArg)) {
-        // No mapping of the values is required!
-        return "$varExpression == null ? null :"
-            "new Map<String, $valueArg>.from($varExpression as Map)";
-      }
-
-      // In this case, we're going to create a new Map with matching reified
-      // types.
-
-      var itemVal = "v$depth";
-      var itemSubVal =
-          _writeAccessToJsonValue(itemVal, valueArg, depth: depth + 1);
-
-      return "$varExpression == null ? null :"
-          "new Map<String, $valueArg>.fromIterables("
-          "($varExpression as Map<String, dynamic>).keys,"
-          "($varExpression as Map).values.map(($itemVal) => $itemSubVal))";
-    } else if (searchType.isDynamic || searchType.isObject) {
-      // just return it as-is. We'll hope it's safe.
-      return varExpression;
-    } else if (_stringBoolNumChecker.isAssignableFromType(searchType)) {
-      return "$varExpression as $searchType";
-    }
-
-    throw new _UnsupportedTypeError(searchType, varExpression);
-  }
+  String _deserialize(DartType targetType, String expression, bool nullable) =>
+      _allHelpers
+          .map((th) =>
+              th.deserialize(targetType, expression, nullable, _deserialize))
+          .firstWhere((r) => r != null,
+              orElse: () =>
+                  throw new UnsupportedTypeError(targetType, expression));
 }
 
-/// Returns the JSON map `key` to be used when (de)serializing [field].
+String _safeNameAccess(String name) =>
+    name.contains(r'$') ? "r'$name'" : "'$name'";
+
+/// Returns the JSON map `key` to be used when (de)serializing [field], if any.
 ///
-/// [fieldName] is used, unless [field] is annotated with [JsonKey], in which
-/// case [JsonKey.jsonName] is used.
-String _fieldToJsonMapKey(String fieldName, FieldElement field) {
-  const $JsonKey = const TypeChecker.fromRuntime(JsonKey);
-  var jsonKey = $JsonKey.firstAnnotationOf(field);
-  if (jsonKey != null) {
-    var jsonName = jsonKey.getField('jsonName').toStringValue();
-    return jsonName;
+/// Otherwise, `null`;
+String _fieldToJsonMapKey(FieldElement field, String ifNull) =>
+    _jsonKeyFor(field).name ?? ifNull;
+
+/// Returns `true` if the field should be treated as potentially nullable.
+///
+/// If no [JsonKey] annotation is present on the field, `true` is returned.
+bool _nullable(FieldElement field) => _jsonKeyFor(field).nullable;
+
+bool _includeIfNull(FieldElement element, bool parentValue) =>
+    _jsonKeyFor(element).includeIfNull ?? parentValue;
+
+JsonKey _jsonKeyFor(FieldElement element) {
+  var key = _jsonKeyExpando[element];
+
+  if (key == null) {
+    // If an annotation exists on `element` the source is a "real" field.
+    // If the result is `null`, check the getter – it is a property.
+    // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
+    var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
+        _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+
+    _jsonKeyExpando[element] = key = obj == null
+        ? const JsonKey()
+        : new JsonKey(
+            name: obj.getField('name').toStringValue(),
+            nullable: obj.getField('nullable').toBoolValue(),
+            includeIfNull: obj.getField('includeIfNull').toBoolValue());
   }
-  return fieldName;
+
+  return key;
 }
 
-DartType _getIterableGenericType(DartType type) =>
-    _getTypeArguments(type, _coreIterableChecker).single;
+final _jsonKeyExpando = new Expando<JsonKey>();
 
-List<DartType> _getTypeArguments(DartType type, TypeChecker checker) {
-  var iterableImplementation =
-      _getImplementationType(type, checker) as InterfaceType;
-
-  return iterableImplementation?.typeArguments;
-}
-
-DartType _getImplementationType(DartType type, TypeChecker checker) {
-  if (checker.isExactlyType(type)) return type;
-
-  if (type is InterfaceType) {
-    var match = [type.interfaces, type.mixins]
-        .expand((e) => e)
-        .map((type) => _getImplementationType(type, checker))
-        .firstWhere((value) => value != null, orElse: () => null);
-
-    if (match != null) {
-      return match;
-    }
-
-    if (type.superclass != null) {
-      return _getImplementationType(type.superclass, checker);
-    }
-  }
-  return null;
-}
-
-final _coreIterableChecker = const TypeChecker.fromUrl('dart:core#Iterable');
-
-final _coreListChecker = const TypeChecker.fromUrl('dart:core#List');
-
-final _coreMapChecker = const TypeChecker.fromUrl('dart:core#Map');
-
-final _coreStringChecker = const TypeChecker.fromUrl('dart:core#String');
-
-final _stringBoolNumChecker = new TypeChecker.any([
-  _coreStringChecker,
-  new TypeChecker.fromUrl('dart:core#bool'),
-  new TypeChecker.fromUrl('dart:core#num')
-]);
-
-class _UnsupportedTypeError extends Error {
-  final String expression;
-  final DartType type;
-
-  _UnsupportedTypeError(this.type, this.expression);
-}
+final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);

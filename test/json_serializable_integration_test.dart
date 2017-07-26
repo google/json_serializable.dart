@@ -2,16 +2,15 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:convert';
-
 import 'package:test/test.dart';
 
 import 'test_files/json_test_example.dart';
+import 'test_utils.dart';
 
 void main() {
   group('Person', () {
     roundTripPerson(Person p) {
-      _roundTripObject(p, (json) => new Person.fromJson(json));
+      roundTripObject(p, (json) => new Person.fromJson(json));
     }
 
     test("null", () {
@@ -43,7 +42,7 @@ void main() {
 
   group('Order', () {
     roundTripOrder(Order p) {
-      _roundTripObject(p, (json) => new Order.fromJson(json));
+      roundTripObject(p, (json) => new Order.fromJson(json));
     }
 
     test("null", () {
@@ -75,7 +74,7 @@ void main() {
 
   group('Item', () {
     roundTripItem(Item p) {
-      _roundTripObject(p, (json) => new Item.fromJson(json));
+      roundTripObject(p, (json) => new Item.fromJson(json));
     }
 
     test('empty json', () {
@@ -84,98 +83,4 @@ void main() {
       roundTripItem(item);
     });
   });
-
-  group('KitchenSink', () {
-    roundTripItem(KitchenSink p) {
-      _roundTripObject(p, (json) => new KitchenSink.fromJson(json));
-    }
-
-    test('empty json', () {
-      var item = new KitchenSink();
-      roundTripItem(item);
-    });
-
-    test('json keys should be defined in field/property order', () {
-      var item = new KitchenSink();
-
-      var json = item.toJson();
-
-      var expectedOrder = [
-        'iterable',
-        'dynamicIterable',
-        'objectIterable',
-        'intIterable',
-        'dateTimeIterable',
-        'list',
-        'dynamicList',
-        'objectList',
-        'intList',
-        'dateTimeList',
-        'map',
-        'stringStringMap',
-        'stringIntMap',
-        'stringDateTimeMap',
-        'crazyComplex'
-      ];
-
-      expect(json.keys, orderedEquals(expectedOrder));
-    });
-
-    test("list and map of DateTime", () {
-      var now = new DateTime.now();
-      var item = new KitchenSink(dateTimeIterable: <DateTime>[now])
-        ..dateTimeList = <DateTime>[now, null]
-        ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
-
-      roundTripItem(item);
-    });
-
-    test('complex nested type', () {
-      var item = new KitchenSink()
-        ..crazyComplex = [
-          null,
-          {},
-          {
-            "null": null,
-            "empty": {},
-            "items": {
-              "null": null,
-              "empty": [],
-              "items": [
-                null,
-                [],
-                [new DateTime.now()]
-              ]
-            }
-          }
-        ];
-      roundTripItem(item);
-    });
-  });
-}
-
-void _roundTripObject(object, factory(Map<String, dynamic> json)) {
-  var json = _loudEncode(object);
-
-  var person2 = factory(JSON.decode(json) as Map<String, dynamic>);
-
-  expect(person2, equals(object));
-
-  var json2 = _loudEncode(person2);
-
-  expect(json2, equals(json));
-}
-
-String _loudEncode(object) {
-  try {
-    return const JsonEncoder.withIndent(' ').convert(object.toJson());
-  } on JsonUnsupportedObjectError catch (e) {
-    var error = e;
-    do {
-      var cause = error.cause;
-      print(cause);
-      error = (cause is JsonUnsupportedObjectError) ? cause : null;
-    } while (error != null);
-    rethrow;
-  }
 }

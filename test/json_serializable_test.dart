@@ -9,7 +9,8 @@ import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/src/string_source.dart';
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/generators.dart';
+import 'package:json_serializable/src/utils.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
@@ -19,6 +20,10 @@ import 'src/io.dart';
 import 'test_utils.dart';
 
 void main() {
+  setUpAll(() async {
+    _compUnit = await _getCompilationUnitForString(getPackagePath());
+  });
+
   group('non-classes', () {
     test('const field', () async {
       expect(
@@ -134,7 +139,7 @@ void main() {
       var output = await _runForElementNamed('Person');
 
       expect(output,
-          contains("json['listOfInts'] as List)?.map((v0) => v0 as int)"));
+          contains("json['listOfInts'] as List)?.map((e) => e as int)"));
     });
   });
 
@@ -144,14 +149,25 @@ void main() {
     expect(output, contains("'h': height,"));
     expect(output, contains("..height = json['h']"));
   });
+
+  group("includeIfNull", () {
+    test("some", () async {
+      var output = await _runForElementNamed('IncludeIfNullAll');
+      expect(output, isNot(contains(toJsonMapVarName)));
+      expect(output, isNot(contains(toJsonMapHelperName)));
+    });
+
+    test("all", () async {
+      var output = await _runForElementNamed('IncludeIfNullOverride');
+      expect(output, contains("$toJsonMapVarName[\'number\'] = number;"));
+      expect(output, contains("$toJsonMapHelperName('str', str);"));
+    });
+  });
 }
 
 const _generator = const JsonSerializableGenerator();
 
 Future<String> _runForElementNamed(String name) async {
-  if (_compUnit == null) {
-    _compUnit = await _getCompilationUnitForString(getPackagePath());
-  }
   var library = new LibraryReader(_compUnit.element.library);
   var element = library.allElements.singleWhere((e) => e.name == name);
   var annotation = _generator.typeChecker.firstAnnotationOf(element);
@@ -174,7 +190,7 @@ Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
 CompilationUnit _compUnit;
 
 const _testSource = r'''
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/annotations.dart';
 
 @JsonSerializable()
 const theAnswer = 42;
@@ -185,7 +201,7 @@ void annotatedMethod() => null;
 @JsonSerializable()
 class Person {
   String firstName, lastName;
-  @JsonKey("h")
+  @JsonKey(name: "h")
   int height;
   DateTime dateOfBirth;
   dynamic dynamicType;
@@ -269,5 +285,19 @@ class NoSerializeBadKey {
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
   Map<int, DateTime> intDateTimeMap;
+}
+
+@JsonSerializable(createFactory: false)
+class IncludeIfNullAll {
+  @JsonKey(includeIfNull: true)
+  int number;
+  String str;
+}
+
+@JsonSerializable(createFactory: false, includeIfNull: false)
+class IncludeIfNullOverride {
+  @JsonKey(includeIfNull: true)
+  int number;
+  String str;
 }
 ''';
