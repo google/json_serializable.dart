@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import '../type_helper.dart';
+import 'type_helper_utils.dart';
 
 class JsonHelper extends TypeHelper {
   const JsonHelper();
@@ -43,11 +44,7 @@ class JsonHelper extends TypeHelper {
     // github.com/dart-lang/json_serializable/issues/19
     var result = "new ${targetType.name}.fromJson($expression$asCast)";
 
-    if (nullable) {
-      result = "$expression == null ? null : " + result;
-    }
-
-    return result;
+    return commonNullPrefix(nullable, expression, result);
   }
 }
 

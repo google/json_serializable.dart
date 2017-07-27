@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
+import 'type_helper_utils.dart';
 
 /// Name used for closure argument when generating calls to `map`.
 final _closureArg = "e";
@@ -41,11 +42,7 @@ class MapHelper extends TypeHelper {
           "$expression.keys,"
           "$expression.values.map(($_closureArg) => $subFieldValue))";
 
-      if (nullable) {
-        result = "$expression == null ? null :" + result;
-      }
-
-      return result;
+      return commonNullPrefix(nullable, expression, result);
     }
     throw new UnsupportedTypeError(targetType, expression);
   }
@@ -85,12 +82,7 @@ class MapHelper extends TypeHelper {
       // No mapping of the values is required!
 
       var result = "new Map<String, $valueArg>.from($expression as Map)";
-
-      if (nullable) {
-        result = "$expression == null ? null :" + result;
-      }
-
-      return result;
+      return commonNullPrefix(nullable, expression, result);
     }
 
     // In this case, we're going to create a new Map with matching reified
@@ -102,11 +94,7 @@ class MapHelper extends TypeHelper {
         "($expression as Map<String, dynamic>).keys,"
         "($expression as Map).values.map(($_closureArg) => $itemSubVal))";
 
-    if (nullable) {
-      result = "$expression == null ? null :" + result;
-    }
-
-    return result;
+    return commonNullPrefix(nullable, expression, result);
   }
 }
 

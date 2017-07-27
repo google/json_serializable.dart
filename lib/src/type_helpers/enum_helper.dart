@@ -1,6 +1,6 @@
 import 'package:analyzer/dart/element/type.dart';
 import '../type_helper.dart';
-import '../utils.dart';
+import 'type_helper_utils.dart';
 
 class EnumHelper extends TypeHelper {
   const EnumHelper();

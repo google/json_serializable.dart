@@ -1,6 +1,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
+import 'type_helper_utils.dart';
 
 class DateTimeHelper extends TypeHelper {
   const DateTimeHelper();
@@ -28,14 +29,8 @@ class DateTimeHelper extends TypeHelper {
       return null;
     }
 
-    var buffer = new StringBuffer();
-
-    if (nullable) {
-      buffer.write("$expression == null ? null : ");
-    }
-
-    buffer.write("DateTime.parse($expression as String)");
-    return buffer.toString();
+    return commonNullPrefix(
+        nullable, expression, "DateTime.parse($expression as String)");
   }
 }
 
