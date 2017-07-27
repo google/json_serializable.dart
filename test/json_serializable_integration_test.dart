@@ -14,22 +14,22 @@ void main() {
     }
 
     test("null", () {
-      roundTripPerson(new Person(null, null));
+      roundTripPerson(new Person(null, null, null));
     });
 
     test("empty", () {
-      roundTripPerson(new Person('', '',
+      roundTripPerson(new Person('', '', null,
           middleName: '',
           dateOfBirth: new DateTime.fromMillisecondsSinceEpoch(0)));
     });
 
     test("now", () {
-      roundTripPerson(new Person('a', 'b',
+      roundTripPerson(new Person('a', 'b', House.gryffindor,
           middleName: 'c', dateOfBirth: new DateTime.now()));
     });
 
     test("now toUtc", () {
-      roundTripPerson(new Person('a', 'b',
+      roundTripPerson(new Person('a', 'b', House.hufflepuff,
           middleName: 'c', dateOfBirth: new DateTime.now().toUtc()));
     });
 
@@ -46,17 +46,17 @@ void main() {
     }
 
     test("null", () {
-      roundTripOrder(new Order());
+      roundTripOrder(new Order(Category.charmed));
     });
 
     test("empty", () {
-      roundTripOrder(new Order(const [])
+      roundTripOrder(new Order(Category.strange, const [])
         ..count = 0
         ..isRushed = false);
     });
 
     test("simple", () {
-      roundTripOrder(new Order(<Item>[
+      roundTripOrder(new Order(Category.top, <Item>[
         new Item(24)
           ..itemNumber = 42
           ..saleDates = [new DateTime.now()]
@@ -65,10 +65,19 @@ void main() {
         ..isRushed = true);
     });
 
-    test('empty json', () {
-      var order = new Order.fromJson({});
+    test('almost empty json', () {
+      var order = new Order.fromJson({'category': 'top'});
       expect(order.items, isEmpty);
+      expect(order.category, Category.top);
       roundTripOrder(order);
+    });
+
+    test('required, but missing enum value fails', () {
+      expect(() => new Order.fromJson({}), throwsStateError);
+    });
+
+    test('mismatched enum value fails', () {
+      expect(() => new Order.fromJson({'category': 'weird'}), throwsStateError);
     });
   });
 

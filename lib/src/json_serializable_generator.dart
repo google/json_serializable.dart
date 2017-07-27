@@ -13,6 +13,7 @@ import 'package:source_gen/source_gen.dart';
 import 'json_serializable.dart';
 import 'type_helper.dart';
 import 'type_helpers/date_time_helper.dart';
+import 'type_helpers/enum_helper.dart';
 import 'type_helpers/iterable_helper.dart';
 import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
@@ -24,6 +25,7 @@ class JsonSerializableGenerator
   static const _coreHelpers = const [
     const IterableHelper(),
     const MapHelper(),
+    const EnumHelper(),
     const ValueHelper()
   ];
 

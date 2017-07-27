@@ -12,12 +12,16 @@ import 'package:json_serializable/annotations.dart';
 
 part 'json_test_example.g.dart';
 
+enum House { gryffindor, hufflepuff, ravenclaw, slytherin }
+
 @JsonSerializable()
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
+  final House house;
 
-  Person(this.firstName, this.lastName, {this.middleName, this.dateOfBirth});
+  Person(this.firstName, this.lastName, this.house,
+      {this.middleName, this.dateOfBirth});
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
@@ -29,16 +33,21 @@ class Person extends Object with _$PersonSerializerMixin {
       dateOfBirth == other.dateOfBirth;
 }
 
+enum Category { top, bottom, strange, charmed, up, down }
+
 @JsonSerializable()
 class Order extends Object with _$OrderSerializerMixin {
   int count;
   bool isRushed;
+
+  @JsonKey(nullable: false)
+  final Category category;
   final UnmodifiableListView<Item> items;
   Platform platform;
 
   int get price => items.fold(0, (total, item) => item.price + total);
 
-  Order([Iterable<Item> items])
+  Order(this.category, [Iterable<Item> items])
       : this.items = new UnmodifiableListView<Item>(
             new List<Item>.unmodifiable(items ?? const <Item>[]));
 

@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Enable support for `enum` values.
+
 ## 0.2.1
 
 * Upgrade to `package:source_gen` v0.7.0

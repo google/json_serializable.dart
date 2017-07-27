@@ -5,6 +5,14 @@
 import 'dart:io';
 import 'package:analyzer/dart/element/element.dart';
 
+String commonNullPrefix(
+    bool nullable, String expression, String unsafeExpression) {
+  if (nullable) {
+    return "$expression == null ? null : $unsafeExpression";
+  }
+  return unsafeExpression;
+}
+
 // Copied from pkg/source_gen - lib/src/utils.
 String friendlyNameForElement(Element element) {
   var friendlyName = element.displayName;
