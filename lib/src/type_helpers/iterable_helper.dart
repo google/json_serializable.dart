@@ -3,7 +3,7 @@ import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
 
 /// Name used for closure argument when generating calls to `map`.
-final _closureArg = "e";
+final _closureArg = 'e';
 
 class IterableHelper extends TypeHelper {
   const IterableHelper();
@@ -30,7 +30,7 @@ class IterableHelper extends TypeHelper {
     if (subFieldValue != _closureArg) {
       // TODO: the type could be imported from a library with a prefix!
       expression =
-          "${expression}${optionalQuestion}.map(($_closureArg) => $subFieldValue)";
+          '${expression}${optionalQuestion}.map(($_closureArg) => $subFieldValue)';
 
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
@@ -39,7 +39,7 @@ class IterableHelper extends TypeHelper {
 
     if (!isList) {
       // If the static type is not a List, generate one.
-      expression += "${optionalQuestion}.toList()";
+      expression += '${optionalQuestion}.toList()';
     }
 
     return expression;
@@ -65,10 +65,10 @@ class IterableHelper extends TypeHelper {
     var optionalQuestion = nullable ? '?' : '';
 
     var output =
-        "($expression as List)${optionalQuestion}.map(($_closureArg) => $itemSubVal)";
+        '($expression as List)${optionalQuestion}.map(($_closureArg) => $itemSubVal)';
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
-      output += "${optionalQuestion}.toList()";
+      output += '${optionalQuestion}.toList()';
     }
 
     return output;

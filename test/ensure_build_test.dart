@@ -15,8 +15,8 @@ void main() {
     pkgRoot = _runProc('git', ['rev-parse', '--show-toplevel']);
     var currentDir = Directory.current.resolveSymbolicLinksSync();
     if (pkgRoot != currentDir) {
-      throw new StateError("Expected the git root ($pkgRoot) "
-          "to match the current directory ($currentDir).");
+      throw new StateError('Expected the git root ($pkgRoot) '
+          'to match the current directory ($currentDir).');
     }
   } catch (e) {
     print("Skipping this test – git didn't run correctly");
@@ -24,14 +24,14 @@ void main() {
     return;
   }
 
-  test("ensure local build succeeds with no changes", () {
+  test('ensure local build succeeds with no changes', () {
     // 1 - get a list of modified `.g.dart` files - should be empty
     //expect(_changedGeneratedFiles(), isEmpty);
 
     // 2 - run build - should be no output, since nothing should change
     var result = _runProc('dart', ['--checked', 'tool/build.dart']);
     expect(result,
-        contains(new RegExp(r"Build: Succeeded after \S+ with \d+ outputs")));
+        contains(new RegExp(r'Build: Succeeded after \S+ with \d+ outputs')));
 
     // 3 - get a list of modified `.g.dart` files - should still be empty
     expect(_changedGeneratedFiles(), isEmpty);

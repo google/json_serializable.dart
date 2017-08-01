@@ -21,7 +21,7 @@ class ValueHelper extends TypeHelper {
       // just return it as-is. We'll hope it's safe.
       return expression;
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
-      return "$expression as $targetType";
+      return '$expression as $targetType';
     }
 
     return null;

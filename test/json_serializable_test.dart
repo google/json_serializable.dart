@@ -95,7 +95,7 @@ void main() {
 
   test('class with final fields', () async {
     var generateResult = await _runForElementNamed('FinalFields');
-    expect(generateResult, contains("Map<String, dynamic> toJson()"));
+    expect(generateResult, contains('Map<String, dynamic> toJson()'));
   });
 
   group('valid inputs', () {
@@ -150,14 +150,14 @@ void main() {
     expect(output, contains("..height = json['h']"));
   });
 
-  group("includeIfNull", () {
-    test("some", () async {
+  group('includeIfNull', () {
+    test('some', () async {
       var output = await _runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(toJsonMapVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
 
-    test("all", () async {
+    test('all', () async {
       var output = await _runForElementNamed('IncludeIfNullOverride');
       expect(output, contains("$toJsonMapVarName[\'number\'] = number;"));
       expect(output, contains("$toJsonMapHelperName('str', str);"));
@@ -201,7 +201,7 @@ void annotatedMethod() => null;
 @JsonSerializable()
 class Person {
   String firstName, lastName;
-  @JsonKey(name: "h")
+  @JsonKey(name: 'h')
   int height;
   DateTime dateOfBirth;
   dynamic dynamicType;

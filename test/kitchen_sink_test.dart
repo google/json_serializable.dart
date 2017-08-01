@@ -31,7 +31,7 @@ void main() {
       }
     });
 
-    test("list and map of DateTime", () {
+    test('list and map of DateTime', () {
       var now = new DateTime.now();
       var item = new KitchenSink(dateTimeIterable: <DateTime>[now])
         ..dateTimeList = <DateTime>[now, null]
@@ -46,12 +46,12 @@ void main() {
           null,
           {},
           {
-            "null": null,
-            "empty": {},
-            "items": {
-              "null": null,
-              "empty": [],
-              "items": [
+            'null': null,
+            'empty': {},
+            'items': {
+              'null': null,
+              'empty': [],
+              'items': [
                 null,
                 [],
                 [new DateTime.now()]
@@ -123,7 +123,7 @@ void _sharedTests(
     roundTripSink(item);
   });
 
-  test("list and map of DateTime - not null", () {
+  test('list and map of DateTime - not null', () {
     var now = new DateTime.now();
     var item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, now]
@@ -137,10 +137,10 @@ void _sharedTests(
       ..crazyComplex = [
         {},
         {
-          "empty": {},
-          "items": {
-            "empty": [],
-            "items": [
+          'empty': {},
+          'items': {
+            'empty': [],
+            'items': [
               [],
               [new DateTime.now()]
             ]

@@ -18,7 +18,7 @@ class DateTimeHelper extends TypeHelper {
       buffer.write('?');
     }
 
-    buffer.write(".toIso8601String()");
+    buffer.write('.toIso8601String()');
 
     return buffer.toString();
   }
@@ -30,7 +30,7 @@ class DateTimeHelper extends TypeHelper {
     }
 
     return commonNullPrefix(
-        nullable, expression, "DateTime.parse($expression as String)");
+        nullable, expression, 'DateTime.parse($expression as String)');
   }
 }
 

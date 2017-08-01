@@ -41,7 +41,7 @@ class FeatureMatcher<T> extends CustomMatcher {
   final dynamic Function(T value) _feature;
 
   FeatureMatcher(String name, this._feature, matcher)
-      : super("`$name`", "`$name`", matcher);
+      : super('`$name`', '`$name`', matcher);
 
   @override
   featureValueOf(covariant T actual) => _feature(actual);

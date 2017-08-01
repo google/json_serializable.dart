@@ -4,7 +4,7 @@ import '../type_helper.dart';
 import 'type_helper_utils.dart';
 
 /// Name used for closure argument when generating calls to `map`.
-final _closureArg = "e";
+final _closureArg = 'e';
 
 class MapHelper extends TypeHelper {
   const MapHelper();
@@ -38,9 +38,9 @@ class MapHelper extends TypeHelper {
 
       var subFieldValue = serializeNested(valueType, _closureArg, nullable);
 
-      var result = "new Map<String, dynamic>.fromIterables("
-          "$expression.keys,"
-          "$expression.values.map(($_closureArg) => $subFieldValue))";
+      var result = 'new Map<String, dynamic>.fromIterables('
+          '$expression.keys,'
+          '$expression.values.map(($_closureArg) => $subFieldValue))';
 
       return commonNullPrefix(nullable, expression, result);
     }
@@ -75,13 +75,13 @@ class MapHelper extends TypeHelper {
     // this is the trivial case. Do a runtime cast to the known type of JSON
     // map values - `Map<String, dynamic>`
     if (valueArg.isDynamic || valueArg.isObject) {
-      return "$expression as Map<String, dynamic>";
+      return '$expression as Map<String, dynamic>';
     }
 
     if (simpleJsonTypeChecker.isAssignableFromType(valueArg)) {
       // No mapping of the values is required!
 
-      var result = "new Map<String, $valueArg>.from($expression as Map)";
+      var result = 'new Map<String, $valueArg>.from($expression as Map)';
       return commonNullPrefix(nullable, expression, result);
     }
 
@@ -90,9 +90,9 @@ class MapHelper extends TypeHelper {
 
     var itemSubVal = deserializeNested(valueArg, _closureArg, nullable);
 
-    var result = "new Map<String, $valueArg>.fromIterables("
-        "($expression as Map<String, dynamic>).keys,"
-        "($expression as Map).values.map(($_closureArg) => $itemSubVal))";
+    var result = 'new Map<String, $valueArg>.fromIterables('
+        '($expression as Map<String, dynamic>).keys,'
+        '($expression as Map).values.map(($_closureArg) => $itemSubVal))';
 
     return commonNullPrefix(nullable, expression, result);
   }

@@ -13,22 +13,22 @@ void main() {
       roundTripObject(p, (json) => new Person.fromJson(json));
     }
 
-    test("null", () {
+    test('null', () {
       roundTripPerson(new Person(null, null, null));
     });
 
-    test("empty", () {
+    test('empty', () {
       roundTripPerson(new Person('', '', null,
           middleName: '',
           dateOfBirth: new DateTime.fromMillisecondsSinceEpoch(0)));
     });
 
-    test("now", () {
+    test('now', () {
       roundTripPerson(new Person('a', 'b', House.gryffindor,
           middleName: 'c', dateOfBirth: new DateTime.now()));
     });
 
-    test("now toUtc", () {
+    test('now toUtc', () {
       roundTripPerson(new Person('a', 'b', House.hufflepuff,
           middleName: 'c', dateOfBirth: new DateTime.now().toUtc()));
     });
@@ -45,17 +45,17 @@ void main() {
       roundTripObject(p, (json) => new Order.fromJson(json));
     }
 
-    test("null", () {
+    test('null', () {
       roundTripOrder(new Order(Category.charmed));
     });
 
-    test("empty", () {
+    test('empty', () {
       roundTripOrder(new Order(Category.strange, const [])
         ..count = 0
         ..isRushed = false);
     });
 
-    test("simple", () {
+    test('simple', () {
       roundTripOrder(new Order(Category.top, <Item>[
         new Item(24)
           ..itemNumber = 42

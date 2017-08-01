@@ -74,7 +74,7 @@ class JsonSerializableGenerator
         fieldsList.where((fe) => fe.type.isUndefined).toList();
     if (undefinedFields.isNotEmpty) {
       var description =
-          undefinedFields.map((fe) => "`${fe.displayName}`").join(', ');
+          undefinedFields.map((fe) => '`${fe.displayName}`').join(', ');
 
       throw new InvalidGenerationSourceError(
           'At least one field has an invalid type: $description.',
@@ -153,13 +153,13 @@ class JsonSerializableGenerator
 
     // TODO(kevmoo) We could write all values up to the null-excluded value
     //   directly in this literal.
-    buffer.writeln("var $toJsonMapVarName = <String, dynamic>{};");
+    buffer.writeln('var $toJsonMapVarName = <String, dynamic>{};');
 
-    buffer.writeln("""void $toJsonMapHelperName(String key, dynamic value) {
+    buffer.writeln('''void $toJsonMapHelperName(String key, dynamic value) {
     if (value != null) {
       $toJsonMapVarName[key] = value;
     }
-    }""");
+    }''');
 
     fields.forEach((fieldName, field) {
       try {
@@ -173,21 +173,21 @@ class JsonSerializableGenerator
         }
 
         if (_includeIfNull(field, includeIfNull)) {
-          buffer.writeln("$toJsonMapVarName[$safeJsonKeyString] = "
-              "${_serialize(field.type, fieldName,  _nullable(field))};");
+          buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
+              '${_serialize(field.type, fieldName,  _nullable(field))};');
         } else {
-          buffer.writeln("$toJsonMapHelperName($safeJsonKeyString, "
-              "${_serialize(field.type, fieldName, _nullable(field))});");
+          buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
+              '${_serialize(field.type, fieldName, _nullable(field))});');
         }
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(
-            "Could not generate `toJson` code for `${friendlyNameForElement(
-                field)}`.",
-            todo: "Make sure all of the types are serializable.");
+            'Could not generate `toJson` code for `${friendlyNameForElement(
+                field)}`.',
+            todo: 'Make sure all of the types are serializable.');
       }
     });
 
-    buffer.writeln(r"return $map;");
+    buffer.writeln(r'return $map;');
 
     buffer.writeln('}');
   }
@@ -200,12 +200,11 @@ class JsonSerializableGenerator
     fields.forEach((fieldName, field) {
       try {
         pairs.add("'${_fieldToJsonMapKey(field, fieldName)}': "
-            "${_serialize(field.type, fieldName, _nullable(field))}");
+            '${_serialize(field.type, fieldName, _nullable(field))}');
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(
-            "Could not generate `toJson` code for `${friendlyNameForElement(
-              field)}`.",
-            todo: "Make sure all of the types are serializable.");
+            'Could not generate `toJson` code for `${friendlyNameForElement(field)}`.',
+            todo: 'Make sure all of the types are serializable.');
       }
     });
     buffer.writeAll(pairs, ', ');
@@ -257,7 +256,7 @@ class JsonSerializableGenerator
         .toList();
     if (undefinedArgs.isNotEmpty) {
       var description =
-          undefinedArgs.map((fe) => "`${fe.displayName}`").join(', ');
+          undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
 
       throw new InvalidGenerationSourceError(
           'At least one constructor argument has an invalid type: $description.',
@@ -301,7 +300,7 @@ class JsonSerializableGenerator
     } else {
       fieldsToSet.forEach((name, field) {
         buffer.writeln();
-        buffer.write("      ..${name} = ");
+        buffer.write('      ..${name} = ');
         buffer.write(_deserializeForField(name, field));
       });
       buffer.writeln(';');
@@ -331,11 +330,11 @@ class JsonSerializableGenerator
 
     try {
       var safeName = _safeNameAccess(name);
-      return _deserialize(targetType, "json[$safeName]", _nullable(field));
+      return _deserialize(targetType, 'json[$safeName]', _nullable(field));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
-          "Could not generate fromJson code for `${friendlyNameForElement(field)}`.",
-          todo: "Make sure all of the types are serializable.");
+          'Could not generate fromJson code for `${friendlyNameForElement(field)}`.',
+          todo: 'Make sure all of the types are serializable.');
     }
   }
 
@@ -369,7 +368,7 @@ JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];
 
   if (key == null) {
-    // If an annotation exists on `element` the source is a "real" field.
+    // If an annotation exists on `element` the source is a 'real' field.
     // If the result is `null`, check the getter – it is a property.
     // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
     var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??

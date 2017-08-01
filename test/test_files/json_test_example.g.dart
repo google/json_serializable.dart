@@ -29,7 +29,7 @@ abstract class _$PersonSerializerMixin {
         'middleName': middleName,
         'lastName': lastName,
         'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'house': house == null ? null : house.toString().split(".")[1]
+        'house': house == null ? null : house.toString().split('.')[1]
       };
 }
 
@@ -53,7 +53,7 @@ abstract class _$OrderSerializerMixin {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'isRushed': isRushed,
-        'category': category.toString().split(".")[1],
+        'category': category.toString().split('.')[1],
         'items': items,
         'platform': platform
       };

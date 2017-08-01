@@ -10,7 +10,7 @@ class EnumHelper extends TypeHelper {
       TypeHelperGenerator serializeNested) {
     if (targetType is InterfaceType && targetType.element.isEnum) {
       return commonNullPrefix(
-          nullable, expression, '$expression.toString().split(".")[1]');
+          nullable, expression, "$expression.toString().split('.')[1]");
     }
 
     return null;
