@@ -28,14 +28,89 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
         p.join(sourcePathDir, annotation.read('path').stringValue));
     var content = JSON.decode(await buildStep.readAsString(fileId));
 
-    var thing = JSON.encode(content);
+    var asConst = annotation.read('asConst').boolValue;
 
-    var marked = _isConstType(content) ? 'const' : 'final';
+    var thing = _jsonLiteralAsDart(content, asConst).toString();
+    var marked = asConst ? 'const' : 'final';
 
     return '$marked _\$${element.displayName}JsonLiteral = $thing;';
   }
 }
 
-bool _isConstType(value) {
-  return value == null || value is String || value is num || value is bool;
+/// Returns a [String] representing a valid Dart literal for [value].
+///
+/// If [asConst] is `true`, the returned [String] is encoded as a `const`
+/// literal.
+String _jsonLiteralAsDart(dynamic value, bool asConst) {
+  if (value == null) return 'null';
+
+  if (value is String) return _jsonStringAsDart(value);
+
+  if (value is bool || value is num) return value.toString();
+
+  if (value is List) {
+    var listItems =
+        value.map((v) => _jsonLiteralAsDart(v, asConst)).join(',\n');
+    return '${asConst ? 'const' : ''}[$listItems]';
+  }
+
+  if (value is Map) return _jsonMapAsDart(value, asConst);
+
+  throw new StateError(
+      'Should never get here – with ${value.runtimeType} - `$value`.');
+}
+
+String _jsonMapAsDart(Map value, bool asConst) {
+  var buffer = new StringBuffer();
+  if (asConst) {
+    buffer.write('const ');
+  }
+  buffer.write('{');
+
+  var first = true;
+  value.forEach((String k, v) {
+    if (first) {
+      first = false;
+    } else {
+      buffer.writeln(',');
+    }
+    buffer.write(_jsonStringAsDart(k));
+    buffer.write(':');
+    buffer.write(_jsonLiteralAsDart(v, asConst));
+  });
+
+  buffer.write('}');
+
+  return buffer.toString();
+}
+
+String _jsonStringAsDart(String value) {
+  var containsSingleQuote = value.contains("'");
+  var contains$ = value.contains(r'$');
+
+  if (containsSingleQuote) {
+    if (value.contains('"')) {
+      // `value` contains both single and double quotes as well as `$`.
+      // The only safe way to wrap the content is to escape all of the
+      // problematic characters.
+      var string = value
+          .replaceAll('\$', '\\\$')
+          .replaceAll('"', '\\"')
+          .replaceAll("'", "\\'");
+      return "'$string'";
+    } else if (contains$) {
+      // `value` contains "'" and "$", but not '"'.
+      // Safely wrap it in a raw string within double-quotes.
+      return 'r"$value"';
+    }
+    return '"$value"';
+  } else if (contains$) {
+    // `value` contains "$", but no "'"
+    // wrap it in a raw string using single quotes
+    return "r'$value'";
+  }
+
+  // `value` contains no problematic characters - except for '"' maybe.
+  // Wrap it in standard single-quotes.
+  return "'$value'";
 }

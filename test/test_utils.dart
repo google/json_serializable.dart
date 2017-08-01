@@ -88,7 +88,7 @@ void roundTripObject(object, factory(Map<String, dynamic> json)) {
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
 String loudEncode(object) {
   try {
-    return const JsonEncoder.withIndent(' ').convert(object.toJson());
+    return const JsonEncoder.withIndent(' ').convert(object);
   } on JsonUnsupportedObjectError catch (e) {
     var error = e;
     do {

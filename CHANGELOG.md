@@ -1,6 +1,8 @@
 ## 0.2.2
 
 * Enable support for `enum` values.
+* Added `asConst` to `JsonLiteral`.
+* Improved the handling of Dart-specific characters in JSON strings.
 
 ## 0.2.1
 
