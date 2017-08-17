@@ -18,8 +18,8 @@ class MapHelper extends TypeHelper {
     var args = typeArgumentsOf(targetType, _coreMapChecker);
     assert(args.length == 2);
 
-    var keyArg = args.first;
-    var valueType = args.last;
+    var keyArg = args[0];
+    var valueType = args[1];
 
     // We're not going to handle converting key types at the moment
     // So the only safe types for key are dynamic/Object/String
@@ -27,24 +27,24 @@ class MapHelper extends TypeHelper {
         keyArg.isObject ||
         _stringTypeChecker.isExactlyType(keyArg);
 
-    var safeValue = valueType.isDynamic ||
-        valueType.isObject ||
-        simpleJsonTypeChecker.isAssignableFromType(valueType);
-
-    if (safeKey) {
-      if (safeValue) {
-        return expression;
-      }
-
-      var subFieldValue = serializeNested(valueType, _closureArg, nullable);
-
-      var result = 'new Map<String, dynamic>.fromIterables('
-          '$expression.keys,'
-          '$expression.values.map(($_closureArg) => $subFieldValue))';
-
-      return commonNullPrefix(nullable, expression, result);
+    if (!safeKey) {
+      // TODO: should add some logic to `UnsupportedTypeError` to allow more
+      //       details to be provided – such as this case where the `key` in
+      //       `targetType` is not supported.
+      throw new UnsupportedTypeError(targetType, expression);
     }
-    throw new UnsupportedTypeError(targetType, expression);
+
+    var subFieldValue = serializeNested(valueType, _closureArg, nullable);
+
+    if (_closureArg == subFieldValue) {
+      return expression;
+    }
+
+    var result = 'new Map<String, dynamic>.fromIterables('
+        '$expression.keys,'
+        '$expression.values.map(($_closureArg) => $subFieldValue))';
+
+    return commonNullPrefix(nullable, expression, result);
   }
 
   @override

@@ -1,3 +1,8 @@
+## 0.2.2+1
+
+* Simplify the serialization of `Map` instances when no conversion is required
+  for `values`.
+
 ## 0.2.2
 
 * Enable support for `enum` values.
