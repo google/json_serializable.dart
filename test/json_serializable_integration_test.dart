@@ -79,6 +79,18 @@ void main() {
     test('mismatched enum value fails', () {
       expect(() => new Order.fromJson({'category': 'weird'}), throwsStateError);
     });
+
+    test('platform', () {
+      var order = new Order(Category.charmed)
+        ..platform = Platform.undefined
+        ..altPlatforms = {
+          'u': Platform.undefined,
+          'f': Platform.foo,
+          'null': null
+        };
+
+      roundTripOrder(order);
+    });
   });
 
   group('Item', () {

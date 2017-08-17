@@ -42,7 +42,13 @@ Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
   ..isRushed = json['isRushed'] as bool
   ..platform = json['platform'] == null
       ? null
-      : new Platform.fromJson(json['platform'] as String);
+      : new Platform.fromJson(json['platform'] as String)
+  ..altPlatforms = json['altPlatforms'] == null
+      ? null
+      : new Map<String, Platform>.fromIterables(
+          (json['altPlatforms'] as Map<String, dynamic>).keys,
+          (json['altPlatforms'] as Map).values.map(
+              (e) => e == null ? null : new Platform.fromJson(e as String)));
 
 abstract class _$OrderSerializerMixin {
   int get count;
@@ -50,12 +56,14 @@ abstract class _$OrderSerializerMixin {
   Category get category;
   UnmodifiableListView<Item> get items;
   Platform get platform;
+  Map<String, Platform> get altPlatforms;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'isRushed': isRushed,
         'category': category.toString().split('.')[1],
         'items': items,
-        'platform': platform
+        'platform': platform,
+        'altPlatforms': altPlatforms
       };
 }
 

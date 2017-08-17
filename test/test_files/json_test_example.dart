@@ -44,6 +44,7 @@ class Order extends Object with _$OrderSerializerMixin {
   final Category category;
   final UnmodifiableListView<Item> items;
   Platform platform;
+  Map<String, Platform> altPlatforms;
 
   int get price => items.fold(0, (total, item) => item.price + total);
 
@@ -57,7 +58,8 @@ class Order extends Object with _$OrderSerializerMixin {
       other is Order &&
       count == other.count &&
       isRushed == other.isRushed &&
-      _deepEquals(items, other.items);
+      _deepEquals(items, other.items) &&
+      _deepEquals(altPlatforms, other.altPlatforms);
 }
 
 @JsonSerializable()
