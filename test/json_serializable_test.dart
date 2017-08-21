@@ -9,6 +9,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/src/string_source.dart';
+import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/generators.dart';
 import 'package:json_serializable/src/utils.dart';
 import 'package:path/path.dart' as p;
@@ -99,21 +100,65 @@ void main() {
   });
 
   group('valid inputs', () {
-    test('class with no fields', () async {
+    test('class with no ctor params', () async {
       var output = await _runForElementNamed('Person');
+      expect(output,
+          r'''Person _$PersonFromJson(Map<String, dynamic> json) => new Person()
+  ..firstName = json['firstName'] as String
+  ..lastName = json['lastName'] as String
+  ..height = json['h'] as int
+  ..dateOfBirth = json['dateOfBirth'] == null
+      ? null
+      : DateTime.parse(json['dateOfBirth'] as String)
+  ..dynamicType = json['dynamicType']
+  ..varType = json['varType']
+  ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
 
-      expect(output, isNotNull);
-
-      // TODO: test the actual output
-      // print(output);
+abstract class _$PersonSerializerMixin {
+  String get firstName;
+  String get lastName;
+  int get height;
+  DateTime get dateOfBirth;
+  dynamic get dynamicType;
+  dynamic get varType;
+  List<int> get listOfInts;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'firstName': firstName,
+        'lastName': lastName,
+        'h': height,
+        'dateOfBirth': dateOfBirth?.toIso8601String(),
+        'dynamicType': dynamicType,
+        'varType': varType,
+        'listOfInts': listOfInts
+      };
+}
+''');
     });
 
     test('class with ctor params', () async {
       var output = await _runForElementNamed('Order');
-      expect(output, isNotNull);
+      expect(output,
+          r'''Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
+    json['height'] as int,
+    json['firstName'] as String,
+    json['lastName'] as String)
+  ..dateOfBirth = json['dateOfBirth'] == null
+      ? null
+      : DateTime.parse(json['dateOfBirth'] as String);
 
-      // TODO: test the actual output
-      // print(output);
+abstract class _$OrderSerializerMixin {
+  String get firstName;
+  String get lastName;
+  int get height;
+  DateTime get dateOfBirth;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'firstName': firstName,
+        'lastName': lastName,
+        'height': height,
+        'dateOfBirth': dateOfBirth?.toIso8601String()
+      };
+}
+''');
     });
 
     test('class with child json-able object', () async {
@@ -159,7 +204,7 @@ void main() {
 
     test('all', () async {
       var output = await _runForElementNamed('IncludeIfNullOverride');
-      expect(output, contains("'number' : number,"));
+      expect(output, contains("'number': number,"));
       expect(output, contains("$toJsonMapHelperName('str', str);"));
     });
   });
@@ -167,12 +212,16 @@ void main() {
 
 const _generator = const JsonSerializableGenerator();
 
+final _formatter = new dart_style.DartFormatter();
+
 Future<String> _runForElementNamed(String name) async {
   var library = new LibraryReader(_compUnit.element.library);
   var element = library.allElements.singleWhere((e) => e.name == name);
   var annotation = _generator.typeChecker.firstAnnotationOf(element);
-  return _generator.generateForAnnotatedElement(
+  var generated = await _generator.generateForAnnotatedElement(
       element, new ConstantReader(annotation), null);
+
+  return _formatter.format(generated);
 }
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
