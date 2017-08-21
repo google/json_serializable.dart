@@ -45,4 +45,3 @@ void log(object) {
 }
 
 final toJsonMapVarName = 'val';
-final toJsonMapHelperName = 'writeNotNull';

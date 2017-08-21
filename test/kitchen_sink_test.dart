@@ -190,6 +190,5 @@ final _expectedOrder = [
   'stringDateTimeMap',
   'crazyComplex',
   toJsonMapVarName,
-  toJsonMapHelperName,
   r'$string'
 ];

@@ -166,7 +166,7 @@ class JsonSerializableGenerator
 
         // If `fieldName` collides with one of the local helpers, prefix
         // access with `this.`.
-        if (fieldName == toJsonMapVarName || fieldName == toJsonMapHelperName) {
+        if (fieldName == toJsonMapVarName) {
           fieldName = 'this.$fieldName';
         }
 
@@ -184,18 +184,14 @@ class JsonSerializableGenerator
             buffer.writeln('};');
             buffer.writeln();
 
-            // write the helper to be used by all following null-excluding
-            // fields
-            buffer.writeln('''
-void $toJsonMapHelperName(String key, dynamic value) {
-  if (value != null) {
-    $toJsonMapVarName[key] = value;
-  }
-}''');
             directWrite = false;
           }
-          buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
-              '${_serialize(field.type, fieldName, _nullable(field))});');
+          buffer.writeln('''if ($fieldName != null) { 
+  $toJsonMapVarName[$safeJsonKeyString] = ${_serialize(field.type, fieldName, _nullable(field))};
+}''');
+
+          //$toJsonMapHelperName($safeJsonKeyString, '
+          //'${_serialize(field.type, fieldName, _nullable(field))});');
         }
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(

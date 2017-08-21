@@ -84,8 +84,6 @@ class Bathtub extends Object
   // Handle fields with names that collide with helper names
   @JsonKey(nullable: false, includeIfNull: false)
   Map<String, bool> val = {};
-  @JsonKey(nullable: false)
-  bool writeNotNull;
   @JsonKey(nullable: false, name: r'$string')
   String string;
 
