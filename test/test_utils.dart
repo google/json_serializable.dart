@@ -73,7 +73,7 @@ Iterable<Element> _getElements(CompilationUnitMember member) {
   return [element];
 }
 
-void roundTripObject(object, factory(Map<String, dynamic> json)) {
+void roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
   var json = loudEncode(object);
 
   var person2 = factory(JSON.decode(json) as Map<String, dynamic>);
@@ -86,7 +86,7 @@ void roundTripObject(object, factory(Map<String, dynamic> json)) {
 }
 
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
-String loudEncode(object) {
+String loudEncode(Object object) {
   try {
     return const JsonEncoder.withIndent(' ').convert(object);
   } on JsonUnsupportedObjectError catch (e) {
