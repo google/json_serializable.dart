@@ -159,7 +159,7 @@ void main() {
 
     test('all', () async {
       var output = await _runForElementNamed('IncludeIfNullOverride');
-      expect(output, contains("$toJsonMapVarName[\'number\'] = number;"));
+      expect(output, contains("'number' : number,"));
       expect(output, contains("$toJsonMapHelperName('str', str);"));
     });
   });

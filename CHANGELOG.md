@@ -1,3 +1,8 @@
+## 0.2.3
+
+* Write out `toJson` methods more efficiently when the first fields written are
+  not intercepted by the null-checking method.
+
 ## 0.2.2+1
 
 * Simplify the serialization of `Map` instances when no conversion is required

@@ -26,14 +26,15 @@ abstract class _$PersonSerializerMixin {
   DateTime get lastOrder;
   List<Order> get orders;
   Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{};
+    var $map = <String, dynamic>{
+      'firstName': firstName,
+    };
     void $writeNotNull(String key, dynamic value) {
       if (value != null) {
         $map[key] = value;
       }
     }
 
-    $map['firstName'] = firstName;
     $writeNotNull('middleName', middleName);
     $map['lastName'] = lastName;
     $map['date-of-birth'] = dateOfBirth.toIso8601String();

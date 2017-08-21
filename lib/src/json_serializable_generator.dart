@@ -151,15 +151,13 @@ class JsonSerializableGenerator
       Map<String, FieldElement> fields, bool includeIfNull) {
     buffer.writeln('{');
 
-    // TODO(kevmoo) We could write all values up to the null-excluded value
-    //   directly in this literal.
-    buffer.writeln('var $toJsonMapVarName = <String, dynamic>{};');
+    buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
 
-    buffer.writeln('''void $toJsonMapHelperName(String key, dynamic value) {
-    if (value != null) {
-      $toJsonMapVarName[key] = value;
-    }
-    }''');
+    // Note that the map literal is left open above. As long as target fields
+    // don't need to be intercepted by the `only if null` logic, write them
+    // to the map literal directly. In theory, should allow more efficient
+    // serialization.
+    var directWrite = true;
 
     fields.forEach((fieldName, field) {
       try {
@@ -173,9 +171,29 @@ class JsonSerializableGenerator
         }
 
         if (_includeIfNull(field, includeIfNull)) {
-          buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
-              '${_serialize(field.type, fieldName,  _nullable(field))};');
+          if (directWrite) {
+            buffer.writeln('$safeJsonKeyString : '
+                '${_serialize(field.type, fieldName, _nullable(field))},');
+          } else {
+            buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
+                '${_serialize(field.type, fieldName, _nullable(field))};');
+          }
         } else {
+          if (directWrite) {
+            // close the still-open map literal
+            buffer.writeln('};');
+            buffer.writeln();
+
+            // write the helper to be used by all following null-excluding
+            // fields
+            buffer.writeln('''
+void $toJsonMapHelperName(String key, dynamic value) {
+  if (value != null) {
+    $toJsonMapVarName[key] = value;
+  }
+}''');
+            directWrite = false;
+          }
           buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
               '${_serialize(field.type, fieldName, _nullable(field))});');
         }
