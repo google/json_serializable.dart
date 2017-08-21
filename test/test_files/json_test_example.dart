@@ -109,6 +109,9 @@ class Numbers extends Object with _$NumbersSerializerMixin {
   List<num> nums;
   List<double> doubles;
 
+  @JsonKey(nullable: false)
+  List<double> nnDoubles;
+
   Numbers();
 
   factory Numbers.fromJson(Map<String, dynamic> json) =>
@@ -118,5 +121,6 @@ class Numbers extends Object with _$NumbersSerializerMixin {
       other is Numbers &&
       _deepEquals(ints, other.ints) &&
       _deepEquals(nums, other.nums) &&
-      _deepEquals(doubles, other.doubles);
+      _deepEquals(doubles, other.doubles) &&
+      _deepEquals(nnDoubles, other.nnDoubles);
 }

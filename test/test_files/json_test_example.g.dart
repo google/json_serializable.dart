@@ -91,12 +91,19 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()
   ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
   ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
   ..doubles =
-      (json['doubles'] as List)?.map((e) => (e as num).toDouble())?.toList();
+      (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
+  ..nnDoubles =
+      (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList();
 
 abstract class _$NumbersSerializerMixin {
   List<int> get ints;
   List<num> get nums;
   List<double> get doubles;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'ints': ints, 'nums': nums, 'doubles': doubles};
+  List<double> get nnDoubles;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'ints': ints,
+        'nums': nums,
+        'doubles': doubles,
+        'nnDoubles': nnDoubles
+      };
 }

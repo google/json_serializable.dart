@@ -23,7 +23,7 @@ class ValueHelper extends TypeHelper {
       return expression;
     } else if (const TypeChecker.fromRuntime(double)
         .isExactlyType(targetType)) {
-      return '($expression as num).toDouble()';
+      return '($expression as num)${nullable ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       return '$expression as $targetType';
     }

@@ -114,12 +114,14 @@ void main() {
       roundTripNumber(new Numbers()
         ..nums = [0, 0.0]
         ..doubles = [0.0]
+        ..nnDoubles = [0.0]
         ..ints = [0]);
     });
 
     test('support ints as doubles', () {
       var value = {
-        'doubles': [0, 0.0]
+        'doubles': [0, 0.0, null],
+        'nnDoubles': [0, 0.0]
       };
 
       roundTripNumber(new Numbers.fromJson(value));
