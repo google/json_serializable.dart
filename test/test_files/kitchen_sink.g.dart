@@ -45,8 +45,8 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
               (e as Map).values.map((e) =>
                   e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
       ?.toList()
-  ..$map = json[r'$map'] == null ? null : new Map<String, bool>.from(json[r'$map'] as Map)
-  ..$writeNotNull = json[r'$writeNotNull'] as bool
+  ..val = json['val'] == null ? null : new Map<String, bool>.from(json['val'] as Map)
+  ..writeNotNull = json['writeNotNull'] as bool
   ..string = json[r'$string'] as String;
 
 abstract class _$KitchenSinkSerializerMixin {
@@ -66,38 +66,39 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
-  Map<String, bool> get $map;
-  bool get $writeNotNull;
+  Map<String, bool> get val;
+  bool get writeNotNull;
   String get string;
   Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{};
-    void $writeNotNull(String key, dynamic value) {
+    var val = <String, dynamic>{};
+
+    void writeNotNull(String key, dynamic value) {
       if (value != null) {
-        $map[key] = value;
+        val[key] = value;
       }
     }
 
-    $writeNotNull('dateTime', dateTime?.toIso8601String());
-    $writeNotNull('iterable', iterable?.toList());
-    $map['dynamicIterable'] = dynamicIterable?.toList();
-    $map['objectIterable'] = objectIterable?.toList();
-    $map['intIterable'] = intIterable?.toList();
-    $map['datetime-iterable'] =
+    writeNotNull('dateTime', dateTime?.toIso8601String());
+    writeNotNull('iterable', iterable?.toList());
+    val['dynamicIterable'] = dynamicIterable?.toList();
+    val['objectIterable'] = objectIterable?.toList();
+    val['intIterable'] = intIterable?.toList();
+    val['datetime-iterable'] =
         dateTimeIterable?.map((e) => e?.toIso8601String())?.toList();
-    $map['list'] = list;
-    $map['dynamicList'] = dynamicList;
-    $map['objectList'] = objectList;
-    $map['intList'] = intList;
-    $writeNotNull('dateTimeList',
+    val['list'] = list;
+    val['dynamicList'] = dynamicList;
+    val['objectList'] = objectList;
+    val['intList'] = intList;
+    writeNotNull('dateTimeList',
         dateTimeList?.map((e) => e?.toIso8601String())?.toList());
-    $map['map'] = map;
-    $map['stringStringMap'] = stringStringMap;
-    $map['stringIntMap'] = stringIntMap;
-    $map['stringDateTimeMap'] = stringDateTimeMap == null
+    val['map'] = map;
+    val['stringStringMap'] = stringStringMap;
+    val['stringIntMap'] = stringIntMap;
+    val['stringDateTimeMap'] = stringDateTimeMap == null
         ? null
         : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
             stringDateTimeMap.values.map((e) => e?.toIso8601String()));
-    $writeNotNull(
+    writeNotNull(
         'crazyComplex',
         crazyComplex
             ?.map((e) => e == null
@@ -114,9 +115,9 @@ abstract class _$KitchenSinkSerializerMixin {
                                     ?.toList())
                                 ?.toList())))))
             ?.toList());
-    $writeNotNull(r'$map', this.$map);
-    $map[r'$writeNotNull'] = this.$writeNotNull;
-    $map[r'$string'] = string;
-    return $map;
+    writeNotNull('val', this.val);
+    val['writeNotNull'] = this.writeNotNull;
+    val[r'$string'] = string;
+    return val;
   }
 }

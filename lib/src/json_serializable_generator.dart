@@ -205,7 +205,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       }
     });
 
-    buffer.writeln(r'return $map;');
+    buffer.writeln('return $toJsonMapVarName;');
 
     buffer.writeln('}');
   }

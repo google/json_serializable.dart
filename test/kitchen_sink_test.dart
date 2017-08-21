@@ -157,7 +157,7 @@ void _sharedTests(
       ..dateTime = new DateTime.now()
       ..dateTimeList = []
       ..crazyComplex = []
-      ..$map = {};
+      ..val = {};
 
     var json = item.toJson();
     expect(json.keys, orderedEquals(_expectedOrder));

@@ -26,21 +26,22 @@ abstract class _$PersonSerializerMixin {
   DateTime get lastOrder;
   List<Order> get orders;
   Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{
+    var val = <String, dynamic>{
       'firstName': firstName,
     };
-    void $writeNotNull(String key, dynamic value) {
+
+    void writeNotNull(String key, dynamic value) {
       if (value != null) {
-        $map[key] = value;
+        val[key] = value;
       }
     }
 
-    $writeNotNull('middleName', middleName);
-    $map['lastName'] = lastName;
-    $map['date-of-birth'] = dateOfBirth.toIso8601String();
-    $map['last-order'] = lastOrder?.toIso8601String();
-    $map['orders'] = orders;
-    return $map;
+    writeNotNull('middleName', middleName);
+    val['lastName'] = lastName;
+    val['date-of-birth'] = dateOfBirth.toIso8601String();
+    val['last-order'] = lastOrder?.toIso8601String();
+    val['orders'] = orders;
+    return val;
   }
 }
 
@@ -58,18 +59,19 @@ abstract class _$OrderSerializerMixin {
   bool get isRushed;
   Item get item;
   Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{};
-    void $writeNotNull(String key, dynamic value) {
+    var val = <String, dynamic>{};
+
+    void writeNotNull(String key, dynamic value) {
       if (value != null) {
-        $map[key] = value;
+        val[key] = value;
       }
     }
 
-    $writeNotNull('count', count);
-    $writeNotNull('itemNumber', itemNumber);
-    $writeNotNull('isRushed', isRushed);
-    $writeNotNull('item', item);
-    return $map;
+    writeNotNull('count', count);
+    writeNotNull('itemNumber', itemNumber);
+    writeNotNull('isRushed', isRushed);
+    writeNotNull('item', item);
+    return val;
   }
 }
 

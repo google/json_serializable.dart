@@ -44,5 +44,5 @@ void log(object) {
   stderr.writeln(['***', object, '***'].join('\n'));
 }
 
-final toJsonMapVarName = r'$map';
-final toJsonMapHelperName = r'$writeNotNull';
+final toJsonMapVarName = 'val';
+final toJsonMapHelperName = 'writeNotNull';

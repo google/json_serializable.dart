@@ -36,8 +36,8 @@ Bathtub _$BathtubFromJson(Map<String, dynamic> json) => new Bathtub(
           (e as Map).values.map((e) =>
               new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
       .toList()
-  ..$map = new Map<String, bool>.from(json[r'$map'] as Map)
-  ..$writeNotNull = json[r'$writeNotNull'] as bool
+  ..val = new Map<String, bool>.from(json['val'] as Map)
+  ..writeNotNull = json['writeNotNull'] as bool
   ..string = json[r'$string'] as String;
 
 abstract class _$BathtubSerializerMixin {
@@ -57,11 +57,11 @@ abstract class _$BathtubSerializerMixin {
   Map<String, int> get stringIntMap;
   Map<String, DateTime> get stringDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
-  Map<String, bool> get $map;
-  bool get $writeNotNull;
+  Map<String, bool> get val;
+  bool get writeNotNull;
   String get string;
   Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{
+    var val = <String, dynamic>{
       'dateTime': dateTime.toIso8601String(),
       'iterable': iterable.toList(),
       'dynamicIterable': dynamicIterable.toList(),
@@ -90,15 +90,16 @@ abstract class _$BathtubSerializerMixin {
                       .toList())))))
           .toList(),
     };
-    void $writeNotNull(String key, dynamic value) {
+
+    void writeNotNull(String key, dynamic value) {
       if (value != null) {
-        $map[key] = value;
+        val[key] = value;
       }
     }
 
-    $writeNotNull(r'$map', this.$map);
-    $map[r'$writeNotNull'] = this.$writeNotNull;
-    $map[r'$string'] = string;
-    return $map;
+    writeNotNull('val', this.val);
+    val['writeNotNull'] = this.writeNotNull;
+    val[r'$string'] = string;
+    return val;
   }
 }
