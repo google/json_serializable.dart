@@ -104,4 +104,34 @@ void main() {
       roundTripItem(item);
     });
   });
+
+  group('Numbers', () {
+    roundTripNumber(Numbers p) {
+      roundTripObject(p, (json) => new Numbers.fromJson(json));
+    }
+
+    test('simple', () {
+      roundTripNumber(new Numbers()
+        ..nums = [0, 0.0]
+        ..doubles = [0.0]
+        ..ints = [0]);
+    });
+
+    test('support ints as doubles', () {
+      var value = {
+        'doubles': [0, 0.0]
+      };
+
+      roundTripNumber(new Numbers.fromJson(value));
+    });
+
+    test('does not support doubles as ints', () {
+      var value = {
+        'ints': [0.0, 0],
+      };
+
+      expect(() => new Numbers.fromJson(value),
+          throwsA(new isInstanceOf<CastError>()));
+    });
+  });
 }
