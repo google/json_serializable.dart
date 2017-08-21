@@ -74,7 +74,6 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   // Handle fields with names that collide with helper names
   @JsonKey(includeIfNull: false)
   Map<String, bool> val;
-  bool writeNotNull;
   @JsonKey(name: r'$string')
   String string;
 

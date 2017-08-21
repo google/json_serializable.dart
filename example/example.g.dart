@@ -30,13 +30,9 @@ abstract class _$PersonSerializerMixin {
       'firstName': firstName,
     };
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+    if (middleName != null) {
+      val['middleName'] = middleName;
     }
-
-    writeNotNull('middleName', middleName);
     val['lastName'] = lastName;
     val['date-of-birth'] = dateOfBirth.toIso8601String();
     val['last-order'] = lastOrder?.toIso8601String();
@@ -61,16 +57,18 @@ abstract class _$OrderSerializerMixin {
   Map<String, dynamic> toJson() {
     var val = <String, dynamic>{};
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+    if (count != null) {
+      val['count'] = count;
     }
-
-    writeNotNull('count', count);
-    writeNotNull('itemNumber', itemNumber);
-    writeNotNull('isRushed', isRushed);
-    writeNotNull('item', item);
+    if (itemNumber != null) {
+      val['itemNumber'] = itemNumber;
+    }
+    if (isRushed != null) {
+      val['isRushed'] = isRushed;
+    }
+    if (item != null) {
+      val['item'] = item;
+    }
     return val;
   }
 }

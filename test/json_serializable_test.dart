@@ -199,13 +199,11 @@ abstract class _$OrderSerializerMixin {
     test('some', () async {
       var output = await _runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(toJsonMapVarName)));
-      expect(output, isNot(contains(toJsonMapHelperName)));
     });
 
     test('all', () async {
       var output = await _runForElementNamed('IncludeIfNullOverride');
       expect(output, contains("'number': number,"));
-      expect(output, contains("$toJsonMapHelperName('str', str);"));
     });
   });
 }
