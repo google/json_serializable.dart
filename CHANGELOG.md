@@ -3,6 +3,8 @@
 * Simplify the serialization of `Map` instances when no conversion is required
   for `values`.
 
+* Handle `int` literals in JSON being assigned to `double` fields.
+
 ## 0.2.2
 
 * Enable support for `enum` values.

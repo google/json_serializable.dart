@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/type.dart';
+import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
 
 class ValueHelper extends TypeHelper {
@@ -20,6 +21,9 @@ class ValueHelper extends TypeHelper {
     if (targetType.isDynamic || targetType.isObject) {
       // just return it as-is. We'll hope it's safe.
       return expression;
+    } else if (const TypeChecker.fromRuntime(double)
+        .isExactlyType(targetType)) {
+      return '($expression as num).toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       return '$expression as $targetType';
     }

@@ -102,3 +102,21 @@ class Platform {
 
   String toJson() => description;
 }
+
+@JsonSerializable()
+class Numbers extends Object with _$NumbersSerializerMixin {
+  List<int> ints;
+  List<num> nums;
+  List<double> doubles;
+
+  Numbers();
+
+  factory Numbers.fromJson(Map<String, dynamic> json) =>
+      _$NumbersFromJson(json);
+
+  bool operator ==(Object other) =>
+      other is Numbers &&
+      _deepEquals(ints, other.ints) &&
+      _deepEquals(nums, other.nums) &&
+      _deepEquals(doubles, other.doubles);
+}
