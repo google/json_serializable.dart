@@ -13,14 +13,10 @@ dart_task:
 matrix:
   exclude:
     dart: stable
-    dart_task:
-      - test: --run-skipped
-        xvfb: false
+    dart_task: dartfmt
   include:
     dart: 1.23.0
-    dart_task:
-      - test: --run-skipped
-        xvfb: false
+    dart_task: dartfmt
 
 
 # Only building master means that we don't run two builds for each pull request.
