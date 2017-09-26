@@ -6,8 +6,18 @@ dart:
 dart_task:
   # Run the tests -- include the default-skipped presubmit tests
   - test: --run-skipped
+    xvfb: false
   - dartfmt
   - dartanalyzer
+
+matrix:
+  exclude:
+    dart: stable
+    dart_task: dartfmt
+  include:
+    dart: 1.23.0
+    dart_task: dartfmt
+
 
 # Only building master means that we don't run two builds for each pull request.
 branches:
