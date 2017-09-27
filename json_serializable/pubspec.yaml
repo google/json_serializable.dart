@@ -9,7 +9,10 @@ dependencies:
   analyzer: '>=0.29.10 <0.31.0'
   build: '>=0.9.0 <0.11.0'
   cli_util: ^0.1.0
-  json_annotation: any
+
+  # Use a tight version constraint to ensure that a constraint on
+  # `json_annotation`. Properly constrains all features it provides.
+  json_annotation: '>=0.2.0 <0.2.1'
   path: ^1.3.2
   source_gen: ^0.7.0
 dev_dependencies:
