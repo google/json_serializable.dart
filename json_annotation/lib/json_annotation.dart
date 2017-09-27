@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-@Deprecated('Use `package:json_annotation` instead.')
-library json_serializable.annotations;
+/// Use these annotations on members you'd like to enable source generation on.
 
-export 'package:json_annotation/json_annotation.dart';
+export 'src/json_literal.dart';
+export 'src/json_serializable.dart';

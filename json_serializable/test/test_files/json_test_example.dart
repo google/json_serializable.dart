@@ -8,7 +8,7 @@ library json_serializable.test.example;
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'json_test_example.g.dart';
 

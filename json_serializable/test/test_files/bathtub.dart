@@ -5,7 +5,7 @@
 // ignore_for_file: annotate_overrides, hash_and_equals
 library json_serializable.test.bathtub;
 
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink.dart';
 

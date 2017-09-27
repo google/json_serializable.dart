@@ -6,7 +6,7 @@
 library json_serializable.test.kitche_sink;
 
 import 'package:collection/collection.dart';
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'kitchen_sink.g.dart';
 

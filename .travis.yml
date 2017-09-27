@@ -6,6 +6,8 @@ dart:
   - stable
 
 env:
+  - PKG=json_annotation TASK=dartanalyzer
+  - PKG=json_annotation TASK=dartfmt
   - PKG=json_serializable TASK=dartanalyzer
   - PKG=json_serializable TASK=dartfmt
   - PKG=json_serializable TASK=test

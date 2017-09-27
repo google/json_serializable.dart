@@ -4,7 +4,7 @@
 
 library json_serializable.example;
 
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'json_literal.g.dart';
 
 @JsonLiteral('data.json')

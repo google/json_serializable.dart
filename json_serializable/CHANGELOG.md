@@ -1,3 +1,12 @@
+## 0.2.4
+
+* Moved the annotations in `annotations.dart` to `package:json_annotations`.
+  * Allows package authors to release code that has the corresponding 
+    annotations without requiring package users to inherit all of the transitive
+    dependencies.
+
+* Deprecated `annotations.dart`.
+
 ## 0.2.3
 
 * Write out `toJson` methods more efficiently when the first fields written are
