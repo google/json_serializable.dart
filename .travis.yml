@@ -1,0 +1,26 @@
+# Created with https://github.com/dart-lang/mono_repo
+language: dart
+
+dart:
+  - dev
+  - stable
+
+env:
+  - PKG=json_serializable TASK=dartanalyzer
+  - PKG=json_serializable TASK=dartfmt
+  - PKG=json_serializable TASK=test
+
+matrix:
+  exclude:
+    - dart: stable
+      env: PKG=json_serializable TASK=dartfmt
+
+script: ./tool/travis.sh
+
+# Only building master means that we don't run two builds for each pull request.
+branches:
+  only: [master]
+
+cache:
+ directories:
+   - $HOME/.pub-cache
