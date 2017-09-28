@@ -11,7 +11,7 @@ Given a library `example.dart` with an `Person` class annotated with
 ```dart
 library json_serializable.example;
 
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
