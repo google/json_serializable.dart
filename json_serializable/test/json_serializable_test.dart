@@ -208,6 +208,15 @@ abstract class _$OrderSerializerMixin {
       expect(output, contains("$toJsonMapHelperName('str', str);"));
     });
   });
+
+  test('missing default ctor with a factory', () async {
+    expect(
+        () => _runForElementNamed('NoCtorClass'),
+        throwsA(new FeatureMatcher<UnsupportedError>(
+            'message',
+            (e) => e.message,
+            'The class `NoCtorClass` has no default constructor.')));
+  });
 }
 
 const _generator = const JsonSerializableGenerator();
@@ -348,5 +357,13 @@ class IncludeIfNullOverride {
   @JsonKey(includeIfNull: true)
   int number;
   String str;
+}
+
+// https://github.com/dart-lang/json_serializable/issues/7 regression
+@JsonSerializable()
+class NoCtorClass {
+  final int member;
+  
+  factory TestDoneEvent.fromJson(Map<String, dynamic> json) => null;
 }
 ''';

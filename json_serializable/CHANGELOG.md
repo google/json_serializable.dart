@@ -1,3 +1,7 @@
+## 0.2.4+1
+
+* Throw a more helpful error when a constructor is missing.
+
 ## 0.2.4
 
 * Moved the annotations in `annotations.dart` to `package:json_annotations`.

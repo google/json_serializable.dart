@@ -244,6 +244,10 @@ void $toJsonMapHelperName(String key, dynamic value) {
     // Get the default constructor
     // TODO: allow overriding the ctor used for the factory
     var ctor = classElement.unnamedConstructor;
+    if (ctor == null) {
+      throw new UnsupportedError(
+          'The class `${classElement.name}` has no default constructor.');
+    }
 
     var ctorArguments = <ParameterElement>[];
     var ctorNamedArguments = <ParameterElement>[];
