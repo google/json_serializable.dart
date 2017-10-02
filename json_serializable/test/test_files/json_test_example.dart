@@ -18,6 +18,7 @@ enum House { gryffindor, hufflepuff, ravenclaw, slytherin }
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
+  @JsonKey(name: '\$house')
   final House house;
 
   Person(this.firstName, this.lastName, this.house,

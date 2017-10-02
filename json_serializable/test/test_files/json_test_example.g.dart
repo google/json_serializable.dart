@@ -9,10 +9,10 @@ part of json_serializable.test.example;
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    json['house'] == null
+    json[r'$house'] == null
         ? null
         : House.values
-            .singleWhere((x) => x.toString() == "House.${json['house']}"),
+            .singleWhere((x) => x.toString() == "House.${json[r'$house']}"),
     middleName: json['middleName'] as String,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
@@ -29,7 +29,7 @@ abstract class _$PersonSerializerMixin {
         'middleName': middleName,
         'lastName': lastName,
         'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'house': house == null ? null : house.toString().split('.')[1]
+        r'$house': house == null ? null : house.toString().split('.')[1]
       };
 }
 

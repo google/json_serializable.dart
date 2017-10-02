@@ -124,20 +124,20 @@ class JsonSerializableGenerator
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
-      fields.forEach((name, field) {
+      for (var field in fields.values) {
         //TODO - handle aliased imports
-        buffer.writeln('  ${field.type} get $name;');
-      });
+        buffer.writeln('  ${field.type} get ${field.name};');
+      }
 
       var includeIfNull = annotation.read('includeIfNull').boolValue;
 
       buffer.writeln('  Map<String, dynamic> toJson() ');
       if (fieldsList.every((e) => _includeIfNull(e, includeIfNull))) {
         // write simple `toJson` method that includes all keys...
-        _writeToJsonSimple(buffer, fields);
+        _writeToJsonSimple(buffer, fields.values);
       } else {
         // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, fields, includeIfNull);
+        _writeToJsonWithNullChecks(buffer, fields.values, includeIfNull);
       }
 
       // end of the mixin class
@@ -147,8 +147,8 @@ class JsonSerializableGenerator
     return buffer.toString();
   }
 
-  void _writeToJsonWithNullChecks(StringBuffer buffer,
-      Map<String, FieldElement> fields, bool includeIfNull) {
+  void _writeToJsonWithNullChecks(
+      StringBuffer buffer, Iterable<FieldElement> fields, bool includeIfNull) {
     buffer.writeln('{');
 
     buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
@@ -159,10 +159,10 @@ class JsonSerializableGenerator
     // serialization.
     var directWrite = true;
 
-    fields.forEach((fieldName, field) {
+    for (var field in fields) {
+      var fieldName = field.name;
       try {
-        var safeJsonKeyString =
-            _safeNameAccess(_fieldToJsonMapKey(field, fieldName));
+        var safeJsonKeyString = _safeNameAccess(field);
 
         // If `fieldName` collides with one of the local helpers, prefix
         // access with `this.`.
@@ -203,29 +203,28 @@ void $toJsonMapHelperName(String key, dynamic value) {
                 field)}`.',
             todo: 'Make sure all of the types are serializable.');
       }
-    });
+    }
 
     buffer.writeln('return $toJsonMapVarName;');
 
     buffer.writeln('}');
   }
 
-  void _writeToJsonSimple(
-      StringBuffer buffer, Map<String, FieldElement> fields) {
+  void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields) {
     buffer.writeln('=> <String, dynamic>{');
 
     var pairs = <String>[];
-    fields.forEach((fieldName, field) {
+    for (var field in fields) {
       try {
-        pairs.add("'${_fieldToJsonMapKey(field, fieldName)}': "
-            '${_serialize(field.type, fieldName, _nullable(field))}');
+        pairs.add('${_safeNameAccess(field)}: '
+            '${_serialize(field.type, field.name, _nullable(field))}');
       } on UnsupportedTypeError {
         throw new InvalidGenerationSourceError(
             'Could not generate `toJson` code for `${friendlyNameForElement(field)}`.',
             todo: 'Make sure all of the types are serializable.');
       }
-    });
-    buffer.writeAll(pairs, ', ');
+    }
+    buffer.writeAll(pairs, ',\n');
 
     buffer.writeln('  };');
   }
@@ -303,7 +302,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.write('    new $className(');
     buffer.writeAll(
         ctorArguments.map((paramElement) => _deserializeForField(
-            paramElement.name, fields[paramElement.name],
+            fields[paramElement.name],
             ctorParam: paramElement)),
         ', ');
     if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
@@ -312,7 +311,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.writeAll(
         ctorNamedArguments.map((paramElement) =>
             '${paramElement.name}: ' +
-            _deserializeForField(paramElement.name, fields[paramElement.name],
+            _deserializeForField(fields[paramElement.name],
                 ctorParam: paramElement)),
         ', ');
 
@@ -320,11 +319,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
     if (fieldsToSet.isEmpty) {
       buffer.writeln(';');
     } else {
-      fieldsToSet.forEach((name, field) {
+      for (var field in fieldsToSet.values) {
         buffer.writeln();
-        buffer.write('      ..${name} = ');
-        buffer.write(_deserializeForField(name, field));
-      });
+        buffer.write('      ..${field.name} = ');
+        buffer.write(_deserializeForField(field));
+      }
       buffer.writeln(';');
     }
     buffer.writeln();
@@ -344,18 +343,18 @@ void $toJsonMapHelperName(String key, dynamic value) {
               orElse: () =>
                   throw new UnsupportedTypeError(targetType, expression));
 
-  String _deserializeForField(String name, FieldElement field,
+  String _deserializeForField(FieldElement field,
       {ParameterElement ctorParam}) {
-    name = _fieldToJsonMapKey(field, name);
+    var jsonKey = _safeNameAccess(field);
 
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      var safeName = _safeNameAccess(name);
-      return _deserialize(targetType, 'json[$safeName]', _nullable(field));
+      return _deserialize(targetType, 'json[$jsonKey]', _nullable(field));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
-          'Could not generate fromJson code for `${friendlyNameForElement(field)}`.',
+          'Could not generate fromJson code for '
+          '`${friendlyNameForElement(field)}`.',
           todo: 'Make sure all of the types are serializable.');
     }
   }
@@ -369,14 +368,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
                   throw new UnsupportedTypeError(targetType, expression));
 }
 
-String _safeNameAccess(String name) =>
-    name.contains(r'$') ? "r'$name'" : "'$name'";
-
-/// Returns the JSON map `key` to be used when (de)serializing [field], if any.
-///
-/// Otherwise, `null`;
-String _fieldToJsonMapKey(FieldElement field, String ifNull) =>
-    _jsonKeyFor(field).name ?? ifNull;
+String _safeNameAccess(FieldElement field) {
+  var name = _jsonKeyFor(field).name ?? field.name;
+  // TODO(kevmoo): JsonKey.name could also have quotes and other silly.
+  return name.contains(r'$') ? "r'${name}'" : "'${name}'";
+}
 
 /// Returns `true` if the field should be treated as potentially nullable.
 ///
