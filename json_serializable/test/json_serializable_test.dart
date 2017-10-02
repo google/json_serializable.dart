@@ -316,7 +316,7 @@ class ParentObjectWithDynamicChildren {
 @JsonSerializable()
 class UnknownCtorParamType {
   int number;
-  
+
   UnknownCtorParamType(Bob number) : this.number = number;
 }
 
@@ -363,7 +363,7 @@ class IncludeIfNullOverride {
 @JsonSerializable()
 class NoCtorClass {
   final int member;
-  
+
   factory TestDoneEvent.fromJson(Map<String, dynamic> json) => null;
 }
 ''';
