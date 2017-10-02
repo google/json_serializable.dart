@@ -68,7 +68,7 @@ abstract class _$OrderSerializerMixin {
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
-  ..itemNumber = json['itemNumber'] as int
+  ..itemNumber = json['item-number'] as int
   ..saleDates = (json['saleDates'] as List)
       ?.map((e) => e == null ? null : DateTime.parse(e as String))
       ?.toList()
@@ -79,12 +79,22 @@ abstract class _$ItemSerializerMixin {
   int get itemNumber;
   List<DateTime> get saleDates;
   List<int> get rates;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'price': price,
-        'itemNumber': itemNumber,
-        'saleDates': saleDates?.map((e) => e?.toIso8601String())?.toList(),
-        'rates': rates
-      };
+  Map<String, dynamic> toJson() {
+    var val = <String, dynamic>{
+      'price': price,
+    };
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('item-number', itemNumber);
+    val['saleDates'] = saleDates?.map((e) => e?.toIso8601String())?.toList();
+    val['rates'] = rates;
+    return val;
+  }
 }
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()

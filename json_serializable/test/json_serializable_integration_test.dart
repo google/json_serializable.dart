@@ -102,6 +102,19 @@ void main() {
       var item = new Item.fromJson({});
       expect(item.saleDates, isNull);
       roundTripItem(item);
+
+      expect(item.toJson().keys, orderedEquals(['price', 'saleDates', 'rates']),
+          reason: 'Omits null `itemNumber`');
+    });
+
+    test('set itemNumber - with custom JSON key', () {
+      var item = new Item.fromJson({'item-number': 42});
+      expect(item.itemNumber, 42);
+      roundTripItem(item);
+
+      expect(item.toJson().keys,
+          orderedEquals(['price', 'item-number', 'saleDates', 'rates']),
+          reason: 'Includes non-null `itemNumber` - with custom key');
     });
   });
 

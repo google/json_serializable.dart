@@ -66,6 +66,7 @@ class Order extends Object with _$OrderSerializerMixin {
 @JsonSerializable()
 class Item extends Object with _$ItemSerializerMixin {
   final int price;
+  @JsonKey(includeIfNull: false, name: 'item-number')
   int itemNumber;
   List<DateTime> saleDates;
   List<int> rates;
