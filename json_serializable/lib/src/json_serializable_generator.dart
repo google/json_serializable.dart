@@ -147,8 +147,8 @@ class JsonSerializableGenerator
     return buffer.toString();
   }
 
-  void _writeToJsonWithNullChecks(
-      StringBuffer buffer, Iterable<FieldElement> fields, bool includeIfNull) {
+  void _writeToJsonWithNullChecks(StringBuffer buffer,
+      Iterable<FieldElement> fields, bool classIncludeIfNull) {
     buffer.writeln('{');
 
     buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
@@ -160,48 +160,42 @@ class JsonSerializableGenerator
     var directWrite = true;
 
     for (var field in fields) {
-      var fieldName = field.name;
-      try {
-        var safeJsonKeyString = _safeNameAccess(field);
+      var safeFieldAccess = field.name;
+      var safeJsonKeyString = _safeNameAccess(field);
 
-        // If `fieldName` collides with one of the local helpers, prefix
-        // access with `this.`.
-        if (fieldName == toJsonMapVarName || fieldName == toJsonMapHelperName) {
-          fieldName = 'this.$fieldName';
-        }
+      // If `fieldName` collides with one of the local helpers, prefix
+      // access with `this.`.
+      if (safeFieldAccess == toJsonMapVarName ||
+          safeFieldAccess == toJsonMapHelperName) {
+        safeFieldAccess = 'this.$safeFieldAccess';
+      }
 
-        if (_includeIfNull(field, includeIfNull)) {
-          if (directWrite) {
-            buffer.writeln('$safeJsonKeyString : '
-                '${_serialize(field.type, fieldName, _nullable(field))},');
-          } else {
-            buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
-                '${_serialize(field.type, fieldName, _nullable(field))};');
-          }
+      if (_includeIfNull(field, classIncludeIfNull)) {
+        if (directWrite) {
+          buffer.writeln('$safeJsonKeyString : '
+              '${_serializeField(field, accessOverride:  safeFieldAccess)},');
         } else {
-          if (directWrite) {
-            // close the still-open map literal
-            buffer.writeln('};');
-            buffer.writeln();
+          buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
+              '${_serializeField(field, accessOverride:  safeFieldAccess)};');
+        }
+      } else {
+        if (directWrite) {
+          // close the still-open map literal
+          buffer.writeln('};');
+          buffer.writeln();
 
-            // write the helper to be used by all following null-excluding
-            // fields
-            buffer.writeln('''
+          // write the helper to be used by all following null-excluding
+          // fields
+          buffer.writeln('''
 void $toJsonMapHelperName(String key, dynamic value) {
   if (value != null) {
     $toJsonMapVarName[key] = value;
   }
 }''');
-            directWrite = false;
-          }
-          buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
-              '${_serialize(field.type, fieldName, _nullable(field))});');
+          directWrite = false;
         }
-      } on UnsupportedTypeError {
-        throw new InvalidGenerationSourceError(
-            'Could not generate `toJson` code for `${friendlyNameForElement(
-                field)}`.',
-            todo: 'Make sure all of the types are serializable.');
+        buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
+            '${_serializeField(field, accessOverride:  safeFieldAccess)});');
       }
     }
 
@@ -215,14 +209,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
     var pairs = <String>[];
     for (var field in fields) {
-      try {
-        pairs.add('${_safeNameAccess(field)}: '
-            '${_serialize(field.type, field.name, _nullable(field))}');
-      } on UnsupportedTypeError {
-        throw new InvalidGenerationSourceError(
-            'Could not generate `toJson` code for `${friendlyNameForElement(field)}`.',
-            todo: 'Make sure all of the types are serializable.');
-      }
+      pairs.add('${_safeNameAccess(field)}: ${_serializeField(field )}');
     }
     buffer.writeAll(pairs, ',\n');
 
@@ -333,6 +320,18 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
   Iterable<TypeHelper> get _allHelpers =>
       [_typeHelpers, _coreHelpers].expand((e) => e);
+
+  String _serializeField(FieldElement field, {String accessOverride}) {
+    accessOverride ??= field.name;
+    try {
+      return _serialize(field.type, accessOverride, _nullable(field));
+    } on UnsupportedTypeError {
+      throw new InvalidGenerationSourceError(
+          'Could not generate `toJson` code for '
+          '`${friendlyNameForElement(field)}`.',
+          todo: 'Make sure all of the types are serializable.');
+    }
+  }
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
