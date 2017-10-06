@@ -98,7 +98,7 @@ class JsonSerializableGenerator
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
         fieldsList,
-        key: (FieldElement f) => f.name);
+        key: (f) => (f as FieldElement).name);
 
     // Get the constructor to use for the factory
 
