@@ -116,6 +116,20 @@ class JsonSerializableGenerator
       }
     }
 
+    // Now we check for duplicate JSON keys due to colliding annotations.
+    // We do this now, since we have a final field list after any pruning done
+    // by `createFactory`.
+
+    fields.values.fold(new Set<String>(), (Set<String> set, fe) {
+      var jsonKey = _jsonKeyFor(fe).name ?? fe.name;
+      if (!set.add(jsonKey)) {
+        throw new InvalidGenerationSourceError(
+            'More than one field has the JSON key `$jsonKey`.',
+            todo: 'Check the `JsonKey` annotations on fields.');
+      }
+      return set;
+    });
+
     if (annotation.read('createToJson').boolValue) {
       //
       // Generate the mixin class

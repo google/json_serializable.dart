@@ -1,3 +1,7 @@
+## 0.2.5
+
+* Throw an exception if a duplicate JSON key is detected.
+
 ## 0.2.4+1
 
 * Throw a more helpful error when a constructor is missing.

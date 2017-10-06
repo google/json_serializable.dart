@@ -188,11 +188,29 @@ abstract class _$OrderSerializerMixin {
     });
   });
 
-  test('reads JsonKey annotations', () async {
-    var output = await _runForElementNamed('Person');
+  group('JsonKey', () {
+    test('works to change the name of a field', () async {
+      var output = await _runForElementNamed('Person');
 
-    expect(output, contains("'h': height,"));
-    expect(output, contains("..height = json['h']"));
+      expect(output, contains("'h': height,"));
+      expect(output, contains("..height = json['h']"));
+    });
+
+    test('works to change the name of a field', () async {
+      expect(
+          () => _runForElementNamed('KeyDupesField'),
+          throwsInvalidGenerationSourceError(
+              'More than one field has the JSON key `str`.',
+              'Check the `JsonKey` annotations on fields.'));
+    });
+
+    test('works to change the name of a field', () async {
+      expect(
+          () => _runForElementNamed('DupeKeys'),
+          throwsInvalidGenerationSourceError(
+              'More than one field has the JSON key `a`.',
+              'Check the `JsonKey` annotations on fields.'));
+    });
   });
 
   group('includeIfNull', () {
@@ -365,5 +383,22 @@ class NoCtorClass {
   final int member;
 
   factory TestDoneEvent.fromJson(Map<String, dynamic> json) => null;
+}
+
+@JsonSerializable(createFactory: false)
+class KeyDupesField {
+  @JsonKey(name: 'str')
+  int number;
+
+  String str;
+}
+
+@JsonSerializable(createFactory: false)
+class DupeKeys {
+  @JsonKey(name: 'a')
+  int number;
+
+  @JsonKey(name: 'a')
+  String str;
 }
 ''';
