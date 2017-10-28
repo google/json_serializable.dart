@@ -5,6 +5,8 @@
 @TestOn('!browser')
 library json_serializable.test.json_generator_test;
 
+// TODO(kevmoo): test all flavors of `nullable` - class, fields, etc
+
 import 'dart:async';
 
 import 'package:analyzer/dart/ast/ast.dart';

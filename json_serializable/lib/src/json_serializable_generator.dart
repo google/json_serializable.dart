@@ -106,8 +106,11 @@ class JsonSerializableGenerator
 
     var buffer = new StringBuffer();
 
-    if (annotation.read('createFactory').boolValue) {
-      var toSkip = _writeFactory(buffer, classElement, fields, prefix);
+    final classAnnotation = _valueForAnnotation(annotation);
+
+    if (classAnnotation.createFactory) {
+      var toSkip = _writeFactory(
+          buffer, classElement, fields, prefix, classAnnotation.nullable);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
@@ -130,7 +133,7 @@ class JsonSerializableGenerator
       return set;
     });
 
-    if (annotation.read('createToJson').boolValue) {
+    if (classAnnotation.createToJson) {
       //
       // Generate the mixin class
       //
@@ -143,15 +146,14 @@ class JsonSerializableGenerator
         buffer.writeln('  ${field.type} get ${field.name};');
       }
 
-      var includeIfNull = annotation.read('includeIfNull').boolValue;
-
       buffer.writeln('  Map<String, dynamic> toJson() ');
-      if (fieldsList.every((e) => _includeIfNull(e, includeIfNull))) {
+      if (fieldsList
+          .every((e) => _includeIfNull(e, classAnnotation.includeIfNull))) {
         // write simple `toJson` method that includes all keys...
-        _writeToJsonSimple(buffer, fields.values);
+        _writeToJsonSimple(buffer, fields.values, classAnnotation.nullable);
       } else {
         // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, fields.values, includeIfNull);
+        _writeToJsonWithNullChecks(buffer, fields.values, classAnnotation);
       }
 
       // end of the mixin class
@@ -162,7 +164,7 @@ class JsonSerializableGenerator
   }
 
   void _writeToJsonWithNullChecks(StringBuffer buffer,
-      Iterable<FieldElement> fields, bool classIncludeIfNull) {
+      Iterable<FieldElement> fields, JsonSerializable classAnnotation) {
     buffer.writeln('{');
 
     buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
@@ -184,13 +186,14 @@ class JsonSerializableGenerator
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
-      if (_includeIfNull(field, classIncludeIfNull)) {
+      var expression = _serializeField(field, classAnnotation.nullable,
+          accessOverride: safeFieldAccess);
+      if (_includeIfNull(field, classAnnotation.includeIfNull)) {
         if (directWrite) {
-          buffer.writeln('$safeJsonKeyString : '
-              '${_serializeField(field, accessOverride:  safeFieldAccess)},');
+          buffer.writeln('$safeJsonKeyString : $expression,');
         } else {
-          buffer.writeln('$toJsonMapVarName[$safeJsonKeyString] = '
-              '${_serializeField(field, accessOverride:  safeFieldAccess)};');
+          buffer
+              .writeln('$toJsonMapVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
@@ -208,8 +211,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
 }''');
           directWrite = false;
         }
-        buffer.writeln('$toJsonMapHelperName($safeJsonKeyString, '
-            '${_serializeField(field, accessOverride:  safeFieldAccess)});');
+        buffer
+            .writeln('$toJsonMapHelperName($safeJsonKeyString, $expression);');
       }
     }
 
@@ -218,12 +221,14 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.writeln('}');
   }
 
-  void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields) {
+  void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields,
+      bool classSupportNullable) {
     buffer.writeln('=> <String, dynamic>{');
 
     var pairs = <String>[];
     for (var field in fields) {
-      pairs.add('${_safeNameAccess(field)}: ${_serializeField(field )}');
+      pairs.add(
+          '${_safeNameAccess(field)}: ${_serializeField(field, classSupportNullable )}');
     }
     buffer.writeAll(pairs, ',\n');
 
@@ -235,7 +240,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
       StringBuffer buffer,
       ClassElement classElement,
       Map<String, FieldElement> fields,
-      String prefix) {
+      String prefix,
+      bool classSupportNullable) {
     // creating a copy so it can be mutated
     var fieldsToSet = new Map<String, FieldElement>.from(fields);
     var className = classElement.displayName;
@@ -303,7 +309,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.write('    new $className(');
     buffer.writeAll(
         ctorArguments.map((paramElement) => _deserializeForField(
-            fields[paramElement.name],
+            fields[paramElement.name], classSupportNullable,
             ctorParam: paramElement)),
         ', ');
     if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
@@ -312,7 +318,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.writeAll(
         ctorNamedArguments.map((paramElement) =>
             '${paramElement.name}: ' +
-            _deserializeForField(fields[paramElement.name],
+            _deserializeForField(
+                fields[paramElement.name], classSupportNullable,
                 ctorParam: paramElement)),
         ', ');
 
@@ -323,7 +330,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       for (var field in fieldsToSet.values) {
         buffer.writeln();
         buffer.write('      ..${field.name} = ');
-        buffer.write(_deserializeForField(field));
+        buffer.write(_deserializeForField(field, classSupportNullable));
       }
       buffer.writeln(';');
     }
@@ -335,10 +342,12 @@ void $toJsonMapHelperName(String key, dynamic value) {
   Iterable<TypeHelper> get _allHelpers =>
       [_typeHelpers, _coreHelpers].expand((e) => e);
 
-  String _serializeField(FieldElement field, {String accessOverride}) {
+  String _serializeField(FieldElement field, bool classIncludeNullable,
+      {String accessOverride}) {
     accessOverride ??= field.name;
     try {
-      return _serialize(field.type, accessOverride, _nullable(field));
+      return _serialize(
+          field.type, accessOverride, _nullable(field, classIncludeNullable));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
           'Could not generate `toJson` code for '
@@ -356,14 +365,15 @@ void $toJsonMapHelperName(String key, dynamic value) {
               orElse: () =>
                   throw new UnsupportedTypeError(targetType, expression));
 
-  String _deserializeForField(FieldElement field,
+  String _deserializeForField(FieldElement field, bool classSupportNullable,
       {ParameterElement ctorParam}) {
     var jsonKey = _safeNameAccess(field);
 
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _deserialize(targetType, 'json[$jsonKey]', _nullable(field));
+      return _deserialize(
+          targetType, 'json[$jsonKey]', _nullable(field, classSupportNullable));
     } on UnsupportedTypeError {
       throw new InvalidGenerationSourceError(
           'Could not generate fromJson code for '
@@ -390,10 +400,11 @@ String _safeNameAccess(FieldElement field) {
 /// Returns `true` if the field should be treated as potentially nullable.
 ///
 /// If no [JsonKey] annotation is present on the field, `true` is returned.
-bool _nullable(FieldElement field) => _jsonKeyFor(field).nullable;
+bool _nullable(FieldElement field, bool parentValue) =>
+    _jsonKeyFor(field).nullable ?? parentValue;
 
-bool _includeIfNull(FieldElement element, bool parentValue) =>
-    _jsonKeyFor(element).includeIfNull ?? parentValue;
+bool _includeIfNull(FieldElement field, bool parentValue) =>
+    _jsonKeyFor(field).includeIfNull ?? parentValue;
 
 JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];
@@ -415,6 +426,13 @@ JsonKey _jsonKeyFor(FieldElement element) {
 
   return key;
 }
+
+JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
+    new JsonSerializable(
+        createToJson: annotation.read('createToJson').boolValue,
+        createFactory: annotation.read('createFactory').boolValue,
+        nullable: annotation.read('nullable').boolValue,
+        includeIfNull: annotation.read('includeIfNull').boolValue);
 
 final _jsonKeyExpando = new Expando<JsonKey>();
 

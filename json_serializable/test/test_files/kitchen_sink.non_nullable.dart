@@ -2,20 +2,29 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// Generator: Test Boilerplate generator
+// **************************************************************************
+
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitchen_sink;
+library json_serializable.test.kitchen_sink_nullable;
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'kitchen_sink.dart';
 import 'test_files_util.dart';
 
-part 'kitchen_sink.g.dart';
+part 'kitchen_sink.non_nullable.g.dart';
 
-List<T> _defaultList<T>() => null;
-Map _defaultMap() => null;
+List<T> _defaultList<T>() => <T>[];
+Map _defaultMap() => {};
 
-@JsonSerializable()
-class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
+@JsonSerializable(nullable: false)
+class KitchenSinkNonNullable extends Object
+    with _$KitchenSinkNonNullableSerializerMixin
+    implements KitchenSink {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
   static final reason = 42;
@@ -29,7 +38,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   final Iterable<int> _intIterable;
   final Iterable<DateTime> _dateTimeIterable;
 
-  KitchenSink(
+  KitchenSinkNonNullable(
       {Iterable iterable,
       Iterable<dynamic> dynamicIterable,
       Iterable<Object> objectIterable,
@@ -41,11 +50,11 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList();
 
-  factory KitchenSink.fromJson(Map<String, Object> json) =>
-      _$KitchenSinkFromJson(json);
+  factory KitchenSinkNonNullable.fromJson(Map<String, Object> json) =>
+      _$KitchenSinkNonNullableFromJson(json);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime;
+  DateTime dateTime = new DateTime(1981, 6, 5);
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;

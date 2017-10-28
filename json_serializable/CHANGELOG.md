@@ -2,6 +2,8 @@
 
 * Throw an exception if a duplicate JSON key is detected.
 
+* Support the `nullable` field on the `JsonSerializable` class annotation.
+
 ## 0.2.4+1
 
 * Throw a more helpful error when a constructor is missing.
