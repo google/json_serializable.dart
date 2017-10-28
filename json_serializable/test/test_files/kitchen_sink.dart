@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitche_sink;
+library json_serializable.test.kitchen_sink;
 
 import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
