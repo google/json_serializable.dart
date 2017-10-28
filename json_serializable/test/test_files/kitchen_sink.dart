@@ -82,7 +82,7 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
 }
 
 //TODO(kevmoo) - finish this...
-bool sinkEquals(KitchenSink a, other) =>
+bool sinkEquals(KitchenSink a, Object other) =>
     other is KitchenSink &&
     a.dateTime == other.dateTime &&
     _deepEquals(a.iterable, other.iterable) &&
@@ -92,4 +92,5 @@ bool sinkEquals(KitchenSink a, other) =>
     _deepEquals(a.stringDateTimeMap, other.stringDateTimeMap) &&
     _deepEquals(a.crazyComplex, other.crazyComplex);
 
-bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
+bool _deepEquals(Object a, Object b) =>
+    const DeepCollectionEquality().equals(a, b);
