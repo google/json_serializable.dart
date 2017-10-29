@@ -83,17 +83,7 @@ class JsonSerializableGenerator
 
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
-    fieldsList.sort((FieldElement a, FieldElement b) {
-      int offsetFor(FieldElement e) {
-        if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
-          assert(e.nameOffset == -1);
-          return e.getter.nameOffset;
-        }
-        return e.nameOffset;
-      }
-
-      return offsetFor(a).compareTo(offsetFor(b));
-    });
+    fieldsList.sort((a, b) => _offsetFor(a).compareTo(_offsetFor(b)));
 
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
@@ -134,10 +124,12 @@ class JsonSerializableGenerator
     });
 
     if (classAnnotation.createToJson) {
+      var mixClassName = '${prefix}SerializerMixin';
+
       //
       // Generate the mixin class
       //
-      buffer.writeln('abstract class ${prefix}SerializerMixin {');
+      buffer.writeln('abstract class $mixClassName {');
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
@@ -157,7 +149,7 @@ class JsonSerializableGenerator
       }
 
       // end of the mixin class
-      buffer.write('}');
+      buffer.writeln('}');
     }
 
     return buffer.toString();
@@ -437,3 +429,13 @@ JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
 final _jsonKeyExpando = new Expando<JsonKey>();
 
 final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);
+
+/// Returns the offset of given field/property in its source file – with a
+/// preference for the getter if it's defined.
+int _offsetFor(FieldElement e) {
+  if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
+    assert(e.nameOffset == -1);
+    return e.getter.nameOffset;
+  }
+  return e.nameOffset;
+}
