@@ -198,7 +198,7 @@ abstract class _$OrderSerializerMixin {
       expect(output, contains("..height = json['h']"));
     });
 
-    test('works to change the name of a field', () async {
+    test('fails if name duplicates existing field', () async {
       expect(
           () => _runForElementNamed('KeyDupesField'),
           throwsInvalidGenerationSourceError(
@@ -206,7 +206,7 @@ abstract class _$OrderSerializerMixin {
               'Check the `JsonKey` annotations on fields.'));
     });
 
-    test('works to change the name of a field', () async {
+    test('fails if two names collide', () async {
       expect(
           () => _runForElementNamed('DupeKeys'),
           throwsInvalidGenerationSourceError(
