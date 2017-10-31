@@ -11,22 +11,31 @@ class MapHelper extends TypeHelper {
 
   @override
   String serialize(DartType targetType, String expression, bool nullable,
-      TypeHelperGenerator serializeNested) {
+      SerializeContext context) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
     var args = typeArgumentsOf(targetType, _coreMapChecker);
     assert(args.length == 2);
 
-    var keyArg = args[0];
+    var keyType = args[0];
     var valueType = args[1];
 
-    _checkSafeKeyType(expression, keyArg);
+    _checkSafeKeyType(expression, keyType);
 
-    var subFieldValue = serializeNested(valueType, _closureArg, nullable);
+    var subFieldValue = context.serialize(valueType, _closureArg, nullable);
 
     if (_closureArg == subFieldValue) {
       return expression;
+    }
+
+    if (context.useWrappers) {
+      var method = '\$wrapMap';
+      if (nullable) {
+        method = '${method}HandleNull';
+      }
+
+      return '$method<$keyType, $valueType>($expression, ($_closureArg) => $subFieldValue)';
     }
 
     var result = 'new Map<String, dynamic>.fromIterables('
@@ -38,7 +47,7 @@ class MapHelper extends TypeHelper {
 
   @override
   String deserialize(DartType targetType, String expression, bool nullable,
-      TypeHelperGenerator deserializeNested) {
+      DeserializeContext context) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -69,7 +78,7 @@ class MapHelper extends TypeHelper {
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    var itemSubVal = deserializeNested(valueArg, _closureArg, nullable);
+    var itemSubVal = context.deserialize(valueArg, _closureArg, nullable);
 
     var result = 'new Map<String, $valueArg>.fromIterables('
         '($expression as Map<String, dynamic>).keys,'

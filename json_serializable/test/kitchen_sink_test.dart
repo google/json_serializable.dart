@@ -8,101 +8,82 @@ import 'package:json_serializable/src/utils.dart';
 
 import 'test_files/kitchen_sink.dart' as nullable;
 import 'test_files/kitchen_sink.non_nullable.dart' as nn;
+import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped;
+import 'test_files/kitchen_sink.wrapped.dart' as wrapped;
 import 'test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 void main() {
-  group('KitchenSink', () {
-    roundTripItem(KitchenSink p) {
-      roundTripObject(p, (json) => new nullable.KitchenSink.fromJson(json));
-    }
-
-    test('Fields with `!includeIfNull` should not be included when null', () {
-      var item = new nullable.KitchenSink();
-
-      var expectedDefaultKeys = _expectedOrder.toSet()
-        ..removeAll(_excludeIfNullKeys);
-
-      var encoded = item.toJson();
-
-      expect(encoded.keys, orderedEquals(expectedDefaultKeys));
-
-      for (var key in expectedDefaultKeys) {
-        expect(encoded, containsPair(key, isNull));
-      }
+  group('nullable', () {
+    group('unwrapped', () {
+      _nullableTests(
+          (
+                  {Iterable iterable,
+                  Iterable<dynamic> dynamicIterable,
+                  Iterable<Object> objectIterable,
+                  Iterable<int> intIterable,
+                  Iterable<DateTime> dateTimeIterable}) =>
+              new nullable.KitchenSink(
+                  iterable: iterable,
+                  dynamicIterable: dynamicIterable,
+                  objectIterable: objectIterable,
+                  intIterable: intIterable,
+                  dateTimeIterable: dateTimeIterable),
+          (j) => new nullable.KitchenSink.fromJson(j));
     });
 
-    test('list and map of DateTime', () {
-      var now = new DateTime.now();
-      var item = new nullable.KitchenSink(dateTimeIterable: <DateTime>[now])
-        ..dateTimeList = <DateTime>[now, null]
-        ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
-
-      roundTripItem(item);
+    group('wrapped', () {
+      _nullableTests(
+          (
+                  {Iterable iterable,
+                  Iterable<dynamic> dynamicIterable,
+                  Iterable<Object> objectIterable,
+                  Iterable<int> intIterable,
+                  Iterable<DateTime> dateTimeIterable}) =>
+              new wrapped.KitchenSink(
+                  iterable: iterable,
+                  dynamicIterable: dynamicIterable,
+                  objectIterable: objectIterable,
+                  intIterable: intIterable,
+                  dateTimeIterable: dateTimeIterable),
+          (j) => new wrapped.KitchenSink.fromJson(j));
     });
-
-    test('complex nested type', () {
-      var item = new nullable.KitchenSink()
-        ..crazyComplex = [
-          null,
-          {},
-          {
-            'null': null,
-            'empty': {},
-            'items': {
-              'null': null,
-              'empty': [],
-              'items': [
-                null,
-                [],
-                [new DateTime.now()]
-              ]
-            }
-          }
-        ];
-      roundTripItem(item);
-    });
-
-    _sharedTests(
-        (
-                {Iterable iterable,
-                Iterable<dynamic> dynamicIterable,
-                Iterable<Object> objectIterable,
-                Iterable<int> intIterable,
-                Iterable<DateTime> dateTimeIterable}) =>
-            new nullable.KitchenSink(
-                iterable: iterable,
-                dynamicIterable: dynamicIterable,
-                objectIterable: objectIterable,
-                intIterable: intIterable,
-                dateTimeIterable: dateTimeIterable),
-        (j) => new nullable.KitchenSink.fromJson(j));
   });
 
-  group('KitchenSink - non-nullable', () {
-    test('with null values fails serialization', () {
-      expect(() => (new nn.KitchenSink()..stringDateTimeMap = null).toJson(),
-          throwsNoSuchMethodError);
+  group('non-nullable', () {
+    group('unwrapped', () {
+      _nonNullableTests(
+          (
+                  {Iterable iterable,
+                  Iterable<dynamic> dynamicIterable,
+                  Iterable<Object> objectIterable,
+                  Iterable<int> intIterable,
+                  Iterable<DateTime> dateTimeIterable}) =>
+              new nn.KitchenSink(
+                  iterable: iterable,
+                  dynamicIterable: dynamicIterable,
+                  objectIterable: objectIterable,
+                  intIterable: intIterable,
+                  dateTimeIterable: dateTimeIterable),
+          (j) => new nn.KitchenSink.fromJson(j));
     });
 
-    test('with empty json fails deserialization', () {
-      expect(() => new nn.KitchenSink.fromJson({}), throwsNoSuchMethodError);
+    group('wrapped', () {
+      _nonNullableTests(
+          (
+                  {Iterable iterable,
+                  Iterable<dynamic> dynamicIterable,
+                  Iterable<Object> objectIterable,
+                  Iterable<int> intIterable,
+                  Iterable<DateTime> dateTimeIterable}) =>
+              new nnwrapped.KitchenSink(
+                  iterable: iterable,
+                  dynamicIterable: dynamicIterable,
+                  objectIterable: objectIterable,
+                  intIterable: intIterable,
+                  dateTimeIterable: dateTimeIterable),
+          (j) => new nnwrapped.KitchenSink.fromJson(j));
     });
-
-    _sharedTests(
-        (
-                {Iterable iterable,
-                Iterable<dynamic> dynamicIterable,
-                Iterable<Object> objectIterable,
-                Iterable<int> intIterable,
-                Iterable<DateTime> dateTimeIterable}) =>
-            new nn.KitchenSink(
-                iterable: iterable,
-                dynamicIterable: dynamicIterable,
-                objectIterable: objectIterable,
-                intIterable: intIterable,
-                dateTimeIterable: dateTimeIterable),
-        (j) => new nn.KitchenSink.fromJson(j));
   });
 }
 
@@ -112,6 +93,74 @@ typedef KitchenSink KitchenSinkCtor(
     Iterable<Object> objectIterable,
     Iterable<int> intIterable,
     Iterable<DateTime> dateTimeIterable});
+
+void _nonNullableTests(
+    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+  test('with null values fails serialization', () {
+    expect(() => (ctor()..stringDateTimeMap = null).toJson(),
+        throwsNoSuchMethodError);
+  });
+
+  test('with empty json fails deserialization', () {
+    expect(() => fromJson({}), throwsNoSuchMethodError);
+  });
+  _sharedTests(ctor, fromJson);
+}
+
+void _nullableTests(
+    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+  roundTripItem(KitchenSink p) {
+    roundTripObject(p, (json) => fromJson(json));
+  }
+
+  test('Fields with `!includeIfNull` should not be included when null', () {
+    var item = ctor();
+
+    var expectedDefaultKeys = _expectedOrder.toSet()
+      ..removeAll(_excludeIfNullKeys);
+
+    var encoded = item.toJson();
+
+    expect(encoded.keys, orderedEquals(expectedDefaultKeys));
+
+    for (var key in expectedDefaultKeys) {
+      expect(encoded, containsPair(key, isNull));
+    }
+  });
+
+  test('list and map of DateTime', () {
+    var now = new DateTime.now();
+    var item = ctor(dateTimeIterable: <DateTime>[now])
+      ..dateTimeList = <DateTime>[now, null]
+      ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
+
+    roundTripItem(item);
+  });
+
+  test('complex nested type', () {
+    var item = ctor()
+      ..crazyComplex = [
+        null,
+        {},
+        {
+          'null': null,
+          'empty': {},
+          'items': {
+            'null': null,
+            'empty': [],
+            'items': [
+              null,
+              [],
+              [new DateTime.now()]
+            ]
+          }
+        }
+      ];
+    roundTripItem(item);
+  });
+
+  _sharedTests(ctor, fromJson);
+}
 
 void _sharedTests(
     KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {

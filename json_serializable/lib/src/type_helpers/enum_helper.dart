@@ -7,7 +7,7 @@ class EnumHelper extends TypeHelper {
 
   @override
   String serialize(DartType targetType, String expression, bool nullable,
-      TypeHelperGenerator serializeNested) {
+      SerializeContext context) {
     if (targetType is InterfaceType && targetType.element.isEnum) {
       return commonNullPrefix(
           nullable, expression, "$expression.toString().split('.')[1]");
@@ -18,7 +18,7 @@ class EnumHelper extends TypeHelper {
 
   @override
   String deserialize(DartType targetType, String expression, bool nullable,
-      TypeHelperGenerator deserializeNested) {
+      DeserializeContext context) {
     if (targetType is InterfaceType && targetType.element.isEnum) {
       return commonNullPrefix(
           nullable,

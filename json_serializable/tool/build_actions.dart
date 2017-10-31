@@ -21,6 +21,14 @@ final List<BuildAction> buildActions = [
         'test/test_files/json_test_example.dart'
       ]),
   new BuildAction(
+      new LibraryBuilder(new _WrappedGenerator(),
+          generatedExtension: '.wrapped.dart', header: _copyrightHeader),
+      'json_serializable',
+      inputs: const [
+        'test/test_files/kitchen_sink.dart',
+        'test/test_files/kitchen_sink.non_nullable.dart'
+      ]),
+  new BuildAction(
     new PartBuilder(
         const [const JsonSerializableGenerator(), const JsonLiteralGenerator()],
         header: _copyrightHeader),
@@ -32,6 +40,14 @@ final List<BuildAction> buildActions = [
       'test/test_files/json_test_example.non_nullable.dart',
       'test/test_files/kitchen_sink.dart',
       'test/test_files/kitchen_sink.non_nullable.dart'
+    ],
+  ),
+  new BuildAction(
+    new PartBuilder(const [const JsonSerializableGenerator(useWrappers: true)],
+        header: _copyrightHeader),
+    'json_serializable',
+    inputs: const [
+      'test/test_files/kitchen_sink*wrapped.dart',
     ],
   )
 ];
@@ -73,6 +89,27 @@ class _NonNullableGenerator extends Generator {
             'DateTime dateTime = new DateTime(1981, 6, 5);')
       ]);
     }
+
+    return _Replacement.generate(content, replacements);
+  }
+}
+
+class _WrappedGenerator extends Generator {
+  @override
+  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+    final path = buildStep.inputId.path;
+    final baseName = p.basenameWithoutExtension(path);
+
+    final content = await buildStep.readAsString(buildStep.inputId);
+    var replacements = <_Replacement>[
+      new _Replacement(_copyrightContent, ''),
+      new _Replacement('library ${buildStep.inputId.package}.test.$baseName',
+          'library ${buildStep.inputId.package}.test.${baseName}_wrapped'),
+      new _Replacement(
+        "part '${baseName}.g.dart",
+        "part '${baseName}.wrapped.g.dart",
+      ),
+    ];
 
     return _Replacement.generate(content, replacements);
   }
