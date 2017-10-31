@@ -78,7 +78,7 @@ void main() {
         (j) => new KitchenSink.fromJson(j));
   });
 
-  group('BathTub', () {
+  group('KitchenSink - non-nullable', () {
     test('with null values fails serialization', () {
       expect(() => (new nn.KitchenSink()..stringDateTimeMap = null).toJson(),
           throwsNoSuchMethodError);
