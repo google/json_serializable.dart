@@ -22,7 +22,13 @@ final List<BuildAction> buildActions = [
         const [const JsonSerializableGenerator(), const JsonLiteralGenerator()],
         header: _copyrightHeader),
     'json_serializable',
-    inputs: const ['example/*.dart', 'test/test_files/*.dart'],
+    inputs: const [
+      'example/*.dart',
+      'test/test_files/json_literal.dart',
+      'test/test_files/json_test_example.dart',
+      'test/test_files/kitchen_sink.dart',
+      'test/test_files/kitchen_sink.non_nullable.dart'
+    ],
   )
 ];
 
