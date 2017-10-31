@@ -4,50 +4,47 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.kitchen_sink_nullable;
+part of json_serializable.test.kitchen_sink_non_nullable;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSinkNonNullable _$KitchenSinkNonNullableFromJson(
-        Map<String, dynamic> json) =>
-    new KitchenSinkNonNullable(
-        iterable: json['iterable'] as List,
-        dynamicIterable: json['dynamicIterable'] as List,
-        objectIterable: json['objectIterable'] as List,
-        intIterable: (json['intIterable'] as List).map((e) => e as int),
-        dateTimeIterable: (json['datetime-iterable'] as List)
-            .map((e) => DateTime.parse(e as String)))
-      ..dateTime = DateTime.parse(json['dateTime'] as String)
-      ..list = json['list'] as List
-      ..dynamicList = json['dynamicList'] as List
-      ..objectList = json['objectList'] as List
-      ..intList = (json['intList'] as List).map((e) => e as int).toList()
-      ..dateTimeList = (json['dateTimeList'] as List)
-          .map((e) => DateTime.parse(e as String))
-          .toList()
-      ..map = json['map'] as Map<String, dynamic>
-      ..stringStringMap =
-          new Map<String, String>.from(json['stringStringMap'] as Map)
-      ..stringIntMap = new Map<String, int>.from(json['stringIntMap'] as Map)
-      ..stringDateTimeMap = new Map<String, DateTime>.fromIterables(
-          (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
-          (json['stringDateTimeMap'] as Map)
-              .values
-              .map((e) => DateTime.parse(e as String)))
-      ..crazyComplex = (json['crazyComplex'] as List)
-          .map((e) => new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-              (e as Map<String, dynamic>).keys,
-              (e as Map)
-                  .values
-                  .map((e) => new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
-          .toList()
-      ..val = new Map<String, bool>.from(json['val'] as Map)
-      ..writeNotNull = json['writeNotNull'] as bool
-      ..string = json[r'$string'] as String;
+KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
+    iterable: json['iterable'] as List,
+    dynamicIterable: json['dynamicIterable'] as List,
+    objectIterable: json['objectIterable'] as List,
+    intIterable: (json['intIterable'] as List).map((e) => e as int),
+    dateTimeIterable: (json['datetime-iterable'] as List)
+        .map((e) => DateTime.parse(e as String)))
+  ..dateTime = DateTime.parse(json['dateTime'] as String)
+  ..list = json['list'] as List
+  ..dynamicList = json['dynamicList'] as List
+  ..objectList = json['objectList'] as List
+  ..intList = (json['intList'] as List).map((e) => e as int).toList()
+  ..dateTimeList = (json['dateTimeList'] as List)
+      .map((e) => DateTime.parse(e as String))
+      .toList()
+  ..map = json['map'] as Map<String, dynamic>
+  ..stringStringMap =
+      new Map<String, String>.from(json['stringStringMap'] as Map)
+  ..stringIntMap = new Map<String, int>.from(json['stringIntMap'] as Map)
+  ..stringDateTimeMap = new Map<String, DateTime>.fromIterables(
+      (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
+      (json['stringDateTimeMap'] as Map)
+          .values
+          .map((e) => DateTime.parse(e as String)))
+  ..crazyComplex = (json['crazyComplex'] as List)
+      .map((e) => new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
+          (e as Map<String, dynamic>).keys,
+          (e as Map).values.map((e) =>
+              new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
+      .toList()
+  ..val = new Map<String, bool>.from(json['val'] as Map)
+  ..writeNotNull = json['writeNotNull'] as bool
+  ..string = json[r'$string'] as String;
 
-abstract class _$KitchenSinkNonNullableSerializerMixin {
+abstract class _$KitchenSinkSerializerMixin {
   DateTime get dateTime;
   Iterable<dynamic> get iterable;
   Iterable<dynamic> get dynamicIterable;

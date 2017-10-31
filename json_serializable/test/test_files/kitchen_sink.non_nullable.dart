@@ -5,15 +5,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: Test Boilerplate generator
+// Generator: _NonNullableGenerator
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitchen_sink_nullable;
+library json_serializable.test.kitchen_sink_non_nullable;
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'kitchen_sink.dart';
+import 'kitchen_sink.dart' as k;
 import 'test_files_util.dart';
 
 part 'kitchen_sink.non_nullable.g.dart';
@@ -22,9 +22,9 @@ List<T> _defaultList<T>() => <T>[];
 Map _defaultMap() => {};
 
 @JsonSerializable(nullable: false)
-class KitchenSinkNonNullable extends Object
-    with _$KitchenSinkNonNullableSerializerMixin
-    implements KitchenSink {
+class KitchenSink extends Object
+    with _$KitchenSinkSerializerMixin
+    implements k.KitchenSink {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
   static final reason = 42;
@@ -38,7 +38,7 @@ class KitchenSinkNonNullable extends Object
   final Iterable<int> _intIterable;
   final Iterable<DateTime> _dateTimeIterable;
 
-  KitchenSinkNonNullable(
+  KitchenSink(
       {Iterable iterable,
       Iterable<dynamic> dynamicIterable,
       Iterable<Object> objectIterable,
@@ -50,8 +50,8 @@ class KitchenSinkNonNullable extends Object
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList();
 
-  factory KitchenSinkNonNullable.fromJson(Map<String, Object> json) =>
-      _$KitchenSinkNonNullableFromJson(json);
+  factory KitchenSink.fromJson(Map<String, Object> json) =>
+      _$KitchenSinkFromJson(json);
 
   @JsonKey(includeIfNull: false)
   DateTime dateTime = new DateTime(1981, 6, 5);
