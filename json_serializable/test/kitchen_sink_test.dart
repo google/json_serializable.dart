@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 import 'package:json_serializable/src/utils.dart';
 
 import 'test_files/kitchen_sink.dart';
-import 'test_files/kitchen_sink.non_nullable.dart';
+import 'test_files/kitchen_sink.non_nullable.dart' as nn;
 import 'test_utils.dart';
 
 void main() {
@@ -80,15 +80,12 @@ void main() {
 
   group('BathTub', () {
     test('with null values fails serialization', () {
-      expect(
-          () =>
-              (new KitchenSinkNonNullable()..stringDateTimeMap = null).toJson(),
+      expect(() => (new nn.KitchenSink()..stringDateTimeMap = null).toJson(),
           throwsNoSuchMethodError);
     });
 
     test('with empty json fails deserialization', () {
-      expect(() => new KitchenSinkNonNullable.fromJson({}),
-          throwsNoSuchMethodError);
+      expect(() => new nn.KitchenSink.fromJson({}), throwsNoSuchMethodError);
     });
 
     _sharedTests(
@@ -98,13 +95,13 @@ void main() {
                 Iterable<Object> objectIterable,
                 Iterable<int> intIterable,
                 Iterable<DateTime> dateTimeIterable}) =>
-            new KitchenSinkNonNullable(
+            new nn.KitchenSink(
                 iterable: iterable,
                 dynamicIterable: dynamicIterable,
                 objectIterable: objectIterable,
                 intIterable: intIterable,
                 dateTimeIterable: dateTimeIterable),
-        (j) => new KitchenSinkNonNullable.fromJson(j));
+        (j) => new nn.KitchenSink.fromJson(j));
   });
 }
 

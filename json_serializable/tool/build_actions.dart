@@ -13,13 +13,10 @@ import 'package:source_gen/source_gen.dart';
 
 final List<BuildAction> buildActions = [
   new BuildAction(
-      new LibraryBuilder(
-          new _TestBoilerplateGenerator('test/test_files/kitchen_sink.dart'),
-          generatedExtension: '.non_nullable.dart',
-          additionalOutputExtensions: _TestBoilerplateGenerator.extensions,
-          header: _copyrightHeader),
+      new LibraryBuilder(new _NonNullableGenerator(),
+          generatedExtension: '.non_nullable.dart', header: _copyrightHeader),
       'json_serializable',
-      inputs: const ['test/test_files/*.dart']),
+      inputs: const ['test/test_files/kitchen_sink.dart']),
   new BuildAction(
     new PartBuilder(
         const [const JsonSerializableGenerator(), const JsonLiteralGenerator()],
@@ -37,50 +34,37 @@ final _copyrightContent =
 
 final _copyrightHeader = '$_copyrightContent\n$defaultFileHeader';
 
-class _TestBoilerplateGenerator extends Generator {
-  static final extensions = const ['.nullable.dart'];
-  final String path;
-  final String _baseFileName;
-
-  _TestBoilerplateGenerator(this.path)
-      : _baseFileName = p.basenameWithoutExtension(path) {
-    assert(p.extension(path) == '.dart');
-    assert(!_baseFileName.contains('.'));
-  }
-
+class _NonNullableGenerator extends Generator {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
-    if (buildStep.inputId.path != path) {
-      return null;
-    }
+    final path = buildStep.inputId.path;
+    final baseName = p.basenameWithoutExtension(path);
 
     // 1) - source file
     final f1Content = await buildStep.readAsString(buildStep.inputId);
     final f1LibraryDirective =
-        'library ${buildStep.inputId.package}.test.$_baseFileName';
-    assert(f1Content.contains(f1LibraryDirective));
-    final f1PartDirective = "part '${_baseFileName}.g.dart";
-    assert(f1Content.contains(f1PartDirective));
+        'library ${buildStep.inputId.package}.test.$baseName';
+    final f1PartDirective = "part '${baseName}.g.dart";
 
-    var replacements = <Replacement>[
-      new Replacement(_copyrightContent, ''),
-      new Replacement(f1LibraryDirective,
-          'library ${buildStep.inputId.package}.test.${_baseFileName}_nullable'),
-      new Replacement(
+    var replacements = <_Replacement>[
+      new _Replacement(_copyrightContent, ''),
+      new _Replacement(f1LibraryDirective,
+          'library ${buildStep.inputId.package}.test.${baseName}_non_nullable'),
+      new _Replacement(
         f1PartDirective,
-        "part '${_baseFileName}.non_nullable.g.dart",
+        "part '${baseName}.non_nullable.g.dart",
       ),
-      new Replacement("import 'test_files_util.dart';",
-          "import 'kitchen_sink.dart';\nimport 'test_files_util.dart';"),
-      new Replacement('List<T> _defaultList<T>() => null;',
+      new _Replacement("import 'test_files_util.dart';",
+          "import 'kitchen_sink.dart' as k;\nimport 'test_files_util.dart';"),
+      new _Replacement('List<T> _defaultList<T>() => null;',
           'List<T> _defaultList<T>() => <T>[];'),
-      new Replacement('Map _defaultMap() => null;', 'Map _defaultMap() => {};'),
-      new Replacement(
+      new _Replacement(
+          'Map _defaultMap() => null;', 'Map _defaultMap() => {};'),
+      new _Replacement(
           '@JsonSerializable()', '@JsonSerializable(nullable: false)'),
-      new Replacement('KitchenSink', 'KitchenSinkNonNullable', false),
-      new Replacement(r'with _$KitchenSinkNonNullableSerializerMixin {',
-          r'with _$KitchenSinkNonNullableSerializerMixin implements KitchenSink {'),
-      new Replacement(
+      new _Replacement(r'with _$KitchenSinkSerializerMixin {',
+          r'with _$KitchenSinkSerializerMixin implements k.KitchenSink {'),
+      new _Replacement(
           'DateTime dateTime;', 'DateTime dateTime = new DateTime(1981, 6, 5);')
     ];
 
@@ -98,15 +82,12 @@ class _TestBoilerplateGenerator extends Generator {
 
     return f2Content;
   }
-
-  @override
-  String toString() => 'Test Boilerplate generator';
 }
 
-class Replacement {
-  final String existing;
+class _Replacement {
+  final Pattern existing;
   final String replacement;
   final bool single;
 
-  Replacement(this.existing, this.replacement, [this.single = true]);
+  _Replacement(this.existing, this.replacement, [this.single = true]);
 }
