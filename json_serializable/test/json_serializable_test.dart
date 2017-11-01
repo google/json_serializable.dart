@@ -63,11 +63,14 @@ void main() {
   });
 
   group('unserializable types', () {
+    final noSupportHelperFyi =
+        'Could not generate `toJson` code for `Stopwatch watch`.\n'
+        'None of the provided `TypeHelper` instances support the defined type.';
+
     test('for toJson', () async {
       expect(
           _runForElementNamed('NoSerializeFieldType'),
-          throwsInvalidGenerationSourceError(
-              'Could not generate `toJson` code for `Stopwatch watch`.',
+          throwsInvalidGenerationSourceError(noSupportHelperFyi,
               'Make sure all of the types are serializable.'));
     });
 
@@ -75,25 +78,26 @@ void main() {
       expect(
           _runForElementNamed('NoDeserializeFieldType'),
           throwsInvalidGenerationSourceError(
-              'Could not generate `fromJson` code for `Stopwatch watch`.',
+              noSupportHelperFyi.replaceFirst('toJson', 'fromJson'),
               'Make sure all of the types are serializable.'));
     });
+
+    final mapKeyFyi = 'Could not generate `toJson` code for '
+        '`Map<int, DateTime> intDateTimeMap` because of type `int`.\n'
+        'The type of the Map key must be `String`, `Object` or `dynamic`.';
 
     test('for toJson in Map key', () async {
       expect(
           _runForElementNamed('NoSerializeBadKey'),
           throwsInvalidGenerationSourceError(
-              'Could not generate `toJson` code for '
-              '`Map<int, DateTime> intDateTimeMap`.',
-              'Make sure all of the types are serializable.'));
+              mapKeyFyi, 'Make sure all of the types are serializable.'));
     });
 
     test('for fromJson', () async {
       expect(
           _runForElementNamed('NoDeserializeBadKey'),
           throwsInvalidGenerationSourceError(
-              'Could not generate `fromJson` code for '
-              '`Map<int, DateTime> intDateTimeMap` because of type `int`.',
+              mapKeyFyi.replaceFirst('toJson', 'fromJson'),
               'Make sure all of the types are serializable.'));
     });
   });

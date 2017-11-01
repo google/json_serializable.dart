@@ -344,13 +344,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       return _serialize(
           field.type, accessOverride, _nullable(field, classIncludeNullable));
     } on UnsupportedTypeError catch (e) {
-      var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
-
-      var message = 'Could not generate `toJson` code for '
-          '`${friendlyNameForElement(field)}`$extra.';
-
-      throw new InvalidGenerationSourceError(message,
-          todo: 'Make sure all of the types are serializable.');
+      throw _createInvalidGenerationError('toJson', field, e);
     }
   }
 
@@ -360,8 +354,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
       _allHelpers
           .map((h) => h.serialize(targetType, expression, nullable, _serialize))
           .firstWhere((r) => r != null,
-              orElse: () =>
-                  throw new UnsupportedTypeError(targetType, expression));
+              orElse: () => throw new UnsupportedTypeError(
+                  targetType, expression, _notSupportedWithTypeHelpersMsg));
 
   String _deserializeForField(FieldElement field, bool classSupportNullable,
       {ParameterElement ctorParam}) {
@@ -373,13 +367,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       return _deserialize(
           targetType, 'json[$jsonKey]', _nullable(field, classSupportNullable));
     } on UnsupportedTypeError catch (e) {
-      var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
-
-      var message = 'Could not generate `fromJson` code for '
-          '`${friendlyNameForElement(field)}`$extra.';
-
-      throw new InvalidGenerationSourceError(message,
-          todo: 'Make sure all of the types are serializable.');
+      throw _createInvalidGenerationError('fromJson', field, e);
     }
   }
 
@@ -388,8 +376,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
           .map((th) =>
               th.deserialize(targetType, expression, nullable, _deserialize))
           .firstWhere((r) => r != null,
-              orElse: () =>
-                  throw new UnsupportedTypeError(targetType, expression));
+              orElse: () => throw new UnsupportedTypeError(
+                  targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
 
 String _safeNameAccess(FieldElement field) {
@@ -456,4 +444,18 @@ int _offsetFor(FieldElement e) {
     return e.getter.nameOffset;
   }
   return e.nameOffset;
+}
+
+final _notSupportedWithTypeHelpersMsg =
+    'None of the provided `TypeHelper` instances support the defined type.';
+
+InvalidGenerationSourceError _createInvalidGenerationError(
+    String targetMember, FieldElement field, UnsupportedTypeError e) {
+  var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
+
+  var message = 'Could not generate `$targetMember` code for '
+      '`${friendlyNameForElement(field)}`$extra.\n${e.reason}';
+
+  return new InvalidGenerationSourceError(message,
+      todo: 'Make sure all of the types are serializable.');
 }
