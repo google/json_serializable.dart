@@ -78,8 +78,9 @@ const simpleJsonTypeChecker = const TypeChecker.any(const [
 class UnsupportedTypeError extends Error {
   final String expression;
   final DartType type;
+  final String reason;
 
-  UnsupportedTypeError(this.type, this.expression);
+  UnsupportedTypeError(this.type, this.expression, this.reason);
 }
 
 DartType _getImplementationType(DartType type, TypeChecker checker) {

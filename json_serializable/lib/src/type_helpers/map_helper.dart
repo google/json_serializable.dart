@@ -21,18 +21,7 @@ class MapHelper extends TypeHelper {
     var keyArg = args[0];
     var valueType = args[1];
 
-    // We're not going to handle converting key types at the moment
-    // So the only safe types for key are dynamic/Object/String
-    var safeKey = keyArg.isDynamic ||
-        keyArg.isObject ||
-        _stringTypeChecker.isExactlyType(keyArg);
-
-    if (!safeKey) {
-      // TODO: should add some logic to `UnsupportedTypeError` to allow more
-      //       details to be provided – such as this case where the `key` in
-      //       `targetType` is not supported.
-      throw new UnsupportedTypeError(targetType, expression);
-    }
+    _checkSafeKeyType(expression, keyArg);
 
     var subFieldValue = serializeNested(valueType, _closureArg, nullable);
 
@@ -62,15 +51,7 @@ class MapHelper extends TypeHelper {
     var keyArg = typeArgs.first;
     var valueArg = typeArgs.last;
 
-    // We're not going to handle converting key types at the moment
-    // So the only safe types for key are dynamic/Object/String
-    var safeKey = keyArg.isDynamic ||
-        keyArg.isObject ||
-        _stringTypeChecker.isExactlyType(keyArg);
-
-    if (!safeKey) {
-      throw new UnsupportedTypeError(keyArg, expression);
-    }
+    _checkSafeKeyType(expression, keyArg);
 
     // this is the trivial case. Do a runtime cast to the known type of JSON
     // map values - `Map<String, dynamic>`
@@ -95,6 +76,19 @@ class MapHelper extends TypeHelper {
         '($expression as Map).values.map(($_closureArg) => $itemSubVal))';
 
     return commonNullPrefix(nullable, expression, result);
+  }
+
+  void _checkSafeKeyType(String expression, DartType keyArg) {
+    // We're not going to handle converting key types at the moment
+    // So the only safe types for key are dynamic/Object/String
+    var safeKey = keyArg.isDynamic ||
+        keyArg.isObject ||
+        _stringTypeChecker.isExactlyType(keyArg);
+
+    if (!safeKey) {
+      throw new UnsupportedTypeError(keyArg, expression,
+          'The type of the Map key must be `String`, `Object` or `dynamic`.');
+    }
   }
 }
 
