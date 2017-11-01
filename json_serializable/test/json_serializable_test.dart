@@ -75,7 +75,7 @@ void main() {
       expect(
           _runForElementNamed('NoDeserializeFieldType'),
           throwsInvalidGenerationSourceError(
-              'Could not generate fromJson code for `Stopwatch watch`.',
+              'Could not generate `fromJson` code for `Stopwatch watch`.',
               'Make sure all of the types are serializable.'));
     });
 
@@ -83,7 +83,8 @@ void main() {
       expect(
           _runForElementNamed('NoSerializeBadKey'),
           throwsInvalidGenerationSourceError(
-              'Could not generate `toJson` code for `Map<int, DateTime> intDateTimeMap`.',
+              'Could not generate `toJson` code for '
+                  '`Map<int, DateTime> intDateTimeMap`.',
               'Make sure all of the types are serializable.'));
     });
 
@@ -91,7 +92,8 @@ void main() {
       expect(
           _runForElementNamed('NoDeserializeBadKey'),
           throwsInvalidGenerationSourceError(
-              'Could not generate fromJson code for `Map<int, DateTime> intDateTimeMap`.',
+              'Could not generate `fromJson` code for '
+              '`Map<int, DateTime> intDateTimeMap` because of type `int`.',
               'Make sure all of the types are serializable.'));
     });
   });

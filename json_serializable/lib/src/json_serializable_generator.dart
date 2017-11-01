@@ -343,10 +343,13 @@ void $toJsonMapHelperName(String key, dynamic value) {
     try {
       return _serialize(
           field.type, accessOverride, _nullable(field, classIncludeNullable));
-    } on UnsupportedTypeError {
-      throw new InvalidGenerationSourceError(
-          'Could not generate `toJson` code for '
-          '`${friendlyNameForElement(field)}`.',
+    } on UnsupportedTypeError catch (e) {
+      var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
+
+      var message = 'Could not generate `toJson` code for '
+          '`${friendlyNameForElement(field)}`$extra.';
+
+      throw new InvalidGenerationSourceError(message,
           todo: 'Make sure all of the types are serializable.');
     }
   }
@@ -369,10 +372,13 @@ void $toJsonMapHelperName(String key, dynamic value) {
     try {
       return _deserialize(
           targetType, 'json[$jsonKey]', _nullable(field, classSupportNullable));
-    } on UnsupportedTypeError {
-      throw new InvalidGenerationSourceError(
-          'Could not generate fromJson code for '
-          '`${friendlyNameForElement(field)}`.',
+    } on UnsupportedTypeError catch (e) {
+      var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
+
+      var message = 'Could not generate `fromJson` code for '
+          '`${friendlyNameForElement(field)}`$extra.';
+
+      throw new InvalidGenerationSourceError(message,
           todo: 'Make sure all of the types are serializable.');
     }
   }
