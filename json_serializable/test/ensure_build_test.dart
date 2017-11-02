@@ -7,29 +7,30 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
   String pkgRoot;
-  try {
+
+  setUpAll(() {
     pkgRoot = _runProc('git', ['rev-parse', '--show-toplevel']);
     var currentDir = Directory.current.resolveSymbolicLinksSync();
-    if (pkgRoot != currentDir) {
+
+    if (!p.equals(p.join(pkgRoot, 'json_serializable'), currentDir)) {
       throw new StateError('Expected the git root ($pkgRoot) '
           'to match the current directory ($currentDir).');
     }
-  } catch (e) {
-    print("Skipping this test – git didn't run correctly");
-    print(e);
-    return;
-  }
+  });
 
   test('ensure local build succeeds with no changes', () {
     // 1 - get a list of modified `.g.dart` files - should be empty
     //expect(_changedGeneratedFiles(), isEmpty);
 
     // 2 - run build - should be no output, since nothing should change
-    var result = _runProc('dart', ['--checked', 'tool/build.dart']);
+    // TODO(kevmoo): run checked after github.com/dart-lang/build/issues/566
+    // is fixed
+    var result = _runProc('dart', ['tool/build.dart']);
     expect(result,
         contains(new RegExp(r'Build: Succeeded after \S+ with \d+ outputs')));
 
@@ -46,7 +47,7 @@ Set<String> _changedGeneratedFiles() {
   return LineSplitter
       .split(output)
       .map((line) => line.split(_whitespace).last)
-      .where((path) => path.endsWith('.g.dart'))
+      .where((path) => path.endsWith('.dart'))
       .toSet();
 }
 
