@@ -84,7 +84,7 @@ void main() {
           _runForElementNamed('NoSerializeBadKey'),
           throwsInvalidGenerationSourceError(
               'Could not generate `toJson` code for '
-                  '`Map<int, DateTime> intDateTimeMap`.',
+              '`Map<int, DateTime> intDateTimeMap`.',
               'Make sure all of the types are serializable.'));
     });
 
