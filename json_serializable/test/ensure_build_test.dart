@@ -25,12 +25,10 @@ void main() {
 
   test('ensure local build succeeds with no changes', () {
     // 1 - get a list of modified `.g.dart` files - should be empty
-    //expect(_changedGeneratedFiles(), isEmpty);
+    expect(_changedGeneratedFiles(), isEmpty);
 
     // 2 - run build - should be no output, since nothing should change
-    // TODO(kevmoo): run checked after github.com/dart-lang/build/issues/566
-    // is fixed
-    var result = _runProc('dart', ['tool/build.dart']);
+    var result = _runProc('dart', ['--checked', 'tool/build.dart']);
     expect(result,
         contains(new RegExp(r'Build: Succeeded after \S+ with \d+ outputs')));
 
