@@ -9,12 +9,11 @@
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitchen_sink_non_nullable;
+library json_serializable.test.kitchen_sink.non_nullable;
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'kitchen_sink.dart' as k;
-import 'test_files_util.dart';
+import 'kitchen_sink_interface.dart' as k;
 
 part 'kitchen_sink.non_nullable.g.dart';
 
@@ -89,5 +88,5 @@ class KitchenSink extends Object
   @JsonKey(name: r'$string')
   String string;
 
-  bool operator ==(Object other) => sinkEquals(this, other);
+  bool operator ==(Object other) => k.sinkEquals(this, other);
 }

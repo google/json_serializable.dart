@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.kitchen_sink_non_nullable;
+part of json_serializable.test.kitchen_sink.non_nullable;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator

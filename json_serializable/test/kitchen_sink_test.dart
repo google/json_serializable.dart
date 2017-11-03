@@ -6,18 +6,19 @@ import 'package:test/test.dart';
 
 import 'package:json_serializable/src/utils.dart';
 
-import 'test_files/kitchen_sink.dart';
+import 'test_files/kitchen_sink.dart' as nullable;
 import 'test_files/kitchen_sink.non_nullable.dart' as nn;
+import 'test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 void main() {
   group('KitchenSink', () {
     roundTripItem(KitchenSink p) {
-      roundTripObject(p, (json) => new KitchenSink.fromJson(json));
+      roundTripObject(p, (json) => new nullable.KitchenSink.fromJson(json));
     }
 
     test('Fields with `!includeIfNull` should not be included when null', () {
-      var item = new KitchenSink();
+      var item = new nullable.KitchenSink();
 
       var expectedDefaultKeys = _expectedOrder.toSet()
         ..removeAll(_excludeIfNullKeys);
@@ -33,7 +34,7 @@ void main() {
 
     test('list and map of DateTime', () {
       var now = new DateTime.now();
-      var item = new KitchenSink(dateTimeIterable: <DateTime>[now])
+      var item = new nullable.KitchenSink(dateTimeIterable: <DateTime>[now])
         ..dateTimeList = <DateTime>[now, null]
         ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
 
@@ -41,7 +42,7 @@ void main() {
     });
 
     test('complex nested type', () {
-      var item = new KitchenSink()
+      var item = new nullable.KitchenSink()
         ..crazyComplex = [
           null,
           {},
@@ -69,13 +70,13 @@ void main() {
                 Iterable<Object> objectIterable,
                 Iterable<int> intIterable,
                 Iterable<DateTime> dateTimeIterable}) =>
-            new KitchenSink(
+            new nullable.KitchenSink(
                 iterable: iterable,
                 dynamicIterable: dynamicIterable,
                 objectIterable: objectIterable,
                 intIterable: intIterable,
                 dateTimeIterable: dateTimeIterable),
-        (j) => new KitchenSink.fromJson(j));
+        (j) => new nullable.KitchenSink.fromJson(j));
   });
 
   group('KitchenSink - non-nullable', () {

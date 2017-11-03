@@ -9,7 +9,7 @@
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.json_test_example_non_nullable;
+library json_serializable.test.json_test_example.non_nullable;
 
 import 'dart:collection';
 

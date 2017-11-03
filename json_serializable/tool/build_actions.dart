@@ -50,18 +50,13 @@ class _NonNullableGenerator extends Generator {
     final path = buildStep.inputId.path;
     final baseName = p.basenameWithoutExtension(path);
 
-    // 1) - source file
-    final f1Content = await buildStep.readAsString(buildStep.inputId);
-    final f1LibraryDirective =
-        'library ${buildStep.inputId.package}.test.$baseName';
-    final f1PartDirective = "part '${baseName}.g.dart";
-
+    final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = <_Replacement>[
       new _Replacement(_copyrightContent, ''),
-      new _Replacement(f1LibraryDirective,
-          'library ${buildStep.inputId.package}.test.${baseName}_non_nullable'),
+      new _Replacement('library ${buildStep.inputId.package}.test.$baseName',
+          'library ${buildStep.inputId.package}.test.${baseName}.non_nullable'),
       new _Replacement(
-        f1PartDirective,
+        "part '${baseName}.g.dart",
         "part '${baseName}.non_nullable.g.dart",
       ),
       new _Replacement(
@@ -70,30 +65,16 @@ class _NonNullableGenerator extends Generator {
 
     if (baseName == 'kitchen_sink') {
       replacements.addAll([
-        new _Replacement("import 'test_files_util.dart';",
-            "import 'kitchen_sink.dart' as k;\nimport 'test_files_util.dart';"),
         new _Replacement('List<T> _defaultList<T>() => null;',
             'List<T> _defaultList<T>() => <T>[];'),
         new _Replacement(
             'Map _defaultMap() => null;', 'Map _defaultMap() => {};'),
-        new _Replacement(r'with _$KitchenSinkSerializerMixin {',
-            r'with _$KitchenSinkSerializerMixin implements k.KitchenSink {'),
         new _Replacement('DateTime dateTime;',
             'DateTime dateTime = new DateTime(1981, 6, 5);')
       ]);
     }
 
-    var f2Content = f1Content;
-
-    for (var r in replacements) {
-      if (!f2Content.contains(r.existing)) {
-        throw new StateError(
-            'Input string did not contain `${r.existing}` as expected.');
-      }
-      f2Content = f2Content.replaceAll(r.existing, r.replacement);
-    }
-
-    return f2Content;
+    return _Replacement.generate(content, replacements);
   }
 }
 
@@ -102,4 +83,19 @@ class _Replacement {
   final String replacement;
 
   _Replacement(this.existing, this.replacement);
+
+  static String generate(
+      String inputContent, Iterable<_Replacement> replacements) {
+    var outputContent = inputContent;
+
+    for (var r in replacements) {
+      if (!outputContent.contains(r.existing)) {
+        throw new StateError(
+            'Input string did not contain `${r.existing}` as expected.');
+      }
+      outputContent = outputContent.replaceAll(r.existing, r.replacement);
+    }
+
+    return outputContent;
+  }
 }

@@ -7,7 +7,7 @@ library json_serializable.test.kitchen_sink;
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'test_files_util.dart';
+import 'kitchen_sink_interface.dart' as k;
 
 part 'kitchen_sink.g.dart';
 
@@ -15,7 +15,9 @@ List<T> _defaultList<T>() => null;
 Map _defaultMap() => null;
 
 @JsonSerializable()
-class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
+class KitchenSink extends Object
+    with _$KitchenSinkSerializerMixin
+    implements k.KitchenSink {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
   static final reason = 42;
@@ -80,5 +82,5 @@ class KitchenSink extends Object with _$KitchenSinkSerializerMixin {
   @JsonKey(name: r'$string')
   String string;
 
-  bool operator ==(Object other) => sinkEquals(this, other);
+  bool operator ==(Object other) => k.sinkEquals(this, other);
 }
