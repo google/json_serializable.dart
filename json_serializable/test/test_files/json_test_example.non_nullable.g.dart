@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.json_test_example;
+part of json_serializable.test.json_test_example_non_nullable;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
@@ -13,14 +13,9 @@ part of json_serializable.test.json_test_example;
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    json[r'$house'] == null
-        ? null
-        : House.values
-            .singleWhere((x) => x.toString() == "House.${json[r'$house']}"),
+    House.values.singleWhere((x) => x.toString() == "House.${json[r'$house']}"),
     middleName: json['middleName'] as String,
-    dateOfBirth: json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String));
+    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -32,27 +27,24 @@ abstract class _$PersonSerializerMixin {
         'firstName': firstName,
         'middleName': middleName,
         'lastName': lastName,
-        'dateOfBirth': dateOfBirth?.toIso8601String(),
-        r'$house': house == null ? null : house.toString().split('.')[1]
+        'dateOfBirth': dateOfBirth.toIso8601String(),
+        r'$house': house.toString().split('.')[1]
       };
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     Category.values
         .singleWhere((x) => x.toString() == "Category.${json['category']}"),
-    (json['items'] as List)?.map(
-        (e) => e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
+    (json['items'] as List)
+        .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int
   ..isRushed = json['isRushed'] as bool
-  ..platform = json['platform'] == null
-      ? null
-      : new Platform.fromJson(json['platform'] as String)
-  ..altPlatforms = json['altPlatforms'] == null
-      ? null
-      : new Map<String, Platform>.fromIterables(
-          (json['altPlatforms'] as Map<String, dynamic>).keys,
-          (json['altPlatforms'] as Map).values.map(
-              (e) => e == null ? null : new Platform.fromJson(e as String)));
+  ..platform = new Platform.fromJson(json['platform'] as String)
+  ..altPlatforms = new Map<String, Platform>.fromIterables(
+      (json['altPlatforms'] as Map<String, dynamic>).keys,
+      (json['altPlatforms'] as Map)
+          .values
+          .map((e) => new Platform.fromJson(e as String)));
 
 abstract class _$OrderSerializerMixin {
   int get count;
@@ -74,9 +66,9 @@ abstract class _$OrderSerializerMixin {
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
   ..itemNumber = json['item-number'] as int
   ..saleDates = (json['saleDates'] as List)
-      ?.map((e) => e == null ? null : DateTime.parse(e as String))
-      ?.toList()
-  ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
+      .map((e) => DateTime.parse(e as String))
+      .toList()
+  ..rates = (json['rates'] as List).map((e) => e as int).toList();
 
 abstract class _$ItemSerializerMixin {
   int get price;
@@ -95,17 +87,17 @@ abstract class _$ItemSerializerMixin {
     }
 
     writeNotNull('item-number', itemNumber);
-    val['saleDates'] = saleDates?.map((e) => e?.toIso8601String())?.toList();
+    val['saleDates'] = saleDates.map((e) => e.toIso8601String()).toList();
     val['rates'] = rates;
     return val;
   }
 }
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()
-  ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
-  ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
+  ..ints = (json['ints'] as List).map((e) => e as int).toList()
+  ..nums = (json['nums'] as List).map((e) => e as num).toList()
   ..doubles =
-      (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
+      (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
   ..nnDoubles =
       (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList();
 

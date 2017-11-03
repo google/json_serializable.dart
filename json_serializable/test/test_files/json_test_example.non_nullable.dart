@@ -2,19 +2,25 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// Generator: _NonNullableGenerator
+// **************************************************************************
+
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.json_test_example;
+library json_serializable.test.json_test_example_non_nullable;
 
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'json_test_example.g.dart';
+part 'json_test_example.non_nullable.g.dart';
 
 enum House { gryffindor, hufflepuff, ravenclaw, slytherin }
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
@@ -37,7 +43,7 @@ class Person extends Object with _$PersonSerializerMixin {
 
 enum Category { top, bottom, strange, charmed, up, down }
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class Order extends Object with _$OrderSerializerMixin {
   int count;
   bool isRushed;
@@ -64,7 +70,7 @@ class Order extends Object with _$OrderSerializerMixin {
       _deepEquals(altPlatforms, other.altPlatforms);
 }
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class Item extends Object with _$ItemSerializerMixin {
   final int price;
   @JsonKey(includeIfNull: false, name: 'item-number')
@@ -106,7 +112,7 @@ class Platform {
   String toJson() => description;
 }
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class Numbers extends Object with _$NumbersSerializerMixin {
   List<int> ints;
   List<num> nums;

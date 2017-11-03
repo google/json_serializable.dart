@@ -16,7 +16,10 @@ final List<BuildAction> buildActions = [
       new LibraryBuilder(new _NonNullableGenerator(),
           generatedExtension: '.non_nullable.dart', header: _copyrightHeader),
       'json_serializable',
-      inputs: const ['test/test_files/kitchen_sink.dart']),
+      inputs: const [
+        'test/test_files/kitchen_sink.dart',
+        'test/test_files/json_test_example.dart'
+      ]),
   new BuildAction(
     new PartBuilder(
         const [const JsonSerializableGenerator(), const JsonLiteralGenerator()],
@@ -26,6 +29,7 @@ final List<BuildAction> buildActions = [
       'example/*.dart',
       'test/test_files/json_literal.dart',
       'test/test_files/json_test_example.dart',
+      'test/test_files/json_test_example.non_nullable.dart',
       'test/test_files/kitchen_sink.dart',
       'test/test_files/kitchen_sink.non_nullable.dart'
     ],
@@ -60,19 +64,24 @@ class _NonNullableGenerator extends Generator {
         f1PartDirective,
         "part '${baseName}.non_nullable.g.dart",
       ),
-      new _Replacement("import 'test_files_util.dart';",
-          "import 'kitchen_sink.dart' as k;\nimport 'test_files_util.dart';"),
-      new _Replacement('List<T> _defaultList<T>() => null;',
-          'List<T> _defaultList<T>() => <T>[];'),
-      new _Replacement(
-          'Map _defaultMap() => null;', 'Map _defaultMap() => {};'),
       new _Replacement(
           '@JsonSerializable()', '@JsonSerializable(nullable: false)'),
-      new _Replacement(r'with _$KitchenSinkSerializerMixin {',
-          r'with _$KitchenSinkSerializerMixin implements k.KitchenSink {'),
-      new _Replacement(
-          'DateTime dateTime;', 'DateTime dateTime = new DateTime(1981, 6, 5);')
     ];
+
+    if (baseName == 'kitchen_sink') {
+      replacements.addAll([
+        new _Replacement("import 'test_files_util.dart';",
+            "import 'kitchen_sink.dart' as k;\nimport 'test_files_util.dart';"),
+        new _Replacement('List<T> _defaultList<T>() => null;',
+            'List<T> _defaultList<T>() => <T>[];'),
+        new _Replacement(
+            'Map _defaultMap() => null;', 'Map _defaultMap() => {};'),
+        new _Replacement(r'with _$KitchenSinkSerializerMixin {',
+            r'with _$KitchenSinkSerializerMixin implements k.KitchenSink {'),
+        new _Replacement('DateTime dateTime;',
+            'DateTime dateTime = new DateTime(1981, 6, 5);')
+      ]);
+    }
 
     var f2Content = f1Content;
 
@@ -81,9 +90,7 @@ class _NonNullableGenerator extends Generator {
         throw new StateError(
             'Input string did not contain `${r.existing}` as expected.');
       }
-      f2Content = r.single
-          ? f2Content.replaceFirst(r.existing, r.replacement)
-          : f2Content.replaceAll(r.existing, r.replacement);
+      f2Content = f2Content.replaceAll(r.existing, r.replacement);
     }
 
     return f2Content;
@@ -93,7 +100,6 @@ class _NonNullableGenerator extends Generator {
 class _Replacement {
   final Pattern existing;
   final String replacement;
-  final bool single;
 
-  _Replacement(this.existing, this.replacement, [this.single = true]);
+  _Replacement(this.existing, this.replacement);
 }
