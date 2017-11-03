@@ -139,8 +139,11 @@ class JsonSerializableGenerator
       }
 
       buffer.writeln('  Map<String, dynamic> toJson() ');
-      if (fieldsList
-          .every((e) => _includeIfNull(e, classAnnotation.includeIfNull))) {
+
+      var writeNaive =
+          fieldsList.every((e) => _writeJsonValueNaive(e, classAnnotation));
+
+      if (writeNaive) {
         // write simple `toJson` method that includes all keys...
         _writeToJsonSimple(buffer, fields.values, classAnnotation.nullable);
       } else {
@@ -180,7 +183,7 @@ class JsonSerializableGenerator
 
       var expression = _serializeField(field, classAnnotation.nullable,
           accessOverride: safeFieldAccess);
-      if (_includeIfNull(field, classAnnotation.includeIfNull)) {
+      if (_writeJsonValueNaive(field, classAnnotation)) {
         if (directWrite) {
           buffer.writeln('$safeJsonKeyString : $expression,');
         } else {
@@ -395,8 +398,17 @@ String _safeNameAccess(FieldElement field) {
 bool _nullable(FieldElement field, bool parentValue) =>
     _jsonKeyFor(field).nullable ?? parentValue;
 
-bool _includeIfNull(FieldElement field, bool parentValue) =>
-    _jsonKeyFor(field).includeIfNull ?? parentValue;
+/// Returns `true` if the field can be written to JSON 'naively' – meaning
+/// we can avoid checking for `null`.
+///
+/// `true` if either:
+///   `includeIfNull` is `true`
+///   or
+///   `nullable` is `false`.
+bool _writeJsonValueNaive(
+        FieldElement field, JsonSerializable parentAnnotation) =>
+    (_jsonKeyFor(field).includeIfNull ?? parentAnnotation.includeIfNull) ||
+    !_nullable(field, parentAnnotation.nullable);
 
 JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];

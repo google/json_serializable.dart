@@ -1,3 +1,9 @@
+## 0.2.6
+
+* Make `null` field handling smarter. If a field is classified as not
+  `nullable`, then use this knowledge when generating serialization code –  even
+  if `includeIfNull` is `false`.
+
 ## 0.2.5
 
 * Throw an exception if a duplicate JSON key is detected.
