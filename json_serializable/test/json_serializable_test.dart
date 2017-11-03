@@ -274,7 +274,7 @@ Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
 CompilationUnit _compUnit;
 
 const _testSource = r'''
-import 'package:json_serializable/annotations.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 const theAnswer = 42;

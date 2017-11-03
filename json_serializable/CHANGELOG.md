@@ -3,6 +3,9 @@
 * **BREAKING** `UnsupportedTypeError` added a new required constructor argument:
   `reason`.
 
+* **BREAKING** The deprecated `annotations.dart` library has been removed.
+  Use `package:json_annotation` instead.
+
 * Make `null` field handling smarter. If a field is classified as not
   `nullable`, then use this knowledge when generating serialization code –  even
   if `includeIfNull` is `false`.
