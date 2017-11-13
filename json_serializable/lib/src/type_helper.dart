@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
@@ -18,10 +19,12 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
 abstract class SerializeContext {
   bool get useWrappers;
   String serialize(DartType fieldType, String expression, bool nullable);
+  List<ElementAnnotation> metadata;
 }
 
 abstract class DeserializeContext {
   String deserialize(DartType fieldType, String expression, bool nullable);
+  List<ElementAnnotation> metadata;
 }
 
 abstract class TypeHelper {
