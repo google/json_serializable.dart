@@ -1,0 +1,60 @@
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+
+import 'dart:convert' hide JsonDecoder;
+
+import 'build_json_listener.dart';
+import 'json_string_parser.dart';
+import 'json_utf8_decoder_sink.dart';
+import 'reviver_json_listener.dart';
+
+/**
+ * Implements the chunked conversion from a JSON string to its corresponding
+ * object.
+ *
+ * The sink only creates one object, but its input can be chunked.
+ */
+class JsonStringDecoderSink extends StringConversionSinkBase {
+  JsonStringParser _parser;
+  final Reviver _reviver;
+  final Sink<Object> _sink;
+
+  JsonStringDecoderSink(this._reviver, this._sink)
+      : _parser = _createParser(_reviver);
+
+  static JsonStringParser _createParser(Reviver reviver) {
+    BuildJsonListener listener;
+    if (reviver == null) {
+      listener = new BuildJsonListener();
+    } else {
+      listener = new ReviverJsonListener(reviver);
+    }
+    return new JsonStringParser(listener);
+  }
+
+  @override
+  void addSlice(String chunk, int start, int end, bool isLast) {
+    _parser.chunk = chunk;
+    _parser.chunkEnd = end;
+    _parser.parse(start);
+    if (isLast) _parser.close();
+  }
+
+  @override
+  void add(String chunk) {
+    addSlice(chunk, 0, chunk.length, false);
+  }
+
+  @override
+  void close() {
+    _parser.close();
+    var decoded = _parser.result;
+    _sink.add(decoded);
+    _sink.close();
+  }
+
+  @override
+  ByteConversionSink asUtf8Sink(bool allowMalformed) {
+    _parser = null;
+    return new JsonUtf8DecoderSink(_reviver, _sink, allowMalformed);
+  }
+}
