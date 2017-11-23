@@ -36,20 +36,26 @@ class JsonSerializableGenerator
 
   final List<TypeHelper> _typeHelpers;
 
+  final bool useWrappers;
+
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, two built-in helpers are used:
   /// [JsonHelper] and [DateTimeHelper].
-  const JsonSerializableGenerator({List<TypeHelper> typeHelpers})
-      : this._typeHelpers = typeHelpers ?? _defaultHelpers;
+  const JsonSerializableGenerator(
+      {List<TypeHelper> typeHelpers, bool useWrappers: false})
+      : this.useWrappers = useWrappers ?? false,
+        this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// [typeHelpers] provides a set of [TypeHelper] that will be used along with
   /// the built-in helpers: [JsonHelper] and [DateTimeHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
-          Iterable<TypeHelper> typeHelpers) =>
+          Iterable<TypeHelper> typeHelpers,
+          {bool useWrappers: false}) =>
       new JsonSerializableGenerator(
+          useWrappers: useWrappers,
           typeHelpers: new List.unmodifiable(
               [typeHelpers, _defaultHelpers].expand((e) => e)));
 
@@ -125,6 +131,7 @@ class JsonSerializableGenerator
 
     if (classAnnotation.createToJson) {
       var mixClassName = '${prefix}SerializerMixin';
+      var helpClassName = '${prefix}JsonMapWrapper';
 
       //
       // Generate the mixin class
@@ -138,24 +145,94 @@ class JsonSerializableGenerator
         buffer.writeln('  ${field.type} get ${field.name};');
       }
 
-      buffer.writeln('  Map<String, dynamic> toJson() ');
+      buffer.write('  Map<String, dynamic> toJson() ');
 
       var writeNaive =
           fieldsList.every((e) => _writeJsonValueNaive(e, classAnnotation));
 
-      if (writeNaive) {
-        // write simple `toJson` method that includes all keys...
-        _writeToJsonSimple(buffer, fields.values, classAnnotation.nullable);
+      if (useWrappers) {
+        buffer.writeln('=> new $helpClassName(this);');
       } else {
-        // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, fields.values, classAnnotation);
+        if (writeNaive) {
+          // write simple `toJson` method that includes all keys...
+          _writeToJsonSimple(buffer, fields.values, classAnnotation.nullable);
+        } else {
+          // At least one field should be excluded if null
+          _writeToJsonWithNullChecks(buffer, fields.values, classAnnotation);
+        }
       }
 
       // end of the mixin class
       buffer.writeln('}');
+
+      if (useWrappers) {
+        _writeWrapper(
+            buffer, helpClassName, mixClassName, classAnnotation, fields);
+      }
     }
 
     return buffer.toString();
+  }
+
+  void _writeWrapper(
+      StringBuffer buffer,
+      String helpClassName,
+      String mixClassName,
+      JsonSerializable classAnnotation,
+      Map<String, FieldElement> fields) {
+    buffer.writeln();
+    // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
+    buffer.writeln('''class $helpClassName extends \$JsonMapWrapper {
+      final $mixClassName _v;
+      $helpClassName(this._v);
+    ''');
+
+    if (fields.values.every((e) => _writeJsonValueNaive(e, classAnnotation))) {
+      // TODO(kevmoo): consider just doing one code path – if it's fast
+      //               enough
+      var jsonKeys = fields.values.map(_safeNameAccess).join(', ');
+
+      // TODO(kevmoo): maybe put this in a static field instead?
+      //               const lists have unfortunate overhead
+      buffer.writeln('''  @override
+      Iterable<String> get keys => const [${jsonKeys}];
+    ''');
+    } else {
+      // At least one field should be excluded if null
+      buffer.writeln('@override\nIterable<String> get keys sync* {');
+
+      for (var field in fields.values) {
+        var nullCheck = !_writeJsonValueNaive(field, classAnnotation);
+        if (nullCheck) {
+          buffer.writeln('if (_v.${field.name} != null) {');
+        }
+        buffer.writeln('yield ${_safeNameAccess(field)};');
+        if (nullCheck) {
+          buffer.writeln('}');
+        }
+      }
+
+      buffer.writeln('}\n');
+    }
+
+    buffer.writeln('''@override
+    dynamic operator [](Object key) {
+    if (key is String) {
+    switch(key) {
+    ''');
+
+    for (var field in fields.values) {
+      var valueAccess = '_v.${field.name}';
+      buffer.write('''case ${_safeNameAccess(field)}:
+        return ${_serializeField(field, classAnnotation.nullable, accessOverride:  valueAccess)};''');
+    }
+
+    buffer.writeln('''
+      }}
+      return null;
+    }''');
+
+    buffer.writeln('}');
   }
 
   void _writeToJsonWithNullChecks(StringBuffer buffer,
@@ -352,7 +429,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
   /// representing the serialization of a value.
   String _serialize(DartType targetType, String expression, bool nullable) =>
       _allHelpers
-          .map((h) => h.serialize(targetType, expression, nullable, _serialize))
+          .map((h) =>
+              h.serialize(targetType, expression, nullable, _helperContext))
           .firstWhere((r) => r != null,
               orElse: () => throw new UnsupportedTypeError(
                   targetType, expression, _notSupportedWithTypeHelpersMsg));
@@ -374,10 +452,35 @@ void $toJsonMapHelperName(String key, dynamic value) {
   String _deserialize(DartType targetType, String expression, bool nullable) =>
       _allHelpers
           .map((th) =>
-              th.deserialize(targetType, expression, nullable, _deserialize))
+              th.deserialize(targetType, expression, nullable, _helperContext))
           .firstWhere((r) => r != null,
               orElse: () => throw new UnsupportedTypeError(
                   targetType, expression, _notSupportedWithTypeHelpersMsg));
+
+  _TypeHelperContext get _helperContext => _typeHelperContextExpando[this] ??=
+      new _TypeHelperContext(_serialize, _deserialize, useWrappers);
+}
+
+final _typeHelperContextExpando = new Expando<_TypeHelperContext>();
+
+typedef String _TypeHelperGenerator(
+    DartType fieldType, String expression, bool nullable);
+
+class _TypeHelperContext implements SerializeContext, DeserializeContext {
+  final _TypeHelperGenerator _serialize, _deserialize;
+
+  @override
+  final bool useWrappers;
+
+  _TypeHelperContext(this._serialize, this._deserialize, this.useWrappers);
+
+  @override
+  String serialize(DartType fieldType, String expression, bool nullable) =>
+      _serialize(fieldType, expression, nullable);
+
+  @override
+  String deserialize(DartType fieldType, String expression, bool nullable) =>
+      _deserialize(fieldType, expression, nullable);
 }
 
 String _safeNameAccess(FieldElement field) {
