@@ -13,7 +13,10 @@
 
 * `JsonSerializableGenerator` now supports an optional `useWrappers` argument
   when generates and uses wrapper classes to (hopefully) improve the speed and
-  memory usage of serialization – at the cost of more code. 
+  memory usage of serialization – at the cost of more code.
+
+  **NOTE**: `useWrappers` is not guaranteed to improve the performance of
+  serialization. Benchmarking is recommended.
 
 * Make `null` field handling smarter. If a field is classified as not
   `nullable`, then use this knowledge when generating serialization code –  even
