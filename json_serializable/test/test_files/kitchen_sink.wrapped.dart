@@ -18,7 +18,7 @@ import 'kitchen_sink_interface.dart' as k;
 part 'kitchen_sink.wrapped.g.dart';
 
 List<T> _defaultList<T>() => null;
-Map<String, T> _defaultMap<String, T>() => null;
+Map _defaultMap() => null;
 
 @JsonSerializable()
 class KitchenSink extends Object

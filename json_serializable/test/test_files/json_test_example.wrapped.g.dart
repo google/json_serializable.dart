@@ -125,9 +125,9 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
   ..itemNumber = json['item-number'] as int
   ..saleDates = (json['saleDates'] as List)
-      ?.map((dynamic e) => e == null ? null : DateTime.parse(e as String))
+      ?.map((e) => e == null ? null : DateTime.parse(e as String))
       ?.toList()
-  ..rates = (json['rates'] as List)?.map((dynamic e) => e as int)?.toList();
+  ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
 
 abstract class _$ItemSerializerMixin {
   int get price;
