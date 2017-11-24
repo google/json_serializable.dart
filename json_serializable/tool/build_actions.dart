@@ -26,7 +26,9 @@ final List<BuildAction> buildActions = [
       'json_serializable',
       inputs: const [
         'test/test_files/kitchen_sink.dart',
-        'test/test_files/kitchen_sink.non_nullable.dart'
+        'test/test_files/kitchen_sink.non_nullable.dart',
+        'test/test_files/json_test_example.dart',
+        'test/test_files/json_test_example.non_nullable.dart',
       ]),
   new BuildAction(
     new PartBuilder(
@@ -48,6 +50,7 @@ final List<BuildAction> buildActions = [
     'json_serializable',
     inputs: const [
       'test/test_files/kitchen_sink*wrapped.dart',
+      'test/test_files/json_test_example*wrapped.dart',
     ],
   )
 ];
