@@ -428,7 +428,6 @@ void $toJsonMapHelperName(String key, dynamic value) {
     }
   }
 
-
   String _deserializeForField(FieldElement field, bool classSupportNullable,
       {ParameterElement ctorParam}) {
     var jsonKey = _safeNameAccess(field);
@@ -453,23 +452,23 @@ void $toJsonMapHelperName(String key, dynamic value) {
     String serialize(DartType targetType, String expression, bool nullable) =>
         _allHelpers
             .map((h) =>
-            h.serialize(targetType, expression, nullable, helperContext))
+                h.serialize(targetType, expression, nullable, helperContext))
             .firstWhere((r) => r != null,
-            orElse: () => throw new UnsupportedTypeError(
-                targetType, expression, _notSupportedWithTypeHelpersMsg));
+                orElse: () => throw new UnsupportedTypeError(
+                    targetType, expression, _notSupportedWithTypeHelpersMsg));
 
     String deserialize(DartType targetType, String expression, bool nullable) =>
         _allHelpers
             .map((th) =>
-            th.deserialize(targetType, expression, nullable, helperContext))
+                th.deserialize(targetType, expression, nullable, helperContext))
             .firstWhere((r) => r != null,
-            orElse: () => throw new UnsupportedTypeError(
-                targetType, expression, _notSupportedWithTypeHelpersMsg));
+                orElse: () => throw new UnsupportedTypeError(
+                    targetType, expression, _notSupportedWithTypeHelpersMsg));
 
-    helperContext = new _TypeHelperContext(serialize, deserialize, useWrappers, field.metadata);
+    helperContext = new _TypeHelperContext(
+        serialize, deserialize, useWrappers, field.metadata);
     return helperContext;
   }
-
 }
 
 typedef String _TypeHelperGenerator(
@@ -483,7 +482,8 @@ class _TypeHelperContext implements SerializeContext, DeserializeContext {
 
   List<ElementAnnotation> metadata;
 
-  _TypeHelperContext(this._serialize, this._deserialize, this.useWrappers, this.metadata);
+  _TypeHelperContext(
+      this._serialize, this._deserialize, this.useWrappers, this.metadata);
 
   @override
   String serialize(DartType fieldType, String expression, bool nullable) =>
