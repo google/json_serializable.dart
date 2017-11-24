@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.kitchen_sink;
+part of json_serializable.test.kitchen_sink_wrapped;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
@@ -69,56 +69,105 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, bool> get val;
   bool get writeNotNull;
   String get string;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{};
+  Map<String, dynamic> toJson() => new _$KitchenSinkJsonMapWrapper(this);
+}
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
+class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
+  final _$KitchenSinkSerializerMixin _v;
+  _$KitchenSinkJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys sync* {
+    if (_v.dateTime != null) {
+      yield 'dateTime';
+    }
+    if (_v.iterable != null) {
+      yield 'iterable';
+    }
+    yield 'dynamicIterable';
+    yield 'objectIterable';
+    yield 'intIterable';
+    yield 'datetime-iterable';
+    yield 'list';
+    yield 'dynamicList';
+    yield 'objectList';
+    yield 'intList';
+    if (_v.dateTimeList != null) {
+      yield 'dateTimeList';
+    }
+    yield 'map';
+    yield 'stringStringMap';
+    yield 'stringIntMap';
+    yield 'stringDateTimeMap';
+    if (_v.crazyComplex != null) {
+      yield 'crazyComplex';
+    }
+    if (_v.val != null) {
+      yield 'val';
+    }
+    yield 'writeNotNull';
+    yield r'$string';
+  }
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'dateTime':
+          return _v.dateTime?.toIso8601String();
+        case 'iterable':
+          return _v.iterable?.toList();
+        case 'dynamicIterable':
+          return _v.dynamicIterable?.toList();
+        case 'objectIterable':
+          return _v.objectIterable?.toList();
+        case 'intIterable':
+          return _v.intIterable?.toList();
+        case 'datetime-iterable':
+          return _v.dateTimeIterable
+              ?.map((DateTime e) => e?.toIso8601String())
+              ?.toList();
+        case 'list':
+          return _v.list;
+        case 'dynamicList':
+          return _v.dynamicList;
+        case 'objectList':
+          return _v.objectList;
+        case 'intList':
+          return _v.intList;
+        case 'dateTimeList':
+          return $wrapListHandleNull<DateTime>(
+              _v.dateTimeList, (e) => e?.toIso8601String());
+        case 'map':
+          return _v.map;
+        case 'stringStringMap':
+          return _v.stringStringMap;
+        case 'stringIntMap':
+          return _v.stringIntMap;
+        case 'stringDateTimeMap':
+          return $wrapMapHandleNull<String, DateTime>(
+              _v.stringDateTimeMap, (e) => e?.toIso8601String());
+        case 'crazyComplex':
+          return $wrapListHandleNull<
+                  Map<String, Map<String, List<List<DateTime>>>>>(
+              _v.crazyComplex,
+              (e) =>
+                  $wrapMapHandleNull<String, Map<String, List<List<DateTime>>>>(
+                      e,
+                      (e) => $wrapMapHandleNull<String, List<List<DateTime>>>(
+                          e,
+                          (e) => $wrapListHandleNull<List<DateTime>>(
+                              e,
+                              (e) => $wrapListHandleNull<DateTime>(
+                                  e, (e) => e?.toIso8601String())))));
+        case 'val':
+          return _v.val;
+        case 'writeNotNull':
+          return _v.writeNotNull;
+        case r'$string':
+          return _v.string;
       }
     }
-
-    writeNotNull('dateTime', dateTime?.toIso8601String());
-    writeNotNull('iterable', iterable?.toList());
-    val['dynamicIterable'] = dynamicIterable?.toList();
-    val['objectIterable'] = objectIterable?.toList();
-    val['intIterable'] = intIterable?.toList();
-    val['datetime-iterable'] =
-        dateTimeIterable?.map((DateTime e) => e?.toIso8601String())?.toList();
-    val['list'] = list;
-    val['dynamicList'] = dynamicList;
-    val['objectList'] = objectList;
-    val['intList'] = intList;
-    writeNotNull('dateTimeList',
-        dateTimeList?.map((DateTime e) => e?.toIso8601String())?.toList());
-    val['map'] = map;
-    val['stringStringMap'] = stringStringMap;
-    val['stringIntMap'] = stringIntMap;
-    val['stringDateTimeMap'] = stringDateTimeMap == null
-        ? null
-        : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-            stringDateTimeMap.values.map<dynamic>((e) => e?.toIso8601String()));
-    writeNotNull(
-        'crazyComplex',
-        crazyComplex
-            ?.map((Map<String, Map<String, List<List<DateTime>>>> e) => e ==
-                    null
-                ? null
-                : new Map<String, dynamic>.fromIterables(
-                    e.keys,
-                    e.values.map<dynamic>((e) => e == null
-                        ? null
-                        : new Map<String, dynamic>.fromIterables(
-                            e.keys,
-                            e.values.map<dynamic>((e) => e
-                                ?.map((List<DateTime> e) => e
-                                    ?.map((DateTime e) => e?.toIso8601String())
-                                    ?.toList())
-                                ?.toList())))))
-            ?.toList());
-    writeNotNull('val', this.val);
-    val['writeNotNull'] = this.writeNotNull;
-    val[r'$string'] = string;
-    return val;
+    return null;
   }
 }

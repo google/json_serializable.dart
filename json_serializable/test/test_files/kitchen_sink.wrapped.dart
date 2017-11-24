@@ -2,14 +2,20 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// Generator: _WrappedGenerator
+// **************************************************************************
+
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitchen_sink;
+library json_serializable.test.kitchen_sink_wrapped;
 
 import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink_interface.dart' as k;
 
-part 'kitchen_sink.g.dart';
+part 'kitchen_sink.wrapped.g.dart';
 
 List<T> _defaultList<T>() => null;
 Map<String, T> _defaultMap<String, T>() => null;

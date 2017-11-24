@@ -27,10 +27,27 @@ void main() {
     _compUnit = await _getCompilationUnitForString(getPackagePath());
   });
 
+  group('without wrappers',
+      () => _registerTests(new JsonSerializableGenerator()));
+  group('with wrapper',
+      () => _registerTests(new JsonSerializableGenerator(useWrappers: true)));
+}
+
+void _registerTests(JsonSerializableGenerator generator) {
+  Future<String> runForElementNamed(String name) async {
+    var library = new LibraryReader(_compUnit.element.library);
+    var element = library.allElements.singleWhere((e) => e.name == name);
+    var annotation = generator.typeChecker.firstAnnotationOf(element);
+    var generated = await generator.generateForAnnotatedElement(
+        element, new ConstantReader(annotation), null);
+
+    return _formatter.format(generated);
+  }
+
   group('non-classes', () {
     test('const field', () async {
       expect(
-          _runForElementNamed('theAnswer'),
+          runForElementNamed('theAnswer'),
           throwsInvalidGenerationSourceError(
               'Generator cannot target `const dynamic theAnswer`.',
               'Remove the JsonSerializable annotation from `const dynamic theAnswer`.'));
@@ -38,7 +55,7 @@ void main() {
 
     test('method', () async {
       expect(
-          _runForElementNamed('annotatedMethod'),
+          runForElementNamed('annotatedMethod'),
           throwsInvalidGenerationSourceError(
               'Generator cannot target `annotatedMethod`.',
               'Remove the JsonSerializable annotation from `annotatedMethod`.'));
@@ -47,7 +64,7 @@ void main() {
   group('unknown types', () {
     test('in constructor arguments', () async {
       expect(
-          _runForElementNamed('UnknownCtorParamType'),
+          runForElementNamed('UnknownCtorParamType'),
           throwsInvalidGenerationSourceError(
               'At least one constructor argument has an invalid type: `number`.',
               'Check names and imports.'));
@@ -55,7 +72,7 @@ void main() {
 
     test('in fields', () async {
       expect(
-          _runForElementNamed('UnknownFieldType'),
+          runForElementNamed('UnknownFieldType'),
           throwsInvalidGenerationSourceError(
               'At least one field has an invalid type: `number`.',
               'Check names and imports.'));
@@ -69,14 +86,14 @@ void main() {
 
     test('for toJson', () async {
       expect(
-          _runForElementNamed('NoSerializeFieldType'),
+          runForElementNamed('NoSerializeFieldType'),
           throwsInvalidGenerationSourceError(noSupportHelperFyi,
               'Make sure all of the types are serializable.'));
     });
 
     test('for fromJson', () async {
       expect(
-          _runForElementNamed('NoDeserializeFieldType'),
+          runForElementNamed('NoDeserializeFieldType'),
           throwsInvalidGenerationSourceError(
               noSupportHelperFyi.replaceFirst('toJson', 'fromJson'),
               'Make sure all of the types are serializable.'));
@@ -88,14 +105,14 @@ void main() {
 
     test('for toJson in Map key', () async {
       expect(
-          _runForElementNamed('NoSerializeBadKey'),
+          runForElementNamed('NoSerializeBadKey'),
           throwsInvalidGenerationSourceError(
               mapKeyFyi, 'Make sure all of the types are serializable.'));
     });
 
     test('for fromJson', () async {
       expect(
-          _runForElementNamed('NoDeserializeBadKey'),
+          runForElementNamed('NoDeserializeBadKey'),
           throwsInvalidGenerationSourceError(
               mapKeyFyi.replaceFirst('toJson', 'fromJson'),
               'Make sure all of the types are serializable.'));
@@ -103,15 +120,16 @@ void main() {
   });
 
   test('class with final fields', () async {
-    var generateResult = await _runForElementNamed('FinalFields');
+    var generateResult = await runForElementNamed('FinalFields');
     expect(generateResult, contains('Map<String, dynamic> toJson()'));
   });
 
   group('valid inputs', () {
-    test('class with no ctor params', () async {
-      var output = await _runForElementNamed('Person');
-      expect(output,
-          r'''Person _$PersonFromJson(Map<String, dynamic> json) => new Person()
+    if (!generator.useWrappers) {
+      test('class with no ctor params', () async {
+        var output = await runForElementNamed('Person');
+        expect(output,
+            r'''Person _$PersonFromJson(Map<String, dynamic> json) => new Person()
   ..firstName = json['firstName'] as String
   ..lastName = json['lastName'] as String
   ..height = json['h'] as int
@@ -120,7 +138,8 @@ void main() {
       : DateTime.parse(json['dateOfBirth'] as String)
   ..dynamicType = json['dynamicType']
   ..varType = json['varType']
-  ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+  ..listOfInts =
+      (json['listOfInts'] as List)?.map((dynamic e) => e as int)?.toList();
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -141,12 +160,12 @@ abstract class _$PersonSerializerMixin {
       };
 }
 ''');
-    });
+      });
 
-    test('class with ctor params', () async {
-      var output = await _runForElementNamed('Order');
-      expect(output,
-          r'''Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
+      test('class with ctor params', () async {
+        var output = await runForElementNamed('Order');
+        expect(output,
+            r'''Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     json['height'] as int,
     json['firstName'] as String,
     json['lastName'] as String)
@@ -167,46 +186,51 @@ abstract class _$OrderSerializerMixin {
       };
 }
 ''');
-    });
+      });
+    }
 
     test('class with child json-able object', () async {
-      var output = await _runForElementNamed('ParentObject');
+      var output = await runForElementNamed('ParentObject');
 
       expect(output, contains('new ChildObject.fromJson'));
     });
 
     test('class with child list of json-able objects', () async {
-      var output = await _runForElementNamed('ParentObjectWithChildren');
+      var output = await runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
       expect(output, contains('new ChildObject.fromJson'));
     });
 
     test('class with child list of dynamic objects is left alone', () async {
-      var output = await _runForElementNamed('ParentObjectWithDynamicChildren');
+      var output = await runForElementNamed('ParentObjectWithDynamicChildren');
 
       expect(output, contains('children = json[\'children\'] as List;'));
     });
 
     test('class with list of int is cast for strong mode', () async {
-      var output = await _runForElementNamed('Person');
+      var output = await runForElementNamed('Person');
 
-      expect(output,
-          contains("json['listOfInts'] as List)?.map((e) => e as int)"));
+      expect(
+          output,
+          contains(
+              "json['listOfInts'] as List)?.map((dynamic e) => e as int)"));
     });
   });
 
   group('JsonKey', () {
-    test('works to change the name of a field', () async {
-      var output = await _runForElementNamed('Person');
+    if (!generator.useWrappers) {
+      test('works to change the name of a field', () async {
+        var output = await runForElementNamed('Person');
 
-      expect(output, contains("'h': height,"));
-      expect(output, contains("..height = json['h']"));
-    });
+        expect(output, contains("'h': height,"));
+        expect(output, contains("..height = json['h']"));
+      });
+    }
 
     test('fails if name duplicates existing field', () async {
       expect(
-          () => _runForElementNamed('KeyDupesField'),
+          () => runForElementNamed('KeyDupesField'),
           throwsInvalidGenerationSourceError(
               'More than one field has the JSON key `str`.',
               'Check the `JsonKey` annotations on fields.'));
@@ -214,7 +238,7 @@ abstract class _$OrderSerializerMixin {
 
     test('fails if two names collide', () async {
       expect(
-          () => _runForElementNamed('DupeKeys'),
+          () => runForElementNamed('DupeKeys'),
           throwsInvalidGenerationSourceError(
               'More than one field has the JSON key `a`.',
               'Check the `JsonKey` annotations on fields.'));
@@ -223,21 +247,23 @@ abstract class _$OrderSerializerMixin {
 
   group('includeIfNull', () {
     test('some', () async {
-      var output = await _runForElementNamed('IncludeIfNullAll');
+      var output = await runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(toJsonMapVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
 
-    test('all', () async {
-      var output = await _runForElementNamed('IncludeIfNullOverride');
-      expect(output, contains("'number': number,"));
-      expect(output, contains("$toJsonMapHelperName('str', str);"));
-    });
+    if (!generator.useWrappers) {
+      test('all', () async {
+        var output = await runForElementNamed('IncludeIfNullOverride');
+        expect(output, contains("'number': number,"));
+        expect(output, contains("$toJsonMapHelperName('str', str);"));
+      });
+    }
   });
 
   test('missing default ctor with a factory', () async {
     expect(
-        () => _runForElementNamed('NoCtorClass'),
+        () => runForElementNamed('NoCtorClass'),
         throwsA(new FeatureMatcher<UnsupportedError>(
             'message',
             (e) => e.message,
@@ -245,19 +271,7 @@ abstract class _$OrderSerializerMixin {
   });
 }
 
-const _generator = const JsonSerializableGenerator();
-
 final _formatter = new dart_style.DartFormatter();
-
-Future<String> _runForElementNamed(String name) async {
-  var library = new LibraryReader(_compUnit.element.library);
-  var element = library.allElements.singleWhere((e) => e.name == name);
-  var annotation = _generator.typeChecker.firstAnnotationOf(element);
-  var generated = await _generator.generateForAnnotatedElement(
-      element, new ConstantReader(annotation), null);
-
-  return _formatter.format(generated);
-}
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
   var source = new StringSource(_testSource, 'test content');

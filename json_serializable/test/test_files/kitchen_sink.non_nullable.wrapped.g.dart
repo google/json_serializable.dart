@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.kitchen_sink.non_nullable;
+part of json_serializable.test.kitchen_sink.non_nullable_wrapped;
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
@@ -66,41 +66,93 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, bool> get val;
   bool get writeNotNull;
   String get string;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'dateTime': dateTime.toIso8601String(),
-        'iterable': iterable.toList(),
-        'dynamicIterable': dynamicIterable.toList(),
-        'objectIterable': objectIterable.toList(),
-        'intIterable': intIterable.toList(),
-        'datetime-iterable':
-            dateTimeIterable.map((DateTime e) => e.toIso8601String()).toList(),
-        'list': list,
-        'dynamicList': dynamicList,
-        'objectList': objectList,
-        'intList': intList,
-        'dateTimeList':
-            dateTimeList.map((DateTime e) => e.toIso8601String()).toList(),
-        'map': map,
-        'stringStringMap': stringStringMap,
-        'stringIntMap': stringIntMap,
-        'stringDateTimeMap': new Map<String, dynamic>.fromIterables(
-            stringDateTimeMap.keys,
-            stringDateTimeMap.values.map<dynamic>((e) => e.toIso8601String())),
-        'crazyComplex': crazyComplex
-            .map((Map<String, Map<String, List<List<DateTime>>>> e) =>
-                new Map<String, dynamic>.fromIterables(
-                    e.keys,
-                    e.values.map<dynamic>((e) =>
-                        new Map<String, dynamic>.fromIterables(
-                            e.keys,
-                            e.values.map<dynamic>((e) => e
-                                .map((List<DateTime> e) => e
-                                    .map((DateTime e) => e.toIso8601String())
-                                    .toList())
-                                .toList())))))
-            .toList(),
-        'val': val,
-        'writeNotNull': writeNotNull,
-        r'$string': string
-      };
+  Map<String, dynamic> toJson() => new _$KitchenSinkJsonMapWrapper(this);
+}
+
+class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
+  final _$KitchenSinkSerializerMixin _v;
+  _$KitchenSinkJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const [
+        'dateTime',
+        'iterable',
+        'dynamicIterable',
+        'objectIterable',
+        'intIterable',
+        'datetime-iterable',
+        'list',
+        'dynamicList',
+        'objectList',
+        'intList',
+        'dateTimeList',
+        'map',
+        'stringStringMap',
+        'stringIntMap',
+        'stringDateTimeMap',
+        'crazyComplex',
+        'val',
+        'writeNotNull',
+        r'$string'
+      ];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'dateTime':
+          return _v.dateTime.toIso8601String();
+        case 'iterable':
+          return _v.iterable.toList();
+        case 'dynamicIterable':
+          return _v.dynamicIterable.toList();
+        case 'objectIterable':
+          return _v.objectIterable.toList();
+        case 'intIterable':
+          return _v.intIterable.toList();
+        case 'datetime-iterable':
+          return _v.dateTimeIterable
+              .map((DateTime e) => e.toIso8601String())
+              .toList();
+        case 'list':
+          return _v.list;
+        case 'dynamicList':
+          return _v.dynamicList;
+        case 'objectList':
+          return _v.objectList;
+        case 'intList':
+          return _v.intList;
+        case 'dateTimeList':
+          return $wrapList<DateTime>(
+              _v.dateTimeList, (e) => e.toIso8601String());
+        case 'map':
+          return _v.map;
+        case 'stringStringMap':
+          return _v.stringStringMap;
+        case 'stringIntMap':
+          return _v.stringIntMap;
+        case 'stringDateTimeMap':
+          return $wrapMap<String, DateTime>(
+              _v.stringDateTimeMap, (e) => e.toIso8601String());
+        case 'crazyComplex':
+          return $wrapList<Map<String, Map<String, List<List<DateTime>>>>>(
+              _v.crazyComplex,
+              (e) => $wrapMap<String, Map<String, List<List<DateTime>>>>(
+                  e,
+                  (e) => $wrapMap<String, List<List<DateTime>>>(
+                      e,
+                      (e) => $wrapList<List<DateTime>>(
+                          e,
+                          (e) => $wrapList<DateTime>(
+                              e, (e) => e.toIso8601String())))));
+        case 'val':
+          return _v.val;
+        case 'writeNotNull':
+          return _v.writeNotNull;
+        case r'$string':
+          return _v.string;
+      }
+    }
+    return null;
+  }
 }

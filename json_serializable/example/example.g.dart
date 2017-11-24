@@ -19,7 +19,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
         ? null
         : DateTime.parse(json['last-order'] as String),
     orders: (json['orders'] as List)
-        .map((e) => new Order.fromJson(e as Map<String, dynamic>))
+        .map((dynamic e) => new Order.fromJson(e as Map<String, dynamic>))
         .toList());
 
 abstract class _$PersonSerializerMixin {
@@ -88,22 +88,22 @@ Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
 // Generator: JsonLiteralGenerator
 // **************************************************************************
 
-final _$glossaryDataJsonLiteral = {
-  'glossary': {
+final _$glossaryDataJsonLiteral = <String, dynamic>{
+  'glossary': <String, dynamic>{
     'title': 'example glossary',
-    'GlossDiv': {
+    'GlossDiv': <String, dynamic>{
       'title': 'S',
-      'GlossList': {
-        'GlossEntry': {
+      'GlossList': <String, dynamic>{
+        'GlossEntry': <String, dynamic>{
           'ID': 'SGML',
           'SortAs': 'SGML',
           'GlossTerm': 'Standard Generalized Markup Language',
           'Acronym': 'SGML',
           'Abbrev': 'ISO 8879:1986',
-          'GlossDef': {
+          'GlossDef': <String, dynamic>{
             'para':
                 'A meta-markup language, used to create markup languages such as DocBook.',
-            'GlossSeeAlso': ['GML', 'XML']
+            'GlossSeeAlso': <dynamic>['GML', 'XML']
           },
           'GlossSee': 'markup'
         }
