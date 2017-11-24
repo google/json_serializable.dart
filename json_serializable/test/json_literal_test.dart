@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 import 'test_files/json_literal.dart';
 import 'test_utils.dart';
 
-main() {
+void main() {
   test('literal round-trip', () {
     var dataFilePath =
         p.join(getPackagePath(), 'test', 'test_files', 'data.json');

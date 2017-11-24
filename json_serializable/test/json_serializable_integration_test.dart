@@ -34,7 +34,7 @@ void main() {
     });
 
     test('empty json', () {
-      var person = new Person.fromJson({});
+      var person = new Person.fromJson(<String, dynamic>{});
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });
@@ -66,18 +66,19 @@ void main() {
     });
 
     test('almost empty json', () {
-      var order = new Order.fromJson({'category': 'top'});
+      var order = new Order.fromJson(<String, String>{'category': 'top'});
       expect(order.items, isEmpty);
       expect(order.category, Category.top);
       roundTripOrder(order);
     });
 
     test('required, but missing enum value fails', () {
-      expect(() => new Order.fromJson({}), throwsStateError);
+      expect(() => new Order.fromJson(<String, dynamic>{}), throwsStateError);
     });
 
     test('mismatched enum value fails', () {
-      expect(() => new Order.fromJson({'category': 'weird'}), throwsStateError);
+      expect(() => new Order.fromJson(<String, String>{'category': 'weird'}),
+          throwsStateError);
     });
 
     test('platform', () {
@@ -99,21 +100,22 @@ void main() {
     }
 
     test('empty json', () {
-      var item = new Item.fromJson({});
+      var item = new Item.fromJson(<String, dynamic>{});
       expect(item.saleDates, isNull);
       roundTripItem(item);
 
-      expect(item.toJson().keys, orderedEquals(['price', 'saleDates', 'rates']),
+      expect(item.toJson().keys,
+          orderedEquals(<String>['price', 'saleDates', 'rates']),
           reason: 'Omits null `itemNumber`');
     });
 
     test('set itemNumber - with custom JSON key', () {
-      var item = new Item.fromJson({'item-number': 42});
+      var item = new Item.fromJson(<String, int>{'item-number': 42});
       expect(item.itemNumber, 42);
       roundTripItem(item);
 
       expect(item.toJson().keys,
-          orderedEquals(['price', 'item-number', 'saleDates', 'rates']),
+          orderedEquals(<String>['price', 'item-number', 'saleDates', 'rates']),
           reason: 'Includes non-null `itemNumber` - with custom key');
     });
   });

@@ -26,7 +26,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     var sourcePathDir = p.dirname(buildStep.inputId.path);
     var fileId = new AssetId(buildStep.inputId.package,
         p.join(sourcePathDir, annotation.read('path').stringValue));
-    var content = JSON.decode(await buildStep.readAsString(fileId));
+    dynamic content = JSON.decode(await buildStep.readAsString(fileId));
 
     var asConst = annotation.read('asConst').boolValue;
 
@@ -50,7 +50,7 @@ String _jsonLiteralAsDart(dynamic value, bool asConst) {
 
   if (value is List) {
     var listItems =
-        value.map((v) => _jsonLiteralAsDart(v, asConst)).join(',\n');
+        value.map((dynamic v) => _jsonLiteralAsDart(v, asConst)).join(',\n');
     return '${asConst ? 'const' : ''}<dynamic>[$listItems]';
   }
 
@@ -68,7 +68,7 @@ String _jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
   buffer.write('<String, dynamic>{');
 
   var first = true;
-  value.forEach((k, v) {
+  value.forEach((k, dynamic v) {
     if (first) {
       first = false;
     } else {

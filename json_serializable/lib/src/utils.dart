@@ -40,7 +40,7 @@ String friendlyNameForElement(Element element) {
 }
 
 /// Logs to STDERR with wrapper stars to make things readable during build.
-void log(object) {
+void log(Object object) {
   stderr.writeln(['***', object, '***'].join('\n'));
 }
 

@@ -28,7 +28,8 @@ String getPackagePath() {
   return _packagePathCache;
 }
 
-Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
+Matcher throwsInvalidGenerationSourceError(
+        String messageMatcher, String todoMatcher) =>
     throwsA(allOf(
         new isInstanceOf<InvalidGenerationSourceError>(),
         new FeatureMatcher<InvalidGenerationSourceError>(
@@ -40,11 +41,11 @@ Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
 class FeatureMatcher<T> extends CustomMatcher {
   final dynamic Function(T value) _feature;
 
-  FeatureMatcher(String name, this._feature, matcher)
+  FeatureMatcher(String name, this._feature, String matcher)
       : super('`$name`', '`$name`', matcher);
 
   @override
-  featureValueOf(covariant T actual) => _feature(actual);
+  dynamic featureValueOf(covariant T actual) => _feature(actual);
 }
 
 /// Returns all of the declarations in [unit], including [unit] as the first
@@ -92,7 +93,7 @@ String loudEncode(Object object) {
   } on JsonUnsupportedObjectError catch (e) {
     var error = e;
     do {
-      var cause = error.cause;
+      dynamic cause = error.cause;
       print(cause);
       error = (cause is JsonUnsupportedObjectError) ? cause : null;
     } while (error != null);

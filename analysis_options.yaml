@@ -1,6 +1,7 @@
 analyzer:
   strong-mode:
     implicit-casts: false
+    implicit-dynamic: false
   errors:
     unused_element: error
     unused_import: error
