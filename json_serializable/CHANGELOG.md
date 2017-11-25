@@ -8,7 +8,7 @@
 
 * **BREAKING** The arguments to `TypeHelper` `serialize` and `deserialize` have
   changed.
-  * `SerializeContext` and `DeserializeContext` (new classes) are now passed 
+  * `SerializeContext` and `DeserializeContext` (new classes) are now passed
     instead of the `TypeHelperGenerator` typedef (which has been deleted).
 
 * `JsonSerializableGenerator` now supports an optional `useWrappers` argument
