@@ -188,8 +188,8 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
-
-    test('class with fromJson() constructor with optional parameters', () async {
+    test('class with fromJson() constructor with optional parameters',
+        () async {
       var output = await runForElementNamed('FromJsonOptionalParameters');
 
       expect(output, contains('new ChildWithFromJson.fromJson'));
