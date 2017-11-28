@@ -14,16 +14,16 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
     iterable: json['iterable'] as List,
     dynamicIterable: json['dynamicIterable'] as List,
     objectIterable: json['objectIterable'] as List,
-    intIterable: (json['intIterable'] as List).map((e) => e as int),
+    intIterable: (json['intIterable'] as List).map((dynamic e) => e as int),
     dateTimeIterable: (json['datetime-iterable'] as List)
-        .map((e) => DateTime.parse(e as String)))
+        .map((dynamic e) => DateTime.parse(e as String)))
   ..dateTime = DateTime.parse(json['dateTime'] as String)
   ..list = json['list'] as List
   ..dynamicList = json['dynamicList'] as List
   ..objectList = json['objectList'] as List
-  ..intList = (json['intList'] as List).map((e) => e as int).toList()
+  ..intList = (json['intList'] as List).map((dynamic e) => e as int).toList()
   ..dateTimeList = (json['dateTimeList'] as List)
-      .map((e) => DateTime.parse(e as String))
+      .map((dynamic e) => DateTime.parse(e as String))
       .toList()
   ..map = json['map'] as Map<String, dynamic>
   ..stringStringMap =
@@ -33,12 +33,14 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
       (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
       (json['stringDateTimeMap'] as Map)
           .values
-          .map((e) => DateTime.parse(e as String)))
+          .map((dynamic e) => DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
-      .map((e) => new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-          (e as Map<String, dynamic>).keys,
-          (e as Map).values.map((e) =>
-              new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
+      .map((dynamic e) =>
+          new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
+              (e as Map<String, dynamic>).keys,
+              (e as Map)
+                  .values
+                  .map((dynamic e) => new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((dynamic e) => (e as List).map((dynamic e) => (e as List).map((dynamic e) => DateTime.parse(e as String)).toList()).toList())))))
       .toList()
   ..val = new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
@@ -109,7 +111,9 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
         case 'intIterable':
           return _v.intIterable.toList();
         case 'datetime-iterable':
-          return _v.dateTimeIterable.map((e) => e.toIso8601String()).toList();
+          return _v.dateTimeIterable
+              .map((DateTime e) => e.toIso8601String())
+              .toList();
         case 'list':
           return _v.list;
         case 'dynamicList':

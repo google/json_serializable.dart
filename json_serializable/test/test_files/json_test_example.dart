@@ -83,7 +83,8 @@ class Item extends Object with _$ItemSerializerMixin {
       _deepEquals(saleDates, other.saleDates);
 }
 
-bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
+bool _deepEquals(dynamic a, dynamic b) =>
+    const DeepCollectionEquality().equals(a, b);
 
 class Platform {
   final String description;

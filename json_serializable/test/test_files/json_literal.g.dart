@@ -10,7 +10,7 @@ part of json_serializable.example;
 // Generator: JsonLiteralGenerator
 // **************************************************************************
 
-final _$dataJsonLiteral = [
+final _$dataJsonLiteral = <dynamic>[
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -27,17 +27,17 @@ final _$dataJsonLiteral = [
   5,
   5.5351,
   -5.5,
-  {},
-  {
+  <String, dynamic>{},
+  <String, dynamic>{
     'null': null,
     'int': 42,
     'double': 42.0,
     'string': 'string',
-    'list': [],
+    'list': <dynamic>[],
     'bool': true
   }
 ];
-const _$asConstJsonLiteral = const [
+const _$asConstJsonLiteral = const <dynamic>[
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -54,13 +54,13 @@ const _$asConstJsonLiteral = const [
   5,
   5.5351,
   -5.5,
-  const {},
-  const {
+  const <String, dynamic>{},
+  const <String, dynamic>{
     'null': null,
     'int': 42,
     'double': 42.0,
     'string': 'string',
-    'list': const [],
+    'list': const <dynamic>[],
     'bool': true
   }
 ];

@@ -138,7 +138,8 @@ void _registerTests(JsonSerializableGenerator generator) {
       : DateTime.parse(json['dateOfBirth'] as String)
   ..dynamicType = json['dynamicType']
   ..varType = json['varType']
-  ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+  ..listOfInts =
+      (json['listOfInts'] as List)?.map((dynamic e) => e as int)?.toList();
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -217,8 +218,10 @@ abstract class _$OrderSerializerMixin {
     test('class with list of int is cast for strong mode', () async {
       var output = await runForElementNamed('Person');
 
-      expect(output,
-          contains("json['listOfInts'] as List)?.map((e) => e as int)"));
+      expect(
+          output,
+          contains(
+              "json['listOfInts'] as List)?.map((dynamic e) => e as int)"));
     });
   });
 

@@ -18,7 +18,7 @@ import 'kitchen_sink_interface.dart' as k;
 part 'kitchen_sink.non_nullable.g.dart';
 
 List<T> _defaultList<T>() => <T>[];
-Map _defaultMap() => {};
+Map<String, T> _defaultMap<String, T>() => <String, T>{};
 
 @JsonSerializable(nullable: false)
 class KitchenSink extends Object
@@ -43,8 +43,8 @@ class KitchenSink extends Object
       Iterable<Object> objectIterable,
       Iterable<int> intIterable,
       Iterable<DateTime> dateTimeIterable})
-      : _iterable = iterable?.toList() ?? _defaultList(),
-        _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
+      : _iterable = iterable?.toList() ?? _defaultList<dynamic>(),
+        _dynamicIterable = dynamicIterable?.toList() ?? _defaultList<dynamic>(),
         _objectIterable = objectIterable?.toList() ?? _defaultList(),
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList();
@@ -65,14 +65,14 @@ class KitchenSink extends Object
   @JsonKey(name: 'datetime-iterable')
   Iterable<DateTime> get dateTimeIterable => _dateTimeIterable;
 
-  List list = _defaultList();
-  List<dynamic> dynamicList = _defaultList();
+  List list = _defaultList<dynamic>();
+  List<dynamic> dynamicList = _defaultList<dynamic>();
   List<Object> objectList = _defaultList();
   List<int> intList = _defaultList();
   @JsonKey(includeIfNull: false)
   List<DateTime> dateTimeList = _defaultList();
 
-  Map map = _defaultMap();
+  Map map = _defaultMap<String, dynamic>();
   Map<String, String> stringStringMap = _defaultMap();
   Map<String, int> stringIntMap = _defaultMap();
   Map<String, DateTime> stringDateTimeMap = _defaultMap();

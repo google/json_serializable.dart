@@ -102,7 +102,7 @@ void _nonNullableTests(
   });
 
   test('with empty json fails deserialization', () {
-    expect(() => fromJson({}), throwsNoSuchMethodError);
+    expect(() => fromJson(<String, dynamic>{}), throwsNoSuchMethodError);
   });
   _sharedTests(ctor, fromJson);
 }
@@ -203,7 +203,7 @@ void _sharedTests(
   test('JSON keys should be defined in field/property order', () {
     /// Explicitly setting values from [_excludeIfNullKeys] to ensure
     /// they exist for KitchenSink where they are excluded when null
-    var item = ctor(iterable: [])
+    var item = ctor(iterable: <dynamic>[])
       ..dateTime = new DateTime.now()
       ..dateTimeList = []
       ..crazyComplex = []

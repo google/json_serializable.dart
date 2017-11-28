@@ -62,8 +62,8 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     Category.values
         .singleWhere((x) => x.toString() == "Category.${json['category']}"),
-    (json['items'] as List)?.map(
-        (e) => e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
+    (json['items'] as List)?.map((dynamic e) =>
+        e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int
   ..isRushed = json['isRushed'] as bool
   ..platform = json['platform'] == null
@@ -73,8 +73,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
       ? null
       : new Map<String, Platform>.fromIterables(
           (json['altPlatforms'] as Map<String, dynamic>).keys,
-          (json['altPlatforms'] as Map).values.map(
-              (e) => e == null ? null : new Platform.fromJson(e as String)));
+          (json['altPlatforms'] as Map).values.map((dynamic e) =>
+              e == null ? null : new Platform.fromJson(e as String)));
 
 abstract class _$OrderSerializerMixin {
   int get count;
@@ -125,9 +125,9 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
 Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
   ..itemNumber = json['item-number'] as int
   ..saleDates = (json['saleDates'] as List)
-      ?.map((e) => e == null ? null : DateTime.parse(e as String))
+      ?.map((dynamic e) => e == null ? null : DateTime.parse(e as String))
       ?.toList()
-  ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
+  ..rates = (json['rates'] as List)?.map((dynamic e) => e as int)?.toList();
 
 abstract class _$ItemSerializerMixin {
   int get price;
@@ -171,12 +171,14 @@ class _$ItemJsonMapWrapper extends $JsonMapWrapper {
 }
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()
-  ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
-  ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
-  ..doubles =
-      (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
-  ..nnDoubles =
-      (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList();
+  ..ints = (json['ints'] as List)?.map((dynamic e) => e as int)?.toList()
+  ..nums = (json['nums'] as List)?.map((dynamic e) => e as num)?.toList()
+  ..doubles = (json['doubles'] as List)
+      ?.map((dynamic e) => (e as num)?.toDouble())
+      ?.toList()
+  ..nnDoubles = (json['nnDoubles'] as List)
+      .map((dynamic e) => (e as num).toDouble())
+      .toList();
 
 abstract class _$NumbersSerializerMixin {
   List<int> get ints;

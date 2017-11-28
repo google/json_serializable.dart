@@ -57,7 +57,7 @@ class JsonSerializableGenerator
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
           typeHelpers: new List.unmodifiable(
-              [typeHelpers, _defaultHelpers].expand((e) => e)));
+              [typeHelpers, _defaultHelpers].expand<TypeHelper>((e) => e)));
 
   @override
   Future<String> generateForAnnotatedElement(
@@ -94,7 +94,7 @@ class JsonSerializableGenerator
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
         fieldsList,
-        key: (f) => (f as FieldElement).name);
+        key: (FieldElement f) => f.name);
 
     // Get the constructor to use for the factory
 
@@ -380,7 +380,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
         .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) =>');
     buffer.write('    new $className(');
     buffer.writeAll(
-        ctorArguments.map((paramElement) => _deserializeForField(
+        ctorArguments.map<String>((paramElement) => _deserializeForField(
             fields[paramElement.name], classSupportNullable,
             ctorParam: paramElement)),
         ', ');
@@ -388,7 +388,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       buffer.write(', ');
     }
     buffer.writeAll(
-        ctorNamedArguments.map((paramElement) =>
+        ctorNamedArguments.map<String>((paramElement) =>
             '${paramElement.name}: ' +
             _deserializeForField(
                 fields[paramElement.name], classSupportNullable,
