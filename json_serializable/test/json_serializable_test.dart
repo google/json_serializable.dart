@@ -189,6 +189,13 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
+    test('class with fromJson() constructor with optional parameters',
+        () async {
+      var output = await runForElementNamed('FromJsonOptionalParameters');
+
+      expect(output, contains('new ChildWithFromJson.fromJson'));
+    });
+
     test('class with child json-able object', () async {
       var output = await runForElementNamed('ParentObject');
 
@@ -322,6 +329,17 @@ class FinalFields {
   int get b => 4;
 
   FinalFields(this.a);
+}
+
+@JsonSerializable()
+class FromJsonOptionalParameters {
+  final ChildWithFromJson child;
+  
+  FromJsonOptionalParameters(this.child);
+}
+
+class ChildWithFromJson {
+  ChildWithFromJson.fromJson(json, {initValue: false}) {}
 }
 
 @JsonSerializable()

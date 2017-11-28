@@ -418,10 +418,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
       {String accessOverride}) {
     accessOverride ??= field.name;
 
-    _TypeHelperContext context = _getHelperContext(field);
-
     try {
-      return context.serialize(
+      return _getHelperContext(field).serialize(
           field.type, accessOverride, _nullable(field, classIncludeNullable));
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('toJson', field, e);
@@ -434,64 +432,46 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
     var targetType = ctorParam?.type ?? field.type;
 
-    _TypeHelperContext context = _getHelperContext(field);
-
     try {
-      return context.deserialize(
+      return _getHelperContext(field).deserialize(
           targetType, 'json[$jsonKey]', _nullable(field, classSupportNullable));
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);
     }
   }
 
-  _TypeHelperContext _getHelperContext(FieldElement field) {
-    _TypeHelperContext helperContext;
-
-    /// [expression] may be just the name of the field or it may an expression
-    /// representing the serialization of a value.
-    String serialize(DartType targetType, String expression, bool nullable) =>
-        _allHelpers
-            .map((h) =>
-                h.serialize(targetType, expression, nullable, helperContext))
-            .firstWhere((r) => r != null,
-                orElse: () => throw new UnsupportedTypeError(
-                    targetType, expression, _notSupportedWithTypeHelpersMsg));
-
-    String deserialize(DartType targetType, String expression, bool nullable) =>
-        _allHelpers
-            .map((th) =>
-                th.deserialize(targetType, expression, nullable, helperContext))
-            .firstWhere((r) => r != null,
-                orElse: () => throw new UnsupportedTypeError(
-                    targetType, expression, _notSupportedWithTypeHelpersMsg));
-
-    helperContext = new _TypeHelperContext(
-        serialize, deserialize, useWrappers, field.metadata);
-    return helperContext;
-  }
+  _TypeHelperContext _getHelperContext(FieldElement field) =>
+      new _TypeHelperContext(this, field.metadata);
 }
 
-typedef String _TypeHelperGenerator(
-    DartType fieldType, String expression, bool nullable);
-
 class _TypeHelperContext implements SerializeContext, DeserializeContext {
-  final _TypeHelperGenerator _serialize, _deserialize;
+  final JsonSerializableGenerator _generator;
 
   @override
-  final bool useWrappers;
+  bool get useWrappers => _generator.useWrappers;
 
+  @override
   List<ElementAnnotation> metadata;
 
-  _TypeHelperContext(
-      this._serialize, this._deserialize, this.useWrappers, this.metadata);
+  _TypeHelperContext(this._generator, this.metadata);
+
+  /// [expression] may be just the name of the field or it may an expression
+  /// representing the serialization of a value.
+  @override
+  String serialize(DartType targetType, String expression, bool nullable) =>
+      _generator._allHelpers
+          .map((h) => h.serialize(targetType, expression, nullable, this))
+          .firstWhere((r) => r != null,
+              orElse: () => throw new UnsupportedTypeError(
+                  targetType, expression, _notSupportedWithTypeHelpersMsg));
 
   @override
-  String serialize(DartType fieldType, String expression, bool nullable) =>
-      _serialize(fieldType, expression, nullable);
-
-  @override
-  String deserialize(DartType fieldType, String expression, bool nullable) =>
-      _deserialize(fieldType, expression, nullable);
+  String deserialize(DartType targetType, String expression, bool nullable) =>
+      _generator._allHelpers
+          .map((th) => th.deserialize(targetType, expression, nullable, this))
+          .firstWhere((r) => r != null,
+              orElse: () => throw new UnsupportedTypeError(
+                  targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
 
 String _safeNameAccess(FieldElement field) {
