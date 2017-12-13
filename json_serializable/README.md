@@ -1,9 +1,11 @@
 [![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
 
-Provides `source_gen` `Generator`s which generate code to
-make it simple to serialize to and from JSON.
+Provides [source_gen] `Generator`s to create code for JSON serialization and
+deserialization.
 
-## Example
+See the [example] package to understand how to configure your project.
+
+## User defined and generated code
 
 Given a library `example.dart` with an `Person` class annotated with
 `@JsonSerializable()`:
@@ -38,7 +40,7 @@ class Person extends Object with _$PersonSerializerMixin {
 }
 ```
 
-`source_gen` creates the corresponding part `example.g.dart`:
+Building creates the corresponding part `example.g.dart`:
 
 ```dart
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
@@ -78,3 +80,6 @@ abstract class _$PersonSerializerMixin {
   }
 }
 ```
+
+[example]: https://github.com/dart-lang/json_serializable/blob/master/example/README.md
+[source_gen]: https://pub.dartlang.org/packages/source_gen

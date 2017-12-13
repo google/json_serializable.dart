@@ -6,14 +6,21 @@ dart:
   - stable
 
 env:
+  - PKG=example TASK=dartanalyzer
+  - PKG=example TASK=dartfmt
+  - PKG=example TASK=test
   - PKG=json_annotation TASK=dartanalyzer
   - PKG=json_annotation TASK=dartfmt
   - PKG=json_serializable TASK=dartanalyzer
   - PKG=json_serializable TASK=dartfmt
-  - PKG=json_serializable TASK=test
+  - PKG=json_serializable TASK=test_1
 
 matrix:
   exclude:
+    - dart: stable
+      env: PKG=example TASK=dartanalyzer
+    - dart: stable
+      env: PKG=example TASK=dartfmt
     - dart: stable
       env: PKG=json_serializable TASK=dartanalyzer
     - dart: stable

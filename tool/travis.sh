@@ -26,6 +26,10 @@ dartfmt) echo
   ;;
 test) echo
   echo -e "[1mTASK: test[22m"
+  pub run test
+  ;;
+test_1) echo
+  echo -e "[1mTASK: test_1[22m"
   pub run test --run-skipped
   ;;
 *) echo -e "[31mNot expecting TASK '${TASK}'. Error![0m"
