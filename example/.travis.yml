@@ -4,7 +4,8 @@ dart:
   - stable
 
 dart_task:
-  - test
+  # Run the tests -- include the default-skipped presubmit tests
+  - test: --run-skipped
 
 matrix:
   include:

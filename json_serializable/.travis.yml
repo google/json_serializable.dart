@@ -1,8 +1,9 @@
 language: dart
-sudo: false
+
 dart:
   - dev
   - stable
+
 dart_task:
   # Run the tests -- include the default-skipped presubmit tests
   - test: --run-skipped
