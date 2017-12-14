@@ -3,6 +3,8 @@
 Provides [source_gen] `Generator`s to create code for JSON serialization and
 deserialization.
 
+This packages requires [source_gen], a command-line tool that generated Dart source.
+
 ## [json_serializable]
 
 The core package providing Generators for JSON-specific tasks.
