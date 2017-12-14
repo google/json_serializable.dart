@@ -13,7 +13,7 @@ env:
   - PKG=json_annotation TASK=dartfmt
   - PKG=json_serializable TASK=dartanalyzer
   - PKG=json_serializable TASK=dartfmt
-  - PKG=json_serializable TASK=test_1
+  - PKG=json_serializable TASK=test
 
 matrix:
   exclude:
