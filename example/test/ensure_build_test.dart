@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// TODO(kevmoo): replace with a common utility
+//               https://github.com/dart-lang/build/issues/716
 @Tags(const ['presubmit-only'])
 
 import 'dart:convert';
