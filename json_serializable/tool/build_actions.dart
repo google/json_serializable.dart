@@ -36,7 +36,6 @@ final List<BuildAction> buildActions = [
         header: _copyrightHeader),
     'json_serializable',
     inputs: const [
-      'example/*.dart',
       'test/test_files/json_literal.dart',
       'test/test_files/json_test_example.dart',
       'test/test_files/json_test_example.non_nullable.dart',

@@ -1,7 +1,7 @@
 # [![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
 
-Provides `source_gen` `Generator`s which generate code to
-make it simple to serialize to and from JSON.
+Provides [source_gen] `Generator`s to create code for JSON serialization and
+deserialization.
 
 ## [json_serializable]
 
@@ -15,5 +15,12 @@ The annotation package which has no dependencies.
 
 Import it into your pubspec `dependencies:` section.
 
+## [example]
+
+A simple example showing how to setup and use [json_serializable] and
+[json_annotation].
+
 [json_serializable]: https://github.com/dart-lang/json_serializable/blob/master/json_serializable/README.md
 [json_annotation]: https://github.com/dart-lang/json_serializable/blob/master/json_annotation/README.md
+[example]: https://github.com/dart-lang/json_serializable/blob/master/example/README.md
+[source_gen]: https://pub.dartlang.org/packages/source_gen
