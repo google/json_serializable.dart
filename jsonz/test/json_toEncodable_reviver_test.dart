@@ -15,40 +15,10 @@ class A {
 }
 
 toEncodable(a) => {"A": (a as A).x};
-reviver(key, value) {
-  if (value is Map && value.length == 1 && value["A"] != null) {
-    return new A(value["A"]);
-  }
-  return value;
-}
 
-const extendedJson =
-    const MyJsonCodec(toEncodable: toEncodable, reviver: reviver);
+const extendedJson = const MyJsonCodec(toEncodable: toEncodable);
 
 main() {
-  test('foo', () {
-    var encoded = extendedJson.encode([
-      new A(0),
-      {"2": new A(1)}
-    ]);
-    Expect.equals('[{"A":0},{"2":{"A":1}}]', encoded);
-    var decoded = extendedJson.decode(encoded);
-    Expect.isTrue(decoded is List);
-    Expect.equals(2, decoded.length);
-    Expect.isTrue(decoded[0] is A);
-    Expect.equals(0, decoded[0].x);
-    Expect.isTrue(decoded[1] is Map);
-    Expect.isNotNull(decoded[1]["2"]);
-    Expect.isTrue(decoded[1]["2"] is A);
-    Expect.equals(1, decoded[1]["2"].x);
-  });
-
-  test('foo', () {
-    var a = extendedJson.decode(extendedJson.encode(new A(499)));
-    Expect.isTrue(a is A);
-    Expect.equals(499, a.x);
-  });
-
   test('foo', () {
     var map = {"a": 42, "b": 42, 37: 42}; // Non-string key.
     var enc = new JsonEncoder((_) => "fixed");

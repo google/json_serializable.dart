@@ -6,20 +6,15 @@ import 'dart:convert' hide JsonDecoder;
 import 'build_json_listener.dart';
 import 'json_string_decoder_sink.dart';
 import 'json_string_parser.dart';
-import 'reviver_json_listener.dart';
 
 /**
  * This class parses JSON strings and builds the corresponding objects.
  */
 class MyJsonDecoder extends Converter<String, Object> {
-  final Reviver _reviver;
   /**
    * Constructs a new JsonDecoder.
-   *
-   * The [reviver] may be `null`.
    */
-  const MyJsonDecoder([reviver(dynamic key, dynamic value)])
-      : this._reviver = reviver;
+  const MyJsonDecoder();
 
   /**
    * Converts the given JSON-string [input] to its corresponding object.
@@ -37,7 +32,7 @@ class MyJsonDecoder extends Converter<String, Object> {
    * Throws [FormatException] if the input is not valid JSON text.
    */
   @override
-  dynamic convert(String input) => _parseJson(input, _reviver);
+  dynamic convert(String input) => _parseJson(input);
 
   /**
    * Starts a conversion from a chunked JSON string to its corresponding object.
@@ -46,7 +41,7 @@ class MyJsonDecoder extends Converter<String, Object> {
    */
   @override
   StringConversionSink startChunkedConversion(Sink<Object> sink) {
-    return new JsonStringDecoderSink(this._reviver, sink);
+    return new JsonStringDecoderSink(sink);
   }
 
   // Override the base class's bind, to provide a better type.
@@ -54,13 +49,8 @@ class MyJsonDecoder extends Converter<String, Object> {
   Stream<Object> bind(Stream<String> stream) => super.bind(stream);
 }
 
-_parseJson(String source, Reviver reviver) {
-  BuildJsonListener listener;
-  if (reviver == null) {
-    listener = new BuildJsonListener();
-  } else {
-    listener = new ReviverJsonListener(reviver);
-  }
+_parseJson(String source) {
+  final listener = new BuildJsonListener();
   var parser = new JsonStringParser(listener);
   parser.chunk = source;
   parser.chunkEnd = source.length;

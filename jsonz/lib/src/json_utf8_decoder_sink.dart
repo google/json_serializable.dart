@@ -4,7 +4,6 @@ import 'dart:convert' hide JsonDecoder;
 
 import 'build_json_listener.dart';
 import 'json_utf8_parser.dart';
-import 'reviver_json_listener.dart';
 
 /**
  * Implements the chunked conversion from a UTF-8 encoding of JSON
@@ -14,17 +13,11 @@ class JsonUtf8DecoderSink extends ByteConversionSinkBase {
   final JsonUtf8Parser _parser;
   final Sink<Object> _sink;
 
-  JsonUtf8DecoderSink(Reviver reviver, this._sink, bool allowMalformed)
-      : _parser = createParser(reviver, allowMalformed);
+  JsonUtf8DecoderSink(this._sink, bool allowMalformed)
+      : _parser = createParser(allowMalformed);
 
-  static JsonUtf8Parser createParser(Reviver reviver, bool allowMalformed) {
-    BuildJsonListener listener;
-    if (reviver == null) {
-      listener = new BuildJsonListener();
-    } else {
-      listener = new ReviverJsonListener(reviver);
-    }
-    return new JsonUtf8Parser(listener, allowMalformed);
+  static JsonUtf8Parser createParser(bool allowMalformed) {
+    return new JsonUtf8Parser(new BuildJsonListener(), allowMalformed);
   }
 
   @override

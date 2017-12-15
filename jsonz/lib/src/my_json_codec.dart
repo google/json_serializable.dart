@@ -3,7 +3,6 @@
 import 'dart:convert' hide JsonDecoder;
 
 import 'my_json_decoder.dart';
-import 'reviver_json_listener.dart';
 
 typedef _ToEncodable(var o);
 
@@ -19,18 +18,10 @@ const json = const MyJsonCodec();
  *     var decoded = json.decode('["foo", { "bar": 499 }]');
  */
 class MyJsonCodec extends Codec<Object, String> {
-  final Reviver _reviver;
   final _ToEncodable _toEncodable;
 
   /**
    * Creates a `JsonCodec` with the given reviver and encoding function.
-   *
-   * The [reviver] function is called during decoding. It is invoked once for
-   * each object or list property that has been parsed.
-   * The `key` argument is either the integer list index for a list property,
-   * the string map key for object properties, or `null` for the final result.
-   *
-   * If [reviver] is omitted, it defaults to returning the value argument.
    *
    * The [toEncodable] function is used during encoding. It is invoked for
    * values that are not directly encodable to a string (a value that is not a
@@ -45,36 +36,13 @@ class MyJsonCodec extends Codec<Object, String> {
    * If [toEncodable] is omitted, it defaults to a function that returns the
    * result of calling `.toJson()` on the unencodable object.
    */
-  const MyJsonCodec({Reviver reviver, toEncodable(var object)})
-      : _reviver = reviver,
-        _toEncodable = toEncodable;
-
-  /**
-   * Creates a `JsonCodec` with the given reviver.
-   *
-   * The [reviver] function is called once for each object or list property
-   * that has been parsed during decoding. The `key` argument is either the
-   * integer list index for a list property, the string map key for object
-   * properties, or `null` for the final result.
-   */
-  MyJsonCodec.withReviver(reviver(var key, var value)) : this(reviver: reviver);
+  const MyJsonCodec({toEncodable(var object)}) : _toEncodable = toEncodable;
 
   /**
    * Parses the string and returns the resulting Json object.
-   *
-   * The optional [reviver] function is called once for each object or list
-   * property that has been parsed during decoding. The `key` argument is either
-   * the integer list index for a list property, the string map key for object
-   * properties, or `null` for the final result.
-   *
-   * The default [reviver] (when not provided) is the identity function.
    */
   @override
-  dynamic decode(String source, {Reviver reviver}) {
-    if (reviver == null) reviver = _reviver;
-    if (reviver == null) return decoder.convert(source);
-    return new MyJsonDecoder(reviver).convert(source);
-  }
+  dynamic decode(String source) => decoder.convert(source);
 
   /**
    * Converts [value] to a JSON string.
@@ -101,10 +69,7 @@ class MyJsonCodec extends Codec<Object, String> {
   }
 
   @override
-  MyJsonDecoder get decoder {
-    if (_reviver == null) return const MyJsonDecoder();
-    return new MyJsonDecoder(_reviver);
-  }
+  MyJsonDecoder get decoder => const MyJsonDecoder();
 }
 
 //// Implementation ///////////////////////////////////////////////////////////

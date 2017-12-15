@@ -33,7 +33,7 @@ bool isJsonEqual(o1, o2) {
 
 Object decode(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -44,7 +44,7 @@ Object decode(String str) {
 
 Object decode2(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -56,7 +56,7 @@ Object decode2(String str) {
 
 Object decode3(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -68,7 +68,7 @@ Object decode3(String str) {
 
 Object decode4(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -80,7 +80,7 @@ Object decode4(String str) {
 
 Object decode5(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -93,7 +93,7 @@ Object decode5(String str) {
 
 Object decode6(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);
@@ -106,7 +106,7 @@ Object decode6(String str) {
 
 Object decode7(String str) {
   Object result;
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   ChunkedConversionSink objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = decoder.startChunkedConversion(objectSink);

@@ -5,7 +5,6 @@ import 'dart:convert' hide JsonDecoder;
 import 'build_json_listener.dart';
 import 'json_string_parser.dart';
 import 'json_utf8_decoder_sink.dart';
-import 'reviver_json_listener.dart';
 
 /**
  * Implements the chunked conversion from a JSON string to its corresponding
@@ -15,21 +14,10 @@ import 'reviver_json_listener.dart';
  */
 class JsonStringDecoderSink extends StringConversionSinkBase {
   JsonStringParser _parser;
-  final Reviver _reviver;
   final Sink<Object> _sink;
 
-  JsonStringDecoderSink(this._reviver, this._sink)
-      : _parser = _createParser(_reviver);
-
-  static JsonStringParser _createParser(Reviver reviver) {
-    BuildJsonListener listener;
-    if (reviver == null) {
-      listener = new BuildJsonListener();
-    } else {
-      listener = new ReviverJsonListener(reviver);
-    }
-    return new JsonStringParser(listener);
-  }
+  JsonStringDecoderSink(this._sink)
+      : _parser = new JsonStringParser(new BuildJsonListener());
 
   @override
   void addSlice(String chunk, int start, int end, bool isLast) {
@@ -55,6 +43,6 @@ class JsonStringDecoderSink extends StringConversionSinkBase {
   @override
   ByteConversionSink asUtf8Sink(bool allowMalformed) {
     _parser = null;
-    return new JsonUtf8DecoderSink(_reviver, _sink, allowMalformed);
+    return new JsonUtf8DecoderSink(_sink, allowMalformed);
   }
 }

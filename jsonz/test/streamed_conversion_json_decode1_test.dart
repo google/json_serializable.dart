@@ -34,7 +34,7 @@ bool isJsonEqual(o1, o2) {
 }
 
 Stream<Object> createStream(List<String> chunks) {
-  var decoder = new MyJsonDecoder(null);
+  var decoder = new MyJsonDecoder();
   StreamController controller;
   controller = new StreamController<String>(onListen: () {
     chunks.forEach(controller.add);

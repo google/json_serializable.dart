@@ -297,7 +297,7 @@ abstract class ChunkedJsonParser<T> {
 
   /** Sets the current source chunk. */
   set chunk(T source);
-  
+
   /**
    * Get charcacter/code unit of current chunk.
    *
