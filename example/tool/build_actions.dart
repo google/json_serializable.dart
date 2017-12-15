@@ -5,28 +5,14 @@
 /// Defines [BuildAction]
 import 'package:build_runner/build_runner.dart';
 
-/// Defines [JsonSerializableGenerator] and [JsonLiteralGenerator]
-import 'package:json_serializable/generators.dart';
-
-/// Defines [PartBuilder]
-import 'package:source_gen/source_gen.dart';
+/// Defines [jsonPartBuilder]
+import 'package:json_serializable/json_serializable.dart';
 
 /// The list of [BuildAction]s  used by `build.dart` and `watch.dart` to
 /// generate source code for this package.
 List<BuildAction> get buildActions => [
       new BuildAction(
-        // `PartBuilder` is a `Builder` defined by `package:source_gen` for
-        // generating Dart "part" files (.g.dart) given a set of generators.
-        new PartBuilder(const [
-          // Uses `@JsonSerializable()` annotations in source files to create
-          // helpers to support to/from JSON.
-
-          const JsonSerializableGenerator(),
-
-          // Uses @JsonLiteral('...') annotations in source files to create
-          // Dart literals for the provided JSON file.
-          const JsonLiteralGenerator()
-        ], header: _copyrightContent),
+        jsonPartBuilder(header: _copyrightContent),
 
         // The name of the current package
         'example',
@@ -38,11 +24,13 @@ List<BuildAction> get buildActions => [
       ),
     ];
 
-/// Used in the `header` argument to the [PartBuilder] constructor to add the
-/// standard copyright notice to all generated files.
+/// Used in the `header` argument to the [jsonPartBuilder] constructor to add
+/// the standard copyright notice to all generated files.
 final _copyrightContent =
     '''// Copyright (c) 2017, the Dart project authors. Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-$defaultFileHeader''';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+''';
