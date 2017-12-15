@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:build/build.dart';
 
 import 'package:build_runner/build_runner.dart';
-import 'package:json_serializable/generators.dart';
+import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
@@ -31,9 +31,7 @@ final List<BuildAction> buildActions = [
         'test/test_files/json_test_example.non_nullable.dart',
       ]),
   new BuildAction(
-    new PartBuilder(
-        const [const JsonSerializableGenerator(), const JsonLiteralGenerator()],
-        header: _copyrightHeader),
+    jsonPartBuilder(header: _copyrightHeader),
     'json_serializable',
     inputs: const [
       'test/test_files/json_literal.dart',
@@ -44,8 +42,7 @@ final List<BuildAction> buildActions = [
     ],
   ),
   new BuildAction(
-    new PartBuilder(const [const JsonSerializableGenerator(useWrappers: true)],
-        header: _copyrightHeader),
+    jsonPartBuilder(useWrappers: true, header: _copyrightHeader),
     'json_serializable',
     inputs: const [
       'test/test_files/kitchen_sink*wrapped.dart',
