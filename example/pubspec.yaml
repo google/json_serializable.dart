@@ -14,12 +14,3 @@ dev_dependencies:
 
   # A great Dart testing package, but not required to use `json_serializable`.
   test: ^0.12.29
-
-# Don't copy `dependency_overrides` into your `pubspec.yaml`
-# Here to ensure compatibility with the packages in this repository during
-# development.
-dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
-  json_serializable:
-    path: ../json_serializable
