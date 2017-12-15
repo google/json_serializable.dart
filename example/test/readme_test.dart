@@ -20,10 +20,9 @@ void _expect(String fileName) {
 
 final _pubspecContent = r'''
 dependencies:
-  json_annotation: ^0.2.1
+  json_annotation: ^0.2.2
 
 dev_dependencies:
   build_runner: ^0.6.1
-  json_serializable: ^0.2.5
-  source_gen: ^0.7.2+1
+  json_serializable: ^0.3.0
 ''';
