@@ -81,5 +81,5 @@ abstract class _$PersonSerializerMixin {
 }
 ```
 
-[example]: https://github.com/dart-lang/json_serializable/blob/master/example/README.md
+[example]: https://github.com/dart-lang/json_serializable/blob/master/example
 [source_gen]: https://pub.dartlang.org/packages/source_gen
