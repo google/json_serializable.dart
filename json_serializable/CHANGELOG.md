@@ -1,5 +1,13 @@
 ## 0.3.0
 
+* **NEW** top-level library `json_serializable.dart`.
+
+  * Replaces now deprecated `generators.dart` to access
+  `JsonSerializableGenerator` and `JsonLiteralGenerator`.
+  
+  * Adds the `jsonPartBuilder` function to make it easy to create a
+    `PartBuilder`, without creating an explicit dependency on `source_gen`.
+
 * **BREAKING** `UnsupportedTypeError` added a new required constructor argument:
   `reason`.
 

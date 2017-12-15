@@ -42,6 +42,11 @@ class JsonSerializableGenerator
   ///
   /// If [typeHelpers] is not provided, two built-in helpers are used:
   /// [JsonHelper] and [DateTimeHelper].
+  ///
+  /// If [useWrappers] is `true`, wrappers are used to minimize the number of
+  /// [Map] and [List] instances created during serialization. This will
+  /// increase the code size, but it may improve runtime performance, especially
+  /// for large object graphs.
   const JsonSerializableGenerator(
       {List<TypeHelper> typeHelpers, bool useWrappers: false})
       : this.useWrappers = useWrappers ?? false,
