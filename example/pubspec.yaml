@@ -8,11 +8,16 @@ dependencies:
   json_annotation: ^0.2.1
 
 dev_dependencies:
-  build_runner: any
+  build_runner: ^0.6.1
   json_serializable: ^0.2.5
   source_gen: ^0.7.2+1
+
+  # A great Dart testing package, but not required to use `json_serializable`.
   test: ^0.12.29
 
+# Don't copy `dependency_overrides` into your `pubspec.yaml`
+# Here to ensure compatibility with the packages in this repository during
+# development.
 dependency_overrides:
   json_annotation:
     path: ../json_annotation
