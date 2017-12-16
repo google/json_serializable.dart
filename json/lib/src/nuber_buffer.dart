@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments
 
 import 'dart:typed_data' show Uint8List;
 

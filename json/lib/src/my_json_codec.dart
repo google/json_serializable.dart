@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments
 
 import 'dart:convert' hide JsonDecoder;
 
@@ -71,5 +71,3 @@ class MyJsonCodec extends Codec<Object, String> {
   @override
   MyJsonDecoder get decoder => const MyJsonDecoder();
 }
-
-//// Implementation ///////////////////////////////////////////////////////////
