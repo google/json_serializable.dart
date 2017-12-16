@@ -52,8 +52,7 @@ class MyJsonDecoder extends Converter<String, Object> {
 _parseJson(String source) {
   final listener = new BuildJsonListener();
   var parser = new JsonStringParser(listener);
-  parser.chunk = source;
-  parser.parse(0, source.length);
+  parser.parse(source, 0, source.length);
   parser.close();
   return listener.result;
 }

@@ -32,8 +32,7 @@ class JsonUtf8DecoderSink extends ByteConversionSinkBase {
   }
 
   void _addChunk(List<int> chunk, int start, int end) {
-    _parser.chunk = chunk;
-    _parser.parse(start, end);
+    _parser.parse(chunk, start, end);
   }
 
   @override

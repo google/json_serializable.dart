@@ -264,10 +264,9 @@ abstract class ChunkedJsonParser<T> {
    *
    * Only used by [fail] to include the chunk in the thrown [FormatException].
    */
-  T get chunk;
+  T get chunk => _chunk;
 
-  /** Sets the current source chunk. */
-  set chunk(T source);
+  T _chunk;
 
   /**
    * Get charcacter/code unit of current chunk.
@@ -560,7 +559,8 @@ abstract class ChunkedJsonParser<T> {
    * Starts parsing at [position] and continues until [chunkEnd].
    * Continues parsing where the previous chunk (if any) ended.
    */
-  void parse(int position, final int end) {
+  void parse(T chunk, int position, final int end) {
+    _chunk = chunk;
     _chunkEnd = end;
     if (_partialState != NO_PARTIAL) {
       position = parsePartial(position);
