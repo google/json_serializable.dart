@@ -16,13 +16,14 @@ void testJson(String jsonText, expected) {
   compare(expected, actual, String path) {
     if (expected is List) {
       Expect.isTrue(actual is List);
-      Expect.equals(expected.length, actual.length, "$path: List length");
+      Expect.equals(
+          expected.length, (actual as List).length, "$path: List length");
       for (int i = 0; i < expected.length; i++) {
         compare(expected[i], actual[i], "$path[$i]");
       }
     } else if (expected is Map) {
       Expect.isTrue(actual is Map);
-      Expect.equals(expected.length, actual.length, "$path: Map size");
+      Expect.equals(expected.length, (actual as Map).length, "$path: Map size");
       expected.forEach((key, value) {
         Expect.isTrue(actual.containsKey(key));
         compare(value, actual[key], "$path[$key]");

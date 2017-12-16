@@ -12,14 +12,11 @@ import 'dart:typed_data' show Uint8List;
  *
  */
 class NumberBuffer {
-  static const int minCapacity = 16;
   static const int kDefaultOverhead = 5;
   Uint8List list;
   int length = 0;
   NumberBuffer(int initialCapacity)
       : list = new Uint8List(_initialCapacity(initialCapacity));
-
-  int get capacity => list.length;
 
   // Pick an initial capacity greater than the first part's size.
   // The typical use case has two parts, this is the attempt at
@@ -43,14 +40,11 @@ class NumberBuffer {
     this.list = newList;
   }
 
-  String getString() {
-    String result = new String.fromCharCodes(list, 0, length);
-    return result;
-  }
+  String _getString() => new String.fromCharCodes(list, 0, length);
 
   // TODO(lrn): See if parsing of numbers can be abstracted to something
   // not only working on strings, but also on char-code lists, without loosing
   // performance.
-  int parseInt() => int.parse(getString());
-  double parseDouble() => double.parse(getString());
+  int parseInt() => int.parse(_getString());
+  double parseDouble() => double.parse(_getString());
 }
