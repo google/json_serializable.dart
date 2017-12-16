@@ -9,11 +9,11 @@
 
 import 'dart:async';
 
-import "package:expect/expect.dart";
 import 'package:test/test.dart';
 import 'package:json/json.dart';
 
 import 'json_unicode_tests.dart';
+import "src/expect.dart";
 
 final jsonUtf8 = json.fuse<List<int>>(utf8);
 

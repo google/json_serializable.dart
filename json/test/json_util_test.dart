@@ -4,9 +4,10 @@
 
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-import "package:expect/expect.dart";
 import 'package:test/test.dart';
 import 'package:json/json.dart';
+
+import "src/expect.dart";
 
 main() {
   test("foo", () {

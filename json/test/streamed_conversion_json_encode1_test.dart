@@ -6,11 +6,10 @@
 
 import 'dart:async';
 
-import "package:expect/expect.dart";
-
 import 'package:test/test.dart';
 import 'package:json/json.dart';
 
+import "src/expect.dart";
 import 'test_values.dart';
 
 Stream<String> encode(Object o) {
