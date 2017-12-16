@@ -24,7 +24,7 @@ class BuildJsonListener extends JsonListener {
   /** The most recently read value. */
   Object _value;
 
-  /** Pushes the currently active container (and key, if a [Map]). */
+  /** Pushes the currently active container */
   void _pushContainer() {
     _stack.add(_currentContainer);
   }
@@ -101,6 +101,7 @@ class BuildJsonListener extends JsonListener {
   /** Read out the final result of parsing a JSON string. */
   @override
   get result {
+    assert(_stack.isEmpty);
     assert(_currentContainer == null);
     return _value;
   }

@@ -136,7 +136,7 @@ abstract class ChunkedJsonParser<T> {
   // Mask used to mask off two lower bits.
   static const int TWO_BIT_MASK = 3;
 
-  final JsonListener listener;
+  final JsonListener _listener;
 
   // The current parsing state.
   int _state = STATE_INITIAL;
@@ -185,7 +185,7 @@ abstract class ChunkedJsonParser<T> {
    */
   Object buffer;
 
-  ChunkedJsonParser(this.listener);
+  ChunkedJsonParser(this._listener);
 
   /**
    * Push the current parse [state] on a stack.
@@ -247,7 +247,7 @@ abstract class ChunkedJsonParser<T> {
    * `true` as second (`isLast`) argument.
    */
   Object get result {
-    return listener.result;
+    return _listener.result;
   }
 
   /**
@@ -536,9 +536,9 @@ abstract class ChunkedJsonParser<T> {
       count++;
     } while (count < keyword.length);
     if (keywordType == KWD_NULL) {
-      listener.handleNull();
+      _listener.handleNull();
     } else {
-      listener.handleBool(keywordType == KWD_TRUE);
+      _listener.handleBool(keywordType == KWD_TRUE);
     }
     return position;
   }
@@ -583,14 +583,14 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $lbracket:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
-          listener.beginArray();
+          _listener.beginArray();
           saveState(state);
           state = STATE_ARRAY_EMPTY;
           position++;
           break;
         case $lbrace:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
-          listener.beginObject();
+          _listener.beginObject();
           saveState(state);
           state = STATE_OBJECT_EMPTY;
           position++;
@@ -612,17 +612,17 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $colon:
           if (state != STATE_OBJECT_KEY) throw fail(position);
-          listener.propertyName();
+          _listener.propertyName();
           state = STATE_OBJECT_COLON;
           position++;
           break;
         case $comma:
           if (state == STATE_OBJECT_VALUE) {
-            listener.propertyValue();
+            _listener.propertyValue();
             state = STATE_OBJECT_COMMA;
             position++;
           } else if (state == STATE_ARRAY_VALUE) {
-            listener.arrayElement();
+            _listener.arrayElement();
             state = STATE_ARRAY_COMMA;
             position++;
           } else {
@@ -631,10 +631,10 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $rbracket:
           if (state == STATE_ARRAY_EMPTY) {
-            listener.endArray();
+            _listener.endArray();
           } else if (state == STATE_ARRAY_VALUE) {
-            listener.arrayElement();
-            listener.endArray();
+            _listener.arrayElement();
+            _listener.endArray();
           } else {
             throw fail(position);
           }
@@ -643,10 +643,10 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $rbrace:
           if (state == STATE_OBJECT_EMPTY) {
-            listener.endObject();
+            _listener.endObject();
           } else if (state == STATE_OBJECT_VALUE) {
-            listener.propertyValue();
-            listener.endObject();
+            _listener.propertyValue();
+            _listener.endObject();
           } else {
             throw fail(position);
           }
@@ -679,7 +679,7 @@ abstract class ChunkedJsonParser<T> {
         getChar(position + 3) != $e) {
       throw fail(position);
     }
-    listener.handleBool(true);
+    _listener.handleBool(true);
     return position + 4;
   }
 
@@ -699,7 +699,7 @@ abstract class ChunkedJsonParser<T> {
         getChar(position + 4) != $e) {
       throw fail(position);
     }
-    listener.handleBool(false);
+    _listener.handleBool(false);
     return position + 5;
   }
 
@@ -718,7 +718,7 @@ abstract class ChunkedJsonParser<T> {
         getChar(position + 3) != $l) {
       throw fail(position);
     }
-    listener.handleNull();
+    _listener.handleNull();
     return position + 4;
   }
 
@@ -762,7 +762,7 @@ abstract class ChunkedJsonParser<T> {
         return parseStringToBuffer(sliceEnd);
       }
       if (char == $quote) {
-        listener.handleString(getString(start, position - 1, bits));
+        _listener.handleString(getString(start, position - 1, bits));
         return position;
       }
       if (char < $space) {
@@ -833,7 +833,7 @@ abstract class ChunkedJsonParser<T> {
         if (quotePosition > start) {
           addSliceToString(start, quotePosition);
         }
-        listener.handleString(endString());
+        _listener.handleString(endString());
         return position;
       }
       if (char != $backslash) {
@@ -945,16 +945,16 @@ abstract class ChunkedJsonParser<T> {
 
   int finishChunkNumber(int state, int start, int end, NumberBuffer buffer) {
     if (state == NUM_ZERO) {
-      listener.handleNumber(0);
+      _listener.handleNumber(0);
       return end;
     }
     if (end > start) {
       addNumberChunk(buffer, start, end, 0);
     }
     if (state == NUM_DIGIT) {
-      listener.handleNumber(buffer.parseInt());
+      _listener.handleNumber(buffer.parseInt());
     } else if (state == NUM_DOT_DIGIT || state == NUM_E_DIGIT) {
-      listener.handleNumber(buffer.parseDouble());
+      _listener.handleNumber(buffer.parseDouble());
     } else {
       throw fail(chunkEnd, "Unterminated number literal");
     }
@@ -1056,7 +1056,7 @@ abstract class ChunkedJsonParser<T> {
       intValue += expSign * exponent;
     }
     if (!isDouble) {
-      listener.handleNumber(sign * intValue);
+      _listener.handleNumber(sign * intValue);
       return position;
     }
     // Double values at or above this value (2 ** 53) may have lost precission.
@@ -1067,15 +1067,15 @@ abstract class ChunkedJsonParser<T> {
       double signedMantissa = doubleValue * sign;
       if (exponent >= -22) {
         if (exponent < 0) {
-          listener.handleNumber(signedMantissa / _powersOfTen[-exponent]);
+          _listener.handleNumber(signedMantissa / _powersOfTen[-exponent]);
           return position;
         }
         if (exponent == 0) {
-          listener.handleNumber(signedMantissa);
+          _listener.handleNumber(signedMantissa);
           return position;
         }
         if (exponent <= 22) {
-          listener.handleNumber(signedMantissa * _powersOfTen[exponent]);
+          _listener.handleNumber(signedMantissa * _powersOfTen[exponent]);
           return position;
         }
       }
@@ -1083,7 +1083,7 @@ abstract class ChunkedJsonParser<T> {
     // If the value is outside the range +/-maxExactDouble or
     // exponent is outside the range +/-22, then we can't trust simple double
     // arithmetic to get the exact result, so we use the system double parsing.
-    listener.handleNumber(parseDouble(start, position));
+    _listener.handleNumber(parseDouble(start, position));
     return position;
   }
 
