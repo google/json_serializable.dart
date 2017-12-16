@@ -1,7 +1,7 @@
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
 import 'chunked_json_parser.dart';
-import 'json_listener.dart';
+import 'listeners/json_listener.dart';
 
 /**
  * Chunked JSON parser that parses [String] chunks.

@@ -2,8 +2,8 @@
 
 import 'dart:convert' hide JsonDecoder;
 
-import 'build_json_listener.dart';
 import 'json_utf8_parser.dart';
+import 'listeners/build_json_listener.dart';
 
 /**
  * Implements the chunked conversion from a UTF-8 encoding of JSON

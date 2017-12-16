@@ -2,9 +2,9 @@
 
 import 'dart:convert' hide JsonDecoder;
 
-import 'build_json_listener.dart';
 import 'json_string_decoder_sink.dart';
 import 'json_string_parser.dart';
+import 'listeners/build_json_listener.dart';
 
 /**
  * This class parses JSON strings and builds the corresponding objects.

@@ -3,7 +3,7 @@
 import 'dart:typed_data' show Uint8List, Uint16List;
 
 import 'chunked_json_parser.dart';
-import 'json_listener.dart';
+import 'listeners/json_listener.dart';
 
 /**
  * Chunked JSON parser that parses UTF-8 chunks.
