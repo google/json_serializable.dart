@@ -89,8 +89,7 @@ class BuildJsonListener extends JsonListener {
 
   @override
   void arrayElement() {
-    List list = _currentContainer;
-    list.add(_value);
+    (_currentContainer as List).add(_value);
     _value = null;
   }
 
