@@ -38,48 +38,43 @@ void testJson(String jsonText, expected) {
   }
 
   group('chunked conversion for `$jsonText`', () {
-    for (var reviver in [null, (k, v) => v]) {
-      group((reviver == null) ? 'without reviver' : 'with reviver', () {
-        for (var split in [0, 1, 2, 3]) {
-          test("with split `$split`", () {
-            var name = (reviver == null) ? "" : "reviver:";
-            var sink = new ChunkedConversionSink.withCallback((values) {
-              var value = values[0];
-              compare(expected, value, "$name$value");
-            });
-            var decoderSink = json.decoder.startChunkedConversion(sink);
-            switch (split) {
-              case 0:
-                // Split after first char.
-                decoderSink.add(jsonText.substring(0, 1));
-                decoderSink.add(jsonText.substring(1));
-                decoderSink.close();
-                break;
-              case 1:
-                // Split before last char.
-                int length = jsonText.length;
-                decoderSink.add(jsonText.substring(0, length - 1));
-                decoderSink.add(jsonText.substring(length - 1));
-                decoderSink.close();
-                break;
-              case 2:
-                // Split in middle.
-                int half = jsonText.length ~/ 2;
-                decoderSink.add(jsonText.substring(0, half));
-                decoderSink.add(jsonText.substring(half));
-                decoderSink.close();
-                break;
-              case 3:
-                // Split in three chunks.
-                int length = jsonText.length;
-                int third = length ~/ 3;
-                decoderSink.add(jsonText.substring(0, third));
-                decoderSink.add(jsonText.substring(third, 2 * third));
-                decoderSink.add(jsonText.substring(2 * third));
-                decoderSink.close();
-                break;
-            }
-          });
+    for (var split in [0, 1, 2, 3]) {
+      test("with split `$split`", () {
+        var sink = new ChunkedConversionSink.withCallback((values) {
+          var value = values[0];
+          compare(expected, value, "$value");
+        });
+        var decoderSink = json.decoder.startChunkedConversion(sink);
+        switch (split) {
+          case 0:
+            // Split after first char.
+            decoderSink.add(jsonText.substring(0, 1));
+            decoderSink.add(jsonText.substring(1));
+            decoderSink.close();
+            break;
+          case 1:
+            // Split before last char.
+            int length = jsonText.length;
+            decoderSink.add(jsonText.substring(0, length - 1));
+            decoderSink.add(jsonText.substring(length - 1));
+            decoderSink.close();
+            break;
+          case 2:
+            // Split in middle.
+            int half = jsonText.length ~/ 2;
+            decoderSink.add(jsonText.substring(0, half));
+            decoderSink.add(jsonText.substring(half));
+            decoderSink.close();
+            break;
+          case 3:
+            // Split in three chunks.
+            int length = jsonText.length;
+            int third = length ~/ 3;
+            decoderSink.add(jsonText.substring(0, third));
+            decoderSink.add(jsonText.substring(third, 2 * third));
+            decoderSink.add(jsonText.substring(2 * third));
+            decoderSink.close();
+            break;
         }
       });
     }
