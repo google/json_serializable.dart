@@ -2,77 +2,67 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-library json_unicode_tests;
+import 'package:charcode/charcode.dart';
 
 import 'unicode_values.dart';
 
-const _quote = 0x22; // "
-const _colon = 0x3a; // :
-const _comma = 0x2c; // ,
-const _braceOpen = 0x7b; // {
-const _braceClose = 0x7d; // }
-const _bracketOpen = 0x5b; // [
-const _bracketClose = 0x5d; // ]
-
-final jsonUnicodeTests = unicodeTests.expand((List testValue) {
+final List<Pair> jsonUnicodeTests =
+    unicodeTests.expand((Pair<String> testValue) {
   // The unicode test will be a string (possibly) containing unicode
   // characters. It also contains the empty string.
   // It must not contain a double-quote '"'.
-  assert(!testValue.contains('"'));
-
-  var bytes = testValue[0] as List<int>;
-  var string = testValue[1] as String;
+  assert(!testValue.target.contains('"'));
 
   // expanded will hold all tests that are generated from the unicode test.
-  var expanded = [];
+  var expanded = <Pair>[];
 
   // Put the string into quotes.
   // For example: 'abcd' -> '"abcd"'.
   var inQuotesBytes = <int>[];
-  inQuotesBytes.add(_quote);
-  inQuotesBytes.addAll(bytes);
-  inQuotesBytes.add(_quote);
-  expanded.add([inQuotesBytes, string]);
+  inQuotesBytes.add($quote);
+  inQuotesBytes.addAll(testValue.bytes);
+  inQuotesBytes.add($quote);
+  expanded.add(new Pair(inQuotesBytes, testValue.target));
 
   // Put the quoted string into a triple nested list.
   // For example: 'abcd' -> '[[["abcd"]]]'.
   var listExpected = [
     [
-      [string]
+      [testValue.target]
     ]
   ];
   var inListBytes = <int>[];
-  inListBytes.addAll([_bracketOpen, _bracketOpen, _bracketOpen]);
+  inListBytes.addAll([$lbracket, $lbracket, $lbracket]);
   inListBytes.addAll(inQuotesBytes);
-  inListBytes.addAll([_bracketClose, _bracketClose, _bracketClose]);
-  expanded.add([inListBytes, listExpected]);
+  inListBytes.addAll([$rbracket, $rbracket, $rbracket]);
+  expanded.add(new Pair(inListBytes, listExpected));
 
   // Put the quoted string into a triple nested list and duplicate that
   // list three times.
   // For example: 'abcd' -> '[[[["abcd"]]],[[["abcd"]]],[[["abcd"]]]]'.
   var listLongerExpected = [listExpected, listExpected, listExpected];
   var listLongerBytes = <int>[];
-  listLongerBytes.add(_bracketOpen);
+  listLongerBytes.add($lbracket);
   listLongerBytes.addAll(inListBytes);
-  listLongerBytes.add(_comma);
+  listLongerBytes.add($comma);
   listLongerBytes.addAll(inListBytes);
-  listLongerBytes.add(_comma);
+  listLongerBytes.add($comma);
   listLongerBytes.addAll(inListBytes);
-  listLongerBytes.add(_bracketClose);
-  expanded.add([listLongerBytes, listLongerExpected]);
+  listLongerBytes.add($rbracket);
+  expanded.add(new Pair(listLongerBytes, listLongerExpected));
 
   // Put the previous strings/lists into a map.
   // For example:
   //    'abcd' -> '{"abcd":[[[["abcd"]]],[[["abcd"]]],[[["abcd"]]]]}'.
   var mapExpected = new Map();
-  mapExpected[string] = listLongerExpected;
+  mapExpected[testValue.target] = listLongerExpected;
   var mapBytes = <int>[];
-  mapBytes.add(_braceOpen);
+  mapBytes.add($lbrace);
   mapBytes.addAll(inQuotesBytes);
-  mapBytes.add(_colon);
+  mapBytes.add($colon);
   mapBytes.addAll(listLongerBytes);
-  mapBytes.add(_braceClose);
-  expanded.add([mapBytes, mapExpected]);
+  mapBytes.add($rbrace);
+  expanded.add(new Pair(mapBytes, mapExpected));
 
   return expanded;
 }).toList();

@@ -170,8 +170,8 @@ abstract class ChunkedJsonParser<T> {
   final JsonListener listener;
 
   // The current parsing state.
-  int state = STATE_INITIAL;
-  List<int> states = <int>[];
+  int _state = STATE_INITIAL;
+  final _states = <int>[];
 
   /**
    * Stores tokenizer state between chunks.
@@ -184,7 +184,7 @@ abstract class ChunkedJsonParser<T> {
    * this integer, or in the [buffer] field as a string-building buffer
    * or a [NumberBuffer].
    *
-   * Prefix state stored in [state] as bits.
+   * Prefix state stored in [_state] as bits.
    *
    *            ..00 : No partial value (NO_PARTIAL).
    *
@@ -225,14 +225,14 @@ abstract class ChunkedJsonParser<T> {
    * so the parser can go back to the correct value when the literal ends.
    */
   void saveState(int state) {
-    states.add(state);
+    _states.add(state);
   }
 
   /**
    * Restore a state pushed with [saveState].
    */
   int restoreState() {
-    return states.removeLast(); // Throws if empty.
+    return _states.removeLast(); // Throws if empty.
   }
 
   /**
@@ -266,7 +266,7 @@ abstract class ChunkedJsonParser<T> {
         throw fail(chunkEnd); // Incomplete literal.
       }
     }
-    if (state != STATE_END) {
+    if (_state != STATE_END) {
       throw fail(chunkEnd);
     }
   }
@@ -595,7 +595,7 @@ abstract class ChunkedJsonParser<T> {
       position = parsePartial(position);
       if (position == length) return;
     }
-    int state = this.state;
+    int state = _state;
     while (position < length) {
       int char = getChar(position);
       switch (char) {
@@ -690,7 +690,7 @@ abstract class ChunkedJsonParser<T> {
           break;
       }
     }
-    this.state = state;
+    _state = state;
   }
 
   /**

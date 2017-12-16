@@ -4,11 +4,7 @@
 
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-/**
- * This library contains an Expect class with static methods that can be used
- * for simple unit-tests.
- */
-library expect;
+import 'package:test/test.dart' as t;
 
 /**
  * Expect is used for tests that do not want to make use of the
@@ -18,37 +14,6 @@ library expect;
  * test assertions.
  */
 class Expect {
-  /**
-   * Return a slice of a string.
-   *
-   * The slice will contain at least the substring from [start] to the lower of
-   * [end] and `start + length`.
-   * If the result is no more than `length - 10` characters long,
-   * context may be added by extending the range of the slice, by decreasing
-   * [start] and increasing [end], up to at most length characters.
-   * If the start or end of the slice are not matching the start or end of
-   * the string, ellipses are added before or after the slice.
-   * Characters other than printable ASCII are escaped.
-   */
-  static String _truncateString(String string, int start, int end, int length) {
-    if (end - start > length) {
-      end = start + length;
-    } else if (end - start < length) {
-      int overflow = length - (end - start);
-      if (overflow > 10) overflow = 10;
-      // Add context.
-      start = start - ((overflow + 1) ~/ 2);
-      end = end + (overflow ~/ 2);
-      if (start < 0) start = 0;
-      if (end > string.length) end = string.length;
-    }
-    StringBuffer buf = new StringBuffer();
-    if (start > 0) buf.write("...");
-    _escapeSubstring(buf, string, 0, string.length);
-    if (end < string.length) buf.write("...");
-    return buf.toString();
-  }
-
   /// Return the string with characters that are not printable ASCII characters
   /// escaped as either "\xXX" codes or "\uXXXX" codes.
   static String _escapeString(String string) {
@@ -80,50 +45,10 @@ class Expect {
   }
 
   /**
-   * Find the difference between two strings.
-   *
-   * This finds the first point where two strings differ, and returns
-   * a text describing the difference.
-   *
-   * For small strings (length less than 20) nothing is done, and null is
-   * returned. Small strings can be compared visually, but for longer strings
-   * only a slice containing the first difference will be shown.
-   */
-  static String _stringDifference(String expected, String actual) {
-    if (expected.length < 20 && actual.length < 20) return null;
-    for (int i = 0; i < expected.length && i < actual.length; i++) {
-      if (expected.codeUnitAt(i) != actual.codeUnitAt(i)) {
-        int start = i;
-        i++;
-        while (i < expected.length && i < actual.length) {
-          if (expected.codeUnitAt(i) == actual.codeUnitAt(i)) break;
-          i++;
-        }
-        int end = i;
-        var truncExpected = _truncateString(expected, start, end, 20);
-        var truncActual = _truncateString(actual, start, end, 20);
-        return "at index $start: Expected <$truncExpected>, "
-            "Found: <$truncActual>";
-      }
-    }
-    return null;
-  }
-
-  /**
    * Checks whether the expected and actual values are equal (using `==`).
    */
   static void equals(var expected, var actual, [String reason]) {
-    if (expected == actual) return;
-    String msg = _getMessage(reason);
-    if (expected is String && actual is String) {
-      String stringDifference = _stringDifference(expected, actual);
-      if (stringDifference != null) {
-        _fail("Expect.equals($stringDifference$msg) fails.");
-      }
-      _fail("Expect.equals(expected: <${_escapeString(expected)}>"
-          ", actual: <${_escapeString(actual)}>$msg) fails.");
-    }
-    _fail("Expect.equals(expected: <$expected>, actual: <$actual>$msg) fails.");
+    t.expect(expected, t.equals(actual), reason: reason);
   }
 
   /**
@@ -132,7 +57,7 @@ class Expect {
   static void isTrue(var actual, [String reason]) {
     if (_identical(actual, true)) return;
     String msg = _getMessage(reason);
-    _fail("Expect.isTrue($actual$msg) fails.");
+    t.fail("Expect.isTrue($actual$msg) fails.");
   }
 
   /**
@@ -141,7 +66,7 @@ class Expect {
   static void isFalse(var actual, [String reason]) {
     if (_identical(actual, false)) return;
     String msg = _getMessage(reason);
-    _fail("Expect.isFalse($actual$msg) fails.");
+    t.fail("Expect.isFalse($actual$msg) fails.");
   }
 
   /**
@@ -150,7 +75,7 @@ class Expect {
   static void isNull(actual, [String reason]) {
     if (null == actual) return;
     String msg = _getMessage(reason);
-    _fail("Expect.isNull(actual: <$actual>$msg) fails.");
+    t.fail("Expect.isNull(actual: <$actual>$msg) fails.");
   }
 
   /**
@@ -159,7 +84,7 @@ class Expect {
   static void isNotNull(actual, [String reason]) {
     if (null != actual) return;
     String msg = _getMessage(reason);
-    _fail("Expect.isNotNull(actual: <$actual>$msg) fails.");
+    t.fail("Expect.isNotNull(actual: <$actual>$msg) fails.");
   }
 
   /**
@@ -172,17 +97,17 @@ class Expect {
     if (expected is String && actual is String) {
       String note =
           (expected == actual) ? ' Strings equal but not identical.' : '';
-      _fail("Expect.identical(expected: <${_escapeString(expected)}>"
+      t.fail("Expect.identical(expected: <${_escapeString(expected)}>"
           ", actual: <${_escapeString(actual)}>$msg) "
           "fails.$note");
     }
-    _fail("Expect.identical(expected: <$expected>, actual: <$actual>$msg) "
+    t.fail("Expect.identical(expected: <$expected>, actual: <$actual>$msg) "
         "fails.");
   }
 
   // Unconditional failure.
   static void fail(String msg) {
-    _fail("Expect.fail('$msg')");
+    t.fail("Expect.fail('$msg')");
   }
 
   /**
@@ -199,14 +124,14 @@ class Expect {
     if ((expected - actual).abs() <= tolerance) return;
 
     String msg = _getMessage(reason);
-    _fail('Expect.approxEquals(expected:<$expected>, actual:<$actual>, '
+    t.fail('Expect.approxEquals(expected:<$expected>, actual:<$actual>, '
         'tolerance:<$tolerance>$msg) fails');
   }
 
   static void notEquals(unexpected, actual, [String reason]) {
     if (unexpected != actual) return;
     String msg = _getMessage(reason);
-    _fail("Expect.notEquals(unexpected: <$unexpected>, actual:<$actual>$msg) "
+    t.fail("Expect.notEquals(unexpected: <$unexpected>, actual:<$actual>$msg) "
         "fails.");
   }
 
@@ -221,14 +146,14 @@ class Expect {
     int n = (expected.length < actual.length) ? expected.length : actual.length;
     for (int i = 0; i < n; i++) {
       if (expected[i] != actual[i]) {
-        _fail('Expect.listEquals(at index $i, '
+        t.fail('Expect.listEquals(at index $i, '
             'expected: <${expected[i]}>, actual: <${actual[i]}>$msg) fails');
       }
     }
     // We check on length at the end in order to provide better error
     // messages when an unexpected item is inserted in a list.
     if (expected.length != actual.length) {
-      _fail('Expect.listEquals(list length, '
+      t.fail('Expect.listEquals(list length, '
           'expected: <${expected.length}>, actual: <${actual.length}>$msg) '
           'fails: Next element <'
           '${expected.length > n ? expected[n] : actual[n]}>');
@@ -246,7 +171,7 @@ class Expect {
     // Make sure all of the values are present in both and match.
     for (final key in expected.keys) {
       if (!actual.containsKey(key)) {
-        _fail('Expect.mapEquals(missing expected key: <$key>$msg) fails');
+        t.fail('Expect.mapEquals(missing expected key: <$key>$msg) fails');
       }
 
       Expect.equals(expected[key], actual[key]);
@@ -255,7 +180,7 @@ class Expect {
     // Make sure the actual map doesn't have any extra keys.
     for (final key in actual.keys) {
       if (!expected.containsKey(key)) {
-        _fail('Expect.mapEquals(unexpected key: <$key>$msg) fails');
+        t.fail('Expect.mapEquals(unexpected key: <$key>$msg) fails');
       }
     }
   }
@@ -272,7 +197,7 @@ class Expect {
         'Expect.stringEquals(expected: <$expected>", <$actual>$msg) fails';
 
     if ((expected == null) || (actual == null)) {
-      _fail('$defaultMessage');
+      t.fail('$defaultMessage');
     }
 
     // Scan from the left until we find the mismatch.
@@ -339,7 +264,7 @@ class Expect {
     String diff = '\nDiff ($left..${eLen - right}/${aLen - right}):\n'
         '$leftLead$leftSnippet[ $eSnippet ]$rightSnippet$rightTail\n'
         '$leftLead$leftSnippet[ $aSnippet ]$rightSnippet$rightTail';
-    _fail("$defaultMessage$diff");
+    t.fail("$defaultMessage$diff");
   }
 
   /**
@@ -373,7 +298,7 @@ class Expect {
     for (final val in extraSet) {
       sb.write('$val ');
     }
-    _fail(sb.toString());
+    t.fail(sb.toString());
   }
 
   /**
@@ -402,7 +327,7 @@ class Expect {
       if (expectedLength != actualLength) {
         var nextElement =
             (expectedLength > length ? expected : actual).elementAt(length);
-        _fail('Expect.deepEquals(list length, '
+        t.fail('Expect.deepEquals(list length, '
             'expected: <$expectedLength>, actual: <$actualLength>) '
             'fails: Next element <$nextElement>');
       }
@@ -410,7 +335,7 @@ class Expect {
       // Make sure all of the values are present in both and match.
       for (final key in expected.keys) {
         if (!actual.containsKey(key)) {
-          _fail('Expect.deepEquals(missing expected key: <$key>) fails');
+          t.fail('Expect.deepEquals(missing expected key: <$key>) fails');
         }
 
         Expect.deepEquals(expected[key], actual[key]);
@@ -419,11 +344,11 @@ class Expect {
       // Make sure the actual map doesn't have any extra keys.
       for (final key in actual.keys) {
         if (!expected.containsKey(key)) {
-          _fail('Expect.deepEquals(unexpected key: <$key>) fails');
+          t.fail('Expect.deepEquals(unexpected key: <$key>) fails');
         }
       }
     } else {
-      _fail("Expect.deepEquals(expected: <$expected>, actual: <$actual>) "
+      t.fail("Expect.deepEquals(expected: <$expected>, actual: <$actual>) "
           "fails.");
     }
   }
@@ -441,19 +366,19 @@ class Expect {
     if (f is! _Nullary) {
       // Only throws from executing the function body should count as throwing.
       // The failure to even call `f` should throw outside the try/catch.
-      _fail("Expect.throws$msg: Function f not callable with zero arguments");
+      t.fail("Expect.throws$msg: Function f not callable with zero arguments");
     }
     try {
       f();
     } catch (e, s) {
       if (check != null) {
         if (!check(e)) {
-          _fail("Expect.throws$msg: Unexpected '$e'\n$s");
+          t.fail("Expect.throws$msg: Unexpected '$e'\n$s");
         }
       }
       return;
     }
-    _fail('Expect.throws$msg fails: Did not throw');
+    t.fail('Expect.throws$msg fails: Did not throw');
   }
 
   static void throwsArgumentError(void f(), [String reason]) {
@@ -503,25 +428,14 @@ class Expect {
   /// It may be using the expect API incorrectly or failing some other
   /// invariant that the test expects to be true.
   static void testError(String message) {
-    _fail("Test error: $message");
+    t.fail("Test error: $message");
   }
 
   static String _getMessage(String reason) =>
       (reason == null) ? "" : ", '$reason'";
-
-  static void _fail(String message) {
-    throw new ExpectException(message);
-  }
 }
 
 bool _identical(a, b) => identical(a, b);
 
 typedef bool _CheckExceptionFn(exception);
 typedef _Nullary(); // Expect.throws argument must be this type.
-
-class ExpectException implements Exception {
-  ExpectException(this.message);
-  @override
-  String toString() => message;
-  String message;
-}

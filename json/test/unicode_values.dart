@@ -205,39 +205,44 @@ const BIGGEST_4_UTF8_UNIT_BYTES = const [0xF4, 0x8F, 0xBF, 0xBF];
 const BIGGEST_4_UTF8_UNIT_STRING = "\u{10FFFF}";
 
 const _TEST_PAIRS = const [
-  const [const <int>[], ""],
-  const [INTER_BYTES, INTER_STRING],
-  const [BLUEBERRY_BYTES, BLUEBERRY_STRING],
-  const [SIVA_BYTES1, SIVA_STRING1],
-  const [SIVA_BYTES2, SIVA_STRING2],
-  const [BEE_BYTES, BEE_STRING],
-  const [DIGIT_BYTES, DIGIT_STRING],
-  const [ASCII_BYTES, ASCII_STRING],
-  const [BIGGEST_ASCII_BYTES, BIGGEST_ASCII_STRING],
-  const [SMALLEST_2_UTF8_UNIT_BYTES, SMALLEST_2_UTF8_UNIT_STRING],
-  const [BIGGEST_2_UTF8_UNIT_BYTES, BIGGEST_2_UTF8_UNIT_STRING],
-  const [SMALLEST_3_UTF8_UNIT_BYTES, SMALLEST_3_UTF8_UNIT_STRING],
-  const [BIGGEST_3_UTF8_UNIT_BYTES, BIGGEST_3_UTF8_UNIT_STRING],
-  const [SMALLEST_4_UTF8_UNIT_BYTES, SMALLEST_4_UTF8_UNIT_STRING],
-  const [BIGGEST_4_UTF8_UNIT_BYTES, BIGGEST_4_UTF8_UNIT_STRING],
+  const Pair<String>(const <int>[], ""),
+  const Pair<String>(INTER_BYTES, INTER_STRING),
+  const Pair<String>(BLUEBERRY_BYTES, BLUEBERRY_STRING),
+  const Pair<String>(SIVA_BYTES1, SIVA_STRING1),
+  const Pair<String>(SIVA_BYTES2, SIVA_STRING2),
+  const Pair<String>(BEE_BYTES, BEE_STRING),
+  const Pair<String>(DIGIT_BYTES, DIGIT_STRING),
+  const Pair<String>(ASCII_BYTES, ASCII_STRING),
+  const Pair<String>(BIGGEST_ASCII_BYTES, BIGGEST_ASCII_STRING),
+  const Pair<String>(SMALLEST_2_UTF8_UNIT_BYTES, SMALLEST_2_UTF8_UNIT_STRING),
+  const Pair<String>(BIGGEST_2_UTF8_UNIT_BYTES, BIGGEST_2_UTF8_UNIT_STRING),
+  const Pair<String>(SMALLEST_3_UTF8_UNIT_BYTES, SMALLEST_3_UTF8_UNIT_STRING),
+  const Pair<String>(BIGGEST_3_UTF8_UNIT_BYTES, BIGGEST_3_UTF8_UNIT_STRING),
+  const Pair<String>(SMALLEST_4_UTF8_UNIT_BYTES, SMALLEST_4_UTF8_UNIT_STRING),
+  const Pair<String>(BIGGEST_4_UTF8_UNIT_BYTES, BIGGEST_4_UTF8_UNIT_STRING),
 ];
 
-List<List> _expandTestPairs() {
+List<Pair<String>> _expandTestPairs() {
   assert(2 == BEE_STRING.length);
-  var tests = <List>[];
+  var tests = <Pair<String>>[];
   tests.addAll(_TEST_PAIRS);
   tests.addAll(_TEST_PAIRS.map((test) {
-    var bytes = test[0] as List<int>;
-    var string = test[1] as String;
     var longBytes = <int>[];
     var longString = '';
     for (int i = 0; i < 100; i++) {
-      longBytes.addAll(bytes);
-      longString += string;
+      longBytes.addAll(test.bytes);
+      longString += test.target;
     }
-    return [longBytes, longString];
+    return new Pair<String>(longBytes, longString);
   }));
   return tests;
 }
 
-final List<List> unicodeTests = _expandTestPairs();
+final List<Pair<String>> unicodeTests = _expandTestPairs();
+
+class Pair<T> {
+  final List<int> bytes;
+  final T target;
+
+  const Pair(this.bytes, this.target);
+}

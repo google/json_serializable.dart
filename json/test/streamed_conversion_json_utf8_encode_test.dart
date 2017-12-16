@@ -9,46 +9,46 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:json/json.dart';
 
-import 'json_unicode_tests.dart';
-import "src/expect.dart";
+import 'unicode_test_values.dart';
 
-final jsonUtf8 = json.fuse<List<int>>(utf8);
+final _jsonUtf8 = json.fuse<List<int>>(utf8);
 
-Stream<List<int>> encode(Object o) {
+Stream<List<int>> _encode(Object o) {
   StreamController controller;
   controller = new StreamController(onListen: () {
     controller.add(o);
     controller.close();
   });
-  return controller.stream.transform(jsonUtf8.encoder);
+  return controller.stream.transform(_jsonUtf8.encoder);
 }
 
-void testUnpaused(List<int> expected, Stream<List<int>> stream) {
-  stream.toList().then(expectAsync1((list) {
-    var combined = <int>[];
-    list.forEach(combined.addAll);
-    Expect.listEquals(expected, combined);
-  }));
+Future _testUnpaused(List<int> expected, Stream<List<int>> stream) async {
+  final list = await stream.toList();
+  var combined = <int>[];
+  list.forEach(combined.addAll);
+  expect(combined, equals(expected));
 }
 
-void testWithPauses(List<int> expected, Stream<List<int>> stream) {
+Future _testWithPauses(List<int> expected, Stream<List<int>> stream) async {
   var accumulated = <int>[];
-  var sub;
+  StreamSubscription sub;
+
   sub = stream.listen((x) {
     accumulated.addAll(x);
     sub.pause(new Future.delayed(Duration.zero));
-  }, onDone: expectAsync0(() {
-    Expect.listEquals(expected, accumulated);
-  }));
+  });
+
+  await sub.asFuture();
+
+  expect(accumulated, expected);
 }
 
 void main() {
+  var count = 1;
   for (var value in jsonUnicodeTests) {
-    test("foo", () {
-      var expected = value[0] as List<int>;
-      var object = value[1];
-      testUnpaused(expected, encode(object));
-      testWithPauses(expected, encode(object));
+    test("test ${count++}", () async {
+      await _testUnpaused(value.bytes, _encode(value.target));
+      await _testWithPauses(value.bytes, _encode(value.target));
     });
   }
 }
