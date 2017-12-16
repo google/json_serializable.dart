@@ -255,7 +255,9 @@ abstract class ChunkedJsonParser<T> {
    *
    * The valid arguments to [getChar] are 0 .. `chunkEnd - 1`.
    */
-  int get chunkEnd;
+  int get chunkEnd => _chunkEnd;
+
+  int _chunkEnd;
 
   /**
    * Returns the chunk itself.
@@ -558,14 +560,14 @@ abstract class ChunkedJsonParser<T> {
    * Starts parsing at [position] and continues until [chunkEnd].
    * Continues parsing where the previous chunk (if any) ended.
    */
-  void parse(int position) {
-    int length = chunkEnd;
+  void parse(int position, final int end) {
+    _chunkEnd = end;
     if (_partialState != NO_PARTIAL) {
       position = parsePartial(position);
-      if (position == length) return;
+      if (position == end) return;
     }
     int state = _state;
-    while (position < length) {
+    while (position < end) {
       int char = getChar(position);
       switch (char) {
         case $space:

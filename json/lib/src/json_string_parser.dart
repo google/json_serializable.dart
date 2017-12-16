@@ -9,8 +9,6 @@ import 'json_listener.dart';
 class JsonStringParser extends ChunkedJsonParser<String> {
   @override
   String chunk;
-  @override
-  int chunkEnd;
 
   JsonStringParser(JsonListener listener) : super(listener);
 

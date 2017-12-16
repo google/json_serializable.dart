@@ -53,8 +53,7 @@ _parseJson(String source) {
   final listener = new BuildJsonListener();
   var parser = new JsonStringParser(listener);
   parser.chunk = source;
-  parser.chunkEnd = source.length;
-  parser.parse(0);
+  parser.parse(0, source.length);
   parser.close();
   return listener.result;
 }

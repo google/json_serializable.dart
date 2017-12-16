@@ -12,8 +12,6 @@ class JsonUtf8Parser extends ChunkedJsonParser<List<int>> {
   final bool allowMalformed;
   @override
   List<int> chunk;
-  @override
-  int chunkEnd;
 
   JsonUtf8Parser(JsonListener listener, this.allowMalformed) : super(listener);
 

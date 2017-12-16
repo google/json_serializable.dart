@@ -22,8 +22,7 @@ class JsonStringDecoderSink extends StringConversionSinkBase {
   @override
   void addSlice(String chunk, int start, int end, bool isLast) {
     _parser.chunk = chunk;
-    _parser.chunkEnd = end;
-    _parser.parse(start);
+    _parser.parse(start, end);
     if (isLast) _parser.close();
   }
 

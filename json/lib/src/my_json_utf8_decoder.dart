@@ -11,8 +11,7 @@ class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
   Object convert(List<int> input) {
     var parser = JsonUtf8DecoderSink.createParser(_allowMalformed);
     parser.chunk = input;
-    parser.chunkEnd = input.length;
-    parser.parse(0);
+    parser.parse(0, input.length);
     return parser.result;
   }
 
