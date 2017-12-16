@@ -9,7 +9,7 @@ import 'package:json/json.dart';
 
 import "src/expect.dart";
 
-jsonTest(String testName, expect, action(sink)) {
+jsonTest(String testName, expect, action(StringConversionSink sink)) {
   test(testName, () {
     var sink = new ChunkedConversionSink.withCallback((values) {
       var value = values[0];
@@ -20,7 +20,7 @@ jsonTest(String testName, expect, action(sink)) {
   });
 }
 
-jsonThrowsTest(String testName, action(sink)) {
+jsonThrowsTest(String testName, action(StringConversionSink sink)) {
   test(testName, () {
     var sink = new ChunkedConversionSink.withCallback((values) {
       Expect.fail("Should have thrown: $testName");
