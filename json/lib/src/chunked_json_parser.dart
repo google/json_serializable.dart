@@ -193,14 +193,14 @@ abstract class ChunkedJsonParser<T> {
    * State is pushed when a new array or object literal starts,
    * so the parser can go back to the correct value when the literal ends.
    */
-  void saveState(int state) {
+  void _saveState(int state) {
     _states.add(state);
   }
 
   /**
-   * Restore a state pushed with [saveState].
+   * Restore a state pushed with [_saveState].
    */
-  int restoreState() {
+  int _restoreState() {
     return _states.removeLast(); // Throws if empty.
   }
 
@@ -227,7 +227,7 @@ abstract class ChunkedJsonParser<T> {
         // but this is assumed to be rare.
         NumberBuffer buffer = this.buffer;
         this.buffer = null;
-        finishChunkNumber(numState, 0, 0, buffer);
+        _finishChunkNumber(numState, 0, 0, buffer);
       } else if (partialType == PARTIAL_STRING) {
         throw fail(chunkEnd, "Unterminated string");
       } else {
@@ -341,7 +341,7 @@ abstract class ChunkedJsonParser<T> {
    * Parse a slice of the current chunk as a double.
    *
    * The format is expected to be correct.
-   * This is used by [parseNumber] when the double value cannot be
+   * This is used by [_parseNumber] when the double value cannot be
    * built exactly during parsing.
    */
   double parseDouble(int start, int end) {
@@ -376,11 +376,11 @@ abstract class ChunkedJsonParser<T> {
     partialState = partialState & ~MASK_PARTIAL;
     assert(partialType != 0);
     if (partialType == PARTIAL_STRING) {
-      position = parsePartialString(position, partialState);
+      position = _parsePartialString(position, partialState);
     } else if (partialType == PARTIAL_NUMERAL) {
-      position = parsePartialNumber(position, partialState);
+      position = _parsePartialNumber(position, partialState);
     } else if (partialType == PARTIAL_KEYWORD) {
-      position = parsePartialKeyword(position, partialState);
+      position = _parsePartialKeyword(position, partialState);
     }
     return position;
   }
@@ -394,7 +394,7 @@ abstract class ChunkedJsonParser<T> {
    * or chunkEnd if the entire chunk is a valid number continuation.
    * Throws if a syntax error is detected.
    */
-  int parsePartialNumber(int position, int state) {
+  int _parsePartialNumber(int position, int state) {
     int start = position;
     // Primitive implementation, can be optimized.
     NumberBuffer buffer = this.buffer;
@@ -432,7 +432,7 @@ abstract class ChunkedJsonParser<T> {
           } else if ((char | 0x20) == $e) {
             state = NUM_E;
           } else {
-            finishChunkNumber(state, start, position, buffer);
+            _finishChunkNumber(state, start, position, buffer);
             return position;
           }
         }
@@ -450,7 +450,7 @@ abstract class ChunkedJsonParser<T> {
           if ((char | 0x20) == $e) {
             state = NUM_E;
           } else {
-            finishChunkNumber(state, start, position, buffer);
+            _finishChunkNumber(state, start, position, buffer);
             return position;
           }
         }
@@ -476,12 +476,12 @@ abstract class ChunkedJsonParser<T> {
         char = getChar(position);
         digit = char ^ $0;
       }
-      finishChunkNumber(state, start, position, buffer);
+      _finishChunkNumber(state, start, position, buffer);
       return position;
     }
     // Bailout code in case the current chunk ends while parsing the numeral.
     assert(position == end);
-    continueChunkNumber(state, start, buffer);
+    _continueChunkNumber(state, start, buffer);
     return chunkEnd;
   }
 
@@ -491,12 +491,12 @@ abstract class ChunkedJsonParser<T> {
    * Handles partial escapes and then hands the parsing off to
    * [parseStringToBuffer].
    */
-  int parsePartialString(int position, int partialState) {
+  int _parsePartialString(int position, int partialState) {
     if (partialState == STR_PLAIN) {
       return parseStringToBuffer(position);
     }
     if (partialState == STR_ESCAPE) {
-      position = parseStringEscape(position);
+      position = _parseStringEscape(position);
       // parseStringEscape sets partialState if it sees the end.
       if (position == chunkEnd) return position;
       return parseStringToBuffer(position);
@@ -507,7 +507,7 @@ abstract class ChunkedJsonParser<T> {
     for (int i = count; i < 4; i++, position++) {
       if (position == chunkEnd) return chunkStringEscapeU(i, value);
       int char = getChar(position);
-      int digit = parseHexDigit(char);
+      int digit = _parseHexDigit(char);
       if (digit < 0) throw fail(position, "Invalid hex digit");
       value = 16 * value + digit;
     }
@@ -518,7 +518,7 @@ abstract class ChunkedJsonParser<T> {
   /**
    * Continues parsing a partial keyword.
    */
-  int parsePartialKeyword(int position, int partialState) {
+  int _parsePartialKeyword(int position, int partialState) {
     int keywordType = partialState & KWD_TYPE_MASK;
     int count = partialState >> KWD_COUNT_SHIFT;
     int keywordTypeIndex = keywordType >> KWD_TYPE_SHIFT;
@@ -544,7 +544,7 @@ abstract class ChunkedJsonParser<T> {
   }
 
   /** Convert hex-digit to its value. Returns -1 if char is not a hex digit. */
-  int parseHexDigit(int char) {
+  static int _parseHexDigit(int char) {
     int digit = char ^ 0x30;
     if (digit <= 9) return digit;
     int letter = (char | 0x20) ^ 0x60;
@@ -584,21 +584,21 @@ abstract class ChunkedJsonParser<T> {
         case $lbracket:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
           _listener.beginArray();
-          saveState(state);
+          _saveState(state);
           state = STATE_ARRAY_EMPTY;
           position++;
           break;
         case $lbrace:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
           _listener.beginObject();
-          saveState(state);
+          _saveState(state);
           state = STATE_OBJECT_EMPTY;
           position++;
           break;
         case $n:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
           state |= VALUE_READ_BITS;
-          position = parseNull(position);
+          position = _parseNull(position);
           break;
         case $f:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
@@ -638,7 +638,7 @@ abstract class ChunkedJsonParser<T> {
           } else {
             throw fail(position);
           }
-          state = restoreState() | VALUE_READ_BITS;
+          state = _restoreState() | VALUE_READ_BITS;
           position++;
           break;
         case $rbrace:
@@ -650,14 +650,14 @@ abstract class ChunkedJsonParser<T> {
           } else {
             throw fail(position);
           }
-          state = restoreState() | VALUE_READ_BITS;
+          state = _restoreState() | VALUE_READ_BITS;
           position++;
           break;
         default:
           if ((state & ALLOW_VALUE_MASK) != 0) throw fail(position);
           state |= VALUE_READ_BITS;
           if (char == null) print("$chunk - $position");
-          position = parseNumber(char, position);
+          position = _parseNumber(char, position);
           break;
       }
     }
@@ -708,7 +708,7 @@ abstract class ChunkedJsonParser<T> {
    *
    * The character `source[position]` must be "n".
    */
-  int parseNull(int position) {
+  int _parseNull(int position) {
     assert(getChar(position) == $n);
     if (chunkEnd < position + 4) {
       return parseKeywordPrefix(position, "null", KWD_NULL);
@@ -844,7 +844,7 @@ abstract class ChunkedJsonParser<T> {
         addSliceToString(start, position - 1);
       }
       if (position == end) return chunkString(STR_ESCAPE);
-      position = parseStringEscape(position);
+      position = _parseStringEscape(position);
       if (position == end) return position;
       start = position;
     }
@@ -859,7 +859,7 @@ abstract class ChunkedJsonParser<T> {
    *
    * Returns position after the last character of the escape.
    */
-  int parseStringEscape(int position) {
+  int _parseStringEscape(int position) {
     int char = getChar(position++);
     int length = chunkEnd;
     switch (char) {
@@ -913,7 +913,7 @@ abstract class ChunkedJsonParser<T> {
 
   /// Sets up a partial numeral state.
   /// Returns chunkEnd to allow easy one-line bailout tests.
-  int beginChunkNumber(int state, int start) {
+  int _beginChunkNumber(int state, int start) {
     int end = chunkEnd;
     int length = end - start;
     var buffer = new NumberBuffer(length);
@@ -924,7 +924,7 @@ abstract class ChunkedJsonParser<T> {
     return end;
   }
 
-  void addNumberChunk(NumberBuffer buffer, int start, int end, int overhead) {
+  void _addNumberChunk(NumberBuffer buffer, int start, int end, int overhead) {
     int length = end - start;
     int count = buffer.length;
     int newCount = count + length;
@@ -935,21 +935,21 @@ abstract class ChunkedJsonParser<T> {
   }
 
   // Continues an already chunked number across an entire chunk.
-  int continueChunkNumber(int state, int start, NumberBuffer buffer) {
+  int _continueChunkNumber(int state, int start, NumberBuffer buffer) {
     int end = chunkEnd;
-    addNumberChunk(buffer, start, end, NumberBuffer.kDefaultOverhead);
+    _addNumberChunk(buffer, start, end, NumberBuffer.kDefaultOverhead);
     this.buffer = buffer;
     _partialState = PARTIAL_NUMERAL | state;
     return end;
   }
 
-  int finishChunkNumber(int state, int start, int end, NumberBuffer buffer) {
+  int _finishChunkNumber(int state, int start, int end, NumberBuffer buffer) {
     if (state == NUM_ZERO) {
       _listener.handleNumber(0);
       return end;
     }
     if (end > start) {
-      addNumberChunk(buffer, start, end, 0);
+      _addNumberChunk(buffer, start, end, 0);
     }
     if (state == NUM_DIGIT) {
       _listener.handleNumber(buffer.parseInt());
@@ -961,7 +961,7 @@ abstract class ChunkedJsonParser<T> {
     return end;
   }
 
-  int parseNumber(int char, int position) {
+  int _parseNumber(int char, int position) {
     // Also called on any unexpected character.
     // Format:
     //  '-'?('0'|[1-9][0-9]*)('.'[0-9]+)?([eE][+-]?[0-9]+)?
@@ -979,7 +979,7 @@ abstract class ChunkedJsonParser<T> {
     if (char == $minus) {
       sign = -1;
       position++;
-      if (position == length) return beginChunkNumber(NUM_SIGN, start);
+      if (position == length) return _beginChunkNumber(NUM_SIGN, start);
       char = getChar(position);
     }
     int digit = char ^ $0;
@@ -993,7 +993,7 @@ abstract class ChunkedJsonParser<T> {
     }
     if (digit == 0) {
       position++;
-      if (position == length) return beginChunkNumber(NUM_ZERO, start);
+      if (position == length) return _beginChunkNumber(NUM_ZERO, start);
       char = getChar(position);
       digit = char ^ $0;
       // If starting with zero, next character must not be digit.
@@ -1002,7 +1002,7 @@ abstract class ChunkedJsonParser<T> {
       do {
         intValue = 10 * intValue + digit;
         position++;
-        if (position == length) return beginChunkNumber(NUM_DIGIT, start);
+        if (position == length) return _beginChunkNumber(NUM_DIGIT, start);
         char = getChar(position);
         digit = char ^ $0;
       } while (digit <= 9);
@@ -1012,7 +1012,7 @@ abstract class ChunkedJsonParser<T> {
       doubleValue = intValue.toDouble();
       intValue = 0;
       position++;
-      if (position == length) return beginChunkNumber(NUM_DOT, start);
+      if (position == length) return _beginChunkNumber(NUM_DOT, start);
       char = getChar(position);
       digit = char ^ $0;
       if (digit > 9) throw fail(position);
@@ -1020,7 +1020,7 @@ abstract class ChunkedJsonParser<T> {
         doubleValue = 10.0 * doubleValue + digit;
         intValue -= 1;
         position++;
-        if (position == length) return beginChunkNumber(NUM_DOT_DIGIT, start);
+        if (position == length) return _beginChunkNumber(NUM_DOT_DIGIT, start);
         char = getChar(position);
         digit = char ^ $0;
       } while (digit <= 9);
@@ -1032,14 +1032,14 @@ abstract class ChunkedJsonParser<T> {
         isDouble = true;
       }
       position++;
-      if (position == length) return beginChunkNumber(NUM_E, start);
+      if (position == length) return _beginChunkNumber(NUM_E, start);
       char = getChar(position);
       int expSign = 1;
       int exponent = 0;
       if (char == $plus || char == $minus) {
         expSign = 0x2C - char; // -1 for MINUS, +1 for PLUS
         position++;
-        if (position == length) return beginChunkNumber(NUM_E_SIGN, start);
+        if (position == length) return _beginChunkNumber(NUM_E_SIGN, start);
         char = getChar(position);
       }
       digit = char ^ $0;
@@ -1049,7 +1049,7 @@ abstract class ChunkedJsonParser<T> {
       do {
         exponent = 10 * exponent + digit;
         position++;
-        if (position == length) return beginChunkNumber(NUM_E_DIGIT, start);
+        if (position == length) return _beginChunkNumber(NUM_E_DIGIT, start);
         char = getChar(position);
         digit = char ^ $0;
       } while (digit <= 9);
