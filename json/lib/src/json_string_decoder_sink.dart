@@ -32,8 +32,7 @@ class JsonStringDecoderSink extends StringConversionSinkBase {
 
   @override
   void close() {
-    _parser.close();
-    var decoded = _parser.result;
+    var decoded = _parser.close();
     _sink.add(decoded);
     _sink.close();
   }

@@ -205,7 +205,7 @@ abstract class ChunkedJsonParser<T> {
   }
 
   /**
-   * Finalizes the parsing.
+   * Finalizes the parsing and returns the final value.
    *
    * Throws if the source read so far doesn't end up with a complete
    * parsed value. That means it must not be inside a list or object
@@ -217,7 +217,7 @@ abstract class ChunkedJsonParser<T> {
    * (otherwise it would be inside a list or object).
    * Such a number will be completed. Any other partial state is an error.
    */
-  void close() {
+  Object close() {
     if (_partialState != NO_PARTIAL) {
       int partialType = _partialState & MASK_PARTIAL;
       if (partialType == PARTIAL_NUMERAL) {
@@ -238,15 +238,6 @@ abstract class ChunkedJsonParser<T> {
     if (_state != STATE_END) {
       throw fail(chunkEnd);
     }
-  }
-
-  /**
-   * Read out the result after successfully closing the parser.
-   *
-   * The parser is closed by calling [close] or calling `addSourceChunk` with
-   * `true` as second (`isLast`) argument.
-   */
-  Object get result {
     return _listener.result;
   }
 
