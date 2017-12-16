@@ -1,16 +1,18 @@
 /// Listener for parsing events from `ChunkedJsonParser`.
 abstract class JsonListener {
-  void handleString(String value) {}
-  void handleNumber(num value) {}
-  void handleBool(bool value) {}
-  void handleNull() {}
-  void beginObject() {}
-  void propertyName() {}
-  void propertyValue() {}
-  void endObject() {}
-  void beginArray() {}
-  void arrayElement() {}
-  void endArray() {}
+  void handleString(String value);
+  void handleNumber(num value);
+  void handleBool(bool value);
+  void handleNull();
+
+  JsonListener objectStart();
+  void propertyName();
+  void propertyValue();
+  JsonListener objectEnd();
+
+  JsonListener arrayStart();
+  void arrayElement();
+  JsonListener arrayEnd();
 
   /// Read out the final result of parsing a JSON string.
   ///

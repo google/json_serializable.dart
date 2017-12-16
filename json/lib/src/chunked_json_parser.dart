@@ -136,7 +136,7 @@ abstract class ChunkedJsonParser<T> {
   // Mask used to mask off two lower bits.
   static const int TWO_BIT_MASK = 3;
 
-  final JsonListener _listener;
+  JsonListener _listener;
 
   // The current parsing state.
   int _state = STATE_INITIAL;
@@ -542,14 +542,14 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $lbracket:
           if ((state & ALLOW_VALUE_MASK) != 0) throw _fail(position);
-          _listener.beginArray();
+          _listener = _listener.arrayStart();
           _saveState(state);
           state = STATE_ARRAY_EMPTY;
           position++;
           break;
         case $lbrace:
           if ((state & ALLOW_VALUE_MASK) != 0) throw _fail(position);
-          _listener.beginObject();
+          _listener = _listener.objectStart();
           _saveState(state);
           state = STATE_OBJECT_EMPTY;
           position++;
@@ -590,10 +590,10 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $rbracket:
           if (state == STATE_ARRAY_EMPTY) {
-            _listener.endArray();
+            _listener = _listener.arrayEnd();
           } else if (state == STATE_ARRAY_VALUE) {
             _listener.arrayElement();
-            _listener.endArray();
+            _listener = _listener.arrayEnd();
           } else {
             throw _fail(position);
           }
@@ -602,10 +602,10 @@ abstract class ChunkedJsonParser<T> {
           break;
         case $rbrace:
           if (state == STATE_OBJECT_EMPTY) {
-            _listener.endObject();
+            _listener = _listener.objectEnd();
           } else if (state == STATE_OBJECT_VALUE) {
             _listener.propertyValue();
-            _listener.endObject();
+            _listener = _listener.objectEnd();
           } else {
             throw _fail(position);
           }

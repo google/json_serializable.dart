@@ -1,6 +1,8 @@
 import 'dart:convert' hide JsonDecoder;
 
+import 'build_json_listener.dart';
 import 'json_utf8_decoder_sink.dart';
+import 'json_utf8_parser.dart';
 
 class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
   final bool _allowMalformed;
@@ -9,7 +11,7 @@ class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
 
   @override
   Object convert(List<int> input) {
-    var parser = JsonUtf8DecoderSink.createParser(_allowMalformed);
+    var parser = new JsonUtf8Parser(new BuildJsonListener(), _allowMalformed);
     parser.parse(input, 0, input.length);
     return parser.close();
   }

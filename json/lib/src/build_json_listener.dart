@@ -56,10 +56,11 @@ class BuildJsonListener extends JsonListener {
   }
 
   @override
-  void beginObject() {
+  JsonListener objectStart() {
     _stack.add(_key);
     _pushContainer();
     _currentContainer = <String, dynamic>{};
+    return this;
   }
 
   @override
@@ -76,15 +77,17 @@ class BuildJsonListener extends JsonListener {
   }
 
   @override
-  void endObject() {
+  JsonListener objectEnd() {
     _popContainer();
     _key = _stack.removeLast() as String;
+    return this;
   }
 
   @override
-  void beginArray() {
+  JsonListener arrayStart() {
     _pushContainer();
     _currentContainer = [];
+    return this;
   }
 
   @override
@@ -94,8 +97,9 @@ class BuildJsonListener extends JsonListener {
   }
 
   @override
-  void endArray() {
+  JsonListener arrayEnd() {
     _popContainer();
+    return this;
   }
 
   /** Read out the final result of parsing a JSON string. */

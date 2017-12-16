@@ -1,6 +1,5 @@
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-import 'dart:async';
 import 'dart:convert' hide JsonDecoder;
 
 import 'build_json_listener.dart';
@@ -43,13 +42,9 @@ class MyJsonDecoder extends Converter<String, Object> {
   StringConversionSink startChunkedConversion(Sink<Object> sink) {
     return new JsonStringDecoderSink(sink);
   }
-
-  // Override the base class's bind, to provide a better type.
-  @override
-  Stream<Object> bind(Stream<String> stream) => super.bind(stream);
 }
 
-_parseJson(String source) {
+Object _parseJson(String source) {
   final listener = new BuildJsonListener();
   var parser = new JsonStringParser(listener);
   parser.parse(source, 0, source.length);
