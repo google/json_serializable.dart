@@ -9,7 +9,7 @@ import 'dart:async';
 import "package:expect/expect.dart";
 
 import 'package:test/test.dart';
-import 'package:jsonz/jsonz.dart';
+import 'package:json/json.dart';
 
 import 'test_values.dart';
 

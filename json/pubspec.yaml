@@ -1,4 +1,5 @@
-name: jsonz
+name: json
+version: 0.11.0-dev
 description: A starting point for Dart libraries or applications.
 
 environment:

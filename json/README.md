@@ -9,7 +9,7 @@ Created from templates made available by Stagehand under a BSD-style
 
 A simple usage example:
 
-    import 'package:jsonz/jsonz.dart';
+    import 'package:json/json.dart';
 
     main() {
       var awesome = new Awesome();
