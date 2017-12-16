@@ -206,7 +206,7 @@ abstract class ChunkedJsonParser<T> {
    *                   For all three keywords, the `ddd` bits encode the number
    *                   of letters seen.
    */
-  int partialState = NO_PARTIAL;
+  int _partialState = NO_PARTIAL;
 
   /**
    * Extra data stored while parsing a primitive value.
@@ -249,10 +249,10 @@ abstract class ChunkedJsonParser<T> {
    * Such a number will be completed. Any other partial state is an error.
    */
   void close() {
-    if (partialState != NO_PARTIAL) {
-      int partialType = partialState & MASK_PARTIAL;
+    if (_partialState != NO_PARTIAL) {
+      int partialType = _partialState & MASK_PARTIAL;
       if (partialType == PARTIAL_NUMERAL) {
-        int numState = partialState & ~MASK_PARTIAL;
+        int numState = _partialState & ~MASK_PARTIAL;
         // A partial number might be a valid number if we know it's done.
         // There is an unnecessary overhead if input is a single number,
         // but this is assumed to be rare.
@@ -399,10 +399,10 @@ abstract class ChunkedJsonParser<T> {
    */
   int parsePartial(int position) {
     if (position == chunkEnd) return position;
-    int partialState = this.partialState;
+    int partialState = _partialState;
     assert(partialState != NO_PARTIAL);
     int partialType = partialState & MASK_PARTIAL;
-    this.partialState = NO_PARTIAL;
+    _partialState = NO_PARTIAL;
     partialState = partialState & ~MASK_PARTIAL;
     assert(partialType != 0);
     if (partialType == PARTIAL_STRING) {
@@ -556,7 +556,7 @@ abstract class ChunkedJsonParser<T> {
     assert(count < keyword.length);
     do {
       if (position == chunkEnd) {
-        this.partialState =
+        _partialState =
             PARTIAL_KEYWORD | keywordType | (count << KWD_COUNT_SHIFT);
         return chunkEnd;
       }
@@ -591,7 +591,7 @@ abstract class ChunkedJsonParser<T> {
    */
   void parse(int position) {
     int length = chunkEnd;
-    if (partialState != NO_PARTIAL) {
+    if (_partialState != NO_PARTIAL) {
       position = parsePartial(position);
       if (position == length) return;
     }
@@ -761,7 +761,7 @@ abstract class ChunkedJsonParser<T> {
       if (char != chars.codeUnitAt(count)) throw fail(start);
       count++;
     }
-    this.partialState = PARTIAL_KEYWORD | type | (count << KWD_COUNT_SHIFT);
+    _partialState = PARTIAL_KEYWORD | type | (count << KWD_COUNT_SHIFT);
     return length;
   }
 
@@ -811,7 +811,7 @@ abstract class ChunkedJsonParser<T> {
    * [chunkStringEscapeU].
    */
   int chunkString(int stringState) {
-    partialState = PARTIAL_STRING | stringState;
+    _partialState = PARTIAL_STRING | stringState;
     return chunkEnd;
   }
 
@@ -825,7 +825,7 @@ abstract class ChunkedJsonParser<T> {
    * Returns [chunkEnd] so it can be used as part of a return statement.
    */
   int chunkStringEscapeU(int count, int value) {
-    partialState = PARTIAL_STRING |
+    _partialState = PARTIAL_STRING |
         STR_U |
         (count << STR_U_COUNT_SHIFT) |
         (value << STR_U_VALUE_SHIFT);
@@ -949,7 +949,7 @@ abstract class ChunkedJsonParser<T> {
     copyCharsToList(start, end, buffer.list, 0);
     buffer.length = length;
     this.buffer = buffer;
-    this.partialState = PARTIAL_NUMERAL | state;
+    _partialState = PARTIAL_NUMERAL | state;
     return end;
   }
 
@@ -968,7 +968,7 @@ abstract class ChunkedJsonParser<T> {
     int end = chunkEnd;
     addNumberChunk(buffer, start, end, NumberBuffer.kDefaultOverhead);
     this.buffer = buffer;
-    this.partialState = PARTIAL_NUMERAL | state;
+    _partialState = PARTIAL_NUMERAL | state;
     return end;
   }
 

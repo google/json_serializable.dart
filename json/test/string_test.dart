@@ -6,7 +6,6 @@
 
 import 'test_util.dart';
 
-
 main() {
   // String parser accepts and understands escapes.
   var input = r'"\u0000\uffff\n\r\f\t\b\/\\\"' '\x20\ufffd\uffff"';

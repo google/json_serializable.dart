@@ -34,7 +34,7 @@ class JsonUtf8Parser extends ChunkedJsonParser<List<int>> {
 
   @override
   void beginString() {
-    this.buffer = new _Utf8StringBuffer(allowMalformed);
+    buffer = new _Utf8StringBuffer(allowMalformed);
   }
 
   @override

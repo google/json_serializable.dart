@@ -24,7 +24,7 @@ class JsonStringParser extends ChunkedJsonParser<String> {
 
   @override
   void beginString() {
-    this.buffer = new StringBuffer();
+    buffer = new StringBuffer();
   }
 
   @override

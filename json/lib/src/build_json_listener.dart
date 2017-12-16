@@ -13,85 +13,85 @@ class BuildJsonListener extends JsonListener {
    * Stack used to handle nested containers.
    *
    * The current container is pushed on the stack when a new one is
-   * started. If the container is a [Map], there is also a current [key]
+   * started. If the container is a [Map], there is also a current [_key]
    * which is also stored on the stack.
    */
   final _stack = [];
   /** The current [Map] or [List] being built. */
-  Object currentContainer;
+  Object _currentContainer;
   /** The most recently read property key. */
-  String key;
+  String _key;
   /** The most recently read value. */
-  Object value;
+  Object _value;
 
   /** Pushes the currently active container (and key, if a [Map]). */
   void _pushContainer() {
-    _stack.add(currentContainer);
+    _stack.add(_currentContainer);
   }
 
   /** Pops the top container from the [_stack], including a key if applicable. */
   void _popContainer() {
-    value = currentContainer;
-    currentContainer = _stack.removeLast();
+    _value = _currentContainer;
+    _currentContainer = _stack.removeLast();
   }
 
   @override
   void handleString(String value) {
-    this.value = value;
+    _value = value;
   }
 
   @override
   void handleNumber(num value) {
-    this.value = value;
+    _value = value;
   }
 
   @override
   void handleBool(bool value) {
-    this.value = value;
+    _value = value;
   }
 
   @override
   void handleNull() {
-    this.value = null;
+    _value = null;
   }
 
   @override
   void beginObject() {
-    _stack.add(key);
+    _stack.add(_key);
     _pushContainer();
-    currentContainer = <String, dynamic>{};
+    _currentContainer = <String, dynamic>{};
   }
 
   @override
   void propertyName() {
-    key = value as String;
-    value = null;
+    _key = _value as String;
+    _value = null;
   }
 
   @override
   void propertyValue() {
-    Map map = currentContainer;
-    map[key] = value;
-    key = value = null;
+    Map map = _currentContainer;
+    map[_key] = _value;
+    _key = _value = null;
   }
 
   @override
   void endObject() {
     _popContainer();
-    key = _stack.removeLast() as String;
+    _key = _stack.removeLast() as String;
   }
 
   @override
   void beginArray() {
     _pushContainer();
-    currentContainer = [];
+    _currentContainer = [];
   }
 
   @override
   void arrayElement() {
-    List list = currentContainer;
-    list.add(value);
-    value = null;
+    List list = _currentContainer;
+    list.add(_value);
+    _value = null;
   }
 
   @override
@@ -102,7 +102,7 @@ class BuildJsonListener extends JsonListener {
   /** Read out the final result of parsing a JSON string. */
   @override
   get result {
-    assert(currentContainer == null);
-    return value;
+    assert(_currentContainer == null);
+    return _value;
   }
 }
