@@ -11,7 +11,7 @@ class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
 
   @override
   Object convert(List<int> input) {
-    var parser = new JsonUtf8Parser(new BuildJsonListener(), _allowMalformed);
+    var parser = new JsonUtf8Parser(anyValueListener(), _allowMalformed);
     parser.parse(input, 0, input.length);
     return parser.close();
   }

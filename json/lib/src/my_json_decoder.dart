@@ -45,7 +45,7 @@ class MyJsonDecoder extends Converter<String, Object> {
 }
 
 Object _parseJson(String source) {
-  final listener = new BuildJsonListener();
+  final listener = anyValueListener();
   var parser = new JsonStringParser(listener);
   parser.parse(source, 0, source.length);
   parser.close();

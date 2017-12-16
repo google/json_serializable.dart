@@ -14,7 +14,7 @@ class JsonUtf8DecoderSink extends ByteConversionSinkBase {
   final Sink<Object> _sink;
 
   JsonUtf8DecoderSink(this._sink, bool allowMalformed)
-      : _parser = new JsonUtf8Parser(new BuildJsonListener(), allowMalformed);
+      : _parser = new JsonUtf8Parser(anyValueListener(), allowMalformed);
 
   @override
   void addSlice(List<int> chunk, int start, int end, bool isLast) {

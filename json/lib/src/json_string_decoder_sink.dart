@@ -17,7 +17,7 @@ class JsonStringDecoderSink extends StringConversionSinkBase {
   final Sink<Object> _sink;
 
   JsonStringDecoderSink(this._sink)
-      : _parser = new JsonStringParser(new BuildJsonListener());
+      : _parser = new JsonStringParser(anyValueListener());
 
   @override
   void addSlice(String chunk, int start, int end, bool isLast) {
