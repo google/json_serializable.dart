@@ -1,3 +1,4 @@
+import 'package:meta/meta.dart';
 
 import 'array_listener.dart';
 import 'json_listener.dart';
@@ -10,10 +11,12 @@ abstract class BaseListener<T> extends JsonListener<T> {
 
   Object _storage;
 
+  @protected
   set storage(Object value) {
     _storage = value;
   }
 
+  @protected
   Object get storage => _storage;
 
   JsonListener finish(Object value) {
