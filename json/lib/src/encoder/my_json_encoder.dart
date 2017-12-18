@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'dart_convert_exports.dart';
+import '../dart_convert_exports.dart';
 
 typedef ToEncodable(dynamic o);
 
