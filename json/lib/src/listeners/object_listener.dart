@@ -11,15 +11,13 @@ class ObjectListener extends ContainerListener<Map<String, dynamic>> {
   void propertyName() {
     _key = storage as String;
     assert(_key != null);
-    storage = null;
   }
 
   @override
   void propertyValue() {
     result[_key] = storage;
-    _key = storage = null;
   }
 
   @override
-  JsonListener objectEnd() => parent.finish(result);
+  JsonListener objectEnd() => parent.childListenerFinish(result);
 }

@@ -2,15 +2,14 @@ import 'base_listener.dart';
 import 'container_listener.dart';
 import 'json_listener.dart';
 
-class ArrayListener extends ContainerListener<List> {
-  ArrayListener(BaseListener parent) : super([], parent);
+class ArrayListener<T> extends ContainerListener<List<T>> {
+  ArrayListener(BaseListener parent) : super(<T>[], parent);
 
   @override
   void arrayElement() {
-    result.add(storage);
-    storage = null;
+    result.add(storage as T);
   }
 
   @override
-  JsonListener arrayEnd() => parent.finish(result);
+  JsonListener arrayEnd() => parent.childListenerFinish(result);
 }

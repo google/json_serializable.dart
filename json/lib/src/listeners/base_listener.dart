@@ -19,9 +19,9 @@ abstract class BaseListener<T> extends JsonListener<T> {
   @protected
   Object get storage => _storage;
 
-  JsonListener finish(Object value) {
+  @protected
+  JsonListener childListenerFinish(Object value) {
     assert(value != null);
-    assert(storage == null);
     storage = value;
     return this;
   }
