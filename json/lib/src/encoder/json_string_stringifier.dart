@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments, annotate_overrides
+// ignore_for_file: slash_for_doc_comments
 
 import 'json_pretty_print_mixin.dart';
 import 'json_stringifier.dart';
@@ -48,20 +48,25 @@ class JsonStringStringifier extends JsonStringifier {
     stringifier.writeObject(object);
   }
 
+  @override
   String get partialResult => _sink is StringBuffer ? _sink.toString() : null;
 
+  @override
   void writeNumber(num number) {
     _sink.write(number.toString());
   }
 
+  @override
   void writeString(String string) {
     _sink.write(string);
   }
 
+  @override
   void writeStringSlice(String string, int start, int end) {
     _sink.write(string.substring(start, end));
   }
 
+  @override
   void writeCharCode(int charCode) {
     _sink.writeCharCode(charCode);
   }

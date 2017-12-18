@@ -163,7 +163,7 @@ abstract class JsonStringifier {
    * Returns true if the value is one of these types, and false if not.
    * If a value is both a [List] and a [Map], it's serialized as a [List].
    */
-  bool _writeJsonValue(object) {
+  bool _writeJsonValue(Object object) {
     if (object is num) {
       if (!object.isFinite) return false;
       writeNumber(object);

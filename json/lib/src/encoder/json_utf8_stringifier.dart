@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments, annotate_overrides, prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments
 
 import 'dart:typed_data';
 
@@ -65,31 +65,21 @@ class JsonUtf8Stringifier extends JsonStringifier {
     _index = 0;
   }
 
+  @override
   String get partialResult => null;
 
+  @override
   void writeNumber(num number) {
-    writeAsciiString(number.toString());
+    _writeAsciiString(number.toString());
   }
 
-  /** Write a string that is known to not have non-ASCII characters. */
-  void writeAsciiString(String string) {
-    // TODO(lrn): Optimize by copying directly into buffer instead of going
-    // through writeCharCode;
-    for (int i = 0; i < string.length; i++) {
-      int char = string.codeUnitAt(i);
-      assert(char <= 0x7f);
-      _writeByte(char);
-    }
-  }
-
+  @override
   void writeString(String string) {
     writeStringSlice(string, 0, string.length);
   }
 
+  @override
   void writeStringSlice(String string, int start, int end) {
-    // TODO(lrn): Optimize by copying directly into buffer instead of going
-    // through writeCharCode/writeByte. Assumption is the most characters
-    // in starings are plain ASCII.
     for (int i = start; i < end; i++) {
       int char = string.codeUnitAt(i);
       if (char <= 0x7f) {
@@ -111,12 +101,22 @@ class JsonUtf8Stringifier extends JsonStringifier {
     }
   }
 
+  @override
   void writeCharCode(int charCode) {
     if (charCode <= 0x7f) {
       _writeByte(charCode);
       return;
     }
     _writeMultiByteCharCode(charCode);
+  }
+
+  /** Write a string that is known to not have non-ASCII characters. */
+  void _writeAsciiString(String string) {
+    for (int i = 0; i < string.length; i++) {
+      int char = string.codeUnitAt(i);
+      assert(char <= 0x7f);
+      _writeByte(char);
+    }
   }
 
   void _writeMultiByteCharCode(int charCode) {
@@ -163,6 +163,7 @@ class _JsonUtf8StringifierPretty extends JsonUtf8Stringifier
       int bufferSize, void addChunk(Uint8List buffer, int start, int end))
       : super(toEncodable, bufferSize, addChunk);
 
+  @override
   void writeIndentation(int count) {
     int indentLength = _indent.length;
     if (indentLength == 1) {

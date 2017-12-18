@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments, annotate_overrides, prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,
 
 import 'json_stringifier.dart';
 
@@ -16,6 +16,7 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
    */
   void writeIndentation(int indentLevel);
 
+  @override
   void writeList(List list) {
     if (list.isEmpty) {
       writeString('[]');
@@ -36,9 +37,10 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
     }
   }
 
+  @override
   bool writeMap(Map map) {
     if (map.isEmpty) {
-      writeString("{}");
+      writeString('{}');
       return true;
     }
     List keyValueList = new List(map.length * 2);
@@ -54,10 +56,10 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
     if (!allStringKeys) return false;
     writeString('{\n');
     _indentLevel++;
-    String separator = "";
+    String separator = '';
     for (int i = 0; i < keyValueList.length; i += 2) {
       writeString(separator);
-      separator = ",\n";
+      separator = ',\n';
       writeIndentation(_indentLevel);
       writeString('"');
       writeStringContent(keyValueList[i] as String);
