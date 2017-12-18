@@ -679,7 +679,8 @@ class _JsonStringStringifier extends _JsonStringifier {
    * for each indentation level. It should only contain valid JSON whitespace
    * characters (space, tab, carriage return or line feed).
    */
-  static String _stringify(object, toEncodable(o), String indent) {
+  static String _stringify(
+      Object object, ToEncodable toEncodable, String indent) {
     StringBuffer output = new StringBuffer();
     _printOn(object, output, toEncodable, indent);
     return output.toString();
@@ -690,8 +691,8 @@ class _JsonStringStringifier extends _JsonStringifier {
    *
    * The result is written piecemally to the sink.
    */
-  static void _printOn(
-      object, StringSink output, toEncodable(o), String indent) {
+  static void _printOn(Object object, StringSink output,
+      ToEncodable toEncodable, String indent) {
     _JsonStringifier stringifier;
     if (indent == null) {
       stringifier = new _JsonStringStringifier(output, toEncodable);
@@ -725,7 +726,7 @@ class _JsonStringStringifierPretty extends _JsonStringStringifier
     with _JsonPrettyPrintMixin {
   final String _indent;
 
-  _JsonStringStringifierPretty(StringSink sink, toEncodable(o), this._indent)
+  _JsonStringStringifierPretty(StringSink sink, ToEncodable toEncodable, this._indent)
       : super(sink, toEncodable);
 
   void writeIndentation(int count) {
@@ -747,7 +748,7 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
   Uint8List _buffer;
   int _index = 0;
 
-  _JsonUtf8Stringifier(toEncodable(o), int bufferSize, this.addChunk)
+  _JsonUtf8Stringifier(ToEncodable toEncodable, int bufferSize, this.addChunk)
       : this._bufferSize = bufferSize,
         _buffer = new Uint8List(bufferSize),
         super(toEncodable);
@@ -763,8 +764,12 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
    * If [indent] is non-`null`, the result will be "pretty-printed" with extra
    * newlines and indentation, using [indent] as the indentation.
    */
-  static void _stringify(Object object, List<int> indent, toEncodable(o),
-      int bufferSize, void addChunk(Uint8List chunk, int start, int end)) {
+  static void _stringify(
+      Object object,
+      List<int> indent,
+      ToEncodable toEncodable,
+      int bufferSize,
+      void addChunk(Uint8List chunk, int start, int end)) {
     _JsonUtf8Stringifier stringifier;
     if (indent != null) {
       stringifier = new _JsonUtf8StringifierPretty(
@@ -882,8 +887,8 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
 class _JsonUtf8StringifierPretty extends _JsonUtf8Stringifier
     with _JsonPrettyPrintMixin {
   final List<int> _indent;
-  _JsonUtf8StringifierPretty(toEncodable(o), this._indent, int bufferSize,
-      void addChunk(Uint8List buffer, int start, int end))
+  _JsonUtf8StringifierPretty(ToEncodable toEncodable, this._indent,
+      int bufferSize, void addChunk(Uint8List buffer, int start, int end))
       : super(toEncodable, bufferSize, addChunk);
 
   void writeIndentation(int count) {
