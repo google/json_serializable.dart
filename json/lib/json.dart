@@ -6,5 +6,6 @@ export 'src/decoder/my_json_decoder.dart';
 // So the tests don't new this up directly. :-/
 export 'src/decoder/my_json_utf8_decoder.dart';
 
-export 'src/encoder/my_json_encoder.dart';
+export 'src/encoder/errors.dart';
+export 'src/encoder/json_encoder.dart';
 export 'src/my_json_codec.dart';

@@ -2,7 +2,8 @@
 
 import 'dart_convert_exports.dart';
 import 'decoder/my_json_decoder.dart';
-import 'encoder/my_json_encoder.dart';
+import 'encoder/json_encoder.dart';
+import 'encoder/to_encodable.dart';
 
 const json = const MyJsonCodec();
 
