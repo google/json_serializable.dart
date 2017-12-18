@@ -90,30 +90,14 @@ class JsonEncoder extends Converter<Object, String> {
    *
    * If [toEncodable] is omitted, it defaults to calling `.toJson()` on
    * the object.
-   */
-  const JsonEncoder([toEncodable(object)])
-      : this.indent = null,
-        this._toEncodable = toEncodable;
-
-  /**
-   * Creates a JSON encoder that creates multi-line JSON.
    *
    * The encoding of elements of lists and maps are indented and put on separate
    * lines. The [indent] string is prepended to these elements, once for each
    * level of indentation.
    *
    * If [indent] is `null`, the output is encoded as a single line.
-   *
-   * The JSON encoder handles numbers, strings, booleans, null, lists and
-   * maps with string keys directly.
-   *
-   * Any other object is attempted converted by [toEncodable] to an
-   * object that is of one of the convertible types.
-   *
-   * If [toEncodable] is omitted, it defaults to calling `.toJson()` on
-   * the object.
    */
-  const JsonEncoder.withIndent(this.indent, [toEncodable(object)])
+  const JsonEncoder({toEncodable(object), this.indent})
       : this._toEncodable = toEncodable;
 
   /**
@@ -182,7 +166,8 @@ class JsonEncoder extends Converter<Object, String> {
       // but the static type system doesn't know that, and so we cast.
       // Cast through dynamic to keep the cast implicit for builds using
       // unchecked implicit casts.
-      return new JsonUtf8Encoder(indent, _toEncodable) as Converter<Object, T>;
+      return new JsonUtf8Encoder(indent: indent, toEncodable: _toEncodable)
+          as Converter<Object, T>;
     }
     return super.fuse<T>(other);
   }
@@ -231,7 +216,7 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
    * object.
    */
   JsonUtf8Encoder(
-      [String indent, toEncodable(object), int bufferSize = _defaultBufferSize])
+      {String indent, toEncodable(object), int bufferSize = _defaultBufferSize})
       : _indent = _utf8Encode(indent),
         _toEncodable = toEncodable,
         _bufferSize = bufferSize;

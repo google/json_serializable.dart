@@ -14,7 +14,7 @@ import "src/expect.dart";
 
 void main() {
   test('pretty', () {
-    var encoder = const JsonEncoder.withIndent('\x00');
+    var encoder = const JsonEncoder(indent: '\x00');
     var encoded = encoder.convert([
       [],
       [[]]
@@ -104,12 +104,12 @@ void main() {
 
 void _expect(Object object, String expected) {
   test('pretty', () {
-    var encoder = const JsonEncoder.withIndent('  ');
+    var encoder = const JsonEncoder(indent: '  ');
     var prettyOutput = encoder.convert(object);
 
     Expect.equals(expected, prettyOutput);
 
-    encoder = const JsonEncoder.withIndent('');
+    encoder = const JsonEncoder(indent: '');
 
     var flatOutput = encoder.convert(object);
 
@@ -122,7 +122,7 @@ void _expect(Object object, String expected) {
 
     var compactOutput = json.encode(object);
 
-    encoder = const JsonEncoder.withIndent(null);
+    encoder = const JsonEncoder(indent: null);
     Expect.equals(compactOutput, encoder.convert(object));
 
     var prettyDecoded = json.decode(prettyOutput);

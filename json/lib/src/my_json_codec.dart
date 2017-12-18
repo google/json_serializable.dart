@@ -16,6 +16,7 @@ const json = const MyJsonCodec();
  *     var decoded = json.decode('["foo", { "bar": 499 }]');
  */
 class MyJsonCodec extends Codec<Object, String> {
+  final String indent;
   final ToEncodable _toEncodable;
 
   /**
@@ -34,7 +35,8 @@ class MyJsonCodec extends Codec<Object, String> {
    * If [toEncodable] is omitted, it defaults to a function that returns the
    * result of calling `.toJson()` on the unencodable object.
    */
-  const MyJsonCodec({toEncodable(Object object)}) : _toEncodable = toEncodable;
+  const MyJsonCodec({toEncodable(Object object), this.indent})
+      : _toEncodable = toEncodable;
 
   /**
    * Parses the string and returns the resulting Json object.
@@ -44,26 +46,14 @@ class MyJsonCodec extends Codec<Object, String> {
 
   /**
    * Converts [value] to a JSON string.
-   *
-   * If value contains objects that are not directly encodable to a JSON
-   * string (a value that is not a number, boolean, string, null, list or a map
-   * with string keys), the [toEncodable] function is used to convert it to an
-   * object that must be directly encodable.
-   *
-   * If [toEncodable] is omitted, it defaults to a function that returns the
-   * result of calling `.toJson()` on the unencodable object.
    */
   @override
-  String encode(Object value, {toEncodable(object)}) {
-    if (toEncodable == null) toEncodable = _toEncodable;
-    if (toEncodable == null) return encoder.convert(value);
-    return new JsonEncoder(toEncodable).convert(value);
-  }
+  String encode(Object value) => encoder.convert(value);
 
   @override
   JsonEncoder get encoder {
-    if (_toEncodable == null) return const JsonEncoder();
-    return new JsonEncoder(_toEncodable);
+    if (_toEncodable == null && indent == null) return const JsonEncoder();
+    return new JsonEncoder(toEncodable: _toEncodable, indent: indent);
   }
 
   @override

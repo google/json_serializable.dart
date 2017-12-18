@@ -12,11 +12,11 @@ import "src/expect.dart";
 main() {
   test('toEncodable', () {
     var map = {"a": 42, "b": 42, 37: 42}; // Non-string key.
-    var enc = new JsonEncoder((_) => "fixed");
+    var enc = new JsonEncoder(toEncodable: (_) => "fixed");
     var res = enc.convert(map);
     Expect.equals('"fixed"', res);
 
-    enc = new JsonEncoder.withIndent(" ", (_) => "fixed");
+    enc = new JsonEncoder(indent: " ", toEncodable: (_) => "fixed");
     res = enc.convert(map);
     Expect.equals('"fixed"', res);
   });
