@@ -48,7 +48,7 @@ class Expect {
    * Checks whether the expected and actual values are equal (using `==`).
    */
   static void equals(var expected, var actual, [String reason]) {
-    t.expect(expected, t.equals(actual), reason: reason);
+    t.expect(actual, t.equals(expected), reason: reason);
   }
 
   /**
