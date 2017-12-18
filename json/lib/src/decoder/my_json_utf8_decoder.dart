@@ -7,7 +7,8 @@ import 'json_utf8_decoder_sink.dart';
 class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
   final bool _allowMalformed;
 
-  MyJsonUtf8Decoder(this._allowMalformed);
+  const MyJsonUtf8Decoder({bool allowMalformed})
+      : _allowMalformed = allowMalformed ?? false;
 
   @override
   Object convert(List<int> input) {
