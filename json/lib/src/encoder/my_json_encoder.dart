@@ -298,11 +298,6 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
     return new _JsonUtf8EncoderSink(
         byteSink, _toEncodable, _indent, _bufferSize);
   }
-
-  // Override the base class's bind, to provide a better type.
-  Stream<List<int>> bind(Stream<Object> stream) {
-    return super.bind(stream);
-  }
 }
 
 /**
