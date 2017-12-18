@@ -1,5 +1,7 @@
 // ignore_for_file: slash_for_doc_comments, annotate_overrides, prefer_single_quotes
 
+// TODO: convert in-line characters to use 'package:charcode/charcode.dart'
+
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -143,7 +145,7 @@ class JsonEncoder extends Converter<Object, String> {
    * first serialized, the new values may not be reflected in the result.
    */
   String convert(Object object) =>
-      _JsonStringStringifier.stringify(object, _toEncodable, indent);
+      _JsonStringStringifier._stringify(object, _toEncodable, indent);
 
   /**
    * Starts a chunked conversion.
@@ -196,8 +198,6 @@ class JsonEncoder extends Converter<Object, String> {
 class JsonUtf8Encoder extends Converter<Object, List<int>> {
   /** Default buffer size used by the JSON-to-UTF-8 encoder. */
   static const int _defaultBufferSize = 256;
-  @deprecated
-  static const int DEFAULT_BUFFER_SIZE = _defaultBufferSize;
   /** Indentation used in pretty-print mode, `null` if not pretty. */
   final List<int> _indent;
   /** Function called with each un-encodable object encountered. */
@@ -263,7 +263,7 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
       bytes.add(chunk);
     }
 
-    _JsonUtf8Stringifier.stringify(
+    _JsonUtf8Stringifier._stringify(
         object, _indent, _toEncodable, _bufferSize, addChunk);
     if (bytes.length == 1) return bytes[0];
     int length = 0;
@@ -331,7 +331,7 @@ class _JsonEncoderSink extends ChunkedConversionSink<Object> {
     }
     _isDone = true;
     ClosableStringSink stringSink = _sink.asStringSink();
-    _JsonStringStringifier.printOn(o, stringSink, _toEncodable, _indent);
+    _JsonStringStringifier._printOn(o, stringSink, _toEncodable, _indent);
     stringSink.close();
   }
 
@@ -342,7 +342,7 @@ class _JsonEncoderSink extends ChunkedConversionSink<Object> {
  * Sink returned when starting a chunked conversion from object to bytes.
  */
 class _JsonUtf8EncoderSink extends ChunkedConversionSink<Object> {
-  /** The byte sink receiveing the encoded chunks. */
+  /** The byte sink receiving the encoded chunks. */
   final ByteConversionSink _sink;
   final List<int> _indent;
   final ToEncodable _toEncodable;
@@ -361,7 +361,7 @@ class _JsonUtf8EncoderSink extends ChunkedConversionSink<Object> {
       throw new StateError("Only one call to add allowed");
     }
     _isDone = true;
-    _JsonUtf8Stringifier.stringify(
+    _JsonUtf8Stringifier._stringify(
         object, _indent, _toEncodable, _bufferSize, _addChunk);
     _sink.close();
   }
@@ -419,12 +419,12 @@ abstract class _JsonStringifier {
   void writeNumber(num number);
 
   // ('0' + x) or ('a' + x - 10)
-  static int hexDigit(int x) => x < 10 ? 48 + x : 87 + x;
+  static int _hexDigit(int x) => x < 10 ? 48 + x : 87 + x;
 
   /**
    * Write, and suitably escape, a string's content as a JSON string literal.
    */
-  void writeStringContent(String s) {
+  void _writeStringContent(String s) {
     int offset = 0;
     final int length = s.length;
     for (int i = 0; i < length; i++) {
@@ -454,8 +454,8 @@ abstract class _JsonStringifier {
             writeCharCode(char_u);
             writeCharCode(char_0);
             writeCharCode(char_0);
-            writeCharCode(hexDigit((charCode >> 4) & 0xf));
-            writeCharCode(hexDigit(charCode & 0xf));
+            writeCharCode(_hexDigit((charCode >> 4) & 0xf));
+            writeCharCode(_hexDigit(charCode & 0xf));
             break;
         }
       } else if (charCode == quote || charCode == backslash) {
@@ -505,15 +505,15 @@ abstract class _JsonStringifier {
    * If [object] isn't directly encodable, the [_toEncodable] function gets one
    * chance to return a replacement which is encodable.
    */
-  void writeObject(object) {
+  void _writeObject(object) {
     // Tries stringifying object directly. If it's not a simple value, List or
     // Map, call toJson() to get a custom representation and try serializing
     // that.
-    if (writeJsonValue(object)) return;
+    if (_writeJsonValue(object)) return;
     _checkCycle(object);
     try {
       var customJson = _toEncodable(object);
-      if (!writeJsonValue(customJson)) {
+      if (!_writeJsonValue(customJson)) {
         throw new JsonUnsupportedObjectError(object,
             partialResult: _partialResult);
       }
@@ -530,7 +530,7 @@ abstract class _JsonStringifier {
    * Returns true if the value is one of these types, and false if not.
    * If a value is both a [List] and a [Map], it's serialized as a [List].
    */
-  bool writeJsonValue(object) {
+  bool _writeJsonValue(object) {
     if (object is num) {
       if (!object.isFinite) return false;
       writeNumber(object);
@@ -546,7 +546,7 @@ abstract class _JsonStringifier {
       return true;
     } else if (object is String) {
       writeString('"');
-      writeStringContent(object);
+      _writeStringContent(object);
       writeString('"');
       return true;
     } else if (object is List) {
@@ -569,10 +569,10 @@ abstract class _JsonStringifier {
   void writeList(List list) {
     writeString('[');
     if (list.length > 0) {
-      writeObject(list[0]);
+      _writeObject(list[0]);
       for (int i = 1; i < list.length; i++) {
         writeString(',');
-        writeObject(list[i]);
+        _writeObject(list[i]);
       }
     }
     writeString(']');
@@ -600,9 +600,9 @@ abstract class _JsonStringifier {
     for (int i = 0; i < keyValueList.length; i += 2) {
       writeString(separator);
       separator = ',"';
-      writeStringContent(keyValueList[i] as String);
+      _writeStringContent(keyValueList[i] as String);
       writeString('":');
-      writeObject(keyValueList[i + 1]);
+      _writeObject(keyValueList[i + 1]);
     }
     writeString('}');
     return true;
@@ -630,11 +630,11 @@ abstract class _JsonPrettyPrintMixin implements _JsonStringifier {
       writeString('[\n');
       _indentLevel++;
       writeIndentation(_indentLevel);
-      writeObject(list[0]);
+      _writeObject(list[0]);
       for (int i = 1; i < list.length; i++) {
         writeString(',\n');
         writeIndentation(_indentLevel);
-        writeObject(list[i]);
+        _writeObject(list[i]);
       }
       writeString('\n');
       _indentLevel--;
@@ -667,9 +667,9 @@ abstract class _JsonPrettyPrintMixin implements _JsonStringifier {
       separator = ",\n";
       writeIndentation(_indentLevel);
       writeString('"');
-      writeStringContent(keyValueList[i] as String);
+      _writeStringContent(keyValueList[i] as String);
       writeString('": ');
-      writeObject(keyValueList[i + 1]);
+      _writeObject(keyValueList[i + 1]);
     }
     writeString('\n');
     _indentLevel--;
@@ -680,7 +680,7 @@ abstract class _JsonPrettyPrintMixin implements _JsonStringifier {
 }
 
 /**
- * A specialziation of [_JsonStringifier] that writes its JSON to a string.
+ * A specialization of [_JsonStringifier] that writes its JSON to a string.
  */
 class _JsonStringStringifier extends _JsonStringifier {
   final StringSink _sink;
@@ -699,9 +699,9 @@ class _JsonStringStringifier extends _JsonStringifier {
    * for each indentation level. It should only contain valid JSON whitespace
    * characters (space, tab, carriage return or line feed).
    */
-  static String stringify(object, toEncodable(o), String indent) {
+  static String _stringify(object, toEncodable(o), String indent) {
     StringBuffer output = new StringBuffer();
-    printOn(object, output, toEncodable, indent);
+    _printOn(object, output, toEncodable, indent);
     return output.toString();
   }
 
@@ -710,7 +710,7 @@ class _JsonStringStringifier extends _JsonStringifier {
    *
    * The result is written piecemally to the sink.
    */
-  static void printOn(
+  static void _printOn(
       object, StringSink output, toEncodable(o), String indent) {
     _JsonStringifier stringifier;
     if (indent == null) {
@@ -719,7 +719,7 @@ class _JsonStringStringifier extends _JsonStringifier {
       stringifier =
           new _JsonStringStringifierPretty(output, toEncodable, indent);
     }
-    stringifier.writeObject(object);
+    stringifier._writeObject(object);
   }
 
   String get _partialResult => _sink is StringBuffer ? _sink.toString() : null;
@@ -762,14 +762,14 @@ typedef void _AddChunk(Uint8List list, int start, int end);
  * The buffers are then passed back to a user provided callback method.
  */
 class _JsonUtf8Stringifier extends _JsonStringifier {
-  final int bufferSize;
+  final int _bufferSize;
   final _AddChunk addChunk;
-  Uint8List buffer;
-  int index = 0;
+  Uint8List _buffer;
+  int _index = 0;
 
   _JsonUtf8Stringifier(toEncodable(o), int bufferSize, this.addChunk)
-      : this.bufferSize = bufferSize,
-        buffer = new Uint8List(bufferSize),
+      : this._bufferSize = bufferSize,
+        _buffer = new Uint8List(bufferSize),
         super(toEncodable);
 
   /**
@@ -783,7 +783,7 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
    * If [indent] is non-`null`, the result will be "pretty-printed" with extra
    * newlines and indentation, using [indent] as the indentation.
    */
-  static void stringify(Object object, List<int> indent, toEncodable(o),
+  static void _stringify(Object object, List<int> indent, toEncodable(o),
       int bufferSize, void addChunk(Uint8List chunk, int start, int end)) {
     _JsonUtf8Stringifier stringifier;
     if (indent != null) {
@@ -792,20 +792,20 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
     } else {
       stringifier = new _JsonUtf8Stringifier(toEncodable, bufferSize, addChunk);
     }
-    stringifier.writeObject(object);
-    stringifier.flush();
+    stringifier._writeObject(object);
+    stringifier._flush();
   }
 
   /**
    * Must be called at the end to push the last chunk to the [addChunk]
    * callback.
    */
-  void flush() {
-    if (index > 0) {
-      addChunk(buffer, 0, index);
+  void _flush() {
+    if (_index > 0) {
+      addChunk(_buffer, 0, _index);
     }
-    buffer = null;
-    index = 0;
+    _buffer = null;
+    _index = 0;
   }
 
   String get _partialResult => null;
@@ -821,7 +821,7 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
     for (int i = 0; i < string.length; i++) {
       int char = string.codeUnitAt(i);
       assert(char <= 0x7f);
-      writeByte(char);
+      _writeByte(char);
     }
   }
 
@@ -836,7 +836,7 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
     for (int i = start; i < end; i++) {
       int char = string.codeUnitAt(i);
       if (char <= 0x7f) {
-        writeByte(char);
+        _writeByte(char);
       } else {
         if ((char & 0xFC00) == 0xD800 && i + 1 < end) {
           // Lead surrogate.
@@ -844,55 +844,55 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
           if ((nextChar & 0xFC00) == 0xDC00) {
             // Tail surrogate.
             char = 0x10000 + ((char & 0x3ff) << 10) + (nextChar & 0x3ff);
-            writeFourByteCharCode(char);
+            _writeFourByteCharCode(char);
             i++;
             continue;
           }
         }
-        writeMultiByteCharCode(char);
+        _writeMultiByteCharCode(char);
       }
     }
   }
 
   void writeCharCode(int charCode) {
     if (charCode <= 0x7f) {
-      writeByte(charCode);
+      _writeByte(charCode);
       return;
     }
-    writeMultiByteCharCode(charCode);
+    _writeMultiByteCharCode(charCode);
   }
 
-  void writeMultiByteCharCode(int charCode) {
+  void _writeMultiByteCharCode(int charCode) {
     if (charCode <= 0x7ff) {
-      writeByte(0xC0 | (charCode >> 6));
-      writeByte(0x80 | (charCode & 0x3f));
+      _writeByte(0xC0 | (charCode >> 6));
+      _writeByte(0x80 | (charCode & 0x3f));
       return;
     }
     if (charCode <= 0xffff) {
-      writeByte(0xE0 | (charCode >> 12));
-      writeByte(0x80 | ((charCode >> 6) & 0x3f));
-      writeByte(0x80 | (charCode & 0x3f));
+      _writeByte(0xE0 | (charCode >> 12));
+      _writeByte(0x80 | ((charCode >> 6) & 0x3f));
+      _writeByte(0x80 | (charCode & 0x3f));
       return;
     }
-    writeFourByteCharCode(charCode);
+    _writeFourByteCharCode(charCode);
   }
 
-  void writeFourByteCharCode(int charCode) {
+  void _writeFourByteCharCode(int charCode) {
     assert(charCode <= 0x10ffff);
-    writeByte(0xF0 | (charCode >> 18));
-    writeByte(0x80 | ((charCode >> 12) & 0x3f));
-    writeByte(0x80 | ((charCode >> 6) & 0x3f));
-    writeByte(0x80 | (charCode & 0x3f));
+    _writeByte(0xF0 | (charCode >> 18));
+    _writeByte(0x80 | ((charCode >> 12) & 0x3f));
+    _writeByte(0x80 | ((charCode >> 6) & 0x3f));
+    _writeByte(0x80 | (charCode & 0x3f));
   }
 
-  void writeByte(int byte) {
+  void _writeByte(int byte) {
     assert(byte <= 0xff);
-    if (index == buffer.length) {
-      addChunk(buffer, 0, index);
-      buffer = new Uint8List(bufferSize);
-      index = 0;
+    if (_index == _buffer.length) {
+      addChunk(_buffer, 0, _index);
+      _buffer = new Uint8List(_bufferSize);
+      _index = 0;
     }
-    buffer[index++] = byte;
+    _buffer[_index++] = byte;
   }
 }
 
@@ -901,31 +901,30 @@ class _JsonUtf8Stringifier extends _JsonStringifier {
  */
 class _JsonUtf8StringifierPretty extends _JsonUtf8Stringifier
     with _JsonPrettyPrintMixin {
-  final List<int> indent;
-  _JsonUtf8StringifierPretty(toEncodable(o), this.indent, int bufferSize,
+  final List<int> _indent;
+  _JsonUtf8StringifierPretty(toEncodable(o), this._indent, int bufferSize,
       void addChunk(Uint8List buffer, int start, int end))
       : super(toEncodable, bufferSize, addChunk);
 
   void writeIndentation(int count) {
-    List<int> indent = this.indent;
-    int indentLength = indent.length;
+    int indentLength = _indent.length;
     if (indentLength == 1) {
-      int char = indent[0];
+      int char = _indent[0];
       while (count > 0) {
-        writeByte(char);
+        _writeByte(char);
         count -= 1;
       }
       return;
     }
     while (count > 0) {
       count--;
-      int end = index + indentLength;
-      if (end <= buffer.length) {
-        buffer.setRange(index, end, indent);
-        index = end;
+      int end = _index + indentLength;
+      if (end <= _buffer.length) {
+        _buffer.setRange(_index, end, _indent);
+        _index = end;
       } else {
         for (int i = 0; i < indentLength; i++) {
-          writeByte(indent[i]);
+          _writeByte(_indent[i]);
         }
       }
     }
