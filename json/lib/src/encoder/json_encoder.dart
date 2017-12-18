@@ -6,6 +6,7 @@ import '../dart_convert_exports.dart';
 import 'errors.dart';
 import 'json_string_stringifier.dart';
 import 'json_utf8_encoder.dart';
+import 'json_writer.dart';
 import 'to_encodable.dart';
 
 /**
@@ -28,6 +29,8 @@ class JsonEncoder extends Converter<Object, String> {
    */
   final ToEncodable _toEncodable;
 
+  final WriteJson _jsonWriter;
+
   /**
    * Creates a JSON encoder.
    *
@@ -46,8 +49,12 @@ class JsonEncoder extends Converter<Object, String> {
    *
    * If [indent] is `null`, the output is encoded as a single line.
    */
-  const JsonEncoder({toEncodable(object), this.indent})
-      : this._toEncodable = toEncodable;
+  const JsonEncoder(
+      {toEncodable(object),
+      this.indent,
+      bool writer(Object source, JsonWriter writer)})
+      : this._toEncodable = toEncodable,
+        this._jsonWriter = writer;
 
   /**
    * Converts [object] to a JSON [String].
@@ -77,8 +84,8 @@ class JsonEncoder extends Converter<Object, String> {
    * for it. In other words, if the content of an object changes after it is
    * first serialized, the new values may not be reflected in the result.
    */
-  String convert(Object object) =>
-      JsonStringStringifier.stringify(object, _toEncodable, indent);
+  String convert(Object object) => JsonStringStringifier.stringify(
+      object, _toEncodable, _jsonWriter, indent);
 
   /**
    * Starts a chunked conversion.
@@ -103,7 +110,7 @@ class JsonEncoder extends Converter<Object, String> {
     //      JsonUtf8Encoder._defaultBufferSize);
     //}
 
-    return new _JsonEncoderSink(scs, _toEncodable, indent);
+    return new _JsonEncoderSink(scs, _toEncodable, _jsonWriter, indent);
   }
 
   // Override the base class's bind, to provide a better type.
@@ -115,8 +122,10 @@ class JsonEncoder extends Converter<Object, String> {
       // but the static type system doesn't know that, and so we cast.
       // Cast through dynamic to keep the cast implicit for builds using
       // unchecked implicit casts.
-      return new JsonUtf8Encoder(indent: indent, toEncodable: _toEncodable)
-          as Converter<Object, T>;
+      return new JsonUtf8Encoder(
+          indent: indent,
+          toEncodable: _toEncodable,
+          writer: _jsonWriter) as Converter<Object, T>;
     }
     return super.fuse<T>(other);
   }
@@ -130,10 +139,11 @@ class JsonEncoder extends Converter<Object, String> {
 class _JsonEncoderSink extends ChunkedConversionSink<Object> {
   final String _indent;
   final ToEncodable _toEncodable;
+  final WriteJson _writer;
   final StringConversionSink _sink;
   bool _isDone = false;
 
-  _JsonEncoderSink(this._sink, this._toEncodable, this._indent);
+  _JsonEncoderSink(this._sink, this._toEncodable, this._writer, this._indent);
 
   /**
    * Encodes the given object [o].
@@ -148,7 +158,8 @@ class _JsonEncoderSink extends ChunkedConversionSink<Object> {
     }
     _isDone = true;
     ClosableStringSink stringSink = _sink.asStringSink();
-    JsonStringStringifier.printOn(o, stringSink, _toEncodable, _indent);
+    JsonStringStringifier.printOn(
+        o, stringSink, _toEncodable, _writer, _indent);
     stringSink.close();
   }
 

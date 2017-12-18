@@ -1,7 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'json_pretty_print_mixin.dart';
 import 'json_stringifier.dart';
+import 'json_writer.dart';
 import 'to_encodable.dart';
 
 /**
@@ -10,8 +10,8 @@ import 'to_encodable.dart';
 class JsonStringStringifier extends JsonStringifier {
   final StringSink _sink;
 
-  JsonStringStringifier(this._sink, ToEncodable _toEncodable)
-      : super(_toEncodable);
+  JsonStringStringifier(this._sink, ToEncodable _toEncodable, WriteJson writer)
+      : super(_toEncodable, writer);
 
   /**
    * Convert object to a string.
@@ -25,9 +25,9 @@ class JsonStringStringifier extends JsonStringifier {
    * characters (space, tab, carriage return or line feed).
    */
   static String stringify(
-      Object object, ToEncodable toEncodable, String indent) {
+      Object object, ToEncodable toEncodable, WriteJson writer, String indent) {
     StringBuffer output = new StringBuffer();
-    printOn(object, output, toEncodable, indent);
+    printOn(object, output, toEncodable, writer, indent);
     return output.toString();
   }
 
@@ -37,13 +37,13 @@ class JsonStringStringifier extends JsonStringifier {
    * The result is written piecemally to the sink.
    */
   static void printOn(Object object, StringSink output, ToEncodable toEncodable,
-      String indent) {
+      WriteJson writer, String indent) {
     JsonStringifier stringifier;
     if (indent == null) {
-      stringifier = new JsonStringStringifier(output, toEncodable);
+      stringifier = new JsonStringStringifier(output, toEncodable, writer);
     } else {
       stringifier =
-          new _JsonStringStringifierPretty(output, toEncodable, indent);
+          new _JsonStringStringifierPretty(output, toEncodable, writer, indent);
     }
     stringifier.writeObject(object);
   }
@@ -77,8 +77,8 @@ class _JsonStringStringifierPretty extends JsonStringStringifier
   final String _indent;
 
   _JsonStringStringifierPretty(
-      StringSink sink, ToEncodable toEncodable, this._indent)
-      : super(sink, toEncodable);
+      StringSink sink, ToEncodable toEncodable, WriteJson writer, this._indent)
+      : super(sink, toEncodable, writer);
 
   @override
   void writeIndentation(int count) {

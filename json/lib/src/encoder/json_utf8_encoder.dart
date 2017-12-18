@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import '../dart_convert_exports.dart';
 import 'json_utf8_stringifier.dart';
+import 'json_writer.dart';
 import 'to_encodable.dart';
 
 /**
@@ -20,6 +21,9 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
   final List<int> _indent;
   /** Function called with each un-encodable object encountered. */
   final ToEncodable _toEncodable;
+
+  final WriteJson _jsonWriter;
+
   /** UTF-8 buffer size. */
   final int _bufferSize;
 
@@ -49,8 +53,12 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
    * object.
    */
   JsonUtf8Encoder(
-      {String indent, toEncodable(object), int bufferSize = _defaultBufferSize})
+      {String indent,
+      toEncodable(object),
+      WriteJson writer,
+      int bufferSize = _defaultBufferSize})
       : _indent = _utf8Encode(indent),
+        _jsonWriter = writer,
         _toEncodable = toEncodable,
         _bufferSize = bufferSize;
 
@@ -82,7 +90,7 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
     }
 
     JsonUtf8Stringifier.stringify(
-        object, _indent, _toEncodable, _bufferSize, addChunk);
+        object, _indent, _toEncodable, _jsonWriter, _bufferSize, addChunk);
     if (bytes.length == 1) return bytes[0];
     int length = 0;
     for (int i = 0; i < bytes.length; i++) {
@@ -114,7 +122,7 @@ class JsonUtf8Encoder extends Converter<Object, List<int>> {
       byteSink = new ByteConversionSink.from(sink);
     }
     return new _JsonUtf8EncoderSink(
-        byteSink, _toEncodable, _indent, _bufferSize);
+        byteSink, _toEncodable, _jsonWriter, _indent, _bufferSize);
   }
 }
 
@@ -126,10 +134,11 @@ class _JsonUtf8EncoderSink extends ChunkedConversionSink<Object> {
   final ByteConversionSink _sink;
   final List<int> _indent;
   final ToEncodable _toEncodable;
+  final WriteJson _jsonWriter;
   final int _bufferSize;
   bool _isDone = false;
-  _JsonUtf8EncoderSink(
-      this._sink, this._toEncodable, this._indent, this._bufferSize);
+  _JsonUtf8EncoderSink(this._sink, this._toEncodable, this._jsonWriter,
+      this._indent, this._bufferSize);
 
   /** Callback called for each slice of result bytes. */
   void _addChunk(Uint8List chunk, int start, int end) {
@@ -142,7 +151,7 @@ class _JsonUtf8EncoderSink extends ChunkedConversionSink<Object> {
     }
     _isDone = true;
     JsonUtf8Stringifier.stringify(
-        object, _indent, _toEncodable, _bufferSize, _addChunk);
+        object, _indent, _toEncodable, _jsonWriter, _bufferSize, _addChunk);
     _sink.close();
   }
 

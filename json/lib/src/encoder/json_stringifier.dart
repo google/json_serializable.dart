@@ -1,11 +1,15 @@
-// ignore_for_file: slash_for_doc_comments, annotate_overrides, prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments, prefer_single_quotes
 
 import 'package:meta/meta.dart';
 
 import 'errors.dart';
+import 'json_writer.dart';
 import 'to_encodable.dart';
 
+// TODO(kevmoo): remove seen tracking. Just have a max-depth counter?
+
 Object _defaultToEncodable(dynamic object) => object.toJson();
+bool _defaultJsonWriter(Object source, JsonWriter writer) => false;
 
 /**
  * JSON encoder that traverses an object structure and writes JSON source.
@@ -13,7 +17,7 @@ Object _defaultToEncodable(dynamic object) => object.toJson();
  * This is an abstract implementation that doesn't decide on the output
  * format, but writes the JSON through abstract methods like [writeString].
  */
-abstract class JsonStringifier {
+abstract class JsonStringifier implements JsonWriter {
   // TODO: convert in-line characters to use 'package:charcode/charcode.dart'
   // Character code constants.
   static const int backspace = 0x08;
@@ -33,11 +37,15 @@ abstract class JsonStringifier {
 
   /** List of objects currently being traversed. Used to detect cycles. */
   final List _seen = new List();
+
   /** Function called for each un-encodable object encountered. */
   final ToEncodable _toEncodable;
 
-  JsonStringifier(toEncodable(dynamic o))
-      : _toEncodable = toEncodable ?? _defaultToEncodable;
+  final WriteJson _jsonWriter;
+
+  JsonStringifier(toEncodable(dynamic o), WriteJson jsonWriter)
+      : _toEncodable = toEncodable ?? _defaultToEncodable,
+        _jsonWriter = jsonWriter ?? _defaultJsonWriter;
 
   @protected
   String get partialResult;
@@ -194,7 +202,7 @@ abstract class JsonStringifier {
       _removeSeen(object);
       return success;
     } else {
-      return false;
+      return _jsonWriter(object, this);
     }
   }
 
@@ -214,7 +222,8 @@ abstract class JsonStringifier {
   /** Serialize a [Map]. */
   bool writeMap(Map map) {
     if (map.isEmpty) {
-      writeString("{}");
+      startMap();
+      endMap();
       return true;
     }
     List keyValueList = new List(map.length * 2);
@@ -228,16 +237,112 @@ abstract class JsonStringifier {
       keyValueList[i++] = value;
     });
     if (!allStringKeys) return false;
-    writeString('{');
-    String separator = '"';
+    startMap();
     for (int i = 0; i < keyValueList.length; i += 2) {
-      writeString(separator);
-      separator = ',"';
-      writeStringContent(keyValueList[i] as String);
-      writeString('":');
-      writeObject(keyValueList[i + 1]);
+      writeKeyValue(keyValueList[i] as String, keyValueList[i + 1]);
     }
-    writeString('}');
+    endMap();
     return true;
+  }
+
+  int _mapWritingDepth = 0;
+  bool _writtenValue;
+
+  @override
+  void startMap() {
+    if (_writtenValue != null) {
+      _mapWritingDepth++;
+    }
+    _writtenValue = false;
+    writeString("{");
+  }
+
+  @override
+  void writeKeyValue(String key, Object value) {
+    assert(_writtenValue != null);
+    if (_writtenValue) {
+      writeString(',"');
+    } else {
+      _writtenValue = true;
+      writeString('"');
+    }
+    writeStringContent(key);
+    writeString('":');
+    writeObject(value);
+  }
+
+  @override
+  void endMap() {
+    assert(_writtenValue != null);
+    writeString('}');
+    if (_mapWritingDepth > 0) {
+      _mapWritingDepth--;
+      _writtenValue = true;
+    } else {
+      _writtenValue = null;
+    }
+  }
+}
+
+/**
+ * A modification of [JsonStringifier] which indents the contents of [List] and
+ * [Map] objects using the specified indent value.
+ *
+ * Subclasses should implement [writeIndentation].
+ */
+abstract class JsonPrettyPrintMixin implements JsonStringifier {
+  int _indentLevel = 0;
+
+  /**
+   * Add [indentLevel] indentations to the JSON output.
+   */
+  void writeIndentation(int indentLevel);
+
+  @override
+  void writeList(List list) {
+    if (list.isEmpty) {
+      writeString('[]');
+    } else {
+      writeString('[\n');
+      _indentLevel++;
+      writeIndentation(_indentLevel);
+      writeObject(list[0]);
+      for (int i = 1; i < list.length; i++) {
+        writeString(',\n');
+        writeIndentation(_indentLevel);
+        writeObject(list[i]);
+      }
+      writeString('\n');
+      _indentLevel--;
+      writeIndentation(_indentLevel);
+      writeString(']');
+    }
+  }
+
+  @override
+  void writeKeyValue(String key, Object value) {
+    assert(_writtenValue != null);
+    if (_writtenValue) {
+      writeString(',\n');
+    } else {
+      _indentLevel++;
+      writeString('\n');
+      _writtenValue = true;
+    }
+    writeIndentation(_indentLevel);
+    writeString('"');
+    writeStringContent(key);
+    writeString('": ');
+    writeObject(value);
+  }
+
+  @override
+  void endMap() {
+    if (_writtenValue) {
+      _indentLevel--;
+      writeString('\n');
+      writeIndentation(_indentLevel);
+    }
+    super.endMap();
   }
 }

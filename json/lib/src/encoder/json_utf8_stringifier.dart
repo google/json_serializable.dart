@@ -2,8 +2,8 @@
 
 import 'dart:typed_data';
 
-import 'json_pretty_print_mixin.dart';
 import 'json_stringifier.dart';
+import 'json_writer.dart';
 import 'to_encodable.dart';
 
 typedef void _AddChunk(Uint8List list, int start, int end);
@@ -20,10 +20,11 @@ class JsonUtf8Stringifier extends JsonStringifier {
   Uint8List _buffer;
   int _index = 0;
 
-  JsonUtf8Stringifier(ToEncodable toEncodable, int bufferSize, this.addChunk)
+  JsonUtf8Stringifier(ToEncodable toEncodable, WriteJson jsonWriter,
+      int bufferSize, this.addChunk)
       : this._bufferSize = bufferSize,
         _buffer = new Uint8List(bufferSize),
-        super(toEncodable);
+        super(toEncodable, jsonWriter);
 
   /**
    * Convert [object] to UTF-8 encoded JSON.
@@ -40,14 +41,16 @@ class JsonUtf8Stringifier extends JsonStringifier {
       Object object,
       List<int> indent,
       ToEncodable toEncodable,
+      WriteJson writer,
       int bufferSize,
       void addChunk(Uint8List chunk, int start, int end)) {
     JsonUtf8Stringifier stringifier;
     if (indent != null) {
       stringifier = new _JsonUtf8StringifierPretty(
-          toEncodable, indent, bufferSize, addChunk);
+          toEncodable, writer, indent, bufferSize, addChunk);
     } else {
-      stringifier = new JsonUtf8Stringifier(toEncodable, bufferSize, addChunk);
+      stringifier =
+          new JsonUtf8Stringifier(toEncodable, writer, bufferSize, addChunk);
     }
     stringifier.writeObject(object);
     stringifier._flush();
@@ -159,9 +162,13 @@ class JsonUtf8Stringifier extends JsonStringifier {
 class _JsonUtf8StringifierPretty extends JsonUtf8Stringifier
     with JsonPrettyPrintMixin {
   final List<int> _indent;
-  _JsonUtf8StringifierPretty(ToEncodable toEncodable, this._indent,
-      int bufferSize, void addChunk(Uint8List buffer, int start, int end))
-      : super(toEncodable, bufferSize, addChunk);
+  _JsonUtf8StringifierPretty(
+      ToEncodable toEncodable,
+      WriteJson writer,
+      this._indent,
+      int bufferSize,
+      void addChunk(Uint8List buffer, int start, int end))
+      : super(toEncodable, writer, bufferSize, addChunk);
 
   @override
   void writeIndentation(int count) {

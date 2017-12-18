@@ -107,7 +107,7 @@ void _expect(Object object, String expected) {
     var encoder = const JsonEncoder(indent: '  ');
     var prettyOutput = encoder.convert(object);
 
-    Expect.equals(expected, prettyOutput);
+    expect(prettyOutput, expected);
 
     encoder = const JsonEncoder(indent: '');
 
