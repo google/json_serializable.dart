@@ -1,6 +1,21 @@
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-List get testValues => [
+Iterable<List> get expandedTestValues => testValues.expand((test) {
+      var object = test[0];
+      var string = test[1] as String;
+      var longString =
+          "                                                        "
+          "                                                        "
+          "$string"
+          "                                                        "
+          "                                                        ";
+      return [
+        test,
+        [object, longString]
+      ];
+    });
+
+List<List> get testValues => [
       [5, '5'],
       [-42, '-42'],
       [3.14, '3.14'],

@@ -4,9 +4,10 @@
 
 import 'package:charcode/charcode.dart';
 
+import 'test_util.dart';
 import 'unicode_values.dart';
 
-final List<Pair> jsonUnicodeTests =
+final List<Pair<List<int>>> jsonUnicodeTests =
     unicodeTests.expand((Pair<String> testValue) {
   // The unicode test will be a string (possibly) containing unicode
   // characters. It also contains the empty string.

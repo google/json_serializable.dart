@@ -4,17 +4,19 @@
 
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-import 'package:test/test.dart';
 import 'package:json/json.dart';
 
 import "src/expect.dart";
+import 'test_util.dart';
 import 'test_values.dart';
 
-class MyStringConversionSink extends StringConversionSinkBase {
-  final _buffer = new StringBuffer();
-  var callback;
+typedef void _Callback(Object input);
 
-  MyStringConversionSink(this.callback);
+class _MyStringConversionSink extends StringConversionSinkBase {
+  final _buffer = new StringBuffer();
+  _Callback callback;
+
+  _MyStringConversionSink(this.callback);
 
   @override
   addSlice(str, start, end, bool isLast) {
@@ -28,17 +30,17 @@ class MyStringConversionSink extends StringConversionSinkBase {
   }
 }
 
-String encode(Object o) {
+String _encode(Object o) {
   String result;
   ChunkedConversionSink<String> stringSink =
-      new MyStringConversionSink((x) => result = x as String);
+      new _MyStringConversionSink((x) => result = x as String);
   var objectSink = new JsonEncoder().startChunkedConversion(stringSink);
   objectSink.add(o);
   objectSink.close();
   return result;
 }
 
-String encode2(Object o) {
+String _encode2(Object o) {
   String result;
   var encoder = new JsonEncoder();
   ChunkedConversionSink<String> stringSink =
@@ -50,12 +52,10 @@ String encode2(Object o) {
 }
 
 main() {
-  for (var value in testValues) {
-    test('foo', () {
-      var o = value[0];
-      var expected = value[1];
-      Expect.equals(expected, encode(o));
-      Expect.equals(expected, encode2(o));
-    });
-  }
+  testAll<List>(testValues, (value) {
+    var o = value[0];
+    var expected = value[1] as String;
+    Expect.equals(expected, _encode(o));
+    Expect.equals(expected, _encode2(o));
+  });
 }

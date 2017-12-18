@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:json/json.dart';
 
+import 'test_util.dart';
 import 'unicode_test_values.dart';
 
 final _jsonUtf8 = json.fuse<List<int>>(utf8);
@@ -39,15 +40,12 @@ Stream<Object> _decodeChunked(List<int> bytes, int chunkSize) {
 }
 
 main() {
-  var count = 1;
-  for (var value in jsonUnicodeTests) {
-    test("test ${count++}", () async {
-      expect(await _decode(value.bytes).single, value.target);
-      expect(await _decodeChunked(value.bytes, 1).single, value.target);
-      expect(await _decodeChunked(value.bytes, 2).single, value.target);
-      expect(await _decodeChunked(value.bytes, 3).single, value.target);
-      expect(await _decodeChunked(value.bytes, 4).single, value.target);
-      expect(await _decodeChunked(value.bytes, 5).single, value.target);
-    });
-  }
+  testAll<Pair>(jsonUnicodeTests, (value) async {
+    expect(await _decode(value.bytes).single, value.target);
+    expect(await _decodeChunked(value.bytes, 1).single, value.target);
+    expect(await _decodeChunked(value.bytes, 2).single, value.target);
+    expect(await _decodeChunked(value.bytes, 3).single, value.target);
+    expect(await _decodeChunked(value.bytes, 4).single, value.target);
+    expect(await _decodeChunked(value.bytes, 5).single, value.target);
+  });
 }

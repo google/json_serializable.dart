@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:json/json.dart';
 
+import 'test_util.dart';
 import 'unicode_test_values.dart';
 
 final _jsonUtf8 = json.fuse<List<int>>(utf8);
@@ -44,11 +45,8 @@ Future _testWithPauses(List<int> expected, Stream<List<int>> stream) async {
 }
 
 void main() {
-  var count = 1;
-  for (var value in jsonUnicodeTests) {
-    test("test ${count++}", () async {
-      await _testUnpaused(value.bytes, _encode(value.target));
-      await _testWithPauses(value.bytes, _encode(value.target));
-    });
-  }
+  testAll<Pair>(jsonUnicodeTests, (value) async {
+    await _testUnpaused(value.bytes, _encode(value.target));
+    await _testWithPauses(value.bytes, _encode(value.target));
+  });
 }

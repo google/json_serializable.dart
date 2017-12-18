@@ -4,6 +4,8 @@
 
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
+import 'test_util.dart';
+
 // Google favorite: "Îñţérñåţîöñåļîžåţîờñ".
 const INTER_BYTES = const [
   0xc3,
@@ -239,10 +241,3 @@ List<Pair<String>> _expandTestPairs() {
 }
 
 final List<Pair<String>> unicodeTests = _expandTestPairs();
-
-class Pair<T> {
-  final List<int> bytes;
-  final T target;
-
-  const Pair(this.bytes, this.target);
-}

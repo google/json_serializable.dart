@@ -5,6 +5,20 @@ import 'package:json/json.dart';
 
 import "src/expect.dart";
 
+class Pair<T> {
+  final List<int> bytes;
+  final T target;
+
+  const Pair(this.bytes, this.target);
+}
+
+void testAll<T>(Iterable<T> items, testBody(T item)) {
+  var count = 1;
+  for (var item in items) {
+    test('item ${count++}', () => testBody(item));
+  }
+}
+
 void testThrows(String jsonText) {
   test(jsonText, () {
     Expect.throwsFormatException(

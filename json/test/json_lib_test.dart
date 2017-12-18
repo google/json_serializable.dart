@@ -10,14 +10,18 @@ import 'package:json/json.dart';
 import "src/expect.dart";
 
 main() {
-  test('foo', () {
-    testParsing();
-    testStringify();
-    testStringifyErrors();
+  test('parsing', () {
+    _testParsing();
+  });
+  test('stringify', () {
+    _testStringify();
+  });
+  test('stringify errors', () {
+    _testStringifyErrors();
   });
 }
 
-void testParsing() {
+void _testParsing() {
   // Scalars.
   Expect.equals(5, json.decode(' 5 '));
   Expect.equals(-42, json.decode(' -42 '));
@@ -92,13 +96,13 @@ void testParsing() {
           '"z":"hi","w":{"c":null,"d":true}, "v":null}'));
 }
 
-void testStringify() {
+void _testStringify() {
   // Scalars.
   Expect.equals('5', json.encode(5));
   Expect.equals('-42', json.encode(-42));
   // Dart does not guarantee a formatting for doubles,
   // so reparse and compare to the original.
-  validateRoundTrip(3.14);
+  _validateRoundTrip(3.14);
   Expect.equals('true', json.encode(true));
   Expect.equals('false', json.encode(false));
   Expect.equals('null', json.encode(null));
@@ -112,7 +116,7 @@ void testStringify() {
   Expect.equals('[]', json.encode([]));
   Expect.equals('[]', json.encode(new List(0)));
   Expect.equals('[null,null,null]', json.encode(new List(3)));
-  validateRoundTrip([3, -4.5, null, true, 'hi', false]);
+  _validateRoundTrip([3, -4.5, null, true, 'hi', false]);
   Expect.equals(
       '[[3],[],[null],["hi",true]]',
       json.encode([
@@ -134,11 +138,11 @@ void testStringify() {
 
   // Dart does not guarantee an order on the keys
   // of a map literal, so reparse and compare to the original Map.
-  validateRoundTrip(
+  _validateRoundTrip(
       {'x': 3, 'y': -4.5, 'z': 'hi', 'w': null, 'u': true, 'v': false});
-  validateRoundTrip({"x": 3, "y": -4.5, "z": 'hi'});
-  validateRoundTrip({' hi bob ': 3, '': 4.5});
-  validateRoundTrip({
+  _validateRoundTrip({"x": 3, "y": -4.5, "z": 'hi'});
+  _validateRoundTrip({' hi bob ': 3, '': 4.5});
+  _validateRoundTrip({
     'x': {'a': 3, 'b': -4.5},
     'y': [{}],
     'z': 'hi',
@@ -146,28 +150,28 @@ void testStringify() {
     'v': null
   });
 
-  Expect.equals("4", json.encode(new ToJson(4)));
-  Expect.equals('[4,"a"]', json.encode(new ToJson([4, "a"])));
+  Expect.equals("4", json.encode(new _ToJson(4)));
+  Expect.equals('[4,"a"]', json.encode(new _ToJson([4, "a"])));
   Expect.equals(
       '[4,{"x":42}]',
-      json.encode(new ToJson([
+      json.encode(new _ToJson([
         4,
-        new ToJson({"x": 42})
+        new _ToJson({"x": 42})
       ])));
 
-  expectThrowsJsonError(() => json.encode([new ToJson(new ToJson(4))]));
-  expectThrowsJsonError(() => json.encode([new Object()]));
+  _expectThrowsJsonError(() => json.encode([new _ToJson(new _ToJson(4))]));
+  _expectThrowsJsonError(() => json.encode([new Object()]));
 }
 
-void testStringifyErrors() {
+void _testStringifyErrors() {
   // Throws if argument cannot be converted.
-  expectThrowsJsonError(() => json.encode(new TestClass()));
+  _expectThrowsJsonError(() => json.encode(new _TestClass()));
 
   // Throws if toJson throws.
-  expectThrowsJsonError(() => json.encode(new ToJsoner("bad", throws: true)));
+  _expectThrowsJsonError(() => json.encode(new _ToJsoner("bad", throws: true)));
 
   // Throws if toJson returns non-serializable value.
-  expectThrowsJsonError(() => json.encode(new ToJsoner(new TestClass())));
+  _expectThrowsJsonError(() => json.encode(new _ToJsoner(new _TestClass())));
 
   // Throws on cyclic values.
   var a = [];
@@ -176,35 +180,35 @@ void testStringifyErrors() {
     b = [b];
   }
   a.add(b);
-  expectThrowsJsonError(() => json.encode(a));
+  _expectThrowsJsonError(() => json.encode(a));
 }
 
-void expectThrowsJsonError(void f()) {
+void _expectThrowsJsonError(void f()) {
   Expect.throws(f, (e) => e is JsonUnsupportedObjectError);
 }
 
-class TestClass {
+class _TestClass {
   int x;
   String y;
 
-  TestClass()
+  _TestClass()
       : x = 3,
         y = 'joe';
 }
 
-class ToJsoner {
+class _ToJsoner {
   final Object returnValue;
   final bool throws;
-  ToJsoner(this.returnValue, {this.throws});
+  _ToJsoner(this.returnValue, {this.throws});
   Object toJson() {
     if (throws) throw new Exception('oops!');
     return returnValue;
   }
 }
 
-class ToJson {
+class _ToJson {
   final object;
-  const ToJson(this.object);
+  const _ToJson(this.object);
   toJson() => object;
 }
 
@@ -212,6 +216,6 @@ class ToJson {
  * Checks that the argument can be converted to a JSON string and
  * back, and produce something equivalent to the argument.
  */
-validateRoundTrip(expected) {
+void _validateRoundTrip(expected) {
   Expect.deepEquals(expected, json.decode(json.encode(expected)));
 }

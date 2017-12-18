@@ -10,6 +10,7 @@ import 'package:test/test.dart';
 import 'package:json/json.dart';
 
 import "src/expect.dart";
+import 'test_util.dart';
 import 'test_values.dart';
 
 Stream<String> encode(Object o) {
@@ -44,12 +45,10 @@ void testWithPause(String expected, Object o) {
 }
 
 void main() {
-  for (var value in testValues) {
-    test('foo', () {
-      var o = value[0];
-      var expected = value[1] as String;
-      testNoPause(expected, o);
-      testWithPause(expected, o);
-    });
-  }
+  testAll(testValues, (value) {
+    var o = value[0];
+    var expected = value[1] as String;
+    testNoPause(expected, o);
+    testWithPause(expected, o);
+  });
 }

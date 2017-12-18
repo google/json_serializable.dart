@@ -13,7 +13,7 @@ import 'package:json/json.dart';
 import "src/expect.dart";
 
 void main() {
-  test('foo', () {
+  test('pretty', () {
     var encoder = const JsonEncoder.withIndent('\x00');
     var encoded = encoder.convert([
       [],
@@ -103,7 +103,7 @@ void main() {
 }
 
 void _expect(Object object, String expected) {
-  test('foo', () {
+  test('pretty', () {
     var encoder = const JsonEncoder.withIndent('  ');
     var prettyOutput = encoder.convert(object);
 
