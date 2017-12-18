@@ -1,7 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import '../dart_convert_exports.dart';
-import '../listeners/build_json_listener.dart';
+import '../listeners/any_value_listener.dart';
 import '../parser/json_string_parser.dart';
 import 'json_string_decoder_sink.dart';
 
