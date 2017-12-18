@@ -1,7 +1,7 @@
 // ignore_for_file: slash_for_doc_comments
 
 import 'dart_convert_exports.dart';
-import 'my_json_decoder.dart';
+import 'decoder/my_json_decoder.dart';
 import 'my_json_encoder.dart';
 
 const json = const MyJsonCodec();

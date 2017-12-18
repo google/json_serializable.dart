@@ -1,8 +1,8 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'dart_convert_exports.dart';
-import 'json_utf8_parser.dart';
-import 'listeners/build_json_listener.dart';
+import '../dart_convert_exports.dart';
+import '../listeners/build_json_listener.dart';
+import '../parser/json_utf8_parser.dart';
 
 /**
  * Implements the chunked conversion from a UTF-8 encoding of JSON

@@ -1,9 +1,9 @@
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-import 'dart_convert_exports.dart';
-import 'json_string_parser.dart';
+import '../dart_convert_exports.dart';
+import '../listeners/build_json_listener.dart';
+import '../parser/json_string_parser.dart';
 import 'json_utf8_decoder_sink.dart';
-import 'listeners/build_json_listener.dart';
 
 /**
  * Implements the chunked conversion from a JSON string to its corresponding

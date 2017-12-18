@@ -1,7 +1,7 @@
-import 'dart_convert_exports.dart';
+import '../dart_convert_exports.dart';
+import '../listeners/build_json_listener.dart';
+import '../parser/json_utf8_parser.dart';
 import 'json_utf8_decoder_sink.dart';
-import 'json_utf8_parser.dart';
-import 'listeners/build_json_listener.dart';
 
 class MyJsonUtf8Decoder extends Converter<List<int>, Object> {
   final bool _allowMalformed;

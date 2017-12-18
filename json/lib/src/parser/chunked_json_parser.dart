@@ -3,7 +3,7 @@
 import 'package:charcode/charcode.dart';
 import 'package:meta/meta.dart';
 
-import 'listeners/json_listener.dart';
+import '../listeners/json_listener.dart';
 import 'nuber_buffer.dart';
 
 const _powersOfTen = const [
