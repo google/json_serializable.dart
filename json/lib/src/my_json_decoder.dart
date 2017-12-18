@@ -1,7 +1,6 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'dart:convert' hide JsonDecoder;
-
+import 'dart_convert_exports.dart';
 import 'json_string_decoder_sink.dart';
 import 'json_string_parser.dart';
 import 'listeners/build_json_listener.dart';

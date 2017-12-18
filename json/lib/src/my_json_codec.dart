@@ -1,10 +1,8 @@
 // ignore_for_file: slash_for_doc_comments
 
-import 'dart:convert' hide JsonDecoder;
-
+import 'dart_convert_exports.dart';
 import 'my_json_decoder.dart';
-
-typedef _ToEncodable(var o);
+import 'my_json_encoder.dart';
 
 const json = const MyJsonCodec();
 
@@ -18,7 +16,7 @@ const json = const MyJsonCodec();
  *     var decoded = json.decode('["foo", { "bar": 499 }]');
  */
 class MyJsonCodec extends Codec<Object, String> {
-  final _ToEncodable _toEncodable;
+  final ToEncodable _toEncodable;
 
   /**
    * Creates a `JsonCodec` with the given reviver and encoding function.
@@ -36,7 +34,7 @@ class MyJsonCodec extends Codec<Object, String> {
    * If [toEncodable] is omitted, it defaults to a function that returns the
    * result of calling `.toJson()` on the unencodable object.
    */
-  const MyJsonCodec({toEncodable(var object)}) : _toEncodable = toEncodable;
+  const MyJsonCodec({toEncodable(Object object)}) : _toEncodable = toEncodable;
 
   /**
    * Parses the string and returns the resulting Json object.

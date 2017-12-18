@@ -1,5 +1,4 @@
-import 'dart:convert' hide JsonDecoder;
-
+import 'dart_convert_exports.dart';
 import 'json_utf8_decoder_sink.dart';
 import 'json_utf8_parser.dart';
 import 'listeners/build_json_listener.dart';

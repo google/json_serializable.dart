@@ -1,7 +1,6 @@
 // ignore_for_file: slash_for_doc_comments,prefer_single_quotes
 
-import 'dart:typed_data' show Uint8List, Uint16List;
-
+import 'dart:typed_data';
 import 'chunked_json_parser.dart';
 import 'listeners/json_listener.dart';
 
