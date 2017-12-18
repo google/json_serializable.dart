@@ -11,6 +11,9 @@ import 'to_encodable.dart';
 Object _defaultToEncodable(dynamic object) => object.toJson();
 bool _defaultJsonWriter(Object source, JsonWriter writer) => false;
 
+// ('0' + x) or ('a' + x - 10)
+int _hexDigit(int x) => x < 10 ? 48 + x : 87 + x;
+
 /**
  * JSON encoder that traverses an object structure and writes JSON source.
  *
@@ -43,6 +46,9 @@ abstract class JsonStringifier implements JsonWriter {
 
   final WriteJson _jsonWriter;
 
+  int _mapWritingDepth = 0;
+  bool _writtenMapValue;
+
   JsonStringifier(toEncodable(dynamic o), WriteJson jsonWriter)
       : _toEncodable = toEncodable ?? _defaultToEncodable,
         _jsonWriter = jsonWriter ?? _defaultJsonWriter;
@@ -58,9 +64,6 @@ abstract class JsonStringifier implements JsonWriter {
   void writeCharCode(int charCode);
   /** Write a number to the JSON output. */
   void writeNumber(num number);
-
-  // ('0' + x) or ('a' + x - 10)
-  static int _hexDigit(int x) => x < 10 ? 48 + x : 87 + x;
 
   /**
    * Write, and suitably escape, a string's content as a JSON string literal.
@@ -245,25 +248,22 @@ abstract class JsonStringifier implements JsonWriter {
     return true;
   }
 
-  int _mapWritingDepth = 0;
-  bool _writtenValue;
-
   @override
   void startMap() {
-    if (_writtenValue != null) {
+    if (_writtenMapValue != null) {
       _mapWritingDepth++;
     }
-    _writtenValue = false;
+    _writtenMapValue = false;
     writeString("{");
   }
 
   @override
   void writeKeyValue(String key, Object value) {
-    assert(_writtenValue != null);
-    if (_writtenValue) {
+    assert(_writtenMapValue != null);
+    if (_writtenMapValue) {
       writeString(',"');
     } else {
-      _writtenValue = true;
+      _writtenMapValue = true;
       writeString('"');
     }
     writeStringContent(key);
@@ -273,13 +273,13 @@ abstract class JsonStringifier implements JsonWriter {
 
   @override
   void endMap() {
-    assert(_writtenValue != null);
+    assert(_writtenMapValue != null);
     writeString('}');
     if (_mapWritingDepth > 0) {
       _mapWritingDepth--;
-      _writtenValue = true;
+      _writtenMapValue = true;
     } else {
-      _writtenValue = null;
+      _writtenMapValue = null;
     }
   }
 }
@@ -321,13 +321,13 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
 
   @override
   void writeKeyValue(String key, Object value) {
-    assert(_writtenValue != null);
-    if (_writtenValue) {
+    assert(_writtenMapValue != null);
+    if (_writtenMapValue) {
       writeString(',\n');
     } else {
       _indentLevel++;
       writeString('\n');
-      _writtenValue = true;
+      _writtenMapValue = true;
     }
     writeIndentation(_indentLevel);
     writeString('"');
@@ -338,7 +338,7 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
 
   @override
   void endMap() {
-    if (_writtenValue) {
+    if (_writtenMapValue) {
       _indentLevel--;
       writeString('\n');
       writeIndentation(_indentLevel);
