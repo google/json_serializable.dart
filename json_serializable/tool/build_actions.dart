@@ -5,50 +5,46 @@
 import 'dart:async';
 
 import 'package:build/build.dart';
-
+import 'package:build_config/build_config.dart';
 import 'package:build_runner/build_runner.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
-final List<BuildAction> buildActions = [
-  new BuildAction(
+final List<BuilderApplication> builders = [
+  applyToRoot(
       new LibraryBuilder(new _NonNullableGenerator(),
           generatedExtension: '.non_nullable.dart', header: _copyrightHeader),
-      'json_serializable',
-      inputs: const [
+      generateFor: const InputSet(include: const [
         'test/test_files/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
-      ]),
-  new BuildAction(
+      ])),
+  applyToRoot(
       new LibraryBuilder(new _WrappedGenerator(),
           generatedExtension: '.wrapped.dart', header: _copyrightHeader),
-      'json_serializable',
-      inputs: const [
+      generateFor: const InputSet(include: const [
         'test/test_files/kitchen_sink.dart',
         'test/test_files/kitchen_sink.non_nullable.dart',
         'test/test_files/json_test_example.dart',
         'test/test_files/json_test_example.non_nullable.dart',
-      ]),
-  new BuildAction(
-    jsonPartBuilder(header: _copyrightHeader),
-    'json_serializable',
-    inputs: const [
-      'test/test_files/json_literal.dart',
-      'test/test_files/json_test_example.dart',
-      'test/test_files/json_test_example.non_nullable.dart',
-      'test/test_files/kitchen_sink.dart',
-      'test/test_files/kitchen_sink.non_nullable.dart'
-    ],
-  ),
-  new BuildAction(
-    jsonPartBuilder(useWrappers: true, header: _copyrightHeader),
-    'json_serializable',
-    inputs: const [
-      'test/test_files/kitchen_sink*wrapped.dart',
-      'test/test_files/json_test_example*wrapped.dart',
-    ],
-  )
+      ])),
+  applyToRoot(jsonPartBuilder(header: _copyrightHeader),
+      generateFor: const InputSet(
+        include: const [
+          'test/test_files/json_literal.dart',
+          'test/test_files/json_test_example.dart',
+          'test/test_files/json_test_example.non_nullable.dart',
+          'test/test_files/kitchen_sink.dart',
+          'test/test_files/kitchen_sink.non_nullable.dart'
+        ],
+      )),
+  applyToRoot(jsonPartBuilder(useWrappers: true, header: _copyrightHeader),
+      generateFor: const InputSet(
+        include: const [
+          'test/test_files/kitchen_sink*wrapped.dart',
+          'test/test_files/json_test_example*wrapped.dart',
+        ],
+      ))
 ];
 
 final _copyrightContent =

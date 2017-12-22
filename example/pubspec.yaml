@@ -8,9 +8,23 @@ dependencies:
   json_annotation: ^0.2.2
 
 dev_dependencies:
-  build_runner: ^0.6.1
-  json_serializable: ^0.3.0
+  build_runner: ^0.7.0
+  json_serializable: ^0.3.1
 
   # Used by tests. Not required to use `json_serializable`.
   path: ^1.5.1
   test: ^0.12.29
+
+dependency_overrides:
+  build_runner:
+    git:
+      url: git@github.com:dart-lang/build.git
+      ref: c80ed85cb67c9d4d5289c94bb1f54bc6226d8ccf
+      path: build_runner
+  build_config:
+    git:
+      url: git@github.com:dart-lang/build.git
+      ref: ca1795e179ca424d3aaf416434f0dd7aaec2957a
+      path: build_config
+  json_serializable:
+    path: ../json_serializable

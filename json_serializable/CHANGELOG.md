@@ -1,3 +1,8 @@
+## 0.3.1-dev
+
+* Add a `build.yaml` so the builder can be consumed by users of `build_runner`
+  version 0.7.0.
+
 ## 0.3.0
 
 * **NEW** top-level library `json_serializable.dart`.
