@@ -16,15 +16,5 @@ dev_dependencies:
   test: ^0.12.29
 
 dependency_overrides:
-  build_runner:
-    git:
-      url: https://github.com/dart-lang/build.git
-      ref: 418024351efdcf2a842842ed3bcc757f1bfc27e6
-      path: build_runner
-  build_config:
-    git:
-      url: https://github.com/dart-lang/build.git
-      ref: 418024351efdcf2a842842ed3bcc757f1bfc27e6
-      path: build_config
   json_serializable:
     path: ../json_serializable
