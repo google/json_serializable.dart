@@ -4,22 +4,21 @@ import 'array_listener.dart';
 import 'json_listener.dart';
 import 'object_listener.dart';
 
-abstract class BaseListener<T> extends JsonListener<T> {
-  final BaseListener parent;
+abstract class ListenerParent<T> {
+  JsonListener childListenerFinish(T value);
+}
+
+abstract class BaseListener<T> extends JsonListener<T>
+    implements ListenerParent<Object> {
+  final ListenerParent parent;
 
   BaseListener(this.parent);
 
-  Object _storage;
+  @protected
+  Object storage;
 
   @protected
-  set storage(Object value) {
-    _storage = value;
-  }
-
-  @protected
-  Object get storage => _storage;
-
-  @protected
+  @override
   JsonListener childListenerFinish(Object value) {
     assert(value != null);
     storage = value;
@@ -47,8 +46,12 @@ abstract class BaseListener<T> extends JsonListener<T> {
   }
 
   @override
-  JsonListener objectStart() => new ObjectListener(this);
+  JsonListener objectStart() {
+    return new ObjectListener(this);
+  }
 
   @override
-  JsonListener arrayStart() => new ArrayListener(this);
+  JsonListener arrayStart() {
+    return new ArrayListener(this);
+  }
 }

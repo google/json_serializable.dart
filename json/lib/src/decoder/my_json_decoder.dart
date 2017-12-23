@@ -2,6 +2,7 @@
 
 import '../dart_convert_exports.dart';
 import '../listeners/any_value_listener.dart';
+import '../listeners/json_listener.dart';
 import '../parser/json_string_parser.dart';
 import 'json_string_decoder_sink.dart';
 
@@ -30,7 +31,8 @@ class MyJsonDecoder extends Converter<String, Object> {
    * Throws [FormatException] if the input is not valid JSON text.
    */
   @override
-  dynamic convert(String input) => _parseJson(input);
+  dynamic convert(String input) =>
+      parseJsonExperimental(input, anyValueListener());
 
   /**
    * Starts a conversion from a chunked JSON string to its corresponding object.
@@ -43,8 +45,7 @@ class MyJsonDecoder extends Converter<String, Object> {
   }
 }
 
-Object _parseJson(String source) {
-  final listener = anyValueListener();
+T parseJsonExperimental<T>(String source, JsonListener<T> listener) {
   var parser = new JsonStringParser(listener);
   parser.parse(source, 0, source.length);
   parser.close();

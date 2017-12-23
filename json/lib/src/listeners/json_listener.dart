@@ -1,21 +1,28 @@
+import 'package:meta/meta.dart';
+
 /// Listener for parsing events from `ChunkedJsonParser`.
 abstract class JsonListener<T> {
-  void handleString(String value) => throw new UnsupportedError('Nope!');
-  void handleNumber(num value) => throw new UnsupportedError('Nope!');
-  void handleBool(bool value) => throw new UnsupportedError('Nope!');
-  void handleNull() => throw new UnsupportedError('Nope!');
+  void handleString(String value) => _notImplemented();
+  void handleNumber(num value) => _notImplemented();
+  void handleBool(bool value) => _notImplemented();
+  void handleNull() => _notImplemented();
 
-  JsonListener objectStart() => throw new UnsupportedError('Nope!');
-  void propertyName() => throw new UnsupportedError('Nope!');
-  void propertyValue() => throw new UnsupportedError('Nope!');
-  JsonListener objectEnd() => throw new UnsupportedError('Nope!');
+  JsonListener objectStart() => _notImplemented();
+  void propertyName() => _notImplemented();
+  void propertyValue() => _notImplemented();
+  JsonListener objectEnd() => _notImplemented();
 
-  JsonListener arrayStart() => throw new UnsupportedError('Nope!');
-  void arrayElement() => throw new UnsupportedError('Nope!');
-  JsonListener arrayEnd() => throw new UnsupportedError('Nope!');
+  JsonListener arrayStart() => _notImplemented();
+  void arrayElement() => _notImplemented();
+  JsonListener arrayEnd() => _notImplemented();
 
   /// Read out the final result of parsing a JSON string.
   ///
   /// Must only be called when the entire input has been parsed.
   T get result;
+
+  @alwaysThrows
+  T _notImplemented<T>() {
+    throw new UnsupportedError('Nope - $runtimeType');
+  }
 }
