@@ -201,7 +201,7 @@ abstract class JsonStringifier implements JsonWriter {
     } else if (object is Map) {
       _checkCycle(object);
       // writeMap can fail if keys are not all strings.
-      var success = writeMap(object);
+      var success = _writeMap(object);
       _removeSeen(object);
       return success;
     } else {
@@ -223,7 +223,7 @@ abstract class JsonStringifier implements JsonWriter {
   }
 
   /** Serialize a [Map]. */
-  bool writeMap(Map map) {
+  bool _writeMap(Map map) {
     if (map.isEmpty) {
       startMap();
       endMap();
