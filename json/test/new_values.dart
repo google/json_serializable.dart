@@ -3,8 +3,9 @@ class Fun {
   final String b;
   final bool c;
   final List<Fun> innerFun;
+  final Set<DateTime> dates;
 
-  const Fun({this.a, this.b, this.c, this.innerFun});
+  const Fun({this.a, this.b, this.c, this.innerFun, this.dates});
 
   Object toJson() {
     var values = <String, dynamic>{};
@@ -20,13 +21,18 @@ class Fun {
     if (innerFun != null) {
       values['innerFun'] = innerFun;
     }
+    if (dates != null) {
+      values['dates'] = dates.map((dt) => dt?.toIso8601String()).toList();
+    }
     return values;
   }
 }
 
 final _empty = const Fun(),
     _oneField = const Fun(a: 41),
-    _simple = const Fun(a: 42, b: 'hello', c: true);
+    _simple = const Fun(a: 42, b: 'hello', c: true),
+    _withDates =
+        new Fun(dates: new Set<DateTime>.from([new DateTime(1979), null]));
 
 final _complexJson = const [
   const {
@@ -56,5 +62,6 @@ final newTestItems = {
   'one field': _oneField,
   'simple': _simple,
   'nested': new Fun(a: 3, innerFun: [_empty, _oneField, _simple]),
-  'json values': _complexJson
+  'json values': _complexJson,
+  'with dates': _withDates,
 };

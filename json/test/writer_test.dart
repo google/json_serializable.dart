@@ -19,14 +19,31 @@ bool _writer(Object object, JsonWriter writer) {
     if (object.innerFun != null) {
       writer.writeKeyValue('innerFun', object.innerFun);
     }
+    if (object.dates != null) {
+      writer.writeKeyValue('dates', object.dates);
+    }
     writer.endMap();
     return true;
   }
+
+  if (object is Iterable) {
+    writer.startList();
+    for (var item in object) {
+      writer.writeListValue(item);
+    }
+    writer.endList();
+    return true;
+  }
+
+  if (object is DateTime) {
+    writer.writeObject(object.toIso8601String());
+    return true;
+  }
+
   return false;
 }
 
 main() {
-
   for (var withBytes in [false, true]) {
     Converter wrap(Converter<Object, String> source) {
       if (withBytes) {

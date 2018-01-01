@@ -149,6 +149,7 @@ abstract class JsonStringifier implements JsonWriter {
    * If [object] isn't directly encodable, the [_toEncodable] function gets one
    * chance to return a replacement which is encodable.
    */
+  @override
   void writeObject(object) {
     // Tries stringifying object directly. If it's not a simple value, List or
     // Map, call toJson() to get a custom representation and try serializing
@@ -195,7 +196,7 @@ abstract class JsonStringifier implements JsonWriter {
       return true;
     } else if (object is List) {
       _checkCycle(object);
-      writeList(object);
+      _writeList(object);
       _removeSeen(object);
       return true;
     } else if (object is Map) {
@@ -210,16 +211,44 @@ abstract class JsonStringifier implements JsonWriter {
   }
 
   /** Serialize a [List]. */
-  void writeList(List list) {
-    writeString('[');
-    if (list.length > 0) {
-      writeObject(list[0]);
-      for (int i = 1; i < list.length; i++) {
-        writeString(',');
-        writeObject(list[i]);
-      }
+  void _writeList(List list) {
+    startList();
+    for (var i = 0; i < list.length; i++) {
+      writeListValue(list[i]);
     }
+    endList();
+  }
+
+  @override
+  void startList() {
+    if (_writtenMapValue != null) {
+      _mapWritingDepth++;
+    }
+    _writtenMapValue = false;
+    writeString('[');
+  }
+
+  @override
+  void writeListValue(Object value) {
+    assert(_writtenMapValue != null);
+    if (_writtenMapValue) {
+      writeString(',');
+    } else {
+      _writtenMapValue = true;
+    }
+    writeObject(value);
+  }
+
+  @override
+  void endList() {
+    assert(_writtenMapValue != null);
     writeString(']');
+    if (_mapWritingDepth > 0) {
+      _mapWritingDepth--;
+      _writtenMapValue = true;
+    } else {
+      _writtenMapValue = null;
+    }
   }
 
   /** Serialize a [Map]. */
@@ -299,24 +328,27 @@ abstract class JsonPrettyPrintMixin implements JsonStringifier {
   void writeIndentation(int indentLevel);
 
   @override
-  void writeList(List list) {
-    if (list.isEmpty) {
-      writeString('[]');
+  void writeListValue(Object value) {
+    assert(_writtenMapValue != null);
+    if (_writtenMapValue) {
+      writeString(',\n');
     } else {
-      writeString('[\n');
       _indentLevel++;
-      writeIndentation(_indentLevel);
-      writeObject(list[0]);
-      for (int i = 1; i < list.length; i++) {
-        writeString(',\n');
-        writeIndentation(_indentLevel);
-        writeObject(list[i]);
-      }
       writeString('\n');
-      _indentLevel--;
-      writeIndentation(_indentLevel);
-      writeString(']');
+      _writtenMapValue = true;
     }
+    writeIndentation(_indentLevel);
+    writeObject(value);
+  }
+
+  @override
+  void endList() {
+    if (_writtenMapValue) {
+      _indentLevel--;
+      writeString('\n');
+      writeIndentation(_indentLevel);
+    }
+    super.endList();
   }
 
   @override
