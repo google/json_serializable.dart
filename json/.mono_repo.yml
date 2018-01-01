@@ -1,0 +1,10 @@
+dart:
+  - dev
+
+stages:
+  - analyzer_and_format:
+    - dartfmt
+    - dartanalyzer: --fatal-infos --fatal-warnings .
+  - unit_test:
+    # Run the tests -- include the default-skipped presubmit tests
+    - test: --run-skipped

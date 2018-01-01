@@ -17,6 +17,18 @@ jobs:
       dart: dev
     - stage: analyzer_and_format
       script: ./tool/travis.sh dartfmt
+      env: PKG="json"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartanalyzer
+      env: PKG="json"
+      dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh test
+      env: PKG="json"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartfmt
       env: PKG="json_annotation"
       dart: dev
     - stage: analyzer_and_format
