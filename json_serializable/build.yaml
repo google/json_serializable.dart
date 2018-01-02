@@ -1,3 +1,4 @@
+# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
   json_serializable:
     target: ":json_serializable"
