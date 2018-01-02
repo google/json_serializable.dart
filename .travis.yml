@@ -3,7 +3,6 @@ language: dart
 
 dart:
   - dev
-  - stable
 
 env:
   - PKG=example TASK=dartanalyzer
