@@ -4,7 +4,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:build/build.dart';
 import 'package:build_config/build_config.dart';
