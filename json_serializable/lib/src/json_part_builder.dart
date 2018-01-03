@@ -20,6 +20,13 @@ import 'json_serializable_generator.dart';
 /// increase the code size, but it may improve runtime performance, especially
 /// for large object graphs.
 ///
+/// May set [requireLibraryDirective] to `false` in order to opt-in to
+/// supporting a Dart v2 feature of `part of` being usable without an  explicit
+/// `library` directive. Developers should restrict their `pubspec` accordingly:
+/// ```yaml
+/// sdk: '>=2.0.0-dev <2.0.0'
+/// ```
+///
 /// Usage:
 ///
 /// ```dart
@@ -34,10 +41,14 @@ import 'json_serializable_generator.dart';
 /// `json_serializable`.
 ///
 /// [example]: https://github.com/dart-lang/json_serializable/tree/master/example
-Builder jsonPartBuilder({String header, bool useWrappers: false}) {
+Builder jsonPartBuilder(
+    {String header,
+    bool useWrappers: false,
+    bool requireLibraryDirective: true}) {
   useWrappers ??= false;
+  requireLibraryDirective ??= true;
   return new PartBuilder([
     new JsonSerializableGenerator(useWrappers: useWrappers),
     const JsonLiteralGenerator()
-  ], header: header);
+  ], header: header, requireLibraryDirective: requireLibraryDirective);
 }
