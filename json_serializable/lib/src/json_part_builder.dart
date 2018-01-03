@@ -21,10 +21,10 @@ import 'json_serializable_generator.dart';
 /// for large object graphs.
 ///
 /// May set [requireLibraryDirective] to `false` in order to opt-in to
-/// supporting a `1.25.0` feature of `part of` being usable without an  explicit
+/// supporting a Dart v2 feature of `part of` being usable without an  explicit
 /// `library` directive. Developers should restrict their `pubspec` accordingly:
 /// ```yaml
-/// sdk: '>=1.25.0 <2.0.0'
+/// sdk: '>=2.0.0-dev <2.0.0'
 /// ```
 ///
 /// Usage:
