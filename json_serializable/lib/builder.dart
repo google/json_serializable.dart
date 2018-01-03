@@ -8,4 +8,6 @@ import 'json_serializable.dart';
 
 Builder jsonSerializable(BuilderOptions options) => jsonPartBuilder(
     header: options.config['header'] as String,
-    useWrappers: options.config['use_wrappers'] as bool ?? false);
+    useWrappers: options.config['use_wrappers'] as bool ?? false,
+    requireLibraryDirective:
+        options.config['require_library_directive'] as bool ?? true);
