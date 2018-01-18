@@ -1,3 +1,7 @@
+## 0.3.1+1
+
+* Expanded `package:build` support to allow version `0.12.0`.
+
 ## 0.3.1
 
 * Add a `build.yaml` so the builder can be consumed by users of `build_runner`
