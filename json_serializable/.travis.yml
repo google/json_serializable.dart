@@ -1,8 +1,7 @@
 language: dart
 
-# Unpin SDK after https://github.com/dart-lang/sdk/issues/31940
 dart:
-  - "dev/release/2.0.0-dev.17.0"
+  - dev
   - stable
 
 dart_task:
@@ -11,10 +10,10 @@ dart_task:
 
 matrix:
   include:
-    - dart: "dev/release/2.0.0-dev.17.0"
+    - dart: dev
       dart_task:
         dartfmt: sdk
-    - dart: "dev/release/2.0.0-dev.17.0"
+    - dart: dev
       dart_task: dartanalyzer
 
 # Only building master means that we don't run two builds for each pull request.
