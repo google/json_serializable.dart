@@ -1,9 +1,8 @@
 # Created with https://github.com/dart-lang/mono_repo
 language: dart
 
-# Unpin SDK after https://github.com/dart-lang/sdk/issues/31940
 dart:
-  - "dev/release/2.0.0-dev.17.0"
+  - dev
 
 env:
   - PKG=example TASK=dartanalyzer
