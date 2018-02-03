@@ -2,11 +2,12 @@ language: dart
 
 dart:
   - dev
-  - stable
 
 dart_task:
   # Run the tests -- include the default-skipped presubmit tests
   - test: --run-skipped
+  - dartfmt
+  - dartanalyzer: --fatal-infos --fatal-warnings .
 
 matrix:
   include:
