@@ -2,6 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// https://github.com/dart-lang/sdk/issues/31761
+// ignore_for_file: comment_references
+
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 

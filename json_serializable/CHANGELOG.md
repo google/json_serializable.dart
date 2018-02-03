@@ -1,3 +1,7 @@
+## 0.3.1+2
+
+* Support the latest version of the `analyzer` package.
+
 ## 0.3.1+1
 
 * Expanded `package:build` support to allow version `0.12.0`.
