@@ -1,19 +1,12 @@
 language: dart
 dart:
   - dev
-  - stable
 
 dart_task:
   # Run the tests -- include the default-skipped presubmit tests
   - test: --run-skipped
-
-matrix:
-  include:
-    - dart: dev
-      dart_task:
-        dartfmt: sdk
-    - dart: dev
-      dart_task: dartanalyzer
+  - dartfmt
+  - dartanalyzer: --fatal-infos --fatal-warnings .
 
 # Only building master means that we don't run two builds for each pull request.
 branches:

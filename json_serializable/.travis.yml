@@ -9,14 +9,6 @@ dart_task:
   - dartfmt
   - dartanalyzer: --fatal-infos --fatal-warnings .
 
-matrix:
-  include:
-    - dart: dev
-      dart_task:
-        dartfmt: sdk
-    - dart: dev
-      dart_task: dartanalyzer
-
 # Only building master means that we don't run two builds for each pull request.
 branches:
   only: [master]

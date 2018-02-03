@@ -6,26 +6,25 @@ dart:
   - stable
 
 env:
-  - PKG=example TASK=dartanalyzer_1
+  - PKG=example TASK=dartanalyzer_0
   - PKG=example TASK=dartfmt
   - PKG=example TASK=test
   - PKG=json_annotation TASK=dartanalyzer_1
   - PKG=json_annotation TASK=dartfmt
   - PKG=json_serializable TASK=dartanalyzer_0
-  - PKG=json_serializable TASK=dartanalyzer_1
   - PKG=json_serializable TASK=dartfmt
   - PKG=json_serializable TASK=test
 
 matrix:
   exclude:
     - dart: stable
-      env: PKG=example TASK=dartanalyzer_1
+      env: PKG=example TASK=dartanalyzer_0
     - dart: stable
       env: PKG=example TASK=dartfmt
     - dart: stable
-      env: PKG=json_serializable TASK=dartanalyzer_0
+      env: PKG=example TASK=test
     - dart: stable
-      env: PKG=json_serializable TASK=dartanalyzer_1
+      env: PKG=json_serializable TASK=dartanalyzer_0
     - dart: stable
       env: PKG=json_serializable TASK=dartfmt
     - dart: stable
