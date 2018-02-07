@@ -1,41 +1,57 @@
 # Created with https://github.com/dart-lang/mono_repo
 language: dart
 
-dart:
-  - dev
-  - stable
+jobs:
+  include:
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartfmt
+      env: PKG="example"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartanalyzer
+      env: PKG="example"
+      dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh test
+      env: PKG="example"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartfmt
+      env: PKG="json_annotation"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartfmt
+      env: PKG="json_annotation"
+      dart: stable
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartanalyzer
+      env: PKG="json_annotation"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartanalyzer
+      env: PKG="json_annotation"
+      dart: stable
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartfmt
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: analyzer_and_format
+      script: ./tool/travis.sh dartanalyzer
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh test
+      env: PKG="json_serializable"
+      dart: dev
 
-env:
-  - PKG=example TASK=dartanalyzer_0
-  - PKG=example TASK=dartfmt
-  - PKG=example TASK=test
-  - PKG=json_annotation TASK=dartanalyzer_1
-  - PKG=json_annotation TASK=dartfmt
-  - PKG=json_serializable TASK=dartanalyzer_0
-  - PKG=json_serializable TASK=dartfmt
-  - PKG=json_serializable TASK=test
-
-matrix:
-  exclude:
-    - dart: stable
-      env: PKG=example TASK=dartanalyzer_0
-    - dart: stable
-      env: PKG=example TASK=dartfmt
-    - dart: stable
-      env: PKG=example TASK=test
-    - dart: stable
-      env: PKG=json_serializable TASK=dartanalyzer_0
-    - dart: stable
-      env: PKG=json_serializable TASK=dartfmt
-    - dart: stable
-      env: PKG=json_serializable TASK=test
-
-script: ./tool/travis.sh
+stages:
+  - analyzer_and_format
+  - unit_test
 
 # Only building master means that we don't run two builds for each pull request.
 branches:
   only: [master]
 
 cache:
- directories:
-   - $HOME/.pub-cache
+  directories:
+    - $HOME/.pub-cache
