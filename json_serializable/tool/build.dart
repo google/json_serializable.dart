@@ -65,8 +65,6 @@ class _NonNullableGenerator extends Generator {
     final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = <_Replacement>[
       new _Replacement(_copyrightContent, ''),
-      new _Replacement('library ${buildStep.inputId.package}.test.$baseName',
-          'library ${buildStep.inputId.package}.test.${baseName}.non_nullable'),
       new _Replacement(
         "part '${baseName}.g.dart",
         "part '${baseName}.non_nullable.g.dart",
@@ -99,8 +97,6 @@ class _WrappedGenerator extends Generator {
     final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = <_Replacement>[
       new _Replacement(_copyrightContent, ''),
-      new _Replacement('library ${buildStep.inputId.package}.test.$baseName',
-          'library ${buildStep.inputId.package}.test.${baseName}_wrapped'),
       new _Replacement(
         "part '${baseName}.g.dart",
         "part '${baseName}.wrapped.g.dart",

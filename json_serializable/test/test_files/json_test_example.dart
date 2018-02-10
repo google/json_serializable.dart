@@ -3,8 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.json_test_example;
-
 import 'dart:collection';
 
 import 'package:collection/collection.dart';
