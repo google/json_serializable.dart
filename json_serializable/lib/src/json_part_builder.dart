@@ -53,5 +53,7 @@ Builder jsonPartBuilder(
   return new PartBuilder([
     new JsonSerializableGenerator(useWrappers: useWrappers),
     const JsonLiteralGenerator()
-  ], header: header, requireLibraryDirective: requireLibraryDirective);
+  ], header: header,
+      // ignore: deprecated_member_use
+      requireLibraryDirective: requireLibraryDirective);
 }
