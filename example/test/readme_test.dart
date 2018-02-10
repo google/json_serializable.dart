@@ -23,6 +23,6 @@ dependencies:
   json_annotation: ^0.2.2
 
 dev_dependencies:
-  build_runner: ^0.7.0
+  build_runner: ^0.7.6
   json_serializable: ^0.3.1
 ''';
