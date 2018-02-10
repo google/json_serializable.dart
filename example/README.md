@@ -1,3 +1,8 @@
+*This example assumes you're using a recent version of the Dart or Flutter SDK.*
+
+* Dart: you need a [v2 pre-release](https://www.dartlang.org/dart-2).
+* Flutter: at least 0.0.23 (Feb 5, 2018).
+
 To use [package:json_serializable][json_serializable] in your package, add these
 dependencies to your `pubspec.yaml`.
 
@@ -6,7 +11,7 @@ dependencies:
   json_annotation: ^0.2.2
 
 dev_dependencies:
-  build_runner: ^0.7.0
+  build_runner: ^0.7.6
   json_serializable: ^0.3.1
 ```
 
