@@ -1,6 +1,6 @@
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 targets:
-  example:
+  $default:
     builders:
       json_serializable:
         options:
