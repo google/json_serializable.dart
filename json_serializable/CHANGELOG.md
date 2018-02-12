@@ -1,3 +1,8 @@
+## 0.3.2
+
+* The `require_library_directive` option now defaults to `false`.
+  The option will be removed entirely in `0.4.0`.
+
 ## 0.3.1+2
 
 * Support the latest version of the `analyzer` package.

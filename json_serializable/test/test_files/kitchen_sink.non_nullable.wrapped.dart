@@ -15,8 +15,6 @@
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides, hash_and_equals
-library json_serializable.test.kitchen_sink.non_nullable_wrapped;
-
 import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink_interface.dart' as k;

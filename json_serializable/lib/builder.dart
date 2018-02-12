@@ -9,5 +9,6 @@ import 'json_serializable.dart';
 Builder jsonSerializable(BuilderOptions options) => jsonPartBuilder(
     header: options.config['header'] as String,
     useWrappers: options.config['use_wrappers'] as bool ?? false,
+    // ignore: deprecated_member_use
     requireLibraryDirective:
-        options.config['require_library_directive'] as bool ?? true);
+        options.config['require_library_directive'] as bool ?? false);

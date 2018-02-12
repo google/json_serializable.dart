@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.test.json_test_example.non_nullable;
+part of 'json_test_example.non_nullable.dart';
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator

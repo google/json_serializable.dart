@@ -4,7 +4,7 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of json_serializable.example;
+part of 'json_literal.dart';
 
 // **************************************************************************
 // Generator: JsonLiteralGenerator
