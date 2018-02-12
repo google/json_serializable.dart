@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // ignore_for_file: annotate_overrides
-library example;
 
 import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
