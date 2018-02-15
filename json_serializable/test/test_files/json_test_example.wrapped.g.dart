@@ -20,7 +20,13 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     middleName: json['middleName'] as String,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
-        : DateTime.parse(json['dateOfBirth'] as String));
+        : DateTime.parse(json['dateOfBirth'] as String))
+  ..houseMap = json['houseMap'] == null
+      ? null
+      : new Map<String, House>.fromIterables(
+          (json['houseMap'] as Map<String, dynamic>).keys,
+          (json['houseMap'] as Map).values.map((e) =>
+              e == null ? null : House.values.singleWhere((x) => x.toString() == "House.${e}")));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -28,6 +34,7 @@ abstract class _$PersonSerializerMixin {
   String get lastName;
   DateTime get dateOfBirth;
   House get house;
+  Map<String, House> get houseMap;
   Map<String, dynamic> toJson() => new _$PersonJsonMapWrapper(this);
 }
 
@@ -36,8 +43,14 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
   _$PersonJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys =>
-      const ['firstName', 'middleName', 'lastName', 'dateOfBirth', r'$house'];
+  Iterable<String> get keys => const [
+        'firstName',
+        'middleName',
+        'lastName',
+        'dateOfBirth',
+        r'$house',
+        'houseMap'
+      ];
 
   @override
   dynamic operator [](Object key) {
@@ -53,6 +66,9 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
           return _v.dateOfBirth?.toIso8601String();
         case r'$house':
           return _v.house == null ? null : _v.house.toString().split('.')[1];
+        case 'houseMap':
+          return $wrapMapHandleNull<String, House>(_v.houseMap,
+              (e) => e == null ? null : e.toString().split('.')[1]);
       }
     }
     return null;
