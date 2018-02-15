@@ -103,7 +103,7 @@ class JsonSerializableGenerator
 
     // Get the constructor to use for the factory
 
-    var prefix = '_\$${className}';
+    var prefix = '_\$$className';
 
     var buffer = new StringBuffer();
 
@@ -200,7 +200,7 @@ class JsonSerializableGenerator
       // TODO(kevmoo): maybe put this in a static field instead?
       //               const lists have unfortunate overhead
       buffer.writeln('''  @override
-      Iterable<String> get keys => const [${jsonKeys}];
+      Iterable<String> get keys => const [$jsonKeys];
     ''');
     } else {
       // At least one field should be excluded if null
@@ -482,7 +482,7 @@ class _TypeHelperContext implements SerializeContext, DeserializeContext {
 String _safeNameAccess(FieldElement field) {
   var name = _jsonKeyFor(field).name ?? field.name;
   // TODO(kevmoo): JsonKey.name could also have quotes and other silly.
-  return name.contains(r'$') ? "r'${name}'" : "'${name}'";
+  return name.contains(r'$') ? "r'$name'" : "'$name'";
 }
 
 /// Returns `true` if the field should be treated as potentially nullable.
