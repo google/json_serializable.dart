@@ -18,8 +18,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
   ..houseMap = new Map<String, House>.fromIterables(
       (json['houseMap'] as Map<String, dynamic>).keys,
-      (json['houseMap'] as Map).values.map((e) =>
-          House.values.singleWhere((x) => x.toString() == "House.${e}")));
+      (json['houseMap'] as Map).values.map(
+          (e) => House.values.singleWhere((x) => x.toString() == "House.$e")));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;

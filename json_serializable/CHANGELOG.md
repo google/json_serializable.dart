@@ -1,3 +1,7 @@
+## 0.3.3
+
+* Avoid unnecessary braces in string escapes.
+
 ## 0.3.2
 
 * The `require_library_directive` option now defaults to `false`.
