@@ -66,8 +66,8 @@ class _NonNullableGenerator extends Generator {
     var replacements = <_Replacement>[
       new _Replacement(_copyrightContent, ''),
       new _Replacement(
-        "part '${baseName}.g.dart",
-        "part '${baseName}.non_nullable.g.dart",
+        "part '$baseName.g.dart",
+        "part '$baseName.non_nullable.g.dart",
       ),
       new _Replacement(
           '@JsonSerializable()', '@JsonSerializable(nullable: false)'),
@@ -98,8 +98,8 @@ class _WrappedGenerator extends Generator {
     var replacements = <_Replacement>[
       new _Replacement(_copyrightContent, ''),
       new _Replacement(
-        "part '${baseName}.g.dart",
-        "part '${baseName}.wrapped.g.dart",
+        "part '$baseName.g.dart",
+        "part '$baseName.wrapped.g.dart",
       ),
     ];
 

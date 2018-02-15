@@ -38,3 +38,4 @@ linter:
     - prefer_single_quotes
     - slash_for_doc_comments
     - type_init_formals
+    - unnecessary_brace_in_string_interps
