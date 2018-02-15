@@ -13,13 +13,13 @@ part of 'json_test_example.non_nullable.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    House.values.singleWhere((x) => x.toString() == "House.${json[r'$house']}"),
+    House.values.singleWhere((x) => x.toString() == 'House.${json[r'$house']}'),
     middleName: json['middleName'] as String,
     dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
   ..houseMap = new Map<String, House>.fromIterables(
       (json['houseMap'] as Map<String, dynamic>).keys,
       (json['houseMap'] as Map).values.map(
-          (e) => House.values.singleWhere((x) => x.toString() == "House.$e")));
+          (e) => House.values.singleWhere((x) => x.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -41,7 +41,7 @@ abstract class _$PersonSerializerMixin {
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     Category.values
-        .singleWhere((x) => x.toString() == "Category.${json['category']}"),
+        .singleWhere((x) => x.toString() == 'Category.${json['category']}'),
     (json['items'] as List)
         .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int
