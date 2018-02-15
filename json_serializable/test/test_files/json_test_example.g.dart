@@ -20,7 +20,13 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     middleName: json['middleName'] as String,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
-        : DateTime.parse(json['dateOfBirth'] as String));
+        : DateTime.parse(json['dateOfBirth'] as String))
+  ..houseMap = json['houseMap'] == null
+      ? null
+      : new Map<String, House>.fromIterables(
+          (json['houseMap'] as Map<String, dynamic>).keys,
+          (json['houseMap'] as Map).values.map((e) =>
+              e == null ? null : House.values.singleWhere((x) => x.toString() == "House.${e}")));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -28,12 +34,19 @@ abstract class _$PersonSerializerMixin {
   String get lastName;
   DateTime get dateOfBirth;
   House get house;
+  Map<String, House> get houseMap;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'firstName': firstName,
         'middleName': middleName,
         'lastName': lastName,
         'dateOfBirth': dateOfBirth?.toIso8601String(),
-        r'$house': house == null ? null : house.toString().split('.')[1]
+        r'$house': house == null ? null : house.toString().split('.')[1],
+        'houseMap': houseMap == null
+            ? null
+            : new Map<String, dynamic>.fromIterables(
+                houseMap.keys,
+                houseMap.values
+                    .map((e) => e == null ? null : e.toString().split('.')[1]))
       };
 }
 
