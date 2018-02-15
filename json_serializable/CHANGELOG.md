@@ -2,6 +2,8 @@
 
 * Avoid unnecessary braces in string escapes.
 
+* Use single quotes when generating code.
+
 ## 0.3.2
 
 * The `require_library_directive` option now defaults to `false`.

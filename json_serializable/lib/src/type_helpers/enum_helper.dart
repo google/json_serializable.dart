@@ -29,7 +29,7 @@ class EnumHelper extends TypeHelper {
           nullable,
           expression,
           '$targetType.values.singleWhere('
-          '(x) => x.toString() == "$targetType.\$$wrappedExpression")');
+          "(x) => x.toString() == '$targetType.\$$wrappedExpression')");
     }
     return null;
   }
