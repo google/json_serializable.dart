@@ -25,6 +25,8 @@ class Person extends Object with _$PersonSerializerMixin {
   @JsonKey(name: '\$house')
   final House house;
 
+  Map<String, House> houseMap;
+
   Person(this.firstName, this.lastName, this.house,
       {this.middleName, this.dateOfBirth});
 
@@ -36,7 +38,8 @@ class Person extends Object with _$PersonSerializerMixin {
       middleName == other.middleName &&
       lastName == other.lastName &&
       dateOfBirth == other.dateOfBirth &&
-      house == other.house;
+      house == other.house &&
+      const MapEquality().equals(houseMap, other.houseMap);
 }
 
 enum Category { top, bottom, strange, charmed, up, down }
