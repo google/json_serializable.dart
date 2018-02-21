@@ -7,6 +7,9 @@ import 'dart:collection';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+// ignore: implementation_imports
+import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
+    show InheritanceManager;
 import 'package:analyzer/analyzer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -75,11 +78,10 @@ class JsonSerializableGenerator
     }
 
     var classElement = element as ClassElement;
-    var className = classElement.name;
 
     // Get all of the fields that need to be assigned
     // TODO: support overriding the field set with an annotation option
-    var fieldsList = classElement.fields.where((e) => !e.isStatic).toList();
+    var fieldsList = _getFields(classElement);
 
     var undefinedFields =
         fieldsList.where((fe) => fe.type.isUndefined).toList();
@@ -94,7 +96,7 @@ class JsonSerializableGenerator
 
     // Sort these in the order in which they appear in the class
     // Sadly, `classElement.fields` puts properties after fields
-    fieldsList.sort((a, b) => _offsetFor(a).compareTo(_offsetFor(b)));
+    fieldsList.sort(_sortByLocation);
 
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
@@ -103,7 +105,7 @@ class JsonSerializableGenerator
 
     // Get the constructor to use for the factory
 
-    var prefix = '_\$$className';
+    var prefix = '_\$${classElement.name}';
 
     var buffer = new StringBuffer();
 
@@ -535,14 +537,37 @@ final _jsonKeyExpando = new Expando<JsonKey>();
 
 final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);
 
-/// Returns the offset of given field/property in its source file – with a
-/// preference for the getter if it's defined.
-int _offsetFor(FieldElement e) {
-  if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
-    assert(e.nameOffset == -1);
-    return e.getter.nameOffset;
+final _dartCoreObjectChecker = new TypeChecker.fromRuntime(Object);
+
+int _sortByLocation(FieldElement a, FieldElement b) {
+  var checkerA = new TypeChecker.fromStatic(a.enclosingElement.type);
+
+  if (!checkerA.isExactly(b.enclosingElement)) {
+    // in this case, you want to prioritize the enclosingElement that is more
+    // "super".
+
+    if (checkerA.isSuperOf(b.enclosingElement)) {
+      return -1;
+    }
+
+    var checkerB = new TypeChecker.fromStatic(b.enclosingElement.type);
+
+    if (checkerB.isSuperOf(a.enclosingElement)) {
+      return 1;
+    }
   }
-  return e.nameOffset;
+
+  /// Returns the offset of given field/property in its source file – with a
+  /// preference for the getter if it's defined.
+  int _offsetFor(FieldElement e) {
+    if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
+      assert(e.nameOffset == -1);
+      return e.getter.nameOffset;
+    }
+    return e.nameOffset;
+  }
+
+  return _offsetFor(a).compareTo(_offsetFor(b));
 }
 
 final _notSupportedWithTypeHelpersMsg =
@@ -557,4 +582,29 @@ InvalidGenerationSourceError _createInvalidGenerationError(
 
   return new InvalidGenerationSourceError(message,
       todo: 'Make sure all of the types are serializable.');
+}
+
+/// Returns a list of all instance, [FieldElement] items for [element] and
+/// super classes.
+List<FieldElement> _getFields(ClassElement element) {
+  // Get all of the fields that need to be assigned
+  // TODO: support overriding the field set with an annotation option
+  var fieldsList = element.fields.where((e) => !e.isStatic).toList();
+
+  var manager = new InheritanceManager(element.library);
+  var things = manager.getMembersInheritedFromClasses(element);
+
+  things.forEach((k, v) {
+    assert(!v.isStatic);
+    assert(v is! FieldElement);
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
+      return;
+    }
+
+    if (v is PropertyAccessorElement && v.variable is FieldElement) {
+      fieldsList.add(v.variable as FieldElement);
+    }
+  });
+
+  return fieldsList;
 }

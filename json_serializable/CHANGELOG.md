@@ -1,4 +1,9 @@
-## 0.3.3
+## 0.4.0
+
+* **Potentially Breaking** Inherited fields are now processed and used
+  when generating serialization and deserialization code. There is a possibility
+  that the generated code may change in undesired ways for classes annotated for
+  `v0.3`.
 
 * Avoid unnecessary braces in string escapes.
 
