@@ -81,7 +81,7 @@ class JsonSerializableGenerator
 
     // Get all of the fields that need to be assigned
     // TODO: support overriding the field set with an annotation option
-    var fieldsList = _getFields(classElement);
+    var fieldsList = _listFields(classElement);
 
     var undefinedFields =
         fieldsList.where((fe) => fe.type.isUndefined).toList();
@@ -586,25 +586,23 @@ InvalidGenerationSourceError _createInvalidGenerationError(
 
 /// Returns a list of all instance, [FieldElement] items for [element] and
 /// super classes.
-List<FieldElement> _getFields(ClassElement element) {
+List<FieldElement> _listFields(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   var fieldsList = element.fields.where((e) => !e.isStatic).toList();
 
   var manager = new InheritanceManager(element.library);
-  var things = manager.getMembersInheritedFromClasses(element);
 
-  things.forEach((k, v) {
-    assert(!v.isStatic);
+  for (var v in manager.getMembersInheritedFromClasses(element).values) {
     assert(v is! FieldElement);
     if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
-      return;
+      continue;
     }
 
     if (v is PropertyAccessorElement && v.variable is FieldElement) {
       fieldsList.add(v.variable as FieldElement);
     }
-  });
+  }
 
   return fieldsList;
 }
