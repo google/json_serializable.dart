@@ -147,3 +147,30 @@ class DupeKeys {
   @JsonKey(name: 'a')
   String str;
 }
+
+@JsonSerializable()
+class SubType extends SuperType {
+  final int subTypeViaCtor;
+  int subTypeReadWrite;
+
+  SubType(this.subTypeViaCtor, int superTypeViaCtor) : super(superTypeViaCtor);
+}
+
+// NOTE: `SuperType` is intentionally after `SubType` in the source file to
+// validate field ordering semantics.
+class SuperType {
+  @JsonKey(name: 'super-type-via-ctor', nullable: false)
+  final int superTypeViaCtor;
+
+  @JsonKey(includeIfNull: false)
+  int superTypeReadWrite;
+
+  SuperType(this.superTypeViaCtor);
+
+  /// Add a property to try to throw-off the generator
+  int get priceHalf => priceFraction(2);
+
+  /// Add a method to try to throw-off the generator
+  int priceFraction(int other) =>
+      superTypeViaCtor == null ? null : superTypeViaCtor ~/ other;
+}

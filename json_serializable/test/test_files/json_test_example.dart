@@ -66,14 +66,13 @@ class Order extends Object with _$OrderSerializerMixin {
 }
 
 @JsonSerializable()
-class Item extends Object with _$ItemSerializerMixin {
-  final int price;
+class Item extends ItemCore with _$ItemSerializerMixin {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int itemNumber;
   List<DateTime> saleDates;
   List<int> rates;
 
-  Item([this.price]);
+  Item([int price]) : super(price);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
@@ -82,6 +81,12 @@ class Item extends Object with _$ItemSerializerMixin {
       price == other.price &&
       itemNumber == other.itemNumber &&
       _deepEquals(saleDates, other.saleDates);
+}
+
+abstract class ItemCore {
+  final int price;
+
+  ItemCore(this.price);
 }
 
 bool _deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);

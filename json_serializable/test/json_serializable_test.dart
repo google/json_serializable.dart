@@ -274,6 +274,92 @@ abstract class _$OrderSerializerMixin {
             (e) => e.message,
             'The class `NoCtorClass` has no default constructor.')));
   });
+
+  test('super types', () async {
+    var output = await runForElementNamed('SubType');
+
+    String expected;
+    if (generator.useWrappers) {
+      expected =
+          r'''SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
+    json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
+  ..superTypeReadWrite = json['superTypeReadWrite'] as int
+  ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+
+abstract class _$SubTypeSerializerMixin {
+  int get superTypeViaCtor;
+  int get superTypeReadWrite;
+  int get subTypeViaCtor;
+  int get subTypeReadWrite;
+  Map<String, dynamic> toJson() => new _$SubTypeJsonMapWrapper(this);
+}
+
+class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
+  final _$SubTypeSerializerMixin _v;
+  _$SubTypeJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys sync* {
+    yield 'super-type-via-ctor';
+    if (_v.superTypeReadWrite != null) {
+      yield 'superTypeReadWrite';
+    }
+    yield 'subTypeViaCtor';
+    yield 'subTypeReadWrite';
+  }
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'super-type-via-ctor':
+          return _v.superTypeViaCtor;
+        case 'superTypeReadWrite':
+          return _v.superTypeReadWrite;
+        case 'subTypeViaCtor':
+          return _v.subTypeViaCtor;
+        case 'subTypeReadWrite':
+          return _v.subTypeReadWrite;
+      }
+    }
+    return null;
+  }
+}
+''';
+    } else {
+      expected =
+          r'''SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
+    json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
+  ..superTypeReadWrite = json['superTypeReadWrite'] as int
+  ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+
+abstract class _$SubTypeSerializerMixin {
+  int get superTypeViaCtor;
+  int get superTypeReadWrite;
+  int get subTypeViaCtor;
+  int get subTypeReadWrite;
+  Map<String, dynamic> toJson() {
+    var val = <String, dynamic>{
+      'super-type-via-ctor': superTypeViaCtor,
+    };
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('superTypeReadWrite', superTypeReadWrite);
+    val['subTypeViaCtor'] = subTypeViaCtor;
+    val['subTypeReadWrite'] = subTypeReadWrite;
+    return val;
+  }
+}
+''';
+    }
+
+    expect(output, expected);
+  });
 }
 
 final _formatter = new dart_style.DartFormatter();
