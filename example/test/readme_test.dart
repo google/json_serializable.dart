@@ -24,5 +24,5 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^0.7.6
-  json_serializable: ^0.3.2
+  json_serializable: ^0.4.0
 ''';
