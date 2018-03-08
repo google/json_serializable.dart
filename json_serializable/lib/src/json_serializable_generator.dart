@@ -383,9 +383,10 @@ void $toJsonMapHelperName(String key, dynamic value) {
     // Generate the static factory method
     //
     buffer.writeln();
+    String objectName = '${className[0].toLowerCase()}${className.substring(1)}';
     buffer
-        .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) =>');
-    buffer.write('    new $className(');
+        .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) {');
+    buffer.write('    $className $objectName = new $className(');
     buffer.writeAll(
         ctorArguments.map((paramElement) => _deserializeForField(
             fields[paramElement.name], classSupportNullable,
@@ -402,17 +403,21 @@ void $toJsonMapHelperName(String key, dynamic value) {
                 ctorParam: paramElement)),
         ', ');
 
-    buffer.write(')');
-    if (fieldsToSet.isEmpty) {
-      buffer.writeln(';');
-    } else {
+    buffer.writeln(');');
+    if (fieldsToSet.isNotEmpty) {
+      buffer.write('$objectName');
       for (var field in fieldsToSet.values) {
         buffer.writeln();
-        buffer.write('      ..${field.name} = ');
+        buffer.write('..${field.name} = ');
         buffer.write(_deserializeForField(field, classSupportNullable));
+        if (!_nullable(field, classSupportNullable)) {
+          buffer.write(' ?? $objectName.${field.name}');
+        }
       }
       buffer.writeln(';');
     }
+    buffer.writeln('return $objectName;');
+    buffer.writeln('}');
     buffer.writeln();
 
     return finalFields;
