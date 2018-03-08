@@ -112,8 +112,13 @@ class JsonSerializableGenerator
     final classAnnotation = _valueForAnnotation(annotation);
 
     if (classAnnotation.createFactory) {
-      var toSkip = _writeFactory(
-          buffer, classElement, fields, prefix, classAnnotation.nullable);
+      var toSkip = fieldsList
+          .where((field) =>
+              field.isFinal || !field.isPublic || _jsonKeyFor(field).ignore)
+          .toSet();
+
+      _writeFactory(buffer, classElement, fields, toSkip, prefix,
+          classAnnotation.nullable);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
@@ -315,10 +320,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
   }
 
   /// Returns the set of fields that are not written to via constructors.
-  Set<FieldElement> _writeFactory(
+  _writeFactory(
       StringBuffer buffer,
       ClassElement classElement,
       Map<String, FieldElement> fields,
+      Set<FieldElement> toSkip,
       String prefix,
       bool classSupportNullable) {
     // creating a copy so it can be mutated
@@ -370,13 +376,9 @@ void $toJsonMapHelperName(String key, dynamic value) {
           todo: 'Check names and imports.');
     }
 
-    // these are fields to skip – now to find them
-    var finalFields =
-        fieldsToSet.values.where((field) => field.isFinal).toSet();
-
-    for (var finalField in finalFields) {
-      var value = fieldsToSet.remove(finalField.name);
-      assert(value == finalField);
+    for (var fieldToSkip in toSkip) {
+      var value = fieldsToSet.remove(fieldToSkip.name);
+      assert(value == fieldToSkip);
     }
 
     //
@@ -414,8 +416,6 @@ void $toJsonMapHelperName(String key, dynamic value) {
       buffer.writeln(';');
     }
     buffer.writeln();
-
-    return finalFields;
   }
 
   Iterable<TypeHelper> get _allHelpers =>
@@ -520,7 +520,8 @@ JsonKey _jsonKeyFor(FieldElement element) {
         : new JsonKey(
             name: obj.getField('name').toStringValue(),
             nullable: obj.getField('nullable').toBoolValue(),
-            includeIfNull: obj.getField('includeIfNull').toBoolValue());
+            includeIfNull: obj.getField('includeIfNull').toBoolValue(),
+            ignore: obj.getField('ignore').toBoolValue());
   }
 
   return key;

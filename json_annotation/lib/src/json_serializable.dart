@@ -65,10 +65,16 @@ class JsonKey {
   /// enclosing class.
   final bool includeIfNull;
 
+  /// `true` if the generator should ignore this field completely
+  ///
+  /// If `null` or `false`, the generator includes the field if it is not
+  /// sorted out by another condition.
+  final bool ignore;
+
   /// Creates a new [JsonKey].
   ///
   /// Only required when the default behavior is not desired.
-  const JsonKey({this.name, this.nullable, this.includeIfNull});
+  const JsonKey({this.name, this.nullable, this.includeIfNull, this.ignore});
 }
 
 // TODO(kevmoo): Add documentation
