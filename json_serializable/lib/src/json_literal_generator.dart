@@ -26,7 +26,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     var sourcePathDir = p.dirname(buildStep.inputId.path);
     var fileId = new AssetId(buildStep.inputId.package,
         p.join(sourcePathDir, annotation.read('path').stringValue));
-    var content = JSON.decode(await buildStep.readAsString(fileId));
+    var content = json.decode(await buildStep.readAsString(fileId));
 
     var asConst = annotation.read('asConst').boolValue;
 

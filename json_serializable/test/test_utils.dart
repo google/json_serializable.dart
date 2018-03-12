@@ -74,15 +74,15 @@ Iterable<Element> _getElements(CompilationUnitMember member) {
 }
 
 void roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
-  var json = loudEncode(object);
+  var data = loudEncode(object);
 
-  var person2 = factory(JSON.decode(json) as Map<String, dynamic>);
+  var person2 = factory(json.decode(data) as Map<String, dynamic>);
 
   expect(person2, equals(object));
 
   var json2 = loudEncode(person2);
 
-  expect(json2, equals(json));
+  expect(json2, equals(data));
 }
 
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
