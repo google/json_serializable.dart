@@ -17,7 +17,7 @@ main() {
         p.join(getPackagePath(), 'test', 'test_files', 'data.json');
     var dataFile = new File(dataFilePath);
 
-    var dataString = loudEncode(JSON.decode(dataFile.readAsStringSync()));
+    var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
     // FYI: nice to re-write the test data when it's changed to keep it pretty
     // ... but not a good idea to ship this
     // dataFile.writeAsStringSync(dataString);

@@ -14,7 +14,7 @@ void main() {
     final personJson = _encode(person);
 
     final person2 =
-        new Person.fromJson(JSON.decode(personJson) as Map<String, dynamic>);
+        new Person.fromJson(json.decode(personJson) as Map<String, dynamic>);
 
     expect(person.firstName, person2.firstName);
     expect(person.lastName, person2.lastName);
