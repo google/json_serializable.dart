@@ -33,7 +33,7 @@ void main() {
     var result = _runProc('pub',
         ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
     expect(result,
-        contains(new RegExp(r'Build: Succeeded after \S+ with \d+ outputs')));
+        contains(new RegExp(r'\[INFO\] Succeeded after \S+ with \d+ outputs')));
 
     // 3 - get a list of modified `.g.dart` files - should still be empty
     expect(_changedGeneratedFiles(), isEmpty);
