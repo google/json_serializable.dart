@@ -320,7 +320,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
   }
 
   /// Returns the set of fields that are not written to via constructors.
-  _writeFactory(
+  void _writeFactory(
       StringBuffer buffer,
       ClassElement classElement,
       Map<String, FieldElement> fields,
