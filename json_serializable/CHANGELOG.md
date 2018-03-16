@@ -17,6 +17,10 @@
 
 ### `package:json_serializable/type_helper.dart`
 
+* *Breaking* The `nullable` parameter on `TypeHelper.serialize` and 
+  `.deserialize` has been removed. It is now exposed in `SerializeContext` and
+   `DeserializeContext` abstract classes as a read-only property.
+
 * **Potentially Breaking** The `metadata` property on `SerializeContext` and
   `DeserializeContext` is now readonly. This would potentially break code that
   extends these classes – which is not expected. 

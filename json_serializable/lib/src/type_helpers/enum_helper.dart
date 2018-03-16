@@ -12,25 +12,25 @@ class EnumHelper extends TypeHelper {
   const EnumHelper();
 
   @override
-  String serialize(DartType targetType, String expression, bool nullable,
-      SerializeContext context) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (targetType is InterfaceType && targetType.element.isEnum) {
       return commonNullPrefix(
-          nullable, expression, "$expression.toString().split('.')[1]");
+          context.nullable, expression, "$expression.toString().split('.')[1]");
     }
 
     return null;
   }
 
   @override
-  String deserialize(DartType targetType, String expression, bool nullable,
-      DeserializeContext context) {
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context) {
     if (targetType is InterfaceType && targetType.element.isEnum) {
       var wrappedExpression =
           simpleExpression.hasMatch(expression) ? expression : '{$expression}';
 
       return commonNullPrefix(
-          nullable,
+          context.nullable,
           expression,
           '$targetType.values.singleWhere('
           "(x) => x.toString() == '$targetType.\$$wrappedExpression')");

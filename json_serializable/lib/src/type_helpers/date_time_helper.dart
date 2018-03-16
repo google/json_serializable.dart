@@ -11,14 +11,15 @@ class DateTimeHelper extends TypeHelper {
   const DateTimeHelper();
 
   @override
-  String serialize(DartType targetType, String expression, bool nullable, _) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (!_matchesType(targetType)) {
       return null;
     }
 
     var buffer = new StringBuffer(expression);
 
-    if (nullable) {
+    if (context.nullable) {
       buffer.write('?');
     }
 
@@ -28,13 +29,14 @@ class DateTimeHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(DartType targetType, String expression, bool nullable, _) {
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context) {
     if (!_matchesType(targetType)) {
       return null;
     }
 
     return commonNullPrefix(
-        nullable, expression, 'DateTime.parse($expression as String)');
+        context.nullable, expression, 'DateTime.parse($expression as String)');
   }
 }
 

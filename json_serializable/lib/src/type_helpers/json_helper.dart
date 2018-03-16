@@ -15,7 +15,7 @@ class JsonHelper extends TypeHelper {
   /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
   /// provided objects.
   @override
-  String serialize(DartType targetType, String expression, bool nullable, _) {
+  String serialize(DartType targetType, String expression, _) {
     // TODO(kevmoo): This should be checking for toJson method, but toJson might
     //   be gone during generation, so we'll have to check for the annotation.
     // In the mean time, just assume the `canSerialize` logic will work most of
@@ -28,7 +28,8 @@ class JsonHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(DartType targetType, String expression, bool nullable, _) {
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context) {
     if (!_canDeserialize(targetType)) {
       return null;
     }
@@ -48,7 +49,7 @@ class JsonHelper extends TypeHelper {
     // github.com/dart-lang/json_serializable/issues/19
     var result = 'new ${targetType.name}.fromJson($expression$asCast)';
 
-    return commonNullPrefix(nullable, expression, result);
+    return commonNullPrefix(context.nullable, expression, result);
   }
 }
 

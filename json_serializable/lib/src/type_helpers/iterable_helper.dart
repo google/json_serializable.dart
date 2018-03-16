@@ -13,8 +13,8 @@ class IterableHelper extends TypeHelper {
   const IterableHelper();
 
   @override
-  String serialize(DartType targetType, String expression, bool nullable,
-      SerializeContext context) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -28,10 +28,10 @@ class IterableHelper extends TypeHelper {
     // Although it's possible that child elements may be marked unsafe
 
     var isList = _coreListChecker.isAssignableFromType(targetType);
-    var subFieldValue = context.serialize(
-        _getIterableGenericType(targetType), _closureArg, nullable);
+    var subFieldValue =
+        context.serialize(_getIterableGenericType(targetType), _closureArg);
 
-    var optionalQuestion = nullable ? '?' : '';
+    var optionalQuestion = context.nullable ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subFieldValue`
     // will be identical to `substitute` – so no explicit mapping is needed.
@@ -39,7 +39,7 @@ class IterableHelper extends TypeHelper {
     if (subFieldValue != _closureArg) {
       if (context.useWrappers && isList) {
         var method = '\$wrapList';
-        if (nullable) {
+        if (context.nullable) {
           method = '${method}HandleNull';
         }
 
@@ -64,23 +64,22 @@ class IterableHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(DartType targetType, String expression, bool nullable,
-      DeserializeContext context) {
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context) {
     if (!_coreIterableChecker.isAssignableFromType(targetType)) {
       return null;
     }
 
     var iterableGenericType = _getIterableGenericType(targetType);
 
-    var itemSubVal =
-        context.deserialize(iterableGenericType, _closureArg, nullable);
+    var itemSubVal = context.deserialize(iterableGenericType, _closureArg);
 
     // If `itemSubVal` is the same, then we don't need to do anything fancy
     if (_closureArg == itemSubVal) {
       return '$expression as List';
     }
 
-    var optionalQuestion = nullable ? '?' : '';
+    var optionalQuestion = context.nullable ? '?' : '';
 
     var output =
         '($expression as List)$optionalQuestion.map(($_closureArg) => $itemSubVal)';
