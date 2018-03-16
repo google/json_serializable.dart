@@ -19,12 +19,12 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
 abstract class SerializeContext {
   bool get useWrappers;
   String serialize(DartType fieldType, String expression, bool nullable);
-  List<ElementAnnotation> metadata;
+  List<ElementAnnotation> get metadata;
 }
 
 abstract class DeserializeContext {
   String deserialize(DartType fieldType, String expression, bool nullable);
-  List<ElementAnnotation> metadata;
+  List<ElementAnnotation> get metadata;
 }
 
 abstract class TypeHelper {

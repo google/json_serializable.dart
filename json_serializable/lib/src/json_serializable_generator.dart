@@ -458,7 +458,7 @@ class _TypeHelperContext implements SerializeContext, DeserializeContext {
   bool get useWrappers => _generator.useWrappers;
 
   @override
-  List<ElementAnnotation> metadata;
+  final List<ElementAnnotation> metadata;
 
   _TypeHelperContext(this._generator, this.metadata);
 
