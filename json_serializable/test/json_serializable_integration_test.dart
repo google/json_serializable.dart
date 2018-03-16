@@ -146,7 +146,7 @@ void main() {
       };
 
       expect(() => new Numbers.fromJson(value),
-          throwsA(new isInstanceOf<CastError>()));
+          throwsA(const isInstanceOf<CastError>()));
     });
   });
 }

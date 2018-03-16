@@ -30,7 +30,7 @@ String getPackagePath() {
 
 Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
     throwsA(allOf(
-        new isInstanceOf<InvalidGenerationSourceError>(),
+        const isInstanceOf<InvalidGenerationSourceError>(),
         new FeatureMatcher<InvalidGenerationSourceError>(
             'message', (e) => e.message, messageMatcher),
         new FeatureMatcher<InvalidGenerationSourceError>(

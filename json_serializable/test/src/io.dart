@@ -29,9 +29,7 @@ Future<List<String>> getDartFiles(String directoryPath,
 /// directories defined in the list.
 Stream<String> getFiles(String directoryPath,
     {List<String> searchList, bool followLinks: false}) async* {
-  if (searchList == null) {
-    searchList = <String>[];
-  }
+  searchList ??= <String>[];
 
   var map = await _expandSearchList(directoryPath, searchList);
   var searchDirs = <String>[];
