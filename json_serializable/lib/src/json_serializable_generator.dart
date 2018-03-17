@@ -81,7 +81,9 @@ class JsonSerializableGenerator
 
     // Get all of the fields that need to be assigned
     // TODO: support overriding the field set with an annotation option
-    var fieldsList = _listFields(classElement);
+    var fieldsList = _listFields(classElement)
+        .where((field) => !field.isPublic || _jsonKeyFor(field).ignore != true)
+        .toList();
 
     var undefinedFields =
         fieldsList.where((fe) => fe.type.isUndefined).toList();
@@ -112,19 +114,12 @@ class JsonSerializableGenerator
     final classAnnotation = _valueForAnnotation(annotation);
 
     if (classAnnotation.createFactory) {
-      var toSkip = fieldsList
-          .where((field) =>
-              field.isFinal || !field.isPublic || _jsonKeyFor(field).ignore)
-          .toSet();
-
-      _writeFactory(buffer, classElement, fields, toSkip, prefix,
-          classAnnotation.nullable);
+      var fieldsSetByFactory = _writeFactory(
+          buffer, classElement, fields, prefix, classAnnotation.nullable);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
-      for (var field in toSkip) {
-        fields.remove(field.name);
-      }
+      fields.removeWhere((key, field) => !fieldsSetByFactory.contains(field));
     }
 
     // Now we check for duplicate JSON keys due to colliding annotations.
@@ -319,16 +314,17 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.writeln('  };');
   }
 
-  /// Returns the set of fields that are not written to via constructors.
-  void _writeFactory(
+  /// Returns the set of fields that are written to via factory.
+  /// Includes final fields that are written to in the constructor parameter list
+  /// Excludes remaining final fields, as they can't be set in the factory body
+  /// and shoudn't generated with toJson
+  Set<FieldElement> _writeFactory(
       StringBuffer buffer,
       ClassElement classElement,
       Map<String, FieldElement> fields,
-      Set<FieldElement> toSkip,
       String prefix,
       bool classSupportNullable) {
-    // creating a copy so it can be mutated
-    var fieldsToSet = new Map<String, FieldElement>.from(fields);
+    var fieldsSetByFactory = new Set<FieldElement>();
     var className = classElement.displayName;
     // Create the factory method
 
@@ -360,7 +356,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       } else {
         ctorArguments.add(arg);
       }
-      fieldsToSet.remove(arg.name);
+      fieldsSetByFactory.add(field);
     }
 
     var undefinedArgs = [ctorArguments, ctorNamedArguments]
@@ -376,10 +372,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
           todo: 'Check names and imports.');
     }
 
-    for (var fieldToSkip in toSkip) {
-      var value = fieldsToSet.remove(fieldToSkip.name);
-      assert(value == fieldToSkip);
-    }
+    // find fields that aren't already set by the constructor and that aren't final
+    var remainingFieldsForFactoryBody = fields.values
+        .where((field) => !field.isFinal)
+        .toSet()
+        .difference(fieldsSetByFactory);
 
     //
     // Generate the static factory method
@@ -405,17 +402,20 @@ void $toJsonMapHelperName(String key, dynamic value) {
         ', ');
 
     buffer.write(')');
-    if (fieldsToSet.isEmpty) {
+    if (remainingFieldsForFactoryBody.isEmpty) {
       buffer.writeln(';');
     } else {
-      for (var field in fieldsToSet.values) {
+      for (var field in remainingFieldsForFactoryBody) {
         buffer.writeln();
         buffer.write('      ..${field.name} = ');
         buffer.write(_deserializeForField(field, classSupportNullable));
+        fieldsSetByFactory.add(field);
       }
       buffer.writeln(';');
     }
     buffer.writeln();
+
+    return fieldsSetByFactory;
   }
 
   Iterable<TypeHelper> get _allHelpers =>
