@@ -233,6 +233,16 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
+    if (!generator.useWrappers) {
+      test('works to ignore a field', () async {
+        var output = await runForElementNamed('IgnoredFieldClass');
+
+        expect(output, contains("'ignoredFalseField': ignoredFalseField,"));
+        expect(output, contains("'ignoredNullField': ignoredNullField"));
+        expect(output, isNot(contains("'ignoredTrueField': ignoredTrueField")));
+      });
+    }
+
     test('fails if name duplicates existing field', () async {
       expect(
           () => runForElementNamed('KeyDupesField'),
