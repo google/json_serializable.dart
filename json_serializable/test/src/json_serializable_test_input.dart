@@ -40,6 +40,13 @@ class FinalFields {
 }
 
 @JsonSerializable()
+class FinalFieldsNotSetInCtor {
+  final int a = 1;
+
+  FinalFieldsNotSetInCtor();
+}
+
+@JsonSerializable()
 class FromJsonOptionalParameters {
   final ChildWithFromJson child;
 
