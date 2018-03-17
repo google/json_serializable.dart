@@ -152,6 +152,18 @@ class DupeKeys {
   String str;
 }
 
+@JsonSerializable(createFactory: false)
+class IgnoredFieldClass {
+  @JsonKey(ignore: true)
+  int ignoredTrueField;
+
+  @JsonKey(ignore: false)
+  int ignoredFalseField;
+
+  int ignoredNullField;
+}
+
+
 @JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
