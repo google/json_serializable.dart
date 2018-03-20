@@ -170,7 +170,6 @@ class IgnoredFieldClass {
   int ignoredNullField;
 }
 
-
 @JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
