@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+//ignore_for_file: avoid_unused_constructor_parameters, prefer_initializing_formals
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
@@ -17,6 +18,7 @@ class Person {
   int height;
   DateTime dateOfBirth;
   dynamic dynamicType;
+  //ignore: prefer_typing_uninitialized_variables
   var varType;
   List<int> listOfInts;
 }

@@ -1,3 +1,11 @@
+## 0.4.1
+
+### `package:json_serializable/type_helper.dart`
+
+* **Potentially Breaking** The `metadata` property on `SerializeContext` and
+  `DeserializeContext` is now readonly. This would potentially break code that
+  extends these classes – which is not expected. 
+
 ## 0.4.0
 
 * **Potentially Breaking** Inherited fields are now processed and used
