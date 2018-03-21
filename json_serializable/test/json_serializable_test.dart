@@ -125,6 +125,23 @@ void _registerTests(JsonSerializableGenerator generator) {
     expect(generateResult, contains('Map<String, dynamic> toJson()'));
   });
 
+  if (!generator.useWrappers) {
+    test('includes final field in toJson when set in ctor', () async {
+      var generateResult = await runForElementNamed('FinalFields');
+      expect(generateResult, contains('new FinalFields(json[\'a\'] as int);'));
+      expect(
+          generateResult, contains('toJson() => <String, dynamic>{\'a\': a};'));
+    });
+
+    test('excludes final field in toJson when not set in ctor', () async {
+      var generateResult = await runForElementNamed('FinalFieldsNotSetInCtor');
+      expect(generateResult,
+          isNot(contains('new FinalFields(json[\'a\'] as int);')));
+      expect(generateResult,
+          isNot(contains('toJson() => <String, dynamic>{\'a\': a};')));
+    });
+  }
+
   group('valid inputs', () {
     if (!generator.useWrappers) {
       test('class with no ctor params', () async {
@@ -230,6 +247,16 @@ abstract class _$OrderSerializerMixin {
 
         expect(output, contains("'h': height,"));
         expect(output, contains("..height = json['h']"));
+      });
+    }
+
+    if (!generator.useWrappers) {
+      test('works to ignore a field', () async {
+        var output = await runForElementNamed('IgnoredFieldClass');
+
+        expect(output, contains("'ignoredFalseField': ignoredFalseField,"));
+        expect(output, contains("'ignoredNullField': ignoredNullField"));
+        expect(output, isNot(contains("'ignoredTrueField': ignoredTrueField")));
       });
     }
 
