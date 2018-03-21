@@ -393,13 +393,12 @@ void $toJsonMapHelperName(String key, dynamic value) {
     if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
       buffer.write(', ');
     }
-    buffer.writeAll(
-        ctorNamedArguments.map((paramElement) =>
-            '${paramElement.name}: ' +
-            _deserializeForField(
-                fields[paramElement.name], classSupportNullable,
-                ctorParam: paramElement)),
-        ', ');
+    buffer.writeAll(ctorNamedArguments.map((paramElement) {
+      var value = _deserializeForField(
+          fields[paramElement.name], classSupportNullable,
+          ctorParam: paramElement);
+      return '${paramElement.name}: $value';
+    }), ', ');
 
     buffer.write(')');
     if (remainingFieldsForFactoryBody.isEmpty) {
@@ -458,7 +457,7 @@ class _TypeHelperContext implements SerializeContext, DeserializeContext {
   bool get useWrappers => _generator.useWrappers;
 
   @override
-  List<ElementAnnotation> metadata;
+  final List<ElementAnnotation> metadata;
 
   _TypeHelperContext(this._generator, this.metadata);
 
@@ -536,9 +535,9 @@ JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
 
 final _jsonKeyExpando = new Expando<JsonKey>();
 
-final _jsonKeyChecker = new TypeChecker.fromRuntime(JsonKey);
+final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
-final _dartCoreObjectChecker = new TypeChecker.fromRuntime(Object);
+final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 
 int _sortByLocation(FieldElement a, FieldElement b) {
   var checkerA = new TypeChecker.fromStatic(a.enclosingElement.type);
