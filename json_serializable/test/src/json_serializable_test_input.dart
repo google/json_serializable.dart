@@ -181,6 +181,7 @@ class IgnoredFieldCtorClass {
 
 @JsonSerializable()
 class PrivateFieldCtorClass {
+  // ignore: unused_field
   int _privateField;
   PrivateFieldCtorClass(this._privateField);
 }
