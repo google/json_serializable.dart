@@ -65,10 +65,10 @@ class JsonKey {
   /// enclosing class.
   final bool includeIfNull;
 
-  /// `true` if the generator should ignore this field completely
+  /// `true` if the generator should ignore this field completely.
   ///
-  /// If `null` or `false`, the generator includes the field if it is not
-  /// sorted out by another condition.
+  /// If `null` (the default) or `false`, the field will be considered for
+  /// serialization.
   final bool ignore;
 
   /// Creates a new [JsonKey].
