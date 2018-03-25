@@ -7,6 +7,7 @@ import 'dart:collection';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
     show InheritanceManager;
@@ -81,8 +82,9 @@ class JsonSerializableGenerator
 
     // Get all of the fields that need to be assigned
     // TODO: support overriding the field set with an annotation option
-    var fieldsList = _listFields(classElement)
-        .where((field) => !field.isPublic || _jsonKeyFor(field).ignore != true)
+    var fieldList = _listFields(classElement);
+    var fieldsList = fieldList
+        .where((field) => field.isPublic && _jsonKeyFor(field).ignore != true)
         .toList();
 
     var undefinedFields =
@@ -114,8 +116,13 @@ class JsonSerializableGenerator
     final classAnnotation = _valueForAnnotation(annotation);
 
     if (classAnnotation.createFactory) {
-      var fieldsSetByFactory = _writeFactory(
-          buffer, classElement, fields, prefix, classAnnotation.nullable);
+      var ignoredFields = new Map<String, FieldElement>.fromIterable(
+          fieldList.where(
+              (field) => !field.isPublic || _jsonKeyFor(field).ignore == true),
+          key: (f) => (f as FieldElement).name);
+
+      var fieldsSetByFactory = _writeFactory(buffer, classElement, fields,
+          ignoredFields, prefix, classAnnotation.nullable);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
@@ -231,7 +238,8 @@ class JsonSerializableGenerator
     for (var field in fields.values) {
       var valueAccess = '_v.${field.name}';
       buffer.write('''case ${_safeNameAccess(field)}:
-        return ${_serializeField(field, classAnnotation.nullable, accessOverride:  valueAccess)};''');
+        return ${_serializeField(
+          field, classAnnotation.nullable, accessOverride: valueAccess)};''');
     }
 
     buffer.writeln('''
@@ -306,8 +314,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
     var pairs = <String>[];
     for (var field in fields) {
-      pairs.add(
-          '${_safeNameAccess(field)}: ${_serializeField(field, classSupportNullable )}');
+      pairs.add('${_safeNameAccess(field)}: ${_serializeField(
+              field, classSupportNullable)}');
     }
     buffer.writeAll(pairs, ',\n');
 
@@ -322,6 +330,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       StringBuffer buffer,
       ClassElement classElement,
       Map<String, FieldElement> fields,
+      Map<String, FieldElement> ignoredFields,
       String prefix,
       bool classSupportNullable) {
     var fieldsSetByFactory = new Set<FieldElement>();
@@ -344,9 +353,20 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
       if (field == null) {
         if (arg.parameterKind == ParameterKind.REQUIRED) {
+          var additionalInfo = "";
+          var ignoredField = ignoredFields[arg.name];
+          if (ignoredField != null) {
+            if (_jsonKeyFor(ignoredField).ignore == true) {
+              additionalInfo = ' It it assigns to an ignored field.';
+            } else if (!ignoredField.isPublic) {
+              additionalInfo = ' It it assigns to a non public field.';
+            }
+          }
+
           throw new UnsupportedError('Cannot populate the required constructor '
-              'argument: ${arg.displayName}.');
+              'argument: ${arg.displayName}.$additionalInfo');
         }
+
         continue;
       }
 

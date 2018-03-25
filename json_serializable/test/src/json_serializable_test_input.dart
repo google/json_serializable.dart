@@ -173,6 +173,19 @@ class IgnoredFieldClass {
 }
 
 @JsonSerializable()
+class IgnoredFieldCtorClass {
+  @JsonKey(ignore: true)
+  int ignoredTrueField;
+  IgnoredFieldCtorClass(this.ignoredTrueField);
+}
+
+@JsonSerializable()
+class PrivateFieldCtorClass {
+  int _privateField;
+  PrivateFieldCtorClass(this._privateField);
+}
+
+@JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
   int subTypeReadWrite;
