@@ -260,6 +260,29 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
+    if (!generator.useWrappers) {
+      test('fails if ignored field is referenced by ctor', () async {
+        expect(
+            () => runForElementNamed('IgnoredFieldCtorClass'),
+            throwsA(new FeatureMatcher<UnsupportedError>(
+                'message',
+                (e) => e.message,
+                'Cannot populate the required constructor argument: '
+                'ignoredTrueField. It it assigns to an ignored field.')));
+      });
+    }
+    if (!generator.useWrappers) {
+      test('fails if private field is referenced by ctor', () async {
+        expect(
+            () => runForElementNamed('PrivateFieldCtorClass'),
+            throwsA(new FeatureMatcher<UnsupportedError>(
+                'message',
+                (e) => e.message,
+                'Cannot populate the required constructor argument: '
+                '_privateField. It it assigns to a non public field.')));
+      });
+    }
+
     test('fails if name duplicates existing field', () async {
       expect(
           () => runForElementNamed('KeyDupesField'),
