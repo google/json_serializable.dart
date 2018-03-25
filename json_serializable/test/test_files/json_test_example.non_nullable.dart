@@ -55,6 +55,13 @@ class Order extends Object with _$OrderSerializerMixin {
   Platform platform;
   Map<String, Platform> altPlatforms;
 
+  @JsonKey(ignore: true)
+  String get platformValue => platform?.description;
+
+  set platformValue(String value) {
+    throw 'not impld';
+  }
+
   int get price => items.fold(0, (total, item) => item.price + total);
 
   Order(this.category, [Iterable<Item> items])
