@@ -6,6 +6,10 @@
   `DeserializeContext` is now readonly. This would potentially break code that
   extends these classes – which is not expected. 
 
+* Private and ignored fields are now excluded when generating serialization and deserialization code.
+
+* Throw an exception if a private field, or an ignored field is referenced by a required constructor argument.
+
 ## 0.4.0
 
 * **Potentially Breaking** Inherited fields are now processed and used
