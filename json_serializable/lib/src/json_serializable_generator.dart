@@ -353,7 +353,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
       if (field == null) {
         if (arg.parameterKind == ParameterKind.REQUIRED) {
-          var additionalInfo = "";
+          var additionalInfo = '';
           var ignoredField = ignoredFields[arg.name];
           if (ignoredField != null) {
             if (_jsonKeyFor(ignoredField).ignore == true) {

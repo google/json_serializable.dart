@@ -59,7 +59,7 @@ class Order extends Object with _$OrderSerializerMixin {
   String get platformValue => platform?.description;
 
   set platformValue(String value) {
-    throw 'not impld';
+    throw new UnimplementedError('not impld');
   }
 
   int get price => items.fold(0, (total, item) => item.price + total);
