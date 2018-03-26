@@ -341,6 +341,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       var field = fields[arg.name];
 
       if (field == null) {
+        // ignore: deprecated_member_use
         if (arg.parameterKind == ParameterKind.REQUIRED) {
           throw new UnsupportedError('Cannot populate the required constructor '
               'argument: ${arg.displayName}.');
@@ -349,6 +350,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       }
 
       // TODO: validate that the types match!
+      // ignore: deprecated_member_use
       if (arg.parameterKind == ParameterKind.NAMED) {
         ctorNamedArguments.add(arg);
       } else {
