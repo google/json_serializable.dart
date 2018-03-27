@@ -13,7 +13,7 @@ dependencies:
 
   # Use a tight version constraint to ensure that a constraint on
   # `json_annotation`. Properly constrains all features it provides.
-  json_annotation: '>=0.2.2 <0.2.3'
+  json_annotation: '>=0.2.3 <0.2.4'
   path: ^1.3.2
   source_gen: ^0.7.5
 dev_dependencies:
