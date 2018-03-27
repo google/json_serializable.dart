@@ -42,6 +42,13 @@ class FinalFields {
 }
 
 @JsonSerializable()
+class FinalFieldsNotSetInCtor {
+  final int a = 1;
+
+  FinalFieldsNotSetInCtor();
+}
+
+@JsonSerializable()
 class FromJsonOptionalParameters {
   final ChildWithFromJson child;
 
@@ -152,6 +159,31 @@ class DupeKeys {
 
   @JsonKey(name: 'a')
   String str;
+}
+
+@JsonSerializable(createFactory: false)
+class IgnoredFieldClass {
+  @JsonKey(ignore: true)
+  int ignoredTrueField;
+
+  @JsonKey(ignore: false)
+  int ignoredFalseField;
+
+  int ignoredNullField;
+}
+
+@JsonSerializable()
+class IgnoredFieldCtorClass {
+  @JsonKey(ignore: true)
+  int ignoredTrueField;
+  IgnoredFieldCtorClass(this.ignoredTrueField);
+}
+
+@JsonSerializable()
+class PrivateFieldCtorClass {
+  // ignore: unused_field
+  int _privateField;
+  PrivateFieldCtorClass(this._privateField);
 }
 
 @JsonSerializable()

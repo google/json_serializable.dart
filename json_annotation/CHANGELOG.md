@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Added `ignore` field to `JsonKey` class annotation
+
 ## 0.2.2
 
 * Added a helper class – `$JsonMapWrapper` – and helper functions – `$wrapMap`, 
