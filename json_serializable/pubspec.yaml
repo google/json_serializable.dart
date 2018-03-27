@@ -6,7 +6,7 @@ homepage: https://github.com/dart-lang/json_serializable
 environment:
   sdk: '>=2.0.0-dev.9 <2.0.0'
 dependencies:
-  analyzer: '>=0.29.10 <0.31.2-alpha.1'
+  analyzer: '>=0.29.10 <0.32.0'
   build: '>=0.9.0 <0.13.0'
   build_config: ^0.2.1
   cli_util: ^0.1.0
