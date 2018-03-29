@@ -1,14 +1,16 @@
 ## 0.4.1
 
+* Private and ignored fields are now excluded when generating serialization and
+  deserialization code by using `@JsonKey(ignore: true)`.
+
+* Throw an exception if a private field or an ignored field is referenced by a
+  required constructor argument.
+
 ### `package:json_serializable/type_helper.dart`
 
 * **Potentially Breaking** The `metadata` property on `SerializeContext` and
   `DeserializeContext` is now readonly. This would potentially break code that
   extends these classes – which is not expected. 
-
-* Private and ignored fields are now excluded when generating serialization and deserialization code.
-
-* Throw an exception if a private field, or an ignored field is referenced by a required constructor argument.
 
 ## 0.4.0
 
