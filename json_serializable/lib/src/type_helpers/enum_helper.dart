@@ -4,7 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import '../type_helper.dart';
-import 'type_helper_utils.dart';
+import '../utils.dart';
 
 final simpleExpression = new RegExp('^[a-zA-Z_]+\$');
 

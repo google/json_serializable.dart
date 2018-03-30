@@ -5,7 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
-import 'type_helper_utils.dart';
+import '../utils.dart';
 
 class DateTimeHelper extends TypeHelper {
   const DateTimeHelper();

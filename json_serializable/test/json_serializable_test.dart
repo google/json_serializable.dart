@@ -14,7 +14,7 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/src/string_source.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
-import 'package:json_serializable/src/utils.dart';
+import 'package:json_serializable/src/constants.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
@@ -268,7 +268,7 @@ abstract class _$OrderSerializerMixin {
                 'message',
                 (e) => e.message,
                 'Cannot populate the required constructor argument: '
-                'ignoredTrueField. It it assigns to an ignored field.')));
+                'ignoredTrueField. It is assigned to an ignored field.')));
       });
     }
     if (!generator.useWrappers) {
@@ -279,7 +279,7 @@ abstract class _$OrderSerializerMixin {
                 'message',
                 (e) => e.message,
                 'Cannot populate the required constructor argument: '
-                '_privateField. It it assigns to a non public field.')));
+                '_privateField. It is assigned to a private field.')));
       });
     }
 

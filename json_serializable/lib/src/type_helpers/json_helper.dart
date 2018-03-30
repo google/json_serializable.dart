@@ -5,7 +5,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import '../type_helper.dart';
-import 'type_helper_utils.dart';
+import '../utils.dart';
 
 class JsonHelper extends TypeHelper {
   const JsonHelper();
