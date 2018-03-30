@@ -5,9 +5,6 @@
 // https://github.com/dart-lang/sdk/issues/31761
 // ignore_for_file: comment_references
 
-// Until `requireLibraryDirective` is removed
-// ignore_for_file: deprecated_member_use
-
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -26,15 +23,6 @@ import 'json_serializable_generator.dart';
 /// increase the code size, but it may improve runtime performance, especially
 /// for large object graphs.
 ///
-/// May set [requireLibraryDirective] to `true` in order to opt-out of the
-/// Dart `2.0.0-dev` feature of `part of` being usable without an explicit
-/// `library` directive. Developers should restrict the SDK constraint in
-/// `pubspec.yaml` accordingly:
-///
-/// ```yaml
-/// sdk: '>=2.0.0-dev <2.0.0'
-/// ```
-///
 /// Usage:
 ///
 /// ```dart
@@ -49,20 +37,10 @@ import 'json_serializable_generator.dart';
 /// `json_serializable`.
 ///
 /// [example]: https://github.com/dart-lang/json_serializable/tree/master/example
-Builder jsonPartBuilder(
-    {String header,
-    bool useWrappers: false,
-    @Deprecated(
-        'Library directives are no longer required for part generation. '
-        'This option will be removed in v0.4.0.')
-        bool requireLibraryDirective: false}) {
+Builder jsonPartBuilder({String header, bool useWrappers: false}) {
   useWrappers ??= false;
-  requireLibraryDirective ??= false;
   return new PartBuilder([
     new JsonSerializableGenerator(useWrappers: useWrappers),
     const JsonLiteralGenerator()
-  ],
-      header: header,
-      // ignore: deprecated_member_use
-      requireLibraryDirective: requireLibraryDirective);
+  ], header: header);
 }

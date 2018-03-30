@@ -1,4 +1,9 @@
-## 0.4.1
+## 0.5.0
+
+* **BREAKING** Removed deprecated support for `require_library_directive` /
+  `requireLibraryDirective` in `build_runner` configuration.
+
+* Support the latest `package:source_gen`.
 
 * Private and ignored fields are now excluded when generating serialization and
   deserialization code by using `@JsonKey(ignore: true)`.
