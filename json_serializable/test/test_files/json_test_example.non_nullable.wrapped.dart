@@ -70,6 +70,9 @@ class Order extends Object with _$OrderSerializerMixin {
 
   int get price => items.fold(0, (total, item) => item.price + total);
 
+  @JsonKey(ignore: true)
+  bool shouldBeCached;
+
   Order(this.category, [Iterable<Item> items])
       : this.items = new UnmodifiableListView<Item>(
             new List<Item>.unmodifiable(items ?? const <Item>[]));
