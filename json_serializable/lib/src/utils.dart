@@ -51,9 +51,10 @@ String friendlyNameForElement(Element element) {
   return names.join(' ');
 }
 
-/// Returns a list of all instance, [FieldElement] items for [element] and
-/// super classes.
-List<FieldElement> listFields(ClassElement element) {
+/// Returns a [Set] of all instance [FieldElement] items for [element] and
+/// super classes, sorted first by their location in the inheritance hierarchy
+/// (super first) and then by their location in the source file.
+Set<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   var fieldsList = element.fields.where((e) => !e.isStatic).toList();
@@ -85,7 +86,7 @@ List<FieldElement> listFields(ClassElement element) {
   // Sadly, `classElement.fields` puts properties after fields
   fieldsList.sort(_sortByLocation);
 
-  return fieldsList;
+  return fieldsList.toSet();
 }
 
 int _sortByLocation(FieldElement a, FieldElement b) {
@@ -141,8 +142,8 @@ final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 Set<String> writeConstructorInvocation(
     StringBuffer buffer,
     ClassElement classElement,
-    Set<String> availableConstructorParameters,
-    Set<String> writeableFields,
+    Iterable<String> availableConstructorParameters,
+    Iterable<String> writeableFields,
     Map<String, String> unavailableReasons,
     String deserializeForField(String paramOrFieldName,
         {ParameterElement ctorParam})) {

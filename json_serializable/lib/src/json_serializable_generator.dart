@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -78,67 +77,15 @@ class JsonSerializableGenerator
     var classElement = element as ClassElement;
 
     // Get all of the fields that need to be assigned
-    var sortedFieldList = listFields(classElement);
-
-    // Used to keep track of why a field is ignored. Useful for providing
-    // helpful errors when generating constructor calls that try to use one of
-    // these fields.
-    var unavailableReasons = <String, String>{};
-
-    var accessibleFieldList = sortedFieldList.where((field) {
-      if (!field.isPublic) {
-        unavailableReasons[field.name] = 'It is assigned to a private field.';
-        return false;
-      }
-
-      if (_jsonKeyFor(field).ignore == true) {
-        unavailableReasons[field.name] = 'It is assigned to an ignored field.';
-        return false;
-      }
-
-      return true;
-    }).toList();
-
-    // Explicitly using `LinkedHashMap` – we want these ordered.
-    var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
-        accessibleFieldList,
-        key: (f) => (f as FieldElement).name);
-
-    var prefix = '_\$${classElement.name}';
+    var classAnnotation = _valueForAnnotation(annotation);
 
     var buffer = new StringBuffer();
+    var accessibleFields = _writeCtor(buffer, classAnnotation, classElement);
 
-    final classAnnotation = _valueForAnnotation(annotation);
-
-    if (classAnnotation.createFactory) {
-      buffer.writeln();
-      buffer.writeln(
-          '${classElement.name} ${prefix}FromJson(Map<String, dynamic> json) =>');
-
-      String deserializeFun(String paramOrFieldName,
-              {ParameterElement ctorParam}) =>
-          _deserializeForField(
-              fields[paramOrFieldName], classAnnotation.nullable,
-              ctorParam: ctorParam);
-
-      var fieldsSetByFactory = writeConstructorInvocation(
-          buffer,
-          classElement,
-          fields.keys.toSet(),
-          fields.values.where((fe) => !fe.isFinal).map((fe) => fe.name).toSet(),
-          unavailableReasons,
-          deserializeFun);
-
-      // If there are fields that are final – that are not set via the generated
-      // constructor, then don't output them when generating the `toJson` call.
-      fields.removeWhere((key, field) => !fieldsSetByFactory.contains(key));
-    }
-
-    // Now we check for duplicate JSON keys due to colliding annotations.
+    // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done
-    // by `createFactory`.
-
-    fields.values.fold(new Set<String>(), (Set<String> set, fe) {
+    // by `_writeCtor`.
+    accessibleFields.fold(new Set<String>(), (Set<String> set, fe) {
       var jsonKey = _jsonKeyFor(fe).name ?? fe.name;
       if (!set.add(jsonKey)) {
         throw new InvalidGenerationSourceError(
@@ -149,6 +96,7 @@ class JsonSerializableGenerator
     });
 
     if (classAnnotation.createToJson) {
+      var prefix = '_\$${classElement.name}';
       var mixClassName = '${prefix}SerializerMixin';
       var helpClassName = '${prefix}JsonMapWrapper';
 
@@ -159,14 +107,14 @@ class JsonSerializableGenerator
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
-      for (var field in fields.values) {
+      for (var field in accessibleFields) {
         //TODO - handle aliased imports
         buffer.writeln('  ${field.type} get ${field.name};');
       }
 
       buffer.write('  Map<String, dynamic> toJson() ');
 
-      var writeNaive = accessibleFieldList
+      var writeNaive = accessibleFields
           .every((e) => _writeJsonValueNaive(e, classAnnotation));
 
       if (useWrappers) {
@@ -174,10 +122,11 @@ class JsonSerializableGenerator
       } else {
         if (writeNaive) {
           // write simple `toJson` method that includes all keys...
-          _writeToJsonSimple(buffer, fields.values, classAnnotation.nullable);
+          _writeToJsonSimple(
+              buffer, accessibleFields, classAnnotation.nullable);
         } else {
           // At least one field should be excluded if null
-          _writeToJsonWithNullChecks(buffer, fields.values, classAnnotation);
+          _writeToJsonWithNullChecks(buffer, accessibleFields, classAnnotation);
         }
       }
 
@@ -185,12 +134,66 @@ class JsonSerializableGenerator
       buffer.writeln('}');
 
       if (useWrappers) {
-        _writeWrapper(
-            buffer, helpClassName, mixClassName, classAnnotation, fields);
+        _writeWrapper(buffer, helpClassName, mixClassName, classAnnotation,
+            accessibleFields);
       }
     }
 
     return buffer.toString();
+  }
+
+  Set<FieldElement> _writeCtor(StringBuffer buffer,
+      JsonSerializable classAnnotation, ClassElement classElement) {
+    // Used to keep track of why a field is ignored. Useful for providing
+    // helpful errors when generating constructor calls that try to use one of
+    // these fields.
+    var unavailableReasons = <String, String>{};
+
+    var sortedFields = createSortedFieldSet(classElement);
+
+    var accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
+        <String, FieldElement>{}, (map, field) {
+      if (!field.isPublic) {
+        unavailableReasons[field.name] = 'It is assigned to a private field.';
+      } else if (_jsonKeyFor(field).ignore == true) {
+        unavailableReasons[field.name] = 'It is assigned to an ignored field.';
+      } else {
+        map[field.name] = field;
+      }
+
+      return map;
+    });
+
+    if (classAnnotation.createFactory) {
+      var prefix = '_\$${classElement.name}';
+
+      buffer.writeln();
+      buffer.writeln('${classElement
+              .name} ${prefix}FromJson(Map<String, dynamic> json) =>');
+
+      String deserializeFun(String paramOrFieldName,
+              {ParameterElement ctorParam}) =>
+          _deserializeForField(
+              accessibleFields[paramOrFieldName], classAnnotation.nullable,
+              ctorParam: ctorParam);
+
+      var fieldsSetByFactory = writeConstructorInvocation(
+          buffer,
+          classElement,
+          accessibleFields.keys,
+          accessibleFields.values
+              .where((fe) => !fe.isFinal)
+              .map((fe) => fe.name)
+              .toList(),
+          unavailableReasons,
+          deserializeFun);
+
+      // If there are fields that are final – that are not set via the generated
+      // constructor, then don't output them when generating the `toJson` call.
+      accessibleFields
+          .removeWhere((name, fe) => !fieldsSetByFactory.contains(name));
+    }
+    return accessibleFields.values.toSet();
   }
 
   void _writeWrapper(
@@ -198,7 +201,7 @@ class JsonSerializableGenerator
       String helpClassName,
       String mixClassName,
       JsonSerializable classAnnotation,
-      Map<String, FieldElement> fields) {
+      Iterable<FieldElement> fields) {
     buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
     buffer.writeln('''class $helpClassName extends \$JsonMapWrapper {
@@ -206,10 +209,10 @@ class JsonSerializableGenerator
       $helpClassName(this._v);
     ''');
 
-    if (fields.values.every((e) => _writeJsonValueNaive(e, classAnnotation))) {
+    if (fields.every((e) => _writeJsonValueNaive(e, classAnnotation))) {
       // TODO(kevmoo): consider just doing one code path – if it's fast
       //               enough
-      var jsonKeys = fields.values.map(_safeNameAccess).join(', ');
+      var jsonKeys = fields.map(_safeNameAccess).join(', ');
 
       // TODO(kevmoo): maybe put this in a static field instead?
       //               const lists have unfortunate overhead
@@ -220,7 +223,7 @@ class JsonSerializableGenerator
       // At least one field should be excluded if null
       buffer.writeln('@override\nIterable<String> get keys sync* {');
 
-      for (var field in fields.values) {
+      for (var field in fields) {
         var nullCheck = !_writeJsonValueNaive(field, classAnnotation);
         if (nullCheck) {
           buffer.writeln('if (_v.${field.name} != null) {');
@@ -240,7 +243,7 @@ class JsonSerializableGenerator
     switch(key) {
     ''');
 
-    for (var field in fields.values) {
+    for (var field in fields) {
       var valueAccess = '_v.${field.name}';
       buffer.write('''case ${_safeNameAccess(field)}:
         return ${_serializeField(
