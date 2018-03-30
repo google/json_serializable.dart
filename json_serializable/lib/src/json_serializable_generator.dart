@@ -96,7 +96,7 @@ class JsonSerializableGenerator
     });
 
     if (classAnnotation.createToJson) {
-      var prefix = '_\$${classElement.name}';
+      var prefix = _prefix(classElement);
       var mixClassName = '${prefix}SerializerMixin';
       var helpClassName = '${prefix}JsonMapWrapper';
 
@@ -165,11 +165,9 @@ class JsonSerializableGenerator
     });
 
     if (classAnnotation.createFactory) {
-      var prefix = '_\$${classElement.name}';
-
       buffer.writeln();
-      buffer.writeln('${classElement
-              .name} ${prefix}FromJson(Map<String, dynamic> json) =>');
+      buffer.writeln('${classElement.name} '
+          '${_prefix(classElement)}FromJson(Map<String, dynamic> json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
@@ -395,6 +393,8 @@ class _TypeHelperContext implements SerializeContext, DeserializeContext {
           orElse: () => throw new UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
+
+String _prefix(ClassElement classElement) => '_\$${classElement.name}';
 
 String _safeNameAccess(FieldElement field) {
   var name = _jsonKeyFor(field).name ?? field.name;
