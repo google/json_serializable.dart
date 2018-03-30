@@ -5,6 +5,8 @@
 
 * **BREAKING** Removed the deprecated `generators.dart` library.
 
+* **BREAKING** Removed `jsonPartBuilder` function from public API.
+
 * Support the latest `package:source_gen`.
 
 * Private and ignored fields are now excluded when generating serialization and

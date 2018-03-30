@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:build/build.dart';
 import 'package:build_config/build_config.dart';
 import 'package:build_runner/build_runner.dart';
-import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/src/json_part_builder.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 

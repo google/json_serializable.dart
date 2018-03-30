@@ -5,7 +5,7 @@
 import 'package:build/build.dart';
 import 'package:logging/logging.dart';
 
-import 'json_serializable.dart';
+import 'src/json_part_builder.dart';
 
 // TODO: until we can use `log` here - github.com/dart-lang/build/issues/1223
 final _logger = new Logger('json_serializable');
