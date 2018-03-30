@@ -16,13 +16,17 @@ import 'type_helper.dart';
 import 'utils.dart';
 
 class GeneratorHelper {
-  final ClassElement element;
-  final JsonSerializable annotation;
-  final JsonSerializableGenerator generator;
+  final ClassElement _element;
+  final JsonSerializable _annotation;
+  final JsonSerializableGenerator _generator;
+  final StringBuffer _buffer = new StringBuffer();
 
-  String get prefix => '_\$${element.name}';
+  String get _prefix => '_\$${_element.name}';
 
-  GeneratorHelper(this.generator, this.element, this.annotation);
+  String get mixClassName => '${_prefix}SerializerMixin';
+  String get helpClassName => '${_prefix}JsonMapWrapper';
+
+  GeneratorHelper(this._generator, this._element, this._annotation);
 
   static Future<String> generate(JsonSerializableGenerator generator,
       Element element, ConstantReader annotation) {
@@ -44,8 +48,8 @@ class GeneratorHelper {
   }
 
   Future<String> _generate() async {
-    var buffer = new StringBuffer();
-    var accessibleFields = _writeCtor(buffer, annotation, element);
+    assert(_buffer.isEmpty);
+    var accessibleFields = _writeCtor();
 
     // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done
@@ -60,59 +64,53 @@ class GeneratorHelper {
       return set;
     });
 
-    if (annotation.createToJson) {
-      var mixClassName = '${prefix}SerializerMixin';
-      var helpClassName = '${prefix}JsonMapWrapper';
-
+    if (_annotation.createToJson) {
       //
       // Generate the mixin class
       //
-      buffer.writeln('abstract class $mixClassName {');
+      _buffer.writeln('abstract class $mixClassName {');
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
       for (var field in accessibleFields) {
         //TODO - handle aliased imports
-        buffer.writeln('  ${field.type} get ${field.name};');
+        _buffer.writeln('  ${field.type} get ${field.name};');
       }
 
-      buffer.write('  Map<String, dynamic> toJson() ');
+      _buffer.write('  Map<String, dynamic> toJson() ');
 
-      var writeNaive =
-          accessibleFields.every((e) => _writeJsonValueNaive(e, annotation));
+      var writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
-      if (generator.useWrappers) {
-        buffer.writeln('=> new $helpClassName(this);');
+      if (_generator.useWrappers) {
+        _buffer.writeln('=> new $helpClassName(this);');
       } else {
         if (writeNaive) {
           // write simple `toJson` method that includes all keys...
-          _writeToJsonSimple(buffer, accessibleFields, annotation.nullable);
+          _writeToJsonSimple(accessibleFields);
         } else {
           // At least one field should be excluded if null
-          _writeToJsonWithNullChecks(buffer, accessibleFields, annotation);
+          _writeToJsonWithNullChecks(accessibleFields);
         }
       }
 
       // end of the mixin class
-      buffer.writeln('}');
+      _buffer.writeln('}');
 
-      if (generator.useWrappers) {
-        _writeWrapper(
-            buffer, helpClassName, mixClassName, annotation, accessibleFields);
+      if (_generator.useWrappers) {
+        _writeWrapper(accessibleFields);
       }
     }
 
-    return buffer.toString();
+    return _buffer.toString();
   }
 
-  Set<FieldElement> _writeCtor(StringBuffer buffer,
-      JsonSerializable classAnnotation, ClassElement classElement) {
+  Set<FieldElement> _writeCtor() {
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of
     // these fields.
     var unavailableReasons = <String, String>{};
 
-    var sortedFields = createSortedFieldSet(classElement);
+    var sortedFields = createSortedFieldSet(_element);
 
     var accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
         <String, FieldElement>{}, (map, field) {
@@ -127,20 +125,19 @@ class GeneratorHelper {
       return map;
     });
 
-    if (classAnnotation.createFactory) {
-      buffer.writeln();
-      buffer.writeln('${classElement.name} '
-          '${prefix}FromJson(Map<String, dynamic> json) =>');
+    if (_annotation.createFactory) {
+      _buffer.writeln();
+      _buffer.writeln('${_element.name} '
+          '${_prefix}FromJson(Map<String, dynamic> json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
-          _deserializeForField(
-              accessibleFields[paramOrFieldName], classAnnotation.nullable,
+          _deserializeForField(accessibleFields[paramOrFieldName],
               ctorParam: ctorParam);
 
       var fieldsSetByFactory = writeConstructorInvocation(
-          buffer,
-          classElement,
+          _buffer,
+          _element,
           accessibleFields.keys,
           accessibleFields.values
               .where((fe) => !fe.isFinal)
@@ -157,48 +154,43 @@ class GeneratorHelper {
     return accessibleFields.values.toSet();
   }
 
-  void _writeWrapper(
-      StringBuffer buffer,
-      String helpClassName,
-      String mixClassName,
-      JsonSerializable classAnnotation,
-      Iterable<FieldElement> fields) {
-    buffer.writeln();
+  void _writeWrapper(Iterable<FieldElement> fields) {
+    _buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
-    buffer.writeln('''class $helpClassName extends \$JsonMapWrapper {
+    _buffer.writeln('''class $helpClassName extends \$JsonMapWrapper {
       final $mixClassName _v;
       $helpClassName(this._v);
     ''');
 
-    if (fields.every((e) => _writeJsonValueNaive(e, classAnnotation))) {
+    if (fields.every(_writeJsonValueNaive)) {
       // TODO(kevmoo): consider just doing one code path – if it's fast
       //               enough
       var jsonKeys = fields.map(_safeNameAccess).join(', ');
 
       // TODO(kevmoo): maybe put this in a static field instead?
       //               const lists have unfortunate overhead
-      buffer.writeln('''  @override
+      _buffer.writeln('''  @override
       Iterable<String> get keys => const [$jsonKeys];
     ''');
     } else {
       // At least one field should be excluded if null
-      buffer.writeln('@override\nIterable<String> get keys sync* {');
+      _buffer.writeln('@override\nIterable<String> get keys sync* {');
 
       for (var field in fields) {
-        var nullCheck = !_writeJsonValueNaive(field, classAnnotation);
+        var nullCheck = !_writeJsonValueNaive(field);
         if (nullCheck) {
-          buffer.writeln('if (_v.${field.name} != null) {');
+          _buffer.writeln('if (_v.${field.name} != null) {');
         }
-        buffer.writeln('yield ${_safeNameAccess(field)};');
+        _buffer.writeln('yield ${_safeNameAccess(field)};');
         if (nullCheck) {
-          buffer.writeln('}');
+          _buffer.writeln('}');
         }
       }
 
-      buffer.writeln('}\n');
+      _buffer.writeln('}\n');
     }
 
-    buffer.writeln('''@override
+    _buffer.writeln('''@override
     dynamic operator [](Object key) {
     if (key is String) {
     switch(key) {
@@ -206,24 +198,23 @@ class GeneratorHelper {
 
     for (var field in fields) {
       var valueAccess = '_v.${field.name}';
-      buffer.write('''case ${_safeNameAccess(field)}:
+      _buffer.write('''case ${_safeNameAccess(field)}:
         return ${_serializeField(
-          field, classAnnotation.nullable, accessOverride: valueAccess)};''');
+          field, accessOverride: valueAccess)};''');
     }
 
-    buffer.writeln('''
+    _buffer.writeln('''
       }}
       return null;
     }''');
 
-    buffer.writeln('}');
+    _buffer.writeln('}');
   }
 
-  void _writeToJsonWithNullChecks(StringBuffer buffer,
-      Iterable<FieldElement> fields, JsonSerializable classAnnotation) {
-    buffer.writeln('{');
+  void _writeToJsonWithNullChecks(Iterable<FieldElement> fields) {
+    _buffer.writeln('{');
 
-    buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
+    _buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them
@@ -242,24 +233,23 @@ class GeneratorHelper {
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
-      var expression = _serializeField(field, classAnnotation.nullable,
-          accessOverride: safeFieldAccess);
-      if (_writeJsonValueNaive(field, classAnnotation)) {
+      var expression = _serializeField(field, accessOverride: safeFieldAccess);
+      if (_writeJsonValueNaive(field)) {
         if (directWrite) {
-          buffer.writeln('$safeJsonKeyString : $expression,');
+          _buffer.writeln('$safeJsonKeyString : $expression,');
         } else {
-          buffer
+          _buffer
               .writeln('$toJsonMapVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
           // close the still-open map literal
-          buffer.writeln('};');
-          buffer.writeln();
+          _buffer.writeln('};');
+          _buffer.writeln();
 
           // write the helper to be used by all following null-excluding
           // fields
-          buffer.writeln('''
+          _buffer.writeln('''
 void $toJsonMapHelperName(String key, dynamic value) {
   if (value != null) {
     $toJsonMapVarName[key] = value;
@@ -267,58 +257,71 @@ void $toJsonMapHelperName(String key, dynamic value) {
 }''');
           directWrite = false;
         }
-        buffer
+        _buffer
             .writeln('$toJsonMapHelperName($safeJsonKeyString, $expression);');
       }
     }
 
-    buffer.writeln('return $toJsonMapVarName;');
+    _buffer.writeln('return $toJsonMapVarName;');
 
-    buffer.writeln('}');
+    _buffer.writeln('}');
   }
 
-  void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields,
-      bool classSupportNullable) {
-    buffer.writeln('=> <String, dynamic>{');
+  void _writeToJsonSimple(Iterable<FieldElement> fields) {
+    _buffer.writeln('=> <String, dynamic>{');
 
     var pairs = <String>[];
     for (var field in fields) {
       pairs.add('${_safeNameAccess(field)}: ${_serializeField(
-          field, classSupportNullable)}');
+          field)}');
     }
-    buffer.writeAll(pairs, ',\n');
+    _buffer.writeAll(pairs, ',\n');
 
-    buffer.writeln('  };');
+    _buffer.writeln('  };');
   }
 
-  String _serializeField(FieldElement field, bool classIncludeNullable,
-      {String accessOverride}) {
+  String _serializeField(FieldElement field, {String accessOverride}) {
     accessOverride ??= field.name;
 
     try {
-      return _getHelperContext(field, _nullable(field, classIncludeNullable))
-          .serialize(field.type, accessOverride);
+      return _getHelperContext(field).serialize(field.type, accessOverride);
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('toJson', field, e);
     }
   }
 
-  String _deserializeForField(FieldElement field, bool classSupportNullable,
+  String _deserializeForField(FieldElement field,
       {ParameterElement ctorParam}) {
     var jsonKey = _safeNameAccess(field);
 
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _getHelperContext(field, _nullable(field, classSupportNullable))
-          .deserialize(targetType, 'json[$jsonKey]');
+      return _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);
     }
   }
 
-  _TypeHelperContext _getHelperContext(FieldElement field, bool nullable) =>
-      new _TypeHelperContext(generator, field.metadata, nullable);
+  _TypeHelperContext _getHelperContext(FieldElement field) =>
+      new _TypeHelperContext(_generator, field.metadata, _nullable(field));
+
+  /// Returns `true` if the field can be written to JSON 'naively' – meaning
+  /// we can avoid checking for `null`.
+  ///
+  /// `true` if either:
+  ///   `includeIfNull` is `true`
+  ///   or
+  ///   `nullable` is `false`.
+  bool _writeJsonValueNaive(FieldElement field) =>
+      (_jsonKeyFor(field).includeIfNull ?? _annotation.includeIfNull) ||
+      !_nullable(field);
+
+  /// Returns `true` if the field should be treated as potentially nullable.
+  ///
+  /// If no [JsonKey] annotation is present on the field, `true` is returned.
+  bool _nullable(FieldElement field) =>
+      _jsonKeyFor(field).nullable ?? _annotation.nullable;
 }
 
 class _TypeHelperContext implements SerializeContext, DeserializeContext {
@@ -359,24 +362,6 @@ String _safeNameAccess(FieldElement field) {
   // TODO(kevmoo): JsonKey.name could also have quotes and other silly.
   return name.contains(r'$') ? "r'$name'" : "'$name'";
 }
-
-/// Returns `true` if the field should be treated as potentially nullable.
-///
-/// If no [JsonKey] annotation is present on the field, `true` is returned.
-bool _nullable(FieldElement field, bool parentValue) =>
-    _jsonKeyFor(field).nullable ?? parentValue;
-
-/// Returns `true` if the field can be written to JSON 'naively' – meaning
-/// we can avoid checking for `null`.
-///
-/// `true` if either:
-///   `includeIfNull` is `true`
-///   or
-///   `nullable` is `false`.
-bool _writeJsonValueNaive(
-        FieldElement field, JsonSerializable parentAnnotation) =>
-    (_jsonKeyFor(field).includeIfNull ?? parentAnnotation.includeIfNull) ||
-    !_nullable(field, parentAnnotation.nullable);
 
 JsonKey _jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];
