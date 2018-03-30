@@ -4,7 +4,7 @@
 
 import 'package:test/test.dart';
 
-import 'package:json_serializable/src/utils.dart';
+import 'package:json_serializable/src/constants.dart';
 
 import 'test_files/kitchen_sink.dart' as nullable;
 import 'test_files/kitchen_sink.non_nullable.dart' as nn;

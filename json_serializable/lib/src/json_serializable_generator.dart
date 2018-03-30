@@ -15,6 +15,7 @@ import 'package:analyzer/analyzer.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'constants.dart';
 import 'type_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/enum_helper.dart';

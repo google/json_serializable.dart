@@ -37,6 +37,3 @@ String friendlyNameForElement(Element element) {
 
   return names.join(' ');
 }
-
-final toJsonMapVarName = 'val';
-final toJsonMapHelperName = 'writeNotNull';
