@@ -268,7 +268,7 @@ abstract class _$OrderSerializerMixin {
                 'message',
                 (e) => e.message,
                 'Cannot populate the required constructor argument: '
-                'ignoredTrueField. It it assigns to an ignored field.')));
+                'ignoredTrueField. It is assigned to an ignored field.')));
       });
     }
     if (!generator.useWrappers) {
@@ -279,7 +279,7 @@ abstract class _$OrderSerializerMixin {
                 'message',
                 (e) => e.message,
                 'Cannot populate the required constructor argument: '
-                '_privateField. It it assigns to a non public field.')));
+                '_privateField. It is assigned to a private field.')));
       });
     }
 

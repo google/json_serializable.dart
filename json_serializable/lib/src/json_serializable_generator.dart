@@ -81,16 +81,29 @@ class JsonSerializableGenerator
     // Get all of the fields that need to be assigned
     var sortedFieldList = listFields(classElement);
 
-    var accessibleFieldList = sortedFieldList
-        .where((field) => field.isPublic && _jsonKeyFor(field).ignore != true)
-        .toList();
+    // Used to keep track of why a field is ignored. Useful for providing
+    // helpful errors when generating constructor calls that try to use one of
+    // these fields.
+    var ignoredFieldReasons = <String, String>{};
+
+    var accessibleFieldList = sortedFieldList.where((field) {
+      if (!field.isPublic) {
+        ignoredFieldReasons[field.name] = 'It is assigned to a private field.';
+        return false;
+      }
+
+      if (_jsonKeyFor(field).ignore == true) {
+        ignoredFieldReasons[field.name] = 'It is assigned to an ignored field.';
+        return false;
+      }
+
+      return true;
+    }).toList();
 
     // Explicitly using `LinkedHashMap` – we want these ordered.
     var fields = new LinkedHashMap<String, FieldElement>.fromIterable(
         accessibleFieldList,
         key: (f) => (f as FieldElement).name);
-
-    // Get the constructor to use for the factory
 
     var prefix = '_\$${classElement.name}';
 
@@ -99,13 +112,18 @@ class JsonSerializableGenerator
     final classAnnotation = _valueForAnnotation(annotation);
 
     if (classAnnotation.createFactory) {
-      var ignoredFields = new Map<String, FieldElement>.fromIterable(
-          sortedFieldList.where(
-              (field) => !field.isPublic || _jsonKeyFor(field).ignore == true),
-          key: (f) => (f as FieldElement).name);
+      buffer.writeln();
+      buffer.writeln(
+          '${classElement.name} ${prefix}FromJson(Map<String, dynamic> json) =>');
 
-      var fieldsSetByFactory = _writeFactory(buffer, classElement, fields,
-          ignoredFields, prefix, classAnnotation.nullable);
+      String ignoreReason(String fieldName) => ignoredFieldReasons[fieldName];
+
+      String deserializeFun(FieldElement field, {ParameterElement ctorParam}) =>
+          _deserializeForField(field, classAnnotation.nullable,
+              ctorParam: ctorParam);
+
+      var fieldsSetByFactory = _writeFactory(
+          buffer, classElement, fields, ignoreReason, deserializeFun);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
@@ -144,8 +162,8 @@ class JsonSerializableGenerator
 
       buffer.write('  Map<String, dynamic> toJson() ');
 
-      var writeNaive =
-          accessibleFieldList.every((e) => _writeJsonValueNaive(e, classAnnotation));
+      var writeNaive = accessibleFieldList
+          .every((e) => _writeJsonValueNaive(e, classAnnotation));
 
       if (useWrappers) {
         buffer.writeln('=> new $helpClassName(this);');
@@ -305,123 +323,6 @@ void $toJsonMapHelperName(String key, dynamic value) {
     buffer.writeln('  };');
   }
 
-  /// Returns the set of fields that are written to via factory.
-  /// Includes final fields that are written to in the constructor parameter list
-  /// Excludes remaining final fields, as they can't be set in the factory body
-  /// and shoudn't generated with toJson
-  Set<FieldElement> _writeFactory(
-      StringBuffer buffer,
-      ClassElement classElement,
-      Map<String, FieldElement> fields,
-      Map<String, FieldElement> ignoredFields,
-      String prefix,
-      bool classSupportNullable) {
-    var fieldsSetByFactory = new Set<FieldElement>();
-    var className = classElement.displayName;
-    // Create the factory method
-
-    // Get the default constructor
-    // TODO: allow overriding the ctor used for the factory
-    var ctor = classElement.unnamedConstructor;
-    if (ctor == null) {
-      throw new UnsupportedError(
-          'The class `${classElement.name}` has no default constructor.');
-    }
-
-    var ctorArguments = <ParameterElement>[];
-    var ctorNamedArguments = <ParameterElement>[];
-
-    for (var arg in ctor.parameters) {
-      var field = fields[arg.name];
-
-      if (field == null) {
-        // ignore: deprecated_member_use
-        if (arg.parameterKind == ParameterKind.REQUIRED) {
-          var additionalInfo = '';
-          var ignoredField = ignoredFields[arg.name];
-          if (ignoredField != null) {
-            if (_jsonKeyFor(ignoredField).ignore == true) {
-              additionalInfo = ' It it assigns to an ignored field.';
-            } else if (!ignoredField.isPublic) {
-              additionalInfo = ' It it assigns to a non public field.';
-            }
-          }
-
-          throw new UnsupportedError('Cannot populate the required constructor '
-              'argument: ${arg.displayName}.$additionalInfo');
-        }
-
-        continue;
-      }
-
-      // TODO: validate that the types match!
-      // ignore: deprecated_member_use
-      if (arg.parameterKind == ParameterKind.NAMED) {
-        ctorNamedArguments.add(arg);
-      } else {
-        ctorArguments.add(arg);
-      }
-      fieldsSetByFactory.add(field);
-    }
-
-    var undefinedArgs = [ctorArguments, ctorNamedArguments]
-        .expand((l) => l)
-        .where((pe) => pe.type.isUndefined)
-        .toList();
-    if (undefinedArgs.isNotEmpty) {
-      var description =
-          undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
-
-      throw new InvalidGenerationSourceError(
-          'At least one constructor argument has an invalid type: $description.',
-          todo: 'Check names and imports.');
-    }
-
-    // find fields that aren't already set by the constructor and that aren't final
-    var remainingFieldsForFactoryBody = fields.values
-        .where((field) => !field.isFinal)
-        .toSet()
-        .difference(fieldsSetByFactory);
-
-    //
-    // Generate the static factory method
-    //
-    buffer.writeln();
-    buffer
-        .writeln('$className ${prefix}FromJson(Map<String, dynamic> json) =>');
-    buffer.write('    new $className(');
-    buffer.writeAll(
-        ctorArguments.map((paramElement) => _deserializeForField(
-            fields[paramElement.name], classSupportNullable,
-            ctorParam: paramElement)),
-        ', ');
-    if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
-      buffer.write(', ');
-    }
-    buffer.writeAll(ctorNamedArguments.map((paramElement) {
-      var value = _deserializeForField(
-          fields[paramElement.name], classSupportNullable,
-          ctorParam: paramElement);
-      return '${paramElement.name}: $value';
-    }), ', ');
-
-    buffer.write(')');
-    if (remainingFieldsForFactoryBody.isEmpty) {
-      buffer.writeln(';');
-    } else {
-      for (var field in remainingFieldsForFactoryBody) {
-        buffer.writeln();
-        buffer.write('      ..${field.name} = ');
-        buffer.write(_deserializeForField(field, classSupportNullable));
-        fieldsSetByFactory.add(field);
-      }
-      buffer.writeln(';');
-    }
-    buffer.writeln();
-
-    return fieldsSetByFactory;
-  }
-
   Iterable<TypeHelper> get _allHelpers =>
       [_typeHelpers, _coreHelpers].expand((e) => e);
 
@@ -557,4 +458,115 @@ InvalidGenerationSourceError _createInvalidGenerationError(
 
   return new InvalidGenerationSourceError(message,
       todo: 'Make sure all of the types are serializable.');
+}
+
+/// Returns the set of fields that are written to via factory.
+/// Includes final fields that are written to in the constructor parameter list
+/// Excludes remaining final fields, as they can't be set in the factory body
+/// and shouldn't generated with toJson
+Set<FieldElement> _writeFactory(
+    StringBuffer buffer,
+    ClassElement classElement,
+    Map<String, FieldElement> fields,
+    String ignoreReason(String fieldName),
+    String deserializeForField(FieldElement field,
+        {ParameterElement ctorParam})) {
+  var fieldsSetByFactory = new Set<FieldElement>();
+  var className = classElement.displayName;
+  // Create the factory method
+
+  // Get the default constructor
+  // TODO: allow overriding the ctor used for the factory
+  var ctor = classElement.unnamedConstructor;
+  if (ctor == null) {
+    throw new UnsupportedError(
+        'The class `${classElement.name}` has no default constructor.');
+  }
+
+  var ctorArguments = <ParameterElement>[];
+  var ctorNamedArguments = <ParameterElement>[];
+
+  for (var arg in ctor.parameters) {
+    var field = fields[arg.name];
+
+    if (field == null) {
+      // ignore: deprecated_member_use
+      if (arg.parameterKind == ParameterKind.REQUIRED) {
+        var msg = 'Cannot populate the required constructor '
+            'argument: ${arg.displayName}.';
+
+        var additionalInfo = ignoreReason(arg.name);
+
+        if (additionalInfo != null) {
+          msg = '$msg $additionalInfo';
+        }
+
+        throw new UnsupportedError(msg);
+      }
+
+      continue;
+    }
+
+    // TODO: validate that the types match!
+    // ignore: deprecated_member_use
+    if (arg.parameterKind == ParameterKind.NAMED) {
+      ctorNamedArguments.add(arg);
+    } else {
+      ctorArguments.add(arg);
+    }
+    fieldsSetByFactory.add(field);
+  }
+
+  var undefinedArgs = [ctorArguments, ctorNamedArguments]
+      .expand((l) => l)
+      .where((pe) => pe.type.isUndefined)
+      .toList();
+  if (undefinedArgs.isNotEmpty) {
+    var description =
+        undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
+
+    throw new InvalidGenerationSourceError(
+        'At least one constructor argument has an invalid type: $description.',
+        todo: 'Check names and imports.');
+  }
+
+  // find fields that aren't already set by the constructor and that aren't final
+  var remainingFieldsForFactoryBody = fields.values
+      .where((field) => !field.isFinal)
+      .toSet()
+      .difference(fieldsSetByFactory);
+
+  //
+  // Generate the static factory method
+  //
+  buffer.write('new $className(');
+  buffer.writeAll(
+      ctorArguments.map((paramElement) => deserializeForField(
+          fields[paramElement.name],
+          ctorParam: paramElement)),
+      ', ');
+  if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
+    buffer.write(', ');
+  }
+  buffer.writeAll(ctorNamedArguments.map((paramElement) {
+    var value =
+        deserializeForField(fields[paramElement.name], ctorParam: paramElement);
+    return '${paramElement.name}: $value';
+  }), ', ');
+
+  buffer.write(')');
+  if (remainingFieldsForFactoryBody.isEmpty) {
+    buffer.writeln(';');
+  } else {
+    for (var field in remainingFieldsForFactoryBody) {
+      buffer.writeln();
+      buffer.write('      ..${field.name} = ');
+      buffer.write(deserializeForField(field));
+      fieldsSetByFactory.add(field);
+    }
+    buffer.writeln(';');
+  }
+  buffer.writeln();
+
+  return fieldsSetByFactory;
 }
