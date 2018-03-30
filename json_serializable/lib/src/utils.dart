@@ -121,11 +121,16 @@ int _sortByLocation(FieldElement a, FieldElement b) {
 
 final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 
+/// Writes the invocation of the default constructor – `new Class(...)` for the
+/// type defined in [classElement].
+///
+/// The invocation is written to [buffer].
+///
 /// Returns the set of fields that are written to via factory.
 /// Includes final fields that are written to in the constructor parameter list
 /// Excludes remaining final fields, as they can't be set in the factory body
 /// and shouldn't generated with toJson
-Set<FieldElement> writeFactory(
+Set<FieldElement> writeConstructorInvocation(
     StringBuffer buffer,
     ClassElement classElement,
     Map<String, FieldElement> fields,
@@ -134,11 +139,10 @@ Set<FieldElement> writeFactory(
         {ParameterElement ctorParam})) {
   var fieldsSetByFactory = new Set<FieldElement>();
   var className = classElement.displayName;
-  // Create the factory method
 
-  // Get the default constructor
   var ctor = classElement.unnamedConstructor;
   if (ctor == null) {
+    // TODO(kevmoo): support using another ctor - dart-lang/json_serializable#50
     throw new UnsupportedError(
         'The class `${classElement.name}` has no default constructor.');
   }
@@ -177,21 +181,10 @@ Set<FieldElement> writeFactory(
     fieldsSetByFactory.add(field);
   }
 
-  var undefinedArgs = [ctorArguments, ctorNamedArguments]
-      .expand((l) => l)
-      .where((pe) => pe.type.isUndefined)
-      .toList();
-  if (undefinedArgs.isNotEmpty) {
-    var description =
-        undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
+  _validateConstructorArguments(ctorArguments, ctorNamedArguments);
 
-    throw new InvalidGenerationSourceError(
-        'At least one constructor argument has an invalid type: $description.',
-        todo: 'Check names and imports.');
-  }
-
-  // find fields that aren't already set by the constructor and that aren't final
-  var remainingFieldsForFactoryBody = fields.values
+  // fields that aren't already set by the constructor and that aren't final
+  var remainingFieldsForInvocationBody = fields.values
       .where((field) => !field.isFinal)
       .toSet()
       .difference(fieldsSetByFactory);
@@ -215,10 +208,10 @@ Set<FieldElement> writeFactory(
   }), ', ');
 
   buffer.write(')');
-  if (remainingFieldsForFactoryBody.isEmpty) {
+  if (remainingFieldsForInvocationBody.isEmpty) {
     buffer.writeln(';');
   } else {
-    for (var field in remainingFieldsForFactoryBody) {
+    for (var field in remainingFieldsForInvocationBody) {
       buffer.writeln();
       buffer.write('      ..${field.name} = ');
       buffer.write(deserializeForField(field));
@@ -229,4 +222,20 @@ Set<FieldElement> writeFactory(
   buffer.writeln();
 
   return fieldsSetByFactory;
+}
+
+void _validateConstructorArguments(Iterable<ParameterElement> ctorArguments,
+    Iterable<ParameterElement> ctorNamedArguments) {
+  var undefinedArgs = [ctorArguments, ctorNamedArguments]
+      .expand((l) => l)
+      .where((pe) => pe.type.isUndefined)
+      .toList();
+  if (undefinedArgs.isNotEmpty) {
+    var description =
+        undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
+
+    throw new InvalidGenerationSourceError(
+        'At least one constructor argument has an invalid type: $description.',
+        todo: 'Check names and imports.');
+  }
 }

@@ -121,7 +121,7 @@ class JsonSerializableGenerator
           _deserializeForField(field, classAnnotation.nullable,
               ctorParam: ctorParam);
 
-      var fieldsSetByFactory = writeFactory(
+      var fieldsSetByFactory = writeConstructorInvocation(
           buffer, classElement, fields, ignoreReason, deserializeFun);
 
       // If there are fields that are final – that are not set via the generated
