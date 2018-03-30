@@ -122,44 +122,51 @@ int _sortByLocation(FieldElement a, FieldElement b) {
 final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 
 /// Writes the invocation of the default constructor – `new Class(...)` for the
-/// type defined in [classElement].
+/// type defined in [classElement] to the provided [buffer].
 ///
-/// The invocation is written to [buffer].
+/// If an parameter is required to invoke the constructor,
+/// [availableConstructorParameters] is checked to see if it is available. If
+/// [availableConstructorParameters] does not contain the parameter name,
+/// an [UnsupportedError] is thrown.
 ///
-/// Returns the set of fields that are written to via factory.
-/// Includes final fields that are written to in the constructor parameter list
-/// Excludes remaining final fields, as they can't be set in the factory body
-/// and shouldn't generated with toJson
-Set<FieldElement> writeConstructorInvocation(
+/// To improve the error details, [unavailableReasons] is checked for the
+/// unavailable constructor parameter. If the value is not `null`, it is
+/// included in the [UnsupportedError] message.
+///
+/// [writeableFields] are also populated, but only if they have not already
+/// been defined by a constructor parameter with the same name.
+///
+/// Set set of all constructor parameters and and fields that are populated is
+/// returned.
+Set<String> writeConstructorInvocation(
     StringBuffer buffer,
     ClassElement classElement,
-    Map<String, FieldElement> fields,
-    String ignoreReason(String fieldName),
-    String deserializeForField(FieldElement field,
+    Set<String> availableConstructorParameters,
+    Set<String> writeableFields,
+    Map<String, String> unavailableReasons,
+    String deserializeForField(String paramOrFieldName,
         {ParameterElement ctorParam})) {
-  var fieldsSetByFactory = new Set<FieldElement>();
   var className = classElement.displayName;
 
   var ctor = classElement.unnamedConstructor;
   if (ctor == null) {
     // TODO(kevmoo): support using another ctor - dart-lang/json_serializable#50
     throw new UnsupportedError(
-        'The class `${classElement.name}` has no default constructor.');
+        'The class `$className` has no default constructor.');
   }
 
-  var ctorArguments = <ParameterElement>[];
-  var ctorNamedArguments = <ParameterElement>[];
+  var usedCtorParamsAndFields = new Set<String>();
+  var constructorArguments = <ParameterElement>[];
+  var namedConstructorArguments = <ParameterElement>[];
 
   for (var arg in ctor.parameters) {
-    var field = fields[arg.name];
-
-    if (field == null) {
+    if (!availableConstructorParameters.contains(arg.name)) {
       // ignore: deprecated_member_use
       if (arg.parameterKind == ParameterKind.REQUIRED) {
         var msg = 'Cannot populate the required constructor '
             'argument: ${arg.displayName}.';
 
-        var additionalInfo = ignoreReason(arg.name);
+        var additionalInfo = unavailableReasons[arg.name];
 
         if (additionalInfo != null) {
           msg = '$msg $additionalInfo';
@@ -174,36 +181,33 @@ Set<FieldElement> writeConstructorInvocation(
     // TODO: validate that the types match!
     // ignore: deprecated_member_use
     if (arg.parameterKind == ParameterKind.NAMED) {
-      ctorNamedArguments.add(arg);
+      namedConstructorArguments.add(arg);
     } else {
-      ctorArguments.add(arg);
+      constructorArguments.add(arg);
     }
-    fieldsSetByFactory.add(field);
+    usedCtorParamsAndFields.add(arg.name);
   }
 
-  _validateConstructorArguments(ctorArguments, ctorNamedArguments);
+  _validateConstructorArguments(
+      constructorArguments.followedBy(namedConstructorArguments));
 
   // fields that aren't already set by the constructor and that aren't final
-  var remainingFieldsForInvocationBody = fields.values
-      .where((field) => !field.isFinal)
-      .toSet()
-      .difference(fieldsSetByFactory);
+  var remainingFieldsForInvocationBody =
+      writeableFields.toSet().difference(usedCtorParamsAndFields);
 
   //
   // Generate the static factory method
   //
   buffer.write('new $className(');
   buffer.writeAll(
-      ctorArguments.map((paramElement) => deserializeForField(
-          fields[paramElement.name],
-          ctorParam: paramElement)),
+      constructorArguments.map((paramElement) =>
+          deserializeForField(paramElement.name, ctorParam: paramElement)),
       ', ');
-  if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
+  if (constructorArguments.isNotEmpty && namedConstructorArguments.isNotEmpty) {
     buffer.write(', ');
   }
-  buffer.writeAll(ctorNamedArguments.map((paramElement) {
-    var value =
-        deserializeForField(fields[paramElement.name], ctorParam: paramElement);
+  buffer.writeAll(namedConstructorArguments.map((paramElement) {
+    var value = deserializeForField(paramElement.name, ctorParam: paramElement);
     return '${paramElement.name}: $value';
   }), ', ');
 
@@ -213,23 +217,21 @@ Set<FieldElement> writeConstructorInvocation(
   } else {
     for (var field in remainingFieldsForInvocationBody) {
       buffer.writeln();
-      buffer.write('      ..${field.name} = ');
+      buffer.write('      ..$field = ');
       buffer.write(deserializeForField(field));
-      fieldsSetByFactory.add(field);
+      usedCtorParamsAndFields.add(field);
     }
     buffer.writeln(';');
   }
   buffer.writeln();
 
-  return fieldsSetByFactory;
+  return usedCtorParamsAndFields;
 }
 
-void _validateConstructorArguments(Iterable<ParameterElement> ctorArguments,
-    Iterable<ParameterElement> ctorNamedArguments) {
-  var undefinedArgs = [ctorArguments, ctorNamedArguments]
-      .expand((l) => l)
-      .where((pe) => pe.type.isUndefined)
-      .toList();
+void _validateConstructorArguments(
+    Iterable<ParameterElement> constructorArguments) {
+  var undefinedArgs =
+      constructorArguments.where((pe) => pe.type.isUndefined).toList();
   if (undefinedArgs.isNotEmpty) {
     var description =
         undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');

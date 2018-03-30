@@ -83,16 +83,16 @@ class JsonSerializableGenerator
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of
     // these fields.
-    var ignoredFieldReasons = <String, String>{};
+    var unavailableReasons = <String, String>{};
 
     var accessibleFieldList = sortedFieldList.where((field) {
       if (!field.isPublic) {
-        ignoredFieldReasons[field.name] = 'It is assigned to a private field.';
+        unavailableReasons[field.name] = 'It is assigned to a private field.';
         return false;
       }
 
       if (_jsonKeyFor(field).ignore == true) {
-        ignoredFieldReasons[field.name] = 'It is assigned to an ignored field.';
+        unavailableReasons[field.name] = 'It is assigned to an ignored field.';
         return false;
       }
 
@@ -115,18 +115,23 @@ class JsonSerializableGenerator
       buffer.writeln(
           '${classElement.name} ${prefix}FromJson(Map<String, dynamic> json) =>');
 
-      String ignoreReason(String fieldName) => ignoredFieldReasons[fieldName];
-
-      String deserializeFun(FieldElement field, {ParameterElement ctorParam}) =>
-          _deserializeForField(field, classAnnotation.nullable,
+      String deserializeFun(String paramOrFieldName,
+              {ParameterElement ctorParam}) =>
+          _deserializeForField(
+              fields[paramOrFieldName], classAnnotation.nullable,
               ctorParam: ctorParam);
 
       var fieldsSetByFactory = writeConstructorInvocation(
-          buffer, classElement, fields, ignoreReason, deserializeFun);
+          buffer,
+          classElement,
+          fields.keys.toSet(),
+          fields.values.where((fe) => !fe.isFinal).map((fe) => fe.name).toSet(),
+          unavailableReasons,
+          deserializeFun);
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
-      fields.removeWhere((key, field) => !fieldsSetByFactory.contains(field));
+      fields.removeWhere((key, field) => !fieldsSetByFactory.contains(key));
     }
 
     // Now we check for duplicate JSON keys due to colliding annotations.
