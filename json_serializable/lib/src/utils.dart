@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/analyzer.dart';
 import 'package:analyzer/dart/element/element.dart';
 
 // ignore: implementation_imports
@@ -119,3 +120,113 @@ int _sortByLocation(FieldElement a, FieldElement b) {
 }
 
 final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
+
+/// Returns the set of fields that are written to via factory.
+/// Includes final fields that are written to in the constructor parameter list
+/// Excludes remaining final fields, as they can't be set in the factory body
+/// and shouldn't generated with toJson
+Set<FieldElement> writeFactory(
+    StringBuffer buffer,
+    ClassElement classElement,
+    Map<String, FieldElement> fields,
+    String ignoreReason(String fieldName),
+    String deserializeForField(FieldElement field,
+        {ParameterElement ctorParam})) {
+  var fieldsSetByFactory = new Set<FieldElement>();
+  var className = classElement.displayName;
+  // Create the factory method
+
+  // Get the default constructor
+  var ctor = classElement.unnamedConstructor;
+  if (ctor == null) {
+    throw new UnsupportedError(
+        'The class `${classElement.name}` has no default constructor.');
+  }
+
+  var ctorArguments = <ParameterElement>[];
+  var ctorNamedArguments = <ParameterElement>[];
+
+  for (var arg in ctor.parameters) {
+    var field = fields[arg.name];
+
+    if (field == null) {
+      // ignore: deprecated_member_use
+      if (arg.parameterKind == ParameterKind.REQUIRED) {
+        var msg = 'Cannot populate the required constructor '
+            'argument: ${arg.displayName}.';
+
+        var additionalInfo = ignoreReason(arg.name);
+
+        if (additionalInfo != null) {
+          msg = '$msg $additionalInfo';
+        }
+
+        throw new UnsupportedError(msg);
+      }
+
+      continue;
+    }
+
+    // TODO: validate that the types match!
+    // ignore: deprecated_member_use
+    if (arg.parameterKind == ParameterKind.NAMED) {
+      ctorNamedArguments.add(arg);
+    } else {
+      ctorArguments.add(arg);
+    }
+    fieldsSetByFactory.add(field);
+  }
+
+  var undefinedArgs = [ctorArguments, ctorNamedArguments]
+      .expand((l) => l)
+      .where((pe) => pe.type.isUndefined)
+      .toList();
+  if (undefinedArgs.isNotEmpty) {
+    var description =
+        undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
+
+    throw new InvalidGenerationSourceError(
+        'At least one constructor argument has an invalid type: $description.',
+        todo: 'Check names and imports.');
+  }
+
+  // find fields that aren't already set by the constructor and that aren't final
+  var remainingFieldsForFactoryBody = fields.values
+      .where((field) => !field.isFinal)
+      .toSet()
+      .difference(fieldsSetByFactory);
+
+  //
+  // Generate the static factory method
+  //
+  buffer.write('new $className(');
+  buffer.writeAll(
+      ctorArguments.map((paramElement) => deserializeForField(
+          fields[paramElement.name],
+          ctorParam: paramElement)),
+      ', ');
+  if (ctorArguments.isNotEmpty && ctorNamedArguments.isNotEmpty) {
+    buffer.write(', ');
+  }
+  buffer.writeAll(ctorNamedArguments.map((paramElement) {
+    var value =
+        deserializeForField(fields[paramElement.name], ctorParam: paramElement);
+    return '${paramElement.name}: $value';
+  }), ', ');
+
+  buffer.write(')');
+  if (remainingFieldsForFactoryBody.isEmpty) {
+    buffer.writeln(';');
+  } else {
+    for (var field in remainingFieldsForFactoryBody) {
+      buffer.writeln();
+      buffer.write('      ..${field.name} = ');
+      buffer.write(deserializeForField(field));
+      fieldsSetByFactory.add(field);
+    }
+    buffer.writeln(';');
+  }
+  buffer.writeln();
+
+  return fieldsSetByFactory;
+}
