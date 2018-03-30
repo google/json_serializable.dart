@@ -14,8 +14,8 @@ class MapHelper extends TypeHelper {
   const MapHelper();
 
   @override
-  String serialize(DartType targetType, String expression, bool nullable,
-      SerializeContext context) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -27,7 +27,7 @@ class MapHelper extends TypeHelper {
 
     _checkSafeKeyType(expression, keyType);
 
-    var subFieldValue = context.serialize(valueType, _closureArg, nullable);
+    var subFieldValue = context.serialize(valueType, _closureArg);
 
     if (_closureArg == subFieldValue) {
       return expression;
@@ -35,7 +35,7 @@ class MapHelper extends TypeHelper {
 
     if (context.useWrappers) {
       var method = '\$wrapMap';
-      if (nullable) {
+      if (context.nullable) {
         method = '${method}HandleNull';
       }
 
@@ -46,12 +46,12 @@ class MapHelper extends TypeHelper {
         '$expression.keys,'
         '$expression.values.map(($_closureArg) => $subFieldValue))';
 
-    return commonNullPrefix(nullable, expression, result);
+    return commonNullPrefix(context.nullable, expression, result);
   }
 
   @override
-  String deserialize(DartType targetType, String expression, bool nullable,
-      DeserializeContext context) {
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context) {
     if (!_coreMapChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -76,19 +76,19 @@ class MapHelper extends TypeHelper {
       // No mapping of the values is required!
 
       var result = 'new Map<String, $valueArg>.from($expression as Map)';
-      return commonNullPrefix(nullable, expression, result);
+      return commonNullPrefix(context.nullable, expression, result);
     }
 
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    var itemSubVal = context.deserialize(valueArg, _closureArg, nullable);
+    var itemSubVal = context.deserialize(valueArg, _closureArg);
 
     var result = 'new Map<String, $valueArg>.fromIterables('
         '($expression as Map<String, dynamic>).keys,'
         '($expression as Map).values.map(($_closureArg) => $itemSubVal))';
 
-    return commonNullPrefix(nullable, expression, result);
+    return commonNullPrefix(context.nullable, expression, result);
   }
 
   void _checkSafeKeyType(String expression, DartType keyArg) {

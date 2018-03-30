@@ -17,9 +17,13 @@
 
 ### `package:json_serializable/type_helper.dart`
 
+* **Breaking** The `nullable` parameter on `TypeHelper.serialize` and
+  `.deserialize` has been removed. It is now exposed in `SerializeContext` and
+   `DeserializeContext` abstract classes as a read-only property.
+
 * **Potentially Breaking** The `metadata` property on `SerializeContext` and
   `DeserializeContext` is now readonly. This would potentially break code that
-  extends these classes – which is not expected. 
+  extends these classes – which is not expected.
 
 ## 0.4.0
 
@@ -58,7 +62,7 @@
 
   * Replaces now deprecated `generators.dart` to access
   `JsonSerializableGenerator` and `JsonLiteralGenerator`.
-  
+
   * Adds the `jsonPartBuilder` function to make it easy to create a
     `PartBuilder`, without creating an explicit dependency on `source_gen`.
 
@@ -97,7 +101,7 @@
 ## 0.2.4
 
 * Moved the annotations in `annotations.dart` to `package:json_annotations`.
-  * Allows package authors to release code that has the corresponding 
+  * Allows package authors to release code that has the corresponding
     annotations without requiring package users to inherit all of the transitive
     dependencies.
 
@@ -134,17 +138,17 @@
 
 * **BREAKING** Types are now segmented into their own libraries.
 
-  * `package:json_serializable/generators.dart` contains `Generator` 
+  * `package:json_serializable/generators.dart` contains `Generator`
     implementations.
 
   * `package:json_serializable/annotations.dart` contains annotations.
     This library should be imported with your target classes.
 
   * `package:json_serializable/type_helpers.dart` contains `TypeHelper` classes
-    and related helpers which allow custom generation for specific types. 
+    and related helpers which allow custom generation for specific types.
 
 * **BREAKING** Generation fails for types that are not a JSON primitive or that
-  do not explicitly supports JSON serialization. 
+  do not explicitly supports JSON serialization.
 
 * **BREAKING** `TypeHelper`:
 

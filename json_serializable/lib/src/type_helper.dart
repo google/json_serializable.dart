@@ -17,13 +17,18 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
 }
 
 abstract class SerializeContext {
+  bool get nullable;
   bool get useWrappers;
-  String serialize(DartType fieldType, String expression, bool nullable);
+
+  /// [expression] may be just the name of the field or it may an expression
+  /// representing the serialization of a value.
+  String serialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
 }
 
 abstract class DeserializeContext {
-  String deserialize(DartType fieldType, String expression, bool nullable);
+  bool get nullable;
+  String deserialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
 }
 
@@ -46,8 +51,8 @@ abstract class TypeHelper {
   ///   "$expression.id";
   /// ```.
   // TODO(kevmoo) – document `context`
-  String serialize(DartType targetType, String expression, bool nullable,
-      SerializeContext context);
+  String serialize(
+      DartType targetType, String expression, SerializeContext context);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
   /// literal to into [targetType].
@@ -73,8 +78,8 @@ abstract class TypeHelper {
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
   // TODO(kevmoo) – document `context`
-  String deserialize(DartType targetType, String expression, bool nullable,
-      DeserializeContext context);
+  String deserialize(
+      DartType targetType, String expression, DeserializeContext context);
 }
 
 /// A [TypeChecker] for [String], [bool] and [num].
