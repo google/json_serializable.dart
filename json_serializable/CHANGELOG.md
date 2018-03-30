@@ -3,6 +3,8 @@
 * **BREAKING** Removed deprecated support for `require_library_directive` /
   `requireLibraryDirective` in `build_runner` configuration.
 
+* **BREAKING** Removed the deprecated `generators.dart` library.
+
 * Support the latest `package:source_gen`.
 
 * Private and ignored fields are now excluded when generating serialization and
