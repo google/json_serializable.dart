@@ -7,8 +7,6 @@
 
 * **BREAKING** Removed `jsonPartBuilder` function from public API.
 
-* Added `Iterable<TypeHelper> get allHelpers` to `JsonSerializableGenerator`.
-
 * Support the latest `package:source_gen`.
 
 * Private and ignored fields are now excluded when generating serialization and

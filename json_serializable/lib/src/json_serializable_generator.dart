@@ -18,6 +18,9 @@ import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
 import 'type_helpers/value_helper.dart';
 
+Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
+    generator._typeHelpers.followedBy(JsonSerializableGenerator._coreHelpers);
+
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
   static const _coreHelpers = const [
@@ -66,6 +69,4 @@ class JsonSerializableGenerator
   Future<String> generateForAnnotatedElement(
           Element element, ConstantReader annotation, _) =>
       generate(this, element, annotation);
-
-  Iterable<TypeHelper> get allHelpers => _typeHelpers.followedBy(_coreHelpers);
 }

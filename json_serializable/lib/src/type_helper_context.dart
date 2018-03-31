@@ -36,7 +36,7 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
 
   String _run(DartType targetType, String expression,
           String invoke(TypeHelper instance)) =>
-      _generator.allHelpers.map(invoke).firstWhere((r) => r != null,
+      allHelpersImpl(_generator).map(invoke).firstWhere((r) => r != null,
           orElse: () => throw new UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
