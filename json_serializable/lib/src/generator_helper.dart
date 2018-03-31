@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'constants.dart';
+import 'json_key_helpers.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helper_context.dart';
@@ -55,7 +56,7 @@ class GeneratorHelper {
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
     accessibleFields.fold(new Set<String>(), (Set<String> set, fe) {
-      var jsonKey = _jsonKeyFor(fe).name ?? fe.name;
+      var jsonKey = jsonKeyFor(fe).name ?? fe.name;
       if (!set.add(jsonKey)) {
         throw new InvalidGenerationSourceError(
             'More than one field has the JSON key `$jsonKey`.',
@@ -116,7 +117,7 @@ class GeneratorHelper {
         <String, FieldElement>{}, (map, field) {
       if (!field.isPublic) {
         unavailableReasons[field.name] = 'It is assigned to a private field.';
-      } else if (_jsonKeyFor(field).ignore == true) {
+      } else if (jsonKeyFor(field).ignore == true) {
         unavailableReasons[field.name] = 'It is assigned to an ignored field.';
       } else {
         map[field.name] = field;
@@ -314,42 +315,20 @@ void $toJsonMapHelperName(String key, dynamic value) {
   ///   or
   ///   `nullable` is `false`.
   bool _writeJsonValueNaive(FieldElement field) =>
-      (_jsonKeyFor(field).includeIfNull ?? _annotation.includeIfNull) ||
+      (jsonKeyFor(field).includeIfNull ?? _annotation.includeIfNull) ||
       !_nullable(field);
 
   /// Returns `true` if the field should be treated as potentially nullable.
   ///
   /// If no [JsonKey] annotation is present on the field, `true` is returned.
   bool _nullable(FieldElement field) =>
-      _jsonKeyFor(field).nullable ?? _annotation.nullable;
+      jsonKeyFor(field).nullable ?? _annotation.nullable;
 }
 
 String _safeNameAccess(FieldElement field) {
-  var name = _jsonKeyFor(field).name ?? field.name;
+  var name = jsonKeyFor(field).name ?? field.name;
   // TODO(kevmoo): JsonKey.name could also have quotes and other silly.
   return name.contains(r'$') ? "r'$name'" : "'$name'";
-}
-
-JsonKey _jsonKeyFor(FieldElement element) {
-  var key = _jsonKeyExpando[element];
-
-  if (key == null) {
-    // If an annotation exists on `element` the source is a 'real' field.
-    // If the result is `null`, check the getter – it is a property.
-    // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
-    var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
-        _jsonKeyChecker.firstAnnotationOfExact(element.getter);
-
-    _jsonKeyExpando[element] = key = obj == null
-        ? const JsonKey()
-        : new JsonKey(
-            name: obj.getField('name').toStringValue(),
-            nullable: obj.getField('nullable').toBoolValue(),
-            includeIfNull: obj.getField('includeIfNull').toBoolValue(),
-            ignore: obj.getField('ignore').toBoolValue());
-  }
-
-  return key;
 }
 
 JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
@@ -358,10 +337,6 @@ JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
         createFactory: annotation.read('createFactory').boolValue,
         nullable: annotation.read('nullable').boolValue,
         includeIfNull: annotation.read('includeIfNull').boolValue);
-
-final _jsonKeyExpando = new Expando<JsonKey>();
-
-final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
 InvalidGenerationSourceError _createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {
