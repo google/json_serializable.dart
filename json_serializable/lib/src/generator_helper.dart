@@ -16,37 +16,32 @@ import 'type_helper.dart';
 import 'type_helper_context.dart';
 import 'utils.dart';
 
-class GeneratorHelper {
+Future<String> generate(JsonSerializableGenerator generator, Element element,
+    ConstantReader annotation) {
+  if (element is! ClassElement) {
+    var friendlyName = friendlyNameForElement(element);
+    throw new InvalidGenerationSourceError(
+        'Generator cannot target `$friendlyName`.',
+        todo: 'Remove the JsonSerializable annotation from `$friendlyName`.');
+  }
+
+  var classElement = element as ClassElement;
+  var classAnnotation = _valueForAnnotation(annotation);
+  var helper = new _GeneratorHelper(generator, classElement, classAnnotation);
+  return helper._generate();
+}
+
+class _GeneratorHelper {
   final ClassElement _element;
   final JsonSerializable _annotation;
   final JsonSerializableGenerator _generator;
   final StringBuffer _buffer = new StringBuffer();
 
   String get _prefix => '_\$${_element.name}';
+  String get _mixClassName => '${_prefix}SerializerMixin';
+  String get _helpClassName => '${_prefix}JsonMapWrapper';
 
-  String get mixClassName => '${_prefix}SerializerMixin';
-  String get helpClassName => '${_prefix}JsonMapWrapper';
-
-  GeneratorHelper(this._generator, this._element, this._annotation);
-
-  static Future<String> generate(JsonSerializableGenerator generator,
-      Element element, ConstantReader annotation) {
-    if (element is! ClassElement) {
-      var friendlyName = friendlyNameForElement(element);
-      throw new InvalidGenerationSourceError(
-          'Generator cannot target `$friendlyName`.',
-          todo: 'Remove the JsonSerializable annotation from `$friendlyName`.');
-    }
-
-    var classElement = element as ClassElement;
-
-    // Get all of the fields that need to be assigned
-    var classAnnotation = _valueForAnnotation(annotation);
-
-    var helper = new GeneratorHelper(generator, classElement, classAnnotation);
-
-    return helper._generate();
-  }
+  _GeneratorHelper(this._generator, this._element, this._annotation);
 
   Future<String> _generate() async {
     assert(_buffer.isEmpty);
@@ -69,7 +64,7 @@ class GeneratorHelper {
       //
       // Generate the mixin class
       //
-      _buffer.writeln('abstract class $mixClassName {');
+      _buffer.writeln('abstract class $_mixClassName {');
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
@@ -83,7 +78,7 @@ class GeneratorHelper {
       var writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
       if (_generator.useWrappers) {
-        _buffer.writeln('=> new $helpClassName(this);');
+        _buffer.writeln('=> new $_helpClassName(this);');
       } else {
         if (writeNaive) {
           // write simple `toJson` method that includes all keys...
@@ -158,9 +153,9 @@ class GeneratorHelper {
   void _writeWrapper(Iterable<FieldElement> fields) {
     _buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
-    _buffer.writeln('''class $helpClassName extends \$JsonMapWrapper {
-      final $mixClassName _v;
-      $helpClassName(this._v);
+    _buffer.writeln('''class $_helpClassName extends \$JsonMapWrapper {
+      final $_mixClassName _v;
+      $_helpClassName(this._v);
     ''');
 
     if (fields.every(_writeJsonValueNaive)) {

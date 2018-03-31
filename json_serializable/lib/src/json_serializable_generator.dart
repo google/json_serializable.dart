@@ -65,7 +65,7 @@ class JsonSerializableGenerator
   @override
   Future<String> generateForAnnotatedElement(
           Element element, ConstantReader annotation, _) =>
-      GeneratorHelper.generate(this, element, annotation);
+      generate(this, element, annotation);
 
   Iterable<TypeHelper> get allHelpers => _typeHelpers.followedBy(_coreHelpers);
 }
