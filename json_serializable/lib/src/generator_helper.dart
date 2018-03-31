@@ -5,7 +5,6 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -13,6 +12,7 @@ import 'package:source_gen/source_gen.dart';
 import 'constants.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
+import 'type_helper_context.dart';
 import 'utils.dart';
 
 class GeneratorHelper {
@@ -303,8 +303,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
     }
   }
 
-  _TypeHelperContext _getHelperContext(FieldElement field) =>
-      new _TypeHelperContext(_generator, field.metadata, _nullable(field));
+  TypeHelperContext _getHelperContext(FieldElement field) =>
+      new TypeHelperContext(_generator, field.metadata, _nullable(field));
 
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.
@@ -322,39 +322,6 @@ void $toJsonMapHelperName(String key, dynamic value) {
   /// If no [JsonKey] annotation is present on the field, `true` is returned.
   bool _nullable(FieldElement field) =>
       _jsonKeyFor(field).nullable ?? _annotation.nullable;
-}
-
-class _TypeHelperContext implements SerializeContext, DeserializeContext {
-  final JsonSerializableGenerator _generator;
-
-  @override
-  bool get useWrappers => _generator.useWrappers;
-
-  @override
-  final List<ElementAnnotation> metadata;
-
-  @override
-  final bool nullable;
-
-  _TypeHelperContext(this._generator, this.metadata, this.nullable);
-
-  @override
-  String serialize(DartType targetType, String expression) => _run(
-      targetType,
-      expression,
-      (TypeHelper th) => th.serialize(targetType, expression, this));
-
-  @override
-  String deserialize(DartType targetType, String expression) => _run(
-      targetType,
-      expression,
-      (TypeHelper th) => th.deserialize(targetType, expression, this));
-
-  String _run(DartType targetType, String expression,
-          String invoke(TypeHelper instance)) =>
-      _generator.allHelpers.map(invoke).firstWhere((r) => r != null,
-          orElse: () => throw new UnsupportedTypeError(
-              targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
 
 String _safeNameAccess(FieldElement field) {
@@ -395,9 +362,6 @@ JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
 final _jsonKeyExpando = new Expando<JsonKey>();
 
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
-
-final _notSupportedWithTypeHelpersMsg =
-    'None of the provided `TypeHelper` instances support the defined type.';
 
 InvalidGenerationSourceError _createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {
