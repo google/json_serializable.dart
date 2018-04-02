@@ -11,7 +11,12 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
 
 import 'package:source_gen/source_gen.dart';
 
+// TODO: still need handle tripe singe/double quotes within `value`
 String escapeDartString(String value) {
+  if (value.contains('\n')) {
+    return "r'''\n$value'''";
+  }
+
   var containsSingleQuote = value.contains("'");
   var contains$ = value.contains(r'$');
 

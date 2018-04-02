@@ -11,6 +11,10 @@ part of 'json_literal.dart';
 // **************************************************************************
 
 final _$dataJsonLiteral = [
+  r'''
+
+new lines are fun!
+''',
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -38,6 +42,10 @@ final _$dataJsonLiteral = [
   }
 ];
 const _$asConstJsonLiteral = const [
+  r'''
+
+new lines are fun!
+''',
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
