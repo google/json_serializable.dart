@@ -322,8 +322,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
 
 String _safeNameAccess(FieldElement field) {
   var name = jsonKeyFor(field).name ?? field.name;
-  // TODO(kevmoo): JsonKey.name could also have quotes and other silly.
-  return name.contains(r'$') ? "r'$name'" : "'$name'";
+  return escapeDartString(name);
 }
 
 JsonSerializable _valueForAnnotation(ConstantReader annotation) =>

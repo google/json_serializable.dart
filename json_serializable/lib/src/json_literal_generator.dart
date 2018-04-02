@@ -12,6 +12,8 @@ import 'package:source_gen/source_gen.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import 'utils.dart';
+
 class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
   const JsonLiteralGenerator();
 
@@ -44,7 +46,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 String _jsonLiteralAsDart(dynamic value, bool asConst) {
   if (value == null) return 'null';
 
-  if (value is String) return _jsonStringAsDart(value);
+  if (value is String) return escapeDartString(value);
 
   if (value is bool || value is num) return value.toString();
 
@@ -74,7 +76,7 @@ String _jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
     } else {
       buffer.writeln(',');
     }
-    buffer.write(_jsonStringAsDart(k));
+    buffer.write(escapeDartString(k));
     buffer.write(':');
     buffer.write(_jsonLiteralAsDart(v, asConst));
   });
@@ -82,35 +84,4 @@ String _jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
   buffer.write('}');
 
   return buffer.toString();
-}
-
-String _jsonStringAsDart(String value) {
-  var containsSingleQuote = value.contains("'");
-  var contains$ = value.contains(r'$');
-
-  if (containsSingleQuote) {
-    if (value.contains('"')) {
-      // `value` contains both single and double quotes as well as `$`.
-      // The only safe way to wrap the content is to escape all of the
-      // problematic characters.
-      var string = value
-          .replaceAll('\$', '\\\$')
-          .replaceAll('"', '\\"')
-          .replaceAll("'", "\\'");
-      return "'$string'";
-    } else if (contains$) {
-      // `value` contains "'" and "$", but not '"'.
-      // Safely wrap it in a raw string within double-quotes.
-      return 'r"$value"';
-    }
-    return '"$value"';
-  } else if (contains$) {
-    // `value` contains "$", but no "'"
-    // wrap it in a raw string using single quotes
-    return "r'$value'";
-  }
-
-  // `value` contains no problematic characters - except for '"' maybe.
-  // Wrap it in standard single-quotes.
-  return "'$value'";
 }

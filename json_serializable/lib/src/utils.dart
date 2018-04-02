@@ -11,6 +11,37 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
 
 import 'package:source_gen/source_gen.dart';
 
+String escapeDartString(String value) {
+  var containsSingleQuote = value.contains("'");
+  var contains$ = value.contains(r'$');
+
+  if (containsSingleQuote) {
+    if (value.contains('"')) {
+      // `value` contains both single and double quotes as well as `$`.
+      // The only safe way to wrap the content is to escape all of the
+      // problematic characters.
+      var string = value
+          .replaceAll('\$', '\\\$')
+          .replaceAll('"', '\\"')
+          .replaceAll("'", "\\'");
+      return "'$string'";
+    } else if (contains$) {
+      // `value` contains "'" and "$", but not '"'.
+      // Safely wrap it in a raw string within double-quotes.
+      return 'r"$value"';
+    }
+    return '"$value"';
+  } else if (contains$) {
+    // `value` contains "$", but no "'"
+    // wrap it in a raw string using single quotes
+    return "r'$value'";
+  }
+
+  // `value` contains no problematic characters - except for '"' maybe.
+  // Wrap it in standard single-quotes.
+  return "'$value'";
+}
+
 String commonNullPrefix(
         bool nullable, String expression, String unsafeExpression) =>
     nullable
