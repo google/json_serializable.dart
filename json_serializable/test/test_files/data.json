@@ -1,5 +1,13 @@
 [
- "\nnew lines are fun!\n",
+ {
+  "backspace": "\b",
+  "tab": "\t",
+  "new line": "\n",
+  "vertical tab": "\u000b",
+  "form feed": "\r",
+  "carriage return": "\r",
+  "delete": "\u007F"
+ },
  "simple string",
  "'string with single quotes'",
  "\"string with double quotes\"",

@@ -15,9 +15,12 @@ import 'package:source_gen/source_gen.dart';
 /// Dart code.
 // TODO: still need handle triple singe/double quotes within `value`
 String escapeDartString(String value) {
-  if (value.contains('\n')) {
-    return "r'''\n$value'''";
-  }
+  value = value.replaceAll('\\', r'\\');
+  value = value.replaceAllMapped(_escapeRegExp, (match) {
+    var mapped = _escapeMap[match[0]];
+    if (mapped != null) return mapped;
+    return _getHexLiteral(match[0]);
+  });
 
   var containsDollar = value.contains(r'$');
 
@@ -46,6 +49,28 @@ String escapeDartString(String value) {
   // `value` contains no problematic characters - except for '"' maybe.
   // Wrap it in standard single-quotes.
   return "'$value'";
+}
+
+/// A [Map] between whitespace characters and their escape sequences.
+const _escapeMap = const {
+  '\b': r'\b', // 08 - backspace
+  '\t': r'\t', // 09 - tab
+  '\n': r'\n', // 0A - new line
+  '\v': r'\v', // 0B - vertical tab
+  '\f': r'\f', // 0C - form feed
+  '\r': r'\r', // 0D - carriage return
+  '\x7F': r'\x7F', // delete
+};
+
+/// A [RegExp] that matches whitespace characters that should be escaped.
+final _escapeRegExp = new RegExp(
+    '[\\x00-\\x07\\x0E-\\x1F${_escapeMap.keys.map(_getHexLiteral).join()}]');
+
+/// Given single-character string, return the hex-escaped equivalent.
+String _getHexLiteral(String input) {
+  var rune = input.runes.single;
+  var value = rune.toRadixString(16).toUpperCase().padLeft(2, '0');
+  return '\\x$value';
 }
 
 String commonNullPrefix(

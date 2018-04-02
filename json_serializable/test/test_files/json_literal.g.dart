@@ -11,10 +11,15 @@ part of 'json_literal.dart';
 // **************************************************************************
 
 final _$dataJsonLiteral = [
-  r'''
-
-new lines are fun!
-''',
+  {
+    'backspace': '\b',
+    'tab': '\t',
+    'new line': '\n',
+    'vertical tab': '\v',
+    'form feed': '\r',
+    'carriage return': '\r',
+    'delete': '\x7F'
+  },
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -42,10 +47,15 @@ new lines are fun!
   }
 ];
 const _$asConstJsonLiteral = const [
-  r'''
-
-new lines are fun!
-''',
+  const {
+    'backspace': '\b',
+    'tab': '\t',
+    'new line': '\n',
+    'vertical tab': '\v',
+    'form feed': '\r',
+    'carriage return': '\r',
+    'delete': '\x7F'
+  },
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
