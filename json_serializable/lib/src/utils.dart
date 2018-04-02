@@ -19,10 +19,9 @@ String escapeDartString(String value) {
     return "r'''\n$value'''";
   }
 
-  var containsSingleQuote = value.contains("'");
   var containsDollar = value.contains(r'$');
 
-  if (containsSingleQuote) {
+  if (value.contains("'")) {
     if (value.contains('"')) {
       // `value` contains both single and double quotes.
       // The only safe way to wrap the content is to escape all of the
