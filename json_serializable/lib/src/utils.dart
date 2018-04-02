@@ -11,32 +11,34 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
 
 import 'package:source_gen/source_gen.dart';
 
-// TODO: still need handle tripe singe/double quotes within `value`
+/// Returns a quoted String literal for [value] that can be used in generated
+/// Dart code.
+// TODO: still need handle triple singe/double quotes within `value`
 String escapeDartString(String value) {
   if (value.contains('\n')) {
     return "r'''\n$value'''";
   }
 
   var containsSingleQuote = value.contains("'");
-  var contains$ = value.contains(r'$');
+  var containsDollar = value.contains(r'$');
 
   if (containsSingleQuote) {
     if (value.contains('"')) {
-      // `value` contains both single and double quotes as well as `$`.
+      // `value` contains both single and double quotes.
       // The only safe way to wrap the content is to escape all of the
       // problematic characters.
       var string = value
-          .replaceAll('\$', '\\\$')
-          .replaceAll('"', '\\"')
-          .replaceAll("'", "\\'");
+          .replaceAll(r'$', r'\$')
+          .replaceAll('"', r'\"')
+          .replaceAll("'", r"\'");
       return "'$string'";
-    } else if (contains$) {
+    } else if (containsDollar) {
       // `value` contains "'" and "$", but not '"'.
       // Safely wrap it in a raw string within double-quotes.
       return 'r"$value"';
     }
     return '"$value"';
-  } else if (contains$) {
+  } else if (containsDollar) {
     // `value` contains "$", but no "'"
     // wrap it in a raw string using single quotes
     return "r'$value'";
