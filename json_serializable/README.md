@@ -11,30 +11,18 @@ Given a library `example.dart` with an `Person` class annotated with
 `@JsonSerializable()`:
 
 ```dart
-library json_serializable.example;
-
 import 'package:json_annotation/json_annotation.dart';
+
 part 'example.g.dart';
 
 @JsonSerializable()
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName;
-  @JsonKey(includeIfNull: false)
-  final String middleName;
   final String lastName;
 
-  @JsonKey(name: 'date-of-birth', nullable: false)
   final DateTime dateOfBirth;
 
-  @JsonKey(name: 'last-order')
-  final DateTime lastOrder;
-
-  @JsonKey(nullable: false)
-  List<Order> orders;
-
-  Person(this.firstName, this.lastName, this.dateOfBirth,
-      {this.middleName, this.lastOrder, List<Order> orders})
-      : this.orders = orders ?? <Order>[];
+  Person({this.firstName, this.lastName, this.dateOfBirth});
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
@@ -43,41 +31,24 @@ class Person extends Object with _$PersonSerializerMixin {
 Building creates the corresponding part `example.g.dart`:
 
 ```dart
+part of 'example.dart';
+
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
-    json['firstName'] as String,
-    json['lastName'] as String,
-    DateTime.parse(json['date-of-birth'] as String),
-    middleName: json['middleName'] as String,
-    lastOrder: json['last-order'] == null
+    firstName: json['firstName'] as String,
+    lastName: json['lastName'] as String,
+    dateOfBirth: json['dateOfBirth'] == null
         ? null
-        : DateTime.parse(json['last-order'] as String),
-    orders: (json['orders'] as List)
-        .map((e) => new Order.fromJson(e as Map<String, dynamic>))
-        .toList());
+        : DateTime.parse(json['dateOfBirth'] as String));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
-  String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
-  DateTime get lastOrder;
-  List<Order> get orders;
-  Map<String, dynamic> toJson() {
-    var $map = <String, dynamic>{};
-    void $writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        $map[key] = value;
-      }
-    }
-
-    $map['firstName'] = firstName;
-    $writeNotNull('middleName', middleName);
-    $map['lastName'] = lastName;
-    $map['date-of-birth'] = dateOfBirth.toIso8601String();
-    $map['last-order'] = lastOrder?.toIso8601String();
-    $map['orders'] = orders;
-    return $map;
-  }
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'firstName': firstName,
+        'lastName': lastName,
+        'dateOfBirth': dateOfBirth?.toIso8601String()
+      };
 }
 ```
 
