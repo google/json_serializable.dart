@@ -1,5 +1,5 @@
 name: json_annotation
-version: 0.2.3-dev
+version: 0.2.3
 description: Annotations for the json_serializable package
 homepage: https://github.com/dart-lang/json_serializable
 author: Dart Team <misc@dartlang.org>
