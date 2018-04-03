@@ -32,6 +32,7 @@ final List<BuilderApplication> builders = [
   applyToRoot(jsonPartBuilder(header: _copyrightHeader),
       generateFor: const InputSet(
         include: const [
+          'example/example.dart',
           'test/test_files/json_literal.dart',
           'test/test_files/json_test_example.dart',
           'test/test_files/json_test_example.non_nullable.dart',
