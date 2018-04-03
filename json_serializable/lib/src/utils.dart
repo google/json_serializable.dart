@@ -13,7 +13,6 @@ import 'package:source_gen/source_gen.dart';
 
 /// Returns a quoted String literal for [value] that can be used in generated
 /// Dart code.
-// TODO: still need handle triple singe/double quotes within `value`
 String escapeDartString(String value) {
   var hasSingleQuote = false;
   var hasDoubleQuote = false;
@@ -34,9 +33,7 @@ String escapeDartString(String value) {
     }
 
     canBeRaw = false;
-    var mapped = _escapeMap[match[0]];
-    if (mapped != null) return mapped;
-    return _getHexLiteral(match[0]);
+    return _escapeMap[value] ?? _getHexLiteral(value);
   });
 
   if (!hasDollar) {
@@ -65,9 +62,11 @@ String escapeDartString(String value) {
 
   // The only safe way to wrap the content is to escape all of the
   // problematic characters - `$`, `'`, and `"`
-  var string = value.replaceAll(new RegExp(r"""(?=[$'"])"""), r'\');
+  var string = value.replaceAll(_dollarQuoteRegexp, r'\');
   return "'$string'";
 }
+
+final _dollarQuoteRegexp = new RegExp(r"""(?=[$'"])""");
 
 /// A [Map] between whitespace characters & `\` and their escape sequences.
 const _escapeMap = const {
