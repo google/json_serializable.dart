@@ -2,10 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// TODO(kevmoo): replace with a common utility
-//               https://github.com/dart-lang/build/issues/716
-@Tags(const ['presubmit-only'])
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -13,19 +9,17 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
-  String pkgRoot;
-
-  setUpAll(() {
-    pkgRoot = _runProc('git', ['rev-parse', '--show-toplevel']);
+  // TODO(kevmoo): replace with a common utility
+  //               https://github.com/dart-lang/build/issues/716
+  test('ensure local build succeeds with no changes', () {
+    var pkgRoot = _runProc('git', ['rev-parse', '--show-toplevel']);
     var currentDir = Directory.current.resolveSymbolicLinksSync();
 
     if (!p.equals(p.join(pkgRoot, 'json_serializable'), currentDir)) {
       throw new StateError('Expected the git root ($pkgRoot) '
           'to match the current directory ($currentDir).');
     }
-  });
 
-  test('ensure local build succeeds with no changes', () {
     // 1 - get a list of modified `.g.dart` files - should be empty
     expect(_changedGeneratedFiles(), isEmpty);
 
@@ -37,7 +31,7 @@ void main() {
 
     // 3 - get a list of modified `.g.dart` files - should still be empty
     expect(_changedGeneratedFiles(), isEmpty);
-  });
+  }, tags: 'presubmit-only');
 }
 
 final _whitespace = new RegExp(r'\s');
