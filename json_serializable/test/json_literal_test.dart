@@ -20,7 +20,7 @@ main() {
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
     // FYI: nice to re-write the test data when it's changed to keep it pretty
     // ... but not a good idea to ship this
-    // dataFile.writeAsStringSync(dataString);
+    // dataFile.writeAsStringSync(dataString.replaceAll('\u007F', '\\u007F'));
     var dartString = loudEncode(data);
 
     expect(dartString, dataString);
