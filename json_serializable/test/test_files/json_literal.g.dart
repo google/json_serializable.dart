@@ -11,10 +11,15 @@ part of 'json_literal.dart';
 // **************************************************************************
 
 final _$dataJsonLiteral = [
-  r'''
-
-new lines are fun!
-''',
+  {
+    'backspace': '\b',
+    'tab': '\t',
+    'new line': '\n',
+    'vertical tab': '\v',
+    'form feed': '\r',
+    'carriage return': '\r',
+    'delete': '\x7F'
+  },
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -25,6 +30,12 @@ new lines are fun!
   '""hello""',
   r'""$double quotes and dollar signs""',
   '\$scary with \'single quotes\' and triple-doubles \"\"\"oh no!',
+  'Dollar signs: \$ vs \\\$ vs \\\\\$',
+  'Slashes \\nice slash\\',
+  'slashes \\ and dollars \$ with white \n space',
+  "'''triple quoted strings should be\nfine!'''",
+  '"""as with triple-double-quotes"""',
+  '\"\"\"as with triple-double-quotes even when \'mixed\'\"\"\"',
   null,
   true,
   false,
@@ -42,10 +53,15 @@ new lines are fun!
   }
 ];
 const _$asConstJsonLiteral = const [
-  r'''
-
-new lines are fun!
-''',
+  const {
+    'backspace': '\b',
+    'tab': '\t',
+    'new line': '\n',
+    'vertical tab': '\v',
+    'form feed': '\r',
+    'carriage return': '\r',
+    'delete': '\x7F'
+  },
   'simple string',
   "'string with single quotes'",
   '"string with double quotes"',
@@ -56,6 +72,12 @@ new lines are fun!
   '""hello""',
   r'""$double quotes and dollar signs""',
   '\$scary with \'single quotes\' and triple-doubles \"\"\"oh no!',
+  'Dollar signs: \$ vs \\\$ vs \\\\\$',
+  'Slashes \\nice slash\\',
+  'slashes \\ and dollars \$ with white \n space',
+  "'''triple quoted strings should be\nfine!'''",
+  '"""as with triple-double-quotes"""',
+  '\"\"\"as with triple-double-quotes even when \'mixed\'\"\"\"',
   null,
   true,
   false,

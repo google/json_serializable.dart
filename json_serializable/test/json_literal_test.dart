@@ -14,13 +14,13 @@ import 'test_utils.dart';
 main() {
   test('literal round-trip', () {
     var dataFilePath =
-        p.join(getPackagePath(), 'test', 'test_files', 'data.json');
+        p.join(getPackagePath(), 'test', 'test_files', 'json_literal.json');
     var dataFile = new File(dataFilePath);
 
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
     // FYI: nice to re-write the test data when it's changed to keep it pretty
     // ... but not a good idea to ship this
-    // dataFile.writeAsStringSync(dataString);
+    // dataFile.writeAsStringSync(dataString.replaceAll('\u007F', '\\u007F'));
     var dartString = loudEncode(data);
 
     expect(dartString, dataString);
