@@ -5,8 +5,8 @@
 import 'package:json_annotation/json_annotation.dart';
 part 'json_literal.g.dart';
 
-@JsonLiteral('data.json')
+@JsonLiteral('json_literal.json')
 List get data => _$dataJsonLiteral;
 
-@JsonLiteral('data.json', asConst: true)
+@JsonLiteral('json_literal.json', asConst: true)
 List get asConst => _$asConstJsonLiteral;
