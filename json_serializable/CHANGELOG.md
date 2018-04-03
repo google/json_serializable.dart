@@ -15,6 +15,8 @@
 * Throw an exception if a private field or an ignored field is referenced by a
   required constructor argument.
 
+* More comprehensive escaping of string literals.
+
 ### `package:json_serializable/type_helper.dart`
 
 * **Breaking** The `nullable` parameter on `TypeHelper.serialize` and
