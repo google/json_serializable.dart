@@ -4,12 +4,16 @@
 
 import 'package:analyzer/analyzer.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
     show InheritanceManager;
 
 import 'package:source_gen/source_gen.dart';
+
+bool isEnum(DartType targetType) =>
+    targetType is InterfaceType && targetType.element.isEnum;
 
 /// Returns a quoted String literal for [value] that can be used in generated
 /// Dart code.
