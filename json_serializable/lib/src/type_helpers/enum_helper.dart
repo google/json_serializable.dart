@@ -14,27 +14,28 @@ class EnumHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, SerializeContext context) {
-    if (targetType is InterfaceType && targetType.element.isEnum) {
-      return commonNullPrefix(
-          context.nullable, expression, "$expression.toString().split('.')[1]");
+    if (!isEnum(targetType)) {
+      return null;
     }
 
-    return null;
+    return commonNullPrefix(
+        context.nullable, expression, "$expression.toString().split('.')[1]");
   }
 
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    if (targetType is InterfaceType && targetType.element.isEnum) {
-      var wrappedExpression =
-          simpleExpression.hasMatch(expression) ? expression : '{$expression}';
-
-      return commonNullPrefix(
-          context.nullable,
-          expression,
-          '$targetType.values.singleWhere('
-          "(x) => x.toString() == '$targetType.\$$wrappedExpression')");
+    if (!isEnum(targetType)) {
+      return null;
     }
-    return null;
+
+    var wrappedExpression =
+        simpleExpression.hasMatch(expression) ? expression : '{$expression}';
+
+    return commonNullPrefix(
+        context.nullable,
+        expression,
+        '$targetType.values.singleWhere('
+        "(x) => x.toString() == '$targetType.\$$wrappedExpression')");
   }
 }
