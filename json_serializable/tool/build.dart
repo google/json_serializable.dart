@@ -4,6 +4,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io' show exitCode;
 
 import 'package:build/build.dart';
 import 'package:build_config/build_config.dart';
@@ -130,6 +131,6 @@ class _Replacement {
   }
 }
 
-main(List<String> args) {
-  run(args, builders);
+main(List<String> args) async {
+  exitCode = await run(args, builders);
 }
