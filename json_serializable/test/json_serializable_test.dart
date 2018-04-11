@@ -29,9 +29,9 @@ void main() {
   });
 
   group('without wrappers',
-      () => _registerTests(new JsonSerializableGenerator()));
+      () => _registerTests(const JsonSerializableGenerator()));
   group('with wrapper',
-      () => _registerTests(new JsonSerializableGenerator(useWrappers: true)));
+      () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
 }
 
 void _registerTests(JsonSerializableGenerator generator) {
