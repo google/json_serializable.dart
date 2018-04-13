@@ -10,3 +10,8 @@ List get data => _$dataJsonLiteral;
 
 @JsonLiteral('json_literal.json', asConst: true)
 List get asConst => _$asConstJsonLiteral;
+
+/// From https://github.com/minimaxir/big-list-of-naughty-strings
+/// blns.json @ 96f50492b278aeb2bfa40c4acbdbf6311312bf30
+@JsonLiteral('big-list-of-naughty-strings.json', asConst: true)
+List get naughtyStrings => _$naughtyStringsJsonLiteral;
