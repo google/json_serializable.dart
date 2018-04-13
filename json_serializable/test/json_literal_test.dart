@@ -26,7 +26,7 @@ main() {
     expect(dartString, dataString);
   });
 
-  test('naught strings', () {
+  test('naughty strings', () {
     var dataFilePath = p.join(getPackagePath(), 'test', 'test_files',
         'big-list-of-naughty-strings.json');
     var dataFile = new File(dataFilePath);
