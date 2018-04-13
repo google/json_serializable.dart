@@ -25,4 +25,15 @@ main() {
 
     expect(dartString, dataString);
   });
+
+  test('naught strings', () {
+    var dataFilePath = p.join(getPackagePath(), 'test', 'test_files',
+        'big-list-of-naughty-strings.json');
+    var dataFile = new File(dataFilePath);
+
+    var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
+    var dartString = loudEncode(naughtyStrings);
+
+    expect(dartString, dataString);
+  });
 }
