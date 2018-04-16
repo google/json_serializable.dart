@@ -104,40 +104,6 @@ String commonNullPrefix(
         ? '$expression == null ? null : $unsafeExpression'
         : unsafeExpression;
 
-@deprecated
-String friendlyNameForElement(Element element) {
-  var friendlyName = element.displayName;
-
-  if (friendlyName == null) {
-    throw new ArgumentError(
-        'Cannot get friendly name for $element - ${element.runtimeType}.');
-  }
-
-  var names = <String>[friendlyName];
-  if (element is ClassElement) {
-    names.insert(0, 'class');
-    if (element.isAbstract) {
-      names.insert(0, 'abstract');
-    }
-  }
-  if (element is VariableElement) {
-    names.insert(0, element.type.toString());
-
-    if (element.isConst) {
-      names.insert(0, 'const');
-    }
-
-    if (element.isFinal) {
-      names.insert(0, 'final');
-    }
-  }
-  if (element is LibraryElement) {
-    names.insert(0, 'library');
-  }
-
-  return names.join(' ');
-}
-
 /// Returns a [Set] of all instance [FieldElement] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
