@@ -1,3 +1,8 @@
+## 0.5.1
+
+* Updated minimum `package:source_gen` dependency to `0.8.1` which includes
+  improved error messages.
+
 ## 0.5.0
 
 * **BREAKING** Removed deprecated support for `require_library_directive` /

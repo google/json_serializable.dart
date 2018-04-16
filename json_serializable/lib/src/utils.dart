@@ -104,7 +104,7 @@ String commonNullPrefix(
         ? '$expression == null ? null : $unsafeExpression'
         : unsafeExpression;
 
-// Copied from pkg/source_gen - lib/src/utils.
+@deprecated
 String friendlyNameForElement(Element element) {
   var friendlyName = element.displayName;
 
@@ -166,7 +166,8 @@ Set<FieldElement> createSortedFieldSet(ClassElement element) {
 
     throw new InvalidGenerationSourceError(
         'At least one field has an invalid type: $description.',
-        todo: 'Check names and imports.');
+        todo: 'Check names and imports.',
+        element: undefinedFields.first);
   }
 
   // Sort these in the order in which they appear in the class
@@ -277,7 +278,7 @@ Set<String> writeConstructorInvocation(
   }
 
   _validateConstructorArguments(
-      constructorArguments.followedBy(namedConstructorArguments));
+      classElement, constructorArguments.followedBy(namedConstructorArguments));
 
   // fields that aren't already set by the constructor and that aren't final
   var remainingFieldsForInvocationBody =
@@ -317,7 +318,7 @@ Set<String> writeConstructorInvocation(
 }
 
 void _validateConstructorArguments(
-    Iterable<ParameterElement> constructorArguments) {
+    ClassElement element, Iterable<ParameterElement> constructorArguments) {
   var undefinedArgs =
       constructorArguments.where((pe) => pe.type.isUndefined).toList();
   if (undefinedArgs.isNotEmpty) {
@@ -326,6 +327,7 @@ void _validateConstructorArguments(
 
     throw new InvalidGenerationSourceError(
         'At least one constructor argument has an invalid type: $description.',
-        todo: 'Check names and imports.');
+        todo: 'Check names and imports.',
+        element: element);
   }
 }
