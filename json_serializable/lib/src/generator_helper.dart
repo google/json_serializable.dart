@@ -19,10 +19,10 @@ import 'utils.dart';
 Future<String> generate(JsonSerializableGenerator generator, Element element,
     ConstantReader annotation) {
   if (element is! ClassElement) {
-    var friendlyName = friendlyNameForElement(element);
-    throw new InvalidGenerationSourceError(
-        'Generator cannot target `$friendlyName`.',
-        todo: 'Remove the JsonSerializable annotation from `$friendlyName`.');
+    var name = element.name;
+    throw new InvalidGenerationSourceError('Generator cannot target `$name`.',
+        todo: 'Remove the JsonSerializable annotation from `$name`.',
+        element: element);
   }
 
   var classElement = element as ClassElement;
@@ -55,7 +55,8 @@ class _GeneratorHelper {
       if (!set.add(jsonKey)) {
         throw new InvalidGenerationSourceError(
             'More than one field has the JSON key `$jsonKey`.',
-            todo: 'Check the `JsonKey` annotations on fields.');
+            todo: 'Check the `JsonKey` annotations on fields.',
+            element: fe);
       }
       return set;
     });
@@ -337,8 +338,8 @@ InvalidGenerationSourceError _createInvalidGenerationError(
   var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
 
   var message = 'Could not generate `$targetMember` code for '
-      '`${friendlyNameForElement(field)}`$extra.\n${e.reason}';
+      '`${field.name}`$extra.\n${e.reason}';
 
   return new InvalidGenerationSourceError(message,
-      todo: 'Make sure all of the types are serializable.');
+      todo: 'Make sure all of the types are serializable.', element: field);
 }

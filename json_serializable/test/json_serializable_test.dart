@@ -50,8 +50,8 @@ void _registerTests(JsonSerializableGenerator generator) {
       expect(
           runForElementNamed('theAnswer'),
           throwsInvalidGenerationSourceError(
-              'Generator cannot target `const dynamic theAnswer`.',
-              'Remove the JsonSerializable annotation from `const dynamic theAnswer`.'));
+              'Generator cannot target `theAnswer`.',
+              'Remove the JsonSerializable annotation from `theAnswer`.'));
     });
 
     test('method', () async {
@@ -81,8 +81,7 @@ void _registerTests(JsonSerializableGenerator generator) {
   });
 
   group('unserializable types', () {
-    final noSupportHelperFyi =
-        'Could not generate `toJson` code for `Stopwatch watch`.\n'
+    final noSupportHelperFyi = 'Could not generate `toJson` code for `watch`.\n'
         'None of the provided `TypeHelper` instances support the defined type.';
 
     test('for toJson', () async {
@@ -101,7 +100,7 @@ void _registerTests(JsonSerializableGenerator generator) {
     });
 
     final mapKeyFyi = 'Could not generate `toJson` code for '
-        '`Map<int, DateTime> intDateTimeMap` because of type `int`.\n'
+        '`intDateTimeMap` because of type `int`.\n'
         'The type of the Map key must be `String`, `Object` or `dynamic`.';
 
     test('for toJson in Map key', () async {

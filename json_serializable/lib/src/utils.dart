@@ -104,40 +104,6 @@ String commonNullPrefix(
         ? '$expression == null ? null : $unsafeExpression'
         : unsafeExpression;
 
-// Copied from pkg/source_gen - lib/src/utils.
-String friendlyNameForElement(Element element) {
-  var friendlyName = element.displayName;
-
-  if (friendlyName == null) {
-    throw new ArgumentError(
-        'Cannot get friendly name for $element - ${element.runtimeType}.');
-  }
-
-  var names = <String>[friendlyName];
-  if (element is ClassElement) {
-    names.insert(0, 'class');
-    if (element.isAbstract) {
-      names.insert(0, 'abstract');
-    }
-  }
-  if (element is VariableElement) {
-    names.insert(0, element.type.toString());
-
-    if (element.isConst) {
-      names.insert(0, 'const');
-    }
-
-    if (element.isFinal) {
-      names.insert(0, 'final');
-    }
-  }
-  if (element is LibraryElement) {
-    names.insert(0, 'library');
-  }
-
-  return names.join(' ');
-}
-
 /// Returns a [Set] of all instance [FieldElement] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
@@ -166,7 +132,8 @@ Set<FieldElement> createSortedFieldSet(ClassElement element) {
 
     throw new InvalidGenerationSourceError(
         'At least one field has an invalid type: $description.',
-        todo: 'Check names and imports.');
+        todo: 'Check names and imports.',
+        element: undefinedFields.first);
   }
 
   // Sort these in the order in which they appear in the class
@@ -277,7 +244,7 @@ Set<String> writeConstructorInvocation(
   }
 
   _validateConstructorArguments(
-      constructorArguments.followedBy(namedConstructorArguments));
+      classElement, constructorArguments.followedBy(namedConstructorArguments));
 
   // fields that aren't already set by the constructor and that aren't final
   var remainingFieldsForInvocationBody =
@@ -317,7 +284,7 @@ Set<String> writeConstructorInvocation(
 }
 
 void _validateConstructorArguments(
-    Iterable<ParameterElement> constructorArguments) {
+    ClassElement element, Iterable<ParameterElement> constructorArguments) {
   var undefinedArgs =
       constructorArguments.where((pe) => pe.type.isUndefined).toList();
   if (undefinedArgs.isNotEmpty) {
@@ -326,6 +293,7 @@ void _validateConstructorArguments(
 
     throw new InvalidGenerationSourceError(
         'At least one constructor argument has an invalid type: $description.',
-        todo: 'Check names and imports.');
+        todo: 'Check names and imports.',
+        element: element);
   }
 }
