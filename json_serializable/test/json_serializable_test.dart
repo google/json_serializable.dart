@@ -20,7 +20,6 @@ import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
-import 'src/io.dart';
 import 'test_utils.dart';
 
 void main() {
@@ -419,10 +418,7 @@ Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
   var source =
       new StringSource(new File(filePath).readAsStringSync(), 'test content');
 
-  var foundFiles = await getDartFiles(projectPath,
-      searchList: [p.join(getPackagePath(), 'test', 'test_files')]);
-
-  var context = await getAnalysisContextForProjectPath(projectPath, foundFiles);
+  var context = await getAnalysisContextForProjectPath(projectPath);
 
   var libElement = context.computeLibraryElement(source);
   return context.resolveCompilationUnit(source, libElement);
