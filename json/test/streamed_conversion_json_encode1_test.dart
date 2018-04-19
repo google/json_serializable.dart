@@ -26,7 +26,7 @@ Stream<String> encode(Object o) {
 void testNoPause(String expected, Object o) {
   Stream stream = encode(o);
   stream.toList().then(expectAsync1((list) {
-    StringBuffer buffer = new StringBuffer();
+    var buffer = new StringBuffer();
     buffer.writeAll(list);
     Expect.stringEquals(expected, buffer.toString());
   }));

@@ -157,7 +157,7 @@ class _JsonEncoderSink extends ChunkedConversionSink<Object> {
       throw new StateError("Only one call to add allowed");
     }
     _isDone = true;
-    ClosableStringSink stringSink = _sink.asStringSink();
+    var stringSink = _sink.asStringSink();
     JsonStringStringifier.printOn(
         o, stringSink, _toEncodable, _writer, _indent);
     stringSink.close();

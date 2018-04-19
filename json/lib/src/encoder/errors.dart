@@ -30,7 +30,7 @@ class JsonUnsupportedObjectError extends Error {
       {this.cause, this.partialResult});
 
   String toString() {
-    String safeString = Error.safeToString(unsupportedObject);
+    var safeString = Error.safeToString(unsupportedObject);
     String prefix;
     if (cause != null) {
       prefix = "Converting object to an encodable object failed:";

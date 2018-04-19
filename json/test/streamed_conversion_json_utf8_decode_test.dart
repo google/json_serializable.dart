@@ -27,7 +27,7 @@ Stream<Object> _decode(List<int> bytes) => _createStream([bytes]);
 
 Stream<Object> _decodeChunked(List<int> bytes, int chunkSize) {
   List<List<int>> chunked = <List<int>>[];
-  int i = 0;
+  var i = 0;
   while (i < bytes.length) {
     if (i + chunkSize <= bytes.length) {
       chunked.add(bytes.sublist(i, i + chunkSize));

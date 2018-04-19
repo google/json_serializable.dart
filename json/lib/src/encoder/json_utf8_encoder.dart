@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments, annotate_overrides, prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,constant_identifier_names,omit_local_variable_types,annotate_overrides
 
 import 'dart:typed_data';
 

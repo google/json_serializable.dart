@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments, prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,constant_identifier_names,omit_local_variable_types
 
 import 'package:meta/meta.dart';
 
@@ -39,7 +39,7 @@ abstract class JsonStringifier implements JsonWriter {
   static const int char_u = 0x75;
 
   /** List of objects currently being traversed. Used to detect cycles. */
-  final List _seen = new List();
+  final List _seen = [];
 
   /** Function called for each un-encodable object encountered. */
   final ToEncodable _toEncodable;

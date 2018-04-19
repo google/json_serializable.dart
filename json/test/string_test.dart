@@ -56,7 +56,7 @@ main() {
   testThrows(r'"\%"');
   testThrows('"\\\x00"'); // Not raw string!
   // Throws on control characters.
-  for (int i = 0; i < 32; i++) {
+  for (var i = 0; i < 32; i++) {
     var string = new String.fromCharCodes([0x22, i, 0x22]); // '"\x00"' etc.
     testThrows(string);
   }

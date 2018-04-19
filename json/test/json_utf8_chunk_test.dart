@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,omit_local_variable_types
 
 import 'package:test/test.dart' as t;
 import 'package:json/json.dart';
@@ -88,8 +88,8 @@ void _testNumbers() {
     "0.0e0",
     "9.9E9",
     "0",
-    "9"
-        "1234.56789123456701418035663664340972900390625",
+    "9",
+    "1234.56789123456701418035663664340972900390625",
     "1.2345678912345671e-14",
     "9223372036854775807"
   ]) {

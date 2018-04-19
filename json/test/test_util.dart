@@ -69,22 +69,22 @@ void testJson(String jsonText, expected) {
             break;
           case 1:
             // Split before last char.
-            int length = jsonText.length;
+            var length = jsonText.length;
             decoderSink.add(jsonText.substring(0, length - 1));
             decoderSink.add(jsonText.substring(length - 1));
             decoderSink.close();
             break;
           case 2:
             // Split in middle.
-            int half = jsonText.length ~/ 2;
+            var half = jsonText.length ~/ 2;
             decoderSink.add(jsonText.substring(0, half));
             decoderSink.add(jsonText.substring(half));
             decoderSink.close();
             break;
           case 3:
             // Split in three chunks.
-            int length = jsonText.length;
-            int third = length ~/ 3;
+            var length = jsonText.length;
+            var third = length ~/ 3;
             decoderSink.add(jsonText.substring(0, third));
             decoderSink.add(jsonText.substring(third, 2 * third));
             decoderSink.add(jsonText.substring(2 * third));

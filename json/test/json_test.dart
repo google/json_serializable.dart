@@ -24,8 +24,8 @@ main() {
     // IE9 accepts invalid characters at the end, so some of these tests have been
     // moved to json_strict_test.dart.
     for (var i in invalids) {
-      testThrows('${i}"s"');
-      testThrows('42${i}');
+      testThrows('$i"s"');
+      testThrows('42$i');
       testThrows('$i[]');
       testThrows('[$i]');
       testThrows('[$i"s"]');

@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,omit_local_variable_types
 
 import 'package:test/test.dart' as t;
 
@@ -14,36 +14,6 @@ import 'package:test/test.dart' as t;
  * test assertions.
  */
 class Expect {
-  /// Return the string with characters that are not printable ASCII characters
-  /// escaped as either "\xXX" codes or "\uXXXX" codes.
-  static String _escapeString(String string) {
-    StringBuffer buf = new StringBuffer();
-    _escapeSubstring(buf, string, 0, string.length);
-    return buf.toString();
-  }
-
-  static _escapeSubstring(StringBuffer buf, String string, int start, int end) {
-    const hexDigits = "0123456789ABCDEF";
-    for (int i = start; i < end; i++) {
-      int code = string.codeUnitAt(i);
-      if (0x20 <= code && code < 0x7F) {
-        if (code == 0x5C) {
-          buf.write(r"\\");
-        } else {
-          buf.writeCharCode(code);
-        }
-      } else if (code < 0x100) {
-        buf.write(r"\x");
-        buf.write(hexDigits[code >> 4]);
-        buf.write(hexDigits[code & 15]);
-      } else {
-        buf.write(r"\u{");
-        buf.write(code.toRadixString(16).toUpperCase());
-        buf.write(r"}");
-      }
-    }
-  }
-
   /**
    * Checks whether the expected and actual values are equal (using `==`).
    */
@@ -78,61 +48,9 @@ class Expect {
     t.fail("Expect.isNull(actual: <$actual>$msg) fails.");
   }
 
-  /**
-   * Checks whether [actual] is not null.
-   */
-  static void isNotNull(actual, [String reason]) {
-    if (null != actual) return;
-    String msg = _getMessage(reason);
-    t.fail("Expect.isNotNull(actual: <$actual>$msg) fails.");
-  }
-
-  /**
-   * Checks whether the expected and actual values are identical
-   * (using `identical`).
-   */
-  static void identical(var expected, var actual, [String reason]) {
-    if (_identical(expected, actual)) return;
-    String msg = _getMessage(reason);
-    if (expected is String && actual is String) {
-      String note =
-          (expected == actual) ? ' Strings equal but not identical.' : '';
-      t.fail("Expect.identical(expected: <${_escapeString(expected)}>"
-          ", actual: <${_escapeString(actual)}>$msg) "
-          "fails.$note");
-    }
-    t.fail("Expect.identical(expected: <$expected>, actual: <$actual>$msg) "
-        "fails.");
-  }
-
   // Unconditional failure.
   static void fail(String msg) {
     t.fail("Expect.fail('$msg')");
-  }
-
-  /**
-   * Failure if the difference between expected and actual is greater than the
-   * given tolerance. If no tolerance is given, tolerance is assumed to be the
-   * value 4 significant digits smaller than the value given for expected.
-   */
-  static void approxEquals(num expected, num actual,
-      [num tolerance, String reason]) {
-    if (tolerance == null) {
-      tolerance = (expected / 1e4).abs();
-    }
-    // Note: use !( <= ) rather than > so we fail on NaNs
-    if ((expected - actual).abs() <= tolerance) return;
-
-    String msg = _getMessage(reason);
-    t.fail('Expect.approxEquals(expected:<$expected>, actual:<$actual>, '
-        'tolerance:<$tolerance>$msg) fails');
-  }
-
-  static void notEquals(unexpected, actual, [String reason]) {
-    if (unexpected != actual) return;
-    String msg = _getMessage(reason);
-    t.fail("Expect.notEquals(unexpected: <$unexpected>, actual:<$actual>$msg) "
-        "fails.");
   }
 
   /**

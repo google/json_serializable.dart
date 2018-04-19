@@ -83,14 +83,14 @@ class JsonUtf8Stringifier extends JsonStringifier {
 
   @override
   void writeStringSlice(String string, int start, int end) {
-    for (int i = start; i < end; i++) {
-      int char = string.codeUnitAt(i);
+    for (var i = start; i < end; i++) {
+      var char = string.codeUnitAt(i);
       if (char <= 0x7f) {
         _writeByte(char);
       } else {
         if ((char & 0xFC00) == 0xD800 && i + 1 < end) {
           // Lead surrogate.
-          int nextChar = string.codeUnitAt(i + 1);
+          var nextChar = string.codeUnitAt(i + 1);
           if ((nextChar & 0xFC00) == 0xDC00) {
             // Tail surrogate.
             char = 0x10000 + ((char & 0x3ff) << 10) + (nextChar & 0x3ff);
@@ -115,8 +115,8 @@ class JsonUtf8Stringifier extends JsonStringifier {
 
   /** Write a string that is known to not have non-ASCII characters. */
   void _writeAsciiString(String string) {
-    for (int i = 0; i < string.length; i++) {
-      int char = string.codeUnitAt(i);
+    for (var i = 0; i < string.length; i++) {
+      var char = string.codeUnitAt(i);
       assert(char <= 0x7f);
       _writeByte(char);
     }
@@ -172,9 +172,9 @@ class _JsonUtf8StringifierPretty extends JsonUtf8Stringifier
 
   @override
   void writeIndentation(int count) {
-    int indentLength = _indent.length;
+    var indentLength = _indent.length;
     if (indentLength == 1) {
-      int char = _indent[0];
+      var char = _indent[0];
       while (count > 0) {
         _writeByte(char);
         count -= 1;
@@ -183,12 +183,12 @@ class _JsonUtf8StringifierPretty extends JsonUtf8Stringifier
     }
     while (count > 0) {
       count--;
-      int end = _index + indentLength;
+      var end = _index + indentLength;
       if (end <= _buffer.length) {
         _buffer.setRange(_index, end, _indent);
         _index = end;
       } else {
-        for (int i = 0; i < indentLength; i++) {
+        for (var i = 0; i < indentLength; i++) {
           _writeByte(_indent[i]);
         }
       }

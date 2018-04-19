@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,constant_identifier_names,omit_local_variable_types
 
 import 'dart:typed_data';
 
@@ -18,13 +18,13 @@ class JsonUtf8Parser extends ChunkedJsonParser<List<int>> {
 
   @override
   String getString(int start, int end, int bits) {
-    const int maxAsciiChar = 0x7f;
+    const maxAsciiChar = 0x7f;
     if (bits <= maxAsciiChar) {
       return new String.fromCharCodes(chunk, start, end);
     }
     beginString();
     if (start < end) addSliceToString(start, end);
-    String result = endString();
+    var result = endString();
     return result;
   }
 
@@ -54,13 +54,13 @@ class JsonUtf8Parser extends ChunkedJsonParser<List<int>> {
 
   @override
   void copyCharsToList(int start, int end, List target, int offset) {
-    int length = end - start;
+    var length = end - start;
     target.setRange(offset, offset + length, chunk, start);
   }
 
   @override
   double parseDouble(int start, int end) {
-    String string = getString(start, end, 0x7f);
+    var string = getString(start, end, 0x7f);
     return double.parse(string);
   }
 }

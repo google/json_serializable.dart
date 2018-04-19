@@ -34,7 +34,7 @@ String _encode(Object o) {
   String result;
   ChunkedConversionSink<String> stringSink =
       new _MyStringConversionSink((x) => result = x as String);
-  var objectSink = new JsonEncoder().startChunkedConversion(stringSink);
+  var objectSink = const JsonEncoder().startChunkedConversion(stringSink);
   objectSink.add(o);
   objectSink.close();
   return result;
@@ -42,7 +42,7 @@ String _encode(Object o) {
 
 String _encode2(Object o) {
   String result;
-  var encoder = new JsonEncoder();
+  var encoder = const JsonEncoder();
   ChunkedConversionSink<String> stringSink =
       new StringConversionSink.withCallback((x) => result = x);
   var objectSink = encoder.startChunkedConversion(stringSink);

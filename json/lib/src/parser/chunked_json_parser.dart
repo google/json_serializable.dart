@@ -1,4 +1,4 @@
-// ignore_for_file: slash_for_doc_comments,prefer_single_quotes
+// ignore_for_file: slash_for_doc_comments,prefer_single_quotes,constant_identifier_names,omit_local_variable_types
 
 import 'package:charcode/charcode.dart';
 import 'package:meta/meta.dart';
@@ -462,12 +462,12 @@ abstract class ChunkedJsonParser<T> {
       return _parseStringToBuffer(position);
     }
     assert((partialState & STR_U) != 0);
-    int value = partialState >> STR_U_VALUE_SHIFT;
-    int count = (partialState >> STR_U_COUNT_SHIFT) & TWO_BIT_MASK;
-    for (int i = count; i < 4; i++, position++) {
+    var value = partialState >> STR_U_VALUE_SHIFT;
+    var count = (partialState >> STR_U_COUNT_SHIFT) & TWO_BIT_MASK;
+    for (var i = count; i < 4; i++, position++) {
       if (position == _chunkEnd) return _chunkStringEscapeU(i, value);
-      int char = getChar(position);
-      int digit = _parseHexDigit(char);
+      var char = getChar(position);
+      var digit = _parseHexDigit(char);
       if (digit < 0) _fail(position, "Invalid hex digit");
       value = 16 * value + digit;
     }
@@ -479,9 +479,9 @@ abstract class ChunkedJsonParser<T> {
    * Continues parsing a partial keyword.
    */
   int _parsePartialKeyword(int position, int partialState) {
-    int keywordType = partialState & KWD_TYPE_MASK;
-    int count = partialState >> KWD_COUNT_SHIFT;
-    int keywordTypeIndex = keywordType >> KWD_TYPE_SHIFT;
+    var keywordType = partialState & KWD_TYPE_MASK;
+    var count = partialState >> KWD_COUNT_SHIFT;
+    var keywordTypeIndex = keywordType >> KWD_TYPE_SHIFT;
     String keyword = const ["null", "true", "false"][keywordTypeIndex];
     assert(count < keyword.length);
     do {
@@ -490,7 +490,7 @@ abstract class ChunkedJsonParser<T> {
             PARTIAL_KEYWORD | keywordType | (count << KWD_COUNT_SHIFT);
         return _chunkEnd;
       }
-      int expectedChar = keyword.codeUnitAt(count);
+      var expectedChar = keyword.codeUnitAt(count);
       if (getChar(position) != expectedChar) _fail(position);
       position++;
       count++;
@@ -684,11 +684,11 @@ abstract class ChunkedJsonParser<T> {
 
   int _parseKeywordPrefix(int position, String chars, int type) {
     assert(getChar(position) == chars.codeUnitAt(0));
-    int length = _chunkEnd;
-    int start = position;
-    int count = 1;
+    var length = _chunkEnd;
+    var start = position;
+    var count = 1;
     while (++position < length) {
-      int char = getChar(position);
+      var char = getChar(position);
       if (char != chars.codeUnitAt(count)) _fail(start);
       count++;
     }
@@ -896,7 +896,7 @@ abstract class ChunkedJsonParser<T> {
 
   // Continues an already chunked number across an entire chunk.
   int _continueChunkNumber(int state, int start, NumberBuffer buffer) {
-    int end = _chunkEnd;
+    var end = _chunkEnd;
     _addNumberChunk(buffer, start, end, NumberBuffer.kDefaultOverhead);
     this.buffer = buffer;
     _partialState = PARTIAL_NUMERAL | state;
@@ -925,14 +925,14 @@ abstract class ChunkedJsonParser<T> {
     // Also called on any unexpected character.
     // Format:
     //  '-'?('0'|[1-9][0-9]*)('.'[0-9]+)?([eE][+-]?[0-9]+)?
-    int start = position;
-    int length = _chunkEnd;
+    var start = position;
+    var length = _chunkEnd;
     // Collects an int value while parsing. Used for both an integer literal,
     // an the exponent part of a double literal.
-    int intValue = 0;
-    double doubleValue = 0.0; // Collect double value while parsing.
-    int sign = 1;
-    bool isDouble = false;
+    var intValue = 0;
+    var doubleValue = 0.0; // Collect double value while parsing.
+    var sign = 1;
+    var isDouble = false;
     // Break this block when the end of the number literal is reached.
     // At that time, position points to the next character, and isDouble
     // is set if the literal contains a decimal point or an exponential.

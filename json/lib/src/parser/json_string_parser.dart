@@ -43,8 +43,8 @@ class JsonStringParser extends ChunkedJsonParser<String> {
 
   @override
   void copyCharsToList(int start, int end, List target, int offset) {
-    int length = end - start;
-    for (int i = 0; i < length; i++) {
+    var length = end - start;
+    for (var i = 0; i < length; i++) {
       target[offset + i] = chunk.codeUnitAt(start + i);
     }
   }

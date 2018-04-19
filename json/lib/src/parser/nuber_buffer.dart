@@ -33,9 +33,9 @@ class NumberBuffer {
 
   // Grows to the exact size asked for.
   void ensureCapacity(int newCapacity) {
-    Uint8List list = this.list;
+    var list = this.list;
     if (newCapacity <= list.length) return;
-    Uint8List newList = new Uint8List(newCapacity);
+    var newList = new Uint8List(newCapacity);
     newList.setRange(0, list.length, list, 0);
     this.list = newList;
   }

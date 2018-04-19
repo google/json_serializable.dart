@@ -26,7 +26,7 @@ class JsonStringStringifier extends JsonStringifier {
    */
   static String stringify(
       Object object, ToEncodable toEncodable, WriteJson writer, String indent) {
-    StringBuffer output = new StringBuffer();
+    var output = new StringBuffer();
     printOn(object, output, toEncodable, writer, indent);
     return output.toString();
   }
@@ -82,6 +82,6 @@ class _JsonStringStringifierPretty extends JsonStringStringifier
 
   @override
   void writeIndentation(int count) {
-    for (int i = 0; i < count; i++) writeString(_indent);
+    for (var i = 0; i < count; i++) writeString(_indent);
   }
 }
