@@ -10,15 +10,9 @@ import 'package:json/json.dart';
 import "src/expect.dart";
 
 main() {
-  test('parsing', () {
-    _testParsing();
-  });
-  test('stringify', () {
-    _testStringify();
-  });
-  test('stringify errors', () {
-    _testStringifyErrors();
-  });
+  test('parsing', _testParsing);
+  test('stringify', _testStringify);
+  test('stringify errors', _testStringifyErrors);
 }
 
 void _testParsing() {
@@ -128,7 +122,7 @@ void _testStringify() {
 
   // Maps.
   Expect.equals('{}', json.encode({}));
-  Expect.equals('{}', json.encode(new Map()));
+  Expect.equals('{}', json.encode({}));
   Expect.equals('{"x":{}}', json.encode({'x': {}}));
   Expect.equals(
       '{"x":{"a":3}}',
@@ -150,16 +144,16 @@ void _testStringify() {
     'v': null
   });
 
-  Expect.equals("4", json.encode(new _ToJson(4)));
-  Expect.equals('[4,"a"]', json.encode(new _ToJson([4, "a"])));
+  Expect.equals("4", json.encode(const _ToJson(4)));
+  Expect.equals('[4,"a"]', json.encode(const _ToJson(const [4, "a"])));
   Expect.equals(
       '[4,{"x":42}]',
-      json.encode(new _ToJson([
+      json.encode(const _ToJson(const [
         4,
-        new _ToJson({"x": 42})
+        const _ToJson(const {"x": 42})
       ])));
 
-  _expectThrowsJsonError(() => json.encode([new _ToJson(new _ToJson(4))]));
+  _expectThrowsJsonError(() => json.encode([const _ToJson(const _ToJson(4))]));
   _expectThrowsJsonError(() => json.encode([new Object()]));
 }
 
@@ -176,7 +170,7 @@ void _testStringifyErrors() {
   // Throws on cyclic values.
   var a = [];
   var b = a;
-  for (int i = 0; i < 50; i++) {
+  for (var i = 0; i < 50; i++) {
     b = [b];
   }
   a.add(b);
@@ -207,7 +201,7 @@ class _ToJsoner {
 }
 
 class _ToJson {
-  final object;
+  final Object object;
   const _ToJson(this.object);
   toJson() => object;
 }

@@ -12,7 +12,7 @@ import 'package:json/json.dart';
 import 'test_util.dart';
 import 'test_values.dart';
 
-final _decoder = new MyJsonDecoder();
+final _decoder = const MyJsonDecoder();
 
 Stream<Object> createStream(List<String> chunks) {
   StreamController controller;

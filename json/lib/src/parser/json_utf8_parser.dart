@@ -175,7 +175,7 @@ class _Utf8StringBuffer {
         partialState = NO_PARTIAL;
         addCharCode(0xFFFD);
       } else {
-        throw new FormatException("Incomplete UTF-8 sequence");
+        throw const FormatException("Incomplete UTF-8 sequence");
       }
     }
     if (isLatin1 && char > 0xff) {

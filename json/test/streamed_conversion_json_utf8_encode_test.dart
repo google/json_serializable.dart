@@ -42,6 +42,7 @@ Future _testWithPauses(List<int> expected, Stream<List<int>> stream) async {
   await sub.asFuture();
 
   expect(accumulated, expected);
+  await sub.cancel();
 }
 
 void main() {

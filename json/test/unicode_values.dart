@@ -233,7 +233,7 @@ List<Pair<String>> _expandTestPairs() {
   tests.addAll(_TEST_PAIRS.map((test) {
     var longBytes = <int>[];
     var longString = '';
-    for (int i = 0; i < 100; i++) {
+    for (var i = 0; i < 100; i++) {
       longBytes.addAll(test.bytes);
       longString += test.target;
     }

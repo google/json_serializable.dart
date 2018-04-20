@@ -15,7 +15,7 @@ main() {
     var invalids = ['\x00', '\f', '\x08', '\\', '\xa0', '\u2028', '\u2029'];
 
     // Valid whitespace accepted "everywhere".
-    testJson('$v[${v}-2.2e2$v,$v{$v"key"$v:${v}true$v}$v,$v"ab"$v]$v', [
+    testJson('$v[$v-2.2e2$v,$v{$v"key"$v:${v}true$v}$v,$v"ab"$v]$v', [
       -2.2e2,
       {"key": true},
       "ab"

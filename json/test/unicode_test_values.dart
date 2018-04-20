@@ -55,7 +55,7 @@ final List<Pair<List<int>>> jsonUnicodeTests =
   // Put the previous strings/lists into a map.
   // For example:
   //    'abcd' -> '{"abcd":[[[["abcd"]]],[[["abcd"]]],[[["abcd"]]]]}'.
-  var mapExpected = new Map();
+  var mapExpected = {};
   mapExpected[testValue.target] = listLongerExpected;
   var mapBytes = <int>[];
   mapBytes.add($lbrace);

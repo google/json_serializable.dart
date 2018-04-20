@@ -32,7 +32,7 @@ void testJson(String jsonText, expected) {
       Expect.isTrue(actual is List);
       Expect.equals(
           expected.length, (actual as List).length, "$path: List length");
-      for (int i = 0; i < expected.length; i++) {
+      for (var i = 0; i < expected.length; i++) {
         compare(expected[i], actual[i], "$path[$i]");
       }
     } else if (expected is Map) {

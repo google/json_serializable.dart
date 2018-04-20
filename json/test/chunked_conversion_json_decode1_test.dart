@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 import 'test_util.dart';
 import 'test_values.dart';
 
-final _decoder = new MyJsonDecoder();
+final _decoder = const MyJsonDecoder();
 
 Object decode(String str) {
   Object result;
@@ -29,7 +29,7 @@ Object decode2(String str) {
   var objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = _decoder.startChunkedConversion(objectSink);
-  ClosableStringSink stringSink = stringConversionSink.asStringSink();
+  var stringSink = stringConversionSink.asStringSink();
   stringSink.write(str);
   stringSink.close();
   return result;
@@ -41,7 +41,7 @@ Object decode3(String str) {
   var objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = _decoder.startChunkedConversion(objectSink);
-  ClosableStringSink stringSink = stringConversionSink.asStringSink();
+  var stringSink = stringConversionSink.asStringSink();
   str.codeUnits.forEach(stringSink.writeCharCode);
   stringSink.close();
   return result;
@@ -80,7 +80,9 @@ Object decode6(String str) {
   var stringConversionSink = _decoder.startChunkedConversion(objectSink);
   var inputByteSink = stringConversionSink.asUtf8Sink(false);
   var tmpBytes = utf8.encode(str);
-  tmpBytes.forEach((b) => inputByteSink.addSlice([0, b, 1], 1, 2, false));
+  for (var b in tmpBytes) {
+    inputByteSink.addSlice([0, b, 1], 1, 2, false);
+  }
   inputByteSink.close();
   return result;
 }
@@ -91,7 +93,7 @@ Object decode7(String str) {
   var objectSink =
       new ChunkedConversionSink.withCallback((x) => result = x.single);
   var stringConversionSink = _decoder.startChunkedConversion(objectSink);
-  stringConversionSink.addSlice("1" + str + "2", 1, str.length + 1, false);
+  stringConversionSink.addSlice("1${str}2", 1, str.length + 1, false);
   stringConversionSink.close();
   return result;
 }

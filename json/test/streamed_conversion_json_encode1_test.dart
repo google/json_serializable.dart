@@ -14,7 +14,7 @@ import 'test_util.dart';
 import 'test_values.dart';
 
 Stream<String> encode(Object o) {
-  var encoder = new JsonEncoder();
+  var encoder = const JsonEncoder();
   StreamController controller;
   controller = new StreamController(onListen: () {
     controller.add(o);
@@ -34,13 +34,14 @@ void testNoPause(String expected, Object o) {
 
 void testWithPause(String expected, Object o) {
   Stream stream = encode(o);
-  StringBuffer buffer = new StringBuffer();
-  var sub;
+  var buffer = new StringBuffer();
+  StreamSubscription sub;
   sub = stream.listen((x) {
     buffer.write(x);
     sub.pause(new Future.delayed(Duration.zero));
   }, onDone: expectAsync0(() {
     Expect.stringEquals(expected, buffer.toString());
+    sub.cancel();
   }));
 }
 

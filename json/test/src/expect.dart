@@ -164,14 +164,18 @@ class Expect {
 
     // If snippets are long, elide the middle.
     if (eSnippet.length > 43) {
-      eSnippet = eSnippet.substring(0, 20) +
-          "..." +
-          eSnippet.substring(eSnippet.length - 20);
+      eSnippet = [
+        eSnippet.substring(0, 20),
+        "...",
+        eSnippet.substring(eSnippet.length - 20)
+      ].join();
     }
     if (aSnippet.length > 43) {
-      aSnippet = aSnippet.substring(0, 20) +
-          "..." +
-          aSnippet.substring(aSnippet.length - 20);
+      aSnippet = [
+        aSnippet.substring(0, 20),
+        "...",
+        aSnippet.substring(aSnippet.length - 20)
+      ].join();
     }
     // Add "..." before and after, unless the snippets reach the end.
     String leftLead = "...";
