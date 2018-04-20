@@ -23,3 +23,27 @@ class CustomObjectListenerRoot<T> extends JsonListener<T>
   @override
   T get result => _value;
 }
+
+abstract class CustomObjectListenerBase<T> extends BaseListener<T> {
+  CustomObjectListenerBase(ListenerParent parent) : super(parent);
+  String _key;
+
+  String get key => _key;
+
+  @override
+  void propertyName() {
+    _key = storage as String;
+    assert(_key != null);
+    storage = null;
+  }
+
+  @override
+  JsonListener objectEnd() {
+    return parent.childListenerFinish(result);
+  }
+
+  @override
+  void propertyValue() {
+    _key = null;
+  }
+}

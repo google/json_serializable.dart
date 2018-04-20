@@ -7,22 +7,13 @@ import 'package:json/src/listeners/json_listener.dart';
 import 'package:json/src/listeners/array_listener.dart';
 import 'package:json/src/listeners/custom_object_listener_root.dart';
 
-//import 'package:stack_trace/stack_trace.dart';
-
 import 'new_values.dart';
 
-void _log(value) {
-//  print(
-//      [new Trace.from(StackTrace.current).frames[1].member, value].join('\t'));
-}
-
-class _FunListener extends BaseListener<Fun> {
+class _FunListener extends CustomObjectListenerBase<Fun> {
   static CustomObjectListenerRoot<Fun> create() =>
       new CustomObjectListenerRoot<Fun>((parent) => new _FunListener(parent));
 
   _FunListener(ListenerParent parent) : super(parent);
-
-  String _key;
 
   int _a;
   String _b;
@@ -33,7 +24,7 @@ class _FunListener extends BaseListener<Fun> {
 
   @override
   void handleNumber(num value) {
-    switch (_key) {
+    switch (key) {
       case 'a':
         _a = value as int;
         storage = null;
@@ -44,7 +35,7 @@ class _FunListener extends BaseListener<Fun> {
 
   @override
   void handleString(String value) {
-    switch (_key) {
+    switch (key) {
       case 'b':
         _b = value;
         storage = null;
@@ -55,7 +46,7 @@ class _FunListener extends BaseListener<Fun> {
 
   @override
   void handleBool(bool value) {
-    switch (_key) {
+    switch (key) {
       case 'c':
         _c = value;
         storage = null;
@@ -65,16 +56,8 @@ class _FunListener extends BaseListener<Fun> {
   }
 
   @override
-  void propertyName() {
-    _log(storage);
-    _key = storage as String;
-    assert(_key != null);
-    storage = null;
-  }
-
-  @override
   void propertyValue() {
-    switch (_key) {
+    switch (key) {
       case 'child':
         _child = storage as Fun;
         break;
@@ -84,19 +67,20 @@ class _FunListener extends BaseListener<Fun> {
       case 'dates':
         _dates = storage as List<DateTime>;
         break;
+      case 'a':
+      case 'b':
+      case 'c':
+        // handled closer to the supported type
+        break;
       default:
-        if (storage != null) {
-          _log('Missed!');
-        }
+      // throw? We have properties that are not supported
     }
-    _log('$_key - $storage');
-    _key = null;
+    super.propertyValue();
   }
 
   @override
   JsonListener objectStart() {
-    _log(_key);
-    switch (_key) {
+    switch (key) {
       case 'child':
         return new _FunListener(this);
     }
@@ -105,18 +89,11 @@ class _FunListener extends BaseListener<Fun> {
 
   @override
   JsonListener arrayStart() {
-    switch (_key) {
+    switch (key) {
       case 'dates':
         return new StringConvertArrayListener<DateTime>(DateTime.parse, this);
     }
-    _log('$_key - might could return a custom thing here');
     return super.arrayStart();
-  }
-
-  @override
-  JsonListener objectEnd() {
-    _log(storage);
-    return parent.childListenerFinish(result);
   }
 
   @override
