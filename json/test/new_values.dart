@@ -2,10 +2,11 @@ class Fun {
   final int a;
   final String b;
   final bool c;
+  final Fun child;
   final List<Fun> innerFun;
-  final Set<DateTime> dates;
+  final List<DateTime> dates;
 
-  const Fun({this.a, this.b, this.c, this.innerFun, this.dates});
+  const Fun({this.a, this.b, this.c, this.innerFun, this.dates, this.child});
 
   Object toJson() {
     var values = <String, dynamic>{};
@@ -18,6 +19,9 @@ class Fun {
     if (c != null) {
       values['c'] = c;
     }
+    if (child != null) {
+      values['child'] = child.toJson();
+    }
     if (innerFun != null) {
       values['innerFun'] = innerFun;
     }
@@ -28,11 +32,10 @@ class Fun {
   }
 }
 
-final _empty = const Fun(),
+const _empty = const Fun(),
     _oneField = const Fun(a: 41),
-    _simple = const Fun(a: 42, b: 'hello', c: true),
-    _withDates =
-        new Fun(dates: new Set<DateTime>.from([new DateTime(1979), null]));
+    _simple = const Fun(a: 42, b: 'hello', c: true);
+final _withDates = new Fun(dates: [new DateTime(1979), null]);
 
 final _complexJson = const [
   const {
@@ -61,7 +64,8 @@ final newTestItems = {
   'empty': _empty,
   'one field': _oneField,
   'simple': _simple,
-  'nested': new Fun(a: 3, innerFun: [_empty, _oneField, _simple]),
+  'with child': const Fun(child: _empty),
+  'nested': const Fun(a: 3, innerFun: const [_empty, _oneField, _simple]),
   'json values': _complexJson,
   'with dates': _withDates,
 };

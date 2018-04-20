@@ -16,6 +16,9 @@ bool _writer(Object object, JsonWriter writer) {
     if (object.c != null) {
       writer.writeKeyValue('c', object.c);
     }
+    if (object.child != null) {
+      writer.writeKeyValue('child', object.child);
+    }
     if (object.innerFun != null) {
       writer.writeKeyValue('innerFun', object.innerFun);
     }

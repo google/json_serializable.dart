@@ -4,6 +4,9 @@ import 'package:test/test.dart';
 
 import 'package:json/src/listeners/base_listener.dart';
 import 'package:json/src/listeners/json_listener.dart';
+import 'package:json/src/listeners/array_listener.dart';
+
+//import 'package:stack_trace/stack_trace.dart';
 
 import 'new_values.dart';
 
@@ -15,7 +18,9 @@ class _CustomObjectListener<T> extends JsonListener<T>
 
   T _value;
 
-  _CustomObjectListener(this._thing);
+  _CustomObjectListener(this._thing) {
+    _log('starting');
+  }
 
   @override
   JsonListener objectStart() => _thing(this);
@@ -23,6 +28,7 @@ class _CustomObjectListener<T> extends JsonListener<T>
   @override
   JsonListener childListenerFinish(T value) {
     _value = value;
+    _log(value);
     return this;
   }
 
@@ -30,24 +36,46 @@ class _CustomObjectListener<T> extends JsonListener<T>
   T get result => _value;
 }
 
+void _log(value) {
+//  print(
+//      [new Trace.from(StackTrace.current).frames[1].member, value].join('\t'));
+}
+
 class _FunListener extends BaseListener<Fun> {
-  _FunListener(ListenerParent<Fun> parent) : super(parent);
+  static _CustomObjectListener<Fun> create() =>
+      new _CustomObjectListener<Fun>((parent) => new _FunListener(parent));
+
+  _FunListener(ListenerParent parent) : super(parent);
 
   String _key;
 
   int _a;
   String _b;
   bool _c;
+  Fun _child;
   List<Fun> _innerFun;
+  List<DateTime> _dates;
+
+  @override
+  void handleNumber(num value) {
+    switch (_key) {
+      case 'a':
+        _a = value as int;
+        storage = null;
+        return;
+    }
+    super.handleNumber(value);
+  }
 
   @override
   void handleString(String value) {
     switch (_key) {
       case 'b':
         _b = value;
+        storage = null;
         return;
     }
-    storage = value;
+    super.handleString(value);
   }
 
   @override
@@ -55,33 +83,70 @@ class _FunListener extends BaseListener<Fun> {
     switch (_key) {
       case 'c':
         _c = value;
+        storage = null;
         return;
     }
-    storage = value;
+    super.handleBool(value);
   }
 
   @override
   void propertyName() {
+    _log(storage);
     _key = storage as String;
     assert(_key != null);
+    storage = null;
   }
 
   @override
   void propertyValue() {
     switch (_key) {
-      case 'a':
-        _a = storage as int;
-        return;
+      case 'child':
+        _child = storage as Fun;
+        break;
+      case 'innerFun':
+        _innerFun = storage as List<Fun>;
+        break;
+      case 'dates':
+        _dates = storage as List<DateTime>;
+        break;
+      default:
+        if (storage != null) {
+          _log('Missed!');
+        }
     }
+    _log('$_key - $storage');
     _key = null;
   }
 
   @override
-  JsonListener objectEnd() => parent
-      .childListenerFinish(new Fun(a: _a, b: _b, c: _c, innerFun: _innerFun));
+  JsonListener objectStart() {
+    _log(_key);
+    switch (_key) {
+      case 'child':
+        return new _FunListener(this);
+    }
+    return super.objectStart();
+  }
 
   @override
-  Fun get result => throw new UnsupportedError('sorry');
+  JsonListener arrayStart() {
+    switch (_key) {
+      case 'dates':
+        return new StringConvertArrayListener<DateTime>(DateTime.parse, this);
+    }
+    _log('$_key - might could return a custom thing here');
+    return super.arrayStart();
+  }
+
+  @override
+  JsonListener objectEnd() {
+    _log(storage);
+    return parent.childListenerFinish(result);
+  }
+
+  @override
+  Fun get result => new Fun(
+      a: _a, b: _b, c: _c, innerFun: _innerFun, child: _child, dates: _dates);
 }
 
 main() {
@@ -91,8 +156,8 @@ main() {
     }
     final sdkString = sdk.json.encode(v);
     test(k, () {
-      final decodedObject = parseJsonExperimental(sdkString,
-          new _CustomObjectListener<Fun>((parent) => new _FunListener(parent)));
+      final decodedObject =
+          parseJsonExperimental(sdkString, _FunListener.create());
 
       final reEncodedString = sdk.json.encode(decodedObject);
       expect(reEncodedString, sdkString);

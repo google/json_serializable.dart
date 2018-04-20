@@ -46,12 +46,8 @@ abstract class BaseListener<T> extends JsonListener<T>
   }
 
   @override
-  JsonListener objectStart() {
-    return new ObjectListener(this);
-  }
+  JsonListener objectStart() => new ObjectListener(this);
 
   @override
-  JsonListener arrayStart() {
-    return new ArrayListener(this);
-  }
+  JsonListener arrayStart() => new ArrayListener(this);
 }
