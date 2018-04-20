@@ -5,36 +5,11 @@ import 'package:test/test.dart';
 import 'package:json/src/listeners/base_listener.dart';
 import 'package:json/src/listeners/json_listener.dart';
 import 'package:json/src/listeners/array_listener.dart';
+import 'package:json/src/listeners/custom_object_listener_root.dart';
 
 //import 'package:stack_trace/stack_trace.dart';
 
 import 'new_values.dart';
-
-typedef JsonListener<T> Thing<T>(ListenerParent<T> parent);
-
-class _CustomObjectListener<T> extends JsonListener<T>
-    implements ListenerParent<T> {
-  final Thing<T> _thing;
-
-  T _value;
-
-  _CustomObjectListener(this._thing) {
-    _log('starting');
-  }
-
-  @override
-  JsonListener objectStart() => _thing(this);
-
-  @override
-  JsonListener childListenerFinish(T value) {
-    _value = value;
-    _log(value);
-    return this;
-  }
-
-  @override
-  T get result => _value;
-}
 
 void _log(value) {
 //  print(
@@ -42,8 +17,8 @@ void _log(value) {
 }
 
 class _FunListener extends BaseListener<Fun> {
-  static _CustomObjectListener<Fun> create() =>
-      new _CustomObjectListener<Fun>((parent) => new _FunListener(parent));
+  static CustomObjectListenerRoot<Fun> create() =>
+      new CustomObjectListenerRoot<Fun>((parent) => new _FunListener(parent));
 
   _FunListener(ListenerParent parent) : super(parent);
 
