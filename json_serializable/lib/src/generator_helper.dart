@@ -51,7 +51,7 @@ class _GeneratorHelper {
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
     accessibleFields.fold(new Set<String>(), (Set<String> set, fe) {
-      var jsonKey = jsonKeyFor(fe).name ?? fe.name;
+      var jsonKey = _nameAccess(fe);
       if (!set.add(jsonKey)) {
         throw new InvalidGenerationSourceError(
             'More than one field has the JSON key `$jsonKey`.',
@@ -321,10 +321,10 @@ void $toJsonMapHelperName(String key, dynamic value) {
       jsonKeyFor(field).nullable ?? _annotation.nullable;
 }
 
-String _safeNameAccess(FieldElement field) {
-  var name = jsonKeyFor(field).name ?? field.name;
-  return escapeDartString(name);
-}
+String _nameAccess(FieldElement field) => jsonKeyFor(field).name ?? field.name;
+
+String _safeNameAccess(FieldElement field) =>
+    escapeDartString(_nameAccess(field));
 
 JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
     new JsonSerializable(
