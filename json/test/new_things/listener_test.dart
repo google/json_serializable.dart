@@ -7,6 +7,7 @@ import 'package:json/src/listeners/json_listener.dart';
 import 'package:json/src/listeners/array_listener.dart';
 import 'package:json/src/listeners/custom_object_listener_root.dart';
 
+import 'fun_class.dart';
 import 'new_values.dart';
 
 class _FunListener extends CustomObjectListenerBase<Fun> {
