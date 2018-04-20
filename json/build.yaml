@@ -5,7 +5,7 @@ targets:
       json_serializable:
         generate_for:
           include:
-          - test/new_things/**
+          - test/new_things/fun_class.**
         options:
           crazy: true
           header: |+

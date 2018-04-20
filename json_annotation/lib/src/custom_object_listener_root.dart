@@ -1,4 +1,6 @@
-import 'package:json/json.dart';
+import 'package:json/json.dart' show JsonListener, ListenerParent, BaseListener;
+
+export 'package:json/json.dart' show JsonWriter, JsonListener, ListenerParent;
 
 typedef JsonListener<T> ListenerFactory<T>(ListenerParent<T> parent);
 

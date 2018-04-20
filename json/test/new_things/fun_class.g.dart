@@ -50,4 +50,31 @@ abstract class _$FunSerializerMixin {
     return val;
   }
 }
+
 // crazy goes here!
+bool _$FunWriter(Object object, JsonWriter writer) {
+  if (object is Fun) {
+    writer.startMap();
+    if (object.a != null) {
+      writer.writeKeyValue('a', object.a);
+    }
+    if (object.b != null) {
+      writer.writeKeyValue('b', object.b);
+    }
+    if (object.c != null) {
+      writer.writeKeyValue('c', object.c);
+    }
+    if (object.child != null) {
+      writer.writeKeyValue('child', object.child);
+    }
+    if (object.innerFun != null) {
+      writer.writeKeyValue('innerFun', object.innerFun);
+    }
+    if (object.dates != null) {
+      writer.writeKeyValue('dates', object.dates);
+    }
+    writer.endMap();
+    return true;
+  }
+  return false;
+}

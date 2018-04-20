@@ -6,36 +6,7 @@ import 'fun_class.dart';
 import 'new_values.dart';
 
 bool _writer(Object object, JsonWriter writer) {
-  if (object is Fun) {
-    writer.startMap();
-    if (object.a != null) {
-      writer.writeKeyValue('a', object.a);
-    }
-    if (object.b != null) {
-      writer.writeKeyValue('b', object.b);
-    }
-    if (object.c != null) {
-      writer.writeKeyValue('c', object.c);
-    }
-    if (object.child != null) {
-      writer.writeKeyValue('child', object.child);
-    }
-    if (object.innerFun != null) {
-      writer.writeKeyValue('innerFun', object.innerFun);
-    }
-    if (object.dates != null) {
-      writer.writeKeyValue('dates', object.dates);
-    }
-    writer.endMap();
-    return true;
-  }
-
-  if (object is Iterable) {
-    writer.startList();
-    for (var item in object) {
-      writer.writeListValue(item);
-    }
-    writer.endList();
+  if (funWriter(object, writer)) {
     return true;
   }
 

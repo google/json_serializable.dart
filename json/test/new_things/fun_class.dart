@@ -3,6 +3,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'fun_class.g.dart';
 
+bool funWriter(Object object, JsonWriter writer) => _$FunWriter(object, writer);
+
 @JsonSerializable(includeIfNull: false)
 class Fun extends Object with _$FunSerializerMixin {
   final int a;
