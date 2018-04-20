@@ -1,5 +1,7 @@
 ## 0.5.1
 
+* Use `log` exposed by `package:build`. This requires end-users to have at least
+  `package:build_runner` `^0.8.2`.
 * Updated minimum `package:source_gen` dependency to `0.8.1` which includes
   improved error messages.
 

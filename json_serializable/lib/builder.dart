@@ -13,12 +13,8 @@
 library json_serializable.builder;
 
 import 'package:build/build.dart';
-import 'package:logging/logging.dart';
 
 import 'src/json_part_builder.dart';
-
-// TODO: until we can use `log` here - github.com/dart-lang/build/issues/1223
-final _logger = new Logger('json_serializable');
 
 /// Supports `package:build_runner` creation and configuration of `build_cli`.
 ///
@@ -28,13 +24,16 @@ Builder jsonSerializable(BuilderOptions options) {
   // elsewhere.
   var optionsMap = new Map<String, dynamic>.from(options.config);
 
-  try {
-    return jsonPartBuilder(
-        header: optionsMap.remove('header') as String,
-        useWrappers: optionsMap.remove('use_wrappers') as bool);
-  } finally {
-    if (optionsMap.isNotEmpty) {
-      _logger.warning('These options were ignored: `$optionsMap`.');
+  var builder = jsonPartBuilder(
+      header: optionsMap.remove('header') as String,
+      useWrappers: optionsMap.remove('use_wrappers') as bool);
+
+  if (optionsMap.isNotEmpty) {
+    if (log == null) {
+      throw new StateError('Upgrade `build_runner` to at least 0.8.2.');
+    } else {
+      log.warning('These options were ignored: `$optionsMap`.');
     }
   }
+  return builder;
 }
