@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'constants.dart';
+import 'crazy.dart';
 import 'json_key_helpers.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
@@ -96,6 +97,10 @@ class _GeneratorHelper {
       if (_generator.useWrappers) {
         _writeWrapper(accessibleFields);
       }
+    }
+
+    if (_generator.crazy) {
+      writeCrazy(_buffer);
     }
 
     return _buffer.toString();

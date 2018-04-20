@@ -50,3 +50,4 @@ abstract class _$FunSerializerMixin {
     return val;
   }
 }
+// crazy goes here!

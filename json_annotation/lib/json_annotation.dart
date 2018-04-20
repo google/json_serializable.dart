@@ -9,5 +9,6 @@
 /// `json_serializable` when generating wrappers.
 library json_annotation;
 
+export 'src/custom_object_listener_root.dart';
 export 'src/json_literal.dart';
 export 'src/json_serializable.dart';

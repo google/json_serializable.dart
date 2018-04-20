@@ -19,10 +19,12 @@ import 'json_serializable_generator.dart';
 /// [Map] and [List] instances created during serialization. This will
 /// increase the code size, but it may improve runtime performance, especially
 /// for large object graphs.
-Builder jsonPartBuilder({String header, bool useWrappers: false}) {
+Builder jsonPartBuilder(
+    {String header, bool useWrappers: false, bool crazy: false}) {
   useWrappers ??= false;
+  crazy ??= false;
   return new PartBuilder([
-    new JsonSerializableGenerator(useWrappers: useWrappers),
+    new JsonSerializableGenerator(useWrappers: useWrappers, crazy: crazy),
     const JsonLiteralGenerator()
   ], header: header);
 }

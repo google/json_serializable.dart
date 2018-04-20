@@ -26,7 +26,8 @@ Builder jsonSerializable(BuilderOptions options) {
 
   var builder = jsonPartBuilder(
       header: optionsMap.remove('header') as String,
-      useWrappers: optionsMap.remove('use_wrappers') as bool);
+      useWrappers: optionsMap.remove('use_wrappers') as bool,
+      crazy: optionsMap.remove('crazy') as bool);
 
   if (optionsMap.isNotEmpty) {
     if (log == null) {

@@ -39,6 +39,8 @@ class JsonSerializableGenerator
 
   final bool useWrappers;
 
+  final bool crazy;
+
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, two built-in helpers are used:
@@ -49,8 +51,11 @@ class JsonSerializableGenerator
   /// increase the code size, but it may improve runtime performance, especially
   /// for large object graphs.
   const JsonSerializableGenerator(
-      {List<TypeHelper> typeHelpers, bool useWrappers: false})
+      {List<TypeHelper> typeHelpers,
+      bool useWrappers: false,
+      bool crazy: false})
       : this.useWrappers = useWrappers ?? false,
+        this.crazy = crazy ?? false,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].

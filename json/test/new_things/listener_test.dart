@@ -5,7 +5,8 @@ import 'package:test/test.dart';
 import 'package:json/src/listeners/base_listener.dart';
 import 'package:json/src/listeners/json_listener.dart';
 import 'package:json/src/listeners/array_listener.dart';
-import 'package:json/src/listeners/custom_object_listener_root.dart';
+
+import 'package:json_annotation/json_annotation.dart';
 
 import 'fun_class.dart';
 import 'new_values.dart';
