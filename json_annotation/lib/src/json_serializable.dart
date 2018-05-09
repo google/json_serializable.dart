@@ -74,10 +74,25 @@ class JsonKey {
 
   /// A top-level [Function] to use when deserializing the associated JSON
   /// value to the annotated field.
+  ///
+  /// The [Function] should take one argument that maps to the expected JSON
+  /// value and return a value that can be assigned to the type of the annotated
+  /// field.
+  ///
+  /// When creating a class that supports both `toJson` and `fromJson`
+  /// (the default), you should also set [toJson] if you set [fromJson].
+  /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function fromJson;
 
   /// A top-level [Function] to use when serializing the annotated field to
   /// JSON.
+  ///
+  /// The [Function] should take one argument that is compatible with the field
+  /// being serialized and return a JSON-compatible value.
+  ///
+  /// When creating a class that supports both `toJson` and `fromJson`
+  /// (the default), you should also set [fromJson] if you set [toJson].
+  /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function toJson;
 
   /// Creates a new [JsonKey].
