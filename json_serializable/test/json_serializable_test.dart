@@ -22,6 +22,16 @@ import 'package:test/test.dart';
 import 'analysis_utils.dart';
 import 'test_utils.dart';
 
+Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
+    throwsA(allOf(
+        const isInstanceOf<InvalidGenerationSourceError>(),
+        new FeatureMatcher<InvalidGenerationSourceError>(
+            'message', (e) => e.message, messageMatcher),
+        new FeatureMatcher<InvalidGenerationSourceError>(
+            'todo', (e) => e.todo, todoMatcher),
+        new FeatureMatcher<InvalidGenerationSourceError>(
+            'element', (e) => e.element, isNotNull)));
+
 void main() {
   setUpAll(() async {
     _compUnit = await _getCompilationUnitForString(getPackagePath());
@@ -44,38 +54,38 @@ void _registerTests(JsonSerializableGenerator generator) {
     return _formatter.format(generated);
   }
 
+  void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
+    todoMatcher ??= isEmpty;
+    expect(() => runForElementNamed(elementName),
+        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
+  }
+
   group('non-classes', () {
-    test('const field', () async {
-      expect(
-          runForElementNamed('theAnswer'),
-          throwsInvalidGenerationSourceError(
-              'Generator cannot target `theAnswer`.',
-              'Remove the JsonSerializable annotation from `theAnswer`.'));
+    test('const field', () {
+      expectThrows('theAnswer', 'Generator cannot target `theAnswer`.',
+          'Remove the JsonSerializable annotation from `theAnswer`.');
     });
 
-    test('method', () async {
-      expect(
-          runForElementNamed('annotatedMethod'),
-          throwsInvalidGenerationSourceError(
-              'Generator cannot target `annotatedMethod`.',
-              'Remove the JsonSerializable annotation from `annotatedMethod`.'));
+    test('method', () {
+      expectThrows(
+          'annotatedMethod',
+          'Generator cannot target `annotatedMethod`.',
+          'Remove the JsonSerializable annotation from `annotatedMethod`.');
     });
   });
   group('unknown types', () {
-    test('in constructor arguments', () async {
-      expect(
-          runForElementNamed('UnknownCtorParamType'),
-          throwsInvalidGenerationSourceError(
-              'At least one constructor argument has an invalid type: `number`.',
-              'Check names and imports.'));
+    test('in constructor arguments', () {
+      expectThrows(
+          'UnknownCtorParamType',
+          'At least one constructor argument has an invalid type: `number`.',
+          'Check names and imports.');
     });
 
-    test('in fields', () async {
-      expect(
-          runForElementNamed('UnknownFieldType'),
-          throwsInvalidGenerationSourceError(
-              'At least one field has an invalid type: `number`.',
-              'Check names and imports.'));
+    test('in fields', () {
+      expectThrows(
+          'UnknownFieldType',
+          'At least one field has an invalid type: `number`.',
+          'Check names and imports.');
     });
   });
 
@@ -83,38 +93,32 @@ void _registerTests(JsonSerializableGenerator generator) {
     final noSupportHelperFyi = 'Could not generate `toJson` code for `watch`.\n'
         'None of the provided `TypeHelper` instances support the defined type.';
 
-    test('for toJson', () async {
-      expect(
-          runForElementNamed('NoSerializeFieldType'),
-          throwsInvalidGenerationSourceError(noSupportHelperFyi,
-              'Make sure all of the types are serializable.'));
+    test('for toJson', () {
+      expectThrows('NoSerializeFieldType', noSupportHelperFyi,
+          'Make sure all of the types are serializable.');
     });
 
-    test('for fromJson', () async {
-      expect(
-          runForElementNamed('NoDeserializeFieldType'),
-          throwsInvalidGenerationSourceError(
-              noSupportHelperFyi.replaceFirst('toJson', 'fromJson'),
-              'Make sure all of the types are serializable.'));
+    test('for fromJson', () {
+      expectThrows(
+          'NoDeserializeFieldType',
+          noSupportHelperFyi.replaceFirst('toJson', 'fromJson'),
+          'Make sure all of the types are serializable.');
     });
 
     final mapKeyFyi = 'Could not generate `toJson` code for '
         '`intDateTimeMap` because of type `int`.\n'
         'The type of the Map key must be `String`, `Object` or `dynamic`.';
 
-    test('for toJson in Map key', () async {
-      expect(
-          runForElementNamed('NoSerializeBadKey'),
-          throwsInvalidGenerationSourceError(
-              mapKeyFyi, 'Make sure all of the types are serializable.'));
+    test('for toJson in Map key', () {
+      expectThrows('NoSerializeBadKey', mapKeyFyi,
+          'Make sure all of the types are serializable.');
     });
 
-    test('for fromJson', () async {
-      expect(
-          runForElementNamed('NoDeserializeBadKey'),
-          throwsInvalidGenerationSourceError(
-              mapKeyFyi.replaceFirst('toJson', 'fromJson'),
-              'Make sure all of the types are serializable.'));
+    test('for fromJson', () {
+      expectThrows(
+          'NoDeserializeBadKey',
+          mapKeyFyi.replaceFirst('toJson', 'fromJson'),
+          'Make sure all of the types are serializable.');
     });
   });
 
@@ -246,9 +250,7 @@ abstract class _$OrderSerializerMixin {
         expect(output, contains("'h': height,"));
         expect(output, contains("..height = json['h']"));
       });
-    }
 
-    if (!generator.useWrappers) {
       test('works to ignore a field', () async {
         var output = await runForElementNamed('IgnoredFieldClass');
 
@@ -256,10 +258,8 @@ abstract class _$OrderSerializerMixin {
         expect(output, contains("'ignoredNullField': ignoredNullField"));
         expect(output, isNot(contains("'ignoredTrueField': ignoredTrueField")));
       });
-    }
 
-    if (!generator.useWrappers) {
-      test('fails if ignored field is referenced by ctor', () async {
+      test('fails if ignored field is referenced by ctor', () {
         expect(
             () => runForElementNamed('IgnoredFieldCtorClass'),
             throwsA(new FeatureMatcher<UnsupportedError>(
@@ -268,9 +268,8 @@ abstract class _$OrderSerializerMixin {
                 'Cannot populate the required constructor argument: '
                 'ignoredTrueField. It is assigned to an ignored field.')));
       });
-    }
-    if (!generator.useWrappers) {
-      test('fails if private field is referenced by ctor', () async {
+
+      test('fails if private field is referenced by ctor', () {
         expect(
             () => runForElementNamed('PrivateFieldCtorClass'),
             throwsA(new FeatureMatcher<UnsupportedError>(
@@ -281,20 +280,16 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
-    test('fails if name duplicates existing field', () async {
-      expect(
-          () => runForElementNamed('KeyDupesField'),
-          throwsInvalidGenerationSourceError(
-              'More than one field has the JSON key `str`.',
-              'Check the `JsonKey` annotations on fields.'));
+    test('fails if name duplicates existing field', () {
+      expectThrows(
+          'KeyDupesField',
+          'More than one field has the JSON key `str`.',
+          'Check the `JsonKey` annotations on fields.');
     });
 
-    test('fails if two names collide', () async {
-      expect(
-          () => runForElementNamed('DupeKeys'),
-          throwsInvalidGenerationSourceError(
-              'More than one field has the JSON key `a`.',
-              'Check the `JsonKey` annotations on fields.'));
+    test('fails if two names collide', () {
+      expectThrows('DupeKeys', 'More than one field has the JSON key `a`.',
+          'Check the `JsonKey` annotations on fields.');
     });
   });
 
@@ -413,10 +408,10 @@ abstract class _$SubTypeSerializerMixin {
 final _formatter = new dart_style.DartFormatter();
 
 Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
-  var filePath = p.join(
-      getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart');
+  var fileName = 'json_serializable_test_input.dart';
+  var filePath = p.join(getPackagePath(), 'test', 'src', fileName);
   var source =
-      new StringSource(new File(filePath).readAsStringSync(), 'test content');
+      new StringSource(new File(filePath).readAsStringSync(), fileName);
 
   var context = await getAnalysisContextForProjectPath(projectPath);
 

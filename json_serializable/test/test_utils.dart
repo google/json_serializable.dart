@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'dart:mirrors';
 
 import 'package:path/path.dart' as p;
-import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 String _packagePathCache;
@@ -25,15 +24,6 @@ String getPackagePath() {
   return _packagePathCache;
 }
 
-Matcher throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
-    throwsA(allOf(
-        const isInstanceOf<InvalidGenerationSourceError>(),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'message', (e) => e.message, messageMatcher),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'todo', (e) => e.todo, todoMatcher),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'element', (e) => e.element, isNotNull)));
 
 // TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {
