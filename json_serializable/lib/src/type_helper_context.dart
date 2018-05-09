@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
+import 'json_key_helpers.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 
@@ -20,7 +21,10 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   @override
   final bool nullable;
 
-  TypeHelperContext(this._generator, this.metadata, this.nullable);
+  final JsonKeyWithConversion jsonKey;
+
+  TypeHelperContext(
+      this._generator, this.metadata, this.nullable, this.jsonKey);
 
   @override
   String serialize(DartType targetType, String expression) => _run(

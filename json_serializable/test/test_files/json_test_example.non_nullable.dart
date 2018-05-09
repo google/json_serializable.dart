@@ -137,6 +137,9 @@ class Numbers extends Object with _$NumbersSerializerMixin {
   @JsonKey(nullable: false)
   List<double> nnDoubles;
 
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  Duration duration;
+
   Numbers();
 
   factory Numbers.fromJson(Map<String, dynamic> json) =>
@@ -149,3 +152,6 @@ class Numbers extends Object with _$NumbersSerializerMixin {
       _deepEquals(doubles, other.doubles) &&
       _deepEquals(nnDoubles, other.nnDoubles);
 }
+
+Duration _fromJson(int ms) => new Duration(milliseconds: ms);
+int _toJson(Duration duration) => duration.inMilliseconds;

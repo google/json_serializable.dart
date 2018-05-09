@@ -11,6 +11,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'generator_helper.dart';
 import 'type_helper.dart';
+import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/enum_helper.dart';
 import 'type_helpers/iterable_helper.dart';
@@ -24,6 +25,7 @@ Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
   static const _coreHelpers = const [
+    const ConvertHelper(),
     const IterableHelper(),
     const MapHelper(),
     const EnumHelper(),

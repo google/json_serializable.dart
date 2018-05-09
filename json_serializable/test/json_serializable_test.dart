@@ -309,6 +309,67 @@ abstract class _$OrderSerializerMixin {
     }
   });
 
+  group('functions', () {
+    group('fromJsonFunction', () {
+      test('with bad fromJson return type', () {
+        expectThrows(
+            'BadFromFuncReturnType',
+            'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
+            'return type `int` is not compatible with field type `String`.');
+      });
+      test('with 2 arg fromJson function', () {
+        expectThrows(
+            'InvalidFromFunc2Args',
+            'Error with `@JsonKey` on `field`. The `fromJson` function '
+            '`_twoArgFunction` must have one positional paramater.');
+      });
+      test('with class static function', () {
+        expectThrows(
+            'InvalidFromFuncClassStatic',
+            'Error with `@JsonKey` on `field`. '
+            'The function provided for `fromJson` must be top-level. '
+            'Static class methods (`_staticFunc`) are not supported.');
+      });
+    });
+
+    group('toJsonFunction', () {
+      test('with bad fromJson return type', () {
+        expectThrows(
+            'BadToFuncReturnType',
+            'Error with `@JsonKey` on `field`. The `toJson` function `_toInt` '
+            'argument type `bool` is not compatible with field type `String`.');
+      });
+      test('with 2 arg fromJson function', () {
+        expectThrows(
+            'InvalidToFunc2Args',
+            'Error with `@JsonKey` on `field`. The `toJson` function '
+            '`_twoArgFunction` must have one positional paramater.');
+      });
+      test('with class static function', () {
+        expectThrows(
+            'InvalidToFuncClassStatic',
+            'Error with `@JsonKey` on `field`. '
+            'The function provided for `toJson` must be top-level. '
+            'Static class methods (`_staticFunc`) are not supported.');
+      });
+    });
+
+    if (!generator.useWrappers) {
+      test('object', () async {
+        var output = await runForElementNamed('ObjectConvertMethods');
+        expect(output, contains("_toObject(json['field'])"));
+      });
+      test('dynamic', () async {
+        var output = await runForElementNamed('DynamicConvertMethods');
+        expect(output, contains("_toDynamic(json['field'])"));
+      });
+      test('typed', () async {
+        var output = await runForElementNamed('TypedConvertMethods');
+        expect(output, contains("_toString(json['field'] as String)"));
+      });
+    }
+  });
+
   test('missing default ctor with a factory', () async {
     expect(
         () => runForElementNamed('NoCtorClass'),

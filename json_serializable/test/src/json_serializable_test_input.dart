@@ -212,3 +212,73 @@ class SuperType {
   int priceFraction(int other) =>
       superTypeViaCtor == null ? null : superTypeViaCtor ~/ other;
 }
+
+//
+// to/from JSON function classes
+//
+
+int _toInt(bool input) => 42;
+int _twoArgFunction(int a, int b) => 42;
+
+dynamic _toDynamic(dynamic input) => null;
+Object _toObject(Object input) => null;
+
+@JsonSerializable()
+class BadFromFuncReturnType {
+  @JsonKey(fromJson: _toInt)
+  String field;
+}
+
+@JsonSerializable()
+class InvalidFromFunc2Args {
+  @JsonKey(fromJson: _twoArgFunction)
+  String field;
+}
+
+@JsonSerializable()
+class InvalidFromFuncClassStatic {
+  static Duration _staticFunc(int param) => null;
+
+  @JsonKey(fromJson: _staticFunc)
+  String field;
+}
+
+@JsonSerializable()
+class BadToFuncReturnType {
+  @JsonKey(toJson: _toInt)
+  String field;
+}
+
+@JsonSerializable()
+class InvalidToFunc2Args {
+  @JsonKey(toJson: _twoArgFunction)
+  String field;
+}
+
+@JsonSerializable()
+class InvalidToFuncClassStatic {
+  static Duration _staticFunc(int param) => null;
+
+  @JsonKey(toJson: _staticFunc)
+  String field;
+}
+
+@JsonSerializable()
+class ObjectConvertMethods {
+  @JsonKey(fromJson: _toObject, toJson: _toObject)
+  String field;
+}
+
+@JsonSerializable()
+class DynamicConvertMethods {
+  @JsonKey(fromJson: _toDynamic, toJson: _toDynamic)
+  String field;
+}
+
+String _toString(String input) => null;
+
+@JsonSerializable()
+class TypedConvertMethods {
+  @JsonKey(fromJson: _toString, toJson: _toString)
+  String field;
+}

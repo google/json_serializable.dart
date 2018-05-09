@@ -24,7 +24,6 @@ String getPackagePath() {
   return _packagePathCache;
 }
 
-
 // TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {
   final dynamic Function(T value) _feature;

@@ -1,3 +1,7 @@
+## 0.2.4
+
+* Added `fromJson` and `toJson` fields to `JsonKey` class.
+
 ## 0.2.3
 
 * Added `ignore` field to `JsonKey` class annotation

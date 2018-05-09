@@ -128,7 +128,8 @@ void main() {
         ..nums = [0, 0.0]
         ..doubles = [0.0]
         ..nnDoubles = [0.0]
-        ..ints = [0]);
+        ..ints = [0]
+        ..duration = const Duration(seconds: 1));
     });
 
     test('support ints as doubles', () {

@@ -72,10 +72,24 @@ class JsonKey {
   /// serialization.
   final bool ignore;
 
+  /// A top-level [Function] to use when deserializing the associated JSON
+  /// value to the annotated field.
+  final Function fromJson;
+
+  /// A top-level [Function] to use when serializing the annotated field to
+  /// JSON.
+  final Function toJson;
+
   /// Creates a new [JsonKey].
   ///
   /// Only required when the default behavior is not desired.
-  const JsonKey({this.name, this.nullable, this.includeIfNull, this.ignore});
+  const JsonKey(
+      {this.name,
+      this.nullable,
+      this.includeIfNull,
+      this.ignore,
+      this.fromJson,
+      this.toJson});
 }
 
 /// Helper classes used in generated code when
