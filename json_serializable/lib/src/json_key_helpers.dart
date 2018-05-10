@@ -25,19 +25,19 @@ JsonKeyWithConversion jsonKeyFor(FieldElement element) {
   var key = _jsonKeyExpando[element];
 
   if (key == null) {
-    // If an annotation exists on `element` the source is a 'real' field.
-    // If the result is `null`, check the getter – it is a property.
-    // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
-    var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
-        _jsonKeyChecker.firstAnnotationOfExact(element.getter);
-
-    _jsonKeyExpando[element] = key = _from(element, obj);
+    _jsonKeyExpando[element] = key = _from(element);
   }
 
   return key;
 }
 
-JsonKeyWithConversion _from(FieldElement element, DartObject obj) {
+JsonKeyWithConversion _from(FieldElement element) {
+  // If an annotation exists on `element` the source is a 'real' field.
+  // If the result is `null`, check the getter – it is a property.
+  // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
+  var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
+      _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+
   if (obj == null) {
     return const JsonKeyWithConversion._empty();
   }
