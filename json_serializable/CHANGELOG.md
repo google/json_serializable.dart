@@ -1,3 +1,9 @@
+## 0.5.2
+
+* If `fromJson`/`toJson` are set in `JsonKey`, apply them before any custom
+  or default `TypeHelper` instances. This allows custom `DateTime` parsing,
+  by preempting the existing `DateTime` `TypeHelper`.
+
 ## 0.5.1
 
 * Support new `fromJson` and `toJson` fields on `JsonKey`.

@@ -129,7 +129,15 @@ void main() {
         ..doubles = [0.0]
         ..nnDoubles = [0.0]
         ..ints = [0]
-        ..duration = const Duration(seconds: 1));
+        ..duration = const Duration(seconds: 1)
+        ..date = new DateTime.now());
+    });
+
+    test('custom DateTime', () {
+      var instance = new Numbers()
+        ..date = new DateTime.fromMicrosecondsSinceEpoch(42);
+      var json = instance.toJson();
+      expect(json, containsPair('date', 42));
     });
 
     test('support ints as doubles', () {

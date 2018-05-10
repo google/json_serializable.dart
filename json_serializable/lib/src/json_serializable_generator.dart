@@ -20,12 +20,11 @@ import 'type_helpers/map_helper.dart';
 import 'type_helpers/value_helper.dart';
 
 Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
-    generator._typeHelpers.followedBy(JsonSerializableGenerator._coreHelpers);
+    generator._allHelpers;
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
   static const _coreHelpers = const [
-    const ConvertHelper(),
     const IterableHelper(),
     const MapHelper(),
     const EnumHelper(),
@@ -38,6 +37,10 @@ class JsonSerializableGenerator
   ];
 
   final List<TypeHelper> _typeHelpers;
+
+  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
+        const ConvertHelper()
+      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   final bool useWrappers;
 

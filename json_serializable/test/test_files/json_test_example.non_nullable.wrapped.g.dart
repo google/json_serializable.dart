@@ -176,7 +176,8 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()
       (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
   ..nnDoubles =
       (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-  ..duration = _fromJson(json['duration'] as int);
+  ..duration = _fromJson(json['duration'] as int)
+  ..date = _dateTimeFromEpochUs(json['date'] as int);
 
 abstract class _$NumbersSerializerMixin {
   List<int> get ints;
@@ -184,6 +185,7 @@ abstract class _$NumbersSerializerMixin {
   List<double> get doubles;
   List<double> get nnDoubles;
   Duration get duration;
+  DateTime get date;
   Map<String, dynamic> toJson() => new _$NumbersJsonMapWrapper(this);
 }
 
@@ -193,7 +195,7 @@ class _$NumbersJsonMapWrapper extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys =>
-      const ['ints', 'nums', 'doubles', 'nnDoubles', 'duration'];
+      const ['ints', 'nums', 'doubles', 'nnDoubles', 'duration', 'date'];
 
   @override
   dynamic operator [](Object key) {
@@ -209,6 +211,8 @@ class _$NumbersJsonMapWrapper extends $JsonMapWrapper {
           return _v.nnDoubles;
         case 'duration':
           return _toJson(_v.duration);
+        case 'date':
+          return _dateTimeToEpochUs(_v.date);
       }
     }
     return null;

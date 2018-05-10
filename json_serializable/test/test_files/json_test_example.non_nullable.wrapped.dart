@@ -146,6 +146,9 @@ class Numbers extends Object with _$NumbersSerializerMixin {
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
   Duration duration;
 
+  @JsonKey(fromJson: _dateTimeFromEpochUs, toJson: _dateTimeToEpochUs)
+  DateTime date;
+
   Numbers();
 
   factory Numbers.fromJson(Map<String, dynamic> json) =>
@@ -161,3 +164,7 @@ class Numbers extends Object with _$NumbersSerializerMixin {
 
 Duration _fromJson(int ms) => new Duration(milliseconds: ms);
 int _toJson(Duration duration) => duration.inMilliseconds;
+
+DateTime _dateTimeFromEpochUs(int us) =>
+    new DateTime.fromMicrosecondsSinceEpoch(us);
+int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
