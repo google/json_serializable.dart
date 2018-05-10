@@ -62,6 +62,7 @@ class Order extends Object with _$OrderSerializerMixin {
     throw new UnimplementedError('not impld');
   }
 
+  // Ignored getter without value set in ctor
   int get price => items.fold(0, (total, item) => item.price + total);
 
   @JsonKey(ignore: true)
@@ -153,7 +154,9 @@ class Numbers extends Object with _$NumbersSerializerMixin {
       _deepEquals(ints, other.ints) &&
       _deepEquals(nums, other.nums) &&
       _deepEquals(doubles, other.doubles) &&
-      _deepEquals(nnDoubles, other.nnDoubles);
+      _deepEquals(nnDoubles, other.nnDoubles) &&
+      _deepEquals(duration, other.duration) &&
+      _deepEquals(date, other.date);
 }
 
 Duration _fromJson(int ms) => new Duration(milliseconds: ms);
