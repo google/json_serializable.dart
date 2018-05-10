@@ -16,7 +16,8 @@ import 'package:build/build.dart';
 
 import 'src/json_part_builder.dart';
 
-/// Supports `package:build_runner` creation and configuration of `build_cli`.
+/// Supports `package:build_runner` creation and configuration of
+/// `json_serializable`.
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
