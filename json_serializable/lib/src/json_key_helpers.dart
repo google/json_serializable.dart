@@ -8,7 +8,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/constant/value.dart';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
+import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
 @alwaysThrows
