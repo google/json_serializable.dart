@@ -49,19 +49,25 @@ abstract class _$PersonSerializerMixin {
   }
 }
 
-Order _$OrderFromJson(Map<String, dynamic> json) => new Order()
+Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
+    json['date'] == null ? null : _dateTimeFromEpochUs(json['date'] as int))
   ..count = json['count'] as int
   ..itemNumber = json['itemNumber'] as int
   ..isRushed = json['isRushed'] as bool
   ..item = json['item'] == null
       ? null
-      : new Item.fromJson(json['item'] as Map<String, dynamic>);
+      : new Item.fromJson(json['item'] as Map<String, dynamic>)
+  ..prepTime = json['prep-time'] == null
+      ? null
+      : _durationFromMillseconds(json['prep-time'] as int);
 
 abstract class _$OrderSerializerMixin {
   int get count;
   int get itemNumber;
   bool get isRushed;
   Item get item;
+  Duration get prepTime;
+  DateTime get date;
   Map<String, dynamic> toJson() {
     var val = <String, dynamic>{};
 
@@ -75,6 +81,9 @@ abstract class _$OrderSerializerMixin {
     writeNotNull('itemNumber', itemNumber);
     writeNotNull('isRushed', isRushed);
     writeNotNull('item', item);
+    writeNotNull('prep-time',
+        prepTime == null ? null : _durationToMilliseconds(prepTime));
+    writeNotNull('date', date == null ? null : _dateTimeToEpochUs(date));
     return val;
   }
 }

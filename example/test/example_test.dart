@@ -9,7 +9,8 @@ import 'package:test/test.dart';
 
 void main() {
   test('JsonSerializable', () {
-    final person = new Person('Inigo', 'Montoya', new DateTime(1560, 5, 5));
+    final person = new Person('Inigo', 'Montoya', new DateTime(1560, 5, 5))
+      ..orders = [new Order(new DateTime.now())];
 
     final personJson = _encode(person);
 
@@ -19,6 +20,7 @@ void main() {
     expect(person.firstName, person2.firstName);
     expect(person.lastName, person2.lastName);
     expect(person.dateOfBirth, person2.dateOfBirth);
+    expect(person.orders.single.date, person2.orders.single.date);
 
     expect(_encode(person2), equals(personJson));
   });

@@ -37,10 +37,27 @@ class Order extends Object with _$OrderSerializerMixin {
   bool isRushed;
   Item item;
 
-  Order();
+  @JsonKey(
+      name: 'prep-time',
+      fromJson: _durationFromMillseconds,
+      toJson: _durationToMilliseconds)
+  Duration prepTime;
+
+  @JsonKey(fromJson: _dateTimeFromEpochUs, toJson: _dateTimeToEpochUs)
+  final DateTime date;
+
+  Order(this.date);
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 }
+
+Duration _durationFromMillseconds(int milliseconds) =>
+    new Duration(milliseconds: milliseconds);
+int _durationToMilliseconds(Duration duration) => duration.inMilliseconds;
+
+DateTime _dateTimeFromEpochUs(int us) =>
+    new DateTime.fromMicrosecondsSinceEpoch(us);
+int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 @JsonSerializable(createToJson: false)
 class Item {
