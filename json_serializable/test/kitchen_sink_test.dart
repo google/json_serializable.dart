@@ -109,7 +109,7 @@ void _nonNullableTests(
 
 void _nullableTests(
     KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
-  roundTripItem(KitchenSink p) {
+  void roundTripItem(KitchenSink p) {
     roundTripObject(p, (json) => fromJson(json));
   }
 
@@ -164,7 +164,7 @@ void _nullableTests(
 
 void _sharedTests(
     KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
-  roundTripSink(KitchenSink p) {
+  void roundTripSink(KitchenSink p) {
     roundTripObject(p, fromJson);
   }
 
@@ -211,6 +211,62 @@ void _sharedTests(
 
     var json = item.toJson();
     expect(json.keys, orderedEquals(_expectedOrder));
+  });
+
+  group('a bad value for', () {
+    final input = const {
+      'dateTime': '2018-05-10T14:20:58.927',
+      'iterable': const [],
+      'dynamicIterable': const [],
+      'objectIterable': const [],
+      'intIterable': const [],
+      'datetime-iterable': const [],
+      'list': const [],
+      'dynamicList': const [],
+      'objectList': const [],
+      'intList': const [],
+      'dateTimeList': const [],
+      'map': const <String, dynamic>{},
+      'stringStringMap': const {},
+      'stringIntMap': const {},
+      'stringDateTimeMap': const <String, dynamic>{},
+      'crazyComplex': const [],
+      'val': const {},
+      'writeNotNull': null,
+      r'$string': null
+    };
+
+    test('nothing succeeds', () {
+      expect(loudEncode(input), loudEncode(fromJson(input)));
+    });
+
+    for (var e in {
+      'dateTime': true,
+      'iterable': true,
+      'dynamicIterable': true,
+      'intIterable': [true],
+      'datetime-iterable': [true],
+      'list': true,
+      'dynamicList': true,
+      'objectList': true,
+      'intList': [true],
+      'dateTimeList': [true],
+      'stringStringMap': {'key': 42},
+      'stringIntMap': {'key': 'value'},
+      'stringDateTimeMap': {'key': 42},
+      'crazyComplex': [true],
+      'val': {'key': 42},
+      'writeNotNull': 42,
+      r'$string': true,
+    }.entries) {
+      test('`${e.key}` fails', () {
+        var copy = new Map<String, dynamic>.from(input);
+        copy[e.key] = e.value;
+        expect(() => fromJson(copy), throwsA((e) {
+          return e is CastError || e is TypeError;
+        }));
+      });
+    }
   });
 }
 

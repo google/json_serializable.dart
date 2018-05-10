@@ -22,7 +22,7 @@ import 'kitchen_sink_interface.dart' as k;
 part 'kitchen_sink.non_nullable.wrapped.g.dart';
 
 List<T> _defaultList<T>() => <T>[];
-Map _defaultMap() => {};
+Map<String, T> _defaultMap<T>() => <String, T>{};
 
 @JsonSerializable(nullable: false)
 class KitchenSink extends Object
