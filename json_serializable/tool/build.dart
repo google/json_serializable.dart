@@ -7,6 +7,7 @@ import 'dart:io' show exitCode;
 
 import 'package:build_config/build_config.dart';
 import 'package:build_runner/build_runner.dart';
+import 'package:build_test/builder.dart';
 import 'package:json_serializable/src/json_part_builder.dart';
 
 import 'builder.dart';
@@ -41,7 +42,10 @@ final List<BuilderApplication> builders = [
           'test/test_files/kitchen_sink*wrapped.dart',
           'test/test_files/json_test_example*wrapped.dart',
         ],
-      ))
+      )),
+  applyToRoot(testBootstrapBuilder(null),
+      generateFor: const InputSet(include: const ['test/**']),
+      hideOutput: true),
 ];
 
 main(List<String> args) async {
