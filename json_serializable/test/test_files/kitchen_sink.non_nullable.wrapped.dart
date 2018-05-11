@@ -24,6 +24,22 @@ part 'kitchen_sink.non_nullable.wrapped.g.dart';
 List<T> _defaultList<T>() => <T>[];
 Map<String, T> _defaultMap<T>() => <String, T>{};
 
+k.KitchenSink testFactory(
+        {Iterable iterable,
+        Iterable<dynamic> dynamicIterable,
+        Iterable<Object> objectIterable,
+        Iterable<int> intIterable,
+        Iterable<DateTime> dateTimeIterable}) =>
+    new KitchenSink(
+        iterable: iterable,
+        dynamicIterable: dynamicIterable,
+        objectIterable: objectIterable,
+        intIterable: intIterable,
+        dateTimeIterable: dateTimeIterable);
+
+k.KitchenSink testFromJson(Map<String, dynamic> json) =>
+    new KitchenSink.fromJson(json);
+
 @JsonSerializable(nullable: false)
 class KitchenSink extends Object
     with _$KitchenSinkSerializerMixin

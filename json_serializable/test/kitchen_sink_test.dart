@@ -6,83 +6,36 @@ import 'package:test/test.dart';
 
 import 'package:json_serializable/src/constants.dart';
 
-import 'test_files/kitchen_sink.dart' as nullable;
-import 'test_files/kitchen_sink.non_nullable.dart' as nn;
-import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped;
-import 'test_files/kitchen_sink.wrapped.dart' as wrapped;
+import 'test_files/kitchen_sink.dart' as nullable
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.non_nullable.dart' as nn
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.wrapped.dart' as wrapped
+    show testFactory, testFromJson;
+
 import 'test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 void main() {
   group('nullable', () {
     group('unwrapped', () {
-      _nullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nullable.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nullable.KitchenSink.fromJson(j));
+      _nullableTests(nullable.testFactory, nullable.testFromJson);
     });
 
     group('wrapped', () {
-      _nullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new wrapped.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new wrapped.KitchenSink.fromJson(j));
+      _nullableTests(wrapped.testFactory, wrapped.testFromJson);
     });
   });
 
   group('non-nullable', () {
     group('unwrapped', () {
-      _nonNullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nn.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nn.KitchenSink.fromJson(j));
+      _nonNullableTests(nn.testFactory, nn.testFromJson);
     });
 
     group('wrapped', () {
-      _nonNullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nnwrapped.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nnwrapped.KitchenSink.fromJson(j));
+      _nonNullableTests(nnwrapped.testFactory, nnwrapped.testFromJson);
     });
   });
 }

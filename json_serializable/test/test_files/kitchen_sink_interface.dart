@@ -40,10 +40,22 @@ bool sinkEquals(KitchenSink a, Object other) =>
     a.dateTime == other.dateTime &&
     _deepEquals(a.iterable, other.iterable) &&
     _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
+    // objectIterable
+    // intIterable
     _deepEquals(a.dateTimeIterable, other.dateTimeIterable) &&
+    // list
+    // dynamicList
+    // objectList
+    // intList
     _deepEquals(a.dateTimeList, other.dateTimeList) &&
+    // map
+    // stringStringMap
+    // stringIntMap
     _deepEquals(a.stringDateTimeMap, other.stringDateTimeMap) &&
-    _deepEquals(a.crazyComplex, other.crazyComplex);
+    _deepEquals(a.crazyComplex, other.crazyComplex) &&
+    // val
+    a.writeNotNull == other.writeNotNull &&
+    a.string == other.string;
 
 bool _deepEquals(Object a, Object b) =>
     const DeepCollectionEquality().equals(a, b);
