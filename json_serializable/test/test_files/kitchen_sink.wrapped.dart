@@ -19,12 +19,14 @@ List<T> _defaultList<T>() => null;
 Map _defaultMap() => null;
 
 k.KitchenSink testFactory(
-        {Iterable iterable,
+        {int ctorValidatedNo42,
+        Iterable iterable,
         Iterable<dynamic> dynamicIterable,
         Iterable<Object> objectIterable,
         Iterable<int> intIterable,
         Iterable<DateTime> dateTimeIterable}) =>
     new KitchenSink(
+        ctorValidatedNo42: ctorValidatedNo42,
         iterable: iterable,
         dynamicIterable: dynamicIterable,
         objectIterable: objectIterable,
@@ -51,8 +53,12 @@ class KitchenSink extends Object
   final Iterable<int> _intIterable;
   final Iterable<DateTime> _dateTimeIterable;
 
+  @JsonKey(name: 'no-42')
+  final int ctorValidatedNo42;
+
   KitchenSink(
-      {Iterable iterable,
+      {this.ctorValidatedNo42,
+      Iterable iterable,
       Iterable<dynamic> dynamicIterable,
       Iterable<Object> objectIterable,
       Iterable<int> intIterable,
@@ -61,7 +67,12 @@ class KitchenSink extends Object
         _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
         _objectIterable = objectIterable?.toList() ?? _defaultList(),
         _intIterable = intIterable?.toList() ?? _defaultList(),
-        _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList();
+        _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList() {
+    if (ctorValidatedNo42 == 42) {
+      throw new ArgumentError.value(
+          42, 'ctorValidatedNo42', 'The value `42` is not allowed.');
+    }
+  }
 
   factory KitchenSink.fromJson(Map<String, Object> json) =>
       _$KitchenSinkFromJson(json);

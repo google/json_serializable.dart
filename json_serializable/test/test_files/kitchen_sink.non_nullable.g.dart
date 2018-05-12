@@ -11,6 +11,7 @@ part of 'kitchen_sink.non_nullable.dart';
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
+    ctorValidatedNo42: json['no-42'] as int,
     iterable: json['iterable'] as List,
     dynamicIterable: json['dynamicIterable'] as List,
     objectIterable: json['objectIterable'] as List,
@@ -45,6 +46,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..string = json[r'$string'] as String;
 
 abstract class _$KitchenSinkSerializerMixin {
+  int get ctorValidatedNo42;
   DateTime get dateTime;
   Iterable<dynamic> get iterable;
   Iterable<dynamic> get dynamicIterable;
@@ -65,6 +67,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'no-42': ctorValidatedNo42,
         'dateTime': dateTime.toIso8601String(),
         'iterable': iterable.toList(),
         'dynamicIterable': dynamicIterable.toList(),

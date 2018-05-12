@@ -18,6 +18,9 @@ import 'test_files/kitchen_sink.wrapped.dart' as wrapped
 import 'test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
+final _isACastError = const isInstanceOf<CastError>();
+final _isATypeError = const isInstanceOf<TypeError>();
+
 void main() {
   group('nullable', () {
     group('unwrapped', () {
@@ -41,7 +44,8 @@ void main() {
 }
 
 typedef KitchenSink KitchenSinkCtor(
-    {Iterable iterable,
+    {int ctorValidatedNo42,
+    Iterable iterable,
     Iterable<dynamic> dynamicIterable,
     Iterable<Object> objectIterable,
     Iterable<int> intIterable,
@@ -168,6 +172,7 @@ void _sharedTests(
 
   group('a bad value for', () {
     final input = const {
+      'no-42': 0,
       'dateTime': '2018-05-10T14:20:58.927',
       'iterable': const [],
       'dynamicIterable': const [],
@@ -194,6 +199,7 @@ void _sharedTests(
     });
 
     for (var e in {
+      'no-42': 42,
       'dateTime': true,
       'iterable': true,
       'dynamicIterable': true,
@@ -215,9 +221,8 @@ void _sharedTests(
       test('`${e.key}` fails', () {
         var copy = new Map<String, dynamic>.from(input);
         copy[e.key] = e.value;
-        expect(() => fromJson(copy), throwsA((e) {
-          return e is CastError || e is TypeError;
-        }));
+        expect(() => fromJson(copy),
+            throwsA(anyOf(_isATypeError, _isACastError, isArgumentError)));
       });
     }
   });
@@ -232,6 +237,7 @@ final _excludeIfNullKeys = [
 ];
 
 final _expectedOrder = [
+  'no-42',
   'dateTime',
   'iterable',
   'dynamicIterable',

@@ -11,6 +11,7 @@ part of 'kitchen_sink.non_nullable.wrapped.dart';
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
+    ctorValidatedNo42: json['no-42'] as int,
     iterable: json['iterable'] as List,
     dynamicIterable: json['dynamicIterable'] as List,
     objectIterable: json['objectIterable'] as List,
@@ -45,6 +46,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..string = json[r'$string'] as String;
 
 abstract class _$KitchenSinkSerializerMixin {
+  int get ctorValidatedNo42;
   DateTime get dateTime;
   Iterable<dynamic> get iterable;
   Iterable<dynamic> get dynamicIterable;
@@ -73,6 +75,7 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys => const [
+        'no-42',
         'dateTime',
         'iterable',
         'dynamicIterable',
@@ -98,6 +101,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
   dynamic operator [](Object key) {
     if (key is String) {
       switch (key) {
+        case 'no-42':
+          return _v.ctorValidatedNo42;
         case 'dateTime':
           return _v.dateTime.toIso8601String();
         case 'iterable':

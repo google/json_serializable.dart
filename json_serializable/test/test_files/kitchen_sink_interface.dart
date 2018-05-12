@@ -5,6 +5,7 @@
 import 'package:collection/collection.dart';
 
 abstract class KitchenSink {
+  int get ctorValidatedNo42;
   DateTime dateTime;
 
   Iterable get iterable;
@@ -37,6 +38,7 @@ abstract class KitchenSink {
 //TODO(kevmoo) - finish this...
 bool sinkEquals(KitchenSink a, Object other) =>
     other is KitchenSink &&
+    a.ctorValidatedNo42 == other.ctorValidatedNo42 &&
     a.dateTime == other.dateTime &&
     _deepEquals(a.iterable, other.iterable) &&
     _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
