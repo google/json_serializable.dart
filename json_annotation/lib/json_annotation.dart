@@ -11,3 +11,4 @@ library json_annotation;
 
 export 'src/json_literal.dart';
 export 'src/json_serializable.dart';
+export 'src/wrapper_helpers.dart';
