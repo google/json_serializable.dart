@@ -1,4 +1,4 @@
-// Copyright (c) 2017, the Dart project authors.  Please see the AUTHORS file
+// Copyright (c) 2018, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
@@ -16,10 +16,10 @@ final _copyrightContent =
 
 final copyrightHeader = '$_copyrightContent\n$defaultFileHeader';
 
-Builder nonNull(_) => new LibraryBuilder(new _NonNullableGenerator(),
+Builder nonNull([_]) => new LibraryBuilder(new _NonNullableGenerator(),
     generatedExtension: '.non_nullable.dart', header: copyrightHeader);
 
-Builder wrapped(_) => new LibraryBuilder(new _WrappedGenerator(),
+Builder wrapped([_]) => new LibraryBuilder(new _WrappedGenerator(),
     generatedExtension: '.wrapped.dart', header: copyrightHeader);
 
 class _NonNullableGenerator extends Generator {

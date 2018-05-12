@@ -13,12 +13,12 @@ import 'package:json_serializable/src/json_part_builder.dart';
 import 'builder.dart';
 
 final List<BuilderApplication> builders = [
-  applyToRoot(nonNull(null),
+  applyToRoot(nonNull(),
       generateFor: const InputSet(include: const [
         'test/test_files/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
       ])),
-  applyToRoot(wrapped(null),
+  applyToRoot(wrapped(),
       generateFor: const InputSet(include: const [
         'test/test_files/kitchen_sink.dart',
         'test/test_files/kitchen_sink.non_nullable.dart',
