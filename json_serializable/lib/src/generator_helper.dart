@@ -142,6 +142,7 @@ class _GeneratorHelper {
               .toList(),
           unavailableReasons,
           deserializeFun);
+      _buffer.writeln(';');
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.

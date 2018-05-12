@@ -267,16 +267,13 @@ Set<String> writeConstructorInvocation(
   }), ', ');
 
   buffer.write(')');
-  if (remainingFieldsForInvocationBody.isEmpty) {
-    buffer.writeln(';');
-  } else {
+  if (remainingFieldsForInvocationBody.isNotEmpty) {
     for (var field in remainingFieldsForInvocationBody) {
       buffer.writeln();
       buffer.write('      ..$field = ');
       buffer.write(deserializeForField(field));
       usedCtorParamsAndFields.add(field);
     }
-    buffer.writeln(';');
   }
   buffer.writeln();
 
