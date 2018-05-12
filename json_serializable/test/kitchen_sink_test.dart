@@ -6,83 +6,36 @@ import 'package:test/test.dart';
 
 import 'package:json_serializable/src/constants.dart';
 
-import 'test_files/kitchen_sink.dart' as nullable;
-import 'test_files/kitchen_sink.non_nullable.dart' as nn;
-import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped;
-import 'test_files/kitchen_sink.wrapped.dart' as wrapped;
+import 'test_files/kitchen_sink.dart' as nullable
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.non_nullable.dart' as nn
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.wrapped.dart' as wrapped
+    show testFactory, testFromJson;
+
 import 'test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 void main() {
   group('nullable', () {
     group('unwrapped', () {
-      _nullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nullable.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nullable.KitchenSink.fromJson(j));
+      _nullableTests(nullable.testFactory, nullable.testFromJson);
     });
 
     group('wrapped', () {
-      _nullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new wrapped.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new wrapped.KitchenSink.fromJson(j));
+      _nullableTests(wrapped.testFactory, wrapped.testFromJson);
     });
   });
 
   group('non-nullable', () {
     group('unwrapped', () {
-      _nonNullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nn.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nn.KitchenSink.fromJson(j));
+      _nonNullableTests(nn.testFactory, nn.testFromJson);
     });
 
     group('wrapped', () {
-      _nonNullableTests(
-          (
-                  {Iterable iterable,
-                  Iterable<dynamic> dynamicIterable,
-                  Iterable<Object> objectIterable,
-                  Iterable<int> intIterable,
-                  Iterable<DateTime> dateTimeIterable}) =>
-              new nnwrapped.KitchenSink(
-                  iterable: iterable,
-                  dynamicIterable: dynamicIterable,
-                  objectIterable: objectIterable,
-                  intIterable: intIterable,
-                  dateTimeIterable: dateTimeIterable),
-          (j) => new nnwrapped.KitchenSink.fromJson(j));
+      _nonNullableTests(nnwrapped.testFactory, nnwrapped.testFromJson);
     });
   });
 }
@@ -109,7 +62,7 @@ void _nonNullableTests(
 
 void _nullableTests(
     KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
-  roundTripItem(KitchenSink p) {
+  void roundTripItem(KitchenSink p) {
     roundTripObject(p, (json) => fromJson(json));
   }
 
@@ -164,7 +117,7 @@ void _nullableTests(
 
 void _sharedTests(
     KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
-  roundTripSink(KitchenSink p) {
+  void roundTripSink(KitchenSink p) {
     roundTripObject(p, fromJson);
   }
 
@@ -211,6 +164,62 @@ void _sharedTests(
 
     var json = item.toJson();
     expect(json.keys, orderedEquals(_expectedOrder));
+  });
+
+  group('a bad value for', () {
+    final input = const {
+      'dateTime': '2018-05-10T14:20:58.927',
+      'iterable': const [],
+      'dynamicIterable': const [],
+      'objectIterable': const [],
+      'intIterable': const [],
+      'datetime-iterable': const [],
+      'list': const [],
+      'dynamicList': const [],
+      'objectList': const [],
+      'intList': const [],
+      'dateTimeList': const [],
+      'map': const <String, dynamic>{},
+      'stringStringMap': const {},
+      'stringIntMap': const {},
+      'stringDateTimeMap': const <String, dynamic>{},
+      'crazyComplex': const [],
+      'val': const {},
+      'writeNotNull': null,
+      r'$string': null
+    };
+
+    test('nothing succeeds', () {
+      expect(loudEncode(input), loudEncode(fromJson(input)));
+    });
+
+    for (var e in {
+      'dateTime': true,
+      'iterable': true,
+      'dynamicIterable': true,
+      'intIterable': [true],
+      'datetime-iterable': [true],
+      'list': true,
+      'dynamicList': true,
+      'objectList': true,
+      'intList': [true],
+      'dateTimeList': [true],
+      'stringStringMap': {'key': 42},
+      'stringIntMap': {'key': 'value'},
+      'stringDateTimeMap': {'key': 42},
+      'crazyComplex': [true],
+      'val': {'key': 42},
+      'writeNotNull': 42,
+      r'$string': true,
+    }.entries) {
+      test('`${e.key}` fails', () {
+        var copy = new Map<String, dynamic>.from(input);
+        copy[e.key] = e.value;
+        expect(() => fromJson(copy), throwsA((e) {
+          return e is CastError || e is TypeError;
+        }));
+      });
+    }
   });
 }
 
