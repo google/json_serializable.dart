@@ -4,17 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_gen/source_gen.dart' show TypeChecker;
-
-/// If [type] is the [Type] or implements the [Type] represented by [checker],
-/// returns the generic arguments to the [checker] [Type] if there are any.
-///
-/// If the [checker] [Type] doesn't have generic arguments, `null` is returned.
-List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
-  var implementation = _getImplementationType(type, checker) as InterfaceType;
-
-  return implementation?.typeArguments;
-}
 
 abstract class SerializeContext {
   bool get nullable;
@@ -82,37 +71,10 @@ abstract class TypeHelper {
       DartType targetType, String expression, DeserializeContext context);
 }
 
-/// A [TypeChecker] for [String], [bool] and [num].
-const simpleJsonTypeChecker = const TypeChecker.any(const [
-  const TypeChecker.fromRuntime(String),
-  const TypeChecker.fromRuntime(bool),
-  const TypeChecker.fromRuntime(num)
-]);
-
 class UnsupportedTypeError extends Error {
   final String expression;
   final DartType type;
   final String reason;
 
   UnsupportedTypeError(this.type, this.expression, this.reason);
-}
-
-DartType _getImplementationType(DartType type, TypeChecker checker) {
-  if (checker.isExactlyType(type)) return type;
-
-  if (type is InterfaceType) {
-    var match = [type.interfaces, type.mixins]
-        .expand((e) => e)
-        .map((type) => _getImplementationType(type, checker))
-        .firstWhere((value) => value != null, orElse: () => null);
-
-    if (match != null) {
-      return match;
-    }
-
-    if (type.superclass != null) {
-      return _getImplementationType(type.superclass, checker);
-    }
-  }
-  return null;
 }

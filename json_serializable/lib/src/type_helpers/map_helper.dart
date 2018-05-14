@@ -3,7 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_gen/source_gen.dart' show TypeChecker;
+
+import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -16,10 +17,10 @@ class MapHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, SerializeContext context) {
-    if (!_coreMapChecker.isAssignableFromType(targetType)) {
+    if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
-    var args = typeArgumentsOf(targetType, _coreMapChecker);
+    var args = typeArgumentsOf(targetType, coreMapTypeChecker);
     assert(args.length == 2);
 
     var keyType = args[0];
@@ -52,14 +53,14 @@ class MapHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    if (!_coreMapChecker.isAssignableFromType(targetType)) {
+    if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
 
     // Just pass through if
     //    key:   dynamic, Object, String
     //    value: dynamic, Object
-    var typeArgs = typeArgumentsOf(targetType, _coreMapChecker);
+    var typeArgs = typeArgumentsOf(targetType, coreMapTypeChecker);
     assert(typeArgs.length == 2);
     var keyArg = typeArgs.first;
     var valueArg = typeArgs.last;
@@ -96,7 +97,7 @@ class MapHelper extends TypeHelper {
     // So the only safe types for key are dynamic/Object/String
     var safeKey = keyArg.isDynamic ||
         keyArg.isObject ||
-        _stringTypeChecker.isExactlyType(keyArg);
+        coreStringTypeChecker.isExactlyType(keyArg);
 
     if (!safeKey) {
       throw new UnsupportedTypeError(keyArg, expression,
@@ -104,6 +105,3 @@ class MapHelper extends TypeHelper {
     }
   }
 }
-
-final _coreMapChecker = const TypeChecker.fromUrl('dart:core#Map');
-final _stringTypeChecker = const TypeChecker.fromRuntime(String);

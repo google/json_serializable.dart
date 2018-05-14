@@ -4,6 +4,8 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+
+import '../shared_checkers.dart';
 import '../type_helper.dart';
 
 class ValueHelper extends TypeHelper {

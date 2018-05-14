@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+export 'src/shared_checkers.dart' show simpleJsonTypeChecker, typeArgumentsOf;
 export 'src/type_helper.dart';
 export 'src/type_helpers/date_time_helper.dart';
 export 'src/type_helpers/json_helper.dart';
