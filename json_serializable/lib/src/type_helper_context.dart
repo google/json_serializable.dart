@@ -21,10 +21,11 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   @override
   final bool nullable;
 
-  final JsonKeyWithConversion jsonKey;
+  final ConvertData fromJsonData;
+  final ConvertData toJsonData;
 
-  TypeHelperContext(
-      this._generator, this.metadata, this.nullable, this.jsonKey);
+  TypeHelperContext(this._generator, this.metadata, this.nullable,
+      this.fromJsonData, this.toJsonData);
 
   @override
   String serialize(DartType targetType, String expression) => _run(

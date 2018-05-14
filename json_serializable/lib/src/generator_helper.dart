@@ -300,9 +300,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
     }
   }
 
-  TypeHelperContext _getHelperContext(FieldElement field) =>
-      new TypeHelperContext(
-          _generator, field.metadata, _nullable(field), jsonKeyFor(field));
+  TypeHelperContext _getHelperContext(FieldElement field) {
+    var key = jsonKeyFor(field);
+    return new TypeHelperContext(_generator, field.metadata, _nullable(field),
+        key.fromJsonData, key.toJsonData);
+  }
 
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.

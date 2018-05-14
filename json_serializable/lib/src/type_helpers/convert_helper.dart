@@ -14,11 +14,11 @@ class ConvertHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, SerializeContext context) {
-    var jsonKey = (context as TypeHelperContext).jsonKey;
-    if (jsonKey.toJsonData != null) {
-      assert(targetType.isAssignableTo(jsonKey.toJsonData.paramType));
+    var toJsonData = (context as TypeHelperContext).toJsonData;
+    if (toJsonData != null) {
+      assert(targetType.isAssignableTo(toJsonData.paramType));
 
-      var result = '${jsonKey.toJsonData.name}($expression)';
+      var result = '${toJsonData.name}($expression)';
       return commonNullPrefix(context.nullable, expression, result);
     }
     return null;
@@ -27,14 +27,14 @@ class ConvertHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    var jsonKey = (context as TypeHelperContext).jsonKey;
-    if (jsonKey.fromJsonData != null) {
+    var fromJsonData = (context as TypeHelperContext).fromJsonData;
+    if (fromJsonData != null) {
       var asContent = '';
-      var paramType = jsonKey.fromJsonData.paramType;
+      var paramType = fromJsonData.paramType;
       if (!(paramType.isDynamic || paramType.isObject)) {
         asContent = ' as $paramType';
       }
-      var result = '${jsonKey.fromJsonData.name}($expression$asContent)';
+      var result = '${fromJsonData.name}($expression$asContent)';
       return commonNullPrefix(context.nullable, expression, result);
     }
     return null;
