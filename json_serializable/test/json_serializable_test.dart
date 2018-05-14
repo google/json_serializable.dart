@@ -51,7 +51,9 @@ void _registerTests(JsonSerializableGenerator generator) {
     var generated = await generator.generateForAnnotatedElement(
         element, new ConstantReader(annotation), null);
 
-    return _formatter.format(generated);
+    var output = _formatter.format(generated);
+    printOnFailure(output);
+    return output;
   }
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
@@ -366,6 +368,23 @@ abstract class _$OrderSerializerMixin {
       test('typed', () async {
         var output = await runForElementNamed('TypedConvertMethods');
         expect(output, contains("_toString(json['field'] as String)"));
+      });
+      test('dynamic collections', () async {
+        var output = await runForElementNamed('FromDynamicCollection');
+        expect(output, r'''
+FromDynamicCollection _$FromDynamicCollectionFromJson(
+        Map<String, dynamic> json) =>
+    new FromDynamicCollection()
+      ..mapField = json['mapField'] == null
+          ? null
+          : _fromDynamicMap(json['mapField'] as Map)
+      ..listField = json['listField'] == null
+          ? null
+          : _fromDynamicList(json['listField'] as List)
+      ..iterableField = json['iterableField'] == null
+          ? null
+          : _fromDynamicIterable(json['iterableField'] as List);
+''');
       });
     }
   });

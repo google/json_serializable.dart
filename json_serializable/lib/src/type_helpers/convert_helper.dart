@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
+import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../type_helper_context.dart';
 import '../utils.dart';
@@ -29,14 +30,34 @@ class ConvertHelper extends TypeHelper {
       DartType targetType, String expression, DeserializeContext context) {
     var fromJsonData = (context as TypeHelperContext).fromJsonData;
     if (fromJsonData != null) {
-      var asContent = '';
-      var paramType = fromJsonData.paramType;
-      if (!(paramType.isDynamic || paramType.isObject)) {
-        asContent = ' as $paramType';
-      }
+      var asContent = _asContent(fromJsonData.paramType);
       var result = '${fromJsonData.name}($expression$asContent)';
       return commonNullPrefix(context.nullable, expression, result);
     }
     return null;
   }
+}
+
+String _asContent(DartType type) {
+  if (type.isDynamic || type.isObject) {
+    return '';
+  }
+
+  if (coreIterableTypeChecker.isAssignableFromType(type)) {
+    var itemType = coreIterableGenericType(type);
+    if (itemType.isDynamic || itemType.isObject) {
+      return ' as List';
+    }
+  }
+
+  if (coreMapTypeChecker.isAssignableFromType(type)) {
+    var args = typeArgumentsOf(type, coreMapTypeChecker);
+    assert(args.length == 2);
+
+    if (args.every((dt) => dt.isDynamic || dt.isObject)) {
+      return ' as Map';
+    }
+  }
+
+  return ' as $type';
 }

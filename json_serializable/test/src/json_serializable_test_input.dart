@@ -282,3 +282,17 @@ class TypedConvertMethods {
   @JsonKey(fromJson: _toString, toJson: _toString)
   String field;
 }
+
+String _fromDynamicMap(Map input) => null;
+String _fromDynamicList(List input) => null;
+String _fromDynamicIterable(Iterable input) => null;
+
+@JsonSerializable(createToJson: false)
+class FromDynamicCollection {
+  @JsonKey(fromJson: _fromDynamicMap)
+  String mapField;
+  @JsonKey(fromJson: _fromDynamicList)
+  String listField;
+  @JsonKey(fromJson: _fromDynamicIterable)
+  String iterableField;
+}
