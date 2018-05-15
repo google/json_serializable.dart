@@ -240,7 +240,7 @@ final _invalidValues = const {
   r'$string': true,
 };
 
-final _excludeIfNullKeys = [
+final _excludeIfNullKeys = const [
   'dateTime',
   'iterable',
   'dateTimeList',
@@ -248,7 +248,7 @@ final _excludeIfNullKeys = [
   toJsonMapVarName
 ];
 
-final _expectedOrder = [
+final _expectedOrder = const [
   'no-42',
   'dateTime',
   'iterable',
