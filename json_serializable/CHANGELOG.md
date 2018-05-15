@@ -8,9 +8,11 @@
    `_myHelper(json['key'] as Map)` instead of
    `_myHelper(json['key'] as Map<dynamic, dynamic>)`.  
 
+* `JsonKey.fromJson`/`.toJson` now support functions with optional arguments.
+
 ## 0.5.2
 
-* If `fromJson`/`toJson` are set in `JsonKey`, apply them before any custom
+* If `JsonKey.fromJson`/`toJson` are set, apply them before any custom
   or default `TypeHelper` instances. This allows custom `DateTime` parsing,
   by preempting the existing `DateTime` `TypeHelper`.
 

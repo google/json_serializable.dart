@@ -296,3 +296,51 @@ class FromDynamicCollection {
   @JsonKey(fromJson: _fromDynamicIterable)
   String iterableField;
 }
+
+String _noArgs() => null;
+
+@JsonSerializable(createToJson: false)
+class BadNoArgs {
+  @JsonKey(fromJson: _noArgs)
+  String field;
+}
+
+String _twoArgs(a, b) => null;
+
+@JsonSerializable(createToJson: false)
+class BadTwoRequiredPositional {
+  @JsonKey(fromJson: _twoArgs)
+  String field;
+}
+
+String _oneNamed({a}) => null;
+
+@JsonSerializable(createToJson: false)
+class BadOneNamed {
+  @JsonKey(fromJson: _oneNamed)
+  String field;
+}
+
+String _oneNormalOnePositional(a, [b]) => null;
+
+@JsonSerializable(createToJson: false)
+class OkayOneNormalOptionalPositional {
+  @JsonKey(fromJson: _oneNormalOnePositional)
+  String field;
+}
+
+String _oneNormalOptionalNamed(a, {b}) => null;
+
+@JsonSerializable(createToJson: false)
+class OkayOneNormalOptionalNamed {
+  @JsonKey(fromJson: _oneNormalOptionalNamed)
+  String field;
+}
+
+String _onlyOptionalPositional([a, b]) => null;
+
+@JsonSerializable(createToJson: false)
+class OkayOnlyOptionalPositional {
+  @JsonKey(fromJson: _onlyOptionalPositional)
+  String field;
+}

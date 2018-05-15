@@ -332,6 +332,18 @@ abstract class _$OrderSerializerMixin {
             'The function provided for `fromJson` must be top-level. '
             'Static class methods (`_staticFunc`) are not supported.');
       });
+      test('BadNoArgs', () {
+        expectThrows('BadNoArgs',
+            'Error with `@JsonKey` on `field`. The `fromJson` function `_noArgs` must have one positional paramater.');
+      });
+      test('BadTwoRequiredPositional', () {
+        expectThrows('BadTwoRequiredPositional',
+            'Error with `@JsonKey` on `field`. The `fromJson` function `_twoArgs` must have one positional paramater.');
+      });
+      test('BadOneNamed', () {
+        expectThrows('BadOneNamed',
+            'Error with `@JsonKey` on `field`. The `fromJson` function `_oneNamed` must have one positional paramater.');
+      });
     });
 
     group('toJsonFunction', () {
@@ -385,6 +397,19 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
           ? null
           : _fromDynamicIterable(json['iterableField'] as List);
 ''');
+      });
+      test('OkayOneNormalOptionalPositional', () async {
+        var output =
+            await runForElementNamed('OkayOneNormalOptionalPositional');
+        expect(output, contains("_oneNormalOnePositional(json['field'])"));
+      });
+      test('OkayOneNormalOptionalNamed', () async {
+        var output = await runForElementNamed('OkayOneNormalOptionalNamed');
+        expect(output, contains("_oneNormalOptionalNamed(json['field'])"));
+      });
+      test('OkayOnlyOptionalPositional', () async {
+        var output = await runForElementNamed('OkayOnlyOptionalPositional');
+        expect(output, contains("_onlyOptionalPositional(json['field'])"));
       });
     }
   });

@@ -96,17 +96,16 @@ ConvertData _getFunctionName(
   }
   var functionElement = type.element as FunctionElement;
 
-  var positionalParams = functionElement.parameters
-      .where((pe) => pe.isPositional)
-      .toList();
-
-  if (positionalParams.length != 1) {
+  if (functionElement.parameters.isEmpty ||
+      functionElement.parameters.first.isNamed ||
+      functionElement.parameters.where((pe) => !pe.isOptional).length > 1) {
     _throwUnsupported(
         element,
         'The `$paramName` function `${functionElement.name}` must have one '
         'positional paramater.');
   }
 
+  var argType = functionElement.parameters.first.type;
   if (isFrom) {
     var returnType = functionElement.returnType;
     if (!returnType.isAssignableTo(element.type)) {
@@ -116,7 +115,6 @@ ConvertData _getFunctionName(
           '`$returnType` is not compatible with field type `${element.type}`.');
     }
   } else {
-    var argType = positionalParams.single.type;
     if (!element.type.isAssignableTo(argType)) {
       _throwUnsupported(
           element,
@@ -125,5 +123,5 @@ ConvertData _getFunctionName(
           ' `${element.type}`.');
     }
   }
-  return new ConvertData._(functionElement.name, positionalParams.single.type);
+  return new ConvertData._(functionElement.name, argType);
 }
