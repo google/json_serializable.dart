@@ -7,8 +7,8 @@ import 'dart:io';
 
 import 'package:analyzer/file_system/file_system.dart' hide File;
 import 'package:analyzer/file_system/physical_file_system.dart';
-import 'package:analyzer/source/package_map_resolver.dart';
-import 'package:analyzer/source/pub_package_map_provider.dart';
+import 'package:analyzer/src/source/package_map_resolver.dart';
+import 'package:analyzer/src/source/pub_package_map_provider.dart';
 import 'package:analyzer/src/dart/sdk/sdk.dart' show FolderBasedDartSdk;
 import 'package:analyzer/src/generated/engine.dart';
 import 'package:analyzer/src/generated/source.dart';

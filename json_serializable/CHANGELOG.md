@@ -1,5 +1,7 @@
 ## 0.5.3
 
+* Require the latest version of `package:analyzer` - `v0.32.0`.
+
 * If `JsonKey.fromJson` function parameter is `Iterable` or `Map` with type
    arguments of `dynamic` or `Object`, omit the arguments when generating a
    cast. 
