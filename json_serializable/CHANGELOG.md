@@ -1,3 +1,9 @@
+## 0.5.4
+
+* Added `any_map` to configuration. Allows `fromJson` code to
+  support dynamic `Map` instances that are not explicitly
+  `Map<String, dynaimc>`.
+
 ## 0.5.3
 
 * Require the latest version of `package:analyzer` - `v0.32.0`.

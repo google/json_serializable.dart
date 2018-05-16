@@ -5,6 +5,7 @@
 import 'package:test/test.dart';
 
 import 'package:json_serializable/src/constants.dart';
+import 'package:yaml/yaml.dart';
 
 import 'test_files/kitchen_sink.dart' as nullable
     show testFactory, testFromJson;
@@ -55,8 +56,7 @@ typedef KitchenSink KitchenSinkCtor(
     Iterable<int> intIterable,
     Iterable<DateTime> dateTimeIterable});
 
-void _nonNullableTests(
-    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   test('with null values fails serialization', () {
     expect(() => (ctor()..stringDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
@@ -68,8 +68,7 @@ void _nonNullableTests(
   _sharedTests(ctor, fromJson);
 }
 
-void _nullableTests(
-    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   void roundTripItem(KitchenSink p) {
     roundTripObject(p, (json) => fromJson(json));
   }
@@ -123,8 +122,7 @@ void _nullableTests(
   _sharedTests(ctor, fromJson);
 }
 
-void _sharedTests(
-    KitchenSinkCtor ctor, KitchenSink fromJson(Map<String, dynamic> json)) {
+void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   void roundTripSink(KitchenSink p) {
     roundTripObject(p, fromJson);
   }
@@ -174,18 +172,31 @@ void _sharedTests(
     expect(json.keys, orderedEquals(_validValues.keys));
   });
 
-  test('valid values round-trip', () {
+  test('valid values round-trip - json', () {
     expect(loudEncode(_validValues), loudEncode(fromJson(_validValues)));
+  });
+
+  test('valid values round-trip - yaml', () {
+    var jsonEncoded = loudEncode(_validValues);
+    var yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
+    expect(jsonEncoded, loudEncode(fromJson(yaml as YamlMap)));
   });
 
   group('a bad value for', () {
     for (var e in _invalidValues.entries) {
-      test('`${e.key}` fails', () {
-        var copy = new Map<String, dynamic>.from(_validValues);
-        copy[e.key] = e.value;
-        expect(() => fromJson(copy),
-            throwsA(anyOf(_isATypeError, _isACastError, isArgumentError)));
-      });
+      for (var isJson in [true, false]) {
+        test('`${e.key}` fails - ${isJson ? 'json' : 'yaml'}', () {
+          var copy = new Map.from(_validValues);
+          copy[e.key] = e.value;
+
+          if (!isJson) {
+            copy = loadYaml(loudEncode(copy)) as YamlMap;
+          }
+
+          expect(() => fromJson(copy),
+              throwsA(anyOf(_isACastError, _isATypeError, isArgumentError)));
+        });
+      }
     }
   });
 }
@@ -210,7 +221,8 @@ final _validValues = const {
   'crazyComplex': const [],
   toJsonMapVarName: const {},
   toJsonMapHelperName: null,
-  r'$string': null
+  r'$string': null,
+  'simpleObject': const {'value': 42}
 };
 
 final _invalidValues = const {
@@ -234,6 +246,7 @@ final _invalidValues = const {
   toJsonMapVarName: const {'key': 42},
   toJsonMapHelperName: 42,
   r'$string': true,
+  'simpleObject': 42
 };
 
 final _excludeIfNullKeys = const [

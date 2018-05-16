@@ -45,6 +45,8 @@ class _NonNullableGenerator extends Generator {
             'List<T> _defaultList<T>() => <T>[];'),
         new _Replacement('Map _defaultMap() => null;',
             'Map<String, T> _defaultMap<T>() => <String, T>{};'),
+        new _Replacement('SimpleObject _defaultSimpleObject() => null;',
+            'SimpleObject _defaultSimpleObject() => new SimpleObject(42);'),
         new _Replacement('DateTime dateTime;',
             'DateTime dateTime = new DateTime(1981, 6, 5);')
       ]);

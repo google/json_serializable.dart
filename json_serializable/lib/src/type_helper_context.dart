@@ -24,6 +24,10 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   final ConvertData fromJsonData;
   final ConvertData toJsonData;
 
+  // This is effectively private to TypeHelpers outside this package.
+  // Consider exposing it if there is interest
+  bool get anyMap => _generator.anyMap;
+
   TypeHelperContext(this._generator, this.metadata, this.nullable,
       this.fromJsonData, this.toJsonData);
 

@@ -12,11 +12,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink_interface.dart' as k;
+import 'simple_object.dart';
 
 part 'kitchen_sink.wrapped.g.dart';
 
 List<T> _defaultList<T>() => null;
 Map _defaultMap() => null;
+SimpleObject _defaultSimpleObject() => null;
 
 k.KitchenSink testFactory(
         {int ctorValidatedNo42,
@@ -33,8 +35,7 @@ k.KitchenSink testFactory(
         intIterable: intIterable,
         dateTimeIterable: dateTimeIterable);
 
-k.KitchenSink testFromJson(Map<String, dynamic> json) =>
-    new KitchenSink.fromJson(json);
+k.KitchenSink testFromJson(Map json) => new KitchenSink.fromJson(json);
 
 @JsonSerializable()
 class KitchenSink extends Object
@@ -74,8 +75,7 @@ class KitchenSink extends Object
     }
   }
 
-  factory KitchenSink.fromJson(Map<String, Object> json) =>
-      _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
 
   @JsonKey(includeIfNull: false)
   DateTime dateTime;
@@ -112,6 +112,8 @@ class KitchenSink extends Object
   bool writeNotNull;
   @JsonKey(name: r'$string')
   String string;
+
+  SimpleObject simpleObject = _defaultSimpleObject();
 
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }

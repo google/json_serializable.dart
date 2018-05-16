@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../type_helper_context.dart';
 import '../utils.dart';
 
 /// Name used for closure argument when generating calls to `map`.
@@ -67,13 +68,22 @@ class MapHelper extends TypeHelper {
 
     _checkSafeKeyType(expression, keyArg);
 
-    // this is the trivial case. Do a runtime cast to the known type of JSON
-    // map values - `Map<String, dynamic>`
-    if (valueArg.isDynamic || valueArg.isObject) {
-      return '$expression as Map<String, dynamic>';
+    var valueArgIsAny = valueArg.isDynamic || valueArg.isObject;
+    var isAnyMap = context is TypeHelperContext && context.anyMap;
+
+    if (valueArgIsAny) {
+      if (isAnyMap) {
+        if (keyArg.isObject || keyArg.isDynamic) {
+          return '$expression as Map';
+        }
+      } else {
+        // this is the trivial case. Do a runtime cast to the known type of JSON
+        // map values - `Map<String, dynamic>`
+        return '$expression as Map<String, dynamic>';
+      }
     }
 
-    if (simpleJsonTypeChecker.isAssignableFromType(valueArg)) {
+    if (valueArgIsAny || simpleJsonTypeChecker.isAssignableFromType(valueArg)) {
       // No mapping of the values is required!
 
       var result = 'new Map<String, $valueArg>.from($expression as Map)';
@@ -85,8 +95,11 @@ class MapHelper extends TypeHelper {
 
     var itemSubVal = context.deserialize(valueArg, _closureArg);
 
-    var result = 'new Map<String, $valueArg>.fromIterables('
-        '($expression as Map<String, dynamic>).keys,'
+    var keyIterable = isAnyMap
+        ? '($expression as Map).keys.cast<String>()'
+        : '($expression as Map<String, dynamic>).keys';
+
+    var result = 'new Map<String, $valueArg>.fromIterables($keyIterable,'
         '($expression as Map).values.map(($_closureArg) => $itemSubVal))';
 
     return commonNullPrefix(context.nullable, expression, result);

@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -40,10 +41,7 @@ class JsonHelper extends TypeHelper {
     // TODO: should verify that this type is a valid JSON type...but for now...
     var asCastType = fromJsonCtor.parameters.first.type;
 
-    var asCast = '';
-    if (!asCastType.isDynamic && !asCastType.isObject) {
-      asCast = ' as $asCastType';
-    }
+    var asCast = asStatement(asCastType);
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19

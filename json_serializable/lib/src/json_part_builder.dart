@@ -15,14 +15,11 @@ import 'json_serializable_generator.dart';
 /// If `null`, the content of [defaultFileHeader] is used.
 /// If [header] is an empty `String` no header is added.
 ///
-/// If [useWrappers] is `true`, wrappers are used to minimize the number of
-/// [Map] and [List] instances created during serialization. This will
-/// increase the code size, but it may improve runtime performance, especially
-/// for large object graphs.
-Builder jsonPartBuilder({String header, bool useWrappers: false}) {
-  useWrappers ??= false;
+/// For details on [useWrappers] and [anyMap], see [JsonSerializableGenerator].
+Builder jsonPartBuilder(
+    {String header, bool useWrappers: false, bool anyMap: false}) {
   return new PartBuilder([
-    new JsonSerializableGenerator(useWrappers: useWrappers),
+    new JsonSerializableGenerator(useWrappers: useWrappers, anyMap: anyMap),
     const JsonLiteralGenerator()
   ], header: header);
 }

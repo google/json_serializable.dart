@@ -123,9 +123,11 @@ class _GeneratorHelper {
     });
 
     if (_annotation.createFactory) {
+      var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
+
       _buffer.writeln();
       _buffer.writeln('${_element.name} '
-          '${_prefix}FromJson(Map<String, dynamic> json) =>');
+          '${_prefix}FromJson($mapType json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>

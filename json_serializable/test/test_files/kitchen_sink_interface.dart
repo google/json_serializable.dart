@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:collection/collection.dart';
+import 'simple_object.dart';
 
 abstract class KitchenSink {
   int get ctorValidatedNo42;
@@ -31,6 +32,8 @@ abstract class KitchenSink {
   Map<String, bool> val;
   bool writeNotNull;
   String string;
+
+  SimpleObject get simpleObject;
 
   Map<String, dynamic> toJson();
 }

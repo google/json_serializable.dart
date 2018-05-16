@@ -35,6 +35,30 @@ const simpleJsonTypeChecker = const TypeChecker.any(const [
   const TypeChecker.fromRuntime(num)
 ]);
 
+String asStatement(DartType type) {
+  if (type.isDynamic || type.isObject) {
+    return '';
+  }
+
+  if (coreIterableTypeChecker.isAssignableFromType(type)) {
+    var itemType = coreIterableGenericType(type);
+    if (itemType.isDynamic || itemType.isObject) {
+      return ' as List';
+    }
+  }
+
+  if (coreMapTypeChecker.isAssignableFromType(type)) {
+    var args = typeArgumentsOf(type, coreMapTypeChecker);
+    assert(args.length == 2);
+
+    if (args.every((dt) => dt.isDynamic || dt.isObject)) {
+      return ' as Map';
+    }
+  }
+
+  return ' as $type';
+}
+
 DartType _getImplementationType(DartType type, TypeChecker checker) {
   if (checker.isExactlyType(type)) return type;
 

@@ -42,20 +42,29 @@ class JsonSerializableGenerator
         const ConvertHelper()
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
+  /// If `true`, wrappers are used to minimize the number of
+  /// [Map] and [List] instances created during serialization. This will
+  /// increase the code size, but it may improve runtime performance, especially
+  /// for large object graphs.
   final bool useWrappers;
+
+  /// If `true`, [Map] types are not assumed to be
+  /// [Map<String, dynamic>] – the default for JSON support in `dart:convert`.
+  /// This results in more code being generated, but allows [Map] types returned
+  /// from other sources, such as `package:yaml`.
+  /// *Note: in many cases the key values are still assumed to be [String]*.
+  final bool anyMap;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, two built-in helpers are used:
   /// [JsonHelper] and [DateTimeHelper].
-  ///
-  /// If [useWrappers] is `true`, wrappers are used to minimize the number of
-  /// [Map] and [List] instances created during serialization. This will
-  /// increase the code size, but it may improve runtime performance, especially
-  /// for large object graphs.
   const JsonSerializableGenerator(
-      {List<TypeHelper> typeHelpers, bool useWrappers: false})
+      {List<TypeHelper> typeHelpers,
+      bool useWrappers: false,
+      bool anyMap: false})
       : this.useWrappers = useWrappers ?? false,
+        this.anyMap = anyMap ?? false,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
@@ -64,9 +73,11 @@ class JsonSerializableGenerator
   /// the built-in helpers: [JsonHelper] and [DateTimeHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
           Iterable<TypeHelper> typeHelpers,
-          {bool useWrappers: false}) =>
+          {bool useWrappers: false,
+          bool anyMap: false}) =>
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
+          anyMap: anyMap,
           typeHelpers: new List.unmodifiable(
               [typeHelpers, _defaultHelpers].expand((e) => e)));
 

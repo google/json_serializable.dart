@@ -10,7 +10,7 @@ part of 'kitchen_sink.wrapped.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
+KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
     ctorValidatedNo42: json['no-42'] as int,
     iterable: json['iterable'] as List,
     dynamicIterable: json['dynamicIterable'] as List,
@@ -28,7 +28,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..dateTimeList = (json['dateTimeList'] as List)
       ?.map((e) => e == null ? null : DateTime.parse(e as String))
       ?.toList()
-  ..map = json['map'] as Map<String, dynamic>
+  ..map = json['map'] as Map
   ..stringStringMap = json['stringStringMap'] == null
       ? null
       : new Map<String, String>.from(json['stringStringMap'] as Map)
@@ -38,7 +38,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
   ..stringDateTimeMap = json['stringDateTimeMap'] == null
       ? null
       : new Map<String, DateTime>.fromIterables(
-          (json['stringDateTimeMap'] as Map<String, dynamic>).keys,
+          (json['stringDateTimeMap'] as Map).keys.cast<String>(),
           (json['stringDateTimeMap'] as Map)
               .values
               .map((e) => e == null ? null : DateTime.parse(e as String)))
@@ -46,13 +46,14 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => new KitchenSink(
       ?.map((e) => e == null
           ? null
           : new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-              (e as Map<String, dynamic>).keys,
+              (e as Map).keys.cast<String>(),
               (e as Map).values.map((e) =>
-                  e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map<String, dynamic>).keys, (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+                  e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map).keys.cast<String>(), (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
       ?.toList()
   ..val = json['val'] == null ? null : new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
-  ..string = json[r'$string'] as String;
+  ..string = json[r'$string'] as String
+  ..simpleObject = json['simpleObject'] == null ? null : new SimpleObject.fromJson(json['simpleObject'] as Map);
 
 abstract class _$KitchenSinkSerializerMixin {
   int get ctorValidatedNo42;
@@ -75,6 +76,7 @@ abstract class _$KitchenSinkSerializerMixin {
   Map<String, bool> get val;
   bool get writeNotNull;
   String get string;
+  SimpleObject get simpleObject;
   Map<String, dynamic> toJson() => new _$KitchenSinkJsonMapWrapper(this);
 }
 
@@ -114,6 +116,7 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
     }
     yield 'writeNotNull';
     yield r'$string';
+    yield 'simpleObject';
   }
 
   @override
@@ -175,6 +178,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
           return _v.writeNotNull;
         case r'$string':
           return _v.string;
+        case 'simpleObject':
+          return _v.simpleObject;
       }
     }
     return null;
