@@ -3,7 +3,8 @@
 Provides [source_gen] `Generator`s to create code for JSON serialization and
 deserialization.
 
-See the [example] package to understand how to configure your project.
+See the [example] to understand how to configure your project for the latest
+released version of `json_serializable`.
 
 ## User defined and generated code
 
