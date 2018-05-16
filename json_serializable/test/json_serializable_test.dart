@@ -8,10 +8,8 @@ library json_serializable.test.json_generator_test;
 // TODO(kevmoo): test all flavors of `nullable` - class, fields, etc
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/src/string_source.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
@@ -34,7 +32,7 @@ Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
 
 void main() {
   setUpAll(() async {
-    _compUnit = await _getCompilationUnitForString(getPackagePath());
+    _compUnit = await _getCompilationUnitForString();
   });
 
   group('without wrappers',
@@ -512,14 +510,12 @@ abstract class _$SubTypeSerializerMixin {
 
 final _formatter = new dart_style.DartFormatter();
 
-Future<CompilationUnit> _getCompilationUnitForString(String projectPath) async {
-  var fileName = 'json_serializable_test_input.dart';
-  var filePath = p.join(getPackagePath(), 'test', 'src', fileName);
-  var source =
-      new StringSource(new File(filePath).readAsStringSync(), fileName);
+Future<CompilationUnit> _getCompilationUnitForString() async {
+  var context = await getAnalysisContextForProjectPath(getPackagePath());
 
-  var context = await getAnalysisContextForProjectPath(projectPath);
-
+  var fileUri = p.toUri(p.join(
+      getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart'));
+  var source = context.sourceFactory.forUri2(fileUri);
   var libElement = context.computeLibraryElement(source);
   return context.resolveCompilationUnit(source, libElement);
 }
