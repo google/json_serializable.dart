@@ -19,6 +19,8 @@ class Person extends Object with _$PersonSerializerMixin {
   @JsonKey(name: '\$house')
   final House house;
 
+  Order order;
+
   Map<String, House> houseMap;
 
   Person(this.firstName, this.lastName, this.house,
