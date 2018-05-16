@@ -30,16 +30,13 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..stringStringMap =
       new Map<String, String>.from(json['stringStringMap'] as Map)
   ..dynamicIntMap = new Map<String, int>.from(json['dynamicIntMap'] as Map)
-  ..objectDateTimeMap = new Map<String, DateTime>.fromIterables(
-      (json['objectDateTimeMap'] as Map).keys.cast<String>(),
-      (json['objectDateTimeMap'] as Map)
-          .values
-          .map((e) => DateTime.parse(e as String)))
+  ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)
+      .map((k, e) => new MapEntry(k, DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
-      .map((e) => new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-          (e as Map).keys.cast<String>(),
-          (e as Map).values.map(
-              (e) => new Map<String, List<List<DateTime>>>.fromIterables((e as Map).keys.cast<String>(), (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
+      .map((e) => (e as Map).map((k, e) => new MapEntry(
+          k as String,
+          (e as Map).map(
+              (k, e) => new MapEntry(k as String, (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
       .toList()
   ..val = new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool

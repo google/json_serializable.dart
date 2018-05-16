@@ -17,10 +17,9 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     middleName: json['middleName'] as String,
     dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
   ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
-  ..houseMap = new Map<String, House>.fromIterables(
-      (json['houseMap'] as Map<String, dynamic>).keys,
-      (json['houseMap'] as Map).values.map(
-          (e) => House.values.singleWhere((x) => x.toString() == 'House.$e')));
+  ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
+      new MapEntry(
+          k, House.values.singleWhere((x) => x.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -37,8 +36,8 @@ abstract class _$PersonSerializerMixin {
         'dateOfBirth': dateOfBirth.toIso8601String(),
         r'$house': house.toString().split('.')[1],
         'order': order,
-        'houseMap': new Map<String, dynamic>.fromIterables(houseMap.keys,
-            houseMap.values.map((e) => e.toString().split('.')[1]))
+        'houseMap':
+            houseMap.map((k, e) => new MapEntry(k, e.toString().split('.')[1]))
       };
 }
 
@@ -50,11 +49,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
   ..count = json['count'] as int
   ..isRushed = json['isRushed'] as bool
   ..platform = new Platform.fromJson(json['platform'] as String)
-  ..altPlatforms = new Map<String, Platform>.fromIterables(
-      (json['altPlatforms'] as Map<String, dynamic>).keys,
-      (json['altPlatforms'] as Map)
-          .values
-          .map((e) => new Platform.fromJson(e as String)));
+  ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
+      .map((k, e) => new MapEntry(k, new Platform.fromJson(e as String)));
 
 abstract class _$OrderSerializerMixin {
   int get count;

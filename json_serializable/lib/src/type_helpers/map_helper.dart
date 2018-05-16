@@ -44,11 +44,10 @@ class MapHelper extends TypeHelper {
       return '$method<$keyType, $valueType>($expression, ($_closureArg) => $subFieldValue)';
     }
 
-    var result = 'new Map<String, dynamic>.fromIterables('
-        '$expression.keys,'
-        '$expression.values.map(($_closureArg) => $subFieldValue))';
+    final optionalQuestion = context.nullable ? '?' : '';
 
-    return commonNullPrefix(context.nullable, expression, result);
+    return '$expression$optionalQuestion'
+        '.map((k, $_closureArg) => new MapEntry(k, $subFieldValue))';
   }
 
   @override
@@ -58,9 +57,6 @@ class MapHelper extends TypeHelper {
       return null;
     }
 
-    // Just pass through if
-    //    key:   dynamic, Object, String
-    //    value: dynamic, Object
     var typeArgs = typeArgumentsOf(targetType, coreMapTypeChecker);
     assert(typeArgs.length == 2);
     var keyArg = typeArgs.first;
@@ -68,12 +64,12 @@ class MapHelper extends TypeHelper {
 
     _checkSafeKeyType(expression, keyArg);
 
-    var valueArgIsAny = valueArg.isDynamic || valueArg.isObject;
+    final valueArgIsAny = _isObjectOrDynamic(valueArg);
     var isAnyMap = context is TypeHelperContext && context.anyMap;
 
     if (valueArgIsAny) {
       if (isAnyMap) {
-        if (keyArg.isObject || keyArg.isDynamic) {
+        if (_isObjectOrDynamic(keyArg)) {
           return '$expression as Map';
         }
       } else {
@@ -93,28 +89,30 @@ class MapHelper extends TypeHelper {
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    var itemSubVal = context.deserialize(valueArg, _closureArg);
+    final itemSubVal = context.deserialize(valueArg, _closureArg);
 
-    var keyIterable = isAnyMap
-        ? '($expression as Map).keys.cast<String>()'
-        : '($expression as Map<String, dynamic>).keys';
+    final optionalQuestion = context.nullable ? '?' : '';
 
-    var result = 'new Map<String, $valueArg>.fromIterables($keyIterable,'
-        '($expression as Map).values.map(($_closureArg) => $itemSubVal))';
+    final mapCast = isAnyMap ? 'as Map' : 'as Map<String, dynamic>';
 
-    return commonNullPrefix(context.nullable, expression, result);
+    final keyUsage =
+        (isAnyMap && !_isObjectOrDynamic(keyArg)) ? 'k as String' : 'k';
+
+    return '($expression $mapCast)$optionalQuestion'
+        '.map((k, $_closureArg) => new MapEntry($keyUsage, $itemSubVal))';
   }
+}
 
-  void _checkSafeKeyType(String expression, DartType keyArg) {
-    // We're not going to handle converting key types at the moment
-    // So the only safe types for key are dynamic/Object/String
-    var safeKey = keyArg.isDynamic ||
-        keyArg.isObject ||
-        coreStringTypeChecker.isExactlyType(keyArg);
+bool _isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 
-    if (!safeKey) {
-      throw new UnsupportedTypeError(keyArg, expression,
-          'The type of the Map key must be `String`, `Object` or `dynamic`.');
-    }
+void _checkSafeKeyType(String expression, DartType keyArg) {
+  // We're not going to handle converting key types at the moment
+  // So the only safe types for key are dynamic/Object/String
+  var safeKey =
+      _isObjectOrDynamic(keyArg) || coreStringTypeChecker.isExactlyType(keyArg);
+
+  if (!safeKey) {
+    throw new UnsupportedTypeError(keyArg, expression,
+        'The type of the Map key must be `String`, `Object` or `dynamic`.');
   }
 }

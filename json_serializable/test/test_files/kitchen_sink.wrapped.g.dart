@@ -35,20 +35,13 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..dynamicIntMap = json['dynamicIntMap'] == null
       ? null
       : new Map<String, int>.from(json['dynamicIntMap'] as Map)
-  ..objectDateTimeMap = json['objectDateTimeMap'] == null
-      ? null
-      : new Map<String, DateTime>.fromIterables(
-          (json['objectDateTimeMap'] as Map).keys.cast<String>(),
-          (json['objectDateTimeMap'] as Map)
-              .values
-              .map((e) => e == null ? null : DateTime.parse(e as String)))
+  ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
+      (k, e) => new MapEntry(k, e == null ? null : DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
-      ?.map((e) => e == null
-          ? null
-          : new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-              (e as Map).keys.cast<String>(),
-              (e as Map).values.map((e) =>
-                  e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map).keys.cast<String>(), (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+      ?.map((e) => (e as Map)?.map((k, e) => new MapEntry(
+          k as String,
+          (e as Map)?.map(
+              (k, e) => new MapEntry(k as String, (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
       ?.toList()
   ..val = json['val'] == null ? null : new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool

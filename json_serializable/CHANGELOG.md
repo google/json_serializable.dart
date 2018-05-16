@@ -1,5 +1,8 @@
 ## 0.5.4
 
+* Use `Map.map` for more map conversions. Simplifies generated code and fixes
+  a subtle issue when the `Map` key type is `dynamic` or `Object`.
+
 * Added `any_map` to configuration. Allows `fromJson` code to
   support dynamic `Map` instances that are not explicitly
   `Map<String, dynaimc>`.
