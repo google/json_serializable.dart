@@ -86,7 +86,7 @@ abstract class _$KitchenSinkSerializerMixin {
         'stringStringMap': stringStringMap,
         'dynamicIntMap': dynamicIntMap,
         'objectDateTimeMap': new Map<String, dynamic>.fromIterables(
-            objectDateTimeMap.keys,
+            objectDateTimeMap.keys.cast<String>(),
             objectDateTimeMap.values.map((e) => e.toIso8601String())),
         'crazyComplex': crazyComplex
             .map((e) => new Map<String, dynamic>.fromIterables(

@@ -106,7 +106,7 @@ abstract class _$KitchenSinkSerializerMixin {
     val['dynamicIntMap'] = dynamicIntMap;
     val['objectDateTimeMap'] = objectDateTimeMap == null
         ? null
-        : new Map<String, dynamic>.fromIterables(objectDateTimeMap.keys,
+        : new Map<String, dynamic>.fromIterables(objectDateTimeMap.keys.cast<String>() ,
             objectDateTimeMap.values.map((e) => e?.toIso8601String()));
     writeNotNull(
         'crazyComplex',
