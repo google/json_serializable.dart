@@ -32,14 +32,14 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..stringStringMap = json['stringStringMap'] == null
       ? null
       : new Map<String, String>.from(json['stringStringMap'] as Map)
-  ..stringIntMap = json['stringIntMap'] == null
+  ..dynamicIntMap = json['dynamicIntMap'] == null
       ? null
-      : new Map<String, int>.from(json['stringIntMap'] as Map)
-  ..stringDateTimeMap = json['stringDateTimeMap'] == null
+      : new Map<String, int>.from(json['dynamicIntMap'] as Map)
+  ..objectDateTimeMap = json['objectDateTimeMap'] == null
       ? null
       : new Map<String, DateTime>.fromIterables(
-          (json['stringDateTimeMap'] as Map).keys.cast<String>(),
-          (json['stringDateTimeMap'] as Map)
+          (json['objectDateTimeMap'] as Map).keys.cast<String>(),
+          (json['objectDateTimeMap'] as Map)
               .values
               .map((e) => e == null ? null : DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
@@ -70,8 +70,8 @@ abstract class _$KitchenSinkSerializerMixin {
   List<DateTime> get dateTimeList;
   Map<dynamic, dynamic> get map;
   Map<String, String> get stringStringMap;
-  Map<String, int> get stringIntMap;
-  Map<String, DateTime> get stringDateTimeMap;
+  Map<dynamic, int> get dynamicIntMap;
+  Map<Object, DateTime> get objectDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, bool> get val;
   bool get writeNotNull;
@@ -103,11 +103,11 @@ abstract class _$KitchenSinkSerializerMixin {
         dateTimeList?.map((e) => e?.toIso8601String())?.toList());
     val['map'] = map;
     val['stringStringMap'] = stringStringMap;
-    val['stringIntMap'] = stringIntMap;
-    val['stringDateTimeMap'] = stringDateTimeMap == null
+    val['dynamicIntMap'] = dynamicIntMap;
+    val['objectDateTimeMap'] = objectDateTimeMap == null
         ? null
-        : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-            stringDateTimeMap.values.map((e) => e?.toIso8601String()));
+        : new Map<String, dynamic>.fromIterables(objectDateTimeMap.keys,
+            objectDateTimeMap.values.map((e) => e?.toIso8601String()));
     writeNotNull(
         'crazyComplex',
         crazyComplex

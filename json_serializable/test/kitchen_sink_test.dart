@@ -58,7 +58,7 @@ typedef KitchenSink KitchenSinkCtor(
 
 void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   test('with null values fails serialization', () {
-    expect(() => (ctor()..stringDateTimeMap = null).toJson(),
+    expect(() => (ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
   });
 
@@ -92,7 +92,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
     var now = new DateTime.now();
     var item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, null]
-      ..stringDateTimeMap = <String, DateTime>{'value': now, 'null': null};
+      ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
 
     roundTripItem(item);
   });
@@ -136,7 +136,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
     var now = new DateTime.now();
     var item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, now]
-      ..stringDateTimeMap = <String, DateTime>{'value': now};
+      ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
     roundTripSink(item);
   });
@@ -216,8 +216,8 @@ final _validValues = const {
   'dateTimeList': const [],
   'map': const <String, dynamic>{},
   'stringStringMap': const {},
-  'stringIntMap': const {},
-  'stringDateTimeMap': const <String, dynamic>{},
+  'dynamicIntMap': const {},
+  'objectDateTimeMap': const <String, dynamic>{},
   'crazyComplex': const [],
   toJsonMapVarName: const {},
   toJsonMapHelperName: null,
@@ -240,8 +240,8 @@ final _invalidValues = const {
   'dateTimeList': const [true],
   'map': true,
   'stringStringMap': const {'key': 42},
-  'stringIntMap': const {'key': 'value'},
-  'stringDateTimeMap': const {'key': 42},
+  'dynamicIntMap': const {'key': 'value'},
+  'objectDateTimeMap': const {'key': 42},
   'crazyComplex': const [true],
   toJsonMapVarName: const {'key': 42},
   toJsonMapHelperName: 42,

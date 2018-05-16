@@ -29,10 +29,10 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..map = json['map'] as Map
   ..stringStringMap =
       new Map<String, String>.from(json['stringStringMap'] as Map)
-  ..stringIntMap = new Map<String, int>.from(json['stringIntMap'] as Map)
-  ..stringDateTimeMap = new Map<String, DateTime>.fromIterables(
-      (json['stringDateTimeMap'] as Map).keys.cast<String>(),
-      (json['stringDateTimeMap'] as Map)
+  ..dynamicIntMap = new Map<String, int>.from(json['dynamicIntMap'] as Map)
+  ..objectDateTimeMap = new Map<String, DateTime>.fromIterables(
+      (json['objectDateTimeMap'] as Map).keys.cast<String>(),
+      (json['objectDateTimeMap'] as Map)
           .values
           .map((e) => DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
@@ -61,8 +61,8 @@ abstract class _$KitchenSinkSerializerMixin {
   List<DateTime> get dateTimeList;
   Map<dynamic, dynamic> get map;
   Map<String, String> get stringStringMap;
-  Map<String, int> get stringIntMap;
-  Map<String, DateTime> get stringDateTimeMap;
+  Map<dynamic, int> get dynamicIntMap;
+  Map<Object, DateTime> get objectDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, bool> get val;
   bool get writeNotNull;
@@ -84,10 +84,10 @@ abstract class _$KitchenSinkSerializerMixin {
         'dateTimeList': dateTimeList.map((e) => e.toIso8601String()).toList(),
         'map': map,
         'stringStringMap': stringStringMap,
-        'stringIntMap': stringIntMap,
-        'stringDateTimeMap': new Map<String, dynamic>.fromIterables(
-            stringDateTimeMap.keys,
-            stringDateTimeMap.values.map((e) => e.toIso8601String())),
+        'dynamicIntMap': dynamicIntMap,
+        'objectDateTimeMap': new Map<String, dynamic>.fromIterables(
+            objectDateTimeMap.keys,
+            objectDateTimeMap.values.map((e) => e.toIso8601String())),
         'crazyComplex': crazyComplex
             .map((e) => new Map<String, dynamic>.fromIterables(
                 e.keys,

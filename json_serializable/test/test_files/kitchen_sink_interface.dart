@@ -24,8 +24,8 @@ abstract class KitchenSink {
 
   Map map;
   Map<String, String> stringStringMap;
-  Map<String, int> stringIntMap;
-  Map<String, DateTime> stringDateTimeMap;
+  Map<dynamic, int> dynamicIntMap;
+  Map<Object, DateTime> objectDateTimeMap;
 
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex;
 
@@ -56,7 +56,7 @@ bool sinkEquals(KitchenSink a, Object other) =>
     // map
     // stringStringMap
     // stringIntMap
-    _deepEquals(a.stringDateTimeMap, other.stringDateTimeMap) &&
+    _deepEquals(a.objectDateTimeMap, other.objectDateTimeMap) &&
     _deepEquals(a.crazyComplex, other.crazyComplex) &&
     // val
     a.writeNotNull == other.writeNotNull &&
