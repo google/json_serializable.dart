@@ -32,23 +32,16 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..stringStringMap = json['stringStringMap'] == null
       ? null
       : new Map<String, String>.from(json['stringStringMap'] as Map)
-  ..stringIntMap = json['stringIntMap'] == null
+  ..dynamicIntMap = json['dynamicIntMap'] == null
       ? null
-      : new Map<String, int>.from(json['stringIntMap'] as Map)
-  ..stringDateTimeMap = json['stringDateTimeMap'] == null
-      ? null
-      : new Map<String, DateTime>.fromIterables(
-          (json['stringDateTimeMap'] as Map).keys.cast<String>(),
-          (json['stringDateTimeMap'] as Map)
-              .values
-              .map((e) => e == null ? null : DateTime.parse(e as String)))
+      : new Map<String, int>.from(json['dynamicIntMap'] as Map)
+  ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
+      (k, e) => new MapEntry(k, e == null ? null : DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
-      ?.map((e) => e == null
-          ? null
-          : new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-              (e as Map).keys.cast<String>(),
-              (e as Map).values.map((e) =>
-                  e == null ? null : new Map<String, List<List<DateTime>>>.fromIterables((e as Map).keys.cast<String>(), (e as Map).values.map((e) => (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+      ?.map((e) => (e as Map)?.map((k, e) => new MapEntry(
+          k as String,
+          (e as Map)?.map(
+              (k, e) => new MapEntry(k as String, (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
       ?.toList()
   ..val = json['val'] == null ? null : new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
@@ -70,8 +63,8 @@ abstract class _$KitchenSinkSerializerMixin {
   List<DateTime> get dateTimeList;
   Map<dynamic, dynamic> get map;
   Map<String, String> get stringStringMap;
-  Map<String, int> get stringIntMap;
-  Map<String, DateTime> get stringDateTimeMap;
+  Map<dynamic, int> get dynamicIntMap;
+  Map<Object, DateTime> get objectDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, bool> get val;
   bool get writeNotNull;
@@ -103,27 +96,20 @@ abstract class _$KitchenSinkSerializerMixin {
         dateTimeList?.map((e) => e?.toIso8601String())?.toList());
     val['map'] = map;
     val['stringStringMap'] = stringStringMap;
-    val['stringIntMap'] = stringIntMap;
-    val['stringDateTimeMap'] = stringDateTimeMap == null
-        ? null
-        : new Map<String, dynamic>.fromIterables(stringDateTimeMap.keys,
-            stringDateTimeMap.values.map((e) => e?.toIso8601String()));
+    val['dynamicIntMap'] = dynamicIntMap;
+    val['objectDateTimeMap'] =
+        objectDateTimeMap?.map((k, e) => new MapEntry(k, e?.toIso8601String()));
     writeNotNull(
         'crazyComplex',
         crazyComplex
-            ?.map((e) => e == null
-                ? null
-                : new Map<String, dynamic>.fromIterables(
-                    e.keys,
-                    e.values.map((e) => e == null
-                        ? null
-                        : new Map<String, dynamic>.fromIterables(
-                            e.keys,
-                            e.values.map((e) => e
-                                ?.map((e) => e
-                                    ?.map((e) => e?.toIso8601String())
-                                    ?.toList())
-                                ?.toList())))))
+            ?.map((e) => e?.map((k, e) => new MapEntry(
+                k,
+                e?.map((k, e) => new MapEntry(
+                    k,
+                    e
+                        ?.map((e) =>
+                            e?.map((e) => e?.toIso8601String())?.toList())
+                        ?.toList())))))
             ?.toList());
     writeNotNull('val', this.val);
     val['writeNotNull'] = this.writeNotNull;

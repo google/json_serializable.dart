@@ -29,17 +29,14 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..map = json['map'] as Map
   ..stringStringMap =
       new Map<String, String>.from(json['stringStringMap'] as Map)
-  ..stringIntMap = new Map<String, int>.from(json['stringIntMap'] as Map)
-  ..stringDateTimeMap = new Map<String, DateTime>.fromIterables(
-      (json['stringDateTimeMap'] as Map).keys.cast<String>(),
-      (json['stringDateTimeMap'] as Map)
-          .values
-          .map((e) => DateTime.parse(e as String)))
+  ..dynamicIntMap = new Map<String, int>.from(json['dynamicIntMap'] as Map)
+  ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)
+      .map((k, e) => new MapEntry(k, DateTime.parse(e as String)))
   ..crazyComplex = (json['crazyComplex'] as List)
-      .map((e) => new Map<String, Map<String, List<List<DateTime>>>>.fromIterables(
-          (e as Map).keys.cast<String>(),
-          (e as Map).values.map(
-              (e) => new Map<String, List<List<DateTime>>>.fromIterables((e as Map).keys.cast<String>(), (e as Map).values.map((e) => (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
+      .map((e) => (e as Map).map((k, e) => new MapEntry(
+          k as String,
+          (e as Map).map(
+              (k, e) => new MapEntry(k as String, (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
       .toList()
   ..val = new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
@@ -61,8 +58,8 @@ abstract class _$KitchenSinkSerializerMixin {
   List<DateTime> get dateTimeList;
   Map<dynamic, dynamic> get map;
   Map<String, String> get stringStringMap;
-  Map<String, int> get stringIntMap;
-  Map<String, DateTime> get stringDateTimeMap;
+  Map<dynamic, int> get dynamicIntMap;
+  Map<Object, DateTime> get objectDateTimeMap;
   List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
   Map<String, bool> get val;
   bool get writeNotNull;
@@ -91,8 +88,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
         'dateTimeList',
         'map',
         'stringStringMap',
-        'stringIntMap',
-        'stringDateTimeMap',
+        'dynamicIntMap',
+        'objectDateTimeMap',
         'crazyComplex',
         'val',
         'writeNotNull',
@@ -133,11 +130,11 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
           return _v.map;
         case 'stringStringMap':
           return _v.stringStringMap;
-        case 'stringIntMap':
-          return _v.stringIntMap;
-        case 'stringDateTimeMap':
-          return $wrapMap<String, DateTime>(
-              _v.stringDateTimeMap, (e) => e.toIso8601String());
+        case 'dynamicIntMap':
+          return _v.dynamicIntMap;
+        case 'objectDateTimeMap':
+          return $wrapMap<Object, DateTime>(
+              _v.objectDateTimeMap, (e) => e.toIso8601String());
         case 'crazyComplex':
           return $wrapList<Map<String, Map<String, List<List<DateTime>>>>>(
               _v.crazyComplex,

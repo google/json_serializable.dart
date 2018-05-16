@@ -93,8 +93,8 @@ class KitchenSink extends Object
 
   Map map = _defaultMap();
   Map<String, String> stringStringMap = _defaultMap();
-  Map<String, int> stringIntMap = _defaultMap();
-  Map<String, DateTime> stringDateTimeMap = _defaultMap();
+  Map<dynamic, int> dynamicIntMap = _defaultMap();
+  Map<Object, DateTime> objectDateTimeMap = _defaultMap();
 
   @JsonKey(includeIfNull: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex =
