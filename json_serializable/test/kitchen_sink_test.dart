@@ -23,11 +23,7 @@ final _isATypeError = const isInstanceOf<TypeError>();
 
 void main() {
   test('valid values covers all keys', () {
-    expect(_validValues.keys, orderedEquals(_expectedOrder));
-  });
-
-  test('inlavid values covers all keys', () {
-    expect(_invalidValues.keys, orderedEquals(_expectedOrder));
+    expect(_invalidValues.keys, orderedEquals(_validValues.keys));
   });
 
   group('nullable', () {
@@ -81,7 +77,7 @@ void _nullableTests(
   test('Fields with `!includeIfNull` should not be included when null', () {
     var item = ctor();
 
-    var expectedDefaultKeys = _expectedOrder.toSet()
+    var expectedDefaultKeys = _validValues.keys.toSet()
       ..removeAll(_excludeIfNullKeys);
 
     var encoded = item.toJson();
@@ -175,7 +171,7 @@ void _sharedTests(
       ..val = {};
 
     var json = item.toJson();
-    expect(json.keys, orderedEquals(_expectedOrder));
+    expect(json.keys, orderedEquals(_validValues.keys));
   });
 
   test('valid values round-trip', () {
@@ -212,8 +208,8 @@ final _validValues = const {
   'stringIntMap': const {},
   'stringDateTimeMap': const <String, dynamic>{},
   'crazyComplex': const [],
-  'val': const {},
-  'writeNotNull': null,
+  toJsonMapVarName: const {},
+  toJsonMapHelperName: null,
   r'$string': null
 };
 
@@ -235,8 +231,8 @@ final _invalidValues = const {
   'stringIntMap': const {'key': 'value'},
   'stringDateTimeMap': const {'key': 42},
   'crazyComplex': const [true],
-  'val': const {'key': 42},
-  'writeNotNull': 42,
+  toJsonMapVarName: const {'key': 42},
+  toJsonMapHelperName: 42,
   r'$string': true,
 };
 
@@ -246,27 +242,4 @@ final _excludeIfNullKeys = const [
   'dateTimeList',
   'crazyComplex',
   toJsonMapVarName
-];
-
-final _expectedOrder = const [
-  'no-42',
-  'dateTime',
-  'iterable',
-  'dynamicIterable',
-  'objectIterable',
-  'intIterable',
-  'datetime-iterable',
-  'list',
-  'dynamicList',
-  'objectList',
-  'intList',
-  'dateTimeList',
-  'map',
-  'stringStringMap',
-  'stringIntMap',
-  'stringDateTimeMap',
-  'crazyComplex',
-  toJsonMapVarName,
-  toJsonMapHelperName,
-  r'$string'
 ];
