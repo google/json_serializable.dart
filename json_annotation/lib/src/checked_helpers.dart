@@ -24,9 +24,9 @@ T $checkedNew<T>(String className, Map map, Map<String, String> fieldKeyMap,
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedConvert<T>(Map map, String key, T castFunc()) {
+T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
   try {
-    return castFunc();
+    return castFunc(map[key]);
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {

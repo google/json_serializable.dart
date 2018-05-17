@@ -312,12 +312,11 @@ void $toJsonMapHelperName(String key, dynamic value) {
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      var value =
-          _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
       if (_generator.checked) {
-        return '\$checkedConvert(json, $jsonKey, () => $value)';
+        var value = _getHelperContext(field).deserialize(targetType, 'v');
+        return '\$checkedConvert(json, $jsonKey, (v) => $value)';
       }
-      return value;
+      return _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);
     }
