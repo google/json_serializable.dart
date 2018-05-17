@@ -23,7 +23,7 @@ T $checkedNew<T>(String className, Map map, T constructor(),
     if (error is ArgumentError) {
       key = fieldKeyMap[error.name] ?? error.name;
     }
-    throw new CheckedFromJsonException._(error, stack, map, key, T,
+    throw new CheckedFromJsonException._(error, stack, map, key,
         className: className);
   }
 }
@@ -38,7 +38,7 @@ T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {
-    throw new CheckedFromJsonException._(error, stack, map, key, T);
+    throw new CheckedFromJsonException._(error, stack, map, key);
   }
 }
 
@@ -49,14 +49,13 @@ class CheckedFromJsonException implements Exception {
   final StackTrace innerStack;
   final String key;
   final Map map;
-  final Type targetType;
   final Object message;
 
   String _className;
   String get className => _className;
 
   CheckedFromJsonException._(
-      this.innerError, this.innerStack, this.map, this.key, this.targetType,
+      this.innerError, this.innerStack, this.map, this.key,
       {String className})
       : _className = className,
         message = _getMessage(innerError);

@@ -109,17 +109,12 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
   var message = 'Could not create `${err.className}`.';
   if (yamlKey == null) {
     assert(err.key == null);
-    message = [yamlMap.span.message(message), err.innerError].join('\n');
+    message = '${yamlMap.span.message(message)} ${err.innerError}';
   } else {
     message = '$message Unsupported value for `${err.key}`.';
-
-    if (err.targetType != dynamic &&
-        (err.innerError is CastError || err.innerError is TypeError)) {
-      message = '$message Could not convert to `${err.targetType}`.';
-    } else if (err.message != null) {
+    if (err.message != null) {
       message = '$message ${err.message}';
     }
-
     message = yamlKey.span.message(message);
   }
 
