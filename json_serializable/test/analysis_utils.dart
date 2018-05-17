@@ -15,36 +15,16 @@ import 'package:analyzer/src/generated/source.dart';
 import 'package:analyzer/src/generated/source_io.dart';
 import 'package:path/path.dart' as p;
 
-Future<AnalysisContext> getAnalysisContextForProjectPath(
-    String projectPath) async {
-  // TODO: fail more clearly if this...fails
-  var sdkPath = _getSdkPath();
+import 'test_utils.dart';
+
+Future<AnalysisContext> analysisContextForProject() async {
+  var sdkPath = p.dirname(p.dirname(Platform.resolvedExecutable));
 
   var resourceProvider = PhysicalResourceProvider.INSTANCE;
   var sdk = new FolderBasedDartSdk(
       resourceProvider, resourceProvider.getFolder(sdkPath));
 
-  var packageResolver = _getPackageResolver(projectPath, sdk);
-
-  var resolvers = [
-    new DartUriResolver(sdk),
-    new ResourceUriResolver(PhysicalResourceProvider.INSTANCE),
-    packageResolver
-  ];
-
-  AnalysisEngine.instance.processRequiredPlugins();
-
-  var options = new AnalysisOptionsImpl()..analyzeFunctionBodies = false;
-
-  var context = AnalysisEngine.instance.createAnalysisContext()
-    ..analysisOptions = options
-    ..sourceFactory = new SourceFactory(resolvers);
-
-  return context;
-}
-
-UriResolver _getPackageResolver(String projectPath, FolderBasedDartSdk sdk) {
-  var dotPackagesPath = p.join(projectPath, '.packages');
+  var dotPackagesPath = p.join(getPackagePath(), '.packages');
 
   if (!FileSystemEntity.isFileSync(dotPackagesPath)) {
     throw new StateError('A package configuration file was not found at the '
@@ -54,15 +34,32 @@ UriResolver _getPackageResolver(String projectPath, FolderBasedDartSdk sdk) {
   var pubPackageMapProvider =
       new PubPackageMapProvider(PhysicalResourceProvider.INSTANCE, sdk);
   var packageMapInfo = pubPackageMapProvider.computePackageMap(
-      PhysicalResourceProvider.INSTANCE.getResource(projectPath) as Folder);
+      PhysicalResourceProvider.INSTANCE.getResource(getPackagePath())
+          as Folder);
   var packageMap = packageMapInfo.packageMap;
   if (packageMap == null) {
     throw new StateError('An error occurred getting the package map.');
   }
 
-  return new PackageMapUriResolver(
-      PhysicalResourceProvider.INSTANCE, packageMap);
-}
+  var packageResolver =
+      new PackageMapUriResolver(PhysicalResourceProvider.INSTANCE, packageMap);
 
-/// Return the path to the current Dart SDK.
-String _getSdkPath() => p.dirname(p.dirname(Platform.resolvedExecutable));
+  var resolvers = [
+    new DartUriResolver(sdk),
+    new ResourceUriResolver(PhysicalResourceProvider.INSTANCE),
+    packageResolver
+  ];
+
+  AnalysisEngine.instance.processRequiredPlugins();
+
+  var options = new AnalysisOptionsImpl()
+    ..analyzeFunctionBodies = false
+    ..strongMode = true
+    ..previewDart2 = true;
+
+  var context = AnalysisEngine.instance.createAnalysisContext()
+    ..analysisOptions = options
+    ..sourceFactory = new SourceFactory(resolvers);
+
+  return context;
+}

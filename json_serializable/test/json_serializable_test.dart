@@ -30,9 +30,19 @@ Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
         new FeatureMatcher<InvalidGenerationSourceError>(
             'element', (e) => e.element, isNotNull)));
 
+final _formatter = new dart_style.DartFormatter();
+
+CompilationUnit _compilationUnit;
+
 void main() {
   setUpAll(() async {
-    _compUnit = await _getCompilationUnitForString();
+    var context = await analysisContextForProject();
+
+    var fileUri = p.toUri(p.join(
+        getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart'));
+    var source = context.sourceFactory.forUri2(fileUri);
+    var libElement = context.computeLibraryElement(source);
+    _compilationUnit = context.resolveCompilationUnit(source, libElement);
   });
 
   group('without wrappers',
@@ -43,7 +53,7 @@ void main() {
 
 void _registerTests(JsonSerializableGenerator generator) {
   Future<String> runForElementNamed(String name) async {
-    var library = new LibraryReader(_compUnit.element.library);
+    var library = new LibraryReader(_compilationUnit.element.library);
     var element = library.allElements.singleWhere((e) => e.name == name);
     var annotation = generator.typeChecker.firstAnnotationOf(element);
     var generated = await generator.generateForAnnotatedElement(
@@ -507,17 +517,3 @@ abstract class _$SubTypeSerializerMixin {
     expect(output, expected);
   });
 }
-
-final _formatter = new dart_style.DartFormatter();
-
-Future<CompilationUnit> _getCompilationUnitForString() async {
-  var context = await getAnalysisContextForProjectPath(getPackagePath());
-
-  var fileUri = p.toUri(p.join(
-      getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart'));
-  var source = context.sourceFactory.forUri2(fileUri);
-  var libElement = context.computeLibraryElement(source);
-  return context.resolveCompilationUnit(source, libElement);
-}
-
-CompilationUnit _compUnit;
