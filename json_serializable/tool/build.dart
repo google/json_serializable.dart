@@ -18,6 +18,10 @@ final List<BuilderApplication> builders = [
         'test/test_files/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
       ])),
+  applyToRoot(checked(),
+      generateFor: const InputSet(include: const [
+        'test/test_files/kitchen_sink.non_nullable.dart',
+      ])),
   applyToRoot(wrapped(),
       generateFor: const InputSet(include: const [
         'test/test_files/kitchen_sink.dart',
@@ -39,6 +43,7 @@ final List<BuilderApplication> builders = [
         include: const [
           'test/test_files/kitchen_sink.dart',
           'test/test_files/kitchen_sink.non_nullable.dart',
+          'test/test_files/kitchen_sink.non_nullable.checked.dart',
           'test/test_files/simple_object.dart'
         ],
       )),

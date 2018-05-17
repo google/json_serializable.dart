@@ -22,6 +22,9 @@ Builder nonNull([_]) => new LibraryBuilder(new _NonNullableGenerator(),
 Builder wrapped([_]) => new LibraryBuilder(new _WrappedGenerator(),
     generatedExtension: '.wrapped.dart', header: copyrightHeader);
 
+Builder checked([_]) => new LibraryBuilder(new _CheckedGenerator(),
+    generatedExtension: '.checked.dart', header: copyrightHeader);
+
 class _NonNullableGenerator extends Generator {
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
@@ -51,6 +54,25 @@ class _NonNullableGenerator extends Generator {
             'DateTime dateTime = new DateTime(1981, 6, 5);')
       ]);
     }
+
+    return _Replacement.generate(content, replacements);
+  }
+}
+
+class _CheckedGenerator extends Generator {
+  @override
+  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
+    final path = buildStep.inputId.path;
+    final baseName = p.basenameWithoutExtension(path);
+
+    final content = await buildStep.readAsString(buildStep.inputId);
+    var replacements = [
+      new _Replacement(_copyrightContent, ''),
+      new _Replacement(
+        "part '$baseName.g.dart",
+        "part '$baseName.checked.g.dart",
+      ),
+    ];
 
     return _Replacement.generate(content, replacements);
   }
