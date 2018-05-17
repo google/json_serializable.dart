@@ -4,7 +4,7 @@
 
 import 'dart:collection';
 
-/// Helper classes used in generated code when
+/// Helper class used in generated code when
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.

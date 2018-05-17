@@ -1,3 +1,12 @@
+## 0.2.5
+
+* Added `CheckedFromJsonException` which is thrown by code generated when
+ `checked` is enabled in `json_serializable`.
+
+* Also added functions to support the `checked` generation option. These
+  functions start with `$` are referenced by generated code. They are not meant
+  for direct use.
+
 ## 0.2.4
 
 * Added `fromJson` and `toJson` fields to `JsonKey` class.
