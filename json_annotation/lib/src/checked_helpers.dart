@@ -6,8 +6,10 @@
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, Map<String, String> fieldKeyMap,
-    T constructor()) {
+T $checkedNew<T>(String className, Map map, T constructor(),
+    {Map<String, String> fieldKeyMap}) {
+  fieldKeyMap ??= const {};
+
   try {
     return constructor();
   } on CheckedFromJsonException catch (e) {

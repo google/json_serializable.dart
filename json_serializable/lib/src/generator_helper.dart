@@ -146,15 +146,24 @@ class _GeneratorHelper {
           deserializeFun);
 
       if (_generator.checked) {
-        var keyFieldMap = new Map.fromEntries(fieldsSetByFactory
+        var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
             .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
             .where((me) => me.key != me.value));
-        var mapLiteral = jsonMapAsDart(keyFieldMap, true);
+
+        String fieldKeyMapArg;
+        if (fieldKeyMap.isEmpty) {
+          fieldKeyMapArg = '';
+        } else {
+          var mapLiteral = jsonMapAsDart(fieldKeyMap, true);
+          fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
+        }
+
         var classLiteral = escapeDartString(_element.displayName);
 
         _buffer.writeln(
             '${_element.displayName} ${_prefix}FromJson($mapType json) =>'
-            '\$checkedNew($classLiteral, json, $mapLiteral, ()=>$tempBuffer)');
+            '\$checkedNew($classLiteral, json, () => $tempBuffer'
+            '$fieldKeyMapArg)');
       } else {
         _buffer.writeln('${_element.name} '
             '${_prefix}FromJson($mapType json) => $tempBuffer');

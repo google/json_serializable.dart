@@ -13,7 +13,6 @@ part of 'build_config.dart';
 Config _$ConfigFromJson(Map json) => $checkedNew(
     'Config',
     json,
-    const {},
     () => new Config(
         builders: $checkedConvert(
             json,
@@ -27,33 +26,33 @@ abstract class _$ConfigSerializerMixin {
 }
 
 Builder _$BuilderFromJson(Map json) => $checkedNew(
-    'Builder',
-    json,
-    const {
-      'isOptional': 'is_optional',
-      'autoApply': 'auto_apply',
-      'builderFactories': 'builder_factories',
-      'appliesBuilders': 'applies_builders',
-      'requiredInputs': 'required_inputs',
-      'buildExtentions': 'build_extensions'
-    },
-    () => new Builder(
-        import: $checkedConvert(json, 'import', (v) => v as String),
-        target: $checkedConvert(json, 'target', (v) => v as String),
-        isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
-        autoApply: $checkedConvert(json, 'auto_apply',
-            (v) => v == null ? null : _fromJson(v as String)),
-        builderFactories: $checkedConvert(json, 'builder_factories',
-            (v) => (v as List).map((e) => e as String).toList()),
-        appliesBuilders: $checkedConvert(json, 'applies_builders',
-            (v) => (v as List)?.map((e) => e as String)?.toList()),
-        requiredInputs: $checkedConvert(json, 'required_inputs',
-            (v) => (v as List)?.map((e) => e as String)?.toList()),
-        buildExtentions: $checkedConvert(
-            json,
-            'build_extensions',
-            (v) => (v as Map)?.map((k, e) => new MapEntry(k as String,
-                (e as List)?.map((e) => e as String)?.toList())))));
+        'Builder',
+        json,
+        () => new Builder(
+            import: $checkedConvert(json, 'import', (v) => v as String),
+            target: $checkedConvert(json, 'target', (v) => v as String),
+            isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
+            autoApply: $checkedConvert(json, 'auto_apply',
+                (v) => v == null ? null : _fromJson(v as String)),
+            builderFactories: $checkedConvert(json, 'builder_factories',
+                (v) => (v as List).map((e) => e as String).toList()),
+            appliesBuilders: $checkedConvert(json, 'applies_builders',
+                (v) => (v as List)?.map((e) => e as String)?.toList()),
+            requiredInputs: $checkedConvert(json, 'required_inputs',
+                (v) => (v as List)?.map((e) => e as String)?.toList()),
+            buildExtentions: $checkedConvert(
+                json,
+                'build_extensions',
+                (v) => (v as Map)?.map((k, e) => new MapEntry(k as String,
+                    (e as List)?.map((e) => e as String)?.toList())))),
+        fieldKeyMap: const {
+          'isOptional': 'is_optional',
+          'autoApply': 'auto_apply',
+          'builderFactories': 'builder_factories',
+          'appliesBuilders': 'applies_builders',
+          'requiredInputs': 'required_inputs',
+          'buildExtentions': 'build_extensions'
+        });
 
 abstract class _$BuilderSerializerMixin {
   String get target;
