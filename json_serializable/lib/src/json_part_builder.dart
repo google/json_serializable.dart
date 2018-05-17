@@ -15,11 +15,16 @@ import 'json_serializable_generator.dart';
 /// If `null`, the content of [defaultFileHeader] is used.
 /// If [header] is an empty `String` no header is added.
 ///
-/// For details on [useWrappers] and [anyMap], see [JsonSerializableGenerator].
+/// For details on [useWrappers], [anyMap], and [checked] see
+/// [JsonSerializableGenerator].
 Builder jsonPartBuilder(
-    {String header, bool useWrappers: false, bool anyMap: false}) {
+    {String header,
+    bool useWrappers: false,
+    bool anyMap: false,
+    bool checked: false}) {
   return new PartBuilder([
-    new JsonSerializableGenerator(useWrappers: useWrappers, anyMap: anyMap),
+    new JsonSerializableGenerator(
+        useWrappers: useWrappers, anyMap: anyMap, checked: checked),
     const JsonLiteralGenerator()
   ], header: header);
 }

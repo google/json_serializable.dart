@@ -59,16 +59,25 @@ class JsonSerializableGenerator
   /// *Note: in many cases the key values are still assumed to be [String]*.
   final bool anyMap;
 
+  /// If `true`, generated `fromJson` functions include extra checks to validate
+  /// proper deserialization of types.
+  ///
+  /// If an exception is thrown during deserialization, a
+  /// [SerializationConvertException] is thrown.
+  final bool checked;
+
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, two built-in helpers are used:
   /// [JsonHelper] and [DateTimeHelper].
-  const JsonSerializableGenerator(
-      {List<TypeHelper> typeHelpers,
-      bool useWrappers: false,
-      bool anyMap: false})
-      : this.useWrappers = useWrappers ?? false,
+  const JsonSerializableGenerator({
+    List<TypeHelper> typeHelpers,
+    bool useWrappers: false,
+    bool anyMap: false,
+    bool checked: false,
+  })  : this.useWrappers = useWrappers ?? false,
         this.anyMap = anyMap ?? false,
+        this.checked = checked ?? false,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
