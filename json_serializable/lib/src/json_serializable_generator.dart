@@ -43,15 +43,19 @@ class JsonSerializableGenerator
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   /// If `true`, wrappers are used to minimize the number of
-  /// [Map] and [List] instances created during serialization. This will
-  /// increase the code size, but it may improve runtime performance, especially
-  /// for large object graphs.
+  /// [Map] and [List] instances created during serialization.
+  ///
+  /// This will increase the code size, but it may improve runtime performance,
+  /// especially for large object graphs.
   final bool useWrappers;
 
-  /// If `true`, [Map] types are not assumed to be
-  /// [Map<String, dynamic>] – the default for JSON support in `dart:convert`.
-  /// This results in more code being generated, but allows [Map] types returned
+  /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
+  /// – which is the default type of [Map] instances return by JSON decode in
+  /// `dart:convert`.
+  ///
+  /// This will increase the code size, but allows [Map] types returned
   /// from other sources, such as `package:yaml`.
+  ///
   /// *Note: in many cases the key values are still assumed to be [String]*.
   final bool anyMap;
 
