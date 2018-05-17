@@ -1,0 +1,8 @@
+builders:
+  # The regular builder config, creates `.tar.gz` files.
+  regular_builder:
+    import: "package:my_package/builder.dart"
+    builder_factories: ["myBuilder"]
+    build_extensions: {".dart": [".tar.gz"]}
+    auto_apply: root_package
+    apply_builders: ["|archive_extract_builder"]
