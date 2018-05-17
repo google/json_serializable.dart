@@ -11,7 +11,10 @@ T $checkedNew<T>(String className, Map map, Map<String, String> fieldKeyMap,
   try {
     return constructor();
   } on CheckedFromJsonException catch (e) {
-    e._className ??= className;
+    if (e._className == null) {
+      e._className = className;
+      assert(identical(e.map, map));
+    }
     rethrow;
   } catch (error, stack) {
     throw new CheckedFromJsonException._(error, stack, map,
