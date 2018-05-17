@@ -15,26 +15,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedNew(
     json,
     const {
       'ctorValidatedNo42': 'no-42',
-      'iterable': 'iterable',
-      'dynamicIterable': 'dynamicIterable',
-      'objectIterable': 'objectIterable',
-      'intIterable': 'intIterable',
       'dateTimeIterable': 'datetime-iterable',
-      'dateTime': 'dateTime',
-      'list': 'list',
-      'dynamicList': 'dynamicList',
-      'objectList': 'objectList',
-      'intList': 'intList',
-      'dateTimeList': 'dateTimeList',
-      'map': 'map',
-      'stringStringMap': 'stringStringMap',
-      'dynamicIntMap': 'dynamicIntMap',
-      'objectDateTimeMap': 'objectDateTimeMap',
-      'crazyComplex': 'crazyComplex',
-      'val': 'val',
-      'writeNotNull': 'writeNotNull',
-      'string': r'$string',
-      'simpleObject': 'simpleObject'
+      'string': r'$string'
     },
     () => new KitchenSink(
         ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),

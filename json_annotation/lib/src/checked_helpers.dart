@@ -17,8 +17,11 @@ T $checkedNew<T>(String className, Map map, Map<String, String> fieldKeyMap,
     }
     rethrow;
   } catch (error, stack) {
-    throw new CheckedFromJsonException._(error, stack, map,
-        (error is ArgumentError) ? fieldKeyMap[error.name] : null, T,
+    String key;
+    if (error is ArgumentError) {
+      key = fieldKeyMap[error.name] ?? error.name;
+    }
+    throw new CheckedFromJsonException._(error, stack, map, key, T,
         className: className);
   }
 }

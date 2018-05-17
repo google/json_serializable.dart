@@ -13,7 +13,7 @@ part of 'build_config.dart';
 Config _$ConfigFromJson(Map json) => $checkedNew(
     'Config',
     json,
-    const {'builders': 'builders'},
+    const {},
     () => new Config(
         builders: $checkedConvert(
             json,
@@ -30,8 +30,6 @@ Builder _$BuilderFromJson(Map json) => $checkedNew(
     'Builder',
     json,
     const {
-      'import': 'import',
-      'target': 'target',
       'isOptional': 'is_optional',
       'autoApply': 'auto_apply',
       'builderFactories': 'builder_factories',

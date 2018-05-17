@@ -146,9 +146,9 @@ class _GeneratorHelper {
           deserializeFun);
 
       if (_generator.checked) {
-        var keyFieldMap = new Map<String, String>.fromIterable(
-            fieldsSetByFactory,
-            value: (k) => _nameAccess(accessibleFields[k]));
+        var keyFieldMap = new Map.fromEntries(fieldsSetByFactory
+            .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
+            .where((me) => me.key != me.value));
         var mapLiteral = jsonMapAsDart(keyFieldMap, true);
         var classLiteral = escapeDartString(_element.displayName);
 
