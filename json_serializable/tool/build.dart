@@ -43,8 +43,15 @@ final List<BuilderApplication> builders = [
         include: const [
           'test/test_files/kitchen_sink.dart',
           'test/test_files/kitchen_sink.non_nullable.dart',
-          'test/test_files/kitchen_sink.non_nullable.checked.dart',
           'test/test_files/simple_object.dart'
+        ],
+      )),
+  applyToRoot(
+      jsonPartBuilder(header: copyrightHeader, checked: true, anyMap: true),
+      generateFor: const InputSet(
+        include: const [
+          'test/config/build_config.dart',
+          'test/test_files/kitchen_sink.non_nullable.checked.dart'
         ],
       )),
   applyToRoot(jsonPartBuilder(useWrappers: true, header: copyrightHeader),

@@ -1,5 +1,8 @@
 ## 0.5.4
 
+* Add `checked` configuration option. If `true`, generated `fromJson` functions
+  include extra checks to validate proper deserialization of types.
+
 * Use `Map.map` for more map conversions. Simplifies generated code and fixes
   a subtle issue when the `Map` key type is `dynamic` or `Object`.
 

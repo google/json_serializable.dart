@@ -4,10 +4,13 @@
 
 import 'package:test/test.dart';
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:yaml/yaml.dart';
 
 import 'test_files/kitchen_sink.dart' as nullable
+    show testFactory, testFromJson;
+import 'test_files/kitchen_sink.non_nullable.checked.dart' as checked
     show testFactory, testFromJson;
 import 'test_files/kitchen_sink.non_nullable.dart' as nn
     show testFactory, testFromJson;
@@ -38,6 +41,11 @@ void main() {
   });
 
   group('non-nullable', () {
+    group('checked', () {
+      _nonNullableTests(checked.testFactory, checked.testFromJson,
+          isChecked: true);
+    });
+
     group('unwrapped', () {
       _nonNullableTests(nn.testFactory, nn.testFromJson);
     });
@@ -56,16 +64,21 @@ typedef KitchenSink KitchenSinkCtor(
     Iterable<int> intIterable,
     Iterable<DateTime> dateTimeIterable});
 
-void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
+void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
+    {bool isChecked: false}) {
   test('with null values fails serialization', () {
     expect(() => (ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
   });
 
   test('with empty json fails deserialization', () {
-    expect(() => fromJson({}), throwsNoSuchMethodError);
+    if (isChecked) {
+      expect(() => fromJson({}), _checkedMatcher(true, 'intIterable'));
+    } else {
+      expect(() => fromJson({}), throwsNoSuchMethodError);
+    }
   });
-  _sharedTests(ctor, fromJson);
+  _sharedTests(ctor, fromJson, isChecked: isChecked);
 }
 
 void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
@@ -122,7 +135,8 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   _sharedTests(ctor, fromJson);
 }
 
-void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
+void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
+    {bool isChecked: false}) {
   void roundTripSink(KitchenSink p) {
     roundTripObject(p, fromJson);
   }
@@ -183,23 +197,37 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   });
 
   group('a bad value for', () {
-    for (var e in _invalidValues.entries) {
+    for (var invalidEntry in _invalidValues.entries) {
+      final expectedKeyValue =
+          const ['intIterable', 'datetime-iterable'].contains(invalidEntry.key)
+              ? null
+              : invalidEntry.key;
+      final matcher = _checkedMatcher(isChecked, expectedKeyValue);
+
       for (var isJson in [true, false]) {
-        test('`${e.key}` fails - ${isJson ? 'json' : 'yaml'}', () {
+        test('`${invalidEntry.key}` fails - ${isJson ? 'json' : 'yaml'}', () {
           var copy = new Map.from(_validValues);
-          copy[e.key] = e.value;
+          copy[invalidEntry.key] = invalidEntry.value;
 
           if (!isJson) {
             copy = loadYaml(loudEncode(copy)) as YamlMap;
           }
 
-          expect(() => fromJson(copy),
-              throwsA(anyOf(_isACastError, _isATypeError, isArgumentError)));
+          expect(() => fromJson(copy), matcher);
         });
       }
     }
   });
 }
+
+Matcher _checkedMatcher(bool checked, String expectedKey) => throwsA(checked
+    ? allOf(
+        const isInstanceOf<CheckedFromJsonException>(),
+        new FeatureMatcher<CheckedFromJsonException>(
+            'className', (e) => e.className, 'KitchenSink'),
+        new FeatureMatcher<CheckedFromJsonException>(
+            'key', (e) => e.key, expectedKey))
+    : anyOf(_isACastError, _isATypeError, isArgumentError));
 
 final _validValues = const {
   'no-42': 0,

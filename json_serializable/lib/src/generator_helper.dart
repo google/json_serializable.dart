@@ -11,6 +11,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'constants.dart';
 import 'json_key_helpers.dart';
+import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helper_context.dart';
@@ -126,16 +127,15 @@ class _GeneratorHelper {
       var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
 
       _buffer.writeln();
-      _buffer.writeln('${_element.name} '
-          '${_prefix}FromJson($mapType json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
           _deserializeForField(accessibleFields[paramOrFieldName],
               ctorParam: ctorParam);
 
+      var tempBuffer = new StringBuffer();
       var fieldsSetByFactory = writeConstructorInvocation(
-          _buffer,
+          tempBuffer,
           _element,
           accessibleFields.keys,
           accessibleFields.values
@@ -144,6 +144,21 @@ class _GeneratorHelper {
               .toList(),
           unavailableReasons,
           deserializeFun);
+
+      if (_generator.checked) {
+        var keyFieldMap = new Map<String, String>.fromIterable(
+            fieldsSetByFactory,
+            value: (k) => _nameAccess(accessibleFields[k]));
+        var mapLiteral = jsonMapAsDart(keyFieldMap, true);
+        var classLiteral = escapeDartString(_element.displayName);
+
+        _buffer.writeln(
+            '${_element.displayName} ${_prefix}FromJson($mapType json) =>'
+            '\$checkedNew($classLiteral, json, $mapLiteral, ()=>$tempBuffer)');
+      } else {
+        _buffer.writeln('${_element.name} '
+            '${_prefix}FromJson($mapType json) => $tempBuffer');
+      }
       _buffer.writeln(';');
 
       // If there are fields that are final – that are not set via the generated
@@ -297,7 +312,12 @@ void $toJsonMapHelperName(String key, dynamic value) {
     var targetType = ctorParam?.type ?? field.type;
 
     try {
-      return _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
+      var value =
+          _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
+      if (_generator.checked) {
+        return '\$checkedConvert(json, $jsonKey, () => $value)';
+      }
+      return value;
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);
     }

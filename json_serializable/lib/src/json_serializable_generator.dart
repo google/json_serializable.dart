@@ -63,7 +63,7 @@ class JsonSerializableGenerator
   /// proper deserialization of types.
   ///
   /// If an exception is thrown during deserialization, a
-  /// [SerializationConvertException] is thrown.
+  /// [CheckedFromJsonException] is thrown.
   final bool checked;
 
   /// Creates an instance of [JsonSerializableGenerator].
