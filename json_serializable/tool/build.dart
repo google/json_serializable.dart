@@ -15,17 +15,17 @@ import 'builder.dart';
 final List<BuilderApplication> builders = [
   applyToRoot(nonNull(),
       generateFor: const InputSet(include: const [
-        'test/test_files/kitchen_sink.dart',
+        'test/kitchen_sink_test_files/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
       ])),
   applyToRoot(checked(),
       generateFor: const InputSet(include: const [
-        'test/test_files/kitchen_sink.non_nullable.dart',
+        'test/kitchen_sink_test_files/kitchen_sink.non_nullable.dart',
       ])),
   applyToRoot(wrapped(),
       generateFor: const InputSet(include: const [
-        'test/test_files/kitchen_sink.dart',
-        'test/test_files/kitchen_sink.non_nullable.dart',
+        'test/kitchen_sink_test_files/kitchen_sink.dart',
+        'test/kitchen_sink_test_files/kitchen_sink.non_nullable.dart',
         'test/test_files/json_test_example.dart',
         'test/test_files/json_test_example.non_nullable.dart',
       ])),
@@ -41,9 +41,9 @@ final List<BuilderApplication> builders = [
   applyToRoot(jsonPartBuilder(header: copyrightHeader, anyMap: true),
       generateFor: const InputSet(
         include: const [
-          'test/test_files/kitchen_sink.dart',
-          'test/test_files/kitchen_sink.non_nullable.dart',
-          'test/test_files/simple_object.dart'
+          'test/kitchen_sink_test_files/kitchen_sink.dart',
+          'test/kitchen_sink_test_files/kitchen_sink.non_nullable.dart',
+          'test/kitchen_sink_test_files/simple_object.dart'
         ],
       )),
   applyToRoot(
@@ -51,7 +51,7 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: const [
           'test/yaml_test_files/build_config.dart',
-          'test/test_files/kitchen_sink.non_nullable.checked.dart'
+          'test/kitchen_sink_test_files/kitchen_sink.non_nullable.checked.dart'
         ],
       )),
   applyToRoot(jsonPartBuilder(useWrappers: true, header: copyrightHeader),
@@ -64,7 +64,7 @@ final List<BuilderApplication> builders = [
       jsonPartBuilder(useWrappers: true, anyMap: true, header: copyrightHeader),
       generateFor: const InputSet(
         include: const [
-          'test/test_files/kitchen_sink*wrapped.dart',
+          'test/kitchen_sink_test_files/kitchen_sink*wrapped.dart',
         ],
       )),
   applyToRoot(testBootstrapBuilder(null),

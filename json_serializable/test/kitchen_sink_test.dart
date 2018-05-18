@@ -8,18 +8,18 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:yaml/yaml.dart';
 
-import 'test_files/kitchen_sink.dart' as nullable
+import 'kitchen_sink_test_files/kitchen_sink.dart' as nullable
     show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.checked.dart' as checked
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.checked.dart'
+    as checked show testFactory, testFromJson;
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.dart' as nn
     show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.dart' as nn
-    show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
-    show testFactory, testFromJson;
-import 'test_files/kitchen_sink.wrapped.dart' as wrapped
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.wrapped.dart'
+    as nnwrapped show testFactory, testFromJson;
+import 'kitchen_sink_test_files/kitchen_sink.wrapped.dart' as wrapped
     show testFactory, testFromJson;
 
-import 'test_files/kitchen_sink_interface.dart';
+import 'kitchen_sink_test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 final _isACastError = const isInstanceOf<CastError>();
