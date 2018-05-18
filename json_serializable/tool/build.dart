@@ -50,7 +50,7 @@ final List<BuilderApplication> builders = [
       jsonPartBuilder(header: copyrightHeader, checked: true, anyMap: true),
       generateFor: const InputSet(
         include: const [
-          'test/config/build_config.dart',
+          'test/yaml_test_files/build_config.dart',
           'test/test_files/kitchen_sink.non_nullable.checked.dart'
         ],
       )),
