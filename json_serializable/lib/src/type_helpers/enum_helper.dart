@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+
+import '../constants.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -35,7 +37,7 @@ class EnumHelper extends TypeHelper {
     return commonNullPrefix(
         context.nullable,
         expression,
-        '$targetType.values.singleWhere('
-        "(x) => x.toString() == '$targetType.\$$wrappedExpression')");
+        '$targetType.values.singleWhere(($closureArg) => $closureArg.toString()'
+        " == '$targetType.\$$wrappedExpression')");
   }
 }

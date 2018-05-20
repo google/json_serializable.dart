@@ -5,11 +5,9 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
+import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-
-/// Name used for closure argument when generating calls to `map`.
-final _closureArg = 'e';
 
 class IterableHelper extends TypeHelper {
   const IterableHelper();
@@ -27,26 +25,26 @@ class IterableHelper extends TypeHelper {
     // Although it's possible that child elements may be marked unsafe
 
     var isList = _coreListChecker.isAssignableFromType(targetType);
-    var subField = context.serialize(itemType, _closureArg);
+    var subField = context.serialize(itemType, closureArg);
 
     var optionalQuestion = context.nullable ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subField`
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
-    if (subField != _closureArg) {
+    if (subField != closureArg) {
       if (context.useWrappers && isList) {
         var method = '\$wrapList';
         if (context.nullable) {
           method = '${method}HandleNull';
         }
 
-        return '$method<$itemType>($expression, ($_closureArg) => $subField)';
+        return '$method<$itemType>($expression, ($closureArg) => $subField)';
       }
 
       // TODO: the type could be imported from a library with a prefix!
       expression =
-          '$expression$optionalQuestion.map(($_closureArg) => $subField)';
+          '$expression$optionalQuestion.map(($closureArg) => $subField)';
 
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
@@ -70,17 +68,17 @@ class IterableHelper extends TypeHelper {
 
     var iterableGenericType = coreIterableGenericType(targetType);
 
-    var itemSubVal = context.deserialize(iterableGenericType, _closureArg);
+    var itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
     // If `itemSubVal` is the same, then we don't need to do anything fancy
-    if (_closureArg == itemSubVal) {
+    if (closureArg == itemSubVal) {
       return '$expression as List';
     }
 
     var optionalQuestion = context.nullable ? '?' : '';
 
     var output =
-        '($expression as List)$optionalQuestion.map(($_closureArg) => $itemSubVal)';
+        '($expression as List)$optionalQuestion.map(($closureArg) => $itemSubVal)';
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
       output += '$optionalQuestion.toList()';
