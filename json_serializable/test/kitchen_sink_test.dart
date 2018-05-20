@@ -73,7 +73,7 @@ void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
 
   test('with empty json fails deserialization', () {
     if (isChecked) {
-      expect(() => fromJson({}), _checkedMatcher(true, 'intIterable'));
+      expect(() => fromJson({}), throwsA(_checkedMatcher('intIterable')));
     } else {
       expect(() => fromJson({}), throwsNoSuchMethodError);
     }
@@ -198,14 +198,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
 
   group('a bad value for', () {
     for (var invalidEntry in _invalidValues.entries) {
-      final expectedKeyValue = const [
-        'intIterable',
-        'datetime-iterable',
-        'validatedPropertyNo42'
-      ].contains(invalidEntry.key)
-          ? null
-          : invalidEntry.key;
-      final matcher = _checkedMatcher(isChecked, expectedKeyValue);
+      final matcher = _getMatcher(isChecked, invalidEntry.key);
 
       for (var isJson in [true, false]) {
         test('`${invalidEntry.key}` fails - ${isJson ? 'json' : 'yaml'}', () {
@@ -223,14 +216,38 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 }
 
-Matcher _checkedMatcher(bool checked, String expectedKey) => throwsA(checked
-    ? allOf(
-        const isInstanceOf<CheckedFromJsonException>(),
-        new FeatureMatcher<CheckedFromJsonException>(
-            'className', (e) => e.className, 'KitchenSink'),
-        new FeatureMatcher<CheckedFromJsonException>(
-            'key', (e) => e.key, expectedKey))
-    : anyOf(_isACastError, _isATypeError, isArgumentError, isStateError));
+Matcher _checkedMatcher(String expectedKey) => allOf(
+    const isInstanceOf<CheckedFromJsonException>(),
+    new FeatureMatcher<CheckedFromJsonException>(
+        'className', (e) => e.className, 'KitchenSink'),
+    new FeatureMatcher<CheckedFromJsonException>(
+        'key', (e) => e.key, expectedKey));
+
+Matcher _getMatcher(bool checked, String expectedKey) {
+  Matcher innerMatcher;
+
+  if (checked) {
+    if (const ['intIterable', 'datetime-iterable', 'validatedPropertyNo42']
+        .contains(expectedKey)) {
+      expectedKey = null;
+    }
+    innerMatcher = _checkedMatcher(expectedKey);
+  } else {
+    switch (expectedKey) {
+      case 'validatedPropertyNo42':
+        innerMatcher = isStateError;
+        break;
+      case 'no-42':
+        innerMatcher = isArgumentError;
+        break;
+      default:
+        innerMatcher = anyOf(_isACastError, _isATypeError);
+        break;
+    }
+  }
+
+  return throwsA(innerMatcher);
+}
 
 final _validValues = const {
   'no-42': 0,
