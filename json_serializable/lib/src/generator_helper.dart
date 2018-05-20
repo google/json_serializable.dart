@@ -133,19 +133,49 @@ class _GeneratorHelper {
           _deserializeForField(accessibleFields[paramOrFieldName],
               ctorParam: ctorParam);
 
-      var tempBuffer = new StringBuffer();
-      var fieldsSetByFactory = writeConstructorInvocation(
-          tempBuffer,
-          _element,
-          accessibleFields.keys,
-          accessibleFields.values
-              .where((fe) => !fe.isFinal)
-              .map((fe) => fe.name)
-              .toList(),
-          unavailableReasons,
-          deserializeFun);
-
+      Set<String> fieldsSetByFactory;
       if (_generator.checked) {
+        var classLiteral = escapeDartString(_element.displayName);
+
+        _buffer.writeln(
+            '${_element.displayName} ${_prefix}FromJson($mapType json) =>'
+            '\$checkedNew($classLiteral, json, ()');
+
+        var data = writeConstructorInvocation(
+            _element,
+            accessibleFields.keys,
+            accessibleFields.values
+                .where((fe) => !fe.isFinal)
+                .map((fe) => fe.name)
+                .toList(),
+            unavailableReasons,
+            deserializeFun);
+
+        fieldsSetByFactory = data.usedCtorParamsAndFields;
+
+        if (data.fieldsToSet.isEmpty) {
+          // Use simple arrow syntax for the constructor invocation.
+          // There are no fields to set
+          _buffer.write(' => ${data.content}');
+        } else {
+          // If there are fields to set, create a full function body and
+          // create a temporary variable to hold the instance so we can make
+          // wrapped calls to all of the fields value assignments.
+          _buffer.writeln('{ var val = ');
+          _buffer.write(data.content);
+          _buffer.writeln(';');
+
+          for (var field in data.fieldsToSet) {
+            _buffer.writeln();
+            _buffer.write('\$checkedConvert(json, ${_safeNameAccess(
+                    accessibleFields[field])}, (v) => ');
+            _buffer.write('val.$field = ');
+            _buffer.write(_deserializeForField(accessibleFields[field],
+                checkedProperty: true));
+            _buffer.write(');');
+          }
+          _buffer.writeln('return val; }');
+        }
         var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
             .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
             .where((me) => me.key != me.value));
@@ -158,15 +188,30 @@ class _GeneratorHelper {
           fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
         }
 
-        var classLiteral = escapeDartString(_element.displayName);
-
-        _buffer.writeln(
-            '${_element.displayName} ${_prefix}FromJson($mapType json) =>'
-            '\$checkedNew($classLiteral, json, () => $tempBuffer'
-            '$fieldKeyMapArg)');
+        _buffer.writeln('$fieldKeyMapArg)');
       } else {
         _buffer.writeln('${_element.name} '
-            '${_prefix}FromJson($mapType json) => $tempBuffer');
+            '${_prefix}FromJson($mapType json) => ');
+
+        var data = writeConstructorInvocation(
+            _element,
+            accessibleFields.keys,
+            accessibleFields.values
+                .where((fe) => !fe.isFinal)
+                .map((fe) => fe.name)
+                .toList(),
+            unavailableReasons,
+            deserializeFun);
+
+        fieldsSetByFactory = data.usedCtorParamsAndFields;
+
+        _buffer.writeln(data.content);
+        for (var field in data.fieldsToSet) {
+          _buffer.writeln();
+          _buffer.write('      ..$field = ');
+          _buffer.write(deserializeFun(field));
+        }
+        _buffer.writeln();
       }
       _buffer.writeln(';');
 
@@ -315,7 +360,8 @@ void $toJsonMapHelperName(String key, dynamic value) {
   }
 
   String _deserializeForField(FieldElement field,
-      {ParameterElement ctorParam}) {
+      {ParameterElement ctorParam, bool checkedProperty}) {
+    checkedProperty ??= false;
     var jsonKey = _safeNameAccess(field);
 
     var targetType = ctorParam?.type ?? field.type;
@@ -323,8 +369,14 @@ void $toJsonMapHelperName(String key, dynamic value) {
     try {
       if (_generator.checked) {
         var value = _getHelperContext(field).deserialize(targetType, 'v');
+        if (checkedProperty) {
+          return value;
+        }
+
         return '\$checkedConvert(json, $jsonKey, (v) => $value)';
       }
+      assert(!checkedProperty,
+          'should only be true if `_generator.checked` is true.');
       return _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);

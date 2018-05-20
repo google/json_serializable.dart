@@ -176,10 +176,7 @@ int _sortByLocation(FieldElement a, FieldElement b) {
 
 final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 
-/// Writes the invocation of the default constructor – `new Class(...)` for the
-/// type defined in [classElement] to the provided [buffer].
-///
-/// If an parameter is required to invoke the constructor,
+/// If a parameter is required to invoke the constructor,
 /// [availableConstructorParameters] is checked to see if it is available. If
 /// [availableConstructorParameters] does not contain the parameter name,
 /// an [UnsupportedError] is thrown.
@@ -190,11 +187,7 @@ final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 ///
 /// [writeableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
-///
-/// Set set of all constructor parameters and and fields that are populated is
-/// returned.
-Set<String> writeConstructorInvocation(
-    StringBuffer buffer,
+CtorData writeConstructorInvocation(
     ClassElement classElement,
     Iterable<String> availableConstructorParameters,
     Iterable<String> writeableFields,
@@ -250,9 +243,7 @@ Set<String> writeConstructorInvocation(
   var remainingFieldsForInvocationBody =
       writeableFields.toSet().difference(usedCtorParamsAndFields);
 
-  //
-  // Generate the static factory method
-  //
+  var buffer = new StringBuffer();
   buffer.write('new $className(');
   buffer.writeAll(
       constructorArguments.map((paramElement) =>
@@ -267,17 +258,18 @@ Set<String> writeConstructorInvocation(
   }), ', ');
 
   buffer.write(')');
-  if (remainingFieldsForInvocationBody.isNotEmpty) {
-    for (var field in remainingFieldsForInvocationBody) {
-      buffer.writeln();
-      buffer.write('      ..$field = ');
-      buffer.write(deserializeForField(field));
-      usedCtorParamsAndFields.add(field);
-    }
-  }
-  buffer.writeln();
 
-  return usedCtorParamsAndFields;
+  usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
+
+  return new CtorData(buffer.toString(), remainingFieldsForInvocationBody,
+      usedCtorParamsAndFields);
+}
+
+class CtorData {
+  final String content;
+  final Set<String> fieldsToSet;
+  final Set<String> usedCtorParamsAndFields;
+  CtorData(this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
 }
 
 void _validateConstructorArguments(

@@ -237,8 +237,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 
   if (checked) {
     if (checkedAssignment &&
-        const ['intIterable', 'datetime-iterable', 'validatedPropertyNo42']
-            .contains(expectedKey)) {
+        const ['intIterable', 'datetime-iterable'].contains(expectedKey)) {
       expectedKey = null;
     }
 
