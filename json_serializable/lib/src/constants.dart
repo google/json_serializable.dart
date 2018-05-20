@@ -5,5 +5,5 @@
 /// Name used for closure argument when generating calls to `map`.
 final closureArg = 'e';
 
-const toJsonMapVarName = 'val';
+const generatedLocalVarName = 'val';
 const toJsonMapHelperName = 'writeNotNull';

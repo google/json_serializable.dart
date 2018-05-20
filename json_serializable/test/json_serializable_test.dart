@@ -306,7 +306,7 @@ abstract class _$OrderSerializerMixin {
   group('includeIfNull', () {
     test('some', () async {
       var output = await runForElementNamed('IncludeIfNullAll');
-      expect(output, isNot(contains(toJsonMapVarName)));
+      expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
 

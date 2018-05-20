@@ -238,7 +238,7 @@ class _GeneratorHelper {
   void _writeToJsonWithNullChecks(Iterable<FieldElement> fields) {
     _buffer.writeln('{');
 
-    _buffer.writeln('var $toJsonMapVarName = <String, dynamic>{');
+    _buffer.writeln('var $generatedLocalVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them
@@ -252,7 +252,7 @@ class _GeneratorHelper {
 
       // If `fieldName` collides with one of the local helpers, prefix
       // access with `this.`.
-      if (safeFieldAccess == toJsonMapVarName ||
+      if (safeFieldAccess == generatedLocalVarName ||
           safeFieldAccess == toJsonMapHelperName) {
         safeFieldAccess = 'this.$safeFieldAccess';
       }
@@ -263,7 +263,7 @@ class _GeneratorHelper {
           _buffer.writeln('$safeJsonKeyString : $expression,');
         } else {
           _buffer
-              .writeln('$toJsonMapVarName[$safeJsonKeyString] = $expression;');
+              .writeln('$generatedLocalVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
@@ -276,7 +276,7 @@ class _GeneratorHelper {
           _buffer.writeln('''
 void $toJsonMapHelperName(String key, dynamic value) {
   if (value != null) {
-    $toJsonMapVarName[key] = value;
+    $generatedLocalVarName[key] = value;
   }
 }''');
           directWrite = false;
@@ -286,7 +286,7 @@ void $toJsonMapHelperName(String key, dynamic value) {
       }
     }
 
-    _buffer.writeln('return $toJsonMapVarName;');
+    _buffer.writeln('return $generatedLocalVarName;');
 
     _buffer.writeln('}');
   }
