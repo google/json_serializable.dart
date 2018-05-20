@@ -46,7 +46,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..val = json['val'] == null ? null : new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
   ..string = json[r'$string'] as String
-  ..simpleObject = json['simpleObject'] == null ? null : new SimpleObject.fromJson(json['simpleObject'] as Map);
+  ..simpleObject = json['simpleObject'] == null ? null : new SimpleObject.fromJson(json['simpleObject'] as Map)
+  ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 
 abstract class _$KitchenSinkSerializerMixin {
   int get ctorValidatedNo42;
@@ -70,6 +71,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   SimpleObject get simpleObject;
+  int get validatedPropertyNo42;
   Map<String, dynamic> toJson() {
     var val = <String, dynamic>{
       'no-42': ctorValidatedNo42,
@@ -115,6 +117,7 @@ abstract class _$KitchenSinkSerializerMixin {
     val['writeNotNull'] = this.writeNotNull;
     val[r'$string'] = string;
     val['simpleObject'] = simpleObject;
+    val['validatedPropertyNo42'] = validatedPropertyNo42;
     return val;
   }
 }

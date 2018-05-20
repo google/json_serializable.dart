@@ -198,10 +198,13 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
 
   group('a bad value for', () {
     for (var invalidEntry in _invalidValues.entries) {
-      final expectedKeyValue =
-          const ['intIterable', 'datetime-iterable'].contains(invalidEntry.key)
-              ? null
-              : invalidEntry.key;
+      final expectedKeyValue = const [
+        'intIterable',
+        'datetime-iterable',
+        'validatedPropertyNo42'
+      ].contains(invalidEntry.key)
+          ? null
+          : invalidEntry.key;
       final matcher = _checkedMatcher(isChecked, expectedKeyValue);
 
       for (var isJson in [true, false]) {
@@ -227,7 +230,7 @@ Matcher _checkedMatcher(bool checked, String expectedKey) => throwsA(checked
             'className', (e) => e.className, 'KitchenSink'),
         new FeatureMatcher<CheckedFromJsonException>(
             'key', (e) => e.key, expectedKey))
-    : anyOf(_isACastError, _isATypeError, isArgumentError));
+    : anyOf(_isACastError, _isATypeError, isArgumentError, isStateError));
 
 final _validValues = const {
   'no-42': 0,
@@ -250,7 +253,8 @@ final _validValues = const {
   toJsonMapVarName: const {},
   toJsonMapHelperName: null,
   r'$string': null,
-  'simpleObject': const {'value': 42}
+  'simpleObject': const {'value': 42},
+  'validatedPropertyNo42': 0
 };
 
 final _invalidValues = const {
@@ -274,7 +278,8 @@ final _invalidValues = const {
   toJsonMapVarName: const {'key': 42},
   toJsonMapHelperName: 42,
   r'$string': true,
-  'simpleObject': 42
+  'simpleObject': 42,
+  'validatedPropertyNo42': 42
 };
 
 final _excludeIfNullKeys = const [

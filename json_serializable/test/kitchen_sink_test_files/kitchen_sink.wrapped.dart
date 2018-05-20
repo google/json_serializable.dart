@@ -115,5 +115,15 @@ class KitchenSink extends Object
 
   SimpleObject simpleObject = _defaultSimpleObject();
 
+  int _validatedPropertyNo42;
+  int get validatedPropertyNo42 => _validatedPropertyNo42;
+
+  set validatedPropertyNo42(int value) {
+    if (value == 42) {
+      throw new StateError('Cannot be 42!');
+    }
+    _validatedPropertyNo42 = value;
+  }
+
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }

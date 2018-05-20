@@ -35,6 +35,8 @@ abstract class KitchenSink {
 
   SimpleObject get simpleObject;
 
+  int validatedPropertyNo42;
+
   Map<String, dynamic> toJson();
 }
 
