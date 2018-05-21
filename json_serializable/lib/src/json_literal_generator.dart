@@ -35,7 +35,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     var thing = _jsonLiteralAsDart(content, asConst).toString();
     var marked = asConst ? 'const' : 'final';
 
-    return '$marked _\$${element.displayName}JsonLiteral = $thing;';
+    return '$marked _\$${element.name}JsonLiteral = $thing;';
   }
 }
 
