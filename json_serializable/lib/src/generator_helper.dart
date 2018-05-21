@@ -262,8 +262,8 @@ class _GeneratorHelper {
         if (directWrite) {
           _buffer.writeln('$safeJsonKeyString : $expression,');
         } else {
-          _buffer
-              .writeln('$generatedLocalVarName[$safeJsonKeyString] = $expression;');
+          _buffer.writeln(
+              '$generatedLocalVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
