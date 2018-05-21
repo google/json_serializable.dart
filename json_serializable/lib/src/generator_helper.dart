@@ -124,9 +124,9 @@ class _GeneratorHelper {
     });
 
     if (_annotation.createFactory) {
-      var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
-
       _buffer.writeln();
+      var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
+      _buffer.writeln('${_element.name} ${_prefix}FromJson($mapType json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
@@ -137,9 +137,7 @@ class _GeneratorHelper {
       if (_generator.checked) {
         var classLiteral = escapeDartString(_element.displayName);
 
-        _buffer.writeln(
-            '${_element.displayName} ${_prefix}FromJson($mapType json) =>'
-            '\$checkedNew($classLiteral, json, ()');
+        _buffer.writeln('\$checkedNew($classLiteral, json, ()');
 
         var data = writeConstructorInvocation(
             _element,
@@ -190,9 +188,6 @@ class _GeneratorHelper {
 
         _buffer.writeln('$fieldKeyMapArg)');
       } else {
-        _buffer.writeln('${_element.name} '
-            '${_prefix}FromJson($mapType json) => ');
-
         var data = writeConstructorInvocation(
             _element,
             accessibleFields.keys,
