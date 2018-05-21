@@ -16,7 +16,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json[r'$house'] == null
         ? null
         : House.values
-            .singleWhere((x) => x.toString() == 'House.${json[r'$house']}'),
+            .singleWhere((e) => e.toString() == 'House.${json[r'$house']}'),
     middleName: json['middleName'] as String,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
@@ -29,7 +29,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
           k,
           e == null
               ? null
-              : House.values.singleWhere((x) => x.toString() == 'House.$e')));
+              : House.values.singleWhere((e) => e.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -84,7 +84,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     Category.values
-        .singleWhere((x) => x.toString() == 'Category.${json['category']}'),
+        .singleWhere((e) => e.toString() == 'Category.${json['category']}'),
     (json['items'] as List)?.map(
         (e) => e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int

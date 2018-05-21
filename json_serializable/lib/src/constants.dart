@@ -2,5 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-const toJsonMapVarName = 'val';
+/// Name used for closure argument when generating calls to `map`.
+final closureArg = 'e';
+
+const generatedLocalVarName = 'val';
 const toJsonMapHelperName = 'writeNotNull';

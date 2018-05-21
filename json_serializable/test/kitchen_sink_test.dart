@@ -285,7 +285,7 @@ final _validValues = const {
   'dynamicIntMap': const {},
   'objectDateTimeMap': const <String, dynamic>{},
   'crazyComplex': const [],
-  toJsonMapVarName: const {},
+  generatedLocalVarName: const {},
   toJsonMapHelperName: null,
   r'$string': null,
   'simpleObject': const {'value': 42},
@@ -310,7 +310,7 @@ final _invalidValueTypes = const {
   'dynamicIntMap': const {'key': 'value'},
   'objectDateTimeMap': const {'key': 42},
   'crazyComplex': const [true],
-  toJsonMapVarName: const {'key': 42},
+  generatedLocalVarName: const {'key': 42},
   toJsonMapHelperName: 42,
   r'$string': true,
   'simpleObject': 42,
@@ -330,5 +330,5 @@ final _excludeIfNullKeys = const [
   'iterable',
   'dateTimeList',
   'crazyComplex',
-  toJsonMapVarName
+  generatedLocalVarName
 ];

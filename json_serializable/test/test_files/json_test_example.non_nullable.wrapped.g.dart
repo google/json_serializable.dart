@@ -13,13 +13,13 @@ part of 'json_test_example.non_nullable.wrapped.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    House.values.singleWhere((x) => x.toString() == 'House.${json[r'$house']}'),
+    House.values.singleWhere((e) => e.toString() == 'House.${json[r'$house']}'),
     middleName: json['middleName'] as String,
     dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
   ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
   ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
       new MapEntry(
-          k, House.values.singleWhere((x) => x.toString() == 'House.$e')));
+          k, House.values.singleWhere((e) => e.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -74,7 +74,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
     Category.values
-        .singleWhere((x) => x.toString() == 'Category.${json['category']}'),
+        .singleWhere((e) => e.toString() == 'Category.${json['category']}'),
     (json['items'] as List)
         .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int

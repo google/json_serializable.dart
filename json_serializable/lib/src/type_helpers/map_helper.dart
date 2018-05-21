@@ -4,13 +4,11 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
+import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../type_helper_context.dart';
 import '../utils.dart';
-
-/// Name used for closure argument when generating calls to `map`.
-final _closureArg = 'e';
 
 class MapHelper extends TypeHelper {
   const MapHelper();
@@ -29,9 +27,9 @@ class MapHelper extends TypeHelper {
 
     _checkSafeKeyType(expression, keyType);
 
-    var subFieldValue = context.serialize(valueType, _closureArg);
+    var subFieldValue = context.serialize(valueType, closureArg);
 
-    if (_closureArg == subFieldValue) {
+    if (closureArg == subFieldValue) {
       return expression;
     }
 
@@ -41,13 +39,13 @@ class MapHelper extends TypeHelper {
         method = '${method}HandleNull';
       }
 
-      return '$method<$keyType, $valueType>($expression, ($_closureArg) => $subFieldValue)';
+      return '$method<$keyType, $valueType>($expression, ($closureArg) => $subFieldValue)';
     }
 
     final optionalQuestion = context.nullable ? '?' : '';
 
     return '$expression$optionalQuestion'
-        '.map((k, $_closureArg) => new MapEntry(k, $subFieldValue))';
+        '.map((k, $closureArg) => new MapEntry(k, $subFieldValue))';
   }
 
   @override
@@ -89,7 +87,7 @@ class MapHelper extends TypeHelper {
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    final itemSubVal = context.deserialize(valueArg, _closureArg);
+    final itemSubVal = context.deserialize(valueArg, closureArg);
 
     final optionalQuestion = context.nullable ? '?' : '';
 
@@ -99,7 +97,7 @@ class MapHelper extends TypeHelper {
         (isAnyMap && !_isObjectOrDynamic(keyArg)) ? 'k as String' : 'k';
 
     return '($expression $mapCast)$optionalQuestion'
-        '.map((k, $_closureArg) => new MapEntry($keyUsage, $itemSubVal))';
+        '.map((k, $closureArg) => new MapEntry($keyUsage, $itemSubVal))';
   }
 }
 
