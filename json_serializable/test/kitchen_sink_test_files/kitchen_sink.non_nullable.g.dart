@@ -41,7 +41,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
   ..val = new Map<String, bool>.from(json['val'] as Map)
   ..writeNotNull = json['writeNotNull'] as bool
   ..string = json[r'$string'] as String
-  ..simpleObject = new SimpleObject.fromJson(json['simpleObject'] as Map);
+  ..simpleObject = new SimpleObject.fromJson(json['simpleObject'] as Map)
+  ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 
 abstract class _$KitchenSinkSerializerMixin {
   int get ctorValidatedNo42;
@@ -65,6 +66,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   SimpleObject get simpleObject;
+  int get validatedPropertyNo42;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'no-42': ctorValidatedNo42,
         'dateTime': dateTime.toIso8601String(),
@@ -96,6 +98,7 @@ abstract class _$KitchenSinkSerializerMixin {
         'val': val,
         'writeNotNull': writeNotNull,
         r'$string': string,
-        'simpleObject': simpleObject
+        'simpleObject': simpleObject,
+        'validatedPropertyNo42': validatedPropertyNo42
       };
 }

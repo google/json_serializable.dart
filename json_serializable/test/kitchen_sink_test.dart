@@ -8,18 +8,18 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:yaml/yaml.dart';
 
-import 'test_files/kitchen_sink.dart' as nullable
+import 'kitchen_sink_test_files/kitchen_sink.dart' as nullable
     show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.checked.dart' as checked
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.checked.dart'
+    as checked show testFactory, testFromJson;
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.dart' as nn
     show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.dart' as nn
-    show testFactory, testFromJson;
-import 'test_files/kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
-    show testFactory, testFromJson;
-import 'test_files/kitchen_sink.wrapped.dart' as wrapped
+import 'kitchen_sink_test_files/kitchen_sink.non_nullable.wrapped.dart'
+    as nnwrapped show testFactory, testFromJson;
+import 'kitchen_sink_test_files/kitchen_sink.wrapped.dart' as wrapped
     show testFactory, testFromJson;
 
-import 'test_files/kitchen_sink_interface.dart';
+import 'kitchen_sink_test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
 final _isACastError = const isInstanceOf<CastError>();
@@ -27,7 +27,7 @@ final _isATypeError = const isInstanceOf<TypeError>();
 
 void main() {
   test('valid values covers all keys', () {
-    expect(_invalidValues.keys, orderedEquals(_validValues.keys));
+    expect(_invalidValueTypes.keys, orderedEquals(_validValues.keys));
   });
 
   group('nullable', () {
@@ -73,7 +73,7 @@ void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
 
   test('with empty json fails deserialization', () {
     if (isChecked) {
-      expect(() => fromJson({}), _checkedMatcher(true, 'intIterable'));
+      expect(() => fromJson({}), throwsA(_checkedMatcher('intIterable')));
     } else {
       expect(() => fromJson({}), throwsNoSuchMethodError);
     }
@@ -197,37 +197,75 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   group('a bad value for', () {
-    for (var invalidEntry in _invalidValues.entries) {
-      final expectedKeyValue =
-          const ['intIterable', 'datetime-iterable'].contains(invalidEntry.key)
-              ? null
-              : invalidEntry.key;
-      final matcher = _checkedMatcher(isChecked, expectedKeyValue);
-
-      for (var isJson in [true, false]) {
-        test('`${invalidEntry.key}` fails - ${isJson ? 'json' : 'yaml'}', () {
-          var copy = new Map.from(_validValues);
-          copy[invalidEntry.key] = invalidEntry.value;
-
-          if (!isJson) {
-            copy = loadYaml(loudEncode(copy)) as YamlMap;
-          }
-
-          expect(() => fromJson(copy), matcher);
-        });
-      }
+    for (var e in _invalidValueTypes.entries) {
+      _testBadValue(isChecked, e.key, e.value, fromJson, false);
+    }
+    for (var e in _invalidCheckedValues.entries) {
+      _testBadValue(isChecked, e.key, e.value, fromJson, true);
     }
   });
 }
 
-Matcher _checkedMatcher(bool checked, String expectedKey) => throwsA(checked
-    ? allOf(
-        const isInstanceOf<CheckedFromJsonException>(),
-        new FeatureMatcher<CheckedFromJsonException>(
-            'className', (e) => e.className, 'KitchenSink'),
-        new FeatureMatcher<CheckedFromJsonException>(
-            'key', (e) => e.key, expectedKey))
-    : anyOf(_isACastError, _isATypeError, isArgumentError));
+void _testBadValue(bool isChecked, String key, Object badValue,
+    KitchenSink fromJson(Map json), bool checkedAssignment) {
+  final matcher = _getMatcher(isChecked, key, checkedAssignment);
+
+  for (var isJson in [true, false]) {
+    test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
+        () {
+      var copy = new Map.from(_validValues);
+      copy[key] = badValue;
+
+      if (!isJson) {
+        copy = loadYaml(loudEncode(copy)) as YamlMap;
+      }
+
+      expect(() => fromJson(copy), matcher);
+    });
+  }
+}
+
+Matcher _checkedMatcher(String expectedKey) => allOf(
+    const isInstanceOf<CheckedFromJsonException>(),
+    new FeatureMatcher<CheckedFromJsonException>(
+        'className', (e) => e.className, 'KitchenSink'),
+    new FeatureMatcher<CheckedFromJsonException>(
+        'key', (e) => e.key, expectedKey));
+
+Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
+  Matcher innerMatcher;
+
+  if (checked) {
+    if (checkedAssignment &&
+        const ['intIterable', 'datetime-iterable', 'validatedPropertyNo42']
+            .contains(expectedKey)) {
+      expectedKey = null;
+    }
+
+    innerMatcher = _checkedMatcher(expectedKey);
+  } else {
+    innerMatcher = anyOf(_isACastError, _isATypeError);
+
+    if (checkedAssignment) {
+      switch (expectedKey) {
+        case 'validatedPropertyNo42':
+          innerMatcher = isStateError;
+          break;
+        case 'no-42':
+          innerMatcher = isArgumentError;
+          break;
+        case 'intIterable':
+        case 'datetime-iterable':
+          innerMatcher = _isACastError;
+          break;
+        default:
+          throw new StateError('Not expected! - $expectedKey');
+      }
+    }
+  }
+
+  return throwsA(innerMatcher);
+}
 
 final _validValues = const {
   'no-42': 0,
@@ -250,17 +288,18 @@ final _validValues = const {
   toJsonMapVarName: const {},
   toJsonMapHelperName: null,
   r'$string': null,
-  'simpleObject': const {'value': 42}
+  'simpleObject': const {'value': 42},
+  'validatedPropertyNo42': 0
 };
 
-final _invalidValues = const {
-  'no-42': 42,
+final _invalidValueTypes = const {
+  'no-42': true,
   'dateTime': true,
   'iterable': true,
   'dynamicIterable': true,
   'objectIterable': true,
-  'intIterable': const [true],
-  'datetime-iterable': const [true],
+  'intIterable': true,
+  'datetime-iterable': true,
   'list': true,
   'dynamicList': true,
   'objectList': true,
@@ -274,7 +313,16 @@ final _invalidValues = const {
   toJsonMapVarName: const {'key': 42},
   toJsonMapHelperName: 42,
   r'$string': true,
-  'simpleObject': 42
+  'simpleObject': 42,
+  'validatedPropertyNo42': true
+};
+
+/// Invalid values that are found after the property set or ctor call
+final _invalidCheckedValues = const {
+  'no-42': 42,
+  'validatedPropertyNo42': 42,
+  'intIterable': const [true],
+  'datetime-iterable': const [true],
 };
 
 final _excludeIfNullKeys = const [

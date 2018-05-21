@@ -8,23 +8,17 @@
 // Generator: _WrappedGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// Generator: _NonNullableGenerator
-// **************************************************************************
-
 // ignore_for_file: annotate_overrides, hash_and_equals
 import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 
-part 'kitchen_sink.non_nullable.wrapped.g.dart';
+part 'kitchen_sink.wrapped.g.dart';
 
-List<T> _defaultList<T>() => <T>[];
-Map<String, T> _defaultMap<T>() => <String, T>{};
-SimpleObject _defaultSimpleObject() => new SimpleObject(42);
+List<T> _defaultList<T>() => null;
+Map _defaultMap() => null;
+SimpleObject _defaultSimpleObject() => null;
 
 k.KitchenSink testFactory(
         {int ctorValidatedNo42,
@@ -43,7 +37,7 @@ k.KitchenSink testFactory(
 
 k.KitchenSink testFromJson(Map json) => new KitchenSink.fromJson(json);
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class KitchenSink extends Object
     with _$KitchenSinkSerializerMixin
     implements k.KitchenSink {
@@ -84,7 +78,7 @@ class KitchenSink extends Object
   factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime = new DateTime(1981, 6, 5);
+  DateTime dateTime;
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
@@ -120,6 +114,16 @@ class KitchenSink extends Object
   String string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
+
+  int _validatedPropertyNo42;
+  int get validatedPropertyNo42 => _validatedPropertyNo42;
+
+  set validatedPropertyNo42(int value) {
+    if (value == 42) {
+      throw new StateError('Cannot be 42!');
+    }
+    _validatedPropertyNo42 = value;
+  }
 
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }

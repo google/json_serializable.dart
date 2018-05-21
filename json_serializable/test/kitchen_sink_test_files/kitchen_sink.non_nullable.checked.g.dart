@@ -58,7 +58,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedNew(
           ..val = $checkedConvert(json, 'val', (v) => new Map<String, bool>.from(v as Map))
           ..writeNotNull = $checkedConvert(json, 'writeNotNull', (v) => v as bool)
           ..string = $checkedConvert(json, r'$string', (v) => v as String)
-          ..simpleObject = $checkedConvert(json, 'simpleObject', (v) => new SimpleObject.fromJson(v as Map)),
+          ..simpleObject = $checkedConvert(json, 'simpleObject', (v) => new SimpleObject.fromJson(v as Map))
+          ..validatedPropertyNo42 = $checkedConvert(json, 'validatedPropertyNo42', (v) => v as int),
         fieldKeyMap: const {
           'ctorValidatedNo42': 'no-42',
           'dateTimeIterable': 'datetime-iterable',
@@ -87,6 +88,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   SimpleObject get simpleObject;
+  int get validatedPropertyNo42;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'no-42': ctorValidatedNo42,
         'dateTime': dateTime.toIso8601String(),
@@ -118,6 +120,7 @@ abstract class _$KitchenSinkSerializerMixin {
         'val': val,
         'writeNotNull': writeNotNull,
         r'$string': string,
-        'simpleObject': simpleObject
+        'simpleObject': simpleObject,
+        'validatedPropertyNo42': validatedPropertyNo42
       };
 }

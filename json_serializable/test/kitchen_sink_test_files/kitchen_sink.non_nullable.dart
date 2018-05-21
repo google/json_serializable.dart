@@ -5,12 +5,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: _CheckedGenerator
-// **************************************************************************
-
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
 // Generator: _NonNullableGenerator
 // **************************************************************************
 
@@ -20,7 +14,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 
-part 'kitchen_sink.non_nullable.checked.g.dart';
+part 'kitchen_sink.non_nullable.g.dart';
 
 List<T> _defaultList<T>() => <T>[];
 Map<String, T> _defaultMap<T>() => <String, T>{};
@@ -120,6 +114,16 @@ class KitchenSink extends Object
   String string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
+
+  int _validatedPropertyNo42;
+  int get validatedPropertyNo42 => _validatedPropertyNo42;
+
+  set validatedPropertyNo42(int value) {
+    if (value == 42) {
+      throw new StateError('Cannot be 42!');
+    }
+    _validatedPropertyNo42 = value;
+  }
 
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }
