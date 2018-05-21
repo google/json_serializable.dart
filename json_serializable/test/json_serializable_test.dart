@@ -431,13 +431,102 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
             'The class `NoCtorClass` has no default constructor.')));
   });
 
+  test('generic classes', () async {
+    var output = await runForElementNamed('GenericClass');
+
+    var expected = generator.useWrappers
+        ? r'''
+GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
+        Map<String, dynamic> json) =>
+    new GenericClass<T, S>()
+      ..fieldObject = json['fieldObject'] == null
+          ? null
+          : _dataFromJson(json['fieldObject'])
+      ..fieldDynamic = json['fieldDynamic'] == null
+          ? null
+          : _dataFromJson(json['fieldDynamic'])
+      ..fieldInt =
+          json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
+      ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
+      ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+
+abstract class _$GenericClassSerializerMixin<T extends num, S> {
+  Object get fieldObject;
+  dynamic get fieldDynamic;
+  int get fieldInt;
+  T get fieldT;
+  S get fieldS;
+  Map<String, dynamic> toJson() => new _$GenericClassJsonMapWrapper<T, S>(this);
+}
+
+class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
+  final _$GenericClassSerializerMixin<T, S> _v;
+  _$GenericClassJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys =>
+      const ['fieldObject', 'fieldDynamic', 'fieldInt', 'fieldT', 'fieldS'];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'fieldObject':
+          return _v.fieldObject == null ? null : _dataToJson(_v.fieldObject);
+        case 'fieldDynamic':
+          return _v.fieldDynamic == null ? null : _dataToJson(_v.fieldDynamic);
+        case 'fieldInt':
+          return _v.fieldInt == null ? null : _dataToJson(_v.fieldInt);
+        case 'fieldT':
+          return _v.fieldT == null ? null : _dataToJson(_v.fieldT);
+        case 'fieldS':
+          return _v.fieldS == null ? null : _dataToJson(_v.fieldS);
+      }
+    }
+    return null;
+  }
+}
+'''
+        : r'''
+GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
+        Map<String, dynamic> json) =>
+    new GenericClass<T, S>()
+      ..fieldObject = json['fieldObject'] == null
+          ? null
+          : _dataFromJson(json['fieldObject'])
+      ..fieldDynamic = json['fieldDynamic'] == null
+          ? null
+          : _dataFromJson(json['fieldDynamic'])
+      ..fieldInt =
+          json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
+      ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
+      ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+
+abstract class _$GenericClassSerializerMixin<T extends num, S> {
+  Object get fieldObject;
+  dynamic get fieldDynamic;
+  int get fieldInt;
+  T get fieldT;
+  S get fieldS;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'fieldObject': fieldObject == null ? null : _dataToJson(fieldObject),
+        'fieldDynamic': fieldDynamic == null ? null : _dataToJson(fieldDynamic),
+        'fieldInt': fieldInt == null ? null : _dataToJson(fieldInt),
+        'fieldT': fieldT == null ? null : _dataToJson(fieldT),
+        'fieldS': fieldS == null ? null : _dataToJson(fieldS)
+      };
+}
+''';
+
+    expect(output, expected);
+  });
+
   test('super types', () async {
     var output = await runForElementNamed('SubType');
 
-    String expected;
-    if (generator.useWrappers) {
-      expected =
-          r'''SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
+    var expected = generator.useWrappers
+        ? r'''
+SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
     json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
   ..superTypeReadWrite = json['superTypeReadWrite'] as int
   ..subTypeReadWrite = json['subTypeReadWrite'] as int;
@@ -481,10 +570,9 @@ class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
     return null;
   }
 }
-''';
-    } else {
-      expected =
-          r'''SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
+'''
+        : r'''
+SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
     json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
   ..superTypeReadWrite = json['superTypeReadWrite'] as int
   ..subTypeReadWrite = json['subTypeReadWrite'] as int;
@@ -512,7 +600,6 @@ abstract class _$SubTypeSerializerMixin {
   }
 }
 ''';
-    }
 
     expect(output, expected);
   });

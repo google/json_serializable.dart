@@ -24,6 +24,7 @@ final List<BuilderApplication> builders = [
       ])),
   applyToRoot(wrapped(),
       generateFor: const InputSet(include: const [
+        'test/generic_files/generic_class.dart',
         'test/kitchen_sink_test_files/kitchen_sink.dart',
         'test/kitchen_sink_test_files/kitchen_sink.non_nullable.dart',
         'test/test_files/json_test_example.dart',
@@ -33,6 +34,7 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: const [
           'example/example.dart',
+          'test/generic_files/generic_class.dart',
           'test/test_files/json_literal.dart',
           'test/test_files/json_test_example.dart',
           'test/test_files/json_test_example.non_nullable.dart'
@@ -57,6 +59,7 @@ final List<BuilderApplication> builders = [
   applyToRoot(jsonPartBuilder(useWrappers: true, header: copyrightHeader),
       generateFor: const InputSet(
         include: const [
+          'test/generic_files/generic_class*wrapped.dart',
           'test/test_files/json_test_example*wrapped.dart',
         ],
       )),

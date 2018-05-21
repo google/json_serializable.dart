@@ -108,14 +108,23 @@ ConvertData _getFunctionName(
   var argType = functionElement.parameters.first.type;
   if (isFrom) {
     var returnType = functionElement.returnType;
-    if (!returnType.isAssignableTo(element.type)) {
+
+    if (returnType is TypeParameterType) {
+      // We keep things simple in this case. We rely on inferred type arguments
+      // to the `fromJson` function.
+      // TODO: consider adding error checking here if there is confusion.
+    } else if (!returnType.isAssignableTo(element.type)) {
       _throwUnsupported(
           element,
           'The `$paramName` function `${functionElement.name}` return type '
           '`$returnType` is not compatible with field type `${element.type}`.');
     }
   } else {
-    if (!element.type.isAssignableTo(argType)) {
+    if (argType is TypeParameterType) {
+      // We keep things simple in this case. We rely on inferred type arguments
+      // to the `fromJson` function.
+      // TODO: consider adding error checking here if there is confusion.
+    } else if (!element.type.isAssignableTo(argType)) {
       _throwUnsupported(
           element,
           'The `$paramName` function `${functionElement.name}` argument type '

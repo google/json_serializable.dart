@@ -175,7 +175,38 @@ int _sortByLocation(FieldElement a, FieldElement b) {
 
 final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
 
-/// If a parameter is required to invoke the constructor,
+/// Returns a [String] representing the type arguments that exist on
+/// [element].
+///
+/// If [withConstraints] is `null` or if [element] has no type arguments, an
+/// empty [String] is returned.
+///
+/// If [withConstraints] is true, any type constraints that exist on [element]
+/// are included.
+///
+/// For example, for class `class Sample<T as num, S>{...}`
+///
+/// For [withConstraints] = `false`:
+///
+/// ```
+/// "<T, S>"
+/// ```
+///
+/// For [withConstraints] = `true`:
+///
+/// ```
+/// "<T as num, S>"
+/// ```
+String genericClassArguments(ClassElement element, bool withConstraints) {
+  if (withConstraints == null || element.typeParameters.isEmpty) {
+    return '';
+  }
+  var values = element.typeParameters
+      .map((t) => withConstraints ? t.toString() : t.name)
+      .join(',');
+  return '<$values>';
+}
+
 /// [availableConstructorParameters] is checked to see if it is available. If
 /// [availableConstructorParameters] does not contain the parameter name,
 /// an [UnsupportedError] is thrown.
@@ -243,7 +274,7 @@ CtorData writeConstructorInvocation(
       writeableFields.toSet().difference(usedCtorParamsAndFields);
 
   var buffer = new StringBuffer();
-  buffer.write('new $className(');
+  buffer.write('new $className${genericClassArguments(classElement, false)}(');
   buffer.writeAll(
       constructorArguments.map((paramElement) =>
           deserializeForField(paramElement.name, ctorParam: paramElement)),

@@ -39,8 +39,22 @@ class _GeneratorHelper {
   final StringBuffer _buffer = new StringBuffer();
 
   String get _prefix => '_\$${_element.name}';
-  String get _mixClassName => '${_prefix}SerializerMixin';
-  String get _helpClassName => '${_prefix}JsonMapWrapper';
+
+  String _mixinClassName(bool withConstraints) =>
+      '${_prefix}SerializerMixin${_genericClassArguments(withConstraints)}';
+
+  String _wrapperClassName([bool withConstraints]) =>
+      '${_prefix}JsonMapWrapper${_genericClassArguments(withConstraints)}';
+
+  /// Returns a [String] representing the type arguments that exist on
+  /// [_element].
+  ///
+  /// Returns the output of calling [genericClassArguments] with [_element].
+  String _genericClassArguments(bool withConstraints) =>
+      genericClassArguments(_element, withConstraints);
+
+  String get _targetClassReference =>
+      '${_element.name}${_genericClassArguments(false)}';
 
   _GeneratorHelper(this._generator, this._element, this._annotation);
 
@@ -66,7 +80,7 @@ class _GeneratorHelper {
       //
       // Generate the mixin class
       //
-      _buffer.writeln('abstract class $_mixClassName {');
+      _buffer.writeln('abstract class ${_mixinClassName(true)} {');
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
@@ -80,7 +94,7 @@ class _GeneratorHelper {
       var writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
       if (_generator.useWrappers) {
-        _buffer.writeln('=> new $_helpClassName(this);');
+        _buffer.writeln('=> new ${_wrapperClassName(false)}(this);');
       } else {
         if (writeNaive) {
           // write simple `toJson` method that includes all keys...
@@ -126,7 +140,8 @@ class _GeneratorHelper {
     if (_annotation.createFactory) {
       _buffer.writeln();
       var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
-      _buffer.writeln('${_element.name} ${_prefix}FromJson($mapType json) =>');
+      _buffer.writeln('$_targetClassReference '
+          '${_prefix}FromJson${_genericClassArguments(true)}($mapType json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
@@ -221,9 +236,10 @@ class _GeneratorHelper {
   void _writeWrapper(Iterable<FieldElement> fields) {
     _buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
-    _buffer.writeln('''class $_helpClassName extends \$JsonMapWrapper {
-      final $_mixClassName _v;
-      $_helpClassName(this._v);
+    _buffer
+        .writeln('''class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
+      final ${_mixinClassName(false)} _v;
+      ${_wrapperClassName()}(this._v);
     ''');
 
     if (fields.every(_writeJsonValueNaive)) {

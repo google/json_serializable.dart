@@ -3,12 +3,14 @@
 * Add `checked` configuration option. If `true`, generated `fromJson` functions
   include extra checks to validate proper deserialization of types.
 
-* Use `Map.map` for more map conversions. Simplifies generated code and fixes
-  a subtle issue when the `Map` key type is `dynamic` or `Object`.
-
 * Added `any_map` to configuration. Allows `fromJson` code to
   support dynamic `Map` instances that are not explicitly
   `Map<String, dynaimc>`.
+
+* Added support for classes with type arguments.
+
+* Use `Map.map` for more map conversions. Simplifies generated code and fixes
+  a subtle issue when the `Map` key type is `dynamic` or `Object`.
 
 ## 0.5.3
 

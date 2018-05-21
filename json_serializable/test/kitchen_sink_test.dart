@@ -22,7 +22,6 @@ import 'kitchen_sink_test_files/kitchen_sink.wrapped.dart' as wrapped
 import 'kitchen_sink_test_files/kitchen_sink_interface.dart';
 import 'test_utils.dart';
 
-final _isACastError = const isInstanceOf<CastError>();
 final _isATypeError = const isInstanceOf<TypeError>();
 
 void main() {
@@ -243,7 +242,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
-    innerMatcher = anyOf(_isACastError, _isATypeError);
+    innerMatcher = anyOf(isACastError, _isATypeError);
 
     if (checkedAssignment) {
       switch (expectedKey) {
@@ -255,7 +254,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           break;
         case 'intIterable':
         case 'datetime-iterable':
-          innerMatcher = _isACastError;
+          innerMatcher = isACastError;
           break;
         default:
           throw new StateError('Not expected! - $expectedKey');

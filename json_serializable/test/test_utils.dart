@@ -8,6 +8,8 @@ import 'dart:mirrors';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
+final isACastError = const isInstanceOf<CastError>();
+
 String _packagePathCache;
 
 String getPackagePath() {
@@ -35,16 +37,17 @@ class FeatureMatcher<T> extends CustomMatcher {
   featureValueOf(covariant T actual) => _feature(actual);
 }
 
-void roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
+T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
   var data = loudEncode(object);
 
-  var person2 = factory(json.decode(data) as Map<String, dynamic>);
+  var object2 = factory(json.decode(data) as Map<String, dynamic>);
 
-  expect(person2, equals(object));
+  expect(object2, equals(object));
 
-  var json2 = loudEncode(person2);
+  var json2 = loudEncode(object2);
 
   expect(json2, equals(data));
+  return object2;
 }
 
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.

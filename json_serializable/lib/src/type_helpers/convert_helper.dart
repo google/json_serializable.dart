@@ -17,8 +17,8 @@ class ConvertHelper extends TypeHelper {
       DartType targetType, String expression, SerializeContext context) {
     var toJsonData = (context as TypeHelperContext).toJsonData;
     if (toJsonData != null) {
-      assert(targetType.isAssignableTo(toJsonData.paramType));
-
+      assert(toJsonData.paramType is TypeParameterType ||
+          targetType.isAssignableTo(toJsonData.paramType));
       var result = '${toJsonData.name}($expression)';
       return commonNullPrefix(context.nullable, expression, result);
     }
