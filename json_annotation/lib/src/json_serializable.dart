@@ -4,8 +4,32 @@
 
 /// An annotation used to specify a class to generate code for.
 class JsonSerializable {
-  // TODO(kevmoo): document these fields
+  /// If `true` (the default), a private, static `_$ExampleFromJson` method
+  /// is created in the generated part file.
+  ///
+  /// Call this method from a factory constructor added to the source class:
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   // ...
+  ///   factory Example.fromJson(Map<String, dynamic> json) =>
+  ///     _$ExampleFromJson(json);
+  /// }
+  /// ```
   final bool createFactory;
+
+  /// If `true` (the default), a private `_$ClassNameMixin` class is created
+  /// in the generated part file which contains a `toJson` method.
+  ///
+  /// Mix in this class to the source class:
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example extends Object with _$ExampleMixin {
+  ///   // ...
+  /// }
+  /// ```
   final bool createToJson;
 
   /// Whether the generator should include fields with `null` values in the
@@ -22,7 +46,7 @@ class JsonSerializable {
   /// `null` runtime validation if it's critical.
   final bool nullable;
 
-  // TODO(kevmoo): document the constructor
+  /// Creates a new [JsonSerializable] instance.
   const JsonSerializable(
       {bool createFactory: true,
       bool createToJson: true,
@@ -93,7 +117,7 @@ class JsonKey {
   /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function toJson;
 
-  /// Creates a new [JsonKey].
+  /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey(
