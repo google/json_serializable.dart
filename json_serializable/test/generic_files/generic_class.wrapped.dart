@@ -1,4 +1,4 @@
-// Copyright (c) 2017, the Dart project authors. Please see the AUTHORS file
+// Copyright (c) 2018, the Dart project authors. Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
@@ -38,19 +38,8 @@ class GenericClass<T extends num, S> extends Object
       _$GenericClassFromJson<T, S>(json);
 }
 
-T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U, other2]) {
-  print(['fj', T, S, U, input]);
-  if (T is Set) {
-    return new Set.from(input['value'] as Iterable) as T;
-  }
-  return input['value'] as T;
-}
+T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U, other2]) =>
+    input['value'] as T;
 
-Map<String, dynamic> _dataToJson<T, S, U>(T input, [S other1, U, other2]) {
-  print(['tj', T, S, U, input]);
-  dynamic value = input;
-  if (input is Iterable) {
-    value = input.toList();
-  }
-  return {'value': value};
-}
+Map<String, dynamic> _dataToJson<T, S, U>(T input, [S other1, U, other2]) =>
+    {'value': input};
