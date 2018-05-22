@@ -1,10 +1,20 @@
 [![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
 
-Provides [source_gen] `Generator`s to create code for JSON serialization and
-deserialization using the [Dart Build System].
+Provides [Dart Build System] builders for handling JSON.
 
-See the [example] to understand how to configure your project for the latest
-released version of `json_serializable`.
+The builders generate code when they find members annotated with classes defined
+in [package:json_annotation].
+
+- To generate to/from JSON code for a class, annotate it with
+  `JsonSerializable`. You can provide arguments to `JsonSerializable` to
+  configure the generated code. You can also customize individual fields
+  by annotating them with `JsonKey` and providing custom arguments.
+
+- To generate a Dart field with the contents of a file containting JSON, use the
+  `JsonLiteral` annotation.
+
+To configure your project for the latest released version of,
+`json_serializable` see the [example].
 
 ## Example
 
@@ -48,6 +58,40 @@ abstract class _$PersonSerializerMixin {
 }
 ```
 
+# Build configuration
+
+Besides setting arguments on the associated annotation classes, you can also
+configure code generation by setting values in `build.yaml`.
+
+```yaml
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          # Specifies a string to add to the top of every generated file.
+          #
+          # If not specified, the default is the value of `defaultFileHeader`
+          # defined in `package:source_gen/source_gen.dart`.
+          #
+          # Note: use `|` to define a multi-line block.
+          header: |
+           // Copyright (c) 2018, the Dart project authors.
+
+           // GENERATED CODE - DO NOT MODIFY BY HAND
+
+          # Options configure how source code is generated for every
+          # `@JsonSerializable`-annotated class in the package.
+          #
+          # The default value for each of them: `false`.
+          #
+          # For usage information, reference the corresponding field in
+          # `JsonSerializableGenerator`.
+          use_wrappers: true
+          any_map: true
+          checked: true
+```
+
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example
-[source_gen]: https://pub.dartlang.org/packages/source_gen
 [Dart Build System]: https://github.com/dart-lang/build
+[package:json_annotation]: https://pub.dartlang.org/packages/json_annotation
