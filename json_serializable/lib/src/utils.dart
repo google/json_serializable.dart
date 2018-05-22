@@ -127,8 +127,7 @@ Set<FieldElement> createSortedFieldSet(ClassElement element) {
 
   var undefinedFields = fieldsList.where((fe) => fe.type.isUndefined).toList();
   if (undefinedFields.isNotEmpty) {
-    var description =
-        undefinedFields.map((fe) => '`${fe.displayName}`').join(', ');
+    var description = undefinedFields.map((fe) => '`${fe.name}`').join(', ');
 
     throw new InvalidGenerationSourceError(
         'At least one field has an invalid type: $description.',
@@ -194,7 +193,7 @@ CtorData writeConstructorInvocation(
     Map<String, String> unavailableReasons,
     String deserializeForField(String paramOrFieldName,
         {ParameterElement ctorParam})) {
-  var className = classElement.displayName;
+  var className = classElement.name;
 
   var ctor = classElement.unnamedConstructor;
   if (ctor == null) {
@@ -212,7 +211,7 @@ CtorData writeConstructorInvocation(
       // ignore: deprecated_member_use
       if (arg.parameterKind == ParameterKind.REQUIRED) {
         var msg = 'Cannot populate the required constructor '
-            'argument: ${arg.displayName}.';
+            'argument: ${arg.name}.';
 
         var additionalInfo = unavailableReasons[arg.name];
 
@@ -277,8 +276,7 @@ void _validateConstructorArguments(
   var undefinedArgs =
       constructorArguments.where((pe) => pe.type.isUndefined).toList();
   if (undefinedArgs.isNotEmpty) {
-    var description =
-        undefinedArgs.map((fe) => '`${fe.displayName}`').join(', ');
+    var description = undefinedArgs.map((fe) => '`${fe.name}`').join(', ');
 
     throw new InvalidGenerationSourceError(
         'At least one constructor argument has an invalid type: $description.',

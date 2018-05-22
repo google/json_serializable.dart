@@ -135,7 +135,7 @@ class _GeneratorHelper {
 
       Set<String> fieldsSetByFactory;
       if (_generator.checked) {
-        var classLiteral = escapeDartString(_element.displayName);
+        var classLiteral = escapeDartString(_element.name);
 
         _buffer.writeln('\$checkedNew($classLiteral, json, ()');
 

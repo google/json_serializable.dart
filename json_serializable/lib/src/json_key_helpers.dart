@@ -13,7 +13,7 @@ import 'package:source_gen/source_gen.dart';
 @alwaysThrows
 T _throwUnsupported<T>(FieldElement element, String message) =>
     throw new InvalidGenerationSourceError(
-        'Error with `@JsonKey` on `${element.displayName}`. $message',
+        'Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
 
 final _jsonKeyExpando = new Expando<JsonKeyWithConversion>();
