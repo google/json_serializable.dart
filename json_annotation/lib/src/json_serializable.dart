@@ -48,7 +48,7 @@ class JsonSerializable {
 
   /// Creates a [JsonSerializable] instance.
   ///
-  /// For details on each parameter, see the documentation the corresponding
+  /// For details on each parameter, see the documentation for the corresponding
   /// field.
   const JsonSerializable(
       {bool createFactory: true,
@@ -124,7 +124,7 @@ class JsonKey {
   ///
   /// Only required when the default behavior is not desired.
   ///
-  /// For details on each parameter, see the documentation the corresponding
+  /// For details on each parameter, see the documentation for the corresponding
   /// field.
   const JsonKey(
       {this.name,
