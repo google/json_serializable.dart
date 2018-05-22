@@ -6,7 +6,15 @@
 /// JSON file.
 ///
 /// The annotation can be applied to any member, but usually it's applied to
-/// getter.
+/// top-level getter.
+///
+/// In this example, the JSON content of `data.json` is populated into a
+/// top-level, final field `_$glossaryDataJsonLiteral` in the generated file.
+///
+/// ```dart
+/// @JsonLiteral('data.json')
+/// Map get glossaryData => _$glossaryDataJsonLiteral;
+/// ```
 class JsonLiteral {
   /// The relative path from the Dart file with the annotation to the file
   /// containing the source JSON.
@@ -15,6 +23,10 @@ class JsonLiteral {
   /// `true` if the JSON literal should be written as a constant.
   final bool asConst;
 
+  /// Creates a new [JsonLiteral].
+  ///
+  /// For details on each parameter, see the documentation for the corresponding
+  /// field.
   const JsonLiteral(this.path, {bool asConst: false})
       : this.asConst = asConst ?? false;
 }
