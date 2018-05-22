@@ -13,9 +13,7 @@ part of 'example.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,
-    dateOfBirth: json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String));
+    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -24,6 +22,6 @@ abstract class _$PersonSerializerMixin {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'firstName': firstName,
         'lastName': lastName,
-        'dateOfBirth': dateOfBirth?.toIso8601String()
+        'dateOfBirth': dateOfBirth.toIso8601String()
       };
 }

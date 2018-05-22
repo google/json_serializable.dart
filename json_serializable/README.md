@@ -1,12 +1,12 @@
 [![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
 
 Provides [source_gen] `Generator`s to create code for JSON serialization and
-deserialization.
+deserialization using the [Dart Build System].
 
 See the [example] to understand how to configure your project for the latest
 released version of `json_serializable`.
 
-## User defined and generated code
+## Example
 
 Given a library `example.dart` with an `Person` class annotated with
 `@JsonSerializable()`:
@@ -16,15 +16,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class Person extends Object with _$PersonSerializerMixin {
   final String firstName;
   final String lastName;
-
   final DateTime dateOfBirth;
-
   Person({this.firstName, this.lastName, this.dateOfBirth});
-
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 }
 ```
@@ -37,9 +34,7 @@ part of 'example.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,
-    dateOfBirth: json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String));
+    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -48,10 +43,11 @@ abstract class _$PersonSerializerMixin {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'firstName': firstName,
         'lastName': lastName,
-        'dateOfBirth': dateOfBirth?.toIso8601String()
+        'dateOfBirth': dateOfBirth.toIso8601String()
       };
 }
 ```
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example
 [source_gen]: https://pub.dartlang.org/packages/source_gen
+[Dart Build System]: https://github.com/dart-lang/build
