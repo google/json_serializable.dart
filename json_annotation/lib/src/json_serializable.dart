@@ -46,10 +46,7 @@ class JsonSerializable {
   /// `null` runtime validation if it's critical.
   final bool nullable;
 
-  /// Creates a [JsonSerializable] instance.
-  ///
-  /// For details on each parameter, see the documentation for the corresponding
-  /// field.
+  /// Creates a new [JsonSerializable] instance.
   const JsonSerializable(
       {bool createFactory: true,
       bool createToJson: true,
@@ -120,12 +117,9 @@ class JsonKey {
   /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function toJson;
 
-  /// Creates a new [JsonKey].
+  /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
-  ///
-  /// For details on each parameter, see the documentation for the corresponding
-  /// field.
   const JsonKey(
       {this.name,
       this.nullable,

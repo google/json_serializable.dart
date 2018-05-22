@@ -23,10 +23,7 @@ class JsonLiteral {
   /// `true` if the JSON literal should be written as a constant.
   final bool asConst;
 
-  /// Creates a new [JsonLiteral].
-  ///
-  /// For details on each parameter, see the documentation for the corresponding
-  /// field.
+  /// Creates a new [JsonLiteral] instance.
   const JsonLiteral(this.path, {bool asConst: false})
       : this.asConst = asConst ?? false;
 }
