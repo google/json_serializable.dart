@@ -6,7 +6,8 @@
 /// [json_serializable](https://pub.dartlang.org/packages/json_serializable).
 ///
 /// Also contains helper functions and classes – prefixed with `$` used by
-/// `json_serializable` when generating wrappers.
+/// `json_serializable` when the `use_wrappers` or `checked` options are
+/// enabled.
 library json_annotation;
 
 export 'src/checked_helpers.dart';
