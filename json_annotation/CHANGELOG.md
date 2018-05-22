@@ -3,7 +3,7 @@
 * Added `CheckedFromJsonException` which is thrown by code generated when
  `checked` is enabled in `json_serializable`.
 
-* Also added functions to support the `checked` generation option. These
+* Added functions to support the `checked` generation option. These
   functions start with `$` are referenced by generated code. They are not meant
   for direct use.
 
