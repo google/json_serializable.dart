@@ -14,12 +14,24 @@ import 'package:json_serializable/src/json_part_builder.dart' as jpb;
 import 'builder.dart';
 
 Builder _jsonPartBuilder(
-        {bool useWrappers: false, bool anyMap: false, bool checked: false}) =>
-    jpb.jsonPartBuilder(
-        header: copyrightHeader,
-        useWrappers: useWrappers,
-        anyMap: anyMap,
-        checked: checked);
+    {bool useWrappers: false,
+    bool anyMap: false,
+    bool checked: false,
+    bool format}) {
+  format ??= true;
+  String Function(String code) formatOutput;
+
+  if (!format) {
+    formatOutput = (s) => s;
+  }
+
+  return jpb.jsonPartBuilder(
+      header: copyrightHeader,
+      formatOutput: formatOutput,
+      useWrappers: useWrappers,
+      anyMap: anyMap,
+      checked: checked);
+}
 
 final List<BuilderApplication> builders = [
   applyToRoot(nonNull(),

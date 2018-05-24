@@ -1,3 +1,7 @@
+## 0.5.5
+
+* Added named `formatOutput` parameter to `jsonPartBuilder`.
+
 ## 0.5.4
 
 * Add `checked` configuration option. If `true`, generated `fromJson` functions

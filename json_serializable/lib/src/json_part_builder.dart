@@ -15,10 +15,14 @@ import 'json_serializable_generator.dart';
 /// If `null`, the content of [defaultFileHeader] is used.
 /// If [header] is an empty `String` no header is added.
 ///
+/// [formatOutput] is called to format the generated code. If not provided,
+/// the default Dart code formatter is used.
+///
 /// For details on [useWrappers], [anyMap], and [checked] see
 /// [JsonSerializableGenerator].
 Builder jsonPartBuilder(
     {String header,
+    String formatOutput(String code),
     bool useWrappers: false,
     bool anyMap: false,
     bool checked: false}) {
@@ -26,5 +30,5 @@ Builder jsonPartBuilder(
     new JsonSerializableGenerator(
         useWrappers: useWrappers, anyMap: anyMap, checked: checked),
     const JsonLiteralGenerator()
-  ], header: header);
+  ], header: header, formatOutput: formatOutput);
 }
