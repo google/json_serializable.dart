@@ -1,6 +1,7 @@
-## 0.5.5
+## 0.5.4+1
 
-* Added named `formatOutput` parameter to `jsonPartBuilder`.
+* Fixed a bug introduced in `0.5.4` in some cases where enum values are nested
+  in collections.
 
 ## 0.5.4
 
