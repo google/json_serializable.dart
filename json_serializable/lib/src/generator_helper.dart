@@ -138,10 +138,10 @@ class _GeneratorHelper {
     });
 
     if (_annotation.createFactory) {
-      _buffer.writeln();
       var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
-      _buffer.writeln('$_targetClassReference '
-          '${_prefix}FromJson${_genericClassArguments(true)}($mapType json) =>');
+      _buffer.write('$_targetClassReference '
+          '${_prefix}FromJson${_genericClassArguments(true)}'
+          '($mapType json) =>');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
@@ -152,7 +152,10 @@ class _GeneratorHelper {
       if (_generator.checked) {
         var classLiteral = escapeDartString(_element.name);
 
-        _buffer.writeln('\$checkedNew($classLiteral, json, ()');
+        _buffer.write(''' \$checkedNew(
+    $classLiteral,
+    json,
+    ()''');
 
         var data = writeConstructorInvocation(
             _element,
@@ -174,14 +177,16 @@ class _GeneratorHelper {
           // If there are fields to set, create a full function body and
           // create a temporary variable to hold the instance so we can make
           // wrapped calls to all of the fields value assignments.
-          _buffer.writeln('{ var val = ');
+          _buffer.write(''' {
+      var val = ''');
           _buffer.write(data.content);
           _buffer.writeln(';');
 
           for (var field in data.fieldsToSet) {
             _buffer.writeln();
-            _buffer.write('\$checkedConvert(json, ${_safeNameAccess(
-                    accessibleFields[field])}, (v) => ');
+            var safeName = _safeNameAccess(accessibleFields[field]);
+            _buffer.write('''
+      \$checkedConvert(json, $safeName, (v) => ''');
             _buffer.write('val.$field = ');
             _buffer.write(_deserializeForField(accessibleFields[field],
                 checkedProperty: true));
@@ -201,7 +206,7 @@ class _GeneratorHelper {
           fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
         }
 
-        _buffer.writeln('$fieldKeyMapArg)');
+        _buffer.write('$fieldKeyMapArg)');
       } else {
         var data = writeConstructorInvocation(
             _element,
@@ -215,15 +220,15 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        _buffer.writeln(data.content);
+        _buffer.write(' ${data.content}');
         for (var field in data.fieldsToSet) {
           _buffer.writeln();
-          _buffer.write('      ..$field = ');
+          _buffer.write('  ..$field = ');
           _buffer.write(deserializeFun(field));
         }
-        _buffer.writeln();
       }
       _buffer.writeln(';');
+      _buffer.writeln();
 
       // If there are fields that are final – that are not set via the generated
       // constructor, then don't output them when generating the `toJson` call.
@@ -236,11 +241,11 @@ class _GeneratorHelper {
   void _writeWrapper(Iterable<FieldElement> fields) {
     _buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
-    _buffer
-        .writeln('''class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
-      final ${_mixinClassName(false)} _v;
-      ${_wrapperClassName()}(this._v);
-    ''');
+    _buffer.writeln('''
+class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
+  final ${_mixinClassName(false)} _v;
+  ${_wrapperClassName()}(this._v);
+''');
 
     if (fields.every(_writeJsonValueNaive)) {
       // TODO(kevmoo): consider just doing one code path – if it's fast
@@ -249,44 +254,46 @@ class _GeneratorHelper {
 
       // TODO(kevmoo): maybe put this in a static field instead?
       //               const lists have unfortunate overhead
-      _buffer.writeln('''  @override
-      Iterable<String> get keys => const [$jsonKeys];
-    ''');
+      _buffer.writeln('''
+  @override
+  Iterable<String> get keys => const [$jsonKeys];
+''');
     } else {
       // At least one field should be excluded if null
-      _buffer.writeln('@override\nIterable<String> get keys sync* {');
+      _buffer.writeln('  @override\n  Iterable<String> get keys sync* {');
 
       for (var field in fields) {
         var nullCheck = !_writeJsonValueNaive(field);
         if (nullCheck) {
-          _buffer.writeln('if (_v.${field.name} != null) {');
+          _buffer.write('    if (_v.${field.name} != null) {\n  ');
         }
-        _buffer.writeln('yield ${_safeNameAccess(field)};');
+        _buffer.writeln('    yield ${_safeNameAccess(field)};');
         if (nullCheck) {
-          _buffer.writeln('}');
+          _buffer.writeln('    }');
         }
       }
 
-      _buffer.writeln('}\n');
-    }
-
-    _buffer.writeln('''@override
-    dynamic operator [](Object key) {
-    if (key is String) {
-    switch(key) {
-    ''');
-
-    for (var field in fields) {
-      var valueAccess = '_v.${field.name}';
-      _buffer.write('''case ${_safeNameAccess(field)}:
-        return ${_serializeField(
-          field, accessOverride: valueAccess)};''');
+      _buffer.writeln('  }\n');
     }
 
     _buffer.writeln('''
-      }}
-      return null;
-    }''');
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {''');
+
+    for (var field in fields) {
+      var valueAccess = '_v.${field.name}';
+      _buffer.writeln('''
+        case ${_safeNameAccess(field)}:
+          return ${_serializeField(field, accessOverride: valueAccess)};''');
+    }
+
+    _buffer.writeln('''
+      }
+    }
+    return null;
+  }''');
 
     _buffer.writeln('}');
   }
@@ -294,7 +301,7 @@ class _GeneratorHelper {
   void _writeToJsonWithNullChecks(Iterable<FieldElement> fields) {
     _buffer.writeln('{');
 
-    _buffer.writeln('var $generatedLocalVarName = <String, dynamic>{');
+    _buffer.writeln('    var $generatedLocalVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them
@@ -316,48 +323,50 @@ class _GeneratorHelper {
       var expression = _serializeField(field, accessOverride: safeFieldAccess);
       if (_writeJsonValueNaive(field)) {
         if (directWrite) {
-          _buffer.writeln('$safeJsonKeyString : $expression,');
+          _buffer.writeln('      $safeJsonKeyString: $expression,');
         } else {
           _buffer.writeln(
-              '$generatedLocalVarName[$safeJsonKeyString] = $expression;');
+              '    $generatedLocalVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
           // close the still-open map literal
-          _buffer.writeln('};');
+          _buffer.writeln('    };');
           _buffer.writeln();
 
           // write the helper to be used by all following null-excluding
           // fields
           _buffer.writeln('''
-void $toJsonMapHelperName(String key, dynamic value) {
-  if (value != null) {
-    $generatedLocalVarName[key] = value;
-  }
-}''');
+    void $toJsonMapHelperName(String key, dynamic value) {
+      if (value != null) {
+        $generatedLocalVarName[key] = value;
+      }
+    }
+''');
           directWrite = false;
         }
-        _buffer
-            .writeln('$toJsonMapHelperName($safeJsonKeyString, $expression);');
+        _buffer.writeln(
+            '    $toJsonMapHelperName($safeJsonKeyString, $expression);');
       }
     }
 
-    _buffer.writeln('return $generatedLocalVarName;');
-
-    _buffer.writeln('}');
+    _buffer.writeln('    return $generatedLocalVarName;');
+    _buffer.writeln('  }');
   }
 
   void _writeToJsonSimple(Iterable<FieldElement> fields) {
     _buffer.writeln('=> <String, dynamic>{');
 
-    var pairs = <String>[];
-    for (var field in fields) {
-      pairs.add('${_safeNameAccess(field)}: ${_serializeField(
-          field)}');
-    }
-    _buffer.writeAll(pairs, ',\n');
+    _buffer.writeAll(fields.map((field) {
+      var value = '${_safeNameAccess(field)}: ${_serializeField(field)}';
+      return '        $value';
+    }), ',\n');
 
-    _buffer.writeln('  };');
+    if (fields.isNotEmpty) {
+      _buffer.write('\n      ');
+    }
+
+    _buffer.writeln('};');
   }
 
   String _serializeField(FieldElement field, {String accessOverride}) {

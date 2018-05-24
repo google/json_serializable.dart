@@ -203,7 +203,7 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
   }
   var values = element.typeParameters
       .map((t) => withConstraints ? t.toString() : t.name)
-      .join(',');
+      .join(', ');
   return '<$values>';
 }
 
@@ -275,17 +275,25 @@ CtorData writeConstructorInvocation(
 
   var buffer = new StringBuffer();
   buffer.write('new $className${genericClassArguments(classElement, false)}(');
-  buffer.writeAll(
-      constructorArguments.map((paramElement) =>
-          deserializeForField(paramElement.name, ctorParam: paramElement)),
-      ', ');
-  if (constructorArguments.isNotEmpty && namedConstructorArguments.isNotEmpty) {
-    buffer.write(', ');
+  if (constructorArguments.isNotEmpty) {
+    buffer.writeln();
+    buffer.writeAll(constructorArguments.map((paramElement) {
+      var content =
+          deserializeForField(paramElement.name, ctorParam: paramElement);
+      return '    $content';
+    }), ',\n');
+    if (namedConstructorArguments.isNotEmpty) {
+      buffer.write(',');
+    }
   }
-  buffer.writeAll(namedConstructorArguments.map((paramElement) {
-    var value = deserializeForField(paramElement.name, ctorParam: paramElement);
-    return '${paramElement.name}: $value';
-  }), ', ');
+  if (namedConstructorArguments.isNotEmpty) {
+    buffer.writeln();
+    buffer.writeAll(namedConstructorArguments.map((paramElement) {
+      var value =
+          deserializeForField(paramElement.name, ctorParam: paramElement);
+      return '    ${paramElement.name}: $value';
+    }), ',\n');
+  }
 
   buffer.write(')');
 
