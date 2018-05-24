@@ -36,6 +36,7 @@ Builder _jsonPartBuilder(
 final List<BuilderApplication> builders = [
   applyToRoot(nonNull(),
       generateFor: const InputSet(include: const [
+        'test/default_value/default_value.dart',
         'test/kitchen_sink_test_files/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
       ])),
@@ -55,6 +56,8 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: const [
           'example/example.dart',
+          'test/default_value/default_value.dart',
+          'test/default_value/default_value.non_nullable.dart',
           'test/generic_files/generic_class.dart',
           'test/test_files/json_literal.dart',
           'test/test_files/json_test_example.dart',

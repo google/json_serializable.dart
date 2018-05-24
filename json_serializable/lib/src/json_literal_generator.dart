@@ -32,7 +32,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 
     var asConst = annotation.read('asConst').boolValue;
 
-    var thing = _jsonLiteralAsDart(content, asConst).toString();
+    var thing = jsonLiteralAsDart(content, asConst).toString();
     var marked = asConst ? 'const' : 'final';
 
     return '$marked _\$${element.name}JsonLiteral = $thing;';
@@ -43,7 +43,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 ///
 /// If [asConst] is `true`, the returned [String] is encoded as a `const`
 /// literal.
-String _jsonLiteralAsDart(dynamic value, bool asConst) {
+String jsonLiteralAsDart(dynamic value, bool asConst) {
   if (value == null) return 'null';
 
   if (value is String) return escapeDartString(value);
@@ -51,8 +51,7 @@ String _jsonLiteralAsDart(dynamic value, bool asConst) {
   if (value is bool || value is num) return value.toString();
 
   if (value is List) {
-    var listItems =
-        value.map((v) => _jsonLiteralAsDart(v, asConst)).join(',\n');
+    var listItems = value.map((v) => jsonLiteralAsDart(v, asConst)).join(',\n');
     return '${asConst ? 'const' : ''}[$listItems]';
   }
 
@@ -78,7 +77,7 @@ String jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
     }
     buffer.write(escapeDartString(k));
     buffer.write(':');
-    buffer.write(_jsonLiteralAsDart(v, asConst));
+    buffer.write(jsonLiteralAsDart(v, asConst));
   });
 
   buffer.write('}');

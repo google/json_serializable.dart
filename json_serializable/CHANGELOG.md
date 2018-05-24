@@ -1,5 +1,7 @@
 ## 0.5.5
 
+* Added support for `JsonKey.defaultValue`.
+
 * Small change to how nullable `Map` values are deserialized.
 
 ## 0.5.4+1

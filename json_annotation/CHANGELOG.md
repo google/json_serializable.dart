@@ -1,3 +1,7 @@
+## 0.2.6
+
+* Added `JsonKey.defaultValue`.
+
 ## 0.2.5
 
 * Added `CheckedFromJsonException` which is thrown by code generated when

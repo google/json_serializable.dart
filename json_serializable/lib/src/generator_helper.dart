@@ -382,22 +382,31 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
   String _deserializeForField(FieldElement field,
       {ParameterElement ctorParam, bool checkedProperty}) {
     checkedProperty ??= false;
-    var jsonKey = _safeNameAccess(field);
+    var defaultValue = jsonKeyFor(field).defaultValue;
+    var jsonKeyName = _safeNameAccess(field);
 
     var targetType = ctorParam?.type ?? field.type;
 
     try {
       if (_generator.checked) {
+        // TODO: default value fun here!
         var value = _getHelperContext(field).deserialize(targetType, 'v');
         if (checkedProperty) {
           return value;
         }
 
-        return '\$checkedConvert(json, $jsonKey, (v) => $value)';
+        return '\$checkedConvert(json, $jsonKeyName, (v) => $value)';
       }
       assert(!checkedProperty,
           'should only be true if `_generator.checked` is true.');
-      return _getHelperContext(field).deserialize(targetType, 'json[$jsonKey]');
+
+      var value = _getHelperContext(field)
+          .deserialize(targetType, 'json[$jsonKeyName]');
+
+      if (defaultValue != null) {
+        value = '$value ?? $defaultValue';
+      }
+      return value;
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('fromJson', field, e);
     }

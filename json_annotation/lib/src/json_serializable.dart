@@ -117,6 +117,10 @@ class JsonKey {
   /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function toJson;
 
+  /// The value to use if the source JSON does not contain this key or if the
+  /// value is `null`.
+  final Object defaultValue;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -126,5 +130,6 @@ class JsonKey {
       this.includeIfNull,
       this.ignore,
       this.fromJson,
-      this.toJson});
+      this.toJson,
+      this.defaultValue});
 }
