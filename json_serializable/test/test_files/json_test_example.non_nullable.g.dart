@@ -19,7 +19,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
   ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
   ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
       new MapEntry(
-          k, House.values.singleWhere((e) => e.toString() == 'House.$e')));
+          k, House.values.singleWhere((e2) => e2.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;

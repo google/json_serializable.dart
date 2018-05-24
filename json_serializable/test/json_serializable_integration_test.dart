@@ -80,6 +80,13 @@ void main() {
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });
+
+    test('enum map', () {
+      var person = new Person(null, null, null)
+        ..houseMap = {'bob': House.gryffindor};
+      expect(person.dateOfBirth, isNull);
+      roundTripPerson(person);
+    });
   });
 
   group('Order', () {

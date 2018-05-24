@@ -4,7 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
-import '../constants.dart';
+import '../constants.dart' as consts;
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -33,6 +33,11 @@ class EnumHelper extends TypeHelper {
 
     var wrappedExpression =
         simpleExpression.hasMatch(expression) ? expression : '{$expression}';
+
+    var closureArg = consts.closureArg;
+    if (closureArg == wrappedExpression) {
+      closureArg = '${closureArg}2';
+    }
 
     return commonNullPrefix(
         context.nullable,

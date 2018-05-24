@@ -29,7 +29,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
           k,
           e == null
               ? null
-              : House.values.singleWhere((e) => e.toString() == 'House.$e')));
+              : House.values.singleWhere((e2) => e2.toString() == 'House.$e')));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
