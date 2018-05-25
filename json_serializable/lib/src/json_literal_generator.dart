@@ -51,7 +51,7 @@ String jsonLiteralAsDart(dynamic value, bool asConst) {
   if (value is bool || value is num) return value.toString();
 
   if (value is List) {
-    var listItems = value.map((v) => jsonLiteralAsDart(v, asConst)).join(',\n');
+    var listItems = value.map((v) => jsonLiteralAsDart(v, asConst)).join(', ');
     return '${asConst ? 'const' : ''}[$listItems]';
   }
 
@@ -76,7 +76,7 @@ String jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
       buffer.writeln(',');
     }
     buffer.write(escapeDartString(k));
-    buffer.write(':');
+    buffer.write(': ');
     buffer.write(jsonLiteralAsDart(v, asConst));
   });
 

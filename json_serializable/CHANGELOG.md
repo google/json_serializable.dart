@@ -4,6 +4,8 @@
 
 * Small change to how nullable `Map` values are deserialized.
 
+* Small whitespace changes to `JsonLiteral` generation to align with `dartfmt`.
+
 ## 0.5.4+1
 
 * Fixed a bug introduced in `0.5.4` in some cases where enum values are nested
