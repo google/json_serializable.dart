@@ -9,8 +9,8 @@ import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
-import 'test_utils.dart';
-import 'yaml_test_files/build_config.dart';
+import '../test_utils.dart';
+import 'build_config.dart';
 
 final _root = p.join('test', 'yaml_test_files');
 
