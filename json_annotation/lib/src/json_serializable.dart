@@ -133,3 +133,22 @@ class JsonKey {
       this.toJson,
       this.defaultValue});
 }
+
+// Until enum supports parse: github.com/dart-lang/sdk/issues/33244
+/// Helper class used in generated code with `enum` values.
+///
+/// Should not be used directly.
+T $enumDecode<T>(String enumName, List<T> values, String enumValue) =>
+    values.singleWhere((e) => e.toString() == '$enumName.$enumValue',
+        orElse: () => throw new ArgumentError(
+            '`$enumValue` is not one of the supported values: '
+            '${values.map(_nameForEnumValue).join(', ')}'));
+
+/// Helper class used in generated code with nullable `enum` values.
+///
+/// Should not be used directly.
+T $enumDecodeNullable<T>(String enumName, List<T> values, String enumValue) =>
+    enumValue == null ? null : $enumDecode(enumName, values, enumValue);
+
+// Until enum has a name property: github.com/dart-lang/sdk/issues/21712
+String _nameForEnumValue(Object value) => value.toString().split('.')[1];

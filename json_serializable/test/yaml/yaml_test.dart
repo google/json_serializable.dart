@@ -75,6 +75,14 @@ builders:
 ^^^^^^^^''',
   r'''
 builders:
+  sample:
+    defaultEnumTest: bob
+''': r'''
+line 3, column 5 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, allPackages, rootPackage
+    defaultEnumTest: bob
+    ^^^^^^^^^^^^^^^''',
+  r'''
+builders:
   a:
     target: 42
   ''': r'''

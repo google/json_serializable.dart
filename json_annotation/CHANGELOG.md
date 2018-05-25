@@ -2,14 +2,18 @@
 
 * Added `JsonKey.defaultValue`.
 
+* Added helpers for deserialization of `enum` values.
+  These functions starting with `$` are  referenced by generated code.
+  They are not meant for direct use.
+
 ## 0.2.5
 
 * Added `CheckedFromJsonException` which is thrown by code generated when
  `checked` is enabled in `json_serializable`.
 
-* Added functions to support the `checked` generation option. These
-  functions start with `$` are referenced by generated code. They are not meant
-  for direct use.
+* Added functions to support the `checked` generation option.
+  These functions starting with `$` are referenced by generated code.
+  They are not meant for direct use.
 
 ## 0.2.4
 
