@@ -8,7 +8,6 @@ import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../type_helper_context.dart';
-import '../utils.dart';
 
 class MapHelper extends TypeHelper {
   const MapHelper();
@@ -77,11 +76,11 @@ class MapHelper extends TypeHelper {
       }
     }
 
-    if (valueArgIsAny || simpleJsonTypeChecker.isAssignableFromType(valueArg)) {
-      // No mapping of the values is required!
-
-      var result = 'new Map<String, $valueArg>.from($expression as Map)';
-      return commonNullPrefix(context.nullable, expression, result);
+    if (!context.nullable &&
+        (valueArgIsAny ||
+            simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
+      // No mapping of the values or null check required!
+      return 'new Map<String, $valueArg>.from($expression as Map)';
     }
 
     // In this case, we're going to create a new Map with matching reified

@@ -1,3 +1,7 @@
+## 0.5.5
+
+* Small change to how nullable `Map` values are deserialized.
+
 ## 0.5.4+1
 
 * Fixed a bug introduced in `0.5.4` in some cases where enum values are nested
