@@ -27,7 +27,7 @@ Future<String> generate(JsonSerializableGenerator generator, Element element,
   }
 
   var classElement = element as ClassElement;
-  var classAnnotation = _valueForAnnotation(annotation);
+  var classAnnotation = valueForAnnotation(annotation);
   var helper = new _GeneratorHelper(generator, classElement, classAnnotation);
   return helper._generate();
 }
@@ -440,13 +440,6 @@ String _nameAccess(FieldElement field) => jsonKeyFor(field).name ?? field.name;
 
 String _safeNameAccess(FieldElement field) =>
     escapeDartString(_nameAccess(field));
-
-JsonSerializable _valueForAnnotation(ConstantReader annotation) =>
-    new JsonSerializable(
-        createToJson: annotation.read('createToJson').boolValue,
-        createFactory: annotation.read('createFactory').boolValue,
-        nullable: annotation.read('nullable').boolValue,
-        includeIfNull: annotation.read('includeIfNull').boolValue);
 
 InvalidGenerationSourceError _createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {

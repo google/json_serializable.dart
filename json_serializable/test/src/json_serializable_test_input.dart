@@ -52,7 +52,7 @@ class FinalFieldsNotSetInCtor {
   FinalFieldsNotSetInCtor();
 }
 
-@JsonSerializable()
+@JsonSerializable(createToJson: false)
 class FromJsonOptionalParameters {
   final ChildWithFromJson child;
 
@@ -74,8 +74,6 @@ class ParentObject {
 class ChildObject {
   int number;
   String str;
-
-  factory ChildObject.fromJson(json) => null;
 }
 
 @JsonSerializable()

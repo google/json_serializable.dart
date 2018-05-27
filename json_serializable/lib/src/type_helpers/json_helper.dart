@@ -4,8 +4,13 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+
+import 'package:json_annotation/json_annotation.dart';
+import 'package:source_gen/source_gen.dart';
+
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../type_helper_context.dart';
 import '../utils.dart';
 
 class JsonHelper extends TypeHelper {
@@ -17,11 +22,7 @@ class JsonHelper extends TypeHelper {
   /// provided objects.
   @override
   String serialize(DartType targetType, String expression, _) {
-    // TODO(kevmoo): This should be checking for toJson method, but toJson might
-    //   be gone during generation, so we'll have to check for the annotation.
-    // In the mean time, just assume the `canSerialize` logic will work most of
-    //   the time.
-    if (!_canDeserialize(targetType)) {
+    if (!_canSerialize(targetType)) {
       return null;
     }
 
@@ -31,17 +32,30 @@ class JsonHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    if (!_canDeserialize(targetType)) {
+    if (targetType is! InterfaceType) {
       return null;
     }
 
-    var classElement = targetType.element as ClassElement;
-    var fromJsonCtor =
-        classElement.constructors.firstWhere((ce) => ce.name == 'fromJson');
-    // TODO: should verify that this type is a valid JSON type...but for now...
-    var asCastType = fromJsonCtor.parameters.first.type;
+    var type = targetType as InterfaceType;
+    var classElement = type.element;
 
-    var asCast = asStatement(asCastType);
+    var fromJsonCtor = classElement.constructors
+        .singleWhere((ce) => ce.name == 'fromJson', orElse: () => null);
+
+    String asCast;
+    if (fromJsonCtor != null) {
+      // TODO: should verify that this type is a valid JSON type
+      var asCastType = fromJsonCtor.parameters.first.type;
+      asCast = asStatement(asCastType);
+    } else if (_annotation(type)?.createFactory == true) {
+      if ((context as TypeHelperContext).anyMap) {
+        asCast = ' as Map';
+      } else {
+        asCast = ' as Map<String, dynamic>';
+      }
+    } else {
+      return null;
+    }
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
@@ -51,17 +65,55 @@ class JsonHelper extends TypeHelper {
   }
 }
 
-bool _canDeserialize(DartType type) {
-  if (type is! InterfaceType) return false;
+bool _canSerialize(DartType type) {
+  if (type is InterfaceType) {
+    var toJsonMethod = _getMethod(type, 'toJson');
 
-  var classElement = type.element as ClassElement;
+    if (toJsonMethod != null) {
+      // TODO: validate there are no required parameters
+      return true;
+    }
 
-  for (var ctor in classElement.constructors) {
-    if (ctor.name == 'fromJson') {
-      // TODO: validate that there are the right number and type of arguments
+    if (_annotation(type)?.createToJson == true) {
+      // TODO: consider logging that we're assuming a user will wire up the
+      // generated mixin at some point...
       return true;
     }
   }
-
   return false;
+}
+
+JsonSerializable _annotation(InterfaceType source) {
+  var annotations = const TypeChecker.fromRuntime(JsonSerializable)
+      .annotationsOfExact(source.element, throwOnUnresolved: false)
+      .toList();
+
+  if (annotations.isEmpty) {
+    return null;
+  }
+
+  return valueForAnnotation(new ConstantReader(annotations.single));
+}
+
+MethodElement _getMethod(DartType type, String methodName) {
+  if (type is InterfaceType) {
+    var method = type.element.getMethod(methodName);
+    if (method != null) {
+      return method;
+    }
+
+    var match = [type.interfaces, type.mixins]
+        .expand((e) => e)
+        .map((type) => _getMethod(type, methodName))
+        .firstWhere((value) => value != null, orElse: () => null);
+
+    if (match != null) {
+      return match;
+    }
+
+    if (type.superclass != null) {
+      return _getMethod(type.superclass, methodName);
+    }
+  }
+  return null;
 }
