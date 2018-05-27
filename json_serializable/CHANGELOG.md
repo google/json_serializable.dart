@@ -4,6 +4,8 @@
 
 * `enum` deserialization now uses helpers provided by `json_annotation`.
 
+* Added `explicit_to_json` configuration option.
+
 * Small change to how nullable `Map` values are deserialized.
 
 * Small whitespace changes to `JsonLiteral` generation to align with `dartfmt`.
