@@ -220,3 +220,15 @@ class SuperType {
   int priceFraction(int other) =>
       superTypeViaCtor == null ? null : superTypeViaCtor ~/ other;
 }
+
+@JsonSerializable(createFactory: false)
+class TrivialNestedNullable {
+  TrivialNestedNullable child;
+  int otherField;
+}
+
+@JsonSerializable(createFactory: false, nullable: false)
+class TrivialNestedNonNullable {
+  TrivialNestedNonNullable child;
+  int otherField;
+}

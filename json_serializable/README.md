@@ -92,6 +92,7 @@ targets:
           use_wrappers: true
           any_map: true
           checked: true
+          explicit_to_json: true
 ```
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example

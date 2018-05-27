@@ -21,11 +21,15 @@ class JsonHelper extends TypeHelper {
   /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
   /// provided objects.
   @override
-  String serialize(DartType targetType, String expression, _) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (!_canSerialize(targetType)) {
       return null;
     }
 
+    if (context is TypeHelperContext && context.explicitToJson) {
+      return '$expression${context.nullable ? '?' : ''}.toJson()';
+    }
     return expression;
   }
 

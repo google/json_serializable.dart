@@ -17,6 +17,8 @@
 * Added missing `checked` parameter to the
   `JsonSerializableGenerator.withDefaultHelpers` constructor.
 
+* Added `explicit_to_json` configuration option.
+
 ## 0.5.6
 
 * Added support for `JsonSerializable.disallowUnrecognizedKeys`.

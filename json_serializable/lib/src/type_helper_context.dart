@@ -21,6 +21,8 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
 
   bool get anyMap => _generator.anyMap;
 
+  bool get explicitToJson => _generator.explicitToJson;
+
   @override
   bool get nullable => _key.nullable;
 

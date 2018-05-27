@@ -66,6 +66,99 @@ void _registerTests(JsonSerializableGenerator generator) {
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
 
+  group('explicit toJson', () {
+    test('nullable', () async {
+      var output = await _runForElementNamed(
+          new JsonSerializableGenerator(
+              explicitToJson: true, useWrappers: generator.useWrappers),
+          'TrivialNestedNullable');
+
+      var expected = generator.useWrappers
+          ? r'''abstract class _$TrivialNestedNullableSerializerMixin {
+  TrivialNestedNullable get child;
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      new _$TrivialNestedNullableJsonMapWrapper(this);
+}
+
+class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
+  final _$TrivialNestedNullableSerializerMixin _v;
+  _$TrivialNestedNullableJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const ['child', 'otherField'];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'child':
+          return _v.child?.toJson();
+        case 'otherField':
+          return _v.otherField;
+      }
+    }
+    return null;
+  }
+}
+'''
+          : r'''abstract class _$TrivialNestedNullableSerializerMixin {
+  TrivialNestedNullable get child;
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'child': child?.toJson(), 'otherField': otherField};
+}
+''';
+
+      expect(output, expected);
+    });
+    test('non-nullable', () async {
+      var output = await _runForElementNamed(
+          new JsonSerializableGenerator(
+              explicitToJson: true, useWrappers: generator.useWrappers),
+          'TrivialNestedNonNullable');
+
+      var expected = generator.useWrappers
+          ? r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
+  TrivialNestedNonNullable get child;
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      new _$TrivialNestedNonNullableJsonMapWrapper(this);
+}
+
+class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
+  final _$TrivialNestedNonNullableSerializerMixin _v;
+  _$TrivialNestedNonNullableJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const ['child', 'otherField'];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'child':
+          return _v.child.toJson();
+        case 'otherField':
+          return _v.otherField;
+      }
+    }
+    return null;
+  }
+}
+'''
+          : r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
+  TrivialNestedNonNullable get child;
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'child': child.toJson(), 'otherField': otherField};
+}
+''';
+
+      expect(output, expected);
+    });
+  });
+
   group('non-classes', () {
     test('const field', () {
       expectThrows('theAnswer', 'Generator cannot target `theAnswer`.',
