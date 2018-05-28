@@ -12,7 +12,7 @@ import 'package:yaml/yaml.dart';
 import '../test_utils.dart';
 import 'build_config.dart';
 
-final _root = p.join('test', 'yaml_test_files');
+final _root = p.join('test', 'yaml');
 
 List<String> _getTests() => new Directory(_root)
     .listSync()

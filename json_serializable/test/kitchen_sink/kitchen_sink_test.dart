@@ -8,19 +8,16 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:yaml/yaml.dart';
 
-import 'kitchen_sink_test_files/kitchen_sink.dart' as nullable
+import '../test_utils.dart';
+import 'kitchen_sink.dart' as nullable show testFactory, testFromJson;
+import 'kitchen_sink.non_nullable.checked.dart' as checked
     show testFactory, testFromJson;
-import 'kitchen_sink_test_files/kitchen_sink.non_nullable.checked.dart'
-    as checked show testFactory, testFromJson;
-import 'kitchen_sink_test_files/kitchen_sink.non_nullable.dart' as nn
+import 'kitchen_sink.non_nullable.dart' as nn show testFactory, testFromJson;
+import 'kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
     show testFactory, testFromJson;
-import 'kitchen_sink_test_files/kitchen_sink.non_nullable.wrapped.dart'
-    as nnwrapped show testFactory, testFromJson;
-import 'kitchen_sink_test_files/kitchen_sink.wrapped.dart' as wrapped
-    show testFactory, testFromJson;
+import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
 
-import 'kitchen_sink_test_files/kitchen_sink_interface.dart';
-import 'test_utils.dart';
+import 'kitchen_sink_interface.dart';
 
 final _isATypeError = const isInstanceOf<TypeError>();
 
