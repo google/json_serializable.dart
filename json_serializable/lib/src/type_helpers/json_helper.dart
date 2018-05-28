@@ -67,7 +67,7 @@ class JsonHelper extends TypeHelper {
 
 bool _canSerialize(DartType type) {
   if (type is InterfaceType) {
-    var toJsonMethod = _getMethod(type, 'toJson');
+    var toJsonMethod = _toJsonMethod(type);
 
     if (toJsonMethod != null) {
       // TODO: validate there are no required parameters
@@ -95,25 +95,6 @@ JsonSerializable _annotation(InterfaceType source) {
   return valueForAnnotation(new ConstantReader(annotations.single));
 }
 
-MethodElement _getMethod(DartType type, String methodName) {
-  if (type is InterfaceType) {
-    var method = type.element.getMethod(methodName);
-    if (method != null) {
-      return method;
-    }
-
-    var match = type.interfaces
-        .followedBy(type.mixins)
-        .map((type) => _getMethod(type, methodName))
-        .firstWhere((value) => value != null, orElse: () => null);
-
-    if (match != null) {
-      return match;
-    }
-
-    if (type.superclass != null) {
-      return _getMethod(type.superclass, methodName);
-    }
-  }
-  return null;
-}
+MethodElement _toJsonMethod(DartType type) => typeImplementations(type)
+    .map((dt) => dt is InterfaceType ? dt.getMethod('toJson') : null)
+    .firstWhere((me) => me != null, orElse: () => null);

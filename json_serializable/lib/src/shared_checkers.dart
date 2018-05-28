@@ -59,22 +59,21 @@ String asStatement(DartType type) {
   return ' as $type';
 }
 
-DartType _getImplementationType(DartType type, TypeChecker checker) {
-  if (checker.isExactlyType(type)) return type;
+/// Returns all of the [DartType] types that [type] implements, mixes-in, and
+/// extends, starting with [type] itself.
+Iterable<DartType> typeImplementations(DartType type) sync* {
+  yield type;
 
   if (type is InterfaceType) {
-    var match = type.interfaces
-        .followedBy(type.mixins)
-        .map((type) => _getImplementationType(type, checker))
-        .firstWhere((value) => value != null, orElse: () => null);
-
-    if (match != null) {
-      return match;
-    }
+    yield* type.interfaces.expand(typeImplementations);
+    yield* type.mixins.expand(typeImplementations);
 
     if (type.superclass != null) {
-      return _getImplementationType(type.superclass, checker);
+      yield* typeImplementations(type.superclass);
     }
   }
-  return null;
 }
+
+DartType _getImplementationType(DartType type, TypeChecker checker) =>
+    typeImplementations(type)
+        .firstWhere(checker.isExactlyType, orElse: () => null);
