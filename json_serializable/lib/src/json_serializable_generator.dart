@@ -91,8 +91,8 @@ class JsonSerializableGenerator
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
           anyMap: anyMap,
-          typeHelpers: new List.unmodifiable(
-              [typeHelpers, _defaultHelpers].expand((e) => e)));
+          typeHelpers:
+              new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
   @override
   Future<String> generateForAnnotatedElement(

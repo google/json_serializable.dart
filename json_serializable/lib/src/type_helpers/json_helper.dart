@@ -102,8 +102,8 @@ MethodElement _getMethod(DartType type, String methodName) {
       return method;
     }
 
-    var match = [type.interfaces, type.mixins]
-        .expand((e) => e)
+    var match = type.interfaces
+        .followedBy(type.mixins)
         .map((type) => _getMethod(type, methodName))
         .firstWhere((value) => value != null, orElse: () => null);
 
