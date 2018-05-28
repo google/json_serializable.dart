@@ -51,18 +51,22 @@ void main() {
       () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
 }
 
-void _registerTests(JsonSerializableGenerator generator) {
-  Future<String> runForElementNamed(String name) async {
-    var library = new LibraryReader(_compilationUnit.element.library);
-    var element = library.allElements.singleWhere((e) => e.name == name);
-    var annotation = generator.typeChecker.firstAnnotationOf(element);
-    var generated = await generator.generateForAnnotatedElement(
-        element, new ConstantReader(annotation), null);
+Future<String> _runForElementNamed(
+    JsonSerializableGenerator generator, String name) async {
+  var library = new LibraryReader(_compilationUnit.element.library);
+  var element = library.allElements.singleWhere((e) => e.name == name);
+  var annotation = generator.typeChecker.firstAnnotationOf(element);
+  var generated = await generator.generateForAnnotatedElement(
+      element, new ConstantReader(annotation), null);
 
-    var output = _formatter.format(generated);
-    printOnFailure(output);
-    return output;
-  }
+  var output = _formatter.format(generated);
+  printOnFailure(output);
+  return output;
+}
+
+void _registerTests(JsonSerializableGenerator generator) {
+  Future<String> runForElementNamed(String name) =>
+      _runForElementNamed(generator, name);
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
     todoMatcher ??= isEmpty;
@@ -228,7 +232,20 @@ abstract class _$OrderSerializerMixin {
     test('class with child json-able object', () async {
       var output = await runForElementNamed('ParentObject');
 
-      expect(output, contains('new ChildObject.fromJson'));
+      expect(
+          output,
+          contains("new ChildObject.fromJson(json['child'] "
+              'as Map<String, dynamic>)'));
+    });
+
+    test('class with child json-able object - anyMap', () async {
+      var output = await _runForElementNamed(
+          new JsonSerializableGenerator(
+              anyMap: true, useWrappers: generator.useWrappers),
+          'ParentObject');
+
+      expect(
+          output, contains("new ChildObject.fromJson(json['child'] as Map)"));
     });
 
     test('class with child list of json-able objects', () async {

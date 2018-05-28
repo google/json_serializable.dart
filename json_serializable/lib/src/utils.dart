@@ -10,7 +10,15 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
     show InheritanceManager;
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+
+JsonSerializable valueForAnnotation(ConstantReader annotation) =>
+    new JsonSerializable(
+        createToJson: annotation.read('createToJson').boolValue,
+        createFactory: annotation.read('createFactory').boolValue,
+        nullable: annotation.read('nullable').boolValue,
+        includeIfNull: annotation.read('includeIfNull').boolValue);
 
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;

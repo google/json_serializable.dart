@@ -6,6 +6,8 @@
 
 * Small whitespace changes to `JsonLiteral` generation to align with `dartfmt`.
 
+* Improve detection of `toJson` and `fromJson` in nested types.
+
 ## 0.5.4+1
 
 * Fixed a bug introduced in `0.5.4` in some cases where enum values are nested
