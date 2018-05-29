@@ -40,7 +40,7 @@ void main() {
     test('with bad arguments', () {
       expect(
           () => new GenericClass<double, String>()
-            ..fieldT = (5 as dynamic) as double,
+            ..fieldT = (true as dynamic) as double,
           throwsA(isACastError));
     });
     test('with bad arguments', () {
@@ -184,9 +184,9 @@ void main() {
 
     test('custom DateTime', () {
       var instance = new Numbers()
-        ..date = new DateTime.fromMicrosecondsSinceEpoch(42);
+        ..date = new DateTime.fromMillisecondsSinceEpoch(42);
       var json = instance.toJson();
-      expect(json, containsPair('date', 42));
+      expect(json, containsPair('date', 42000));
     });
 
     test('support ints as doubles', () {
@@ -200,7 +200,7 @@ void main() {
 
     test('does not support doubles as ints', () {
       var value = {
-        'ints': [0.0, 0],
+        'ints': [3.14, 0],
       };
 
       expect(() => new Numbers.fromJson(value),

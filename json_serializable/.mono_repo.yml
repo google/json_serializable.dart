@@ -9,3 +9,4 @@ stages:
   - unit_test:
     # Run the tests -- include the default-skipped presubmit tests
     - test: --run-skipped
+    - command: pub run build_runner test -- -p chrome

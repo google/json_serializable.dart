@@ -3,28 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:convert';
-import 'dart:mirrors';
 
-import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 final isACastError = const isInstanceOf<CastError>();
-
-String _packagePathCache;
-
-String getPackagePath() {
-  if (_packagePathCache == null) {
-    // Getting the location of this file – via reflection
-    var currentFilePath = (reflect(getPackagePath) as ClosureMirror)
-        .function
-        .location
-        .sourceUri
-        .path;
-
-    _packagePathCache = p.normalize(p.join(p.dirname(currentFilePath), '..'));
-  }
-  return _packagePathCache;
-}
 
 // TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {

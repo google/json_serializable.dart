@@ -1,3 +1,12 @@
+targets:
+  $default:
+    builders:
+      build_web_compilers|entrypoint:
+        generate_for:
+          - test/default_value/**
+          - test/json_serializable_integration*
+          - test/kitchen_sink/**
+
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
   json_serializable:

@@ -35,6 +35,10 @@ jobs:
       script: ./tool/travis.sh test
       env: PKG="json_serializable"
       dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh command
+      env: PKG="json_serializable"
+      dart: dev
 
 stages:
   - analyzer_and_format
