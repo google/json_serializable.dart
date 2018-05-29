@@ -135,8 +135,8 @@ class JsonKey {
 }
 
 // Until enum supports parse: github.com/dart-lang/sdk/issues/33244
-/// *Helper class used in generated code with `enum` values – should not be used
-/// directly.*
+/// *Helper function used in generated code with `enum` values – should not be
+/// used directly.*
 ///
 /// Returns an enum instance corresponding to [enumValue] from the enum named
 /// [enumName] with [values].
@@ -155,8 +155,8 @@ T $enumDecode<T>(String enumName, List<T> values, String enumValue) =>
             '`$enumValue` is not one of the supported values: '
             '${values.map(_nameForEnumValue).join(', ')}'));
 
-/// *Helper class used in generated code with `enum` values – should not be used
-/// directly.*
+/// *Helper function used in generated code with `enum` values – should not be
+/// used directly.*
 ///
 /// Returns an enum instance corresponding to [enumValue] from the enum named
 /// [enumName] with [values].
