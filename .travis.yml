@@ -22,7 +22,7 @@ jobs:
       env: PKG="example"
       dart: dev
     - stage: unit_test
-      script: ./tool/travis.sh test
+      script: ./tool/travis.sh test_0
       env: PKG="example"
       dart: dev
     - stage: analyzer_and_format
@@ -42,7 +42,11 @@ jobs:
       env: PKG="json_serializable"
       dart: dev
     - stage: unit_test
-      script: ./tool/travis.sh test
+      script: ./tool/travis.sh test_1
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh test_2
       env: PKG="json_serializable"
       dart: dev
     - stage: unit_test
