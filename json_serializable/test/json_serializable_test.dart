@@ -66,7 +66,7 @@ void _registerTests(JsonSerializableGenerator generator) {
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
 
-  group('explicit toJson', () {
+  group('implicitToJson: false', () {
     test('nullable', () async {
       var output = await _runForElementNamed(
           new JsonSerializableGenerator(
