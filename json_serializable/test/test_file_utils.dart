@@ -7,7 +7,7 @@ import 'dart:mirrors';
 import 'package:path/path.dart' as p;
 
 String testFilePath(String part1, [String part2, String part3]) =>
-    p.join(_packagePath(), part1, part2);
+    p.join(_packagePath(), part1, part2, part3);
 
 String _packagePathCache;
 

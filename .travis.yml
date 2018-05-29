@@ -1,6 +1,9 @@
 # Created with https://github.com/dart-lang/mono_repo
 language: dart
 
+addons:
+  chrome: stable
+
 jobs:
   include:
     - stage: analyzer_and_format
