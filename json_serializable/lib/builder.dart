@@ -30,7 +30,7 @@ Builder jsonSerializable(BuilderOptions options) {
     useWrappers: optionsMap.remove('use_wrappers') as bool,
     checked: optionsMap.remove('checked') as bool,
     anyMap: optionsMap.remove('any_map') as bool,
-    explicitToJson: optionsMap.remove('explicit_to_json') as bool,
+    implicitToJson: optionsMap.remove('implicit_to_json') as bool,
   );
 
   if (optionsMap.isNotEmpty) {

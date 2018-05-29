@@ -26,14 +26,14 @@ Builder jsonPartBuilder({
   bool useWrappers: false,
   bool anyMap: false,
   bool checked: false,
-  bool explicitToJson: false,
+  bool implicitToJson: true,
 }) {
   return new PartBuilder([
     new JsonSerializableGenerator(
       useWrappers: useWrappers,
       anyMap: anyMap,
       checked: checked,
-      explicitToJson: explicitToJson,
+      implicitToJson: implicitToJson,
     ),
     const JsonLiteralGenerator()
   ], header: header, formatOutput: formatOutput);

@@ -66,25 +66,25 @@ class JsonSerializableGenerator
   /// [CheckedFromJsonException] is thrown.
   final bool checked;
 
-  /// If `true`, generated `toJson` methods will explicitly call `toJson` on
+  /// If `false`, generated `toJson` methods will explicitly call `toJson` on
   /// nested objects.
   ///
   /// When using JSON encoding support in `dart:convert`, `toJson` is
   /// automatically called on objects, so the default behavior
-  /// (`explicitToJson: false`) is to omit the `toJson` call.
+  /// (`implicitToJson: true`) is to omit the `toJson` call.
   ///
-  /// Example of `explicitToJson: false` (default)
+  /// Example of `implicitToJson: true` (default)
   ///
   /// ```dart
   /// Map<String, dynamic> toJson() => {'child': child};
   /// ```
   ///
-  /// Example of `explicitToJson: true`
+  /// Example of `implicitToJson: false`
   ///
   /// ```dart
   /// Map<String, dynamic> toJson() => {'child': child?.toJson()};
   /// ```
-  final bool explicitToJson;
+  final bool implicitToJson;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -95,11 +95,11 @@ class JsonSerializableGenerator
     bool useWrappers: false,
     bool anyMap: false,
     bool checked: false,
-    bool explicitToJson: false,
+    bool implicitToJson: true,
   })  : this.useWrappers = useWrappers ?? false,
         this.anyMap = anyMap ?? false,
         this.checked = checked ?? false,
-        this.explicitToJson = explicitToJson ?? false,
+        this.implicitToJson = implicitToJson ?? true,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].

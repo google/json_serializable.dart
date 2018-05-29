@@ -70,7 +70,7 @@ void _registerTests(JsonSerializableGenerator generator) {
     test('nullable', () async {
       var output = await _runForElementNamed(
           new JsonSerializableGenerator(
-              explicitToJson: true, useWrappers: generator.useWrappers),
+              implicitToJson: false, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
       var expected = generator.useWrappers
@@ -115,7 +115,7 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
     test('non-nullable', () async {
       var output = await _runForElementNamed(
           new JsonSerializableGenerator(
-              explicitToJson: true, useWrappers: generator.useWrappers),
+              implicitToJson: false, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
       var expected = generator.useWrappers
