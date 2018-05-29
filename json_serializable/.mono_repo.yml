@@ -8,5 +8,6 @@ stages:
     - dartanalyzer: --fatal-infos --fatal-warnings .
   - unit_test:
     # Run the tests -- include the default-skipped presubmit tests
-    - test: --run-skipped
+    - test
+    - test: --run-skipped test/ensure_build_test.dart
     - command: pub run build_runner test -- -p chrome
