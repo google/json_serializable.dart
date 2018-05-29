@@ -4,7 +4,7 @@
 
 * `enum` deserialization now uses helpers provided by `json_annotation`.
 
-* Added `explicit_to_json` configuration option.
+* Added `implicit_to_json` configuration option.
 
 * Small change to how nullable `Map` values are deserialized.
 
