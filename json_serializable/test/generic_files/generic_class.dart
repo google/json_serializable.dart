@@ -32,8 +32,8 @@ class GenericClass<T extends num, S> extends Object
       _$GenericClassFromJson<T, S>(json);
 }
 
-T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U, other2]) =>
+T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U other2]) =>
     input['value'] as T;
 
-Map<String, dynamic> _dataToJson<T, S, U>(T input, [S other1, U, other2]) =>
+Map<String, dynamic> _dataToJson<T, S, U>(T input, [S other1, U other2]) =>
     {'value': input};

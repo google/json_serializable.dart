@@ -2,10 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-@TestOn('!browser')
-library json_serializable.test.json_generator_test;
-
-// TODO(kevmoo): test all flavors of `nullable` - class, fields, etc
+@TestOn('vm')
 
 import 'dart:async';
 
@@ -13,11 +10,11 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
-import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
+import 'test_file_utils.dart';
 import 'test_utils.dart';
 
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
@@ -36,8 +33,7 @@ CompilationUnit _compilationUnit;
 
 void main() {
   setUpAll(() async {
-    var path = p.join(
-        getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart');
+    var path = testFilePath('test', 'src', 'json_serializable_test_input.dart');
     _compilationUnit = await resolveCompilationUnit(path);
   });
 

@@ -1,6 +1,16 @@
 # Created with https://github.com/dart-lang/mono_repo
 language: dart
 
+####################
+# Begin hand edits #
+####################
+sudo: required
+addons:
+  chrome: stable
+##################
+# End hand edits #
+##################
+
 jobs:
   include:
     - stage: analyzer_and_format
@@ -33,6 +43,10 @@ jobs:
       dart: dev
     - stage: unit_test
       script: ./tool/travis.sh test
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: unit_test
+      script: ./tool/travis.sh command
       env: PKG="json_serializable"
       dart: dev
 
