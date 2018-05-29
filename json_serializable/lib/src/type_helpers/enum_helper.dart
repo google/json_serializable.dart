@@ -19,8 +19,10 @@ class EnumHelper extends TypeHelper {
       return null;
     }
 
-    return commonNullPrefix(
-        context.nullable, expression, "$expression.toString().split('.')[1]");
+    var nullableLiteral = context.nullable ? '?' : '';
+
+    return '$expression$nullableLiteral.toString()'
+        "$nullableLiteral.split('.')$nullableLiteral.last";
   }
 
   @override
