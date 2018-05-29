@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/analyzer.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
@@ -247,8 +246,7 @@ CtorData writeConstructorInvocation(
 
   for (var arg in ctor.parameters) {
     if (!availableConstructorParameters.contains(arg.name)) {
-      // ignore: deprecated_member_use
-      if (arg.parameterKind == ParameterKind.REQUIRED) {
+      if (arg.isNotOptional) {
         var msg = 'Cannot populate the required constructor '
             'argument: ${arg.name}.';
 
@@ -265,8 +263,7 @@ CtorData writeConstructorInvocation(
     }
 
     // TODO: validate that the types match!
-    // ignore: deprecated_member_use
-    if (arg.parameterKind == ParameterKind.NAMED) {
+    if (arg.isNamed) {
       namedConstructorArguments.add(arg);
     } else {
       constructorArguments.add(arg);

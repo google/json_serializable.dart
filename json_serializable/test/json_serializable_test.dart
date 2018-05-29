@@ -36,13 +36,9 @@ CompilationUnit _compilationUnit;
 
 void main() {
   setUpAll(() async {
-    var context = await analysisContextForProject();
-
-    var fileUri = p.toUri(p.join(
-        getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart'));
-    var source = context.sourceFactory.forUri2(fileUri);
-    var libElement = context.computeLibraryElement(source);
-    _compilationUnit = context.resolveCompilationUnit(source, libElement);
+    var path = p.join(
+        getPackagePath(), 'test', 'src', 'json_serializable_test_input.dart');
+    _compilationUnit = await resolveCompilationUnit(path);
   });
 
   group('without wrappers',
