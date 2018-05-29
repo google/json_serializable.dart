@@ -76,6 +76,7 @@ void _registerTests(JsonSerializableGenerator generator) {
       var expected = generator.useWrappers
           ? r'''abstract class _$TrivialNestedNullableSerializerMixin {
   TrivialNestedNullable get child;
+  int get otherField;
   Map<String, dynamic> toJson() =>
       new _$TrivialNestedNullableJsonMapWrapper(this);
 }
@@ -85,7 +86,7 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
   _$TrivialNestedNullableJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys => const ['child'];
+  Iterable<String> get keys => const ['child', 'otherField'];
 
   @override
   dynamic operator [](Object key) {
@@ -93,6 +94,8 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
       switch (key) {
         case 'child':
           return _v.child?.toJson();
+        case 'otherField':
+          return _v.otherField;
       }
     }
     return null;
@@ -101,7 +104,9 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
 '''
           : r'''abstract class _$TrivialNestedNullableSerializerMixin {
   TrivialNestedNullable get child;
-  Map<String, dynamic> toJson() => <String, dynamic>{'child': child?.toJson()};
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'child': child?.toJson(), 'otherField': otherField};
 }
 ''';
 
@@ -116,6 +121,7 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
       var expected = generator.useWrappers
           ? r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
   TrivialNestedNonNullable get child;
+  int get otherField;
   Map<String, dynamic> toJson() =>
       new _$TrivialNestedNonNullableJsonMapWrapper(this);
 }
@@ -125,7 +131,7 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
   _$TrivialNestedNonNullableJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys => const ['child'];
+  Iterable<String> get keys => const ['child', 'otherField'];
 
   @override
   dynamic operator [](Object key) {
@@ -133,6 +139,8 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
       switch (key) {
         case 'child':
           return _v.child.toJson();
+        case 'otherField':
+          return _v.otherField;
       }
     }
     return null;
@@ -141,7 +149,9 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
 '''
           : r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
   TrivialNestedNonNullable get child;
-  Map<String, dynamic> toJson() => <String, dynamic>{'child': child.toJson()};
+  int get otherField;
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'child': child.toJson(), 'otherField': otherField};
 }
 ''';
 

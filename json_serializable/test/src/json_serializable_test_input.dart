@@ -218,9 +218,11 @@ class SuperType {
 @JsonSerializable(createFactory: false)
 class TrivialNestedNullable {
   TrivialNestedNullable child;
+  int otherField;
 }
 
 @JsonSerializable(createFactory: false, nullable: false)
 class TrivialNestedNonNullable {
   TrivialNestedNonNullable child;
+  int otherField;
 }
