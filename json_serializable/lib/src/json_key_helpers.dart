@@ -11,9 +11,10 @@ import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
+import 'utils.dart';
 
 @alwaysThrows
-T _throwUnsupported<T>(FieldElement element, String message) =>
+void throwUnsupported(FieldElement element, String message) =>
     throw new InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
@@ -45,41 +46,71 @@ JsonKeyWithConversion _from(FieldElement element) {
   var fromJsonName = _getFunctionName(obj, element, true);
   var toJsonName = _getFunctionName(obj, element, false);
 
-  Object _getLiteral(DartObject dartObject) {
+  Object _getLiteral(DartObject dartObject, Iterable<String> things) {
     if (dartObject.isNull) {
       return null;
     }
 
     var reader = new ConstantReader(dartObject);
 
+    String badType;
     if (reader.isSymbol) {
-      _throwUnsupported(element,
-          'Values of type `Symbol` are not supported for `defaultValue`.');
+      badType = 'Symbol';
     } else if (reader.isType) {
-      _throwUnsupported(element,
-          'Values of type `Type` are not supported for `defaultValue`.');
+      badType = 'Type';
+    } else if (dartObject.type is FunctionType) {
+      // TODO(kevmoo): Support calling function for the default value?
+      badType = 'Function';
     } else if (!reader.isLiteral) {
-      _throwUnsupported(
-          element, 'The provided `defaultValue` is not a literal: $dartObject');
+      badType = dartObject.type.name;
+    }
+
+    if (badType != null) {
+      badType = things.followedBy([badType]).join(' > ');
+      throwUnsupported(
+          element, '`defaultValue` is `$badType`, it must be a literal.');
     }
 
     var literal = reader.literalValue;
+
     if (literal is num || literal is String || literal is bool) {
       return literal;
     } else if (literal is List<DartObject>) {
-      return literal.map(_getLiteral).toList();
-    } else if (literal is Map<DartObject, DartObject>) {
       return literal
-          .map((k, v) => new MapEntry(_getLiteral(k), _getLiteral(v)));
+          .map((e) => _getLiteral(e, things.followedBy(['List'])))
+          .toList();
+    } else if (literal is Map<DartObject, DartObject>) {
+      var mapThings = things.followedBy(['Map']);
+      return literal.map((k, v) =>
+          new MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
     }
-    _throwUnsupported(
-        element, 'The provided value is not supported: $dartObject');
+
+    badType = things.followedBy(['$dartObject']).join(' > ');
+
+    throwUnsupported(
+        element,
+        'The provided value is not supported: $badType. '
+        'This may be an error in package:json_serializable. '
+        'Please rerun your build with `--verbose` and file an issue.');
   }
 
-  var defaultValueLiteral = _getLiteral(obj.getField('defaultValue'));
+  var defaultValueObject = obj.getField('defaultValue');
 
-  if (defaultValueLiteral != null) {
-    defaultValueLiteral = jsonLiteralAsDart(defaultValueLiteral, false);
+  Object defaultValueLiteral;
+  if (isEnum(defaultValueObject.type)) {
+    var interfaceType = defaultValueObject.type as InterfaceType;
+    var allowedValues = interfaceType.accessors
+        .where((p) => p.returnType == interfaceType)
+        .map((p) => p.name)
+        .toList();
+    var enumValueIndex = defaultValueObject.getField('index').toIntValue();
+    defaultValueLiteral =
+        '${interfaceType.name}.${allowedValues[enumValueIndex]}';
+  } else {
+    defaultValueLiteral = _getLiteral(defaultValueObject, []);
+    if (defaultValueLiteral != null) {
+      defaultValueLiteral = jsonLiteralAsDart(defaultValueLiteral, false);
+    }
   }
 
   return new JsonKeyWithConversion._(
@@ -130,7 +161,7 @@ ConvertData _getFunctionName(
   var type = objectValue.type as FunctionType;
 
   if (type.element is MethodElement) {
-    _throwUnsupported(
+    throwUnsupported(
         element,
         'The function provided for `$paramName` must be top-level. '
         'Static class methods (`${type.element.name}`) are not supported.');
@@ -140,7 +171,7 @@ ConvertData _getFunctionName(
   if (functionElement.parameters.isEmpty ||
       functionElement.parameters.first.isNamed ||
       functionElement.parameters.where((pe) => !pe.isOptional).length > 1) {
-    _throwUnsupported(
+    throwUnsupported(
         element,
         'The `$paramName` function `${functionElement.name}` must have one '
         'positional paramater.');
@@ -155,7 +186,7 @@ ConvertData _getFunctionName(
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
     } else if (!returnType.isAssignableTo(element.type)) {
-      _throwUnsupported(
+      throwUnsupported(
           element,
           'The `$paramName` function `${functionElement.name}` return type '
           '`$returnType` is not compatible with field type `${element.type}`.');
@@ -166,7 +197,7 @@ ConvertData _getFunctionName(
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
     } else if (!element.type.isAssignableTo(argType)) {
-      _throwUnsupported(
+      throwUnsupported(
           element,
           'The `$paramName` function `${functionElement.name}` argument type '
           '`$argType` is not compatible with field type'

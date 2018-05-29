@@ -133,3 +133,45 @@ class JsonKey {
       this.toJson,
       this.defaultValue});
 }
+
+// Until enum supports parse: github.com/dart-lang/sdk/issues/33244
+/// *Helper function used in generated code with `enum` values – should not be
+/// used directly.*
+///
+/// Returns an enum instance corresponding to [enumValue] from the enum named
+/// [enumName] with [values].
+///
+/// If [enumValue] is null or no corresponding values exists, an `ArgumentError`
+/// is thrown.
+///
+/// Given an enum named `Example`, an invocation would look like
+///
+/// ```dart
+/// $enumDecode('Example', Example.values, 'desiredValue')
+/// ```
+T $enumDecode<T>(String enumName, List<T> values, String enumValue) =>
+    values.singleWhere((e) => e.toString() == '$enumName.$enumValue',
+        orElse: () => throw new ArgumentError(
+            '`$enumValue` is not one of the supported values: '
+            '${values.map(_nameForEnumValue).join(', ')}'));
+
+/// *Helper function used in generated code with `enum` values – should not be
+/// used directly.*
+///
+/// Returns an enum instance corresponding to [enumValue] from the enum named
+/// [enumName] with [values].
+///
+/// If [enumValue] is `null`, `null` is returned.
+///
+/// If no corresponding values exists, an `ArgumentError` is thrown.
+///
+/// Given an enum named `Example`, an invocation would look like
+///
+/// ```dart
+/// $enumDecodeNullable('Example', Example.values, 'desiredValue')
+/// ```
+T $enumDecodeNullable<T>(String enumName, List<T> values, String enumValue) =>
+    enumValue == null ? null : $enumDecode(enumName, values, enumValue);
+
+// Until enum has a name property: github.com/dart-lang/sdk/issues/21712
+String _nameForEnumValue(Object value) => value.toString().split('.')[1];

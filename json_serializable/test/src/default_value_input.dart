@@ -30,4 +30,36 @@ class DefaultWithType {
   DefaultWithType();
 }
 
-// TODO: const, non-literal (const Duration, etc)
+@JsonSerializable()
+class DefaultWithConstObject {
+  @JsonKey(defaultValue: const Duration())
+  Object field;
+
+  DefaultWithConstObject();
+}
+
+enum Enum { value }
+
+@JsonSerializable()
+class DefaultWithNestedEnum {
+  @JsonKey(defaultValue: [Enum.value])
+  Object field;
+
+  DefaultWithNestedEnum();
+}
+
+@JsonSerializable()
+class DefaultWithNonNullableField {
+  @JsonKey(defaultValue: 42, nullable: false)
+  Object field;
+
+  DefaultWithNonNullableField();
+}
+
+@JsonSerializable(nullable: false)
+class DefaultWithNonNullableClass {
+  @JsonKey(defaultValue: 42)
+  Object field;
+
+  DefaultWithNonNullableClass();
+}

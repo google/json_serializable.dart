@@ -30,7 +30,10 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) =>
                       k, (e as List)?.map((e) => e as String)?.toList())) ??
               {
                 'root': ['child']
-              };
+              }
+      ..fieldEnum = $enumDecodeNullable(
+              'Greek', Greek.values, json['fieldEnum'] as String) ??
+          Greek.beta;
 
 abstract class _$DefaultValueSerializerMixin {
   bool get fieldBool;
@@ -42,6 +45,7 @@ abstract class _$DefaultValueSerializerMixin {
   List<int> get fieldListSimple;
   Map<String, int> get fieldMapSimple;
   Map<String, List<String>> get fieldMapListString;
+  Greek get fieldEnum;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'fieldBool': fieldBool,
         'fieldString': fieldString,
@@ -51,6 +55,8 @@ abstract class _$DefaultValueSerializerMixin {
         'fieldMapEmpty': fieldMapEmpty,
         'fieldListSimple': fieldListSimple,
         'fieldMapSimple': fieldMapSimple,
-        'fieldMapListString': fieldMapListString
+        'fieldMapListString': fieldMapListString,
+        'fieldEnum':
+            fieldEnum == null ? null : fieldEnum.toString().split('.')[1]
       };
 }

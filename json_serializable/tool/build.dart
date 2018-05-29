@@ -36,12 +36,12 @@ Builder _jsonPartBuilder(
 final List<BuilderApplication> builders = [
   applyToRoot(nonNull(),
       generateFor: const InputSet(include: const [
-        'test/default_value/default_value.dart',
         'test/kitchen_sink/kitchen_sink.dart',
         'test/test_files/json_test_example.dart'
       ])),
   applyToRoot(checked(),
       generateFor: const InputSet(include: const [
+        'test/default_value/default_value.dart',
         'test/kitchen_sink/kitchen_sink.non_nullable.dart',
       ])),
   applyToRoot(wrapped(),
@@ -57,7 +57,6 @@ final List<BuilderApplication> builders = [
         include: const [
           'example/example.dart',
           'test/default_value/default_value.dart',
-          'test/default_value/default_value.non_nullable.dart',
           'test/generic_files/generic_class.dart',
           'test/test_files/json_literal.dart',
           'test/test_files/json_test_example.dart',
@@ -75,8 +74,9 @@ final List<BuilderApplication> builders = [
   applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
       generateFor: const InputSet(
         include: const [
+          'test/default_value/default_value.checked.dart',
+          'test/kitchen_sink/kitchen_sink.non_nullable.checked.dart',
           'test/yaml/build_config.dart',
-          'test/kitchen_sink/kitchen_sink.non_nullable.checked.dart'
         ],
       )),
   applyToRoot(_jsonPartBuilder(useWrappers: true),

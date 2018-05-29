@@ -2,6 +2,8 @@
 
 * Added support for `JsonKey.defaultValue`.
 
+* `enum` deserialization now uses helpers provided by `json_annotation`.
+
 * Small change to how nullable `Map` values are deserialized.
 
 * Small whitespace changes to `JsonLiteral` generation to align with `dartfmt`.

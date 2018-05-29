@@ -34,6 +34,11 @@ Builder _$BuilderFromJson(Map json) => $checkedNew(
             isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
             autoApply: $checkedConvert(json, 'auto_apply',
                 (v) => v == null ? null : _fromJson(v as String)),
+            defaultEnumTest: $checkedConvert(
+                json,
+                'defaultEnumTest',
+                (v) => $enumDecodeNullable(
+                    'AutoApply', AutoApply.values, v as String)),
             builderFactories: $checkedConvert(json, 'builder_factories',
                 (v) => (v as List).map((e) => e as String).toList()),
             appliesBuilders: $checkedConvert(json, 'applies_builders',
@@ -59,6 +64,7 @@ abstract class _$BuilderSerializerMixin {
   String get import;
   bool get isOptional;
   AutoApply get autoApply;
+  AutoApply get defaultEnumTest;
   List<String> get builderFactories;
   List<String> get appliesBuilders;
   List<String> get requiredInputs;
@@ -76,6 +82,11 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('import', import);
     writeNotNull('is_optional', isOptional);
     writeNotNull('auto_apply', autoApply == null ? null : _toJson(autoApply));
+    writeNotNull(
+        'defaultEnumTest',
+        defaultEnumTest == null
+            ? null
+            : defaultEnumTest.toString().split('.')[1]);
     val['builder_factories'] = builderFactories;
     writeNotNull('applies_builders', appliesBuilders);
     writeNotNull('required_inputs', requiredInputs);

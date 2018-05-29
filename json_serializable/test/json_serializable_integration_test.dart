@@ -122,11 +122,12 @@ void main() {
     });
 
     test('required, but missing enum value fails', () {
-      expect(() => new Order.fromJson({}), throwsStateError);
+      expect(() => new Order.fromJson({}), throwsArgumentError);
     });
 
     test('mismatched enum value fails', () {
-      expect(() => new Order.fromJson({'category': 'weird'}), throwsStateError);
+      expect(
+          () => new Order.fromJson({'category': 'weird'}), throwsArgumentError);
     });
 
     test('platform', () {

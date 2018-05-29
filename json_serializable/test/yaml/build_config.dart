@@ -30,6 +30,8 @@ class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(name: 'auto_apply', toJson: _toJson, fromJson: _fromJson)
   final AutoApply autoApply;
 
+  final AutoApply defaultEnumTest;
+
   @JsonKey(name: 'builder_factories', nullable: false)
   final List<String> builderFactories;
 
@@ -47,6 +49,7 @@ class Builder extends Object with _$BuilderSerializerMixin {
     this.target,
     this.isOptional,
     this.autoApply,
+    this.defaultEnumTest,
     this.builderFactories,
     this.appliesBuilders,
     this.requiredInputs,
@@ -63,8 +66,8 @@ class Builder extends Object with _$BuilderSerializerMixin {
 
 enum AutoApply { none, dependents, allPackages, rootPackage }
 
-//TODO: remove all of this and annotate the fields on the enum once we have
-//pkg:analyzer with github.com/dart-lang/sdk/commit/74db253d34
+// TODO: remove all of this and annotate the fields on the enum – once we have
+// https://github.com/dart-lang/json_serializable/issues/38
 AutoApply _fromJson(String input) {
   var value = _autoApplyConvert[input];
   if (value == null) {

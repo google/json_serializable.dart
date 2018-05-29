@@ -13,13 +13,12 @@ part of 'json_test_example.non_nullable.wrapped.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    House.values.singleWhere((e) => e.toString() == 'House.${json[r'$house']}'),
+    $enumDecode('House', House.values, json[r'$house'] as String),
     middleName: json['middleName'] as String,
     dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
   ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
   ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
-      new MapEntry(
-          k, House.values.singleWhere((e2) => e2.toString() == 'House.$e')));
+      new MapEntry(k, $enumDecode('House', House.values, e as String)));
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -73,8 +72,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
-    Category.values
-        .singleWhere((e) => e.toString() == 'Category.${json['category']}'),
+    $enumDecode('Category', Category.values, json['category'] as String),
     (json['items'] as List)
         .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
   ..count = json['count'] as int
