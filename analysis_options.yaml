@@ -15,6 +15,7 @@ linter:
     - avoid_null_checks_in_equality_operators
     - avoid_return_types_on_setters
     - avoid_returning_null
+    - avoid_types_as_parameter_names
     - avoid_unused_constructor_parameters
     - await_only_futures
     - camel_case_types
