@@ -59,8 +59,8 @@ DateTime _dateTimeFromEpochUs(int us) =>
     new DateTime.fromMicrosecondsSinceEpoch(us);
 int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
-@JsonSerializable(createToJson: false)
-class Item {
+@JsonSerializable()
+class Item extends Object with _$ItemSerializerMixin {
   int count;
   int itemNumber;
   bool isRushed;
