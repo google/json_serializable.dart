@@ -28,6 +28,8 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   // Consider exposing it if there is interest
   bool get anyMap => _generator.anyMap;
 
+  bool get implicitToJson => _generator.implicitToJson;
+
   TypeHelperContext(this._generator, this.metadata, this.nullable,
       this.fromJsonData, this.toJsonData);
 

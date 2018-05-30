@@ -20,15 +20,21 @@ import 'json_serializable_generator.dart';
 ///
 /// For details on [useWrappers], [anyMap], and [checked] see
 /// [JsonSerializableGenerator].
-Builder jsonPartBuilder(
-    {String header,
-    String formatOutput(String code),
-    bool useWrappers: false,
-    bool anyMap: false,
-    bool checked: false}) {
+Builder jsonPartBuilder({
+  String header,
+  String formatOutput(String code),
+  bool useWrappers: false,
+  bool anyMap: false,
+  bool checked: false,
+  bool implicitToJson: true,
+}) {
   return new PartBuilder([
     new JsonSerializableGenerator(
-        useWrappers: useWrappers, anyMap: anyMap, checked: checked),
+      useWrappers: useWrappers,
+      anyMap: anyMap,
+      checked: checked,
+      implicitToJson: implicitToJson,
+    ),
     const JsonLiteralGenerator()
   ], header: header, formatOutput: formatOutput);
 }

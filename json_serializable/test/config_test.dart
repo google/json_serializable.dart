@@ -100,12 +100,14 @@ const _validConfig = const {
   'header': 'header',
   'use_wrappers': true,
   'any_map': true,
-  'checked': true
+  'checked': true,
+  'implicit_to_json': false
 };
 
 const _invalidConfig = const {
   'header': true,
   'use_wrappers': 42,
   'any_map': 42,
-  'checked': 42
+  'checked': 42,
+  'implicit_to_json': 42
 };

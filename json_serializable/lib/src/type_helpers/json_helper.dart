@@ -16,17 +16,24 @@ import '../utils.dart';
 class JsonHelper extends TypeHelper {
   const JsonHelper();
 
-  /// Simply returns the [expression] provided.
+  /// If the builder is configured with `implicit_to_json: true`, simply returns
+  /// the [expression] provided.
   ///
-  /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
-  /// provided objects.
+  /// Otherwise, returns [expression]`.toJson()` with proper `null` handling.
   @override
-  String serialize(DartType targetType, String expression, _) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (!_canSerialize(targetType)) {
       return null;
     }
 
-    return expression;
+    var ctx = context as TypeHelperContext;
+
+    if (ctx.implicitToJson) {
+      return expression;
+    }
+
+    return '$expression${context.nullable ? '?' : ''}.toJson()';
   }
 
   @override

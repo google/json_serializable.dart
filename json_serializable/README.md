@@ -83,13 +83,14 @@ targets:
           # Options configure how source code is generated for every
           # `@JsonSerializable`-annotated class in the package.
           #
-          # The default value for each of them: `false`.
+          # The default value for each is shown.
           #
           # For usage information, reference the corresponding field in
           # `JsonSerializableGenerator`.
-          use_wrappers: true
-          any_map: true
-          checked: true
+          use_wrappers: false
+          any_map: false
+          checked: false
+          implicit_to_json: true
 ```
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example
