@@ -14,6 +14,8 @@ import 'package:source_gen/source_gen.dart';
 
 JsonSerializable valueForAnnotation(ConstantReader annotation) =>
     new JsonSerializable(
+        allowUnrecognizedKeys:
+            annotation.read('allowUnrecognizedKeys').boolValue,
         createToJson: annotation.read('createToJson').boolValue,
         createFactory: annotation.read('createFactory').boolValue,
         nullable: annotation.read('nullable').boolValue,

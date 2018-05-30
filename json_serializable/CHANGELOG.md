@@ -1,3 +1,7 @@
+## 0.5.6
+
+* Added support for `JsonSerializable.allowUnrecognizedKeys`.
+
 ## 0.5.5
 
 * Added support for `JsonKey.defaultValue`.
@@ -35,9 +39,9 @@
 
 * If `JsonKey.fromJson` function parameter is `Iterable` or `Map` with type
    arguments of `dynamic` or `Object`, omit the arguments when generating a
-   cast. 
+   cast.
    `_myHelper(json['key'] as Map)` instead of
-   `_myHelper(json['key'] as Map<dynamic, dynamic>)`.  
+   `_myHelper(json['key'] as Map<dynamic, dynamic>)`.
 
 * `JsonKey.fromJson`/`.toJson` now support functions with optional arguments.
 
