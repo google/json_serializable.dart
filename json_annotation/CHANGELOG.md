@@ -1,3 +1,15 @@
+## 0.2.7
+
+* Added `JsonSerializable.allowUnrecognizedKeys`.
+  * Defaults to `true` which maintains the previous behavior.
+  * Throws an `UnrecognizedKeysException` if it finds unrecognized keys in any
+    json maps.
+  * Will be captured captured and wrapped in a `CheckedFromJsonException` if
+    `checked` is enabled in `json_serializable`.
+  * Added a helper function to support this option. This function starts with a
+    `$` and should only be referenced by generated code. It is not meant for
+    direct use.
+
 ## 0.2.6
 
 * `CheckedFromJsonException`
@@ -29,7 +41,7 @@
 
 ## 0.2.2
 
-* Added a helper class – `$JsonMapWrapper` – and helper functions – `$wrapMap`, 
+* Added a helper class – `$JsonMapWrapper` – and helper functions – `$wrapMap`,
   `$wrapMapHandleNull`, `$wrapList`, and `$wrapListHandleNull` – to support
   the `useWrappers` option added to `JsonSerializableGenerator` in `v0.3.0` of
   `package:json_serializable`.

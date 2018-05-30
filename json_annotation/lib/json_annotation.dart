@@ -10,6 +10,7 @@
 /// enabled.
 library json_annotation;
 
+export 'src/allowed_keys_helpers.dart';
 export 'src/checked_helpers.dart';
 export 'src/json_literal.dart';
 export 'src/json_serializable.dart';
