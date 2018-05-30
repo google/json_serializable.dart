@@ -10,39 +10,45 @@ part of 'kitchen_sink.non_nullable.wrapped.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) => new KitchenSink(
-    ctorValidatedNo42: json['no-42'] as int,
-    iterable: json['iterable'] as List,
-    dynamicIterable: json['dynamicIterable'] as List,
-    objectIterable: json['objectIterable'] as List,
-    intIterable: (json['intIterable'] as List).map((e) => e as int),
-    dateTimeIterable: (json['datetime-iterable'] as List)
-        .map((e) => DateTime.parse(e as String)))
-  ..dateTime = DateTime.parse(json['dateTime'] as String)
-  ..list = json['list'] as List
-  ..dynamicList = json['dynamicList'] as List
-  ..objectList = json['objectList'] as List
-  ..intList = (json['intList'] as List).map((e) => e as int).toList()
-  ..dateTimeList = (json['dateTimeList'] as List)
-      .map((e) => DateTime.parse(e as String))
-      .toList()
-  ..map = json['map'] as Map
-  ..stringStringMap =
-      new Map<String, String>.from(json['stringStringMap'] as Map)
-  ..dynamicIntMap = new Map<String, int>.from(json['dynamicIntMap'] as Map)
-  ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)
-      .map((k, e) => new MapEntry(k, DateTime.parse(e as String)))
-  ..crazyComplex = (json['crazyComplex'] as List)
-      .map((e) => (e as Map).map((k, e) => new MapEntry(
-          k as String,
-          (e as Map).map(
-              (k, e) => new MapEntry(k as String, (e as List).map((e) => (e as List).map((e) => DateTime.parse(e as String)).toList()).toList())))))
-      .toList()
-  ..val = new Map<String, bool>.from(json['val'] as Map)
-  ..writeNotNull = json['writeNotNull'] as bool
-  ..string = json[r'$string'] as String
-  ..simpleObject = new SimpleObject.fromJson(json['simpleObject'] as Map)
-  ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
+KitchenSink _$KitchenSinkFromJson(Map json) {
+  return new KitchenSink(
+      ctorValidatedNo42: json['no-42'] as int,
+      iterable: json['iterable'] as List,
+      dynamicIterable: json['dynamicIterable'] as List,
+      objectIterable: json['objectIterable'] as List,
+      intIterable: (json['intIterable'] as List).map((e) => e as int),
+      dateTimeIterable: (json['datetime-iterable'] as List)
+          .map((e) => DateTime.parse(e as String)))
+    ..dateTime = DateTime.parse(json['dateTime'] as String)
+    ..list = json['list'] as List
+    ..dynamicList = json['dynamicList'] as List
+    ..objectList = json['objectList'] as List
+    ..intList = (json['intList'] as List).map((e) => e as int).toList()
+    ..dateTimeList = (json['dateTimeList'] as List)
+        .map((e) => DateTime.parse(e as String))
+        .toList()
+    ..map = json['map'] as Map
+    ..stringStringMap =
+        new Map<String, String>.from(json['stringStringMap'] as Map)
+    ..dynamicIntMap = new Map<String, int>.from(json['dynamicIntMap'] as Map)
+    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)
+        .map((k, e) => new MapEntry(k, DateTime.parse(e as String)))
+    ..crazyComplex = (json['crazyComplex'] as List)
+        .map((e) => (e as Map).map((k, e) => new MapEntry(
+            k as String,
+            (e as Map).map((k, e) => new MapEntry(
+                k as String,
+                (e as List)
+                    .map(
+                        (e) => (e as List).map((e) => DateTime.parse(e as String)).toList())
+                    .toList())))))
+        .toList()
+    ..val = new Map<String, bool>.from(json['val'] as Map)
+    ..writeNotNull = json['writeNotNull'] as bool
+    ..string = json[r'$string'] as String
+    ..simpleObject = new SimpleObject.fromJson(json['simpleObject'] as Map)
+    ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
+}
 
 abstract class _$KitchenSinkSerializerMixin {
   int get ctorValidatedNo42;

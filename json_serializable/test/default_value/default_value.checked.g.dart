@@ -10,49 +10,48 @@ part of 'default_value.checked.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-DefaultValue _$DefaultValueFromJson(Map json) =>
-    $checkedNew('DefaultValue', json, () {
-      var val = new DefaultValue();
-
-      $checkedConvert(
-          json, 'fieldBool', (v) => val.fieldBool = v as bool ?? true);
-      $checkedConvert(json, 'fieldString',
-          (v) => val.fieldString = v as String ?? 'string');
-      $checkedConvert(json, 'fieldInt', (v) => val.fieldInt = v as int ?? 42);
-      $checkedConvert(json, 'fieldDouble',
-          (v) => val.fieldDouble = (v as num)?.toDouble() ?? 3.14);
-      $checkedConvert(
-          json, 'fieldListEmpty', (v) => val.fieldListEmpty = v as List ?? []);
-      $checkedConvert(
-          json, 'fieldMapEmpty', (v) => val.fieldMapEmpty = v as Map ?? {});
-      $checkedConvert(
-          json,
-          'fieldListSimple',
-          (v) => val.fieldListSimple =
-              (v as List)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
-      $checkedConvert(
-          json,
-          'fieldMapSimple',
-          (v) => val.fieldMapSimple =
-              (v as Map)?.map((k, e) => new MapEntry(k as String, e as int)) ??
-                  {'answer': 42});
-      $checkedConvert(
-          json,
-          'fieldMapListString',
-          (v) => val.fieldMapListString = (v as Map)?.map((k, e) =>
-                  new MapEntry(k as String,
-                      (e as List)?.map((e) => e as String)?.toList())) ??
-              {
-                'root': ['child']
-              });
-      $checkedConvert(
-          json,
-          'fieldEnum',
-          (v) => val.fieldEnum =
-              $enumDecodeNullable('Greek', Greek.values, v as String) ??
-                  Greek.beta);
-      return val;
-    });
+DefaultValue _$DefaultValueFromJson(Map json) {
+  return $checkedNew('DefaultValue', json, () {
+    var val = new DefaultValue();
+    $checkedConvert(
+        json, 'fieldBool', (v) => val.fieldBool = v as bool ?? true);
+    $checkedConvert(
+        json, 'fieldString', (v) => val.fieldString = v as String ?? 'string');
+    $checkedConvert(json, 'fieldInt', (v) => val.fieldInt = v as int ?? 42);
+    $checkedConvert(json, 'fieldDouble',
+        (v) => val.fieldDouble = (v as num)?.toDouble() ?? 3.14);
+    $checkedConvert(
+        json, 'fieldListEmpty', (v) => val.fieldListEmpty = v as List ?? []);
+    $checkedConvert(
+        json, 'fieldMapEmpty', (v) => val.fieldMapEmpty = v as Map ?? {});
+    $checkedConvert(
+        json,
+        'fieldListSimple',
+        (v) => val.fieldListSimple =
+            (v as List)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
+    $checkedConvert(
+        json,
+        'fieldMapSimple',
+        (v) => val.fieldMapSimple =
+            (v as Map)?.map((k, e) => new MapEntry(k as String, e as int)) ??
+                {'answer': 42});
+    $checkedConvert(
+        json,
+        'fieldMapListString',
+        (v) => val.fieldMapListString = (v as Map)?.map((k, e) => new MapEntry(
+                k as String, (e as List)?.map((e) => e as String)?.toList())) ??
+            {
+              'root': ['child']
+            });
+    $checkedConvert(
+        json,
+        'fieldEnum',
+        (v) => val.fieldEnum =
+            $enumDecodeNullable('Greek', Greek.values, v as String) ??
+                Greek.beta);
+    return val;
+  });
+}
 
 abstract class _$DefaultValueSerializerMixin {
   bool get fieldBool;

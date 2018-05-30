@@ -10,71 +10,70 @@ part of 'kitchen_sink.non_nullable.checked.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) =>
-    $checkedNew('KitchenSink', json, () {
-      var val = new KitchenSink(
-          ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
-          iterable: $checkedConvert(json, 'iterable', (v) => v as List),
-          dynamicIterable:
-              $checkedConvert(json, 'dynamicIterable', (v) => v as List),
-          objectIterable:
-              $checkedConvert(json, 'objectIterable', (v) => v as List),
-          intIterable: $checkedConvert(
-              json, 'intIterable', (v) => (v as List).map((e) => e as int)),
-          dateTimeIterable: $checkedConvert(json, 'datetime-iterable',
-              (v) => (v as List).map((e) => DateTime.parse(e as String))));
-
-      $checkedConvert(
-          json, 'dateTime', (v) => val.dateTime = DateTime.parse(v as String));
-      $checkedConvert(json, 'list', (v) => val.list = v as List);
-      $checkedConvert(json, 'dynamicList', (v) => val.dynamicList = v as List);
-      $checkedConvert(json, 'objectList', (v) => val.objectList = v as List);
-      $checkedConvert(json, 'intList',
-          (v) => val.intList = (v as List).map((e) => e as int).toList());
-      $checkedConvert(
-          json,
-          'dateTimeList',
-          (v) => val.dateTimeList =
-              (v as List).map((e) => DateTime.parse(e as String)).toList());
-      $checkedConvert(json, 'map', (v) => val.map = v as Map);
-      $checkedConvert(json, 'stringStringMap',
-          (v) => val.stringStringMap = new Map<String, String>.from(v as Map));
-      $checkedConvert(json, 'dynamicIntMap',
-          (v) => val.dynamicIntMap = new Map<String, int>.from(v as Map));
-      $checkedConvert(
-          json,
-          'objectDateTimeMap',
-          (v) => val.objectDateTimeMap = (v as Map)
-              .map((k, e) => new MapEntry(k, DateTime.parse(e as String))));
-      $checkedConvert(
-          json,
-          'crazyComplex',
-          (v) => val.crazyComplex = (v as List)
-              .map((e) => (e as Map).map((k, e) => new MapEntry(
-                  k as String,
-                  (e as Map).map((k, e) => new MapEntry(
-                      k as String,
-                      (e as List)
-                          .map((e) => (e as List)
-                              .map((e) => DateTime.parse(e as String))
-                              .toList())
-                          .toList())))))
-              .toList());
-      $checkedConvert(
-          json, 'val', (v) => val.val = new Map<String, bool>.from(v as Map));
-      $checkedConvert(
-          json, 'writeNotNull', (v) => val.writeNotNull = v as bool);
-      $checkedConvert(json, r'$string', (v) => val.string = v as String);
-      $checkedConvert(json, 'simpleObject',
-          (v) => val.simpleObject = new SimpleObject.fromJson(v as Map));
-      $checkedConvert(json, 'validatedPropertyNo42',
-          (v) => val.validatedPropertyNo42 = v as int);
-      return val;
-    }, fieldKeyMap: const {
-      'ctorValidatedNo42': 'no-42',
-      'dateTimeIterable': 'datetime-iterable',
-      'string': r'$string'
-    });
+KitchenSink _$KitchenSinkFromJson(Map json) {
+  return $checkedNew('KitchenSink', json, () {
+    var val = new KitchenSink(
+        ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
+        iterable: $checkedConvert(json, 'iterable', (v) => v as List),
+        dynamicIterable:
+            $checkedConvert(json, 'dynamicIterable', (v) => v as List),
+        objectIterable:
+            $checkedConvert(json, 'objectIterable', (v) => v as List),
+        intIterable: $checkedConvert(
+            json, 'intIterable', (v) => (v as List).map((e) => e as int)),
+        dateTimeIterable: $checkedConvert(json, 'datetime-iterable',
+            (v) => (v as List).map((e) => DateTime.parse(e as String))));
+    $checkedConvert(
+        json, 'dateTime', (v) => val.dateTime = DateTime.parse(v as String));
+    $checkedConvert(json, 'list', (v) => val.list = v as List);
+    $checkedConvert(json, 'dynamicList', (v) => val.dynamicList = v as List);
+    $checkedConvert(json, 'objectList', (v) => val.objectList = v as List);
+    $checkedConvert(json, 'intList',
+        (v) => val.intList = (v as List).map((e) => e as int).toList());
+    $checkedConvert(
+        json,
+        'dateTimeList',
+        (v) => val.dateTimeList =
+            (v as List).map((e) => DateTime.parse(e as String)).toList());
+    $checkedConvert(json, 'map', (v) => val.map = v as Map);
+    $checkedConvert(json, 'stringStringMap',
+        (v) => val.stringStringMap = new Map<String, String>.from(v as Map));
+    $checkedConvert(json, 'dynamicIntMap',
+        (v) => val.dynamicIntMap = new Map<String, int>.from(v as Map));
+    $checkedConvert(
+        json,
+        'objectDateTimeMap',
+        (v) => val.objectDateTimeMap = (v as Map)
+            .map((k, e) => new MapEntry(k, DateTime.parse(e as String))));
+    $checkedConvert(
+        json,
+        'crazyComplex',
+        (v) => val.crazyComplex = (v as List)
+            .map((e) => (e as Map).map((k, e) => new MapEntry(
+                k as String,
+                (e as Map).map((k, e) => new MapEntry(
+                    k as String,
+                    (e as List)
+                        .map((e) => (e as List)
+                            .map((e) => DateTime.parse(e as String))
+                            .toList())
+                        .toList())))))
+            .toList());
+    $checkedConvert(
+        json, 'val', (v) => val.val = new Map<String, bool>.from(v as Map));
+    $checkedConvert(json, 'writeNotNull', (v) => val.writeNotNull = v as bool);
+    $checkedConvert(json, r'$string', (v) => val.string = v as String);
+    $checkedConvert(json, 'simpleObject',
+        (v) => val.simpleObject = new SimpleObject.fromJson(v as Map));
+    $checkedConvert(json, 'validatedPropertyNo42',
+        (v) => val.validatedPropertyNo42 = v as int);
+    return val;
+  }, fieldKeyMap: const {
+    'ctorValidatedNo42': 'no-42',
+    'dateTimeIterable': 'datetime-iterable',
+    'string': r'$string'
+  });
+}
 
 abstract class _$KitchenSinkSerializerMixin {
   int get ctorValidatedNo42;

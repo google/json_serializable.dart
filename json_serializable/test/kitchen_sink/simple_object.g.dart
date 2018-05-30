@@ -10,8 +10,9 @@ part of 'simple_object.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-SimpleObject _$SimpleObjectFromJson(Map json) =>
-    new SimpleObject(json['value'] as int);
+SimpleObject _$SimpleObjectFromJson(Map json) {
+  return new SimpleObject(json['value'] as int);
+}
 
 abstract class _$SimpleObjectSerializerMixin {
   int get value;
