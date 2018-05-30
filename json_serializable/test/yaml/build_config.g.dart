@@ -83,10 +83,7 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('is_optional', isOptional);
     writeNotNull('auto_apply', autoApply == null ? null : _toJson(autoApply));
     writeNotNull(
-        'defaultEnumTest',
-        defaultEnumTest == null
-            ? null
-            : defaultEnumTest.toString().split('.')[1]);
+        'defaultEnumTest', defaultEnumTest?.toString()?.split('.')?.last);
     val['builder_factories'] = builderFactories;
     writeNotNull('applies_builders', appliesBuilders);
     writeNotNull('required_inputs', requiredInputs);

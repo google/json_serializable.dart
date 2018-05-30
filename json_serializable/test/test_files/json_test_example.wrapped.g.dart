@@ -63,12 +63,12 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         case 'dateOfBirth':
           return _v.dateOfBirth?.toIso8601String();
         case r'$house':
-          return _v.house == null ? null : _v.house.toString().split('.')[1];
+          return _v.house?.toString()?.split('.')?.last;
         case 'order':
           return _v.order;
         case 'houseMap':
-          return $wrapMapHandleNull<String, House>(_v.houseMap,
-              (e) => e == null ? null : e.toString().split('.')[1]);
+          return $wrapMapHandleNull<String, House>(
+              _v.houseMap, (e) => e?.toString()?.split('.')?.last);
       }
     }
     return null;
@@ -120,7 +120,7 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
         case 'isRushed':
           return _v.isRushed;
         case 'category':
-          return _v.category.toString().split('.')[1];
+          return _v.category.toString().split('.').last;
         case 'items':
           return _v.items;
         case 'platform':

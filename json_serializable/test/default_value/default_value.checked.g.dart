@@ -75,7 +75,6 @@ abstract class _$DefaultValueSerializerMixin {
         'fieldListSimple': fieldListSimple,
         'fieldMapSimple': fieldMapSimple,
         'fieldMapListString': fieldMapListString,
-        'fieldEnum':
-            fieldEnum == null ? null : fieldEnum.toString().split('.')[1]
+        'fieldEnum': fieldEnum?.toString()?.split('.')?.last
       };
 }
