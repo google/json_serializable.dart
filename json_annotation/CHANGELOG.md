@@ -1,5 +1,9 @@
 ## 0.2.6
 
+* `CheckedFromJsonException`
+  * The constructor is now public.
+  * The `message` property is now `String` (instead of `Object`).
+
 * Added `JsonKey.defaultValue`.
 
 * Added helpers for deserialization of `enum` values.
