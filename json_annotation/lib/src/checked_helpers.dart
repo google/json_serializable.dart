@@ -13,9 +13,8 @@ T $checkedNew<T>(String className, Map map, T constructor(),
   try {
     return constructor();
   } on CheckedFromJsonException catch (e) {
-    if (e._className == null) {
+    if (identical(e.map, map) && e._className == null) {
       e._className = className;
-      assert(identical(e.map, map));
     }
     rethrow;
   } catch (error, stack) {
@@ -23,7 +22,7 @@ T $checkedNew<T>(String className, Map map, T constructor(),
     if (error is ArgumentError) {
       key = fieldKeyMap[error.name] ?? error.name;
     }
-    throw new CheckedFromJsonException(error, stack, map, key,
+    throw new CheckedFromJsonException._(error, stack, map, key,
         className: className);
   }
 }
@@ -38,7 +37,7 @@ T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {
-    throw new CheckedFromJsonException(error, stack, map, key);
+    throw new CheckedFromJsonException._(error, stack, map, key);
   }
 }
 
@@ -46,10 +45,14 @@ T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
 /// code generated when `JsonSerializableGenerator.checked` is `true`
 class CheckedFromJsonException implements Exception {
   /// The [Error] or [Exception] that triggered this exception.
+  ///
+  /// If this instance was created by user code, this field will be `null`.
   final Object innerError;
 
   /// The [StackTrace] for the [Error] or [Exception] that triggered this
   /// exception.
+  ///
+  /// If this instance was created by user code, this field will be `null`.
   final StackTrace innerStack;
 
   /// The key from [map] that corresponds to the thrown [innerError].
@@ -71,7 +74,13 @@ class CheckedFromJsonException implements Exception {
   String _className;
 
   /// Creates a new instance of [CheckedFromJsonException].
-  CheckedFromJsonException(this.innerError, this.innerStack, this.map, this.key,
+  CheckedFromJsonException(this.map, this.key, String className, this.message)
+      : _className = className,
+        innerError = null,
+        innerStack = null;
+
+  CheckedFromJsonException._(
+      this.innerError, this.innerStack, this.map, this.key,
       {String className})
       : _className = className,
         message = _getMessage(innerError);
