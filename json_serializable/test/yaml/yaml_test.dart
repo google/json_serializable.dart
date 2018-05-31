@@ -70,53 +70,51 @@ builders:
 - a
 - b
 ''': r'''
-line 1, column 1 of file.yaml: Could not create `Config`. Unsupported value for `builders`.
-builders:
-^^^^^^^^''',
+line 2, column 1 of file.yaml: Could not create `Config`. Unsupported value for `builders`.
+- a
+^^^^''',
   r'''
 builders:
   sample:
     defaultEnumTest: bob
 ''': r'''
-line 3, column 5 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, allPackages, rootPackage
+line 3, column 22 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, allPackages, rootPackage
     defaultEnumTest: bob
-    ^^^^^^^^^^^^^^^''',
+                     ^^^''',
   r'''
 builders:
   a:
     target: 42
   ''': r'''
-line 3, column 5 of file.yaml: Could not create `Builder`. Unsupported value for `target`.
+line 3, column 13 of file.yaml: Could not create `Builder`. Unsupported value for `target`.
     target: 42
-    ^^^^^^''',
+            ^^''',
   r'''
 builders:
   a:
     target: "a target"
     auto_apply: unsupported
 ''': r'''
-line 4, column 5 of file.yaml: Could not create `Builder`. Unsupported value for `auto_apply`. "unsupported" is not in the supported set: "none", "dependents", "all_packages", "root_package".
+line 4, column 17 of file.yaml: Could not create `Builder`. Unsupported value for `auto_apply`. "unsupported" is not in the supported set: "none", "dependents", "all_packages", "root_package".
     auto_apply: unsupported
-    ^^^^^^^^^^''',
+                ^^^^^^^^^^^''',
   r'''
 builders:
   a:
     builder_factories: []
   ''': r'''
-line 3, column 5 of file.yaml: Could not create `Builder`. Unsupported value for `builder_factories`. Must have at least one value.
+line 3, column 24 of file.yaml: Could not create `Builder`. Unsupported value for `builder_factories`. Must have at least one value.
     builder_factories: []
-    ^^^^^^^^^^^^^^^^^''',
+                       ^^''',
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
   var yamlMap = err.map as YamlMap;
 
-  var yamlKey = yamlMap.nodes.keys.singleWhere(
-      (k) => (k as YamlScalar).value == err.key,
-      orElse: () => null) as YamlScalar;
+  var yamlValue = yamlMap.nodes[err.key];
 
   var message = 'Could not create `${err.className}`.';
-  if (yamlKey == null) {
+  if (yamlValue == null) {
     assert(err.key == null);
     message = '${yamlMap.span.message(message)} ${err.innerError}';
   } else {
@@ -124,7 +122,7 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
     if (err.message != null) {
       message = '$message ${err.message}';
     }
-    message = yamlKey.span.message(message);
+    message = yamlValue.span.message(message);
   }
 
   return message;
