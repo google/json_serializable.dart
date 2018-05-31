@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Helper function used in generated code when
-/// `JsonAnnotation.allowUnrecognizedKeys` is `false`.
+/// `JsonAnnotation.disallowUnregognizedKeys` is `true`.
 ///
 /// Should not be used directly.
 void $checkAllowedKeys(Map map, Iterable<String> allowedKeys) {

@@ -170,7 +170,7 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        if (!_annotation.allowUnrecognizedKeys) {
+        if (_annotation.disallowUnregognizedKeys) {
           var listLiteral = jsonLiteralAsDart(
               accessibleFields.values.map(_nameAccess).toList(), true);
           _buffer.write('''
@@ -194,7 +194,7 @@ class _GeneratorHelper {
 
         var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
             .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
-            .where((me) => me.value != me.key));
+            .where((me) => me.key != me.value));
 
         String fieldKeyMapArg;
         if (fieldKeyMap.isEmpty) {
@@ -220,7 +220,7 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        if (!_annotation.allowUnrecognizedKeys) {
+        if (_annotation.disallowUnregognizedKeys) {
           var listLiteral = jsonLiteralAsDart(
               fieldsSetByFactory
                   .map((k) => _nameAccess(accessibleFields[k]))

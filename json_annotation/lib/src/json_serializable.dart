@@ -4,12 +4,12 @@
 
 /// An annotation used to specify a class to generate code for.
 class JsonSerializable {
-  /// If `true` (the default), then any unrecognized keys passed to the
+  /// If `false` (the default), then any unrecognized keys passed to the
   /// generated FromJson factory will be ignored.
   ///
-  /// If `false`, any unrecognized keys will be treated as an error.
+  /// If `true`, any unrecognized keys will be treated as an error.
   /// ```
-  final bool allowUnrecognizedKeys;
+  final bool disallowUnregognizedKeys;
 
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
@@ -55,12 +55,12 @@ class JsonSerializable {
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable(
-      {bool allowUnrecognizedKeys: true,
+      {bool disallowUnregognizedKeys: false,
       bool createFactory: true,
       bool createToJson: true,
       bool includeIfNull: true,
       bool nullable: true})
-      : this.allowUnrecognizedKeys = allowUnrecognizedKeys ?? true,
+      : this.disallowUnregognizedKeys = disallowUnregognizedKeys ?? false,
         this.createFactory = createFactory ?? true,
         this.createToJson = createToJson ?? true,
         this.includeIfNull = includeIfNull ?? true,

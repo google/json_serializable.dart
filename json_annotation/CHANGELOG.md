@@ -1,9 +1,9 @@
 ## 0.2.7
 
-* Added `JsonSerializable.allowUnrecognizedKeys`.
-  * Defaults to `true` which maintains the previous behavior.
-  * Throws an `UnrecognizedKeysException` if it finds unrecognized keys in any
-    json maps.
+* Added `JsonSerializable.disallowUnregognizedKeys`.
+  * Defaults to `false` which maintains the previous behavior.
+  * Throws an `UnrecognizedKeysException` if it finds unrecognized keys in the
+    JSON map used to create the annotated object.
   * Will be captured captured and wrapped in a `CheckedFromJsonException` if
     `checked` is enabled in `json_serializable`.
   * Added a helper function to support this option. This function starts with a
