@@ -29,6 +29,18 @@ abstract class _$ConfigSerializerMixin {
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
+    $checkAllowedKeys(json, const [
+      'target',
+      'import',
+      'is_optional',
+      'auto_apply',
+      'build_to',
+      'defaultEnumTest',
+      'builder_factories',
+      'applies_builders',
+      'required_inputs',
+      'build_extensions'
+    ]);
     var val = new Builder(
         import: $checkedConvert(json, 'import', (v) => v as String),
         target: $checkedConvert(json, 'target', (v) => v as String),
