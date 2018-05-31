@@ -1,6 +1,6 @@
 ## 0.5.6
 
-* Added support for `JsonSerializable.disallowUnregognizedKeys`.
+* Added support for `JsonSerializable.disallowUnrecognizedKeys`.
 
 ## 0.5.5
 

@@ -9,7 +9,7 @@ class JsonSerializable {
   ///
   /// If `true`, any unrecognized keys will be treated as an error.
   /// ```
-  final bool disallowUnregognizedKeys;
+  final bool disallowUnrecognizedKeys;
 
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
@@ -55,12 +55,12 @@ class JsonSerializable {
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable(
-      {bool disallowUnregognizedKeys: false,
+      {bool disallowUnrecognizedKeys: false,
       bool createFactory: true,
       bool createToJson: true,
       bool includeIfNull: true,
       bool nullable: true})
-      : this.disallowUnregognizedKeys = disallowUnregognizedKeys ?? false,
+      : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
         this.createFactory = createFactory ?? true,
         this.createToJson = createToJson ?? true,
         this.includeIfNull = includeIfNull ?? true,

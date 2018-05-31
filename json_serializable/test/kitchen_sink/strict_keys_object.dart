@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'strict_keys_object.g.dart';
 
-@JsonSerializable(disallowUnregognizedKeys: true)
+@JsonSerializable(disallowUnrecognizedKeys: true)
 class StrictKeysObject extends Object with _$StrictKeysObjectSerializerMixin {
   @override
   final int value;

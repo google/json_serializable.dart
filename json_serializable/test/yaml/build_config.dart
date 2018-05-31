@@ -18,7 +18,7 @@ class Config extends Object with _$ConfigSerializerMixin {
   factory Config.fromJson(Map map) => _$ConfigFromJson(map);
 }
 
-@JsonSerializable(includeIfNull: false, disallowUnregognizedKeys: true)
+@JsonSerializable(includeIfNull: false, disallowUnrecognizedKeys: true)
 class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(nullable: true)
   final String target;

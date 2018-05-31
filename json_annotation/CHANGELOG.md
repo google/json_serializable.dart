@@ -1,6 +1,6 @@
 ## 0.2.7
 
-* Added `JsonSerializable.disallowUnregognizedKeys`.
+* Added `JsonSerializable.disallowUnrecognizedKeys`.
   * Defaults to `false` which maintains the previous behavior.
   * Throws an `UnrecognizedKeysException` if it finds unrecognized keys in the
     JSON map used to create the annotated object.
