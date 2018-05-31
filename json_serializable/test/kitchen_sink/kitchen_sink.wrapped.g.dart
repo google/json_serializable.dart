@@ -46,6 +46,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
     ..simpleObject = json['simpleObject'] == null ? null : new SimpleObject.fromJson(json['simpleObject'] as Map)
+    ..strictKeysObject = json['strictKeysObject'] == null ? null : new StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -71,6 +72,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   SimpleObject get simpleObject;
+  StrictKeysObject get strictKeysObject;
   int get validatedPropertyNo42;
   Map<String, dynamic> toJson() => new _$KitchenSinkJsonMapWrapper(this);
 }
@@ -112,6 +114,7 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
     yield 'writeNotNull';
     yield r'$string';
     yield 'simpleObject';
+    yield 'strictKeysObject';
     yield 'validatedPropertyNo42';
   }
 
@@ -176,6 +179,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
           return _v.string;
         case 'simpleObject':
           return _v.simpleObject;
+        case 'strictKeysObject':
+          return _v.strictKeysObject;
         case 'validatedPropertyNo42':
           return _v.validatedPropertyNo42;
       }

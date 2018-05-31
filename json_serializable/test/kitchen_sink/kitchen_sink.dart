@@ -7,12 +7,14 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
+import 'strict_keys_object.dart';
 
 part 'kitchen_sink.g.dart';
 
 List<T> _defaultList<T>() => null;
 Map _defaultMap() => null;
 SimpleObject _defaultSimpleObject() => null;
+StrictKeysObject _defaultStrictKeysObject() => null;
 
 k.KitchenSink testFactory(
         {int ctorValidatedNo42,
@@ -108,6 +110,8 @@ class KitchenSink extends Object
   String string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
+
+  StrictKeysObject strictKeysObject = _defaultStrictKeysObject();
 
   int _validatedPropertyNo42;
   int get validatedPropertyNo42 => _validatedPropertyNo42;

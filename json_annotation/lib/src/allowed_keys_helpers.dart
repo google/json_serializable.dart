@@ -7,6 +7,7 @@
 ///
 /// Should not be used directly.
 void $checkAllowedKeys(Map map, Iterable<String> allowedKeys) {
+  if (map == null) return;
   var invalidKeys = map.keys.where((k) => !allowedKeys.contains(k));
   if (invalidKeys.isNotEmpty) {
     throw new UnrecognizedKeysException(

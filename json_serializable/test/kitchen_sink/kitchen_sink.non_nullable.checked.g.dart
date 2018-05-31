@@ -65,6 +65,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(json, r'$string', (v) => val.string = v as String);
     $checkedConvert(json, 'simpleObject',
         (v) => val.simpleObject = new SimpleObject.fromJson(v as Map));
+    $checkedConvert(json, 'strictKeysObject',
+        (v) => val.strictKeysObject = new StrictKeysObject.fromJson(v as Map));
     $checkedConvert(json, 'validatedPropertyNo42',
         (v) => val.validatedPropertyNo42 = v as int);
     return val;
@@ -97,6 +99,7 @@ abstract class _$KitchenSinkSerializerMixin {
   bool get writeNotNull;
   String get string;
   SimpleObject get simpleObject;
+  StrictKeysObject get strictKeysObject;
   int get validatedPropertyNo42;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'no-42': ctorValidatedNo42,
@@ -130,6 +133,7 @@ abstract class _$KitchenSinkSerializerMixin {
         'writeNotNull': writeNotNull,
         r'$string': string,
         'simpleObject': simpleObject,
+        'strictKeysObject': strictKeysObject,
         'validatedPropertyNo42': validatedPropertyNo42
       };
 }
