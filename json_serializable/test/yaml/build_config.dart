@@ -22,13 +22,20 @@ class Config extends Object with _$ConfigSerializerMixin {
 class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(nullable: true)
   final String target;
+
   final String import;
 
   @JsonKey(name: 'is_optional')
   final bool isOptional;
 
-  @JsonKey(name: 'auto_apply', toJson: _toJson, fromJson: _fromJson)
+  @JsonKey(
+      name: 'auto_apply',
+      toJson: _autoApplyToJson,
+      fromJson: _autoApplyFromJson)
   final AutoApply autoApply;
+
+  @JsonKey(name: 'build_to', toJson: _buildToToJson, fromJson: _buildToFromJson)
+  final BuildTo buildTo;
 
   final AutoApply defaultEnumTest;
 
@@ -49,6 +56,7 @@ class Builder extends Object with _$BuilderSerializerMixin {
     this.target,
     this.isOptional,
     this.autoApply,
+    this.buildTo,
     this.defaultEnumTest,
     this.builderFactories,
     this.appliesBuilders,
@@ -66,28 +74,42 @@ class Builder extends Object with _$BuilderSerializerMixin {
 
 enum AutoApply { none, dependents, allPackages, rootPackage }
 
+enum BuildTo { cache, source }
+
+AutoApply _autoApplyFromJson(String input) =>
+    _fromJson(input, _autoApplyConvert, 'autoApply');
+
+String _autoApplyToJson(AutoApply value) =>
+    _toJson(value, _autoApplyConvert, 'autoApply');
+
+BuildTo _buildToFromJson(String input) =>
+    _fromJson(input, _buildToConvert, 'buildTo');
+
+String _buildToToJson(BuildTo value) =>
+    _toJson(value, _buildToConvert, 'buildTo');
+
 // TODO: remove all of this and annotate the fields on the enum – once we have
 // https://github.com/dart-lang/json_serializable/issues/38
-AutoApply _fromJson(String input) {
-  var value = _autoApplyConvert[input];
+T _fromJson<T>(String input, Map<String, T> convertMap, String fieldName) {
+  var value = convertMap[input];
   if (value == null) {
-    var allowed = _autoApplyConvert.keys.map((e) => '"$e"').join(', ');
+    var allowed = convertMap.keys.map((e) => '"$e"').join(', ');
     throw new ArgumentError.value(
-        input, 'autoApply', '"$input" is not in the supported set: $allowed.');
+        input, fieldName, '"$input" is not in the supported set: $allowed.');
   }
   return value;
 }
 
-String _toJson(AutoApply value) {
+String _toJson<T>(T value, Map<String, T> convertMap, String fieldName) {
   if (value == null) {
     return null;
   }
-  var string = _autoApplyConvert.entries
+  var string = convertMap.entries
       .singleWhere((e) => e.value == value, orElse: () => null)
       ?.key;
 
   if (string == null) {
-    throw new ArgumentError.value(value, 'autoApply', 'Unsupported value.');
+    throw new ArgumentError.value(value, fieldName, 'Unsupported value.');
   }
   return string;
 }
@@ -97,4 +119,9 @@ const _autoApplyConvert = const {
   'dependents': AutoApply.dependents,
   'all_packages': AutoApply.allPackages,
   'root_package': AutoApply.rootPackage
+};
+
+const _buildToConvert = const {
+  'cache': BuildTo.cache,
+  'source': BuildTo.source,
 };

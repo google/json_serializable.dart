@@ -118,13 +118,17 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
   var message = 'Could not create `${err.className}`.';
   if (yamlKey == null) {
     assert(err.key == null);
-    message = '${yamlMap.span.message(message)} ${err.innerError}';
+    message = '${yamlMap.span.message(message)}\n${err.innerError}';
   } else {
     message = '$message Unsupported value for `${err.key}`.';
     if (err.message != null) {
       message = '$message ${err.message}';
     }
     message = yamlKey.span.message(message);
+  }
+
+  if (err.innerError is UnrecognizedKeysException) {
+    message += '\n${(err.innerError as UnrecognizedKeysException).message}';
   }
 
   return message;

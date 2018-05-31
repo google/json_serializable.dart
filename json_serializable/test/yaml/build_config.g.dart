@@ -12,7 +12,6 @@ part of 'build_config.dart';
 
 Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
-    $checkAllowedKeys(json, const ['builders']);
     var val = new Config(
         builders: $checkedConvert(
             json,
@@ -30,23 +29,14 @@ abstract class _$ConfigSerializerMixin {
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
-    $checkAllowedKeys(json, const [
-      'target',
-      'import',
-      'is_optional',
-      'auto_apply',
-      'defaultEnumTest',
-      'builder_factories',
-      'applies_builders',
-      'required_inputs',
-      'build_extensions'
-    ]);
     var val = new Builder(
         import: $checkedConvert(json, 'import', (v) => v as String),
         target: $checkedConvert(json, 'target', (v) => v as String),
         isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
         autoApply: $checkedConvert(json, 'auto_apply',
-            (v) => v == null ? null : _fromJson(v as String)),
+            (v) => v == null ? null : _autoApplyFromJson(v as String)),
+        buildTo: $checkedConvert(json, 'build_to',
+            (v) => v == null ? null : _buildToFromJson(v as String)),
         defaultEnumTest: $checkedConvert(
             json,
             'defaultEnumTest',
@@ -67,6 +57,7 @@ Builder _$BuilderFromJson(Map json) {
   }, fieldKeyMap: const {
     'isOptional': 'is_optional',
     'autoApply': 'auto_apply',
+    'buildTo': 'build_to',
     'builderFactories': 'builder_factories',
     'appliesBuilders': 'applies_builders',
     'requiredInputs': 'required_inputs',
@@ -79,6 +70,7 @@ abstract class _$BuilderSerializerMixin {
   String get import;
   bool get isOptional;
   AutoApply get autoApply;
+  BuildTo get buildTo;
   AutoApply get defaultEnumTest;
   List<String> get builderFactories;
   List<String> get appliesBuilders;
@@ -96,7 +88,9 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('target', target);
     writeNotNull('import', import);
     writeNotNull('is_optional', isOptional);
-    writeNotNull('auto_apply', autoApply == null ? null : _toJson(autoApply));
+    writeNotNull(
+        'auto_apply', autoApply == null ? null : _autoApplyToJson(autoApply));
+    writeNotNull('build_to', buildTo == null ? null : _buildToToJson(buildTo));
     writeNotNull(
         'defaultEnumTest',
         defaultEnumTest == null
