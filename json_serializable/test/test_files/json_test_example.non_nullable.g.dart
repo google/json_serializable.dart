@@ -33,10 +33,10 @@ abstract class _$PersonSerializerMixin {
         'middleName': middleName,
         'lastName': lastName,
         'dateOfBirth': dateOfBirth.toIso8601String(),
-        r'$house': house.toString().split('.')[1],
+        r'$house': house.toString().split('.').last,
         'order': order,
-        'houseMap':
-            houseMap.map((k, e) => new MapEntry(k, e.toString().split('.')[1]))
+        'houseMap': houseMap
+            .map((k, e) => new MapEntry(k, e.toString().split('.').last))
       };
 }
 
@@ -62,7 +62,7 @@ abstract class _$OrderSerializerMixin {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'isRushed': isRushed,
-        'category': category.toString().split('.')[1],
+        'category': category.toString().split('.').last,
         'items': items,
         'platform': platform,
         'altPlatforms': altPlatforms

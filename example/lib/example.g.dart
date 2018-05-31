@@ -93,6 +93,17 @@ Item _$ItemFromJson(Map<String, dynamic> json) => new Item()
   ..itemNumber = json['itemNumber'] as int
   ..isRushed = json['isRushed'] as bool;
 
+abstract class _$ItemSerializerMixin {
+  int get count;
+  int get itemNumber;
+  bool get isRushed;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'count': count,
+        'itemNumber': itemNumber,
+        'isRushed': isRushed
+      };
+}
+
 // **************************************************************************
 // Generator: JsonLiteralGenerator
 // **************************************************************************

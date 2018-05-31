@@ -13,7 +13,7 @@
 ## 0.2.6
 
 * `CheckedFromJsonException`
-  * The constructor is now public.
+  * Added a public constructor to support hand-written JSON decoding logic.
   * The `message` property is now `String` (instead of `Object`).
 
 * Added `JsonKey.defaultValue`.
