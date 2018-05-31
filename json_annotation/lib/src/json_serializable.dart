@@ -8,7 +8,6 @@ class JsonSerializable {
   /// generated FromJson factory will be ignored.
   ///
   /// If `true`, any unrecognized keys will be treated as an error.
-  /// ```
   final bool disallowUnrecognizedKeys;
 
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
