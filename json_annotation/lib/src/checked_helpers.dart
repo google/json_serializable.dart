@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'allowed_keys_helpers.dart';
+
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
@@ -76,6 +78,12 @@ class CheckedFromJsonException implements Exception {
       : _className = className,
         message = _getMessage(innerError);
 
-  static String _getMessage(Object error) =>
-      (error is ArgumentError) ? error.message?.toString() : null;
+  static String _getMessage(Object error) {
+    if (error is ArgumentError) {
+      return error.message?.toString();
+    } else if (error is UnrecognizedKeysException) {
+      return error.message;
+    }
+    return null;
+  }
 }
