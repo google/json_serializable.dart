@@ -10,15 +10,15 @@ part of 'json_test_example.non_nullable.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
-    json['firstName'] as String,
-    json['lastName'] as String,
-    $enumDecode('House', House.values, json[r'$house'] as String),
-    middleName: json['middleName'] as String,
-    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
-  ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
-  ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
-      new MapEntry(k, $enumDecode('House', House.values, e as String)));
+Person _$PersonFromJson(Map<String, dynamic> json) {
+  return new Person(json['firstName'] as String, json['lastName'] as String,
+      $enumDecode('House', House.values, json[r'$house'] as String),
+      middleName: json['middleName'] as String,
+      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
+    ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
+    ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
+        new MapEntry(k, $enumDecode('House', House.values, e as String)));
+}
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -40,15 +40,17 @@ abstract class _$PersonSerializerMixin {
       };
 }
 
-Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
-    $enumDecode('Category', Category.values, json['category'] as String),
-    (json['items'] as List)
-        .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
-  ..count = json['count'] as int
-  ..isRushed = json['isRushed'] as bool
-  ..platform = new Platform.fromJson(json['platform'] as String)
-  ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
-      .map((k, e) => new MapEntry(k, new Platform.fromJson(e as String)));
+Order _$OrderFromJson(Map<String, dynamic> json) {
+  return new Order(
+      $enumDecode('Category', Category.values, json['category'] as String),
+      (json['items'] as List)
+          .map((e) => new Item.fromJson(e as Map<String, dynamic>)))
+    ..count = json['count'] as int
+    ..isRushed = json['isRushed'] as bool
+    ..platform = new Platform.fromJson(json['platform'] as String)
+    ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
+        .map((k, e) => new MapEntry(k, new Platform.fromJson(e as String)));
+}
 
 abstract class _$OrderSerializerMixin {
   int get count;
@@ -67,12 +69,14 @@ abstract class _$OrderSerializerMixin {
       };
 }
 
-Item _$ItemFromJson(Map<String, dynamic> json) => new Item(json['price'] as int)
-  ..itemNumber = json['item-number'] as int
-  ..saleDates = (json['saleDates'] as List)
-      .map((e) => DateTime.parse(e as String))
-      .toList()
-  ..rates = (json['rates'] as List).map((e) => e as int).toList();
+Item _$ItemFromJson(Map<String, dynamic> json) {
+  return new Item(json['price'] as int)
+    ..itemNumber = json['item-number'] as int
+    ..saleDates = (json['saleDates'] as List)
+        .map((e) => DateTime.parse(e as String))
+        .toList()
+    ..rates = (json['rates'] as List).map((e) => e as int).toList();
+}
 
 abstract class _$ItemSerializerMixin {
   int get price;
@@ -87,15 +91,17 @@ abstract class _$ItemSerializerMixin {
       };
 }
 
-Numbers _$NumbersFromJson(Map<String, dynamic> json) => new Numbers()
-  ..ints = (json['ints'] as List).map((e) => e as int).toList()
-  ..nums = (json['nums'] as List).map((e) => e as num).toList()
-  ..doubles =
-      (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
-  ..nnDoubles =
-      (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-  ..duration = _fromJson(json['duration'] as int)
-  ..date = _dateTimeFromEpochUs(json['date'] as int);
+Numbers _$NumbersFromJson(Map<String, dynamic> json) {
+  return new Numbers()
+    ..ints = (json['ints'] as List).map((e) => e as int).toList()
+    ..nums = (json['nums'] as List).map((e) => e as num).toList()
+    ..doubles =
+        (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
+    ..nnDoubles =
+        (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
+    ..duration = _fromJson(json['duration'] as int)
+    ..date = _dateTimeFromEpochUs(json['date'] as int);
+}
 
 abstract class _$NumbersSerializerMixin {
   List<int> get ints;

@@ -10,10 +10,12 @@ part of 'example.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) => new Person(
-    firstName: json['firstName'] as String,
-    lastName: json['lastName'] as String,
-    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
+Person _$PersonFromJson(Map<String, dynamic> json) {
+  return new Person(
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
+}
 
 abstract class _$PersonSerializerMixin {
   String get firstName;

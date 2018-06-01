@@ -68,7 +68,8 @@ final List<BuilderApplication> builders = [
         include: const [
           'test/kitchen_sink/kitchen_sink.dart',
           'test/kitchen_sink/kitchen_sink.non_nullable.dart',
-          'test/kitchen_sink/simple_object.dart'
+          'test/kitchen_sink/simple_object.dart',
+          'test/kitchen_sink/strict_keys_object.dart'
         ],
       )),
   applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),

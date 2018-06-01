@@ -106,23 +106,53 @@ builders:
 line 3, column 24 of file.yaml: Could not create `Builder`. Unsupported value for `builder_factories`. Must have at least one value.
     builder_factories: []
                        ^^''',
+  r'''
+builders:
+  a:
+    foo: bar
+    baz: zap
+''': r'''
+Could not create `Builder`.
+Unrecognized keys [baz, foo], supported keys  are [target, import, is_optional, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
+
+line 4, column 5 of file.yaml: Invalid key "baz"
+    baz: zap
+    ^^^
+line 3, column 5 of file.yaml: Invalid key "foo"
+    foo: bar
+    ^^^''',
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
   var yamlMap = err.map as YamlMap;
 
-  var yamlValue = yamlMap.nodes[err.key];
+  YamlScalar _getYamlKey(String key) {
+    return yamlMap.nodes.keys.singleWhere((k) => (k as YamlScalar).value == key,
+        orElse: () => null) as YamlScalar;
+  }
 
   var message = 'Could not create `${err.className}`.';
-  if (yamlValue == null) {
-    assert(err.key == null);
-    message = '${yamlMap.span.message(message)} ${err.innerError}';
-  } else {
-    message = '$message Unsupported value for `${err.key}`.';
-    if (err.message != null) {
-      message = '$message ${err.message}';
+  if (err.innerError is UnrecognizedKeysException) {
+    var innerError = err.innerError as UnrecognizedKeysException;
+    message += '\n${innerError.message}\n';
+    for (var key in innerError.unrecognizedKeys) {
+      var yamlKey = _getYamlKey(key);
+      assert(yamlKey != null);
+      message += '\n${yamlKey.span.message('Invalid key "$key"')}';
     }
-    message = yamlValue.span.message(message);
+  } else {
+    var yamlValue = yamlMap.nodes[err.key];
+
+    if (yamlValue == null) {
+      assert(err.key == null);
+      message = '${yamlMap.span.message(message)} ${err.innerError}';
+    } else {
+      message = '$message Unsupported value for `${err.key}`.';
+      if (err.message != null) {
+        message = '$message ${err.message}';
+      }
+      message = yamlValue.span.message(message);
+    }
   }
 
   return message;

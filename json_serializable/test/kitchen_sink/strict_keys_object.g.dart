@@ -4,17 +4,21 @@
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'simple_object.dart';
+part of 'strict_keys_object.dart';
 
 // **************************************************************************
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-SimpleObject _$SimpleObjectFromJson(Map json) {
-  return new SimpleObject(json['value'] as int);
+StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
+  $checkAllowedKeys(json, const ['value', 'custom_field']);
+  return new StrictKeysObject(
+      json['value'] as int, json['custom_field'] as String);
 }
 
-abstract class _$SimpleObjectSerializerMixin {
+abstract class _$StrictKeysObjectSerializerMixin {
   int get value;
-  Map<String, dynamic> toJson() => <String, dynamic>{'value': value};
+  String get customField;
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'value': value, 'custom_field': customField};
 }

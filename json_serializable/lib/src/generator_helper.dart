@@ -141,7 +141,7 @@ class _GeneratorHelper {
       var mapType = _generator.anyMap ? 'Map' : 'Map<String, dynamic>';
       _buffer.write('$_targetClassReference '
           '${_prefix}FromJson${_genericClassArguments(true)}'
-          '($mapType json) =>');
+          '($mapType json) {\n');
 
       String deserializeFun(String paramOrFieldName,
               {ParameterElement ctorParam}) =>
@@ -152,10 +152,11 @@ class _GeneratorHelper {
       if (_generator.checked) {
         var classLiteral = escapeDartString(_element.name);
 
-        _buffer.write(''' \$checkedNew(
+        _buffer.write('''
+  return \$checkedNew(
     $classLiteral,
     json,
-    ()''');
+    () {''');
 
         var data = writeConstructorInvocation(
             _element,
@@ -169,31 +170,28 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        if (data.fieldsToSet.isEmpty) {
-          // Use simple arrow syntax for the constructor invocation.
-          // There are no fields to set
-          _buffer.write(' => ${data.content}');
-        } else {
-          // If there are fields to set, create a full function body and
-          // create a temporary variable to hold the instance so we can make
-          // wrapped calls to all of the fields value assignments.
-          _buffer.write(''' {
-      var val = ''');
-          _buffer.write(data.content);
-          _buffer.writeln(';');
-
-          for (var field in data.fieldsToSet) {
-            _buffer.writeln();
-            var safeName = _safeNameAccess(accessibleFields[field]);
-            _buffer.write('''
-      \$checkedConvert(json, $safeName, (v) => ''');
-            _buffer.write('val.$field = ');
-            _buffer.write(_deserializeForField(accessibleFields[field],
-                checkedProperty: true));
-            _buffer.write(');');
-          }
-          _buffer.writeln('return val; }');
+        if (_annotation.disallowUnrecognizedKeys) {
+          var listLiteral = jsonLiteralAsDart(
+              accessibleFields.values.map(_nameAccess).toList(), true);
+          _buffer.write('''
+      \$checkAllowedKeys(json, $listLiteral);''');
         }
+        _buffer.write('''
+      var val = ${data.content};''');
+
+        for (var field in data.fieldsToSet) {
+          _buffer.writeln();
+          var safeName = _safeNameAccess(accessibleFields[field]);
+          _buffer.write('''
+      \$checkedConvert(json, $safeName, (v) => ''');
+          _buffer.write('val.$field = ');
+          _buffer.write(_deserializeForField(accessibleFields[field],
+              checkedProperty: true));
+          _buffer.write(');');
+        }
+
+        _buffer.writeln('return val; }');
+
         var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
             .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
             .where((me) => me.key != me.value));
@@ -206,7 +204,9 @@ class _GeneratorHelper {
           fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
         }
 
-        _buffer.write('$fieldKeyMapArg)');
+        _buffer.write(fieldKeyMapArg);
+
+        _buffer.write(')');
       } else {
         var data = writeConstructorInvocation(
             _element,
@@ -220,14 +220,25 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        _buffer.write(' ${data.content}');
+        if (_annotation.disallowUnrecognizedKeys) {
+          var listLiteral = jsonLiteralAsDart(
+              fieldsSetByFactory
+                  .map((k) => _nameAccess(accessibleFields[k]))
+                  .toList(),
+              true);
+          _buffer.write('''
+  \$checkAllowedKeys(json, $listLiteral);''');
+        }
+
+        _buffer.write('''
+  return ${data.content}''');
         for (var field in data.fieldsToSet) {
           _buffer.writeln();
-          _buffer.write('  ..$field = ');
+          _buffer.write('    ..$field = ');
           _buffer.write(deserializeFun(field));
         }
       }
-      _buffer.writeln(';');
+      _buffer.writeln(';\n}');
       _buffer.writeln();
 
       // If there are fields that are final – that are not set via the generated

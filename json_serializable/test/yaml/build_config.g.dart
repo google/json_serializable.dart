@@ -10,60 +10,79 @@ part of 'build_config.dart';
 // Generator: JsonSerializableGenerator
 // **************************************************************************
 
-Config _$ConfigFromJson(Map json) => $checkedNew(
-    'Config',
-    json,
-    () => new Config(
+Config _$ConfigFromJson(Map json) {
+  return $checkedNew('Config', json, () {
+    var val = new Config(
         builders: $checkedConvert(
             json,
             'builders',
             (v) => (v as Map)?.map((k, e) => new MapEntry(k as String,
-                e == null ? null : new Builder.fromJson(e as Map))))));
+                e == null ? null : new Builder.fromJson(e as Map)))));
+    return val;
+  });
+}
 
 abstract class _$ConfigSerializerMixin {
   Map<String, Builder> get builders;
   Map<String, dynamic> toJson() => <String, dynamic>{'builders': builders};
 }
 
-Builder _$BuilderFromJson(Map json) => $checkedNew(
-        'Builder',
-        json,
-        () => new Builder(
-            import: $checkedConvert(json, 'import', (v) => v as String),
-            target: $checkedConvert(json, 'target', (v) => v as String),
-            isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
-            autoApply: $checkedConvert(json, 'auto_apply',
-                (v) => v == null ? null : _fromJson(v as String)),
-            defaultEnumTest: $checkedConvert(
-                json,
-                'defaultEnumTest',
-                (v) => $enumDecodeNullable(
-                    'AutoApply', AutoApply.values, v as String)),
-            builderFactories: $checkedConvert(json, 'builder_factories',
-                (v) => (v as List).map((e) => e as String).toList()),
-            appliesBuilders: $checkedConvert(json, 'applies_builders',
-                (v) => (v as List)?.map((e) => e as String)?.toList()),
-            requiredInputs: $checkedConvert(json, 'required_inputs',
-                (v) => (v as List)?.map((e) => e as String)?.toList()),
-            buildExtentions: $checkedConvert(
-                json,
-                'build_extensions',
-                (v) => (v as Map)?.map((k, e) => new MapEntry(k as String,
-                    (e as List)?.map((e) => e as String)?.toList())))),
-        fieldKeyMap: const {
-          'isOptional': 'is_optional',
-          'autoApply': 'auto_apply',
-          'builderFactories': 'builder_factories',
-          'appliesBuilders': 'applies_builders',
-          'requiredInputs': 'required_inputs',
-          'buildExtentions': 'build_extensions'
-        });
+Builder _$BuilderFromJson(Map json) {
+  return $checkedNew('Builder', json, () {
+    $checkAllowedKeys(json, const [
+      'target',
+      'import',
+      'is_optional',
+      'auto_apply',
+      'build_to',
+      'defaultEnumTest',
+      'builder_factories',
+      'applies_builders',
+      'required_inputs',
+      'build_extensions'
+    ]);
+    var val = new Builder(
+        import: $checkedConvert(json, 'import', (v) => v as String),
+        target: $checkedConvert(json, 'target', (v) => v as String),
+        isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
+        autoApply: $checkedConvert(json, 'auto_apply',
+            (v) => v == null ? null : _autoApplyFromJson(v as String)),
+        buildTo: $checkedConvert(json, 'build_to',
+            (v) => v == null ? null : _buildToFromJson(v as String)),
+        defaultEnumTest: $checkedConvert(
+            json,
+            'defaultEnumTest',
+            (v) => $enumDecodeNullable(
+                'AutoApply', AutoApply.values, v as String)),
+        builderFactories: $checkedConvert(json, 'builder_factories',
+            (v) => (v as List).map((e) => e as String).toList()),
+        appliesBuilders: $checkedConvert(json, 'applies_builders',
+            (v) => (v as List)?.map((e) => e as String)?.toList()),
+        requiredInputs: $checkedConvert(json, 'required_inputs',
+            (v) => (v as List)?.map((e) => e as String)?.toList()),
+        buildExtentions: $checkedConvert(
+            json,
+            'build_extensions',
+            (v) => (v as Map)?.map((k, e) => new MapEntry(
+                k as String, (e as List)?.map((e) => e as String)?.toList()))));
+    return val;
+  }, fieldKeyMap: const {
+    'isOptional': 'is_optional',
+    'autoApply': 'auto_apply',
+    'buildTo': 'build_to',
+    'builderFactories': 'builder_factories',
+    'appliesBuilders': 'applies_builders',
+    'requiredInputs': 'required_inputs',
+    'buildExtentions': 'build_extensions'
+  });
+}
 
 abstract class _$BuilderSerializerMixin {
   String get target;
   String get import;
   bool get isOptional;
   AutoApply get autoApply;
+  BuildTo get buildTo;
   AutoApply get defaultEnumTest;
   List<String> get builderFactories;
   List<String> get appliesBuilders;
@@ -81,7 +100,9 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('target', target);
     writeNotNull('import', import);
     writeNotNull('is_optional', isOptional);
-    writeNotNull('auto_apply', autoApply == null ? null : _toJson(autoApply));
+    writeNotNull(
+        'auto_apply', autoApply == null ? null : _autoApplyToJson(autoApply));
+    writeNotNull('build_to', buildTo == null ? null : _buildToToJson(buildTo));
     writeNotNull(
         'defaultEnumTest', defaultEnumTest?.toString()?.split('.')?.last);
     val['builder_factories'] = builderFactories;

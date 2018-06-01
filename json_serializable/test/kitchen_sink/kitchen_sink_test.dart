@@ -20,6 +20,8 @@ import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
 import 'kitchen_sink_interface.dart';
 
 final _isATypeError = const isInstanceOf<TypeError>();
+final _isAUnrecognizedKeysEexception =
+    const isInstanceOf<UnrecognizedKeysException>();
 
 void main() {
   test('valid values covers all keys', () {
@@ -239,7 +241,8 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
-    innerMatcher = anyOf(isACastError, _isATypeError);
+    innerMatcher =
+        anyOf(isACastError, _isATypeError, _isAUnrecognizedKeysEexception);
 
     if (checkedAssignment) {
       switch (expectedKey) {
@@ -248,6 +251,9 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           break;
         case 'no-42':
           innerMatcher = isArgumentError;
+          break;
+        case 'strictKeysObject':
+          innerMatcher = _isAUnrecognizedKeysEexception;
           break;
         case 'intIterable':
         case 'datetime-iterable':
@@ -284,6 +290,7 @@ final _validValues = const {
   toJsonMapHelperName: null,
   r'$string': null,
   'simpleObject': const {'value': 42},
+  'strictKeysObject': const {'value': 10, 'custom_field': 'cool'},
   'validatedPropertyNo42': 0
 };
 
@@ -309,6 +316,10 @@ final _invalidValueTypes = const {
   toJsonMapHelperName: 42,
   r'$string': true,
   'simpleObject': 42,
+  'strictKeysObject': const {
+    'value': 10,
+    'invalid_key': true,
+  },
   'validatedPropertyNo42': true
 };
 

@@ -154,17 +154,18 @@ void _registerTests(JsonSerializableGenerator generator) {
     if (!generator.useWrappers) {
       test('class with no ctor params', () async {
         var output = await runForElementNamed('Person');
-        expect(output,
-            r'''Person _$PersonFromJson(Map<String, dynamic> json) => new Person()
-  ..firstName = json['firstName'] as String
-  ..lastName = json['lastName'] as String
-  ..height = json['h'] as int
-  ..dateOfBirth = json['dateOfBirth'] == null
-      ? null
-      : DateTime.parse(json['dateOfBirth'] as String)
-  ..dynamicType = json['dynamicType']
-  ..varType = json['varType']
-  ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+        expect(output, r'''Person _$PersonFromJson(Map<String, dynamic> json) {
+  return new Person()
+    ..firstName = json['firstName'] as String
+    ..lastName = json['lastName'] as String
+    ..height = json['h'] as int
+    ..dateOfBirth = json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String)
+    ..dynamicType = json['dynamicType']
+    ..varType = json['varType']
+    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+}
 
 abstract class _$PersonSerializerMixin {
   String get firstName;
@@ -189,14 +190,13 @@ abstract class _$PersonSerializerMixin {
 
       test('class with ctor params', () async {
         var output = await runForElementNamed('Order');
-        expect(output,
-            r'''Order _$OrderFromJson(Map<String, dynamic> json) => new Order(
-    json['height'] as int,
-    json['firstName'] as String,
-    json['lastName'] as String)
-  ..dateOfBirth = json['dateOfBirth'] == null
-      ? null
-      : DateTime.parse(json['dateOfBirth'] as String);
+        expect(output, r'''Order _$OrderFromJson(Map<String, dynamic> json) {
+  return new Order(json['height'] as int, json['firstName'] as String,
+      json['lastName'] as String)
+    ..dateOfBirth = json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String);
+}
 
 abstract class _$OrderSerializerMixin {
   String get firstName;
@@ -402,17 +402,18 @@ abstract class _$OrderSerializerMixin {
         var output = await runForElementNamed('FromDynamicCollection');
         expect(output, r'''
 FromDynamicCollection _$FromDynamicCollectionFromJson(
-        Map<String, dynamic> json) =>
-    new FromDynamicCollection()
-      ..mapField = json['mapField'] == null
-          ? null
-          : _fromDynamicMap(json['mapField'] as Map)
-      ..listField = json['listField'] == null
-          ? null
-          : _fromDynamicList(json['listField'] as List)
-      ..iterableField = json['iterableField'] == null
-          ? null
-          : _fromDynamicIterable(json['iterableField'] as List);
+    Map<String, dynamic> json) {
+  return new FromDynamicCollection()
+    ..mapField = json['mapField'] == null
+        ? null
+        : _fromDynamicMap(json['mapField'] as Map)
+    ..listField = json['listField'] == null
+        ? null
+        : _fromDynamicList(json['listField'] as List)
+    ..iterableField = json['iterableField'] == null
+        ? null
+        : _fromDynamicIterable(json['iterableField'] as List);
+}
 ''');
       });
       test('OkayOneNormalOptionalPositional', () async {
@@ -446,18 +447,18 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
     var expected = generator.useWrappers
         ? r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-        Map<String, dynamic> json) =>
-    new GenericClass<T, S>()
-      ..fieldObject = json['fieldObject'] == null
-          ? null
-          : _dataFromJson(json['fieldObject'])
-      ..fieldDynamic = json['fieldDynamic'] == null
-          ? null
-          : _dataFromJson(json['fieldDynamic'])
-      ..fieldInt =
-          json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-      ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-      ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+    Map<String, dynamic> json) {
+  return new GenericClass<T, S>()
+    ..fieldObject =
+        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
+    ..fieldDynamic = json['fieldDynamic'] == null
+        ? null
+        : _dataFromJson(json['fieldDynamic'])
+    ..fieldInt =
+        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
+    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
+    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+}
 
 abstract class _$GenericClassSerializerMixin<T extends num, S> {
   Object get fieldObject;
@@ -498,18 +499,18 @@ class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
 '''
         : r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-        Map<String, dynamic> json) =>
-    new GenericClass<T, S>()
-      ..fieldObject = json['fieldObject'] == null
-          ? null
-          : _dataFromJson(json['fieldObject'])
-      ..fieldDynamic = json['fieldDynamic'] == null
-          ? null
-          : _dataFromJson(json['fieldDynamic'])
-      ..fieldInt =
-          json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-      ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-      ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+    Map<String, dynamic> json) {
+  return new GenericClass<T, S>()
+    ..fieldObject =
+        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
+    ..fieldDynamic = json['fieldDynamic'] == null
+        ? null
+        : _dataFromJson(json['fieldDynamic'])
+    ..fieldInt =
+        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
+    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
+    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+}
 
 abstract class _$GenericClassSerializerMixin<T extends num, S> {
   Object get fieldObject;
@@ -535,10 +536,12 @@ abstract class _$GenericClassSerializerMixin<T extends num, S> {
 
     var expected = generator.useWrappers
         ? r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
-    json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
-  ..superTypeReadWrite = json['superTypeReadWrite'] as int
-  ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+SubType _$SubTypeFromJson(Map<String, dynamic> json) {
+  return new SubType(
+      json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
+    ..superTypeReadWrite = json['superTypeReadWrite'] as int
+    ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+}
 
 abstract class _$SubTypeSerializerMixin {
   int get superTypeViaCtor;
@@ -581,10 +584,12 @@ class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
 }
 '''
         : r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) => new SubType(
-    json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
-  ..superTypeReadWrite = json['superTypeReadWrite'] as int
-  ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+SubType _$SubTypeFromJson(Map<String, dynamic> json) {
+  return new SubType(
+      json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
+    ..superTypeReadWrite = json['superTypeReadWrite'] as int
+    ..subTypeReadWrite = json['subTypeReadWrite'] as int;
+}
 
 abstract class _$SubTypeSerializerMixin {
   int get superTypeViaCtor;

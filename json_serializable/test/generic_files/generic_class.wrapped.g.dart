@@ -11,23 +11,24 @@ part of 'generic_class.wrapped.dart';
 // **************************************************************************
 
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-        Map<String, dynamic> json) =>
-    new GenericClass<T, S>()
-      ..fieldObject = json['fieldObject'] == null
-          ? null
-          : _dataFromJson(json['fieldObject'] as Map<String, dynamic>)
-      ..fieldDynamic = json['fieldDynamic'] == null
-          ? null
-          : _dataFromJson(json['fieldDynamic'] as Map<String, dynamic>)
-      ..fieldInt = json['fieldInt'] == null
-          ? null
-          : _dataFromJson(json['fieldInt'] as Map<String, dynamic>)
-      ..fieldT = json['fieldT'] == null
-          ? null
-          : _dataFromJson(json['fieldT'] as Map<String, dynamic>)
-      ..fieldS = json['fieldS'] == null
-          ? null
-          : _dataFromJson(json['fieldS'] as Map<String, dynamic>);
+    Map<String, dynamic> json) {
+  return new GenericClass<T, S>()
+    ..fieldObject = json['fieldObject'] == null
+        ? null
+        : _dataFromJson(json['fieldObject'] as Map<String, dynamic>)
+    ..fieldDynamic = json['fieldDynamic'] == null
+        ? null
+        : _dataFromJson(json['fieldDynamic'] as Map<String, dynamic>)
+    ..fieldInt = json['fieldInt'] == null
+        ? null
+        : _dataFromJson(json['fieldInt'] as Map<String, dynamic>)
+    ..fieldT = json['fieldT'] == null
+        ? null
+        : _dataFromJson(json['fieldT'] as Map<String, dynamic>)
+    ..fieldS = json['fieldS'] == null
+        ? null
+        : _dataFromJson(json['fieldS'] as Map<String, dynamic>);
+}
 
 abstract class _$GenericClassSerializerMixin<T extends num, S> {
   Object get fieldObject;
