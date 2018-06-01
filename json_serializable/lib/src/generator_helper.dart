@@ -156,7 +156,7 @@ class _GeneratorHelper {
   return \$checkedNew(
     $classLiteral,
     json,
-    () {''');
+    () {\n''');
 
         var data = writeConstructorInvocation(
             _element,
@@ -177,20 +177,22 @@ class _GeneratorHelper {
       \$checkAllowedKeys(json, $listLiteral);''');
         }
         _buffer.write('''
-      var val = ${data.content};''');
+    var val = ${data.content};''');
 
         for (var field in data.fieldsToSet) {
           _buffer.writeln();
           var safeName = _safeNameAccess(accessibleFields[field]);
           _buffer.write('''
-      \$checkedConvert(json, $safeName, (v) => ''');
+    \$checkedConvert(json, $safeName, (v) => ''');
           _buffer.write('val.$field = ');
           _buffer.write(_deserializeForField(accessibleFields[field],
               checkedProperty: true));
           _buffer.write(');');
         }
 
-        _buffer.writeln('return val; }');
+        _buffer.write('''\n
+    return val;
+  }''');
 
         var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
             .map((k) => new MapEntry(k, _nameAccess(accessibleFields[k])))
