@@ -4,6 +4,7 @@
   * Added a helper function to support this option. This function starts with a
     `$` and should only be referenced by generated code. It is not meant for
     direct use.
+  * Added `UnrecognizedKeysException` for reporting errors.
 
 ## 0.2.6
 
