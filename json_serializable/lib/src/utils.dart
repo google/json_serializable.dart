@@ -287,7 +287,7 @@ CtorData writeConstructorInvocation(
     buffer.writeAll(constructorArguments.map((paramElement) {
       var content =
           deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '    $content';
+      return '      $content';
     }), ',\n');
     if (namedConstructorArguments.isNotEmpty) {
       buffer.write(',');
@@ -298,7 +298,7 @@ CtorData writeConstructorInvocation(
     buffer.writeAll(namedConstructorArguments.map((paramElement) {
       var value =
           deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '    ${paramElement.name}: $value';
+      return '      ${paramElement.name}: $value';
     }), ',\n');
   }
 
