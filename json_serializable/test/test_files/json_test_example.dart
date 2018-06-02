@@ -51,6 +51,8 @@ class Order extends Object with _$OrderSerializerMixin {
   Platform platform;
   Map<String, Platform> altPlatforms;
 
+  Uri homepage;
+
   @JsonKey(ignore: true)
   String get platformValue => platform?.description;
 
