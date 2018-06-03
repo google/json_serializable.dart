@@ -1,3 +1,8 @@
+## 0.2.7+1
+
+* Small improvement to `UnrecognizedKeysException.message` output and
+  documentation comments.
+
 ## 0.2.7
 
 * Added `JsonSerializable.disallowUnrecognizedKeys`.
