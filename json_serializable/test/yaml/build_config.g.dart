@@ -29,7 +29,7 @@ abstract class _$ConfigSerializerMixin {
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
-    $checkAllowedKeys(json, const [
+    $checkKeys(json, allowedKeys: const [
       'target',
       'import',
       'is_optional',

@@ -240,11 +240,17 @@ class _GeneratorHelper {
 
   void _writeChecks(int indent, JsonSerializable classAnnotation,
       Map<String, FieldElement> accessibleFields) {
+    var args = <String>[];
+
     if (classAnnotation.disallowUnrecognizedKeys) {
-      var listLiteral = jsonLiteralAsDart(
+      var allowKeysLiteral = jsonLiteralAsDart(
           accessibleFields.values.map(_nameAccess).toList(), true);
 
-      _buffer.writeln('${' ' * indent}\$checkAllowedKeys(json, $listLiteral);');
+      args.add('allowedKeys: $allowKeysLiteral');
+    }
+
+    if (args.isNotEmpty) {
+      _buffer.writeln('${' ' * indent}\$checkKeys(json, ${args.join(', ')});');
     }
   }
 

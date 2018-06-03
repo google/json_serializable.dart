@@ -1,3 +1,9 @@
+## 0.2.8
+
+* Added `$checkKeys` helper function and deprecated `$checkAllowedKeys`.
+  Upgrading to the latest `json_serializable` and re-running your build will
+  eliminate any `@deprecated` hints you see.
+
 ## 0.2.7+1
 
 * Small improvement to `UnrecognizedKeysException.message` output and
