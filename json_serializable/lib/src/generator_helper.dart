@@ -170,12 +170,7 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        if (_annotation.disallowUnrecognizedKeys) {
-          var listLiteral = jsonLiteralAsDart(
-              accessibleFields.values.map(_nameAccess).toList(), true);
-          _buffer.write('''
-      \$checkAllowedKeys(json, $listLiteral);''');
-        }
+        _writeChecks(6, _annotation, accessibleFields);
         _buffer.write('''
     var val = ${data.content};''');
 
@@ -222,15 +217,7 @@ class _GeneratorHelper {
 
         fieldsSetByFactory = data.usedCtorParamsAndFields;
 
-        if (_annotation.disallowUnrecognizedKeys) {
-          var listLiteral = jsonLiteralAsDart(
-              fieldsSetByFactory
-                  .map((k) => _nameAccess(accessibleFields[k]))
-                  .toList(),
-              true);
-          _buffer.write('''
-  \$checkAllowedKeys(json, $listLiteral);''');
-        }
+        _writeChecks(2, _annotation, accessibleFields);
 
         _buffer.write('''
   return ${data.content}''');
@@ -249,6 +236,16 @@ class _GeneratorHelper {
           .removeWhere((name, fe) => !fieldsSetByFactory.contains(name));
     }
     return accessibleFields.values.toSet();
+  }
+
+  void _writeChecks(int indent, JsonSerializable classAnnotation,
+      Map<String, FieldElement> accessibleFields) {
+    if (classAnnotation.disallowUnrecognizedKeys) {
+      var listLiteral = jsonLiteralAsDart(
+          accessibleFields.values.map(_nameAccess).toList(), true);
+
+      _buffer.writeln('${' ' * indent}\$checkAllowedKeys(json, $listLiteral);');
+    }
   }
 
   void _writeWrapper(Iterable<FieldElement> fields) {
