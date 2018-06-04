@@ -113,7 +113,7 @@ builders:
     baz: zap
 ''': r'''
 Could not create `Builder`.
-Unrecognized keys [baz, foo], supported keys  are [target, import, is_optional, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
+Unrecognized keys: [baz, foo]; supported keys: [target, import, is_optional, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
 
 line 4, column 5 of file.yaml: Invalid key "baz"
     baz: zap
