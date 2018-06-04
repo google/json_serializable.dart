@@ -1,13 +1,19 @@
 ## 0.5.7
 
+* Added support for `JsonKey.required`.
+  * When `true`, generated code throws a `MissingRequiredKeysException` if
+    the key does not exist in the JSON map used to populate the annotated field.
+  * Will be captured and wrapped in a `CheckedFromJsonException` if
+    `checked` is enabled in `json_serializable`.
+
 * Added support for `Uri` conversion.
 
 ## 0.5.6
 
 * Added support for `JsonSerializable.disallowUnrecognizedKeys`.
   * Throws an `UnrecognizedKeysException` if it finds unrecognized keys in the
-    JSON map used to create the annotated object.
-  * Will be captured captured and wrapped in a `CheckedFromJsonException` if
+    JSON map used to populate the annotated field.
+  * Will be captured and wrapped in a `CheckedFromJsonException` if
     `checked` is enabled in `json_serializable`.
 * All `fromJson` constructors now use block syntax instead of fat arrows.
 

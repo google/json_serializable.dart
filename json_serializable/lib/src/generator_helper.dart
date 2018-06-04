@@ -249,6 +249,15 @@ class _GeneratorHelper {
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
+    var requiredKeys =
+        accessibleFields.values.where((fe) => jsonKeyFor(fe).required).toList();
+    if (requiredKeys.isNotEmpty) {
+      var requiredKeyLiteral =
+          jsonLiteralAsDart(requiredKeys.map(_nameAccess).toList(), true);
+
+      args.add('requiredKeys: $requiredKeyLiteral');
+    }
+
     if (args.isNotEmpty) {
       _buffer.writeln('${' ' * indent}\$checkKeys(json, ${args.join(', ')});');
     }

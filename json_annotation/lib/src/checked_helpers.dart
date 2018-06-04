@@ -23,6 +23,8 @@ T $checkedNew<T>(String className, Map map, T constructor(),
     String key;
     if (error is ArgumentError) {
       key = fieldKeyMap[error.name] ?? error.name;
+    } else if (error is MissingRequiredKeysException) {
+      key = error.missingKeys.first;
     }
     throw new CheckedFromJsonException._(error, stack, map, key,
         className: className);
@@ -91,6 +93,8 @@ class CheckedFromJsonException implements Exception {
     if (error is ArgumentError) {
       return error.message?.toString();
     } else if (error is UnrecognizedKeysException) {
+      return error.message;
+    } else if (error is MissingRequiredKeysException) {
       return error.message;
     }
     return null;

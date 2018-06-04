@@ -9,10 +9,11 @@ part 'strict_keys_object.g.dart';
 @JsonSerializable(disallowUnrecognizedKeys: true)
 class StrictKeysObject extends Object with _$StrictKeysObjectSerializerMixin {
   @override
+  @JsonKey(required: true)
   final int value;
 
   @override
-  @JsonKey(name: 'custom_field')
+  @JsonKey(name: 'custom_field', required: true)
   final String customField;
 
   StrictKeysObject(this.value, this.customField);

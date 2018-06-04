@@ -13,16 +13,26 @@ void $checkAllowedKeys(Map map, Iterable<String> allowedKeys) {
   $checkKeys(map, allowedKeys: allowedKeys?.toList());
 }
 
-/// Helper function used in generated code when
-/// `JsonSerializable.disallowUnrecognizedKeys` is `true`.
+/// Helper function used in generated `fromJson` code when
+/// `JsonSerializable.disallowUnrecognizedKeys` is true for an annotated type or
+/// `JsonKey.required` is `true` for any annotated fields.
 ///
 /// Should not be used directly.
-void $checkKeys(Map map, {Iterable<String> allowedKeys}) {
-  if (map == null) return;
-  var invalidKeys = map.keys.where((k) => !allowedKeys.contains(k));
-  if (invalidKeys.isNotEmpty) {
-    throw new UnrecognizedKeysException(
-        new List<String>.from(invalidKeys), map, allowedKeys.toList());
+void $checkKeys(Map map,
+    {List<String> allowedKeys, List<String> requiredKeys}) {
+  if (map != null && allowedKeys != null) {
+    var invalidKeys =
+        map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
+    if (invalidKeys.isNotEmpty) {
+      throw new UnrecognizedKeysException(invalidKeys, map, allowedKeys);
+    }
+  }
+
+  if (requiredKeys != null) {
+    var missingKeys = requiredKeys.where((k) => !map.keys.contains(k)).toList();
+    if (missingKeys.isNotEmpty) {
+      throw new MissingRequiredKeysException(missingKeys, map);
+    }
   }
 }
 
@@ -44,4 +54,20 @@ class UnrecognizedKeysException implements Exception {
       '[${allowedKeys.join(', ')}]';
 
   UnrecognizedKeysException(this.unrecognizedKeys, this.map, this.allowedKeys);
+}
+
+/// Exception thrown if there are missing required keys in a JSON map that was
+/// provided during deserialization.
+class MissingRequiredKeysException implements Exception {
+  /// The keys that [map] is missing.
+  final List<String> missingKeys;
+
+  /// The source [Map] that the required keys were missing in.
+  final Map map;
+
+  /// A human-readable message corresponding to the error.
+  String get message => 'Required keys are missing: ${missingKeys.join(', ')}.';
+
+  MissingRequiredKeysException(this.missingKeys, this.map)
+      : assert(missingKeys.isNotEmpty);
 }

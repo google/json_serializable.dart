@@ -119,6 +119,7 @@ JsonKeyWithConversion _from(FieldElement element) {
       obj.getField('includeIfNull').toBoolValue(),
       obj.getField('ignore').toBoolValue(),
       defaultValueLiteral,
+      obj.getField('required').toBoolValue(),
       fromJsonName,
       toJsonName);
 }
@@ -137,16 +138,24 @@ class JsonKeyWithConversion extends JsonKey {
   const JsonKeyWithConversion._empty()
       : fromJsonData = null,
         toJsonData = null,
-        super();
+        super(required: false);
 
-  JsonKeyWithConversion._(String name, bool nullable, bool includeIfNull,
-      bool ignore, Object defaultValue, this.fromJsonData, this.toJsonData)
+  JsonKeyWithConversion._(
+      String name,
+      bool nullable,
+      bool includeIfNull,
+      bool ignore,
+      Object defaultValue,
+      bool required,
+      this.fromJsonData,
+      this.toJsonData)
       : super(
             name: name,
             nullable: nullable,
             includeIfNull: includeIfNull,
             ignore: ignore,
-            defaultValue: defaultValue);
+            defaultValue: defaultValue,
+            required: required ?? false);
 }
 
 ConvertData _getFunctionName(

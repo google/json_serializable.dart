@@ -12,6 +12,7 @@ part of 'build_config.dart';
 
 Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
+    $checkKeys(json, requiredKeys: const ['builders']);
     var val = new Config(
         builders: $checkedConvert(
             json,

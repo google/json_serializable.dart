@@ -18,14 +18,30 @@ import 'kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
 import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
 
 import 'kitchen_sink_interface.dart';
+import 'strict_keys_object.dart';
 
 final _isATypeError = const isInstanceOf<TypeError>();
-final _isAUnrecognizedKeysEexception =
-    const isInstanceOf<UnrecognizedKeysException>();
+
+Matcher _isAUnrecognizedKeysEexception(expectedMessage) => allOf(
+    const isInstanceOf<UnrecognizedKeysException>(),
+    new FeatureMatcher<UnrecognizedKeysException>(
+        'message', (e) => e.message, expectedMessage));
+
+Matcher _isMissingKeyException(expectedMessage) => allOf(
+    const isInstanceOf<MissingRequiredKeysException>(),
+    new FeatureMatcher<MissingRequiredKeysException>(
+        'message', (e) => e.message, expectedMessage));
 
 void main() {
   test('valid values covers all keys', () {
     expect(_invalidValueTypes.keys, orderedEquals(_validValues.keys));
+  });
+
+  test('required keys', () {
+    expect(
+        () => new StrictKeysObject.fromJson({}),
+        throwsA(_isMissingKeyException(
+            'Required keys are missing: value, custom_field.')));
   });
 
   group('nullable', () {
@@ -241,8 +257,11 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
-    innerMatcher =
-        anyOf(isACastError, _isATypeError, _isAUnrecognizedKeysEexception);
+    innerMatcher = anyOf(
+        isACastError,
+        _isATypeError,
+        _isAUnrecognizedKeysEexception(
+            'Unrecognized keys: [invalid_key]; supported keys: [value, custom_field]'));
 
     if (checkedAssignment) {
       switch (expectedKey) {
@@ -253,7 +272,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           innerMatcher = isArgumentError;
           break;
         case 'strictKeysObject':
-          innerMatcher = _isAUnrecognizedKeysEexception;
+          innerMatcher = _isAUnrecognizedKeysEexception('bob');
           break;
         case 'intIterable':
         case 'datetime-iterable':

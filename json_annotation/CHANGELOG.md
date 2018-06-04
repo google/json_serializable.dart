@@ -4,6 +4,10 @@
   Upgrading to the latest `json_serializable` and re-running your build will
   eliminate any `@deprecated` hints you see.
 
+* Added `JsonKey.required` field and an associated
+  `MissingRequiredKeysException` that is thrown when `required` fields don't
+  have corresponding keys in a source JSON map.
+
 ## 0.2.7+1
 
 * Small improvement to `UnrecognizedKeysException.message` output and

@@ -129,6 +129,16 @@ class JsonKey {
   /// value is `null`.
   final Object defaultValue;
 
+  /// When `true`, generated code for `fromJson` will verify that the source
+  /// JSON map contains the associated key.
+  ///
+  /// If the key does not exist, a `MissingRequiredKeysException` exception is
+  /// thrown.
+  ///
+  /// Note: only the existence of the key is checked. A key with a `null` value
+  /// is considered valid.
+  final bool required;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -139,7 +149,8 @@ class JsonKey {
       this.ignore,
       this.fromJson,
       this.toJson,
-      this.defaultValue});
+      this.defaultValue,
+      this.required});
 }
 
 // Until enum supports parse: github.com/dart-lang/sdk/issues/33244

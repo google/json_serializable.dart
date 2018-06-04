@@ -11,6 +11,7 @@ part 'build_config.g.dart';
 
 @JsonSerializable()
 class Config extends Object with _$ConfigSerializerMixin {
+  @JsonKey(required: true)
   final Map<String, Builder> builders;
 
   Config({@required this.builders});

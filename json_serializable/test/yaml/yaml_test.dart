@@ -121,6 +121,13 @@ line 4, column 5 of file.yaml: Invalid key "baz"
 line 3, column 5 of file.yaml: Invalid key "foo"
     foo: bar
     ^^^''',
+  r'''
+  bob: cool
+  ''': '''
+Could not create `Config`.
+line 1, column 3 of file.yaml: Required keys are missing: builders.
+  bob: cool
+  ^^^^^^^^^^'''
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
@@ -131,15 +138,21 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
         orElse: () => null) as YamlScalar;
   }
 
+  var innerError = err.innerError;
+
   var message = 'Could not create `${err.className}`.';
-  if (err.innerError is UnrecognizedKeysException) {
-    var innerError = err.innerError as UnrecognizedKeysException;
+  if (innerError is UnrecognizedKeysException) {
+    expect(err.message, innerError.message);
     message += '\n${innerError.message}\n';
     for (var key in innerError.unrecognizedKeys) {
       var yamlKey = _getYamlKey(key);
       assert(yamlKey != null);
       message += '\n${yamlKey.span.message('Invalid key "$key"')}';
     }
+  } else if (innerError is MissingRequiredKeysException) {
+    expect(err.message, innerError.message);
+    expect(err.key, innerError.missingKeys.first);
+    message += '\n${yamlMap.span.message(innerError.message)}';
   } else {
     var yamlValue = yamlMap.nodes[err.key];
 
