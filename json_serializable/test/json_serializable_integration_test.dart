@@ -141,6 +141,19 @@ void main() {
 
       roundTripOrder(order);
     });
+
+    test('homepage', () {
+      var order = new Order(Category.charmed)
+        ..platform = Platform.undefined
+        ..altPlatforms = {
+          'u': Platform.undefined,
+          'f': Platform.foo,
+          'null': null
+        }
+        ..homepage = Uri.parse('https://dartlang.org');
+
+      roundTripOrder(order);
+    });
   });
 
   group('Item', () {

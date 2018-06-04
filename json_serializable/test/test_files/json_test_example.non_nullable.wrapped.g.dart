@@ -80,7 +80,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..isRushed = json['isRushed'] as bool
     ..platform = new Platform.fromJson(json['platform'] as String)
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
-        .map((k, e) => new MapEntry(k, new Platform.fromJson(e as String)));
+        .map((k, e) => new MapEntry(k, new Platform.fromJson(e as String)))
+    ..homepage = Uri.parse(json['homepage'] as String);
 }
 
 abstract class _$OrderSerializerMixin {
@@ -90,6 +91,7 @@ abstract class _$OrderSerializerMixin {
   UnmodifiableListView<Item> get items;
   Platform get platform;
   Map<String, Platform> get altPlatforms;
+  Uri get homepage;
   Map<String, dynamic> toJson() => new _$OrderJsonMapWrapper(this);
 }
 
@@ -104,7 +106,8 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
         'category',
         'items',
         'platform',
-        'altPlatforms'
+        'altPlatforms',
+        'homepage'
       ];
 
   @override
@@ -123,6 +126,8 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
           return _v.platform;
         case 'altPlatforms':
           return _v.altPlatforms;
+        case 'homepage':
+          return _v.homepage.toString();
       }
     }
     return null;

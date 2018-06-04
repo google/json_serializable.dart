@@ -1,3 +1,7 @@
+## 0.5.7
+
+* Added support for `Uri` conversion.
+
 ## 0.5.6
 
 * Added support for `JsonSerializable.disallowUnrecognizedKeys`.

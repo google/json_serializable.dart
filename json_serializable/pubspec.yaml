@@ -1,5 +1,5 @@
 name: json_serializable
-version: 0.5.6
+version: 0.5.7-dev
 author: Dart Team <misc@dartlang.org>
 description: Generates utilities to aid in serializing to/from JSON.
 homepage: https://github.com/dart-lang/json_serializable
