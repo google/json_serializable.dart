@@ -15,7 +15,7 @@ void $checkAllowedKeys(Map map, Iterable<String> allowedKeys) {
   }
 }
 
-/// Exception thrown if there is an unrecognized key in a json map that was
+/// Exception thrown if there are unrecognized keys in a JSON map that was
 /// provided during deserialization.
 class UnrecognizedKeysException implements Exception {
   /// The allowed keys for [map].
@@ -24,12 +24,12 @@ class UnrecognizedKeysException implements Exception {
   /// The keys from [map] that were unrecognized.
   final List<String> unrecognizedKeys;
 
-  /// The source [Map] that the key was found in.
+  /// The source [Map] that the unrecognized keys were found in.
   final Map map;
 
   /// A human-readable message corresponding to the error.
   String get message =>
-      'Unrecognized keys [${unrecognizedKeys.join(', ')}], supported keys  are '
+      'Unrecognized keys: [${unrecognizedKeys.join(', ')}]; supported keys: '
       '[${allowedKeys.join(', ')}]';
 
   UnrecognizedKeysException(this.unrecognizedKeys, this.map, this.allowedKeys);
