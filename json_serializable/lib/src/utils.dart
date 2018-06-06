@@ -10,7 +10,14 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
     show InheritanceManager;
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
+
+@alwaysThrows
+void throwUnsupported(FieldElement element, String message) =>
+    throw new InvalidGenerationSourceError(
+        'Error with `@JsonKey` on `${element.name}`. $message',
+        element: element);
 
 JsonSerializable valueForAnnotation(ConstantReader annotation) =>
     new JsonSerializable(

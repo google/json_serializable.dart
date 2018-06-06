@@ -7,17 +7,10 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/constant/value.dart';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
 import 'utils.dart';
-
-@alwaysThrows
-void throwUnsupported(FieldElement element, String message) =>
-    throw new InvalidGenerationSourceError(
-        'Error with `@JsonKey` on `${element.name}`. $message',
-        element: element);
 
 final _jsonKeyExpando = new Expando<JsonKeyWithConversion>();
 
