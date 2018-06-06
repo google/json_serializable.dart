@@ -41,6 +41,8 @@ Builder _$BuilderFromJson(Map json) {
       'applies_builders',
       'required_inputs',
       'build_extensions'
+    ], disallowNullValues: const [
+      'auto_apply'
     ]);
     var val = new Builder(
         import: $checkedConvert(json, 'import', (v) => v as String),

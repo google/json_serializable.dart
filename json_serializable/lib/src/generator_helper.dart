@@ -259,6 +259,16 @@ class _GeneratorHelper {
       args.add('requiredKeys: $requiredKeyLiteral');
     }
 
+    var disallowNullKeys = accessibleFields.values
+        .where((fe) => _jsonKeyFor(fe).disallowNullValue)
+        .toList();
+    if (disallowNullKeys.isNotEmpty) {
+      var dissallowNullKeyLiteral =
+          jsonLiteralAsDart(disallowNullKeys.map(_nameAccess).toList(), true);
+
+      args.add('disallowNullValues: $dissallowNullKeyLiteral');
+    }
+
     if (args.isNotEmpty) {
       _buffer.writeln('${' ' * indent}\$checkKeys(json, ${args.join(', ')});');
     }

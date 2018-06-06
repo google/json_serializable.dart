@@ -95,13 +95,26 @@ JsonKeyWithConversion _from(
     }
   }
 
+  var disallowNullValue = obj.getField('disallowNullValue').toBoolValue();
+  var includeIfNull = obj.getField('includeIfNull').toBoolValue();
+
+  if (disallowNullValue == true) {
+    if (includeIfNull == true) {
+      throwUnsupported(
+          element,
+          'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+          'This leads to incompatible `toJson` and `fromJson` behavior.');
+    }
+  }
+
   return new JsonKeyWithConversion._(classAnnotation,
       name: obj.getField('name').toStringValue(),
       nullable: obj.getField('nullable').toBoolValue(),
-      includeIfNull: obj.getField('includeIfNull').toBoolValue(),
+      includeIfNull: includeIfNull,
       ignore: obj.getField('ignore').toBoolValue(),
       defaultValue: defaultValueLiteral,
       required: obj.getField('required').toBoolValue(),
+      disallowNullValue: disallowNullValue,
       fromJsonData: fromJsonName,
       toJsonData: toJsonName);
 }
@@ -131,15 +144,29 @@ class JsonKeyWithConversion extends JsonKey {
     bool ignore,
     Object defaultValue,
     bool required,
+    bool disallowNullValue,
     this.fromJsonData,
     this.toJsonData,
   }) : super(
             name: name,
             nullable: nullable ?? classAnnotation.nullable,
-            includeIfNull: includeIfNull ?? classAnnotation.includeIfNull,
+            includeIfNull: _includeIfNull(includeIfNull, disallowNullValue,
+                classAnnotation.includeIfNull),
             ignore: ignore ?? false,
             defaultValue: defaultValue,
-            required: required ?? false);
+            required: required ?? false,
+            disallowNullValue: disallowNullValue ?? false) {
+    assert(!this.includeIfNull || !this.disallowNullValue);
+  }
+
+  static bool _includeIfNull(bool keyIncludeIfNull, bool keyDisallowNullValue,
+      bool classIncludeIfNull) {
+    if (keyDisallowNullValue == true) {
+      assert(keyIncludeIfNull != true);
+      return false;
+    }
+    return keyIncludeIfNull ?? classIncludeIfNull;
+  }
 }
 
 ConvertData _getFunctionName(

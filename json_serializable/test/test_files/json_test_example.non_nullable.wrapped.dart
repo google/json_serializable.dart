@@ -54,6 +54,8 @@ enum Category { top, bottom, strange, charmed, up, down }
 
 @JsonSerializable(nullable: false)
 class Order extends Object with _$OrderSerializerMixin {
+  /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
+  @JsonKey(disallowNullValue: true)
   int count;
   bool isRushed;
 

@@ -5,11 +5,16 @@
   eliminate any `@deprecated` hints you see.
   
 * Added `BadKeyException` exception which is the abstract super class for
-  `MissingRequiredKeysException` and `UnrecognizedKeysException`.
+  `MissingRequiredKeysException`, `UnrecognizedKeysException`, and
+  `DisallowedNullValueException`.
 
 * Added `JsonKey.required` field and an associated
   `MissingRequiredKeysException` that is thrown when `required` fields don't
   have corresponding keys in a source JSON map.
+  
+* Added `JsonKey.disallowNullValue`  field and an associated 
+  `DisallowedNullValueException` that is thrown when corresponding keys exist in
+  a source JSON map, but their values are `null`.
 
 ## 0.2.7+1
 

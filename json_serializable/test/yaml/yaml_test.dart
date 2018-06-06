@@ -127,7 +127,14 @@ line 3, column 5 of file.yaml: Invalid key "foo"
 Could not create `Config`.
 line 1, column 3 of file.yaml: Required keys are missing: builders.
   bob: cool
-  ^^^^^^^^^^'''
+  ^^^^^^^^^^''',
+  r'''
+builders:
+  builder_name:
+    auto_apply:''': '''Could not create `Builder`.
+line 3, column 5 of file.yaml: These keys had `null` values, which is not allowed: [auto_apply]
+    auto_apply:
+    ^^^^^^^^^^^'''
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
@@ -141,18 +148,25 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
   var innerError = err.innerError;
 
   var message = 'Could not create `${err.className}`.';
-  if (innerError is UnrecognizedKeysException) {
+  if (innerError is BadKeyException) {
     expect(err.message, innerError.message);
-    message += '\n${innerError.message}\n';
-    for (var key in innerError.unrecognizedKeys) {
-      var yamlKey = _getYamlKey(key);
-      assert(yamlKey != null);
-      message += '\n${yamlKey.span.message('Invalid key "$key"')}';
+
+    if (innerError is UnrecognizedKeysException) {
+      message += '\n${innerError.message}\n';
+      for (var key in innerError.unrecognizedKeys) {
+        var yamlKey = _getYamlKey(key);
+        assert(yamlKey != null);
+        message += '\n${yamlKey.span.message('Invalid key "$key"')}';
+      }
+    } else if (innerError is MissingRequiredKeysException) {
+      expect(err.key, innerError.missingKeys.first);
+      message += '\n${yamlMap.span.message(innerError.message)}';
+    } else if (innerError is DisallowedNullValueException) {
+      expect(err.key, innerError.keysWithNullValues.first);
+      message += '\n${yamlMap.span.message(innerError.message)}';
+    } else {
+      throw new UnsupportedError('${innerError.runtimeType} is not supported.');
     }
-  } else if (innerError is MissingRequiredKeysException) {
-    expect(err.message, innerError.message);
-    expect(err.key, innerError.missingKeys.first);
-    message += '\n${yamlMap.span.message(innerError.message)}';
   } else {
     var yamlValue = yamlMap.nodes[err.key];
 

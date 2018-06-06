@@ -72,6 +72,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
+  $checkKeys(json, disallowNullValues: const ['count']);
   return new Order(
       $enumDecode('Category', Category.values, json['category'] as String),
       (json['items'] as List)

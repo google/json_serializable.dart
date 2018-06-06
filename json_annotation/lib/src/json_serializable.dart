@@ -40,6 +40,12 @@ class JsonSerializable {
 
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
+  ///
+  /// If `true` (the default), all fields are written to JSON, even if they are
+  /// `null`.
+  ///
+  /// If a field is annotated with `JsonKey` with a non-`null` value for
+  /// `includeIfNull`, that value takes precedent.
   final bool includeIfNull;
 
   /// When `true` (the default), `null` values are handled gracefully when
@@ -94,6 +100,12 @@ class JsonKey {
   /// The default value, `null`, indicates that the behavior should be
   /// acquired from the [JsonSerializable.includeIfNull] annotation on the
   /// enclosing class.
+  ///
+  /// If [disallowNullValue] is `true`, this value is treated as `false` to
+  /// ensure compatibility between `toJson` and `fromJson`.
+  ///
+  /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
+  /// same field, an exception will be thrown during code generation.
   final bool includeIfNull;
 
   /// `true` if the generator should ignore this field completely.
@@ -139,6 +151,19 @@ class JsonKey {
   /// is considered valid.
   final bool required;
 
+  /// If `true`, generated code will throw a `DisallowedNullValueException` if
+  /// the corresponding key exits, but the value is `null`.
+  ///
+  /// Note: this value does not affect the behavior of a JSON map *without* the
+  /// associated key.
+  ///
+  /// If [disallowNullValue] is `true`, [includeIfNull] will be treated as
+  /// `false` to ensure compatibility between `toJson` and `fromJson`.
+  ///
+  /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
+  /// same field, an exception will be thrown during code generation.
+  final bool disallowNullValue;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -151,6 +176,7 @@ class JsonKey {
     this.toJson,
     this.defaultValue,
     this.required,
+    this.disallowNullValue,
   });
 }
 

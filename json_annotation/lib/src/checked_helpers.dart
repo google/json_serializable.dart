@@ -25,6 +25,8 @@ T $checkedNew<T>(String className, Map map, T constructor(),
       key = fieldKeyMap[error.name] ?? error.name;
     } else if (error is MissingRequiredKeysException) {
       key = error.missingKeys.first;
+    } else if (error is DisallowedNullValueException) {
+      key = error.keysWithNullValues.first;
     }
     throw new CheckedFromJsonException._(error, stack, map, key,
         className: className);

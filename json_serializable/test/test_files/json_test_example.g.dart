@@ -46,6 +46,7 @@ abstract class _$PersonSerializerMixin {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
+  $checkKeys(json, disallowNullValues: const ['count']);
   return new Order(
       $enumDecode('Category', Category.values, json['category'] as String),
       (json['items'] as List)?.map((e) =>
@@ -70,15 +71,24 @@ abstract class _$OrderSerializerMixin {
   Platform get platform;
   Map<String, Platform> get altPlatforms;
   Uri get homepage;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'count': count,
-        'isRushed': isRushed,
-        'category': category.toString().split('.').last,
-        'items': items,
-        'platform': platform,
-        'altPlatforms': altPlatforms,
-        'homepage': homepage?.toString()
-      };
+  Map<String, dynamic> toJson() {
+    var val = <String, dynamic>{};
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('count', count);
+    val['isRushed'] = isRushed;
+    val['category'] = category.toString().split('.').last;
+    val['items'] = items;
+    val['platform'] = platform;
+    val['altPlatforms'] = altPlatforms;
+    val['homepage'] = homepage?.toString();
+    return val;
+  }
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) {

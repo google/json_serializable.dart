@@ -189,6 +189,12 @@ class PrivateFieldCtorClass {
 }
 
 @JsonSerializable()
+class IncludeIfNullDisallowNullClass {
+  @JsonKey(includeIfNull: true, disallowNullValue: true)
+  int field;
+}
+
+@JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
   int subTypeReadWrite;

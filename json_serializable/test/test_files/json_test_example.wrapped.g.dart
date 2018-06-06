@@ -77,6 +77,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
+  $checkKeys(json, disallowNullValues: const ['count']);
   return new Order(
       $enumDecode('Category', Category.values, json['category'] as String),
       (json['items'] as List)?.map((e) =>
@@ -109,15 +110,17 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
   _$OrderJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys => const [
-        'count',
-        'isRushed',
-        'category',
-        'items',
-        'platform',
-        'altPlatforms',
-        'homepage'
-      ];
+  Iterable<String> get keys sync* {
+    if (_v.count != null) {
+      yield 'count';
+    }
+    yield 'isRushed';
+    yield 'category';
+    yield 'items';
+    yield 'platform';
+    yield 'altPlatforms';
+    yield 'homepage';
+  }
 
   @override
   dynamic operator [](Object key) {

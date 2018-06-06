@@ -31,6 +31,7 @@ class Builder extends Object with _$BuilderSerializerMixin {
 
   @JsonKey(
       name: 'auto_apply',
+      disallowNullValue: true,
       toJson: _autoApplyToJson,
       fromJson: _autoApplyFromJson)
   final AutoApply autoApply;

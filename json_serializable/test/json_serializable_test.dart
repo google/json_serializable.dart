@@ -663,5 +663,13 @@ abstract class _$SubTypeSerializerMixin {
             'Cannot use `defaultValue` on a field with `nullable` false.');
       });
     });
+
+    test('`disallowNullvalue` and `includeIfNull` both `true`', () {
+      expectThrows(
+          'IncludeIfNullDisallowNullClass',
+          'Error with `@JsonKey` on `field`. '
+          'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+          'This leads to incompatible `toJson` and `fromJson` behavior.');
+    });
   }
 }

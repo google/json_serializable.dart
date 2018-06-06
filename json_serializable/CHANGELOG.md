@@ -6,6 +6,12 @@
   * Will be captured and wrapped in a `CheckedFromJsonException` if
     `checked` is enabled in `json_serializable`.
 
+* Added `JsonKey.disallowNullValue`.
+  * When `true`, generated code throws a `DisallowedNullValueException` if
+  the corresponding keys exist in in the JSON map, but it's value is null.
+  * Will be captured and wrapped in a `CheckedFromJsonException` if
+    `checked` is enabled in `json_serializable`.
+
 * Added support for `Uri` conversion.
 
 ## 0.5.6
