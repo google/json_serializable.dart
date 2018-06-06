@@ -12,21 +12,10 @@ import 'package:source_gen/source_gen.dart';
 import 'json_literal_generator.dart';
 import 'utils.dart';
 
-final _jsonKeyExpando = new Expando<JsonKeyWithConversion>();
-
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
-JsonKeyWithConversion jsonKeyFor(FieldElement element) {
-  var key = _jsonKeyExpando[element];
-
-  if (key == null) {
-    _jsonKeyExpando[element] = key = _from(element);
-  }
-
-  return key;
-}
-
-JsonKeyWithConversion _from(FieldElement element) {
+JsonKeyWithConversion _from(
+    FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
@@ -34,7 +23,7 @@ JsonKeyWithConversion _from(FieldElement element) {
       _jsonKeyChecker.firstAnnotationOfExact(element.getter);
 
   if (obj == null) {
-    return const JsonKeyWithConversion._empty();
+    return new JsonKeyWithConversion._(classAnnotation);
   }
   var fromJsonName = _getFunctionName(obj, element, true);
   var toJsonName = _getFunctionName(obj, element, false);
@@ -106,15 +95,15 @@ JsonKeyWithConversion _from(FieldElement element) {
     }
   }
 
-  return new JsonKeyWithConversion._(
-      obj.getField('name').toStringValue(),
-      obj.getField('nullable').toBoolValue(),
-      obj.getField('includeIfNull').toBoolValue(),
-      obj.getField('ignore').toBoolValue(),
-      defaultValueLiteral,
-      obj.getField('required').toBoolValue(),
-      fromJsonName,
-      toJsonName);
+  return new JsonKeyWithConversion._(classAnnotation,
+      name: obj.getField('name').toStringValue(),
+      nullable: obj.getField('nullable').toBoolValue(),
+      includeIfNull: obj.getField('includeIfNull').toBoolValue(),
+      ignore: obj.getField('ignore').toBoolValue(),
+      defaultValue: defaultValueLiteral,
+      required: obj.getField('required').toBoolValue(),
+      fromJsonData: fromJsonName,
+      toJsonData: toJsonName);
 }
 
 class ConvertData {
@@ -125,28 +114,30 @@ class ConvertData {
 }
 
 class JsonKeyWithConversion extends JsonKey {
+  static final _jsonKeyExpando = new Expando<JsonKeyWithConversion>();
+
   final ConvertData fromJsonData;
   final ConvertData toJsonData;
 
-  const JsonKeyWithConversion._empty()
-      : fromJsonData = null,
-        toJsonData = null,
-        super(required: false);
+  factory JsonKeyWithConversion(
+          FieldElement element, JsonSerializable classAnnotation) =>
+      _jsonKeyExpando[element] ??= _from(element, classAnnotation);
 
   JsonKeyWithConversion._(
-      String name,
-      bool nullable,
-      bool includeIfNull,
-      bool ignore,
-      Object defaultValue,
-      bool required,
-      this.fromJsonData,
-      this.toJsonData)
-      : super(
+    JsonSerializable classAnnotation, {
+    String name,
+    bool nullable,
+    bool includeIfNull,
+    bool ignore,
+    Object defaultValue,
+    bool required,
+    this.fromJsonData,
+    this.toJsonData,
+  }) : super(
             name: name,
-            nullable: nullable,
-            includeIfNull: includeIfNull,
-            ignore: ignore,
+            nullable: nullable ?? classAnnotation.nullable,
+            includeIfNull: includeIfNull ?? classAnnotation.includeIfNull,
+            ignore: ignore ?? false,
             defaultValue: defaultValue,
             required: required ?? false);
 }

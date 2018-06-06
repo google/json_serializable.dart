@@ -10,7 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'constants.dart';
-import 'json_key_helpers.dart';
+import 'json_key_with_conversion.dart';
 import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
@@ -128,7 +128,7 @@ class _GeneratorHelper {
         <String, FieldElement>{}, (map, field) {
       if (!field.isPublic) {
         unavailableReasons[field.name] = 'It is assigned to a private field.';
-      } else if (jsonKeyFor(field).ignore == true) {
+      } else if (_jsonKeyFor(field).ignore) {
         unavailableReasons[field.name] = 'It is assigned to an ignored field.';
       } else {
         map[field.name] = field;
@@ -249,8 +249,9 @@ class _GeneratorHelper {
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
-    var requiredKeys =
-        accessibleFields.values.where((fe) => jsonKeyFor(fe).required).toList();
+    var requiredKeys = accessibleFields.values
+        .where((fe) => _jsonKeyFor(fe).required)
+        .toList();
     if (requiredKeys.isNotEmpty) {
       var requiredKeyLiteral =
           jsonLiteralAsDart(requiredKeys.map(_nameAccess).toList(), true);
@@ -428,7 +429,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       throw _createInvalidGenerationError('fromJson', field, e);
     }
 
-    var defaultValue = jsonKeyFor(field).defaultValue;
+    var defaultValue = _jsonKeyFor(field).defaultValue;
     if (defaultValue != null) {
       if (!contextHelper.nullable) {
         throwUnsupported(field,
@@ -440,11 +441,11 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     return value;
   }
 
-  TypeHelperContext _getHelperContext(FieldElement field) {
-    var key = jsonKeyFor(field);
-    return new TypeHelperContext(_generator, field.metadata, _nullable(field),
-        key.fromJsonData, key.toJsonData);
-  }
+  JsonKeyWithConversion _jsonKeyFor(FieldElement field) =>
+      new JsonKeyWithConversion(field, _annotation);
+
+  TypeHelperContext _getHelperContext(FieldElement field) =>
+      new TypeHelperContext(_generator, field.metadata, _jsonKeyFor(field));
 
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.
@@ -454,20 +455,14 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
   ///   or
   ///   `nullable` is `false`.
   bool _writeJsonValueNaive(FieldElement field) =>
-      (jsonKeyFor(field).includeIfNull ?? _annotation.includeIfNull) ||
-      !_nullable(field);
+      _jsonKeyFor(field).includeIfNull || !_jsonKeyFor(field).nullable;
 
-  /// Returns `true` if the field should be treated as potentially nullable.
-  ///
-  /// If no [JsonKey] annotation is present on the field, `true` is returned.
-  bool _nullable(FieldElement field) =>
-      jsonKeyFor(field).nullable ?? _annotation.nullable;
+  String _nameAccess(FieldElement field) =>
+      _jsonKeyFor(field).name ?? field.name;
+
+  String _safeNameAccess(FieldElement field) =>
+      escapeDartString(_nameAccess(field));
 }
-
-String _nameAccess(FieldElement field) => jsonKeyFor(field).name ?? field.name;
-
-String _safeNameAccess(FieldElement field) =>
-    escapeDartString(_nameAccess(field));
 
 InvalidGenerationSourceError _createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {

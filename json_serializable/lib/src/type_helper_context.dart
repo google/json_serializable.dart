@@ -5,31 +5,29 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
-import 'json_key_helpers.dart';
+import 'json_key_with_conversion.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 
 class TypeHelperContext implements SerializeContext, DeserializeContext {
+  @override
+  final List<ElementAnnotation> metadata;
+
   final JsonSerializableGenerator _generator;
+  final JsonKeyWithConversion _key;
 
   @override
   bool get useWrappers => _generator.useWrappers;
 
-  @override
-  final List<ElementAnnotation> metadata;
-
-  @override
-  final bool nullable;
-
-  final ConvertData fromJsonData;
-  final ConvertData toJsonData;
-
-  // This is effectively private to TypeHelpers outside this package.
-  // Consider exposing it if there is interest
   bool get anyMap => _generator.anyMap;
 
-  TypeHelperContext(this._generator, this.metadata, this.nullable,
-      this.fromJsonData, this.toJsonData);
+  @override
+  bool get nullable => _key.nullable;
+
+  ConvertData get fromJsonData => _key.fromJsonData;
+  ConvertData get toJsonData => _key.toJsonData;
+
+  TypeHelperContext(this._generator, this.metadata, this._key);
 
   @override
   String serialize(DartType targetType, String expression) => _run(
