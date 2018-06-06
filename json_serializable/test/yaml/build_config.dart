@@ -36,7 +36,7 @@ class Builder extends Object with _$BuilderSerializerMixin {
       fromJson: _autoApplyFromJson)
   final AutoApply autoApply;
 
-  @JsonKey(name: 'build_to', toJson: _buildToToJson, fromJson: _buildToFromJson)
+  @JsonKey(name: 'build_to')
   final BuildTo buildTo;
 
   final AutoApply defaultEnumTest;
@@ -84,12 +84,6 @@ AutoApply _autoApplyFromJson(String input) =>
 String _autoApplyToJson(AutoApply value) =>
     _toJson(value, _autoApplyConvert, 'autoApply');
 
-BuildTo _buildToFromJson(String input) =>
-    _fromJson(input, _buildToConvert, 'buildTo');
-
-String _buildToToJson(BuildTo value) =>
-    _toJson(value, _buildToConvert, 'buildTo');
-
 // TODO: remove all of this and annotate the fields on the enum – once we have
 // https://github.com/dart-lang/json_serializable/issues/38
 T _fromJson<T>(String input, Map<String, T> convertMap, String fieldName) {
@@ -121,9 +115,4 @@ const _autoApplyConvert = const {
   'dependents': AutoApply.dependents,
   'all_packages': AutoApply.allPackages,
   'root_package': AutoApply.rootPackage
-};
-
-const _buildToConvert = const {
-  'cache': BuildTo.cache,
-  'source': BuildTo.source,
 };
