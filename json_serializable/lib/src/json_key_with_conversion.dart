@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/constant/value.dart';
@@ -81,10 +82,12 @@ JsonKeyWithConversion _from(
   Object defaultValueLiteral;
   if (isEnum(defaultValueObject.type)) {
     var interfaceType = defaultValueObject.type as InterfaceType;
-    var allowedValues = interfaceType.accessors
-        .where((p) => p.returnType == interfaceType)
-        .map((p) => p.name)
-        .toList();
+    var unit = defaultValueObject.type.element.unit;
+    var declaration = unit.declarations.singleWhere((unit) =>
+            unit is EnumDeclaration && unit.element == interfaceType.element)
+        as EnumDeclaration;
+    var allowedValues = declaration.constants.map((p) => p.name).toList();
+
     var enumValueIndex = defaultValueObject.getField('index').toIntValue();
     defaultValueLiteral =
         '${interfaceType.name}.${allowedValues[enumValueIndex]}';
