@@ -3,6 +3,9 @@
 * Added `$checkKeys` helper function and deprecated `$checkAllowedKeys`.
   Upgrading to the latest `json_serializable` and re-running your build will
   eliminate any `@deprecated` hints you see.
+  
+* Added `BadKeyException` exception which is the abstract super class for
+  `MissingRequiredKeysException` and `UnrecognizedKeysException`.
 
 * Added `JsonKey.required` field and an associated
   `MissingRequiredKeysException` that is thrown when `required` fields don't

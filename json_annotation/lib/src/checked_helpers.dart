@@ -92,9 +92,7 @@ class CheckedFromJsonException implements Exception {
   static String _getMessage(Object error) {
     if (error is ArgumentError) {
       return error.message?.toString();
-    } else if (error is UnrecognizedKeysException) {
-      return error.message;
-    } else if (error is MissingRequiredKeysException) {
+    } else if (error is BadKeyException) {
       return error.message;
     }
     return null;

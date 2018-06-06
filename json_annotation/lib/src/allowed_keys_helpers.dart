@@ -36,38 +36,45 @@ void $checkKeys(Map map,
   }
 }
 
+/// A base class for exceptions thrown when decoding JSON.
+abstract class BadKeyException implements Exception {
+  BadKeyException._(this.map);
+
+  /// The source [Map] that the unrecognized keys were found in.
+  final Map map;
+
+  /// A human-readable message corresponding to the error.
+  String get message;
+}
+
 /// Exception thrown if there are unrecognized keys in a JSON map that was
 /// provided during deserialization.
-class UnrecognizedKeysException implements Exception {
+class UnrecognizedKeysException extends BadKeyException {
   /// The allowed keys for [map].
   final List<String> allowedKeys;
 
   /// The keys from [map] that were unrecognized.
   final List<String> unrecognizedKeys;
 
-  /// The source [Map] that the unrecognized keys were found in.
-  final Map map;
-
-  /// A human-readable message corresponding to the error.
+  @override
   String get message =>
       'Unrecognized keys: [${unrecognizedKeys.join(', ')}]; supported keys: '
       '[${allowedKeys.join(', ')}]';
 
-  UnrecognizedKeysException(this.unrecognizedKeys, this.map, this.allowedKeys);
+  UnrecognizedKeysException(this.unrecognizedKeys, Map map, this.allowedKeys)
+      : super._(map);
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was
 /// provided during deserialization.
-class MissingRequiredKeysException implements Exception {
+class MissingRequiredKeysException extends BadKeyException {
   /// The keys that [map] is missing.
   final List<String> missingKeys;
 
-  /// The source [Map] that the required keys were missing in.
-  final Map map;
-
-  /// A human-readable message corresponding to the error.
+  @override
   String get message => 'Required keys are missing: ${missingKeys.join(', ')}.';
 
-  MissingRequiredKeysException(this.missingKeys, this.map)
-      : assert(missingKeys.isNotEmpty);
+  MissingRequiredKeysException(this.missingKeys, Map map)
+      : assert(missingKeys.isNotEmpty),
+        super._(map);
 }
