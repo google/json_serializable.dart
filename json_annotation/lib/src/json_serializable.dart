@@ -53,13 +53,13 @@ class JsonSerializable {
   final bool nullable;
 
   /// Creates a new [JsonSerializable] instance.
-  const JsonSerializable(
-      {bool disallowUnrecognizedKeys: false,
-      bool createFactory: true,
-      bool createToJson: true,
-      bool includeIfNull: true,
-      bool nullable: true})
-      : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
+  const JsonSerializable({
+    bool disallowUnrecognizedKeys: false,
+    bool createFactory: true,
+    bool createToJson: true,
+    bool includeIfNull: true,
+    bool nullable: true,
+  })  : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
         this.createFactory = createFactory ?? true,
         this.createToJson = createToJson ?? true,
         this.includeIfNull = includeIfNull ?? true,
@@ -142,15 +142,16 @@ class JsonKey {
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
-  const JsonKey(
-      {this.name,
-      this.nullable,
-      this.includeIfNull,
-      this.ignore,
-      this.fromJson,
-      this.toJson,
-      this.defaultValue,
-      this.required});
+  const JsonKey({
+    this.name,
+    this.nullable,
+    this.includeIfNull,
+    this.ignore,
+    this.fromJson,
+    this.toJson,
+    this.defaultValue,
+    this.required,
+  });
 }
 
 // Until enum supports parse: github.com/dart-lang/sdk/issues/33244
