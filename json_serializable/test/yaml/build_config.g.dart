@@ -51,7 +51,7 @@ Builder _$BuilderFromJson(Map json) {
         autoApply: $checkedConvert(json, 'auto_apply',
             (v) => v == null ? null : _autoApplyFromJson(v as String)),
         buildTo: $checkedConvert(json, 'build_to',
-            (v) => v == null ? null : _buildToFromJson(v as String)),
+            (v) => $enumDecodeNullable('BuildTo', BuildTo.values, v as String)),
         defaultEnumTest: $checkedConvert(
             json,
             'defaultEnumTest',
@@ -105,7 +105,7 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('is_optional', isOptional);
     writeNotNull(
         'auto_apply', autoApply == null ? null : _autoApplyToJson(autoApply));
-    writeNotNull('build_to', buildTo == null ? null : _buildToToJson(buildTo));
+    writeNotNull('build_to', buildTo?.toString()?.split('.')?.last);
     writeNotNull(
         'defaultEnumTest', defaultEnumTest?.toString()?.split('.')?.last);
     val['builder_factories'] = builderFactories;
