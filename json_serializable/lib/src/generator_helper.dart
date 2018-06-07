@@ -322,7 +322,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       var valueAccess = '_v.${field.name}';
       _buffer.writeln('''
         case ${_safeNameAccess(field)}:
-          return ${_serializeField(field, accessOverride: valueAccess)};''');
+          return ${_serializeField(field, valueAccess)};''');
     }
 
     _buffer.writeln('''
@@ -356,7 +356,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
-      var expression = _serializeField(field, accessOverride: safeFieldAccess);
+      var expression = _serializeField(field, safeFieldAccess);
       if (_writeJsonValueNaive(field)) {
         if (directWrite) {
           _buffer.writeln('      $safeJsonKeyString: $expression,');
@@ -394,7 +394,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     _buffer.writeln('=> <String, dynamic>{');
 
     _buffer.writeAll(fields.map((field) {
-      var value = '${_safeNameAccess(field)}: ${_serializeField(field)}';
+      var value =
+          '${_safeNameAccess(field)}: ${_serializeField(field, field.name)}';
       return '        $value';
     }), ',\n');
 
@@ -405,11 +406,9 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     _buffer.writeln('};');
   }
 
-  String _serializeField(FieldElement field, {String accessOverride}) {
-    accessOverride ??= field.name;
-
+  String _serializeField(FieldElement field, String accessExpression) {
     try {
-      return _getHelperContext(field).serialize(field.type, accessOverride);
+      return _getHelperContext(field).serialize(field.type, accessExpression);
     } on UnsupportedTypeError catch (e) {
       throw _createInvalidGenerationError('toJson', field, e);
     }
