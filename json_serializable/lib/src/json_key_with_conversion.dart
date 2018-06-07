@@ -81,8 +81,8 @@ JsonKeyWithConversion _from(
   Object defaultValueLiteral;
   if (isEnum(defaultValueObject.type)) {
     var interfaceType = defaultValueObject.type as InterfaceType;
-    var allowedValues = interfaceType.accessors
-        .where((p) => p.returnType == interfaceType)
+    var allowedValues = interfaceType.element.fields
+        .where((p) => !p.isSynthetic)
         .map((p) => p.name)
         .toList();
     var enumValueIndex = defaultValueObject.getField('index').toIntValue();
