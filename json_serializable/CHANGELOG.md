@@ -14,6 +14,9 @@
 
 * Added support for `Uri` conversion.
 
+* Added missing `checked` parameter to the
+  `JsonSerializableGenerator.withDefaultHelpers` constructor.
+
 ## 0.5.6
 
 * Added support for `JsonSerializable.disallowUnrecognizedKeys`.

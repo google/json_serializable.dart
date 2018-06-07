@@ -88,12 +88,15 @@ class JsonSerializableGenerator
   /// the built-in helpers:
   /// [JsonHelper], [DateTimeHelper], and [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
-          Iterable<TypeHelper> typeHelpers,
-          {bool useWrappers: false,
-          bool anyMap: false}) =>
+    Iterable<TypeHelper> typeHelpers, {
+    bool useWrappers: false,
+    bool anyMap: false,
+    bool checked: false,
+  }) =>
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
           anyMap: anyMap,
+          checked: checked,
           typeHelpers:
               new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
