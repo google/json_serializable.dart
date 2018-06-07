@@ -64,16 +64,26 @@ abstract class _$DefaultValueSerializerMixin {
   Map<String, int> get fieldMapSimple;
   Map<String, List<String>> get fieldMapListString;
   Greek get fieldEnum;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'fieldBool': fieldBool,
-        'fieldString': fieldString,
-        'fieldInt': fieldInt,
-        'fieldDouble': fieldDouble,
-        'fieldListEmpty': fieldListEmpty,
-        'fieldMapEmpty': fieldMapEmpty,
-        'fieldListSimple': fieldListSimple,
-        'fieldMapSimple': fieldMapSimple,
-        'fieldMapListString': fieldMapListString,
-        'fieldEnum': fieldEnum?.toString()?.split('.')?.last
-      };
+  Map<String, dynamic> toJson() {
+    var val = <String, dynamic>{
+      'fieldBool': fieldBool,
+    };
+
+    void writeNotNull(String key, dynamic value) {
+      if (value != null) {
+        val[key] = value;
+      }
+    }
+
+    writeNotNull('fieldString', fieldString);
+    val['fieldInt'] = fieldInt;
+    val['fieldDouble'] = fieldDouble;
+    val['fieldListEmpty'] = fieldListEmpty;
+    val['fieldMapEmpty'] = fieldMapEmpty;
+    val['fieldListSimple'] = fieldListSimple;
+    val['fieldMapSimple'] = fieldMapSimple;
+    val['fieldMapListString'] = fieldMapListString;
+    val['fieldEnum'] = fieldEnum?.toString()?.split('.')?.last;
+    return val;
+  }
 }

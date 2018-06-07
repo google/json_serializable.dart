@@ -29,7 +29,7 @@ class DefaultValue extends Object
   @JsonKey(defaultValue: true)
   bool fieldBool;
 
-  @JsonKey(defaultValue: 'string')
+  @JsonKey(defaultValue: 'string', includeIfNull: false)
   String fieldString;
 
   @JsonKey(defaultValue: _intValue)
