@@ -17,9 +17,7 @@ dvi.DefaultValue fromJson(Map<String, dynamic> json) =>
     _$DefaultValueFromJson(json);
 
 @JsonSerializable()
-class DefaultValue extends Object
-    with _$DefaultValueSerializerMixin
-    implements dvi.DefaultValue {
+class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: true)
   bool fieldBool;
 
@@ -56,4 +54,6 @@ class DefaultValue extends Object
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DefaultValueToJson(this);
 }

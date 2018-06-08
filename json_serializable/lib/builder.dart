@@ -31,6 +31,8 @@ Builder jsonSerializable(BuilderOptions options) {
     checked: optionsMap.remove('checked') as bool,
     anyMap: optionsMap.remove('any_map') as bool,
     explicitToJson: optionsMap.remove('explicit_to_json') as bool,
+    generateToJsonFunction:
+        optionsMap.remove('generate_to_json_function') as bool,
   );
 
   if (optionsMap.isNotEmpty) {

@@ -93,6 +93,7 @@ targets:
           any_map: true
           checked: true
           explicit_to_json: true
+          generate_to_json_function: true
 ```
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example

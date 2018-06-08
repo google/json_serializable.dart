@@ -33,6 +33,10 @@ Future<String> generate(JsonSerializableGenerator generator, Element element,
 }
 
 class _GeneratorHelper {
+  /// Name of the parameter used when generating top-level `toJson` functions
+  /// if [JsonSerializableGenerator.generateToJsonFunction] is `true`.
+  static const _toJsonParamName = 'instance';
+
   final ClassElement _element;
   final JsonSerializable _annotation;
   final JsonSerializableGenerator _generator;
@@ -76,42 +80,7 @@ class _GeneratorHelper {
       return set;
     });
 
-    if (_annotation.createToJson) {
-      //
-      // Generate the mixin class
-      //
-      _buffer.writeln('abstract class ${_mixinClassName(true)} {');
-
-      // write copies of the fields - this allows the toJson method to access
-      // the fields of the target class
-      for (var field in accessibleFields) {
-        //TODO - handle aliased imports
-        _buffer.writeln('  ${field.type} get ${field.name};');
-      }
-
-      _buffer.write('  Map<String, dynamic> toJson() ');
-
-      var writeNaive = accessibleFields.every(_writeJsonValueNaive);
-
-      if (_generator.useWrappers) {
-        _buffer.writeln('=> new ${_wrapperClassName(false)}(this);');
-      } else {
-        if (writeNaive) {
-          // write simple `toJson` method that includes all keys...
-          _writeToJsonSimple(accessibleFields);
-        } else {
-          // At least one field should be excluded if null
-          _writeToJsonWithNullChecks(accessibleFields);
-        }
-      }
-
-      // end of the mixin class
-      _buffer.writeln('}');
-
-      if (_generator.useWrappers) {
-        _writeWrapper(accessibleFields);
-      }
-    }
+    _writeToJson(accessibleFields);
 
     return _buffer.toString();
   }
@@ -274,12 +243,67 @@ class _GeneratorHelper {
     }
   }
 
+  void _writeToJson(Set<FieldElement> accessibleFields) {
+    if (!_annotation.createToJson) {
+      return;
+    }
+
+    if (_generator.generateToJsonFunction) {
+      var functionName = '${_prefix}ToJson${_genericClassArguments(true)}';
+      _buffer.write('Map<String, dynamic> $functionName'
+          '($_targetClassReference $_toJsonParamName) ');
+    } else {
+      //
+      // Generate the mixin class
+      //
+      _buffer.writeln('abstract class ${_mixinClassName(true)} {');
+
+      // write copies of the fields - this allows the toJson method to access
+      // the fields of the target class
+      for (var field in accessibleFields) {
+        //TODO - handle aliased imports
+        _buffer.writeln('  ${field.type} get ${field.name};');
+      }
+
+      _buffer.write('  Map<String, dynamic> toJson() ');
+    }
+
+    var writeNaive = accessibleFields.every(_writeJsonValueNaive);
+
+    if (_generator.useWrappers) {
+      var param = _generator.generateToJsonFunction ? _toJsonParamName : 'this';
+      _buffer.writeln('=> new ${_wrapperClassName(false)}($param);');
+    } else {
+      if (writeNaive) {
+        // write simple `toJson` method that includes all keys...
+        _writeToJsonSimple(accessibleFields);
+      } else {
+        // At least one field should be excluded if null
+        _writeToJsonWithNullChecks(accessibleFields);
+      }
+    }
+
+    if (!_generator.generateToJsonFunction) {
+      // end of the mixin class
+      _buffer.writeln('}');
+    }
+
+    if (_generator.useWrappers) {
+      _writeWrapper(accessibleFields);
+    }
+  }
+
   void _writeWrapper(Iterable<FieldElement> fields) {
     _buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
+
+    var fieldType = _generator.generateToJsonFunction
+        ? _targetClassReference
+        : _mixinClassName(false);
+
     _buffer.writeln('''
 class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
-  final ${_mixinClassName(false)} _v;
+  final $fieldType _v;
   ${_wrapperClassName()}(this._v);
 ''');
 
@@ -334,6 +358,14 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     _buffer.writeln('}');
   }
 
+  String _fieldAccess(FieldElement field) {
+    var fieldAccess = field.name;
+    if (_generator.generateToJsonFunction) {
+      fieldAccess = '$_toJsonParamName.$fieldAccess';
+    }
+    return fieldAccess;
+  }
+
   void _writeToJsonWithNullChecks(Iterable<FieldElement> fields) {
     _buffer.writeln('{');
 
@@ -346,13 +378,15 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     var directWrite = true;
 
     for (var field in fields) {
-      var safeFieldAccess = field.name;
+      var safeFieldAccess = _fieldAccess(field);
       var safeJsonKeyString = _safeNameAccess(field);
 
       // If `fieldName` collides with one of the local helpers, prefix
       // access with `this.`.
       if (safeFieldAccess == generatedLocalVarName ||
           safeFieldAccess == toJsonMapHelperName) {
+        assert(!_generator.generateToJsonFunction,
+            'This code path should only be hit during the mixin codepath.');
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
@@ -394,8 +428,9 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     _buffer.writeln('=> <String, dynamic>{');
 
     _buffer.writeAll(fields.map((field) {
+      var access = _fieldAccess(field);
       var value =
-          '${_safeNameAccess(field)}: ${_serializeField(field, field.name)}';
+          '${_safeNameAccess(field)}: ${_serializeField(field, access)}';
       return '        $value';
     }), ',\n');
 

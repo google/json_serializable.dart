@@ -88,6 +88,33 @@ class JsonSerializableGenerator
   /// ```
   final bool explicitToJson;
 
+  /// Controls how `toJson` functionality is generated for all types processed
+  /// by this generator.
+  ///
+  /// If `false` (the default), a private `_$ClassNameSerializerMixin` class is
+  /// created in the generated part file which contains a `toJson` method.
+  ///
+  /// Mix in this class to the source class:
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example extends Object with _$ExampleSerializerMixin {
+  ///   // ...
+  /// }
+  /// ```
+  ///
+  /// If `true`, then a top-level function is created that you can reference
+  /// from your class.
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   // ...
+  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  /// }
+  /// ```
+  final bool generateToJsonFunction;
+
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, three built-in helpers are used:
@@ -98,10 +125,12 @@ class JsonSerializableGenerator
     bool anyMap: false,
     bool checked: false,
     bool explicitToJson: false,
+    bool generateToJsonFunction: false,
   })  : this.useWrappers = useWrappers ?? false,
         this.anyMap = anyMap ?? false,
         this.checked = checked ?? false,
         this.explicitToJson = explicitToJson ?? false,
+        this.generateToJsonFunction = generateToJsonFunction ?? false,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
@@ -114,11 +143,13 @@ class JsonSerializableGenerator
     bool useWrappers: false,
     bool anyMap: false,
     bool checked: false,
+    bool generateToJsonFunction: false,
   }) =>
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
           anyMap: anyMap,
           checked: checked,
+          generateToJsonFunction: generateToJsonFunction,
           typeHelpers:
               new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 

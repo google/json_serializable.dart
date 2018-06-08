@@ -18,6 +18,10 @@
   `JsonSerializableGenerator.withDefaultHelpers` constructor.
 
 * Added `explicit_to_json` configuration option.
+  * See `JsonSerializableGenerator.explicitToJson` for details.
+
+* Added `generate_to_json_function` configuration option.
+  * See `JsonSerializableGenerator.generateToJsonFunction` for details.
 
 ## 0.5.6
 

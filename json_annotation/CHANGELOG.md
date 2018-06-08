@@ -16,6 +16,9 @@
   `DisallowedNullValueException` that is thrown when corresponding keys exist in
   a source JSON map, but their values are `null`.
 
+* Updated documentation of `JsonSerializable.createToJson` to include details
+  of the new `generate_to_json_function` configuration option.
+
 ## 0.2.7+1
 
 * Small improvement to `UnrecognizedKeysException.message` output and

@@ -101,7 +101,8 @@ const _validConfig = const {
   'use_wrappers': true,
   'any_map': true,
   'checked': true,
-  'explicit_to_json': true
+  'explicit_to_json': true,
+  'generate_to_json_function': true,
 };
 
 const _invalidConfig = const {
@@ -109,5 +110,6 @@ const _invalidConfig = const {
   'use_wrappers': 42,
   'any_map': 42,
   'checked': 42,
-  'explicit_to_json': 42
+  'explicit_to_json': 42,
+  'generate_to_json_function': 42,
 };

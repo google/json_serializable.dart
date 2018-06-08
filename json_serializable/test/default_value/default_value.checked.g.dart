@@ -53,37 +53,25 @@ DefaultValue _$DefaultValueFromJson(Map json) {
   });
 }
 
-abstract class _$DefaultValueSerializerMixin {
-  bool get fieldBool;
-  String get fieldString;
-  int get fieldInt;
-  double get fieldDouble;
-  List<dynamic> get fieldListEmpty;
-  Map<dynamic, dynamic> get fieldMapEmpty;
-  List<int> get fieldListSimple;
-  Map<String, int> get fieldMapSimple;
-  Map<String, List<String>> get fieldMapListString;
-  Greek get fieldEnum;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{
-      'fieldBool': fieldBool,
-    };
+Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
+  var val = <String, dynamic>{
+    'fieldBool': instance.fieldBool,
+  };
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('fieldString', fieldString);
-    val['fieldInt'] = fieldInt;
-    val['fieldDouble'] = fieldDouble;
-    val['fieldListEmpty'] = fieldListEmpty;
-    val['fieldMapEmpty'] = fieldMapEmpty;
-    val['fieldListSimple'] = fieldListSimple;
-    val['fieldMapSimple'] = fieldMapSimple;
-    val['fieldMapListString'] = fieldMapListString;
-    val['fieldEnum'] = fieldEnum?.toString()?.split('.')?.last;
-    return val;
   }
+
+  writeNotNull('fieldString', instance.fieldString);
+  val['fieldInt'] = instance.fieldInt;
+  val['fieldDouble'] = instance.fieldDouble;
+  val['fieldListEmpty'] = instance.fieldListEmpty;
+  val['fieldMapEmpty'] = instance.fieldMapEmpty;
+  val['fieldListSimple'] = instance.fieldListSimple;
+  val['fieldMapSimple'] = instance.fieldMapSimple;
+  val['fieldMapListString'] = instance.fieldMapListString;
+  val['fieldEnum'] = instance.fieldEnum?.toString()?.split('.')?.last;
+  return val;
 }

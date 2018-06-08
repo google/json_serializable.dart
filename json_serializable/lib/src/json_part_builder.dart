@@ -27,6 +27,7 @@ Builder jsonPartBuilder({
   bool anyMap: false,
   bool checked: false,
   bool explicitToJson: false,
+  bool generateToJsonFunction: false,
 }) {
   return new PartBuilder([
     new JsonSerializableGenerator(
@@ -34,6 +35,7 @@ Builder jsonPartBuilder({
       anyMap: anyMap,
       checked: checked,
       explicitToJson: explicitToJson,
+      generateToJsonFunction: generateToJsonFunction,
     ),
     const JsonLiteralGenerator()
   ], header: header, formatOutput: formatOutput);

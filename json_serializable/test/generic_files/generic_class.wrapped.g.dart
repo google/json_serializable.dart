@@ -30,17 +30,12 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
         : _dataFromJson(json['fieldS'] as Map<String, dynamic>);
 }
 
-abstract class _$GenericClassSerializerMixin<T extends num, S> {
-  Object get fieldObject;
-  dynamic get fieldDynamic;
-  int get fieldInt;
-  T get fieldT;
-  S get fieldS;
-  Map<String, dynamic> toJson() => new _$GenericClassJsonMapWrapper<T, S>(this);
-}
+Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
+        GenericClass<T, S> instance) =>
+    new _$GenericClassJsonMapWrapper<T, S>(instance);
 
 class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
-  final _$GenericClassSerializerMixin<T, S> _v;
+  final GenericClass<T, S> _v;
   _$GenericClassJsonMapWrapper(this._v);
 
   @override

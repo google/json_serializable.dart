@@ -2,15 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: annotate_overrides
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'generic_class.g.dart';
 
 @JsonSerializable()
-class GenericClass<T extends num, S> extends Object
-    with _$GenericClassSerializerMixin<T, S> {
+class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   Object fieldObject;
 
@@ -30,6 +27,8 @@ class GenericClass<T extends num, S> extends Object
 
   factory GenericClass.fromJson(Map<String, dynamic> json) =>
       _$GenericClassFromJson<T, S>(json);
+
+  Map<String, dynamic> toJson() => _$GenericClassToJson(this);
 }
 
 T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U other2]) =>

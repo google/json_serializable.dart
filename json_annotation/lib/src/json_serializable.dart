@@ -25,15 +25,29 @@ class JsonSerializable {
   /// ```
   final bool createFactory;
 
-  /// If `true` (the default), a private `_$ClassNameMixin` class is created
+  /// If `true` (the default), code for decoding JSON is generated fon this
+  /// class.
+  ///
+  /// By default, a private `_$ClassNameMixin` class is created
   /// in the generated part file which contains a `toJson` method.
   ///
   /// Mix in this class to the source class:
   ///
   /// ```dart
   /// @JsonSerializable()
-  /// class Example extends Object with _$ExampleMixin {
+  /// class Example extends Object with _$ExampleSerializerMixin {
   ///   // ...
+  /// }
+  /// ```
+  ///
+  /// If `json_serializable` is configured with
+  /// `generate_to_json_function: true`, then a top-level function is created
+  /// that you can reference from your class.
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
   /// }
   /// ```
   final bool createToJson;
