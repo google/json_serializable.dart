@@ -4,8 +4,8 @@
 
 import 'package:test/test.dart';
 
-import 'test_files/json_test_example.dart';
-import 'test_utils.dart';
+import '../test_utils.dart';
+import 'json_test_example.dart';
 
 void main() {
   group('Person', () {

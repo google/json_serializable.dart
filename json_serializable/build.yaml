@@ -5,7 +5,7 @@ targets:
         generate_for:
           - test/default_value/**
           - test/generic_files/*_test.dart
-          - test/json_serializable_integration*
+          - test/integration/*_test.dart
           - test/kitchen_sink/**
 
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
