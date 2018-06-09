@@ -154,8 +154,7 @@ class _GeneratorHelper {
           _buffer.write(');');
         }
 
-        _buffer.write('''\n
-    return val;
+        _buffer.write('''\n    return val;
   }''');
 
         var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
