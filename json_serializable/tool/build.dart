@@ -59,7 +59,7 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: const [
           'example/example.dart',
-          'test/test_files/json_literal.dart',
+          'test/literal/json_literal.dart',
           'test/test_files/json_test_example.dart',
           'test/test_files/json_test_example.non_nullable.dart'
         ],

@@ -9,13 +9,13 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import 'test_file_utils.dart';
-import 'test_files/json_literal.dart';
-import 'test_utils.dart';
+import '../test_file_utils.dart';
+import '../test_utils.dart';
+import 'json_literal.dart';
 
 main() {
   test('literal round-trip', () {
-    var dataFilePath = testFilePath('test', 'test_files', 'json_literal.json');
+    var dataFilePath = testFilePath('test', 'literal', 'json_literal.json');
     var dataFile = new File(dataFilePath);
 
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
@@ -29,7 +29,7 @@ main() {
 
   test('naughty strings', () {
     var dataFilePath =
-        testFilePath('test', 'test_files', 'big-list-of-naughty-strings.json');
+        testFilePath('test', 'literal', 'big-list-of-naughty-strings.json');
     var dataFile = new File(dataFilePath);
 
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
