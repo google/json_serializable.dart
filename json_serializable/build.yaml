@@ -4,6 +4,7 @@ targets:
       build_web_compilers|entrypoint:
         generate_for:
           - test/default_value/**
+          - test/generic_files/*_test.dart
           - test/json_serializable_integration*
           - test/kitchen_sink/**
 
