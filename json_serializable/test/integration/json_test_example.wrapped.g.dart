@@ -204,10 +204,11 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
     ..nnDoubles =
         (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration =
-        json['duration'] == null ? null : _fromJson(json['duration'] as int)
+    ..duration = json['duration'] == null
+        ? null
+        : durationFromInt(json['duration'] as int)
     ..date =
-        json['date'] == null ? null : _dateTimeFromEpochUs(json['date'] as int);
+        json['date'] == null ? null : dateTimeFromEpochUs(json['date'] as int);
 }
 
 abstract class _$NumbersSerializerMixin {
@@ -241,9 +242,9 @@ class _$NumbersJsonMapWrapper extends $JsonMapWrapper {
         case 'nnDoubles':
           return _v.nnDoubles;
         case 'duration':
-          return _v.duration == null ? null : _toJson(_v.duration);
+          return _v.duration == null ? null : durationToInt(_v.duration);
         case 'date':
-          return _v.date == null ? null : _dateTimeToEpochUs(_v.date);
+          return _v.date == null ? null : dateTimeToEpochUs(_v.date);
       }
     }
     return null;

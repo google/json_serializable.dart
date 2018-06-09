@@ -5,6 +5,7 @@
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'json_test_common.dart' show Category, House, Platform;
 import 'json_test_example.dart';
 
 void main() {

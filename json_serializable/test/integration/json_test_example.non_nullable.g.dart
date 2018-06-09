@@ -103,8 +103,8 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
     ..nnDoubles =
         (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration = _fromJson(json['duration'] as int)
-    ..date = _dateTimeFromEpochUs(json['date'] as int);
+    ..duration = durationFromInt(json['duration'] as int)
+    ..date = dateTimeFromEpochUs(json['date'] as int);
 }
 
 abstract class _$NumbersSerializerMixin {
@@ -119,7 +119,7 @@ abstract class _$NumbersSerializerMixin {
         'nums': nums,
         'doubles': doubles,
         'nnDoubles': nnDoubles,
-        'duration': _toJson(duration),
-        'date': _dateTimeToEpochUs(date)
+        'duration': durationToInt(duration),
+        'date': dateTimeToEpochUs(date)
       };
 }

@@ -131,10 +131,11 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
     ..nnDoubles =
         (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration =
-        json['duration'] == null ? null : _fromJson(json['duration'] as int)
+    ..duration = json['duration'] == null
+        ? null
+        : durationFromInt(json['duration'] as int)
     ..date =
-        json['date'] == null ? null : _dateTimeFromEpochUs(json['date'] as int);
+        json['date'] == null ? null : dateTimeFromEpochUs(json['date'] as int);
 }
 
 abstract class _$NumbersSerializerMixin {
@@ -149,7 +150,7 @@ abstract class _$NumbersSerializerMixin {
         'nums': nums,
         'doubles': doubles,
         'nnDoubles': nnDoubles,
-        'duration': duration == null ? null : _toJson(duration),
-        'date': date == null ? null : _dateTimeToEpochUs(date)
+        'duration': duration == null ? null : durationToInt(duration),
+        'date': date == null ? null : dateTimeToEpochUs(date)
       };
 }

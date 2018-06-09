@@ -186,8 +186,8 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
     ..nnDoubles =
         (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration = _fromJson(json['duration'] as int)
-    ..date = _dateTimeFromEpochUs(json['date'] as int);
+    ..duration = durationFromInt(json['duration'] as int)
+    ..date = dateTimeFromEpochUs(json['date'] as int);
 }
 
 abstract class _$NumbersSerializerMixin {
@@ -221,9 +221,9 @@ class _$NumbersJsonMapWrapper extends $JsonMapWrapper {
         case 'nnDoubles':
           return _v.nnDoubles;
         case 'duration':
-          return _toJson(_v.duration);
+          return durationToInt(_v.duration);
         case 'date':
-          return _dateTimeToEpochUs(_v.date);
+          return dateTimeToEpochUs(_v.date);
       }
     }
     return null;
