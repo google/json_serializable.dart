@@ -55,13 +55,13 @@ String jsonLiteralAsDart(dynamic value, bool asConst) {
     return '${asConst ? 'const' : ''}[$listItems]';
   }
 
-  if (value is Map<String, dynamic>) return jsonMapAsDart(value, asConst);
+  if (value is Map) return jsonMapAsDart(value, asConst);
 
   throw new StateError(
       'Should never get here – with ${value.runtimeType} - `$value`.');
 }
 
-String jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
+String jsonMapAsDart(Map value, bool asConst) {
   var buffer = new StringBuffer();
   if (asConst) {
     buffer.write('const ');
@@ -75,7 +75,7 @@ String jsonMapAsDart(Map<String, dynamic> value, bool asConst) {
     } else {
       buffer.writeln(',');
     }
-    buffer.write(escapeDartString(k));
+    buffer.write(escapeDartString(k as String));
     buffer.write(': ');
     buffer.write(jsonLiteralAsDart(v, asConst));
   });

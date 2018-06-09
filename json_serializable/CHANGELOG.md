@@ -1,3 +1,7 @@
+## 0.5.8
+
+* Small fixes to support Dart 2 runtime semantics.
+
 ## 0.5.7
 
 * Added support for `JsonKey.required`.
