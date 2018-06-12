@@ -65,7 +65,6 @@ linter:
     - slash_for_doc_comments
     - super_goes_last
     - test_types_in_equals
-    - test_types_in_equals
     - throw_in_finally
     - type_init_formals
     - unawaited_futures
