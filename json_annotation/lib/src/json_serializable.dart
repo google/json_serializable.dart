@@ -74,11 +74,11 @@ class JsonSerializable {
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
-    bool disallowUnrecognizedKeys: false,
-    bool createFactory: true,
-    bool createToJson: true,
-    bool includeIfNull: true,
-    bool nullable: true,
+    bool disallowUnrecognizedKeys = false,
+    bool createFactory = true,
+    bool createToJson = true,
+    bool includeIfNull = true,
+    bool nullable = true,
   })  : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
         this.createFactory = createFactory ?? true,
         this.createToJson = createToJson ?? true,

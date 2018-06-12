@@ -118,6 +118,6 @@ final List<BuilderApplication> builders = [
       hideOutput: true),
 ];
 
-main(List<String> args) async {
+void main(List<String> args) async {
   exitCode = await run(args, builders);
 }

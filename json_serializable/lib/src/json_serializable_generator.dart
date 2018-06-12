@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -121,11 +122,11 @@ class JsonSerializableGenerator
   /// [JsonHelper], [DateTimeHelper], and [UriHelper].
   const JsonSerializableGenerator({
     List<TypeHelper> typeHelpers,
-    bool useWrappers: false,
-    bool anyMap: false,
-    bool checked: false,
-    bool explicitToJson: false,
-    bool generateToJsonFunction: false,
+    bool useWrappers = false,
+    bool anyMap = false,
+    bool checked = false,
+    bool explicitToJson = false,
+    bool generateToJsonFunction = false,
   })  : this.useWrappers = useWrappers ?? false,
         this.anyMap = anyMap ?? false,
         this.checked = checked ?? false,
@@ -140,10 +141,10 @@ class JsonSerializableGenerator
   /// [JsonHelper], [DateTimeHelper], and [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
-    bool useWrappers: false,
-    bool anyMap: false,
-    bool checked: false,
-    bool generateToJsonFunction: false,
+    bool useWrappers = false,
+    bool anyMap = false,
+    bool checked = false,
+    bool generateToJsonFunction = false,
   }) =>
       new JsonSerializableGenerator(
           useWrappers: useWrappers,
@@ -155,6 +156,6 @@ class JsonSerializableGenerator
 
   @override
   Future<String> generateForAnnotatedElement(
-          Element element, ConstantReader annotation, _) =>
+          Element element, ConstantReader annotation, BuildStep buildStep) =>
       generate(this, element, annotation);
 }

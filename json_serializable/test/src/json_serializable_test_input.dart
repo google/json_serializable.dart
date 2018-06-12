@@ -60,7 +60,7 @@ class FromJsonOptionalParameters {
 }
 
 class ChildWithFromJson {
-  ChildWithFromJson.fromJson(json, {initValue: false});
+  ChildWithFromJson.fromJson(json, {initValue = false});
 }
 
 @JsonSerializable()

@@ -2,17 +2,20 @@ analyzer:
   strong-mode:
     implicit-casts: false
   errors:
+    dead_code: error
+    override_on_non_overriding_method: error
     unused_element: error
     unused_import: error
     unused_local_variable: error
-    dead_code: error
 linter:
   rules:
+    - always_declare_return_types
     - annotate_overrides
     - avoid_empty_else
     - avoid_function_literals_in_foreach_calls
     - avoid_init_to_null
     - avoid_null_checks_in_equality_operators
+    - avoid_renaming_method_parameters
     - avoid_return_types_on_setters
     - avoid_returning_null
     - avoid_types_as_parameter_names
@@ -35,6 +38,7 @@ linter:
     - library_names
     - library_prefixes
     - list_remove_unrelated_type
+    - literal_only_boolean_expressions
     - no_adjacent_strings_in_list
     - no_duplicate_case_values
     - non_constant_identifier_names
@@ -49,6 +53,7 @@ linter:
     - prefer_conditional_assignment
     - prefer_const_constructors
     - prefer_contains
+    - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings
@@ -70,4 +75,5 @@ linter:
     - unnecessary_statements
     - unnecessary_this
     - unrelated_type_equality_checks
+    - use_rethrow_when_possible
     - valid_regexps

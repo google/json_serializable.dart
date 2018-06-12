@@ -13,7 +13,7 @@ import '../test_file_utils.dart';
 import '../test_utils.dart';
 import 'json_literal.dart';
 
-main() {
+void main() {
   test('literal round-trip', () {
     var dataFilePath = testFilePath('test', 'literal', 'json_literal.json');
     var dataFile = new File(dataFilePath);

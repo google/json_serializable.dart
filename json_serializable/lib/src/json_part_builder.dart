@@ -23,11 +23,11 @@ import 'json_serializable_generator.dart';
 Builder jsonPartBuilder({
   String header,
   String formatOutput(String code),
-  bool useWrappers: false,
-  bool anyMap: false,
-  bool checked: false,
-  bool explicitToJson: false,
-  bool generateToJsonFunction: false,
+  bool useWrappers = false,
+  bool anyMap = false,
+  bool checked = false,
+  bool explicitToJson = false,
+  bool generateToJsonFunction = false,
 }) {
   return new PartBuilder([
     new JsonSerializableGenerator(
