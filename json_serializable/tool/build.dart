@@ -3,6 +3,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:io' show exitCode;
 
 import 'package:build/build.dart';
@@ -118,6 +119,6 @@ final List<BuilderApplication> builders = [
       hideOutput: true),
 ];
 
-main(List<String> args) async {
+Future main(List<String> args) async {
   exitCode = await run(args, builders);
 }

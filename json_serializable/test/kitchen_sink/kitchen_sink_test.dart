@@ -79,7 +79,7 @@ typedef KitchenSink KitchenSinkCtor(
     Iterable<DateTime> dateTimeIterable});
 
 void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
-    {bool isChecked: false}) {
+    {bool isChecked = false}) {
   test('with null values fails serialization', () {
     expect(() => (ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
@@ -150,7 +150,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
 }
 
 void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
-    {bool isChecked: false}) {
+    {bool isChecked = false}) {
   void roundTripSink(KitchenSink p) {
     roundTripObject(p, fromJson);
   }

@@ -12,7 +12,8 @@ class ValueHelper extends TypeHelper {
   const ValueHelper();
 
   @override
-  String serialize(DartType targetType, String expression, _) {
+  String serialize(
+      DartType targetType, String expression, SerializeContext context) {
     if (targetType.isDynamic ||
         targetType.isObject ||
         simpleJsonTypeChecker.isAssignableFromType(targetType)) {

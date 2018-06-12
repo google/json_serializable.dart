@@ -10,7 +10,7 @@ import 'json_test_example.dart';
 
 void main() {
   group('Person', () {
-    roundTripPerson(Person p) {
+    void roundTripPerson(Person p) {
       roundTripObject(p, (json) => new Person.fromJson(json));
     }
 
@@ -49,7 +49,7 @@ void main() {
   });
 
   group('Order', () {
-    roundTripOrder(Order p) {
+    void roundTripOrder(Order p) {
       roundTripObject(p, (json) => new Order.fromJson(json));
     }
 
@@ -116,7 +116,7 @@ void main() {
   });
 
   group('Item', () {
-    roundTripItem(Item p) {
+    void roundTripItem(Item p) {
       roundTripObject(p, (json) => new Item.fromJson(json));
     }
 
@@ -141,7 +141,7 @@ void main() {
   });
 
   group('Numbers', () {
-    roundTripNumber(Numbers p) {
+    void roundTripNumber(Numbers p) {
       roundTripObject(p, (json) => new Numbers.fromJson(json));
     }
 
