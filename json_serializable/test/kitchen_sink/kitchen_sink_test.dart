@@ -258,7 +258,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
     innerMatcher = anyOf(
-        isACastError,
+        isCastError,
         _isATypeError,
         _isAUnrecognizedKeysEexception(
             'Unrecognized keys: [invalid_key]; supported keys: [value, custom_field]'));
@@ -276,7 +276,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           break;
         case 'intIterable':
         case 'datetime-iterable':
-          innerMatcher = isACastError;
+          innerMatcher = isCastError;
           break;
         default:
           throw new StateError('Not expected! - $expectedKey');

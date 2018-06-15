@@ -40,13 +40,13 @@ void main() {
       expect(
           () => new GenericClass<double, String>()
             ..fieldT = (true as dynamic) as double,
-          throwsA(isACastError));
+          throwsCastError);
     });
     test('with bad arguments', () {
       expect(
           () => new GenericClass<double, String>()
             ..fieldS = (5 as dynamic) as String,
-          throwsA(isACastError));
+          throwsCastError);
     });
   });
 }

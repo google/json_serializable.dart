@@ -14,7 +14,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
-final _throwsCastError = throwsA(const isInstanceOf<CastError>());
+import 'test_utils.dart';
 
 void main() {
   StreamSubscription sub;
@@ -90,7 +90,7 @@ void main() {
         config[entry.key] = entry.value;
 
         expect(() => jsonSerializable(new BuilderOptions(config)),
-            _throwsCastError);
+            throwsCastError);
       });
     }
   });

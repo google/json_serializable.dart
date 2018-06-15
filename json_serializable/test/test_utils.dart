@@ -6,7 +6,8 @@ import 'dart:convert';
 
 import 'package:test/test.dart';
 
-final isACastError = const isInstanceOf<CastError>();
+final isCastError = const TypeMatcher<CastError>();
+final throwsCastError = throwsA(isCastError);
 
 // TODO(kevmoo) add this to pkg/matcher – is nice!
 class FeatureMatcher<T> extends CustomMatcher {
