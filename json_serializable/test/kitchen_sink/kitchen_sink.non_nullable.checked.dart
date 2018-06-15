@@ -5,13 +5,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: _CheckedGenerator
+// _CheckedGenerator
 // **************************************************************************
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: _NonNullableGenerator
+// _NonNullableGenerator
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides, hash_and_equals

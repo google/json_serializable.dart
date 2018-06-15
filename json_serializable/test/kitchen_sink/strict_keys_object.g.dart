@@ -7,7 +7,7 @@
 part of 'strict_keys_object.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 StrictKeysObject _$StrictKeysObjectFromJson(Map json) {

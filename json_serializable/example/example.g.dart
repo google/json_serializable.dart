@@ -7,7 +7,7 @@
 part of 'example.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {

@@ -7,7 +7,7 @@
 part of 'kitchen_sink.non_nullable.checked.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map json) {

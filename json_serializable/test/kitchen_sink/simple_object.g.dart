@@ -7,7 +7,7 @@
 part of 'simple_object.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 SimpleObject _$SimpleObjectFromJson(Map json) {

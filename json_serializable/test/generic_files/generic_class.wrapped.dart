@@ -5,7 +5,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: _WrappedGenerator
+// _WrappedGenerator
 // **************************************************************************
 
 import 'package:json_annotation/json_annotation.dart';

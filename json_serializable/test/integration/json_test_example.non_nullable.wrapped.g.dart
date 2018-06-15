@@ -7,7 +7,7 @@
 part of 'json_test_example.non_nullable.wrapped.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {

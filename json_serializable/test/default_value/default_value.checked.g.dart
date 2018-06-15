@@ -7,7 +7,7 @@
 part of 'default_value.checked.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 DefaultValue _$DefaultValueFromJson(Map json) {
