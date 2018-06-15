@@ -9,17 +9,6 @@ import 'package:test/test.dart';
 final isCastError = const TypeMatcher<CastError>();
 final throwsCastError = throwsA(isCastError);
 
-// TODO(kevmoo) add this to pkg/matcher – is nice!
-class FeatureMatcher<T> extends CustomMatcher {
-  final dynamic Function(T value) _feature;
-
-  FeatureMatcher(String name, this._feature, matcher)
-      : super('`$name`', '`$name`', matcher);
-
-  @override
-  Object featureValueOf(covariant T actual) => _feature(actual);
-}
-
 T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
   var data = loudEncode(object);
 

@@ -20,17 +20,15 @@ import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
 
-final _isATypeError = const isInstanceOf<TypeError>();
+final _isATypeError = const TypeMatcher<TypeError>();
 
-Matcher _isAUnrecognizedKeysEexception(expectedMessage) => allOf(
-    const isInstanceOf<UnrecognizedKeysException>(),
-    new FeatureMatcher<UnrecognizedKeysException>(
-        'message', (e) => e.message, expectedMessage));
+Matcher _isAUnrecognizedKeysEexception(expectedMessage) =>
+    const TypeMatcher<UnrecognizedKeysException>()
+        .having((e) => e.message, 'message', expectedMessage);
 
-Matcher _isMissingKeyException(expectedMessage) => allOf(
-    const isInstanceOf<MissingRequiredKeysException>(),
-    new FeatureMatcher<MissingRequiredKeysException>(
-        'message', (e) => e.message, expectedMessage));
+Matcher _isMissingKeyException(expectedMessage) =>
+    const TypeMatcher<MissingRequiredKeysException>()
+        .having((e) => e.message, 'message', expectedMessage);
 
 void main() {
   test('valid values covers all keys', () {
@@ -239,12 +237,10 @@ void _testBadValue(bool isChecked, String key, Object badValue,
   }
 }
 
-Matcher _checkedMatcher(String expectedKey) => allOf(
-    const isInstanceOf<CheckedFromJsonException>(),
-    new FeatureMatcher<CheckedFromJsonException>(
-        'className', (e) => e.className, 'KitchenSink'),
-    new FeatureMatcher<CheckedFromJsonException>(
-        'key', (e) => e.key, expectedKey));
+Matcher _checkedMatcher(String expectedKey) =>
+    const TypeMatcher<CheckedFromJsonException>()
+        .having((e) => e.className, 'className', 'KitchenSink')
+        .having((e) => e.key, 'key', expectedKey);
 
 Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
   Matcher innerMatcher;

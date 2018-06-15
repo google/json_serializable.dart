@@ -15,17 +15,16 @@ import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
 import 'test_file_utils.dart';
-import 'test_utils.dart';
 
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
-    throwsA(allOf(
-        const isInstanceOf<InvalidGenerationSourceError>(),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'message', (e) => e.message, messageMatcher),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'todo', (e) => e.todo, todoMatcher),
-        new FeatureMatcher<InvalidGenerationSourceError>(
-            'element', (e) => e.element, isNotNull)));
+    throwsA(const TypeMatcher<InvalidGenerationSourceError>()
+        .having((e) => e.message, 'message', messageMatcher)
+        .having((e) => e.todo, 'todo', todoMatcher)
+        .having((e) => e.element, 'element', isNotNull));
+
+Matcher _throwsUnsupportedError(matcher) =>
+    throwsA(const TypeMatcher<UnsupportedError>()
+        .having((e) => e.message, 'message', matcher));
 
 final _formatter = new dart_style.DartFormatter();
 
@@ -374,21 +373,17 @@ abstract class _$OrderSerializerMixin {
       test('fails if ignored field is referenced by ctor', () {
         expect(
             () => runForElementNamed('IgnoredFieldCtorClass'),
-            throwsA(new FeatureMatcher<UnsupportedError>(
-                'message',
-                (e) => e.message,
+            _throwsUnsupportedError(
                 'Cannot populate the required constructor argument: '
-                'ignoredTrueField. It is assigned to an ignored field.')));
+                'ignoredTrueField. It is assigned to an ignored field.'));
       });
 
       test('fails if private field is referenced by ctor', () {
         expect(
             () => runForElementNamed('PrivateFieldCtorClass'),
-            throwsA(new FeatureMatcher<UnsupportedError>(
-                'message',
-                (e) => e.message,
+            _throwsUnsupportedError(
                 'Cannot populate the required constructor argument: '
-                '_privateField. It is assigned to a private field.')));
+                '_privateField. It is assigned to a private field.'));
       });
     }
 
@@ -528,10 +523,8 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
   test('missing default ctor with a factory', () async {
     expect(
         () => runForElementNamed('NoCtorClass'),
-        throwsA(new FeatureMatcher<UnsupportedError>(
-            'message',
-            (e) => e.message,
-            'The class `NoCtorClass` has no default constructor.')));
+        _throwsUnsupportedError(
+            'The class `NoCtorClass` has no default constructor.'));
   });
 
   test('generic classes', () async {
