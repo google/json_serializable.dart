@@ -7,7 +7,7 @@
 part of 'default_value.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {

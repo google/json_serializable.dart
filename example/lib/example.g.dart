@@ -7,7 +7,7 @@
 part of 'example.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
@@ -109,7 +109,7 @@ abstract class _$ItemSerializerMixin {
 }
 
 // **************************************************************************
-// Generator: JsonLiteralGenerator
+// JsonLiteralGenerator
 // **************************************************************************
 
 final _$glossaryDataJsonLiteral = {

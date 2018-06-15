@@ -5,7 +5,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// Generator: _CheckedGenerator
+// _CheckedGenerator
 // **************************************************************************
 
 // ignore_for_file: annotate_overrides

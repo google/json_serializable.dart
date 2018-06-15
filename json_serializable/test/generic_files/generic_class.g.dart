@@ -7,7 +7,7 @@
 part of 'generic_class.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(

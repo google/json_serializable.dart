@@ -7,7 +7,7 @@
 part of 'json_literal.dart';
 
 // **************************************************************************
-// Generator: JsonLiteralGenerator
+// JsonLiteralGenerator
 // **************************************************************************
 
 final _$dataJsonLiteral = [

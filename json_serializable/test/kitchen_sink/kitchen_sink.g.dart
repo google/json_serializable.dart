@@ -7,7 +7,7 @@
 part of 'kitchen_sink.dart';
 
 // **************************************************************************
-// Generator: JsonSerializableGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map json) {
