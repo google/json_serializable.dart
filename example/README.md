@@ -38,8 +38,7 @@ Run `pub run build_runner build` to generate files into your source directory.
 [INFO] Build: Succeeded after 4687ms with 1 outputs
 ```
 
-*NOTE*: If you're using Flutter, running a script from a Dart package is a bit
-tricky. Replace `pub run` with `flutter packages pub run`.
+*NOTE*: If you're using Flutter, replace `pub run` with `flutter packages pub run`.
 
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart
