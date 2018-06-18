@@ -174,7 +174,7 @@ class JsonSerializableGenerator
   }
 }
 
-class _GeneratorHelper extends HelperCore with EncodeHelper, DencodeHelper {
+class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   _GeneratorHelper(JsonSerializableGenerator generator, ClassElement element,
       JsonSerializable annotation)
       : super(generator, element, annotation);
