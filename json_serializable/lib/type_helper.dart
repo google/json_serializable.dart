@@ -3,7 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 export 'src/shared_checkers.dart' show simpleJsonTypeChecker, typeArgumentsOf;
-export 'src/type_helper.dart';
+export 'src/type_helper.dart'
+    show SerializeContext, DeserializeContext, TypeHelper, UnsupportedTypeError;
 export 'src/type_helpers/date_time_helper.dart';
 export 'src/type_helpers/json_helper.dart';
 export 'src/type_helpers/uri_helper.dart';

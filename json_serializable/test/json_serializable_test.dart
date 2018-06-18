@@ -4,8 +4,6 @@
 
 @TestOn('vm')
 
-import 'dart:async';
-
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
@@ -42,12 +40,11 @@ void main() {
       () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
 }
 
-Future<String> _runForElementNamed(
-    JsonSerializableGenerator generator, String name) async {
+String _runForElementNamed(JsonSerializableGenerator generator, String name) {
   var library = new LibraryReader(_compilationUnit.element.library);
   var element = library.allElements.singleWhere((e) => e.name == name);
   var annotation = generator.typeChecker.firstAnnotationOf(element);
-  var generated = await generator.generateForAnnotatedElement(
+  var generated = generator.generateForAnnotatedElement(
       element, new ConstantReader(annotation), null);
 
   var output = _formatter.format(generated);
@@ -56,7 +53,7 @@ Future<String> _runForElementNamed(
 }
 
 void _registerTests(JsonSerializableGenerator generator) {
-  Future<String> runForElementNamed(String name) =>
+  String runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
@@ -66,8 +63,8 @@ void _registerTests(JsonSerializableGenerator generator) {
   }
 
   group('explicit toJson', () {
-    test('nullable', () async {
-      var output = await _runForElementNamed(
+    test('nullable', () {
+      var output = _runForElementNamed(
           new JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
@@ -111,8 +108,8 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
 
       expect(output, expected);
     });
-    test('non-nullable', () async {
-      var output = await _runForElementNamed(
+    test('non-nullable', () {
+      var output = _runForElementNamed(
           new JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
@@ -220,21 +217,21 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
     });
   });
 
-  test('class with final fields', () async {
-    var generateResult = await runForElementNamed('FinalFields');
+  test('class with final fields', () {
+    var generateResult = runForElementNamed('FinalFields');
     expect(generateResult, contains('Map<String, dynamic> toJson()'));
   });
 
   if (!generator.useWrappers) {
-    test('includes final field in toJson when set in ctor', () async {
-      var generateResult = await runForElementNamed('FinalFields');
+    test('includes final field in toJson when set in ctor', () {
+      var generateResult = runForElementNamed('FinalFields');
       expect(generateResult, contains('new FinalFields(json[\'a\'] as int);'));
       expect(
           generateResult, contains('toJson() => <String, dynamic>{\'a\': a};'));
     });
 
-    test('excludes final field in toJson when not set in ctor', () async {
-      var generateResult = await runForElementNamed('FinalFieldsNotSetInCtor');
+    test('excludes final field in toJson when not set in ctor', () {
+      var generateResult = runForElementNamed('FinalFieldsNotSetInCtor');
       expect(generateResult,
           isNot(contains('new FinalFields(json[\'a\'] as int);')));
       expect(generateResult,
@@ -244,8 +241,8 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
 
   group('valid inputs', () {
     if (!generator.useWrappers) {
-      test('class with no ctor params', () async {
-        var output = await runForElementNamed('Person');
+      test('class with no ctor params', () {
+        var output = runForElementNamed('Person');
         expect(output, r'''Person _$PersonFromJson(Map<String, dynamic> json) {
   return new Person()
     ..firstName = json['firstName'] as String
@@ -280,8 +277,8 @@ abstract class _$PersonSerializerMixin {
 ''');
       });
 
-      test('class with ctor params', () async {
-        var output = await runForElementNamed('Order');
+      test('class with ctor params', () {
+        var output = runForElementNamed('Order');
         expect(output, r'''Order _$OrderFromJson(Map<String, dynamic> json) {
   return new Order(json['height'] as int, json['firstName'] as String,
       json['lastName'] as String)
@@ -306,15 +303,14 @@ abstract class _$OrderSerializerMixin {
       });
     }
 
-    test('class with fromJson() constructor with optional parameters',
-        () async {
-      var output = await runForElementNamed('FromJsonOptionalParameters');
+    test('class with fromJson() constructor with optional parameters', () {
+      var output = runForElementNamed('FromJsonOptionalParameters');
 
       expect(output, contains('new ChildWithFromJson.fromJson'));
     });
 
-    test('class with child json-able object', () async {
-      var output = await runForElementNamed('ParentObject');
+    test('class with child json-able object', () {
+      var output = runForElementNamed('ParentObject');
 
       expect(
           output,
@@ -322,8 +318,8 @@ abstract class _$OrderSerializerMixin {
               'as Map<String, dynamic>)'));
     });
 
-    test('class with child json-able object - anyMap', () async {
-      var output = await _runForElementNamed(
+    test('class with child json-able object - anyMap', () {
+      var output = _runForElementNamed(
           new JsonSerializableGenerator(
               anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
@@ -332,21 +328,21 @@ abstract class _$OrderSerializerMixin {
           output, contains("new ChildObject.fromJson(json['child'] as Map)"));
     });
 
-    test('class with child list of json-able objects', () async {
-      var output = await runForElementNamed('ParentObjectWithChildren');
+    test('class with child list of json-able objects', () {
+      var output = runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
       expect(output, contains('new ChildObject.fromJson'));
     });
 
-    test('class with child list of dynamic objects is left alone', () async {
-      var output = await runForElementNamed('ParentObjectWithDynamicChildren');
+    test('class with child list of dynamic objects is left alone', () {
+      var output = runForElementNamed('ParentObjectWithDynamicChildren');
 
       expect(output, contains('children = json[\'children\'] as List;'));
     });
 
-    test('class with list of int is cast for strong mode', () async {
-      var output = await runForElementNamed('Person');
+    test('class with list of int is cast for strong mode', () {
+      var output = runForElementNamed('Person');
 
       expect(output,
           contains("json['listOfInts'] as List)?.map((e) => e as int)"));
@@ -355,15 +351,15 @@ abstract class _$OrderSerializerMixin {
 
   group('JsonKey', () {
     if (!generator.useWrappers) {
-      test('works to change the name of a field', () async {
-        var output = await runForElementNamed('Person');
+      test('works to change the name of a field', () {
+        var output = runForElementNamed('Person');
 
         expect(output, contains("'h': height,"));
         expect(output, contains("..height = json['h']"));
       });
 
-      test('works to ignore a field', () async {
-        var output = await runForElementNamed('IgnoredFieldClass');
+      test('works to ignore a field', () {
+        var output = runForElementNamed('IgnoredFieldClass');
 
         expect(output, contains("'ignoredFalseField': ignoredFalseField,"));
         expect(output, contains("'ignoredNullField': ignoredNullField"));
@@ -401,15 +397,15 @@ abstract class _$OrderSerializerMixin {
   });
 
   group('includeIfNull', () {
-    test('some', () async {
-      var output = await runForElementNamed('IncludeIfNullAll');
+    test('some', () {
+      var output = runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
 
     if (!generator.useWrappers) {
-      test('all', () async {
-        var output = await runForElementNamed('IncludeIfNullOverride');
+      test('all', () {
+        var output = runForElementNamed('IncludeIfNullOverride');
         expect(output, contains("'number': number,"));
         expect(output, contains("$toJsonMapHelperName('str', str);"));
       });
@@ -474,20 +470,20 @@ abstract class _$OrderSerializerMixin {
     });
 
     if (!generator.useWrappers) {
-      test('object', () async {
-        var output = await runForElementNamed('ObjectConvertMethods');
+      test('object', () {
+        var output = runForElementNamed('ObjectConvertMethods');
         expect(output, contains("_toObject(json['field'])"));
       });
-      test('dynamic', () async {
-        var output = await runForElementNamed('DynamicConvertMethods');
+      test('dynamic', () {
+        var output = runForElementNamed('DynamicConvertMethods');
         expect(output, contains("_toDynamic(json['field'])"));
       });
-      test('typed', () async {
-        var output = await runForElementNamed('TypedConvertMethods');
+      test('typed', () {
+        var output = runForElementNamed('TypedConvertMethods');
         expect(output, contains("_toString(json['field'] as String)"));
       });
-      test('dynamic collections', () async {
-        var output = await runForElementNamed('FromDynamicCollection');
+      test('dynamic collections', () {
+        var output = runForElementNamed('FromDynamicCollection');
         expect(output, r'''
 FromDynamicCollection _$FromDynamicCollectionFromJson(
     Map<String, dynamic> json) {
@@ -504,31 +500,30 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
 }
 ''');
       });
-      test('OkayOneNormalOptionalPositional', () async {
-        var output =
-            await runForElementNamed('OkayOneNormalOptionalPositional');
+      test('OkayOneNormalOptionalPositional', () {
+        var output = runForElementNamed('OkayOneNormalOptionalPositional');
         expect(output, contains("_oneNormalOnePositional(json['field'])"));
       });
-      test('OkayOneNormalOptionalNamed', () async {
-        var output = await runForElementNamed('OkayOneNormalOptionalNamed');
+      test('OkayOneNormalOptionalNamed', () {
+        var output = runForElementNamed('OkayOneNormalOptionalNamed');
         expect(output, contains("_oneNormalOptionalNamed(json['field'])"));
       });
-      test('OkayOnlyOptionalPositional', () async {
-        var output = await runForElementNamed('OkayOnlyOptionalPositional');
+      test('OkayOnlyOptionalPositional', () {
+        var output = runForElementNamed('OkayOnlyOptionalPositional');
         expect(output, contains("_onlyOptionalPositional(json['field'])"));
       });
     }
   });
 
-  test('missing default ctor with a factory', () async {
+  test('missing default ctor with a factory', () {
     expect(
         () => runForElementNamed('NoCtorClass'),
         _throwsUnsupportedError(
             'The class `NoCtorClass` has no default constructor.'));
   });
 
-  test('generic classes', () async {
-    var output = await runForElementNamed('GenericClass');
+  test('generic classes', () {
+    var output = runForElementNamed('GenericClass');
 
     var expected = generator.useWrappers
         ? r'''
@@ -617,8 +612,8 @@ abstract class _$GenericClassSerializerMixin<T extends num, S> {
     expect(output, expected);
   });
 
-  test('super types', () async {
-    var output = await runForElementNamed('SubType');
+  test('super types', () {
+    var output = runForElementNamed('SubType');
 
     var expected = generator.useWrappers
         ? r'''

@@ -2,15 +2,17 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:async';
-
 import 'package:analyzer/dart/element/element.dart';
+// ignore: implementation_imports
+import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
+    show InheritanceManager;
 import 'package:build/build.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'generator_helper.dart';
+import 'decode_helper.dart';
+import 'encoder_helper.dart';
+import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
@@ -20,6 +22,7 @@ import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
 import 'type_helpers/value_helper.dart';
+import 'utils.dart';
 
 Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
     generator._allHelpers;
@@ -155,7 +158,141 @@ class JsonSerializableGenerator
               new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
   @override
-  Future<String> generateForAnnotatedElement(
-          Element element, ConstantReader annotation, BuildStep buildStep) =>
-      generate(this, element, annotation);
+  String generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) {
+    if (element is! ClassElement) {
+      var name = element.name;
+      throw new InvalidGenerationSourceError('Generator cannot target `$name`.',
+          todo: 'Remove the JsonSerializable annotation from `$name`.',
+          element: element);
+    }
+
+    var classElement = element as ClassElement;
+    var classAnnotation = valueForAnnotation(annotation);
+    var helper = new _GeneratorHelper(this, classElement, classAnnotation);
+    return helper._generate().join('\n\n');
+  }
 }
+
+class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
+  _GeneratorHelper(JsonSerializableGenerator generator, ClassElement element,
+      JsonSerializable annotation)
+      : super(generator, element, annotation);
+
+  Iterable<String> _generate() sync* {
+    var sortedFields = _createSortedFieldSet(element);
+
+    // Used to keep track of why a field is ignored. Useful for providing
+    // helpful errors when generating constructor calls that try to use one of
+    // these fields.
+    var unavailableReasons = <String, String>{};
+
+    var accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
+        <String, FieldElement>{}, (map, field) {
+      if (!field.isPublic) {
+        unavailableReasons[field.name] = 'It is assigned to a private field.';
+      } else if (jsonKeyFor(field).ignore) {
+        unavailableReasons[field.name] = 'It is assigned to an ignored field.';
+      } else {
+        map[field.name] = field;
+      }
+
+      return map;
+    });
+
+    if (annotation.createFactory) {
+      yield createFactory(accessibleFields, unavailableReasons);
+    }
+
+    var accessibleFieldSet = accessibleFields.values.toSet();
+
+    // Check for duplicate JSON keys due to colliding annotations.
+    // We do this now, since we have a final field list after any pruning done
+    // by `_writeCtor`.
+    accessibleFieldSet.fold(new Set<String>(), (Set<String> set, fe) {
+      var jsonKey = nameAccess(fe);
+      if (!set.add(jsonKey)) {
+        throw new InvalidGenerationSourceError(
+            'More than one field has the JSON key `$jsonKey`.',
+            todo: 'Check the `JsonKey` annotations on fields.',
+            element: fe);
+      }
+      return set;
+    });
+
+    if (annotation.createToJson) {
+      yield* createToJson(accessibleFieldSet);
+    }
+  }
+}
+
+/// Returns a [Set] of all instance [FieldElement] items for [element] and
+/// super classes, sorted first by their location in the inheritance hierarchy
+/// (super first) and then by their location in the source file.
+Set<FieldElement> _createSortedFieldSet(ClassElement element) {
+  // Get all of the fields that need to be assigned
+  // TODO: support overriding the field set with an annotation option
+  var fieldsList = element.fields.where((e) => !e.isStatic).toList();
+
+  var manager = new InheritanceManager(element.library);
+
+  for (var v in manager.getMembersInheritedFromClasses(element).values) {
+    assert(v is! FieldElement);
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
+      continue;
+    }
+
+    if (v is PropertyAccessorElement && v.variable is FieldElement) {
+      fieldsList.add(v.variable as FieldElement);
+    }
+  }
+
+  var undefinedFields = fieldsList.where((fe) => fe.type.isUndefined).toList();
+  if (undefinedFields.isNotEmpty) {
+    var description = undefinedFields.map((fe) => '`${fe.name}`').join(', ');
+
+    throw new InvalidGenerationSourceError(
+        'At least one field has an invalid type: $description.',
+        todo: 'Check names and imports.',
+        element: undefinedFields.first);
+  }
+
+  // Sort these in the order in which they appear in the class
+  // Sadly, `classElement.fields` puts properties after fields
+  fieldsList.sort(_sortByLocation);
+
+  return fieldsList.toSet();
+}
+
+int _sortByLocation(FieldElement a, FieldElement b) {
+  var checkerA = new TypeChecker.fromStatic(a.enclosingElement.type);
+
+  if (!checkerA.isExactly(b.enclosingElement)) {
+    // in this case, you want to prioritize the enclosingElement that is more
+    // "super".
+
+    if (checkerA.isSuperOf(b.enclosingElement)) {
+      return -1;
+    }
+
+    var checkerB = new TypeChecker.fromStatic(b.enclosingElement.type);
+
+    if (checkerB.isSuperOf(a.enclosingElement)) {
+      return 1;
+    }
+  }
+
+  /// Returns the offset of given field/property in its source file – with a
+  /// preference for the getter if it's defined.
+  int _offsetFor(FieldElement e) {
+    if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
+      assert(e.nameOffset == -1);
+      return e.getter.nameOffset;
+    }
+    return e.nameOffset;
+  }
+
+  return _offsetFor(a).compareTo(_offsetFor(b));
+}
+
+final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
