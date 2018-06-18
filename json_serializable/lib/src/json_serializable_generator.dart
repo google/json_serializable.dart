@@ -201,7 +201,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     });
 
     if (annotation.createFactory) {
-      yield writeCtor(accessibleFields, unavailableReasons);
+      yield createFactory(accessibleFields, unavailableReasons);
     }
 
     var accessibleFieldSet = accessibleFields.values.toSet();
@@ -221,7 +221,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     });
 
     if (annotation.createToJson) {
-      yield* writeToJson(accessibleFieldSet);
+      yield* createToJson(accessibleFieldSet);
     }
   }
 }

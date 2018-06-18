@@ -24,7 +24,7 @@ abstract class EncodeHelper implements HelperCore {
   String _wrapperClassName([bool withConstraints]) =>
       '${prefix}JsonMapWrapper${genericClassArgumentsImpl(withConstraints)}';
 
-  Iterable<String> writeToJson(Set<FieldElement> accessibleFields) sync* {
+  Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(annotation.createToJson);
 
     var buffer = new StringBuffer();
@@ -72,11 +72,11 @@ abstract class EncodeHelper implements HelperCore {
     yield buffer.toString();
 
     if (generator.useWrappers) {
-      yield _writeWrapper(accessibleFields);
+      yield _createWrapperClass(accessibleFields);
     }
   }
 
-  String _writeWrapper(Iterable<FieldElement> fields) {
+  String _createWrapperClass(Iterable<FieldElement> fields) {
     var buffer = new StringBuffer();
     buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported

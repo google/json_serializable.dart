@@ -14,7 +14,7 @@ import 'utils.dart';
 abstract class DecodeHelper implements HelperCore {
   final StringBuffer _buffer = new StringBuffer();
 
-  String writeCtor(Map<String, FieldElement> accessibleFields,
+  String createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
     assert(annotation.createFactory);
     assert(_buffer.isEmpty);
@@ -200,7 +200,7 @@ abstract class DecodeHelper implements HelperCore {
 ///
 /// [writeableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
-_CtorData _writeConstructorInvocation(
+_ConstructorData _writeConstructorInvocation(
     ClassElement classElement,
     Iterable<String> availableConstructorParameters,
     Iterable<String> writeableFields,
@@ -280,15 +280,16 @@ _CtorData _writeConstructorInvocation(
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
 
-  return new _CtorData(buffer.toString(), remainingFieldsForInvocationBody,
-      usedCtorParamsAndFields);
+  return new _ConstructorData(buffer.toString(),
+      remainingFieldsForInvocationBody, usedCtorParamsAndFields);
 }
 
-class _CtorData {
+class _ConstructorData {
   final String content;
   final Set<String> fieldsToSet;
   final Set<String> usedCtorParamsAndFields;
-  _CtorData(this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
+  _ConstructorData(
+      this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
 }
 
 void _validateConstructorArguments(
