@@ -7,7 +7,6 @@ import 'package:analyzer/dart/element/type.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../type_helper_context.dart';
-import '../utils.dart';
 
 class ConvertHelper extends TypeHelper {
   const ConvertHelper();
