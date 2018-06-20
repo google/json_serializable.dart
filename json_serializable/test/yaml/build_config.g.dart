@@ -34,6 +34,7 @@ Builder _$BuilderFromJson(Map json) {
       'target',
       'import',
       'is_optional',
+      'configLocation',
       'auto_apply',
       'build_to',
       'defaultEnumTest',
@@ -42,6 +43,7 @@ Builder _$BuilderFromJson(Map json) {
       'required_inputs',
       'build_extensions'
     ], disallowNullValues: const [
+      'configLocation',
       'auto_apply'
     ]);
     var val = new Builder(
@@ -67,7 +69,9 @@ Builder _$BuilderFromJson(Map json) {
             json,
             'build_extensions',
             (v) => (v as Map)?.map((k, e) => new MapEntry(
-                k as String, (e as List)?.map((e) => e as String)?.toList()))));
+                k as String, (e as List)?.map((e) => e as String)?.toList()))),
+        configLocation: $checkedConvert(json, 'configLocation',
+            (v) => v == null ? null : Uri.parse(v as String)));
     return val;
   }, fieldKeyMap: const {
     'isOptional': 'is_optional',
@@ -84,6 +88,7 @@ abstract class _$BuilderSerializerMixin {
   String get target;
   String get import;
   bool get isOptional;
+  Uri get configLocation;
   AutoApply get autoApply;
   BuildTo get buildTo;
   AutoApply get defaultEnumTest;
@@ -103,6 +108,7 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('target', target);
     writeNotNull('import', import);
     writeNotNull('is_optional', isOptional);
+    writeNotNull('configLocation', configLocation?.toString());
     writeNotNull(
         'auto_apply', autoApply == null ? null : _autoApplyToJson(autoApply));
     writeNotNull('build_to', buildTo?.toString()?.split('.')?.last);

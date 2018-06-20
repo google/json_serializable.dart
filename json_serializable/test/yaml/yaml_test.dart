@@ -113,7 +113,7 @@ builders:
     baz: zap
 ''': r'''
 Could not create `Builder`.
-Unrecognized keys: [baz, foo]; supported keys: [target, import, is_optional, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
+Unrecognized keys: [baz, foo]; supported keys: [target, import, is_optional, configLocation, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
 
 line 4, column 5 of file.yaml: Invalid key "baz"
     baz: zap
@@ -134,7 +134,15 @@ builders:
     auto_apply:''': '''Could not create `Builder`.
 line 3, column 5 of file.yaml: These keys had `null` values, which is not allowed: [auto_apply]
     auto_apply:
-    ^^^^^^^^^^^'''
+    ^^^^^^^^^^^''',
+  r'''
+builders:
+  builder_name:
+    builder_factories: ["scssBuilder"]
+    configLocation: "user@host:invalid/uri"''':
+      '''line 4, column 21 of file.yaml: Could not create `Builder`. Unsupported value for `configLocation`.
+    configLocation: "user@host:invalid/uri"
+                    ^^^^^^^^^^^^^^^^^^^^^^^'''
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {

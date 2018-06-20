@@ -29,6 +29,9 @@ class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(name: 'is_optional')
   final bool isOptional;
 
+  @JsonKey(disallowNullValue: true)
+  final Uri configLocation;
+
   @JsonKey(
       name: 'auto_apply',
       disallowNullValue: true,
@@ -53,18 +56,18 @@ class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(name: 'build_extensions')
   final Map<String, List<String>> buildExtentions;
 
-  Builder({
-    @required this.import,
-    this.target,
-    this.isOptional,
-    this.autoApply,
-    this.buildTo,
-    this.defaultEnumTest,
-    this.builderFactories,
-    this.appliesBuilders,
-    this.requiredInputs,
-    this.buildExtentions,
-  }) {
+  Builder(
+      {@required this.import,
+      this.target,
+      this.isOptional,
+      this.autoApply,
+      this.buildTo,
+      this.defaultEnumTest,
+      this.builderFactories,
+      this.appliesBuilders,
+      this.requiredInputs,
+      this.buildExtentions,
+      this.configLocation}) {
     if (builderFactories.isEmpty) {
       throw new ArgumentError.value(builderFactories, 'builderFactories',
           'Must have at least one value.');
