@@ -168,19 +168,44 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
           'Remove the JsonSerializable annotation from `annotatedMethod`.');
     });
   });
+
   group('unknown types', () {
-    test('in constructor arguments', () {
-      expectThrows(
-          'UnknownCtorParamType',
-          'At least one constructor argument has an invalid type: `number`.',
-          'Check names and imports.');
+    String flavorMessage(String flavor) =>
+        'Could not generate `$flavor` code for `number` '
+        'because the type is undefined.';
+
+    String flavorTodo(String flavor) =>
+        'Check your imports. If you\'re trying to generate code for a '
+        'Platform-provided type, you may have to specify a custom `$flavor` '
+        'in the associated `@JsonKey` annotation.';
+
+    group('fromJson', () {
+      var msg = flavorMessage('fromJson');
+      var todo = flavorTodo('fromJson');
+      test('in constructor arguments', () {
+        expectThrows('UnknownCtorParamType', msg, todo);
+      });
+
+      test('in fields', () {
+        expectThrows('UnknownFieldType', msg, todo);
+      });
     });
 
-    test('in fields', () {
-      expectThrows(
-          'UnknownFieldType',
-          'At least one field has an invalid type: `number`.',
-          'Check names and imports.');
+    group('toJson', () {
+      test('in fields', () {
+        expectThrows('UnknownFieldTypeToJsonOnly', flavorMessage('toJson'),
+            flavorTodo('toJson'));
+      });
+    });
+
+    test('with proper convert methods', () {
+      var output = runForElementNamed('UnknownFieldTypeWithConvert');
+      expect(output, contains("_everythingIs42(json['number'])"));
+      if (generator.useWrappers) {
+        expect(output, contains('_everythingIs42(_v.number)'));
+      } else {
+        expect(output, contains('_everythingIs42(number)'));
+      }
     });
   });
 

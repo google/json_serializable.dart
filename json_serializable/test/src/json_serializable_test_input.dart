@@ -105,6 +105,21 @@ class UnknownFieldType {
 }
 
 @JsonSerializable(createFactory: false)
+class UnknownFieldTypeToJsonOnly {
+  // ignore: undefined_class
+  Bob number;
+}
+
+@JsonSerializable()
+class UnknownFieldTypeWithConvert {
+  @JsonKey(fromJson: _everythingIs42, toJson: _everythingIs42)
+  // ignore: undefined_class
+  Bob number;
+}
+
+dynamic _everythingIs42(Object input) => 42;
+
+@JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
   Stopwatch watch;
 }

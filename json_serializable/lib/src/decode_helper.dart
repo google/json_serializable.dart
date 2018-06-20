@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
@@ -247,8 +246,8 @@ _ConstructorData _writeConstructorInvocation(
     usedCtorParamsAndFields.add(arg.name);
   }
 
-  _validateConstructorArguments(
-      classElement, constructorArguments.followedBy(namedConstructorArguments));
+  warnUndefinedElements(
+      constructorArguments.followedBy(namedConstructorArguments));
 
   // fields that aren't already set by the constructor and that aren't final
   var remainingFieldsForInvocationBody =
@@ -290,18 +289,4 @@ class _ConstructorData {
   final Set<String> usedCtorParamsAndFields;
   _ConstructorData(
       this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
-}
-
-void _validateConstructorArguments(
-    ClassElement element, Iterable<ParameterElement> constructorArguments) {
-  var undefinedArgs =
-      constructorArguments.where((pe) => pe.type.isUndefined).toList();
-  if (undefinedArgs.isNotEmpty) {
-    var description = undefinedArgs.map((fe) => '`${fe.name}`').join(', ');
-
-    throw new InvalidGenerationSourceError(
-        'At least one constructor argument has an invalid type: $description.',
-        todo: 'Check names and imports.',
-        element: element);
-  }
 }
