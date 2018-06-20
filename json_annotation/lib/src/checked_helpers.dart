@@ -96,6 +96,12 @@ class CheckedFromJsonException implements Exception {
       return error.message?.toString();
     } else if (error is BadKeyException) {
       return error.message;
+    } else if (error is FormatException) {
+      var message = error.message;
+      if (error.offset != null) {
+        message = '$message at offset ${error.offset}.';
+      }
+      return message;
     }
     return null;
   }

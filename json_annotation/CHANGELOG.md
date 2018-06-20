@@ -1,3 +1,8 @@
+## 0.2.9
+
+* When `FormatException` is caught in "checked mode", use the `message`
+  property when creating `CheckedFromJsonException`.
+
 ## 0.2.8
 
 * Added `$checkKeys` helper function and deprecated `$checkAllowedKeys`.

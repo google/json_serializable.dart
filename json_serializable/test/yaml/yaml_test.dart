@@ -140,7 +140,7 @@ builders:
   builder_name:
     builder_factories: ["scssBuilder"]
     configLocation: "user@host:invalid/uri"''':
-      '''line 4, column 21 of file.yaml: Could not create `Builder`. Unsupported value for `configLocation`.
+      '''line 4, column 21 of file.yaml: Could not create `Builder`. Unsupported value for `configLocation`. Illegal scheme character at offset 4.
     configLocation: "user@host:invalid/uri"
                     ^^^^^^^^^^^^^^^^^^^^^^^'''
 };
