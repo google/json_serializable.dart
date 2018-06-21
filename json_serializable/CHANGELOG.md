@@ -2,6 +2,9 @@
 
 * Small fixes to support Dart 2 runtime semantics.
 
+* Support serializing types provided by platform-specific libraries (such as
+  Flutter) if they use custom convert functions.
+
 ## 0.5.7
 
 * Added support for `JsonKey.required`.
