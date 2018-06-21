@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -46,13 +46,24 @@ abstract class HelperCore {
 
 InvalidGenerationSourceError createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {
-  var extra = (field.type != e.type) ? ' because of type `${e.type}`' : '';
+  var message = 'Could not generate `$targetMember` code for `${field.name}`';
 
-  var message = 'Could not generate `$targetMember` code for '
-      '`${field.name}`$extra.\n${e.reason}';
+  var todo = 'Make sure all of the types are serializable.';
 
-  return new InvalidGenerationSourceError(message,
-      todo: 'Make sure all of the types are serializable.', element: field);
+  if (e.type.isUndefined) {
+    message = '$message because the type is undefined.';
+    todo = "Check your imports. If you're trying to generate code for a "
+        'Platform-provided type, you may have to specify a custom '
+        '`$targetMember` in the associated `@JsonKey` annotation.';
+  } else {
+    if (field.type != e.type) {
+      message = '$message because of type `${e.type}`';
+    }
+
+    message = '$message.\n${e.reason}';
+  }
+
+  return new InvalidGenerationSourceError(message, todo: todo, element: field);
 }
 
 /// Returns a [String] representing the type arguments that exist on
@@ -85,4 +96,14 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
       .map((t) => withConstraints ? t.toString() : t.name)
       .join(', ');
   return '<$values>';
+}
+
+void warnUndefinedElements(Iterable<VariableElement> elements) {
+  for (var element in elements.where((fe) => fe.type.isUndefined)) {
+    var span = spanForElement(element);
+    log.warning('''
+This element has an undefined type. It may causes issues when generated code.
+${span.start.toolString}
+${span.highlight()}''');
+  }
 }

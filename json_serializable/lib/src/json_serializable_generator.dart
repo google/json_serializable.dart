@@ -247,15 +247,7 @@ Set<FieldElement> _createSortedFieldSet(ClassElement element) {
     }
   }
 
-  var undefinedFields = fieldsList.where((fe) => fe.type.isUndefined).toList();
-  if (undefinedFields.isNotEmpty) {
-    var description = undefinedFields.map((fe) => '`${fe.name}`').join(', ');
-
-    throw new InvalidGenerationSourceError(
-        'At least one field has an invalid type: $description.',
-        todo: 'Check names and imports.',
-        element: undefinedFields.first);
-  }
+  warnUndefinedElements(fieldsList);
 
   // Sort these in the order in which they appear in the class
   // Sadly, `classElement.fields` puts properties after fields
