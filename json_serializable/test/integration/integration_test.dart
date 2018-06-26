@@ -5,7 +5,7 @@
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
-import 'json_test_common.dart' show Category, House, Platform;
+import 'json_test_common.dart' show Category, Platform;
 import 'json_test_example.dart';
 
 Matcher _throwsArgumentError(matcher) =>
@@ -28,12 +28,12 @@ void main() {
     });
 
     test('now', () {
-      roundTripPerson(new Person('a', 'b', House.gryffindor,
+      roundTripPerson(new Person('a', 'b', Category.charmed,
           middleName: 'c', dateOfBirth: new DateTime.now()));
     });
 
     test('now toUtc', () {
-      roundTripPerson(new Person('a', 'b', House.hufflepuff,
+      roundTripPerson(new Person('a', 'b', Category.bottom,
           middleName: 'c', dateOfBirth: new DateTime.now().toUtc()));
     });
 
@@ -45,7 +45,7 @@ void main() {
 
     test('enum map', () {
       var person = new Person(null, null, null)
-        ..houseMap = {'bob': House.gryffindor};
+        ..houseMap = {'bob': Category.strange};
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });

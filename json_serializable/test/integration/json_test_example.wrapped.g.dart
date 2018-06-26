@@ -11,8 +11,11 @@ part of 'json_test_example.wrapped.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return new Person(json['firstName'] as String, json['lastName'] as String,
-      $enumDecodeNullable('House', House.values, json[r'$house'] as String),
+  return new Person(
+      json['firstName'] as String,
+      json['lastName'] as String,
+      $enumDecodeNullable(
+          'Category', Category.values, json[r'$house'] as String),
       middleName: json['middleName'] as String,
       dateOfBirth: json['dateOfBirth'] == null
           ? null
@@ -22,7 +25,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         : new Order.fromJson(json['order'] as Map<String, dynamic>)
     ..houseMap = (json['houseMap'] as Map<String, dynamic>)?.map((k, e) =>
         new MapEntry(
-            k, $enumDecodeNullable('House', House.values, e as String)));
+            k, $enumDecodeNullable('Category', Category.values, e as String)));
 }
 
 abstract class _$PersonSerializerMixin {
@@ -30,9 +33,9 @@ abstract class _$PersonSerializerMixin {
   String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
-  House get house;
+  Category get house;
   Order get order;
-  Map<String, House> get houseMap;
+  Map<String, Category> get houseMap;
   Map<String, dynamic> toJson() => new _$PersonJsonMapWrapper(this);
 }
 
@@ -68,7 +71,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         case 'order':
           return _v.order;
         case 'houseMap':
-          return $wrapMapHandleNull<String, House>(
+          return $wrapMapHandleNull<String, Category>(
               _v.houseMap, (e) => e?.toString()?.split('.')?.last);
       }
     }

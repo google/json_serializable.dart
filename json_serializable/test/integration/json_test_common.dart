@@ -4,7 +4,6 @@
 
 import 'package:collection/collection.dart';
 
-enum House { gryffindor, hufflepuff, ravenclaw, slytherin }
 enum Category { top, bottom, strange, charmed, up, down }
 
 Duration durationFromInt(int ms) => new Duration(milliseconds: ms);

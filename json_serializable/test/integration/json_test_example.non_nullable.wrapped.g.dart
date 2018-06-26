@@ -12,12 +12,12 @@ part of 'json_test_example.non_nullable.wrapped.dart';
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return new Person(json['firstName'] as String, json['lastName'] as String,
-      $enumDecode('House', House.values, json[r'$house'] as String),
+      $enumDecode('Category', Category.values, json[r'$house'] as String),
       middleName: json['middleName'] as String,
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
     ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
     ..houseMap = (json['houseMap'] as Map<String, dynamic>).map((k, e) =>
-        new MapEntry(k, $enumDecode('House', House.values, e as String)));
+        new MapEntry(k, $enumDecode('Category', Category.values, e as String)));
 }
 
 abstract class _$PersonSerializerMixin {
@@ -25,9 +25,9 @@ abstract class _$PersonSerializerMixin {
   String get middleName;
   String get lastName;
   DateTime get dateOfBirth;
-  House get house;
+  Category get house;
   Order get order;
-  Map<String, House> get houseMap;
+  Map<String, Category> get houseMap;
   Map<String, dynamic> toJson() => new _$PersonJsonMapWrapper(this);
 }
 
@@ -63,7 +63,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         case 'order':
           return _v.order;
         case 'houseMap':
-          return $wrapMap<String, House>(
+          return $wrapMap<String, Category>(
               _v.houseMap, (e) => e.toString().split('.').last);
       }
     }
