@@ -8,6 +8,9 @@ import '../test_utils.dart';
 import 'json_test_common.dart' show Category, House, Platform;
 import 'json_test_example.dart';
 
+Matcher _throwsArgumentError(matcher) =>
+    throwsA(isArgumentError.having((e) => e.message, 'message', matcher));
+
 void main() {
   group('Person', () {
     void roundTripPerson(Person p) {
@@ -81,12 +84,17 @@ void main() {
     });
 
     test('required, but missing enum value fails', () {
-      expect(() => new Order.fromJson({}), throwsArgumentError);
+      expect(
+          () => new Order.fromJson({}),
+          _throwsArgumentError('`null` is not one of the supported values: '
+              'top, bottom, strange, charmed, up, down'));
     });
 
     test('mismatched enum value fails', () {
       expect(
-          () => new Order.fromJson({'category': 'weird'}), throwsArgumentError);
+          () => new Order.fromJson({'category': 'weird'}),
+          _throwsArgumentError('`weird` is not one of the supported values: '
+              'top, bottom, strange, charmed, up, down'));
     });
 
     test('platform', () {
