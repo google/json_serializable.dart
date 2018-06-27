@@ -52,6 +52,7 @@ final _$dataJsonLiteral = [
     'bool': true
   }
 ];
+
 const _$asConstJsonLiteral = const [
   const {
     'backspace': '\b',
@@ -94,6 +95,7 @@ const _$asConstJsonLiteral = const [
     'bool': true
   }
 ];
+
 const _$naughtyStringsJsonLiteral = const [
   '',
   'undefined',
