@@ -5,7 +5,7 @@
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
-import 'json_test_common.dart' show Category, Platform;
+import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 
 Matcher _throwsArgumentError(matcher) =>
@@ -57,11 +57,13 @@ void main() {
     }
 
     test('null', () {
-      roundTripOrder(new Order(Category.charmed));
+      roundTripOrder(
+          new Order(Category.charmed)..statusCode = StatusCode.success);
     });
 
     test('empty', () {
       roundTripOrder(new Order(Category.strange, const [])
+        ..statusCode = StatusCode.success
         ..count = 0
         ..isRushed = false);
     });
@@ -72,33 +74,36 @@ void main() {
           ..itemNumber = 42
           ..saleDates = [new DateTime.now()]
       ])
+        ..statusCode = StatusCode.success
         ..count = 42
         ..isRushed = true);
     });
 
     test('almost empty json', () {
-      var order = new Order.fromJson({'category': 'top'});
+      var order = new Order.fromJson({'category': 'not_discovered_yet'});
       expect(order.items, isEmpty);
-      expect(order.category, Category.top);
+      expect(order.category, Category.notDiscoveredYet);
+      expect(order.statusCode, StatusCode.success);
       roundTripOrder(order);
     });
 
     test('required, but missing enum value fails', () {
       expect(
           () => new Order.fromJson({}),
-          _throwsArgumentError('`null` is not one of the supported values: '
-              'top, bottom, strange, charmed, up, down'));
+          _throwsArgumentError('A value must be provided. Supported values: '
+              'top, bottom, strange, charmed, up, down, not_discovered_yet'));
     });
 
     test('mismatched enum value fails', () {
       expect(
           () => new Order.fromJson({'category': 'weird'}),
           _throwsArgumentError('`weird` is not one of the supported values: '
-              'top, bottom, strange, charmed, up, down'));
+              'top, bottom, strange, charmed, up, down, not_discovered_yet'));
     });
 
     test('platform', () {
       var order = new Order(Category.charmed)
+        ..statusCode = StatusCode.success
         ..platform = Platform.undefined
         ..altPlatforms = {
           'u': Platform.undefined,
@@ -112,6 +117,7 @@ void main() {
     test('homepage', () {
       var order = new Order(Category.charmed)
         ..platform = Platform.undefined
+        ..statusCode = StatusCode.success
         ..altPlatforms = {
           'u': Platform.undefined,
           'f': Platform.foo,
@@ -119,6 +125,13 @@ void main() {
         }
         ..homepage = Uri.parse('https://dartlang.org');
 
+      roundTripOrder(order);
+    });
+
+    test('statusCode', () {
+      var order = new Order.fromJson(
+          {'category': 'not_discovered_yet', 'status_code': 404});
+      expect(order.statusCode, StatusCode.notFound);
       roundTripOrder(order);
     });
   });

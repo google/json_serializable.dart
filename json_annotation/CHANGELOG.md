@@ -1,3 +1,11 @@
+## 0.3.0
+
+* Added `JsonValue` class for annotating `enum` fields with a custom
+  serialization value.
+
+* Removed `$checkAllowedKeys`, `$enumDecode` and `$enumDecodeNullable` which are
+  no longer needed by the latest release of `package:json_serializable`.
+
 ## 0.2.9
 
 * When `FormatException` is caught in "checked mode", use the `message`

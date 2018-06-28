@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 abstract class SerializeContext {
+  /// `true` if [serialize] should handle the case of `expression` being null.
   bool get nullable;
   bool get useWrappers;
 
@@ -13,12 +14,19 @@ abstract class SerializeContext {
   /// representing the serialization of a value.
   String serialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
+
+  /// Adds [memberContent] to the set of generated, top-level members.
+  void addMember(String memberContent);
 }
 
 abstract class DeserializeContext {
+  /// `true` if [deserialize] should handle the case of `expression` being null.
   bool get nullable;
   String deserialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
+
+  /// Adds [memberContent] to the set of generated, top-level members.
+  void addMember(String memberContent);
 }
 
 abstract class TypeHelper {

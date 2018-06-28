@@ -247,3 +247,30 @@ class TrivialNestedNonNullable {
   TrivialNestedNonNullable child;
   int otherField;
 }
+
+@JsonSerializable()
+class JsonValueWithBool {
+  BadEnum field;
+}
+
+enum BadEnum {
+  @JsonValue(true)
+  value
+}
+
+@JsonSerializable()
+class JsonValueValid {
+  GoodEnum field;
+}
+
+enum GoodEnum {
+  noAnnotation,
+  @JsonValue('string annotation')
+  stringAnnotation,
+  @JsonValue("string annotation with \$ funky 'values'")
+  stringAnnotationWeird,
+  @JsonValue(42)
+  intValue,
+  @JsonValue(null)
+  nullValue
+}

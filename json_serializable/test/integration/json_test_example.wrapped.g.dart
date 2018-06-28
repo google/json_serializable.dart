@@ -11,11 +11,8 @@ part of 'json_test_example.wrapped.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return new Person(
-      json['firstName'] as String,
-      json['lastName'] as String,
-      $enumDecodeNullable(
-          'Category', Category.values, json[r'$house'] as String),
+  return new Person(json['firstName'] as String, json['lastName'] as String,
+      _$enumDecodeNullable(_$CategoryEnumMap, json[r'$house']),
       middleName: json['middleName'] as String,
       dateOfBirth: json['dateOfBirth'] == null
           ? null
@@ -23,9 +20,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     ..order = json['order'] == null
         ? null
         : new Order.fromJson(json['order'] as Map<String, dynamic>)
-    ..houseMap = (json['houseMap'] as Map<String, dynamic>)?.map((k, e) =>
-        new MapEntry(
-            k, $enumDecodeNullable('Category', Category.values, e as String)));
+    ..houseMap = (json['houseMap'] as Map<String, dynamic>)?.map(
+        (k, e) => new MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)));
 }
 
 abstract class _$PersonSerializerMixin {
@@ -67,22 +63,52 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         case 'dateOfBirth':
           return _v.dateOfBirth?.toIso8601String();
         case r'$house':
-          return _v.house?.toString()?.split('.')?.last;
+          return _$CategoryEnumMap[_v.house];
         case 'order':
           return _v.order;
         case 'houseMap':
           return $wrapMapHandleNull<String, Category>(
-              _v.houseMap, (e) => e?.toString()?.split('.')?.last);
+              _v.houseMap, (e) => _$CategoryEnumMap[e]);
       }
     }
     return null;
   }
 }
 
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw new ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw new ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$CategoryEnumMap = const <Category, dynamic>{
+  Category.top: 'top',
+  Category.bottom: 'bottom',
+  Category.strange: 'strange',
+  Category.charmed: 'charmed',
+  Category.up: 'up',
+  Category.down: 'down',
+  Category.notDiscoveredYet: 'not_discovered_yet'
+};
+
 Order _$OrderFromJson(Map<String, dynamic> json) {
   $checkKeys(json, disallowNullValues: const ['count']);
   return new Order(
-      $enumDecode('Category', Category.values, json['category'] as String),
+      _$enumDecode(_$CategoryEnumMap, json['category']),
       (json['items'] as List)?.map((e) =>
           e == null ? null : new Item.fromJson(e as Map<String, dynamic>)))
     ..count = json['count'] as int
@@ -94,7 +120,10 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
             e) =>
         new MapEntry(k, e == null ? null : new Platform.fromJson(e as String)))
     ..homepage =
-        json['homepage'] == null ? null : Uri.parse(json['homepage'] as String);
+        json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
+    ..statusCode =
+        _$enumDecodeNullable(_$StatusCodeEnumMap, json['status_code']) ??
+            StatusCode.success;
 }
 
 abstract class _$OrderSerializerMixin {
@@ -105,6 +134,7 @@ abstract class _$OrderSerializerMixin {
   Platform get platform;
   Map<String, Platform> get altPlatforms;
   Uri get homepage;
+  StatusCode get statusCode;
   Map<String, dynamic> toJson() => new _$OrderJsonMapWrapper(this);
 }
 
@@ -123,6 +153,7 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
     yield 'platform';
     yield 'altPlatforms';
     yield 'homepage';
+    yield 'status_code';
   }
 
   @override
@@ -134,7 +165,7 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
         case 'isRushed':
           return _v.isRushed;
         case 'category':
-          return _v.category.toString().split('.').last;
+          return _$CategoryEnumMap[_v.category];
         case 'items':
           return _v.items;
         case 'platform':
@@ -143,11 +174,18 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
           return _v.altPlatforms;
         case 'homepage':
           return _v.homepage?.toString();
+        case 'status_code':
+          return _$StatusCodeEnumMap[_v.statusCode];
       }
     }
     return null;
   }
 }
+
+const _$StatusCodeEnumMap = const <StatusCode, dynamic>{
+  StatusCode.success: 200,
+  StatusCode.notFound: 404
+};
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return new Item(json['price'] as int)

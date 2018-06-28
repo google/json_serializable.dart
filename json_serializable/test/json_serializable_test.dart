@@ -44,8 +44,13 @@ String _runForElementNamed(JsonSerializableGenerator generator, String name) {
   var library = new LibraryReader(_compilationUnit.element.library);
   var element = library.allElements.singleWhere((e) => e.name == name);
   var annotation = generator.typeChecker.firstAnnotationOf(element);
-  var generated = generator.generateForAnnotatedElement(
-      element, new ConstantReader(annotation), null);
+  var generated = generator
+      .generateForAnnotatedElement(
+          element, new ConstantReader(annotation), null)
+      .map((e) => e.trim())
+      .where((e) => e.isNotEmpty)
+      .map((e) => '$e\n\n')
+      .join();
 
   var output = _formatter.format(generated);
   printOnFailure(output);
@@ -725,6 +730,28 @@ abstract class _$SubTypeSerializerMixin {
   });
 
   if (!generator.useWrappers) {
+    group('enums annotated with JsonValue', () {
+      test('must be String, int, or null values', () {
+        expectThrows(
+            'JsonValueWithBool',
+            'The `JsonValue` annotation on `BadEnum.value` does not have a value '
+            'of type String, int, or null.');
+      });
+
+      test('can be interesting', () {
+        var output = runForElementNamed('JsonValueValid');
+
+        expect(output, contains(r'''
+const _$GoodEnumEnumMap = const <GoodEnum, dynamic>{
+  GoodEnum.noAnnotation: 'noAnnotation',
+  GoodEnum.stringAnnotation: 'string annotation',
+  GoodEnum.stringAnnotationWeird: r"string annotation with $ funky 'values'",
+  GoodEnum.intValue: 42,
+  GoodEnum.nullValue: null
+};'''));
+      });
+    });
+
     group('default values fail with', () {
       test('symbols', () {
         expectThrows(

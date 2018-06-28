@@ -1,3 +1,25 @@
+## 0.6.0
+
+* Now supports changing the serialized values of enums using `JsonValue`.
+
+  ```dart
+  enum AutoApply {
+    none,
+    dependents,
+    @JsonValue('all_packages')
+    allPackages,
+    @JsonValue('root_package')
+    rootPackage
+  }
+  ```
+
+* `JsonSerializableGenerator.generateForAnnotatedElement` now returns
+  `Iterable<String>` instead of `String`.
+
+* `SerializeContext` and `DeserializeContext` now have an `addMember` function
+  which allows `TypeHelper` instances to add additional members when handling
+  a field. This is useful for generating shared helpers, for instance.
+
 ## 0.5.8
 
 * Small fixes to support Dart 2 runtime semantics.

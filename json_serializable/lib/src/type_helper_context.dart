@@ -5,23 +5,25 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
+import 'helper_core.dart';
 import 'json_key_with_conversion.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 
 class TypeHelperContext implements SerializeContext, DeserializeContext {
+  final HelperCore _helperCore;
+
   @override
   final List<ElementAnnotation> metadata;
 
-  final JsonSerializableGenerator _generator;
   final JsonKeyWithConversion _key;
 
   @override
-  bool get useWrappers => _generator.useWrappers;
+  bool get useWrappers => _helperCore.generator.useWrappers;
 
-  bool get anyMap => _generator.anyMap;
+  bool get anyMap => _helperCore.generator.anyMap;
 
-  bool get explicitToJson => _generator.explicitToJson;
+  bool get explicitToJson => _helperCore.generator.explicitToJson;
 
   @override
   bool get nullable => _key.nullable;
@@ -29,7 +31,12 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   ConvertData get fromJsonData => _key.fromJsonData;
   ConvertData get toJsonData => _key.toJsonData;
 
-  TypeHelperContext(this._generator, this.metadata, this._key);
+  TypeHelperContext(this._helperCore, this.metadata, this._key);
+
+  @override
+  void addMember(String memberContent) {
+    _helperCore.addMember(memberContent);
+  }
 
   @override
   String serialize(DartType targetType, String expression) => _run(
@@ -45,7 +52,8 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
 
   String _run(DartType targetType, String expression,
           String invoke(TypeHelper instance)) =>
-      allHelpersImpl(_generator).map(invoke).firstWhere((r) => r != null,
+      allHelpersImpl(_helperCore.generator).map(invoke).firstWhere(
+          (r) => r != null,
           orElse: () => throw new UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
