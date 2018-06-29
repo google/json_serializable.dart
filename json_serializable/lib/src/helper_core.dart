@@ -20,6 +20,8 @@ abstract class HelperCore {
 
   HelperCore(this.generator, this.element, this.annotation);
 
+  void addMember(String memberContent);
+
   String get targetClassReference =>
       '${element.name}${genericClassArgumentsImpl(false)}';
 
@@ -41,7 +43,7 @@ abstract class HelperCore {
       new JsonKeyWithConversion(field, annotation);
 
   TypeHelperContext getHelperContext(FieldElement field) =>
-      new TypeHelperContext(generator, field.metadata, jsonKeyFor(field));
+      new TypeHelperContext(this, field.metadata, jsonKeyFor(field));
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(

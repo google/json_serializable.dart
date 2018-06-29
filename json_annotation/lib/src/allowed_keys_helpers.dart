@@ -2,17 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-/// **DEPRECATED** Helper function used in generated code when
-/// `JsonSerializable.disallowUnrecognizedKeys` is `true`.
-///
-/// Should not be used directly.
-@Deprecated('Code generated with the latest `json_serializable` will use '
-    '`\$checkKeys` instead. This function will be removed in the next major '
-    'release.')
-void $checkAllowedKeys(Map map, Iterable<String> allowedKeys) {
-  $checkKeys(map, allowedKeys: allowedKeys?.toList());
-}
-
 /// Helper function used in generated `fromJson` code when
 /// `JsonSerializable.disallowUnrecognizedKeys` is true for an annotated type or
 /// `JsonKey.required` is `true` for any annotated fields.

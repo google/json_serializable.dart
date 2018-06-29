@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
+import '../json_literal_generator.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -15,26 +16,75 @@ class EnumHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, SerializeContext context) {
-    if (!isEnum(targetType)) {
+    var memberContent = _enumValueMapFromType(targetType);
+
+    if (memberContent == null) {
       return null;
     }
 
-    var nullableLiteral = context.nullable ? '?' : '';
+    context.addMember(memberContent);
 
-    return '$expression$nullableLiteral.toString()'
-        "$nullableLiteral.split('.')$nullableLiteral.last";
+    return '${_constMapName(targetType)}[$expression]';
   }
 
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    if (!isEnum(targetType)) {
+    var memberContent = _enumValueMapFromType(targetType);
+
+    if (memberContent == null) {
       return null;
     }
 
+    context.addMember(_enumDecodeHelper);
+
+    if (context.nullable) {
+      context.addMember(_enumDecodeHelperNullable);
+    }
+
+    context.addMember(memberContent);
+
     var functionName =
-        context.nullable ? r'$enumDecodeNullable' : r'$enumDecode';
-    return "$functionName('$targetType', $targetType.values, "
-        '$expression as String)';
+        context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
+    return '$functionName(${_constMapName(targetType)}, '
+        '$expression)';
   }
 }
+
+String _constMapName(DartType targetType) => '_\$${targetType.name}EnumMap';
+
+String _enumValueMapFromType(DartType targetType) {
+  var enumMap = enumFieldsMap(targetType);
+
+  if (enumMap == null) {
+    return null;
+  }
+
+  var items = enumMap.entries.map((e) =>
+      '  ${targetType.name}.${e.key.name}: ${jsonLiteralAsDart(e.value, false)}');
+
+  return 'const ${_constMapName(targetType)} = '
+      'const <${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';
+}
+
+const _enumDecodeHelper = r'''
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw new ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw new ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}''';
+
+const _enumDecodeHelperNullable = r'''
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}''';

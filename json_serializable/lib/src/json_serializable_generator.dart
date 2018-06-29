@@ -158,7 +158,7 @@ class JsonSerializableGenerator
               new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
   @override
-  String generateForAnnotatedElement(
+  Iterable<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     if (element is! ClassElement) {
       var name = element.name;
@@ -170,7 +170,7 @@ class JsonSerializableGenerator
     var classElement = element as ClassElement;
     var classAnnotation = valueForAnnotation(annotation);
     var helper = new _GeneratorHelper(this, classElement, classAnnotation);
-    return helper._generate().join('\n\n');
+    return helper._generate();
   }
 }
 
@@ -179,7 +179,15 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       JsonSerializable annotation)
       : super(generator, element, annotation);
 
+  final _addedMembers = new Set<String>();
+
+  @override
+  void addMember(String memberContent) {
+    _addedMembers.add(memberContent);
+  }
+
   Iterable<String> _generate() sync* {
+    assert(_addedMembers.isEmpty);
     var sortedFields = _createSortedFieldSet(element);
 
     // Used to keep track of why a field is ignored. Useful for providing
@@ -223,6 +231,8 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     if (annotation.createToJson) {
       yield* createToJson(accessibleFieldSet);
     }
+
+    yield* _addedMembers;
   }
 }
 

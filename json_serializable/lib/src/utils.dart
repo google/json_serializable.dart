@@ -27,6 +27,61 @@ JsonSerializable valueForAnnotation(ConstantReader annotation) =>
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;
 
+final _enumMapExpando = new Expando<Map<FieldElement, dynamic>>();
+
+/// If [targetType] is an enum, returns a [Map] of the [FieldElement] instances
+/// associated with the enum values mapped to the [String] values that represent
+/// the serialized output.
+///
+/// By default, the [String] value is just the name of the enum value.
+/// If the enum value is annotated with [JsonKey], then the `name` property is
+/// used if it's set and not `null`.
+///
+/// If [targetType] is not an enum, `null` is returned.
+Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
+  MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
+    var annotation =
+        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
+
+    dynamic fieldValue;
+    if (annotation == null) {
+      fieldValue = fe.name;
+    } else {
+      var reader = new ConstantReader(annotation);
+
+      var valueReader = reader.read('value');
+
+      if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
+        fieldValue = valueReader.literalValue;
+      } else {
+        throw new InvalidGenerationSourceError(
+            'The `JsonValue` annotation on `$targetType.${fe.name}` does '
+            'not have a value of type String, int, or null.',
+            element: fe);
+      }
+    }
+
+    var entry = new MapEntry(fe, fieldValue);
+
+    return entry;
+  }
+
+  if (targetType is InterfaceType && targetType.element.isEnum) {
+    return _enumMapExpando[targetType] ??=
+        new Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
+            .where((p) => !p.isSynthetic)
+            .map(_generateEntry));
+  }
+  return null;
+}
+
+/// If [targetType] is an enum, returns the [FieldElement] instances associated
+/// with its values.
+///
+/// Otherwise, `null`.
+Iterable<FieldElement> iterateEnumFields(DartType targetType) =>
+    enumFieldsMap(targetType)?.keys;
+
 /// Returns a quoted String literal for [value] that can be used in generated
 /// Dart code.
 String escapeDartString(String value) {

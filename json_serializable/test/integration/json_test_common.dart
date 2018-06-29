@@ -3,8 +3,25 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:collection/collection.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-enum Category { top, bottom, strange, charmed, up, down }
+enum Category {
+  top,
+  bottom,
+  strange,
+  charmed,
+  up,
+  down,
+  @JsonValue('not_discovered_yet')
+  notDiscoveredYet
+}
+
+enum StatusCode {
+  @JsonValue(200)
+  success,
+  @JsonValue(404)
+  notFound
+}
 
 Duration durationFromInt(int ms) => new Duration(milliseconds: ms);
 int durationToInt(Duration duration) => duration.inMilliseconds;

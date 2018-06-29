@@ -79,15 +79,13 @@ JsonKeyWithConversion _from(
   var defaultValueObject = obj.getField('defaultValue');
 
   Object defaultValueLiteral;
-  if (isEnum(defaultValueObject.type)) {
-    var interfaceType = defaultValueObject.type as InterfaceType;
-    var allowedValues = interfaceType.element.fields
-        .where((p) => !p.isSynthetic)
-        .map((p) => p.name)
-        .toList();
+
+  var enumFields = iterateEnumFields(defaultValueObject.type);
+  if (enumFields != null) {
+    var allowedValues = enumFields.map((p) => p.name).toList();
     var enumValueIndex = defaultValueObject.getField('index').toIntValue();
     defaultValueLiteral =
-        '${interfaceType.name}.${allowedValues[enumValueIndex]}';
+        '${defaultValueObject.type.name}.${allowedValues[enumValueIndex]}';
   } else {
     defaultValueLiteral = _getLiteral(defaultValueObject, []);
     if (defaultValueLiteral != null) {

@@ -57,6 +57,10 @@ class Order extends Object with _$OrderSerializerMixin {
 
   Uri homepage;
 
+  @JsonKey(
+      name: 'status_code', defaultValue: StatusCode.success, nullable: true)
+  StatusCode statusCode;
+
   @JsonKey(ignore: true)
   String get platformValue => platform?.description;
 

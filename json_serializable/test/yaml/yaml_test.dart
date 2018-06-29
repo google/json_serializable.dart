@@ -78,7 +78,7 @@ builders:
   sample:
     defaultEnumTest: bob
 ''': r'''
-line 3, column 22 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, allPackages, rootPackage
+line 3, column 22 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, all_packages, root_package
     defaultEnumTest: bob
                      ^^^''',
   r'''
@@ -95,7 +95,7 @@ builders:
     target: "a target"
     auto_apply: unsupported
 ''': r'''
-line 4, column 17 of file.yaml: Could not create `Builder`. Unsupported value for `auto_apply`. "unsupported" is not in the supported set: "none", "dependents", "all_packages", "root_package".
+line 4, column 17 of file.yaml: Could not create `Builder`. Unsupported value for `auto_apply`. `unsupported` is not one of the supported values: none, dependents, all_packages, root_package
     auto_apply: unsupported
                 ^^^^^^^^^^^''',
   r'''

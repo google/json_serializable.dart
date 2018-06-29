@@ -52,7 +52,7 @@ String jsonLiteralAsDart(dynamic value, bool asConst) {
 
   if (value is List) {
     var listItems = value.map((v) => jsonLiteralAsDart(v, asConst)).join(', ');
-    return '${asConst ? 'const' : ''}[$listItems]';
+    return '${asConst ? 'const ' : ''}[$listItems]';
   }
 
   if (value is Map) return jsonMapAsDart(value, asConst);

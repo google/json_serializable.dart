@@ -51,14 +51,11 @@ Builder _$BuilderFromJson(Map json) {
         target: $checkedConvert(json, 'target', (v) => v as String),
         isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
         autoApply: $checkedConvert(json, 'auto_apply',
-            (v) => v == null ? null : _autoApplyFromJson(v as String)),
-        buildTo: $checkedConvert(json, 'build_to',
-            (v) => $enumDecodeNullable('BuildTo', BuildTo.values, v as String)),
-        defaultEnumTest: $checkedConvert(
-            json,
-            'defaultEnumTest',
-            (v) => $enumDecodeNullable(
-                'AutoApply', AutoApply.values, v as String)),
+            (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+        buildTo: $checkedConvert(
+            json, 'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
+        defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
+            (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
         builderFactories: $checkedConvert(json, 'builder_factories',
             (v) => (v as List).map((e) => e as String).toList()),
         appliesBuilders: $checkedConvert(json, 'applies_builders',
@@ -109,11 +106,9 @@ abstract class _$BuilderSerializerMixin {
     writeNotNull('import', import);
     writeNotNull('is_optional', isOptional);
     writeNotNull('configLocation', configLocation?.toString());
-    writeNotNull(
-        'auto_apply', autoApply == null ? null : _autoApplyToJson(autoApply));
-    writeNotNull('build_to', buildTo?.toString()?.split('.')?.last);
-    writeNotNull(
-        'defaultEnumTest', defaultEnumTest?.toString()?.split('.')?.last);
+    writeNotNull('auto_apply', _$AutoApplyEnumMap[autoApply]);
+    writeNotNull('build_to', _$BuildToEnumMap[buildTo]);
+    writeNotNull('defaultEnumTest', _$AutoApplyEnumMap[defaultEnumTest]);
     val['builder_factories'] = builderFactories;
     writeNotNull('applies_builders', appliesBuilders);
     writeNotNull('required_inputs', requiredInputs);
@@ -121,3 +116,35 @@ abstract class _$BuilderSerializerMixin {
     return val;
   }
 }
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw new ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw new ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$AutoApplyEnumMap = const <AutoApply, dynamic>{
+  AutoApply.none: 'none',
+  AutoApply.dependents: 'dependents',
+  AutoApply.allPackages: 'all_packages',
+  AutoApply.rootPackage: 'root_package'
+};
+
+const _$BuildToEnumMap = const <BuildTo, dynamic>{
+  BuildTo.cache: 'cache',
+  BuildTo.source: 'source'
+};

@@ -32,11 +32,7 @@ class Builder extends Object with _$BuilderSerializerMixin {
   @JsonKey(disallowNullValue: true)
   final Uri configLocation;
 
-  @JsonKey(
-      name: 'auto_apply',
-      disallowNullValue: true,
-      toJson: _autoApplyToJson,
-      fromJson: _autoApplyFromJson)
+  @JsonKey(name: 'auto_apply', disallowNullValue: true)
   final AutoApply autoApply;
 
   @JsonKey(name: 'build_to')
@@ -77,45 +73,13 @@ class Builder extends Object with _$BuilderSerializerMixin {
   factory Builder.fromJson(Map map) => _$BuilderFromJson(map);
 }
 
-enum AutoApply { none, dependents, allPackages, rootPackage }
+enum AutoApply {
+  none,
+  dependents,
+  @JsonValue('all_packages')
+  allPackages,
+  @JsonValue('root_package')
+  rootPackage
+}
 
 enum BuildTo { cache, source }
-
-AutoApply _autoApplyFromJson(String input) =>
-    _fromJson(input, _autoApplyConvert, 'autoApply');
-
-String _autoApplyToJson(AutoApply value) =>
-    _toJson(value, _autoApplyConvert, 'autoApply');
-
-// TODO: remove all of this and annotate the fields on the enum – once we have
-// https://github.com/dart-lang/json_serializable/issues/38
-T _fromJson<T>(String input, Map<String, T> convertMap, String fieldName) {
-  var value = convertMap[input];
-  if (value == null) {
-    var allowed = convertMap.keys.map((e) => '"$e"').join(', ');
-    throw new ArgumentError.value(
-        input, fieldName, '"$input" is not in the supported set: $allowed.');
-  }
-  return value;
-}
-
-String _toJson<T>(T value, Map<String, T> convertMap, String fieldName) {
-  if (value == null) {
-    return null;
-  }
-  var string = convertMap.entries
-      .singleWhere((e) => e.value == value, orElse: () => null)
-      ?.key;
-
-  if (string == null) {
-    throw new ArgumentError.value(value, fieldName, 'Unsupported value.');
-  }
-  return string;
-}
-
-const _autoApplyConvert = const {
-  'none': AutoApply.none,
-  'dependents': AutoApply.dependents,
-  'all_packages': AutoApply.allPackages,
-  'root_package': AutoApply.rootPackage
-};
