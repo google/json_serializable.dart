@@ -200,5 +200,6 @@ class JsonValue {
   ///
   /// Can be a [String] or an [int].
   final dynamic value;
+
   const JsonValue(this.value);
 }

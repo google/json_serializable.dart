@@ -39,39 +39,38 @@ final _enumMapExpando = new Expando<Map<FieldElement, dynamic>>();
 ///
 /// If [targetType] is not an enum, `null` is returned.
 Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
-  if (targetType is InterfaceType && targetType.element.isEnum) {
-    var value = _enumMapExpando[targetType];
-    if (value == null) {
-      _enumMapExpando[targetType] = value =
-          new Map<FieldElement, dynamic>.fromEntries(
-              targetType.element.fields.where((p) => !p.isSynthetic).map((fe) {
-        var annotation =
-            const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
+  MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
+    var annotation =
+        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
 
-        dynamic fieldValue;
-        if (annotation == null) {
-          fieldValue = fe.name;
-        } else {
-          var reader = new ConstantReader(annotation);
+    dynamic fieldValue;
+    if (annotation == null) {
+      fieldValue = fe.name;
+    } else {
+      var reader = new ConstantReader(annotation);
 
-          var valueReader = reader.read('value');
+      var valueReader = reader.read('value');
 
-          if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
-            fieldValue = valueReader.literalValue;
-          } else {
-            throw new InvalidGenerationSourceError(
-                'The `JsonValue` annotation on `$targetType.${fe.name}` does '
-                'not have a value of type String, int, or null.',
-                element: fe);
-          }
-        }
-
-        var entry = new MapEntry(fe, fieldValue);
-
-        return entry;
-      }));
+      if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
+        fieldValue = valueReader.literalValue;
+      } else {
+        throw new InvalidGenerationSourceError(
+            'The `JsonValue` annotation on `$targetType.${fe.name}` does '
+            'not have a value of type String, int, or null.',
+            element: fe);
+      }
     }
-    return value;
+
+    var entry = new MapEntry(fe, fieldValue);
+
+    return entry;
+  }
+
+  if (targetType is InterfaceType && targetType.element.isEnum) {
+    return _enumMapExpando[targetType] ??=
+        new Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
+            .where((p) => !p.isSynthetic)
+            .map(_generateEntry));
   }
   return null;
 }
