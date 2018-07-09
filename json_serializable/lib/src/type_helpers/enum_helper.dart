@@ -60,8 +60,8 @@ String _enumValueMapFromType(DartType targetType) {
     return null;
   }
 
-  var items = enumMap.entries.map((e) =>
-      '  ${targetType.name}.${e.key.name}: ${jsonLiteralAsDart(e.value, false)}');
+  var items = enumMap.entries.map((e) => '  ${targetType.name}.${e.key.name}: '
+      '${jsonLiteralAsDart(e.value, false)}');
 
   return 'const ${_constMapName(targetType)} = '
       'const <${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';
