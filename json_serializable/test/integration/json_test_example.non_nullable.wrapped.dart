@@ -14,7 +14,7 @@
 // _NonNullableGenerator
 // **************************************************************************
 
-// ignore_for_file: annotate_overrides, hash_and_equals
+// ignore_for_file: hash_and_equals
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -40,6 +40,7 @@ class Person {
 
   Map<String, dynamic> toJson() => _$PersonToJson(this);
 
+  @override
   bool operator ==(Object other) =>
       other is Person &&
       firstName == other.firstName &&
@@ -90,6 +91,7 @@ class Order {
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);
 
+  @override
   bool operator ==(Object other) =>
       other is Order &&
       count == other.count &&
@@ -111,6 +113,7 @@ class Item extends ItemCore {
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
 
+  @override
   bool operator ==(Object other) =>
       other is Item &&
       price == other.price &&
@@ -140,6 +143,7 @@ class Numbers {
 
   Map<String, dynamic> toJson() => _$NumbersToJson(this);
 
+  @override
   bool operator ==(Object other) =>
       other is Numbers &&
       deepEquals(ints, other.ints) &&
