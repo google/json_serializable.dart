@@ -102,7 +102,7 @@ const _validConfig = const {
   'any_map': true,
   'checked': true,
   'explicit_to_json': true,
-  'generate_to_json_function': true,
+  'generate_to_json_function': false,
 };
 
 const _invalidConfig = const {

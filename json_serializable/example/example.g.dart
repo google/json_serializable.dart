@@ -17,13 +17,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get lastName;
-  DateTime get dateOfBirth;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'dateOfBirth': dateOfBirth.toIso8601String()
-      };
-}
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'dateOfBirth': instance.dateOfBirth.toIso8601String()
+    };

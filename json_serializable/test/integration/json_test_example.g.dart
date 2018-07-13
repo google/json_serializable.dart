@@ -24,25 +24,16 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         (k, e) => new MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)));
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get middleName;
-  String get lastName;
-  DateTime get dateOfBirth;
-  Category get house;
-  Order get order;
-  Map<String, Category> get houseMap;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'middleName': middleName,
-        'lastName': lastName,
-        'dateOfBirth': dateOfBirth?.toIso8601String(),
-        r'$house': _$CategoryEnumMap[house],
-        'order': order,
-        'houseMap':
-            houseMap?.map((k, e) => new MapEntry(k, _$CategoryEnumMap[e]))
-      };
-}
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'middleName': instance.middleName,
+      'lastName': instance.lastName,
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      r'$house': _$CategoryEnumMap[instance.house],
+      'order': instance.order,
+      'houseMap': instance.houseMap
+          ?.map((k, e) => new MapEntry(k, _$CategoryEnumMap[e]))
+    };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {
@@ -95,34 +86,24 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
             StatusCode.success;
 }
 
-abstract class _$OrderSerializerMixin {
-  int get count;
-  bool get isRushed;
-  Category get category;
-  UnmodifiableListView<Item> get items;
-  Platform get platform;
-  Map<String, Platform> get altPlatforms;
-  Uri get homepage;
-  StatusCode get statusCode;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{};
+Map<String, dynamic> _$OrderToJson(Order instance) {
+  var val = <String, dynamic>{};
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('count', count);
-    val['isRushed'] = isRushed;
-    val['category'] = _$CategoryEnumMap[category];
-    val['items'] = items;
-    val['platform'] = platform;
-    val['altPlatforms'] = altPlatforms;
-    val['homepage'] = homepage?.toString();
-    val['status_code'] = _$StatusCodeEnumMap[statusCode];
-    return val;
   }
+
+  writeNotNull('count', instance.count);
+  val['isRushed'] = instance.isRushed;
+  val['category'] = _$CategoryEnumMap[instance.category];
+  val['items'] = instance.items;
+  val['platform'] = instance.platform;
+  val['altPlatforms'] = instance.altPlatforms;
+  val['homepage'] = instance.homepage?.toString();
+  val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
+  return val;
 }
 
 const _$StatusCodeEnumMap = const <StatusCode, dynamic>{
@@ -139,27 +120,22 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
 }
 
-abstract class _$ItemSerializerMixin {
-  int get price;
-  int get itemNumber;
-  List<DateTime> get saleDates;
-  List<int> get rates;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{
-      'price': price,
-    };
+Map<String, dynamic> _$ItemToJson(Item instance) {
+  var val = <String, dynamic>{
+    'price': instance.price,
+  };
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('item-number', itemNumber);
-    val['saleDates'] = saleDates?.map((e) => e?.toIso8601String())?.toList();
-    val['rates'] = rates;
-    return val;
   }
+
+  writeNotNull('item-number', instance.itemNumber);
+  val['saleDates'] =
+      instance.saleDates?.map((e) => e?.toIso8601String())?.toList();
+  val['rates'] = instance.rates;
+  return val;
 }
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) {
@@ -177,19 +153,12 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         json['date'] == null ? null : dateTimeFromEpochUs(json['date'] as int);
 }
 
-abstract class _$NumbersSerializerMixin {
-  List<int> get ints;
-  List<num> get nums;
-  List<double> get doubles;
-  List<double> get nnDoubles;
-  Duration get duration;
-  DateTime get date;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'ints': ints,
-        'nums': nums,
-        'doubles': doubles,
-        'nnDoubles': nnDoubles,
-        'duration': duration == null ? null : durationToInt(duration),
-        'date': date == null ? null : dateTimeToEpochUs(date)
-      };
-}
+Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
+      'ints': instance.ints,
+      'nums': instance.nums,
+      'doubles': instance.doubles,
+      'nnDoubles': instance.nnDoubles,
+      'duration':
+          instance.duration == null ? null : durationToInt(instance.duration),
+      'date': instance.date == null ? null : dateTimeToEpochUs(instance.date)
+    };

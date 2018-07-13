@@ -64,14 +64,14 @@ final List<BuilderApplication> builders = [
           'test/integration/json_test_example.non_nullable.dart'
         ],
       )),
-  applyToRoot(_jsonPartBuilder(generateToJsonFunction: true),
+  applyToRoot(_jsonPartBuilder(),
       generateFor: const InputSet(
         include: const [
           'test/generic_files/generic_class.dart',
           'test/default_value/default_value.dart',
         ],
       )),
-  applyToRoot(_jsonPartBuilder(anyMap: true),
+  applyToRoot(_jsonPartBuilder(anyMap: true, generateToJsonFunction: false),
       generateFor: const InputSet(
         include: const [
           'test/kitchen_sink/kitchen_sink.dart',
@@ -80,16 +80,21 @@ final List<BuilderApplication> builders = [
           'test/kitchen_sink/strict_keys_object.dart'
         ],
       )),
-  applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
+  applyToRoot(
+      _jsonPartBuilder(
+          checked: true, anyMap: true, generateToJsonFunction: false),
       generateFor: const InputSet(
         include: const [
           'test/kitchen_sink/kitchen_sink.non_nullable.checked.dart',
+        ],
+      )),
+  applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
+      generateFor: const InputSet(
+        include: const [
           'test/yaml/build_config.dart',
         ],
       )),
-  applyToRoot(
-      _jsonPartBuilder(
-          checked: true, anyMap: true, generateToJsonFunction: true),
+  applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
       generateFor: const InputSet(
         include: const [
           'test/default_value/default_value.checked.dart',
@@ -101,13 +106,15 @@ final List<BuilderApplication> builders = [
           'test/integration/json_test_example*wrapped.dart',
         ],
       )),
-  applyToRoot(_jsonPartBuilder(useWrappers: true, generateToJsonFunction: true),
+  applyToRoot(_jsonPartBuilder(useWrappers: true),
       generateFor: const InputSet(
         include: const [
           'test/generic_files/generic_class*wrapped.dart',
         ],
       )),
-  applyToRoot(_jsonPartBuilder(useWrappers: true, anyMap: true),
+  applyToRoot(
+      _jsonPartBuilder(
+          useWrappers: true, anyMap: true, generateToJsonFunction: false),
       generateFor: const InputSet(
         include: const [
           'test/kitchen_sink/kitchen_sink*wrapped.dart',

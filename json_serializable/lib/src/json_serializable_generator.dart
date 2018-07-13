@@ -95,7 +95,18 @@ class JsonSerializableGenerator
   /// Controls how `toJson` functionality is generated for all types processed
   /// by this generator.
   ///
-  /// If `false` (the default), a private `_$ClassNameSerializerMixin` class is
+  /// If `true` (the default), then a top-level function is created that you can reference
+  /// from your class.
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   // ...
+  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  /// }
+  /// ```
+  ///
+  /// If `false`, a private `_$ClassNameSerializerMixin` class is
   /// created in the generated part file which contains a `toJson` method.
   ///
   /// Mix in this class to the source class:
@@ -104,17 +115,6 @@ class JsonSerializableGenerator
   /// @JsonSerializable()
   /// class Example extends Object with _$ExampleSerializerMixin {
   ///   // ...
-  /// }
-  /// ```
-  ///
-  /// If `true`, then a top-level function is created that you can reference
-  /// from your class.
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example {
-  ///   // ...
-  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
   /// }
   /// ```
   final bool generateToJsonFunction;
@@ -129,12 +129,12 @@ class JsonSerializableGenerator
     bool anyMap = false,
     bool checked = false,
     bool explicitToJson = false,
-    bool generateToJsonFunction = false,
+    bool generateToJsonFunction = true,
   })  : this.useWrappers = useWrappers ?? false,
         this.anyMap = anyMap ?? false,
         this.checked = checked ?? false,
         this.explicitToJson = explicitToJson ?? false,
-        this.generateToJsonFunction = generateToJsonFunction ?? false,
+        this.generateToJsonFunction = generateToJsonFunction ?? true,
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].

@@ -23,7 +23,7 @@ import 'json_test_common.dart';
 part 'json_test_example.non_nullable.wrapped.g.dart';
 
 @JsonSerializable(nullable: false)
-class Person extends Object with _$PersonSerializerMixin {
+class Person {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
   @JsonKey(name: '\$house')
@@ -38,6 +38,8 @@ class Person extends Object with _$PersonSerializerMixin {
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
+
   bool operator ==(Object other) =>
       other is Person &&
       firstName == other.firstName &&
@@ -49,7 +51,7 @@ class Person extends Object with _$PersonSerializerMixin {
 }
 
 @JsonSerializable(nullable: false)
-class Order extends Object with _$OrderSerializerMixin {
+class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
   @JsonKey(disallowNullValue: true)
   int count;
@@ -86,6 +88,8 @@ class Order extends Object with _$OrderSerializerMixin {
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+
   bool operator ==(Object other) =>
       other is Order &&
       count == other.count &&
@@ -95,7 +99,7 @@ class Order extends Object with _$OrderSerializerMixin {
 }
 
 @JsonSerializable(nullable: false)
-class Item extends ItemCore with _$ItemSerializerMixin {
+class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int itemNumber;
   List<DateTime> saleDates;
@@ -105,6 +109,8 @@ class Item extends ItemCore with _$ItemSerializerMixin {
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
+
   bool operator ==(Object other) =>
       other is Item &&
       price == other.price &&
@@ -113,7 +119,7 @@ class Item extends ItemCore with _$ItemSerializerMixin {
 }
 
 @JsonSerializable(nullable: false)
-class Numbers extends Object with _$NumbersSerializerMixin {
+class Numbers {
   List<int> ints;
   List<num> nums;
   List<double> doubles;
@@ -131,6 +137,8 @@ class Numbers extends Object with _$NumbersSerializerMixin {
 
   factory Numbers.fromJson(Map<String, dynamic> json) =>
       _$NumbersFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NumbersToJson(this);
 
   bool operator ==(Object other) =>
       other is Numbers &&

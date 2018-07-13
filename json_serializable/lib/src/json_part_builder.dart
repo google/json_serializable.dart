@@ -27,7 +27,7 @@ Builder jsonPartBuilder({
   bool anyMap = false,
   bool checked = false,
   bool explicitToJson = false,
-  bool generateToJsonFunction = false,
+  bool generateToJsonFunction = true,
 }) {
   return new PartBuilder([
     new JsonSerializableGenerator(

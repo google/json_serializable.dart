@@ -1,5 +1,10 @@
 ## 0.6.0
 
+* **BREAKING** By default, code generated to support `toJson` now creates
+  a top-level function instead of a mixin. The default for the
+  `generate_to_json_function` is now `true`. To opt-out of this change,
+  set `generate_to_json_function` to `false`.
+
 * Now supports changing the serialized values of enums using `JsonValue`.
 
   ```dart
