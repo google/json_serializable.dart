@@ -24,19 +24,11 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         (k, e) => new MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)));
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get middleName;
-  String get lastName;
-  DateTime get dateOfBirth;
-  Category get house;
-  Order get order;
-  Map<String, Category> get houseMap;
-  Map<String, dynamic> toJson() => new _$PersonJsonMapWrapper(this);
-}
+Map<String, dynamic> _$PersonToJson(Person instance) =>
+    new _$PersonJsonMapWrapper(instance);
 
 class _$PersonJsonMapWrapper extends $JsonMapWrapper {
-  final _$PersonSerializerMixin _v;
+  final Person _v;
   _$PersonJsonMapWrapper(this._v);
 
   @override
@@ -126,20 +118,11 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
             StatusCode.success;
 }
 
-abstract class _$OrderSerializerMixin {
-  int get count;
-  bool get isRushed;
-  Category get category;
-  UnmodifiableListView<Item> get items;
-  Platform get platform;
-  Map<String, Platform> get altPlatforms;
-  Uri get homepage;
-  StatusCode get statusCode;
-  Map<String, dynamic> toJson() => new _$OrderJsonMapWrapper(this);
-}
+Map<String, dynamic> _$OrderToJson(Order instance) =>
+    new _$OrderJsonMapWrapper(instance);
 
 class _$OrderJsonMapWrapper extends $JsonMapWrapper {
-  final _$OrderSerializerMixin _v;
+  final Order _v;
   _$OrderJsonMapWrapper(this._v);
 
   @override
@@ -196,16 +179,11 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
 }
 
-abstract class _$ItemSerializerMixin {
-  int get price;
-  int get itemNumber;
-  List<DateTime> get saleDates;
-  List<int> get rates;
-  Map<String, dynamic> toJson() => new _$ItemJsonMapWrapper(this);
-}
+Map<String, dynamic> _$ItemToJson(Item instance) =>
+    new _$ItemJsonMapWrapper(instance);
 
 class _$ItemJsonMapWrapper extends $JsonMapWrapper {
-  final _$ItemSerializerMixin _v;
+  final Item _v;
   _$ItemJsonMapWrapper(this._v);
 
   @override
@@ -252,18 +230,11 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         json['date'] == null ? null : dateTimeFromEpochUs(json['date'] as int);
 }
 
-abstract class _$NumbersSerializerMixin {
-  List<int> get ints;
-  List<num> get nums;
-  List<double> get doubles;
-  List<double> get nnDoubles;
-  Duration get duration;
-  DateTime get date;
-  Map<String, dynamic> toJson() => new _$NumbersJsonMapWrapper(this);
-}
+Map<String, dynamic> _$NumbersToJson(Numbers instance) =>
+    new _$NumbersJsonMapWrapper(instance);
 
 class _$NumbersJsonMapWrapper extends $JsonMapWrapper {
-  final _$NumbersSerializerMixin _v;
+  final Numbers _v;
   _$NumbersJsonMapWrapper(this._v);
 
   @override

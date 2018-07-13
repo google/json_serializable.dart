@@ -75,15 +75,13 @@ void _registerTests(JsonSerializableGenerator generator) {
           'TrivialNestedNullable');
 
       var expected = generator.useWrappers
-          ? r'''abstract class _$TrivialNestedNullableSerializerMixin {
-  TrivialNestedNullable get child;
-  int get otherField;
-  Map<String, dynamic> toJson() =>
-      new _$TrivialNestedNullableJsonMapWrapper(this);
-}
+          ? r'''
+Map<String, dynamic> _$TrivialNestedNullableToJson(
+        TrivialNestedNullable instance) =>
+    new _$TrivialNestedNullableJsonMapWrapper(instance);
 
 class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
-  final _$TrivialNestedNullableSerializerMixin _v;
+  final TrivialNestedNullable _v;
   _$TrivialNestedNullableJsonMapWrapper(this._v);
 
   @override
@@ -103,12 +101,13 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
   }
 }
 '''
-          : r'''abstract class _$TrivialNestedNullableSerializerMixin {
-  TrivialNestedNullable get child;
-  int get otherField;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'child': child?.toJson(), 'otherField': otherField};
-}
+          : r'''
+Map<String, dynamic> _$TrivialNestedNullableToJson(
+        TrivialNestedNullable instance) =>
+    <String, dynamic>{
+      'child': instance.child?.toJson(),
+      'otherField': instance.otherField
+    };
 ''';
 
       expect(output, expected);
@@ -120,15 +119,13 @@ class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
           'TrivialNestedNonNullable');
 
       var expected = generator.useWrappers
-          ? r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
-  TrivialNestedNonNullable get child;
-  int get otherField;
-  Map<String, dynamic> toJson() =>
-      new _$TrivialNestedNonNullableJsonMapWrapper(this);
-}
+          ? r'''
+Map<String, dynamic> _$TrivialNestedNonNullableToJson(
+        TrivialNestedNonNullable instance) =>
+    new _$TrivialNestedNonNullableJsonMapWrapper(instance);
 
 class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
-  final _$TrivialNestedNonNullableSerializerMixin _v;
+  final TrivialNestedNonNullable _v;
   _$TrivialNestedNonNullableJsonMapWrapper(this._v);
 
   @override
@@ -148,12 +145,13 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
   }
 }
 '''
-          : r'''abstract class _$TrivialNestedNonNullableSerializerMixin {
-  TrivialNestedNonNullable get child;
-  int get otherField;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'child': child.toJson(), 'otherField': otherField};
-}
+          : r'''
+Map<String, dynamic> _$TrivialNestedNonNullableToJson(
+        TrivialNestedNonNullable instance) =>
+    <String, dynamic>{
+      'child': instance.child.toJson(),
+      'otherField': instance.otherField
+    };
 ''';
 
       expect(output, expected);
@@ -209,7 +207,7 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
       if (generator.useWrappers) {
         expect(output, contains('_everythingIs42(_v.number)'));
       } else {
-        expect(output, contains('_everythingIs42(number)'));
+        expect(output, contains('_everythingIs42(instance.number)'));
       }
     });
   });
@@ -249,15 +247,17 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
 
   test('class with final fields', () {
     var generateResult = runForElementNamed('FinalFields');
-    expect(generateResult, contains('Map<String, dynamic> toJson()'));
+    expect(
+        generateResult,
+        contains(
+            r'Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance)'));
   });
 
   if (!generator.useWrappers) {
     test('includes final field in toJson when set in ctor', () {
       var generateResult = runForElementNamed('FinalFields');
       expect(generateResult, contains('new FinalFields(json[\'a\'] as int);'));
-      expect(
-          generateResult, contains('toJson() => <String, dynamic>{\'a\': a};'));
+      expect(generateResult, contains('<String, dynamic>{\'a\': instance.a};'));
     });
 
     test('excludes final field in toJson when not set in ctor', () {
@@ -273,7 +273,8 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
     if (!generator.useWrappers) {
       test('class with no ctor params', () {
         var output = runForElementNamed('Person');
-        expect(output, r'''Person _$PersonFromJson(Map<String, dynamic> json) {
+        expect(output, r'''
+Person _$PersonFromJson(Map<String, dynamic> json) {
   return new Person()
     ..firstName = json['firstName'] as String
     ..lastName = json['lastName'] as String
@@ -286,30 +287,22 @@ class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
     ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get lastName;
-  int get height;
-  DateTime get dateOfBirth;
-  dynamic get dynamicType;
-  dynamic get varType;
-  List<int> get listOfInts;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'h': height,
-        'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'dynamicType': dynamicType,
-        'varType': varType,
-        'listOfInts': listOfInts
-      };
-}
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'h': instance.height,
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dynamicType': instance.dynamicType,
+      'varType': instance.varType,
+      'listOfInts': instance.listOfInts
+    };
 ''');
       });
 
       test('class with ctor params', () {
         var output = runForElementNamed('Order');
-        expect(output, r'''Order _$OrderFromJson(Map<String, dynamic> json) {
+        expect(output, r'''
+Order _$OrderFromJson(Map<String, dynamic> json) {
   return new Order(json['height'] as int, json['firstName'] as String,
       json['lastName'] as String)
     ..dateOfBirth = json['dateOfBirth'] == null
@@ -317,18 +310,12 @@ abstract class _$PersonSerializerMixin {
         : DateTime.parse(json['dateOfBirth'] as String);
 }
 
-abstract class _$OrderSerializerMixin {
-  String get firstName;
-  String get lastName;
-  int get height;
-  DateTime get dateOfBirth;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'height': height,
-        'dateOfBirth': dateOfBirth?.toIso8601String()
-      };
-}
+Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'height': instance.height,
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String()
+    };
 ''');
       });
     }
@@ -384,16 +371,19 @@ abstract class _$OrderSerializerMixin {
       test('works to change the name of a field', () {
         var output = runForElementNamed('Person');
 
-        expect(output, contains("'h': height,"));
+        expect(output, contains("'h': instance.height,"));
         expect(output, contains("..height = json['h']"));
       });
 
       test('works to ignore a field', () {
         var output = runForElementNamed('IgnoredFieldClass');
 
-        expect(output, contains("'ignoredFalseField': ignoredFalseField,"));
-        expect(output, contains("'ignoredNullField': ignoredNullField"));
-        expect(output, isNot(contains("'ignoredTrueField': ignoredTrueField")));
+        expect(output,
+            contains("'ignoredFalseField': instance.ignoredFalseField"));
+        expect(
+            output, contains("'ignoredNullField': instance.ignoredNullField"));
+        expect(output,
+            isNot(contains("'ignoredTrueField': instance.ignoredTrueField")));
       });
 
       test('fails if ignored field is referenced by ctor', () {
@@ -436,8 +426,8 @@ abstract class _$OrderSerializerMixin {
     if (!generator.useWrappers) {
       test('all', () {
         var output = runForElementNamed('IncludeIfNullOverride');
-        expect(output, contains("'number': number,"));
-        expect(output, contains("$toJsonMapHelperName('str', str);"));
+        expect(output, contains(r"'number': instance.number"));
+        expect(output, contains(r"writeNotNull('str', instance.str);"));
       });
     }
   });
@@ -571,17 +561,12 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
 }
 
-abstract class _$GenericClassSerializerMixin<T extends num, S> {
-  Object get fieldObject;
-  dynamic get fieldDynamic;
-  int get fieldInt;
-  T get fieldT;
-  S get fieldS;
-  Map<String, dynamic> toJson() => new _$GenericClassJsonMapWrapper<T, S>(this);
-}
+Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
+        GenericClass<T, S> instance) =>
+    new _$GenericClassJsonMapWrapper<T, S>(instance);
 
 class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
-  final _$GenericClassSerializerMixin<T, S> _v;
+  final GenericClass<T, S> _v;
   _$GenericClassJsonMapWrapper(this._v);
 
   @override
@@ -623,20 +608,20 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
 }
 
-abstract class _$GenericClassSerializerMixin<T extends num, S> {
-  Object get fieldObject;
-  dynamic get fieldDynamic;
-  int get fieldInt;
-  T get fieldT;
-  S get fieldS;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'fieldObject': fieldObject == null ? null : _dataToJson(fieldObject),
-        'fieldDynamic': fieldDynamic == null ? null : _dataToJson(fieldDynamic),
-        'fieldInt': fieldInt == null ? null : _dataToJson(fieldInt),
-        'fieldT': fieldT == null ? null : _dataToJson(fieldT),
-        'fieldS': fieldS == null ? null : _dataToJson(fieldS)
-      };
-}
+Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
+        GenericClass<T, S> instance) =>
+    <String, dynamic>{
+      'fieldObject': instance.fieldObject == null
+          ? null
+          : _dataToJson(instance.fieldObject),
+      'fieldDynamic': instance.fieldDynamic == null
+          ? null
+          : _dataToJson(instance.fieldDynamic),
+      'fieldInt':
+          instance.fieldInt == null ? null : _dataToJson(instance.fieldInt),
+      'fieldT': instance.fieldT == null ? null : _dataToJson(instance.fieldT),
+      'fieldS': instance.fieldS == null ? null : _dataToJson(instance.fieldS)
+    };
 ''';
 
     expect(output, expected);
@@ -654,16 +639,11 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) {
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
 }
 
-abstract class _$SubTypeSerializerMixin {
-  int get superTypeViaCtor;
-  int get superTypeReadWrite;
-  int get subTypeViaCtor;
-  int get subTypeReadWrite;
-  Map<String, dynamic> toJson() => new _$SubTypeJsonMapWrapper(this);
-}
+Map<String, dynamic> _$SubTypeToJson(SubType instance) =>
+    new _$SubTypeJsonMapWrapper(instance);
 
 class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
-  final _$SubTypeSerializerMixin _v;
+  final SubType _v;
   _$SubTypeJsonMapWrapper(this._v);
 
   @override
@@ -702,27 +682,21 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) {
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
 }
 
-abstract class _$SubTypeSerializerMixin {
-  int get superTypeViaCtor;
-  int get superTypeReadWrite;
-  int get subTypeViaCtor;
-  int get subTypeReadWrite;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{
-      'super-type-via-ctor': superTypeViaCtor,
-    };
+Map<String, dynamic> _$SubTypeToJson(SubType instance) {
+  var val = <String, dynamic>{
+    'super-type-via-ctor': instance.superTypeViaCtor,
+  };
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('superTypeReadWrite', superTypeReadWrite);
-    val['subTypeViaCtor'] = subTypeViaCtor;
-    val['subTypeReadWrite'] = subTypeReadWrite;
-    return val;
   }
+
+  writeNotNull('superTypeReadWrite', instance.superTypeReadWrite);
+  val['subTypeViaCtor'] = instance.subTypeViaCtor;
+  val['subTypeReadWrite'] = instance.subTypeReadWrite;
+  return val;
 }
 ''';
 

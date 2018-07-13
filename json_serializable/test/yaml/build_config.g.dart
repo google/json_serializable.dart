@@ -23,10 +23,8 @@ Config _$ConfigFromJson(Map json) {
   });
 }
 
-abstract class _$ConfigSerializerMixin {
-  Map<String, Builder> get builders;
-  Map<String, dynamic> toJson() => <String, dynamic>{'builders': builders};
-}
+Map<String, dynamic> _$ConfigToJson(Config instance) =>
+    <String, dynamic>{'builders': instance.builders};
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
@@ -81,40 +79,27 @@ Builder _$BuilderFromJson(Map json) {
   });
 }
 
-abstract class _$BuilderSerializerMixin {
-  String get target;
-  String get import;
-  bool get isOptional;
-  Uri get configLocation;
-  AutoApply get autoApply;
-  BuildTo get buildTo;
-  AutoApply get defaultEnumTest;
-  List<String> get builderFactories;
-  List<String> get appliesBuilders;
-  List<String> get requiredInputs;
-  Map<String, List<String>> get buildExtentions;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{};
+Map<String, dynamic> _$BuilderToJson(Builder instance) {
+  var val = <String, dynamic>{};
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('target', target);
-    writeNotNull('import', import);
-    writeNotNull('is_optional', isOptional);
-    writeNotNull('configLocation', configLocation?.toString());
-    writeNotNull('auto_apply', _$AutoApplyEnumMap[autoApply]);
-    writeNotNull('build_to', _$BuildToEnumMap[buildTo]);
-    writeNotNull('defaultEnumTest', _$AutoApplyEnumMap[defaultEnumTest]);
-    val['builder_factories'] = builderFactories;
-    writeNotNull('applies_builders', appliesBuilders);
-    writeNotNull('required_inputs', requiredInputs);
-    writeNotNull('build_extensions', buildExtentions);
-    return val;
   }
+
+  writeNotNull('target', instance.target);
+  writeNotNull('import', instance.import);
+  writeNotNull('is_optional', instance.isOptional);
+  writeNotNull('configLocation', instance.configLocation?.toString());
+  writeNotNull('auto_apply', _$AutoApplyEnumMap[instance.autoApply]);
+  writeNotNull('build_to', _$BuildToEnumMap[instance.buildTo]);
+  writeNotNull('defaultEnumTest', _$AutoApplyEnumMap[instance.defaultEnumTest]);
+  val['builder_factories'] = instance.builderFactories;
+  writeNotNull('applies_builders', instance.appliesBuilders);
+  writeNotNull('required_inputs', instance.requiredInputs);
+  writeNotNull('build_extensions', instance.buildExtentions);
+  return val;
 }
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

@@ -27,12 +27,13 @@ import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable(nullable: false)
-class Person extends Object with _$PersonSerializerMixin {
+class Person {
   final String firstName;
   final String lastName;
   final DateTime dateOfBirth;
   Person({this.firstName, this.lastName, this.dateOfBirth});
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 ```
 
@@ -48,16 +49,11 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get lastName;
-  DateTime get dateOfBirth;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'dateOfBirth': dateOfBirth.toIso8601String()
-      };
-}
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'dateOfBirth': instance.dateOfBirth.toIso8601String()
+    };
 ```
 
 # Build configuration
@@ -85,14 +81,14 @@ targets:
           # Options configure how source code is generated for every
           # `@JsonSerializable`-annotated class in the package.
           #
-          # The default value for each of them: `false`.
+          # The default value for each is listed.
           #
           # For usage information, reference the corresponding field in
           # `JsonSerializableGenerator`.
-          use_wrappers: true
-          any_map: true
-          checked: true
-          explicit_to_json: true
+          use_wrappers: false
+          any_map: false
+          checked: false
+          explicit_to_json: false
           generate_to_json_function: true
 ```
 
