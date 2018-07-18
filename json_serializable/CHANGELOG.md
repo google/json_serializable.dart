@@ -25,6 +25,14 @@
   which allows `TypeHelper` instances to add additional members when handling
   a field. This is useful for generating shared helpers, for instance.
 
+* **BREAKING** The `header` option is no longer supported and must be removed
+  from `build.yaml`.
+
+* If a manual build script is used the `json_serializable` builder must be
+  switched to `hideOutput: true`, and the `combiningBuilder` from `source_gen`
+  must be included following this builder. When using a generated build script
+  with `pub run build_runner` or `webdev` this is handled automatically.
+
 ## 0.5.8
 
 * Small fixes to support Dart 2 runtime semantics.

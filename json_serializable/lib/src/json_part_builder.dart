@@ -11,17 +11,12 @@ import 'json_serializable_generator.dart';
 /// Returns a [Builder] for use within a `package:build_runner`
 /// `BuildAction`.
 ///
-/// [header] is used to specify the content at the top of each generated file.
-/// If `null`, the content of [defaultFileHeader] is used.
-/// If [header] is an empty `String` no header is added.
-///
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
 ///
 /// For details on [useWrappers], [anyMap], and [checked] see
 /// [JsonSerializableGenerator].
 Builder jsonPartBuilder({
-  String header,
   String formatOutput(String code),
   bool useWrappers = false,
   bool anyMap = false,
@@ -29,7 +24,7 @@ Builder jsonPartBuilder({
   bool explicitToJson = false,
   bool generateToJsonFunction = true,
 }) {
-  return new PartBuilder([
+  return new SharedPartBuilder([
     new JsonSerializableGenerator(
       useWrappers: useWrappers,
       anyMap: anyMap,
@@ -38,5 +33,5 @@ Builder jsonPartBuilder({
       generateToJsonFunction: generateToJsonFunction,
     ),
     const JsonLiteralGenerator()
-  ], header: header, formatOutput: formatOutput);
+  ], 'json_serializable',  formatOutput: formatOutput);
 }
