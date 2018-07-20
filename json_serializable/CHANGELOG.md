@@ -1,3 +1,7 @@
+## 0.5.8+1
+
+* Support the Dart 2.0 stable release.
+
 ## 0.5.8
 
 * Small fixes to support Dart 2 runtime semantics.

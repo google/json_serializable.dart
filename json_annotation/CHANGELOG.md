@@ -1,3 +1,7 @@
+## 0.2.9+1
+
+* Support the Dart 2.0 stable release.
+
 ## 0.2.9
 
 * When `FormatException` is caught in "checked mode", use the `message`
