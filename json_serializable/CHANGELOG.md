@@ -25,6 +25,10 @@
   which allows `TypeHelper` instances to add additional members when handling
   a field. This is useful for generating shared helpers, for instance.
 
+## 0.5.8+1
+
+* Support the Dart 2.0 stable release.
+
 ## 0.5.8
 
 * Small fixes to support Dart 2 runtime semantics.

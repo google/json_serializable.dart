@@ -4,7 +4,7 @@ author: Dart Team <misc@dartlang.org>
 description: Generates utilities to aid in serializing to/from JSON.
 homepage: https://github.com/dart-lang/json_serializable
 environment:
-  sdk: '>=2.0.0-dev.65 <2.0.0'
+  sdk: '>=2.0.0-dev.65 <3.0.0'
 
 dependencies:
   analyzer: ^0.32.2
