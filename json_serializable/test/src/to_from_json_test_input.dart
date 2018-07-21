@@ -10,18 +10,31 @@ int _twoArgFunction(int a, int b) => 42;
 dynamic _toDynamic(dynamic input) => null;
 Object _toObject(Object input) => null;
 
+@ShouldThrow(
+    'fromJson with function with incompatible return type',
+    'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
+    'return type `int` is not compatible with field type `String`.')
 @JsonSerializable()
 class BadFromFuncReturnType {
   @JsonKey(fromJson: _toInt)
   String field;
 }
 
+@ShouldThrow(
+    'fromJson function with 2 arg fromJson function',
+    'Error with `@JsonKey` on `field`. The `fromJson` function '
+    '`_twoArgFunction` must have one positional paramater.')
 @JsonSerializable()
 class InvalidFromFunc2Args {
   @JsonKey(fromJson: _twoArgFunction)
   String field;
 }
 
+@ShouldThrow(
+    'with class static function',
+    'Error with `@JsonKey` on `field`. '
+    'The function provided for `fromJson` must be top-level. '
+    'Static class methods (`_staticFunc`) are not supported.')
 @JsonSerializable()
 class InvalidFromFuncClassStatic {
   static Duration _staticFunc(int param) => null;
@@ -30,18 +43,31 @@ class InvalidFromFuncClassStatic {
   String field;
 }
 
+@ShouldThrow(
+    'mismatched toJson return value',
+    'Error with `@JsonKey` on `field`. The `toJson` function `_toInt` '
+    'argument type `bool` is not compatible with field type `String`.')
 @JsonSerializable()
 class BadToFuncReturnType {
   @JsonKey(toJson: _toInt)
   String field;
 }
 
+@ShouldThrow(
+    'toJson function with 2 potitional required args',
+    'Error with `@JsonKey` on `field`. The `toJson` function '
+    '`_twoArgFunction` must have one positional paramater.')
 @JsonSerializable()
 class InvalidToFunc2Args {
   @JsonKey(toJson: _twoArgFunction)
   String field;
 }
 
+@ShouldThrow(
+    'toJson with class static function',
+    'Error with `@JsonKey` on `field`. '
+    'The function provided for `toJson` must be top-level. '
+    'Static class methods (`_staticFunc`) are not supported.')
 @JsonSerializable()
 class InvalidToFuncClassStatic {
   static Duration _staticFunc(int param) => null;
@@ -86,6 +112,10 @@ class FromDynamicCollection {
 
 String _noArgs() => null;
 
+@ShouldThrow(
+    'fromJson with zero-arg function',
+    'Error with `@JsonKey` on `field`. The `fromJson` function '
+    '`_noArgs` must have one positional paramater.')
 @JsonSerializable(createToJson: false)
 class BadNoArgs {
   @JsonKey(fromJson: _noArgs)
@@ -94,6 +124,10 @@ class BadNoArgs {
 
 String _twoArgs(a, b) => null;
 
+@ShouldThrow(
+    'fromJson with function with two positional args',
+    'Error with `@JsonKey` on `field`. The `fromJson` function '
+    '`_twoArgs` must have one positional paramater.')
 @JsonSerializable(createToJson: false)
 class BadTwoRequiredPositional {
   @JsonKey(fromJson: _twoArgs)
@@ -102,6 +136,10 @@ class BadTwoRequiredPositional {
 
 String _oneNamed({a}) => null;
 
+@ShouldThrow(
+    'fromJson with function with one named arg',
+    'Error with `@JsonKey` on `field`. The `fromJson` function '
+    '`_oneNamed` must have one positional paramater.')
 @JsonSerializable(createToJson: false)
 class BadOneNamed {
   @JsonKey(fromJson: _oneNamed)

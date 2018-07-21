@@ -6,9 +6,9 @@ import 'dart:async';
 
 import 'package:analyzer/dart/analysis/context_builder.dart';
 import 'package:analyzer/dart/analysis/context_locator.dart';
-import 'package:analyzer/dart/ast/ast.dart';
+import 'package:source_gen/source_gen.dart';
 
-Future<CompilationUnit> resolveCompilationUnit(String path) async {
+Future<LibraryReader> resolveCompilationUnit(String path) async {
   var contextLocator = new ContextLocator();
   var roots = contextLocator.locateRoots(includedPaths: [path]);
   if (roots.length != 1) {
@@ -18,5 +18,5 @@ Future<CompilationUnit> resolveCompilationUnit(String path) async {
   var analysisContext =
       new ContextBuilder().createContext(contextRoot: roots.single);
   var resolveResult = await analysisContext.currentSession.getResolvedAst(path);
-  return resolveResult.unit;
+  return new LibraryReader(resolveResult.unit.element.library);
 }
