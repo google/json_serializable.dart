@@ -26,6 +26,7 @@ class Person {
   Order order;
 
   Map<String, Category> houseMap;
+  Map<Category, int> categoryCounts;
 
   Person(this.firstName, this.lastName, this.house,
       {this.middleName, this.dateOfBirth});

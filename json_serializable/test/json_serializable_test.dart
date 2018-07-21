@@ -228,9 +228,9 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
           'Make sure all of the types are serializable.');
     });
 
-    final mapKeyFyi = 'Could not generate `toJson` code for '
-        '`intDateTimeMap` because of type `int`.\n'
-        'The type of the Map key must be `String`, `Object` or `dynamic`.';
+    final mapKeyFyi = 'Could not generate `toJson` code for `intDateTimeMap` '
+        'because of type `int`.\nMap keys must be of type '
+        '`String`, enum, `Object` or `dynamic`.';
 
     test('for toJson in Map key', () {
       expectThrows('NoSerializeBadKey', mapKeyFyi,

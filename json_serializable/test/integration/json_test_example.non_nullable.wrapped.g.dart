@@ -17,7 +17,9 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
     ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
     ..houseMap = (json['houseMap'] as Map<String, dynamic>)
-        .map((k, e) => new MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)));
+        .map((k, e) => new MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)))
+    ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>).map(
+        (k, e) => new MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int));
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) =>
@@ -35,7 +37,8 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         'dateOfBirth',
         r'$house',
         'order',
-        'houseMap'
+        'houseMap',
+        'categoryCounts'
       ];
 
   @override
@@ -57,6 +60,8 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         case 'houseMap':
           return $wrapMap<String, Category>(
               _v.houseMap, (e) => _$CategoryEnumMap[e]);
+        case 'categoryCounts':
+          return $wrapMap<Category, int>(_v.categoryCounts, (e) => e);
       }
     }
     return null;

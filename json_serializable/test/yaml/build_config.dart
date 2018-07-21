@@ -12,6 +12,9 @@ class Config {
   @JsonKey(required: true)
   final Map<String, Builder> builders;
 
+  // Verifying enum keys in map
+  Map<AutoApply, int> weights;
+
   Config({@required this.builders});
 
   factory Config.fromJson(Map map) => _$ConfigFromJson(map);

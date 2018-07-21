@@ -8,6 +8,9 @@ import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../type_helper_context.dart';
+import '../utils.dart';
+
+const _keyParam = 'k';
 
 class MapHelper extends TypeHelper {
   const MapHelper();
@@ -27,8 +30,9 @@ class MapHelper extends TypeHelper {
     _checkSafeKeyType(expression, keyType);
 
     var subFieldValue = context.serialize(valueType, closureArg);
+    var subKeyValue = context.serialize(keyType, _keyParam);
 
-    if (closureArg == subFieldValue) {
+    if (closureArg == subFieldValue && _keyParam == subKeyValue) {
       return expression;
     }
 
@@ -44,7 +48,7 @@ class MapHelper extends TypeHelper {
     final optionalQuestion = context.nullable ? '?' : '';
 
     return '$expression$optionalQuestion'
-        '.map((k, $closureArg) => new MapEntry(k, $subFieldValue))';
+        '.map(($_keyParam, $closureArg) => new MapEntry($subKeyValue, $subFieldValue))';
   }
 
   @override
@@ -63,24 +67,27 @@ class MapHelper extends TypeHelper {
 
     final valueArgIsAny = _isObjectOrDynamic(valueArg);
     var isAnyMap = context is TypeHelperContext && context.anyMap;
+    final isEnumKey = isEnum(keyArg);
 
-    if (valueArgIsAny) {
-      if (isAnyMap) {
-        if (_isObjectOrDynamic(keyArg)) {
-          return '$expression as Map';
+    if (!isEnumKey) {
+      if (valueArgIsAny) {
+        if (isAnyMap) {
+          if (_isObjectOrDynamic(keyArg)) {
+            return '$expression as Map';
+          }
+        } else {
+          // this is the trivial case. Do a runtime cast to the known type of JSON
+          // map values - `Map<String, dynamic>`
+          return '$expression as Map<String, dynamic>';
         }
-      } else {
-        // this is the trivial case. Do a runtime cast to the known type of JSON
-        // map values - `Map<String, dynamic>`
-        return '$expression as Map<String, dynamic>';
       }
-    }
 
-    if (!context.nullable &&
-        (valueArgIsAny ||
-            simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
-      // No mapping of the values or null check required!
-      return 'new Map<String, $valueArg>.from($expression as Map)';
+      if (!context.nullable &&
+          (valueArgIsAny ||
+              simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
+        // No mapping of the values or null check required!
+        return 'new Map<String, $valueArg>.from($expression as Map)';
+      }
     }
 
     // In this case, we're going to create a new Map with matching reified
@@ -92,11 +99,17 @@ class MapHelper extends TypeHelper {
 
     final mapCast = isAnyMap ? 'as Map' : 'as Map<String, dynamic>';
 
-    final keyUsage =
-        (isAnyMap && !_isObjectOrDynamic(keyArg)) ? 'k as String' : 'k';
+    String keyUsage;
+    if (isEnumKey) {
+      keyUsage = context.deserialize(keyArg, _keyParam);
+    } else if (isAnyMap && !_isObjectOrDynamic(keyArg)) {
+      keyUsage = '$_keyParam as String';
+    } else {
+      keyUsage = _keyParam;
+    }
 
-    return '($expression $mapCast)$optionalQuestion'
-        '.map((k, $closureArg) => new MapEntry($keyUsage, $itemSubVal))';
+    return '($expression $mapCast)$optionalQuestion.map('
+        '($_keyParam, $closureArg) => new MapEntry($keyUsage, $itemSubVal))';
   }
 }
 
@@ -105,11 +118,12 @@ bool _isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String
-  var safeKey =
-      _isObjectOrDynamic(keyArg) || coreStringTypeChecker.isExactlyType(keyArg);
+  var safeKey = _isObjectOrDynamic(keyArg) ||
+      coreStringTypeChecker.isExactlyType(keyArg) ||
+      isEnum(keyArg);
 
   if (!safeKey) {
     throw new UnsupportedTypeError(keyArg, expression,
-        'The type of the Map key must be `String`, `Object` or `dynamic`.');
+        'Map keys must be of type `String`, enum, `Object` or `dynamic`.');
   }
 }
