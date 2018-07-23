@@ -22,5 +22,5 @@ dependency_overrides:
     path: ../json_annotation
   source_gen:
     git:
-      url: git@github.com:dart-lang/source_gen.git
+      url: https://github.com/dart-lang/source_gen
       path: source_gen
