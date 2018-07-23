@@ -117,7 +117,7 @@ bool _isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
-  // So the only safe types for key are dynamic/Object/String
+  // So the only safe types for key are dynamic/Object/String/enum
   var safeKey = _isObjectOrDynamic(keyArg) ||
       coreStringTypeChecker.isExactlyType(keyArg) ||
       isEnum(keyArg);
