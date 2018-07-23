@@ -1,7 +1,3 @@
-// Copyright (c) 2018, the Dart project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'json_test_example.non_nullable.dart';
@@ -17,7 +13,9 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
     ..order = new Order.fromJson(json['order'] as Map<String, dynamic>)
     ..houseMap = (json['houseMap'] as Map<String, dynamic>)
-        .map((k, e) => new MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)));
+        .map((k, e) => new MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)))
+    ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>).map(
+        (k, e) => new MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int));
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -27,8 +25,10 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'dateOfBirth': instance.dateOfBirth.toIso8601String(),
       r'$house': _$CategoryEnumMap[instance.house],
       'order': instance.order,
-      'houseMap':
-          instance.houseMap.map((k, e) => new MapEntry(k, _$CategoryEnumMap[e]))
+      'houseMap': instance.houseMap
+          .map((k, e) => new MapEntry(k, _$CategoryEnumMap[e])),
+      'categoryCounts': instance.categoryCounts
+          .map((k, e) => new MapEntry(_$CategoryEnumMap[k], e))
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

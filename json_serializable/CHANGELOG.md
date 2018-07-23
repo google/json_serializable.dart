@@ -33,6 +33,10 @@
   must be included following this builder. When using a generated build script
   with `pub run build_runner` or `webdev` this is handled automatically.
 
+## 0.5.8+1
+
+* Support the Dart 2.0 stable release.
+
 ## 0.5.8
 
 * Small fixes to support Dart 2 runtime semantics.

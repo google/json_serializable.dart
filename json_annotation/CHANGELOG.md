@@ -6,6 +6,10 @@
 * Removed `$checkAllowedKeys`, `$enumDecode` and `$enumDecodeNullable` which are
   no longer needed by the latest release of `package:json_serializable`.
 
+## 0.2.9+1
+
+* Support the Dart 2.0 stable release.
+
 ## 0.2.9
 
 * When `FormatException` is caught in "checked mode", use the `message`

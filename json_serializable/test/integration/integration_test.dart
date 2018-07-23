@@ -45,7 +45,8 @@ void main() {
 
     test('enum map', () {
       var person = new Person(null, null, null)
-        ..houseMap = {'bob': Category.strange};
+        ..houseMap = {'bob': Category.strange}
+        ..categoryCounts = {Category.strange: 1};
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });
