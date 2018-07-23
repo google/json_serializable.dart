@@ -19,12 +19,47 @@ Config _$ConfigFromJson(Map json) {
             'builders',
             (v) => (v as Map)?.map((k, e) => new MapEntry(k as String,
                 e == null ? null : new Builder.fromJson(e as Map)))));
+    $checkedConvert(
+        json,
+        'weights',
+        (v) => val.weights = (v as Map)?.map((k, e) => new MapEntry(
+            _$enumDecodeNullable(_$AutoApplyEnumMap, k), e as int)));
     return val;
   });
 }
 
-Map<String, dynamic> _$ConfigToJson(Config instance) =>
-    <String, dynamic>{'builders': instance.builders};
+Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
+      'builders': instance.builders,
+      'weights': instance.weights
+          ?.map((k, e) => new MapEntry(_$AutoApplyEnumMap[k], e))
+    };
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw new ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw new ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$AutoApplyEnumMap = const <AutoApply, dynamic>{
+  AutoApply.none: 'none',
+  AutoApply.dependents: 'dependents',
+  AutoApply.allPackages: 'all_packages',
+  AutoApply.rootPackage: 'root_package'
+};
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
@@ -101,33 +136,6 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   writeNotNull('build_extensions', instance.buildExtentions);
   return val;
 }
-
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
-  if (source == null) {
-    throw new ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw new ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
-}
-
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source);
-}
-
-const _$AutoApplyEnumMap = const <AutoApply, dynamic>{
-  AutoApply.none: 'none',
-  AutoApply.dependents: 'dependents',
-  AutoApply.allPackages: 'all_packages',
-  AutoApply.rootPackage: 'root_package'
-};
 
 const _$BuildToEnumMap = const <BuildTo, dynamic>{
   BuildTo.cache: 'cache',

@@ -1,3 +1,7 @@
+weights:
+  all_packages: 42
+  none:
+  root_package: null
 builders:
   scss_builder:
     target: "scss_builder"
