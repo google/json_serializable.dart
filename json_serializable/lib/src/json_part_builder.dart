@@ -33,5 +33,5 @@ Builder jsonPartBuilder({
       generateToJsonFunction: generateToJsonFunction,
     ),
     const JsonLiteralGenerator()
-  ], 'json_serializable',  formatOutput: formatOutput);
+  ], 'json_serializable', formatOutput: formatOutput);
 }

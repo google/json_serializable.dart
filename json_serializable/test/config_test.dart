@@ -36,8 +36,7 @@ void main() {
   });
 
   test('valid config', () async {
-    var builder =
-        jsonSerializable(const BuilderOptions(_validConfig));
+    var builder = jsonSerializable(const BuilderOptions(_validConfig));
     expect(builder, isNotNull);
 
     expect(records, isEmpty);
