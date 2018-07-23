@@ -75,8 +75,9 @@ void _registerTests(JsonSerializableGenerator generator) {
   }
 
   group('fails when generating for', () {
-    for (var thing in _library.annotatedWithExact(_shouldThrowChecker)) {
-      var element = thing.element;
+    for (var annotatedElement
+        in _library.annotatedWithExact(_shouldThrowChecker)) {
+      var element = annotatedElement.element;
       var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
       var testDescription =
           constantValue.getField('testDescription').toStringValue();
@@ -85,7 +86,8 @@ void _registerTests(JsonSerializableGenerator generator) {
       var todoMatcher = constantValue.getField('todo').toStringValue();
 
       test('$testDescription (${element.name})', () {
-        expectThrows(thing.element.name, messageMatcher, todoMatcher);
+        expectThrows(
+            annotatedElement.element.name, messageMatcher, todoMatcher);
       });
     }
   });
