@@ -75,8 +75,39 @@ void _registerTests(JsonSerializableGenerator generator) {
   }
 
   group('fails when generating for', () {
-    for (var annotatedElement
-        in _library.annotatedWithExact(_shouldThrowChecker)) {
+    var annotatedElements = _library
+        .annotatedWithExact(_shouldThrowChecker)
+        .toList()
+          ..sort((a, b) => a.element.name.compareTo(b.element.name));
+
+    test('all expected members', () {
+      expect(annotatedElements.map((ae) => ae.element.name), [
+        'BadFromFuncReturnType',
+        'BadNoArgs',
+        'BadOneNamed',
+        'BadToFuncReturnType',
+        'BadTwoRequiredPositional',
+        'DefaultWithConstObject',
+        'DefaultWithFunction',
+        'DefaultWithNestedEnum',
+        'DefaultWithNonNullableClass',
+        'DefaultWithNonNullableField',
+        'DefaultWithSymbol',
+        'DefaultWithType',
+        'DupeKeys',
+        'IncludeIfNullDisallowNullClass',
+        'InvalidFromFunc2Args',
+        'InvalidFromFuncClassStatic',
+        'InvalidToFunc2Args',
+        'InvalidToFuncClassStatic',
+        'JsonValueWithBool',
+        'KeyDupesField',
+        'annotatedMethod',
+        'theAnswer',
+      ]);
+    });
+
+    for (var annotatedElement in annotatedElements) {
       var element = annotatedElement.element;
       var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
       var testDescription =
