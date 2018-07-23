@@ -5,13 +5,19 @@
 //ignore_for_file: avoid_unused_constructor_parameters, prefer_initializing_formals
 import 'package:json_annotation/json_annotation.dart';
 
+import 'annotation.dart';
+
 part 'default_value_input.dart';
 part 'generic_test_input.dart';
 part 'to_from_json_test_input.dart';
 
+@ShouldThrow('field', 'Generator cannot target `theAnswer`.',
+    'Remove the JsonSerializable annotation from `theAnswer`.')
 @JsonSerializable()
 const theAnswer = 42;
 
+@ShouldThrow('function', 'Generator cannot target `annotatedMethod`.',
+    'Remove the JsonSerializable annotation from `annotatedMethod`.')
 @JsonSerializable()
 void annotatedMethod() => null;
 
@@ -161,6 +167,10 @@ class NoCtorClass {
   factory NoCtorClass.fromJson(Map<String, dynamic> json) => null;
 }
 
+@ShouldThrow(
+    'fails if name duplicates existing field',
+    'More than one field has the JSON key `str`.',
+    'Check the `JsonKey` annotations on fields.')
 @JsonSerializable(createFactory: false)
 class KeyDupesField {
   @JsonKey(name: 'str')
@@ -169,6 +179,10 @@ class KeyDupesField {
   String str;
 }
 
+@ShouldThrow(
+    'fails if two names collide',
+    'More than one field has the JSON key `a`.',
+    'Check the `JsonKey` annotations on fields.')
 @JsonSerializable(createFactory: false)
 class DupeKeys {
   @JsonKey(name: 'a')
@@ -203,6 +217,11 @@ class PrivateFieldCtorClass {
   PrivateFieldCtorClass(this._privateField);
 }
 
+@ShouldThrow(
+    '`disallowNullvalue` and `includeIfNull` both `true`',
+    'Error with `@JsonKey` on `field`. '
+    'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+    'This leads to incompatible `toJson` and `fromJson` behavior.')
 @JsonSerializable()
 class IncludeIfNullDisallowNullClass {
   @JsonKey(includeIfNull: true, disallowNullValue: true)
@@ -248,6 +267,10 @@ class TrivialNestedNonNullable {
   int otherField;
 }
 
+@ShouldThrow(
+    'enums annotated with JsonValue must be string, int or null',
+    'The `JsonValue` annotation on `BadEnum.value` does not have a value '
+    'of type String, int, or null.')
 @JsonSerializable()
 class JsonValueWithBool {
   BadEnum field;

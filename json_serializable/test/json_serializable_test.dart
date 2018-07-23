@@ -4,7 +4,6 @@
 
 @TestOn('vm')
 
-import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
@@ -12,6 +11,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
+import 'src/annotation.dart';
 import 'test_file_utils.dart';
 
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
@@ -26,13 +26,13 @@ Matcher _throwsUnsupportedError(matcher) =>
 
 final _formatter = new dart_style.DartFormatter();
 
-CompilationUnit _compilationUnit;
+LibraryReader _library;
 
-void main() {
-  setUpAll(() async {
-    var path = testFilePath('test', 'src', 'json_serializable_test_input.dart');
-    _compilationUnit = await resolveCompilationUnit(path);
-  });
+const _shouldThrowChecker = const TypeChecker.fromRuntime(ShouldThrow);
+
+void main() async {
+  var path = testFilePath('test', 'src', 'json_serializable_test_input.dart');
+  _library = await resolveCompilationUnit(path);
 
   group('without wrappers',
       () => _registerTests(const JsonSerializableGenerator()));
@@ -41,8 +41,7 @@ void main() {
 }
 
 String _runForElementNamed(JsonSerializableGenerator generator, String name) {
-  var library = new LibraryReader(_compilationUnit.element.library);
-  var element = library.allElements.singleWhere((e) => e.name == name);
+  var element = _library.allElements.singleWhere((e) => e.name == name);
   var annotation = generator.typeChecker.firstAnnotationOf(element);
   var generated = generator
       .generateForAnnotatedElement(
@@ -62,10 +61,67 @@ void _registerTests(JsonSerializableGenerator generator) {
       _runForElementNamed(generator, name);
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
+    if (messageMatcher == null) {
+      var element =
+          _library.allElements.singleWhere((e) => e.name == elementName);
+
+      var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
+      messageMatcher = constantValue.getField('errorMessage').toStringValue();
+      todoMatcher ??= constantValue.getField('todo').toStringValue();
+    }
     todoMatcher ??= isEmpty;
     expect(() => runForElementNamed(elementName),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
+
+  group('fails when generating for', () {
+    var annotatedElements = _library
+        .annotatedWithExact(_shouldThrowChecker)
+        .toList()
+          ..sort((a, b) => a.element.name.compareTo(b.element.name));
+
+    test('all expected members', () {
+      expect(annotatedElements.map((ae) => ae.element.name), [
+        'BadFromFuncReturnType',
+        'BadNoArgs',
+        'BadOneNamed',
+        'BadToFuncReturnType',
+        'BadTwoRequiredPositional',
+        'DefaultWithConstObject',
+        'DefaultWithFunction',
+        'DefaultWithNestedEnum',
+        'DefaultWithNonNullableClass',
+        'DefaultWithNonNullableField',
+        'DefaultWithSymbol',
+        'DefaultWithType',
+        'DupeKeys',
+        'IncludeIfNullDisallowNullClass',
+        'InvalidFromFunc2Args',
+        'InvalidFromFuncClassStatic',
+        'InvalidToFunc2Args',
+        'InvalidToFuncClassStatic',
+        'JsonValueWithBool',
+        'KeyDupesField',
+        'annotatedMethod',
+        'theAnswer',
+      ]);
+    });
+
+    for (var annotatedElement in annotatedElements) {
+      var element = annotatedElement.element;
+      var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
+      var testDescription =
+          constantValue.getField('testDescription').toStringValue();
+      var messageMatcher =
+          constantValue.getField('errorMessage').toStringValue();
+      var todoMatcher = constantValue.getField('todo').toStringValue();
+
+      test('$testDescription (${element.name})', () {
+        expectThrows(
+            annotatedElement.element.name, messageMatcher, todoMatcher);
+      });
+    }
+  });
 
   group('explicit toJson', () {
     test('nullable', () {
@@ -155,20 +211,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 ''';
 
       expect(output, expected);
-    });
-  });
-
-  group('non-classes', () {
-    test('const field', () {
-      expectThrows('theAnswer', 'Generator cannot target `theAnswer`.',
-          'Remove the JsonSerializable annotation from `theAnswer`.');
-    });
-
-    test('method', () {
-      expectThrows(
-          'annotatedMethod',
-          'Generator cannot target `annotatedMethod`.',
-          'Remove the JsonSerializable annotation from `annotatedMethod`.');
     });
   });
 
@@ -402,18 +444,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
                 '_privateField. It is assigned to a private field.'));
       });
     }
-
-    test('fails if name duplicates existing field', () {
-      expectThrows(
-          'KeyDupesField',
-          'More than one field has the JSON key `str`.',
-          'Check the `JsonKey` annotations on fields.');
-    });
-
-    test('fails if two names collide', () {
-      expectThrows('DupeKeys', 'More than one field has the JSON key `a`.',
-          'Check the `JsonKey` annotations on fields.');
-    });
   });
 
   group('includeIfNull', () {
@@ -433,62 +463,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
   });
 
   group('functions', () {
-    group('fromJsonFunction', () {
-      test('with bad fromJson return type', () {
-        expectThrows(
-            'BadFromFuncReturnType',
-            'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
-            'return type `int` is not compatible with field type `String`.');
-      });
-      test('with 2 arg fromJson function', () {
-        expectThrows(
-            'InvalidFromFunc2Args',
-            'Error with `@JsonKey` on `field`. The `fromJson` function '
-            '`_twoArgFunction` must have one positional paramater.');
-      });
-      test('with class static function', () {
-        expectThrows(
-            'InvalidFromFuncClassStatic',
-            'Error with `@JsonKey` on `field`. '
-            'The function provided for `fromJson` must be top-level. '
-            'Static class methods (`_staticFunc`) are not supported.');
-      });
-      test('BadNoArgs', () {
-        expectThrows('BadNoArgs',
-            'Error with `@JsonKey` on `field`. The `fromJson` function `_noArgs` must have one positional paramater.');
-      });
-      test('BadTwoRequiredPositional', () {
-        expectThrows('BadTwoRequiredPositional',
-            'Error with `@JsonKey` on `field`. The `fromJson` function `_twoArgs` must have one positional paramater.');
-      });
-      test('BadOneNamed', () {
-        expectThrows('BadOneNamed',
-            'Error with `@JsonKey` on `field`. The `fromJson` function `_oneNamed` must have one positional paramater.');
-      });
-    });
-
-    group('toJsonFunction', () {
-      test('with bad fromJson return type', () {
-        expectThrows(
-            'BadToFuncReturnType',
-            'Error with `@JsonKey` on `field`. The `toJson` function `_toInt` '
-            'argument type `bool` is not compatible with field type `String`.');
-      });
-      test('with 2 arg fromJson function', () {
-        expectThrows(
-            'InvalidToFunc2Args',
-            'Error with `@JsonKey` on `field`. The `toJson` function '
-            '`_twoArgFunction` must have one positional paramater.');
-      });
-      test('with class static function', () {
-        expectThrows(
-            'InvalidToFuncClassStatic',
-            'Error with `@JsonKey` on `field`. '
-            'The function provided for `toJson` must be top-level. '
-            'Static class methods (`_staticFunc`) are not supported.');
-      });
-    });
-
     if (!generator.useWrappers) {
       test('object', () {
         var output = runForElementNamed('ObjectConvertMethods');
@@ -705,13 +679,6 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
 
   if (!generator.useWrappers) {
     group('enums annotated with JsonValue', () {
-      test('must be String, int, or null values', () {
-        expectThrows(
-            'JsonValueWithBool',
-            'The `JsonValue` annotation on `BadEnum.value` does not have a value '
-            'of type String, int, or null.');
-      });
-
       test('can be interesting', () {
         var output = runForElementNamed('JsonValueValid');
 
@@ -724,59 +691,6 @@ const _$GoodEnumEnumMap = const <GoodEnum, dynamic>{
   GoodEnum.nullValue: null
 };'''));
       });
-    });
-
-    group('default values fail with', () {
-      test('symbols', () {
-        expectThrows(
-            'DefaultWithSymbol',
-            'Error with `@JsonKey` on `field`. '
-            '`defaultValue` is `Symbol`, it must be a literal.');
-      });
-      test('functions', () {
-        expectThrows(
-            'DefaultWithFunction',
-            'Error with `@JsonKey` on `field`. '
-            '`defaultValue` is `Function`, it must be a literal.');
-      });
-      test('type', () {
-        expectThrows(
-            'DefaultWithType',
-            'Error with `@JsonKey` on `field`. '
-            '`defaultValue` is `Type`, it must be a literal.');
-      });
-      test('const object', () {
-        expectThrows(
-            'DefaultWithConstObject',
-            'Error with `@JsonKey` on `field`. '
-            '`defaultValue` is `Duration`, it must be a literal.');
-      });
-      test('enum value', () {
-        expectThrows(
-            'DefaultWithNestedEnum',
-            'Error with `@JsonKey` on `field`. '
-            '`defaultValue` is `List > Enum`, it must be a literal.');
-      });
-      test('non-nullable field', () {
-        expectThrows(
-            'DefaultWithNonNullableField',
-            'Error with `@JsonKey` on `field`. '
-            'Cannot use `defaultValue` on a field with `nullable` false.');
-      });
-      test('non-nullable class', () {
-        expectThrows(
-            'DefaultWithNonNullableClass',
-            'Error with `@JsonKey` on `field`. '
-            'Cannot use `defaultValue` on a field with `nullable` false.');
-      });
-    });
-
-    test('`disallowNullvalue` and `includeIfNull` both `true`', () {
-      expectThrows(
-          'IncludeIfNullDisallowNullClass',
-          'Error with `@JsonKey` on `field`. '
-          'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
-          'This leads to incompatible `toJson` and `fromJson` behavior.');
     });
   }
 }
