@@ -5,7 +5,6 @@
 import 'package:test/test.dart';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/src/constants.dart';
 import 'package:yaml/yaml.dart';
 
 import '../test_utils.dart';
@@ -19,6 +18,10 @@ import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
 
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
+
+// copied and renamed as private from /lib/src/constants.dart
+const _generatedLocalVarName = 'val';
+const _toJsonMapHelperName = 'writeNotNull';
 
 final _isATypeError = const TypeMatcher<TypeError>();
 
@@ -301,8 +304,8 @@ final _validValues = const {
   'dynamicIntMap': const {},
   'objectDateTimeMap': const <String, dynamic>{},
   'crazyComplex': const [],
-  generatedLocalVarName: const {},
-  toJsonMapHelperName: null,
+  _generatedLocalVarName: const {},
+  _toJsonMapHelperName: null,
   r'$string': null,
   'simpleObject': const {'value': 42},
   'strictKeysObject': const {'value': 10, 'custom_field': 'cool'},
@@ -327,8 +330,8 @@ final _invalidValueTypes = const {
   'dynamicIntMap': const {'key': 'value'},
   'objectDateTimeMap': const {'key': 42},
   'crazyComplex': const [true],
-  generatedLocalVarName: const {'key': 42},
-  toJsonMapHelperName: 42,
+  _generatedLocalVarName: const {'key': 42},
+  _toJsonMapHelperName: 42,
   r'$string': true,
   'simpleObject': 42,
   'strictKeysObject': const {
@@ -351,5 +354,5 @@ final _excludeIfNullKeys = const [
   'iterable',
   'dateTimeList',
   'crazyComplex',
-  generatedLocalVarName
+  _generatedLocalVarName
 ];
