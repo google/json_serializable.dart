@@ -1,4 +1,4 @@
-## 0.6.0
+## 1.0.0
 
 * **BREAKING** By default, code generated to support `toJson` now creates
   a top-level function instead of a mixin. The default for the
