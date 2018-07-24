@@ -10,6 +10,7 @@ import 'package:build_config/build_config.dart';
 import 'package:build_runner/build_runner.dart';
 import 'package:build_test/builder.dart';
 import 'package:json_serializable/src/json_part_builder.dart' as jpb;
+import 'package:source_gen/builder.dart';
 
 import 'builder.dart';
 
@@ -28,7 +29,6 @@ Builder _jsonPartBuilder({
   }
 
   return jpb.jsonPartBuilder(
-      header: copyrightHeader,
       formatOutput: formatOutput,
       useWrappers: useWrappers,
       anyMap: anyMap,
@@ -63,14 +63,16 @@ final List<BuilderApplication> builders = [
           'test/integration/json_test_example.dart',
           'test/integration/json_test_example.non_nullable.dart'
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(),
       generateFor: const InputSet(
         include: const [
           'test/generic_files/generic_class.dart',
           'test/default_value/default_value.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(anyMap: true, generateToJsonFunction: false),
       generateFor: const InputSet(
         include: const [
@@ -79,7 +81,8 @@ final List<BuilderApplication> builders = [
           'test/kitchen_sink/simple_object.dart',
           'test/kitchen_sink/strict_keys_object.dart'
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(
       _jsonPartBuilder(
           checked: true, anyMap: true, generateToJsonFunction: false),
@@ -87,31 +90,36 @@ final List<BuilderApplication> builders = [
         include: const [
           'test/kitchen_sink/kitchen_sink.non_nullable.checked.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
       generateFor: const InputSet(
         include: const [
           'test/yaml/build_config.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
       generateFor: const InputSet(
         include: const [
           'test/default_value/default_value.checked.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(useWrappers: true),
       generateFor: const InputSet(
         include: const [
           'test/integration/json_test_example*wrapped.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(_jsonPartBuilder(useWrappers: true),
       generateFor: const InputSet(
         include: const [
           'test/generic_files/generic_class*wrapped.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
   applyToRoot(
       _jsonPartBuilder(
           useWrappers: true, anyMap: true, generateToJsonFunction: false),
@@ -119,7 +127,9 @@ final List<BuilderApplication> builders = [
         include: const [
           'test/kitchen_sink/kitchen_sink*wrapped.dart',
         ],
-      )),
+      ),
+      hideOutput: true),
+  applyToRoot(combiningBuilder()),
   applyToRoot(testBootstrapBuilder(null),
       generateFor: const InputSet(include: const ['test/**']),
       hideOutput: true),

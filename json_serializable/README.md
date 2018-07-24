@@ -67,17 +67,6 @@ targets:
     builders:
       json_serializable:
         options:
-          # Specifies a string to add to the top of every generated file.
-          #
-          # If not specified, the default is the value of `defaultFileHeader`
-          # defined in `package:source_gen/source_gen.dart`.
-          #
-          # Note: use `|` to define a multi-line block.
-          header: |
-           // Copyright (c) 2018, the Dart project authors.
-
-           // GENERATED CODE - DO NOT MODIFY BY HAND
-
           # Options configure how source code is generated for every
           # `@JsonSerializable`-annotated class in the package.
           #

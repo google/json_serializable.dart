@@ -26,7 +26,6 @@ Builder jsonSerializable(BuilderOptions options) {
   var optionsMap = new Map<String, dynamic>.from(options.config);
 
   var builder = jsonPartBuilder(
-    header: optionsMap.remove('header') as String,
     useWrappers: optionsMap.remove('use_wrappers') as bool,
     checked: optionsMap.remove('checked') as bool,
     anyMap: optionsMap.remove('any_map') as bool,

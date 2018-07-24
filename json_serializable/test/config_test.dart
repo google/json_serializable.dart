@@ -10,7 +10,6 @@ import 'dart:io';
 import 'package:build/build.dart';
 import 'package:json_serializable/builder.dart';
 import 'package:logging/logging.dart';
-import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -31,14 +30,13 @@ void main() {
   setUp(records.clear);
 
   test('empty', () async {
-    var builder = jsonSerializable(BuilderOptions.empty) as PartBuilder;
+    var builder = jsonSerializable(BuilderOptions.empty);
     expect(builder, isNotNull);
     expect(records, isEmpty);
   });
 
   test('valid config', () async {
-    var builder =
-        jsonSerializable(const BuilderOptions(_validConfig)) as PartBuilder;
+    var builder = jsonSerializable(const BuilderOptions(_validConfig));
     expect(builder, isNotNull);
 
     expect(records, isEmpty);
@@ -68,15 +66,14 @@ void main() {
 
     expect(config.keys, unorderedEquals(_validConfig.keys));
 
-    var builder = jsonSerializable(new BuilderOptions(config)) as PartBuilder;
+    var builder = jsonSerializable(new BuilderOptions(config));
     expect(builder, isNotNull);
     expect(records, isEmpty);
   });
 
   test('unsupported configuration', () async {
     var builder =
-        jsonSerializable(const BuilderOptions(const {'unsupported': 'config'}))
-            as PartBuilder;
+        jsonSerializable(const BuilderOptions(const {'unsupported': 'config'}));
     expect(builder, isNotNull);
 
     expect(records.single.message,
@@ -97,7 +94,6 @@ void main() {
 }
 
 const _validConfig = const {
-  'header': 'header',
   'use_wrappers': true,
   'any_map': true,
   'checked': true,
@@ -106,7 +102,6 @@ const _validConfig = const {
 };
 
 const _invalidConfig = const {
-  'header': true,
   'use_wrappers': 42,
   'any_map': 42,
   'checked': 42,
