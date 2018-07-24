@@ -1,4 +1,4 @@
-## 0.3.0
+## 1.0.0
 
 * Added `JsonValue` class for annotating `enum` fields with a custom
   serialization value.
