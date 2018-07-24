@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
-class Person {
+class Person extends Object with _$PersonSerializerMixin {
   final String firstName;
   @JsonKey(includeIfNull: false)
   final String middleName;
@@ -28,12 +28,10 @@ class Person {
       : this.orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
 @JsonSerializable(includeIfNull: false)
-class Order {
+class Order extends Object with _$OrderSerializerMixin {
   int count;
   int itemNumber;
   bool isRushed;
@@ -51,8 +49,6 @@ class Order {
   Order(this.date);
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OrderToJson(this);
 }
 
 Duration _durationFromMillseconds(int milliseconds) =>
@@ -64,7 +60,7 @@ DateTime _dateTimeFromEpochUs(int us) =>
 int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 @JsonSerializable()
-class Item {
+class Item extends Object with _$ItemSerializerMixin {
   int count;
   int itemNumber;
   bool isRushed;
@@ -72,8 +68,6 @@ class Item {
   Item();
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
 
 @JsonLiteral('data.json')
