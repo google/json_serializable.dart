@@ -8,11 +8,11 @@ dependencies to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  json_annotation: ^0.2.5
+  json_annotation: ^1.0.0
 
 dev_dependencies:
   build_runner: ^0.9.0
-  json_serializable: ^0.5.4
+  json_serializable: ^1.0.0
 ```
 
 Annotate your code with classes defined in
@@ -22,9 +22,6 @@ Annotate your code with classes defined in
   annotations.
 
 * See [`lib/example.g.dart`][example_g] for the generated file.
-
-If you would like to use a custom header, or enable the wrapper option, add a
-[`build.yaml`][build_config] file and a default target.
 
 Run `pub run build_runner build` to generate files into your source directory.
 
@@ -42,6 +39,5 @@ Run `pub run build_runner build` to generate files into your source directory.
 
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart
-[build_config]: build.yaml
 [json_annotation]: https://pub.dartlang.org/packages/json_annotation
 [json_serializable]: https://pub.dartlang.org/packages/json_serializable

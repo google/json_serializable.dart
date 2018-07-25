@@ -2,13 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: annotate_overrides
-
 import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
-class Person extends Object with _$PersonSerializerMixin {
+class Person {
   final String firstName;
   @JsonKey(includeIfNull: false)
   final String middleName;
@@ -28,10 +26,12 @@ class Person extends Object with _$PersonSerializerMixin {
       : this.orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
 @JsonSerializable(includeIfNull: false)
-class Order extends Object with _$OrderSerializerMixin {
+class Order {
   int count;
   int itemNumber;
   bool isRushed;
@@ -49,6 +49,8 @@ class Order extends Object with _$OrderSerializerMixin {
   Order(this.date);
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
 }
 
 Duration _durationFromMillseconds(int milliseconds) =>
@@ -60,7 +62,7 @@ DateTime _dateTimeFromEpochUs(int us) =>
 int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 @JsonSerializable()
-class Item extends Object with _$ItemSerializerMixin {
+class Item {
   int count;
   int itemNumber;
   bool isRushed;
@@ -68,6 +70,8 @@ class Item extends Object with _$ItemSerializerMixin {
   Item();
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
 
 @JsonLiteral('data.json')
