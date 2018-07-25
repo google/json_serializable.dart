@@ -1,7 +1,3 @@
-// Copyright (c) 2017, the Dart project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'example.dart';
@@ -22,31 +18,23 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
           .toList());
 }
 
-abstract class _$PersonSerializerMixin {
-  String get firstName;
-  String get middleName;
-  String get lastName;
-  DateTime get dateOfBirth;
-  DateTime get lastOrder;
-  List<Order> get orders;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{
-      'firstName': firstName,
-    };
+Map<String, dynamic> _$PersonToJson(Person instance) {
+  var val = <String, dynamic>{
+    'firstName': instance.firstName,
+  };
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('middleName', middleName);
-    val['lastName'] = lastName;
-    val['date-of-birth'] = dateOfBirth.toIso8601String();
-    val['last-order'] = lastOrder?.toIso8601String();
-    val['orders'] = orders;
-    return val;
   }
+
+  writeNotNull('middleName', instance.middleName);
+  val['lastName'] = instance.lastName;
+  val['date-of-birth'] = instance.dateOfBirth.toIso8601String();
+  val['last-order'] = instance.lastOrder?.toIso8601String();
+  val['orders'] = instance.orders;
+  return val;
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
@@ -63,31 +51,27 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         : _durationFromMillseconds(json['prep-time'] as int);
 }
 
-abstract class _$OrderSerializerMixin {
-  int get count;
-  int get itemNumber;
-  bool get isRushed;
-  Item get item;
-  Duration get prepTime;
-  DateTime get date;
-  Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{};
+Map<String, dynamic> _$OrderToJson(Order instance) {
+  var val = <String, dynamic>{};
 
-    void writeNotNull(String key, dynamic value) {
-      if (value != null) {
-        val[key] = value;
-      }
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
     }
-
-    writeNotNull('count', count);
-    writeNotNull('itemNumber', itemNumber);
-    writeNotNull('isRushed', isRushed);
-    writeNotNull('item', item);
-    writeNotNull('prep-time',
-        prepTime == null ? null : _durationToMilliseconds(prepTime));
-    writeNotNull('date', date == null ? null : _dateTimeToEpochUs(date));
-    return val;
   }
+
+  writeNotNull('count', instance.count);
+  writeNotNull('itemNumber', instance.itemNumber);
+  writeNotNull('isRushed', instance.isRushed);
+  writeNotNull('item', instance.item);
+  writeNotNull(
+      'prep-time',
+      instance.prepTime == null
+          ? null
+          : _durationToMilliseconds(instance.prepTime));
+  writeNotNull(
+      'date', instance.date == null ? null : _dateTimeToEpochUs(instance.date));
+  return val;
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
@@ -97,16 +81,11 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     ..isRushed = json['isRushed'] as bool;
 }
 
-abstract class _$ItemSerializerMixin {
-  int get count;
-  int get itemNumber;
-  bool get isRushed;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'count': count,
-        'itemNumber': itemNumber,
-        'isRushed': isRushed
-      };
-}
+Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'count': instance.count,
+      'itemNumber': instance.itemNumber,
+      'isRushed': instance.isRushed
+    };
 
 // **************************************************************************
 // JsonLiteralGenerator
