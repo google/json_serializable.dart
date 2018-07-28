@@ -11,3 +11,7 @@ stages:
     - test
     - test: --run-skipped test/ensure_build_test.dart
     - command: pub run build_runner test -- -p chrome
+
+cache:
+  directories:
+  - .dart_tool/build
