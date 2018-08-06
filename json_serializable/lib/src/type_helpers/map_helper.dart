@@ -48,7 +48,7 @@ class MapHelper extends TypeHelper {
     final optionalQuestion = context.nullable ? '?' : '';
 
     return '$expression$optionalQuestion'
-        '.map(($_keyParam, $closureArg) => new MapEntry($subKeyValue, $subFieldValue))';
+        '.map(($_keyParam, $closureArg) => MapEntry($subKeyValue, $subFieldValue))';
   }
 
   @override
@@ -86,7 +86,7 @@ class MapHelper extends TypeHelper {
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
-        return 'new Map<String, $valueArg>.from($expression as Map)';
+        return 'Map<String, $valueArg>.from($expression as Map)';
       }
     }
 
@@ -109,7 +109,7 @@ class MapHelper extends TypeHelper {
     }
 
     return '($expression $mapCast)$optionalQuestion.map('
-        '($_keyParam, $closureArg) => new MapEntry($keyUsage, $itemSubVal))';
+        '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal))';
   }
 }
 
@@ -123,7 +123,7 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
       isEnum(keyArg);
 
   if (!safeKey) {
-    throw new UnsupportedTypeError(keyArg, expression,
+    throw UnsupportedTypeError(keyArg, expression,
         'Map keys must be of type `String`, enum, `Object` or `dynamic`.');
   }
 }

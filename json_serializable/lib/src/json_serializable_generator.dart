@@ -29,24 +29,20 @@ Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
-  static const _coreHelpers = const [
-    const IterableHelper(),
-    const MapHelper(),
-    const EnumHelper(),
-    const ValueHelper()
+  static const _coreHelpers = [
+    IterableHelper(),
+    MapHelper(),
+    EnumHelper(),
+    ValueHelper()
   ];
 
-  static const _defaultHelpers = const [
-    const JsonHelper(),
-    const DateTimeHelper(),
-    const UriHelper()
-  ];
+  static const _defaultHelpers = [JsonHelper(), DateTimeHelper(), UriHelper()];
 
   final List<TypeHelper> _typeHelpers;
 
-  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
-        const ConvertHelper()
-      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
+  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[ConvertHelper()]
+      .followedBy(_typeHelpers)
+      .followedBy(_coreHelpers);
 
   /// If `true`, wrappers are used to minimize the number of
   /// [Map] and [List] instances created during serialization.
@@ -149,27 +145,27 @@ class JsonSerializableGenerator
     bool checked = false,
     bool generateToJsonFunction = false,
   }) =>
-      new JsonSerializableGenerator(
+      JsonSerializableGenerator(
           useWrappers: useWrappers,
           anyMap: anyMap,
           checked: checked,
           generateToJsonFunction: generateToJsonFunction,
           typeHelpers:
-              new List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
+              List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
   @override
   Iterable<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     if (element is! ClassElement) {
       var name = element.name;
-      throw new InvalidGenerationSourceError('Generator cannot target `$name`.',
+      throw InvalidGenerationSourceError('Generator cannot target `$name`.',
           todo: 'Remove the JsonSerializable annotation from `$name`.',
           element: element);
     }
 
     var classElement = element as ClassElement;
     var classAnnotation = valueForAnnotation(annotation);
-    var helper = new _GeneratorHelper(this, classElement, classAnnotation);
+    var helper = _GeneratorHelper(this, classElement, classAnnotation);
     return helper._generate();
   }
 }
@@ -179,7 +175,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       JsonSerializable annotation)
       : super(generator, element, annotation);
 
-  final _addedMembers = new Set<String>();
+  final _addedMembers = Set<String>();
 
   @override
   void addMember(String memberContent) {
@@ -217,10 +213,10 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
-    accessibleFieldSet.fold(new Set<String>(), (Set<String> set, fe) {
+    accessibleFieldSet.fold(Set<String>(), (Set<String> set, fe) {
       var jsonKey = nameAccess(fe);
       if (!set.add(jsonKey)) {
-        throw new InvalidGenerationSourceError(
+        throw InvalidGenerationSourceError(
             'More than one field has the JSON key `$jsonKey`.',
             todo: 'Check the `JsonKey` annotations on fields.',
             element: fe);
@@ -244,7 +240,7 @@ Set<FieldElement> _createSortedFieldSet(ClassElement element) {
   // TODO: support overriding the field set with an annotation option
   var fieldsList = element.fields.where((e) => !e.isStatic).toList();
 
-  var manager = new InheritanceManager(element.library);
+  var manager = InheritanceManager(element.library);
 
   for (var v in manager.getMembersInheritedFromClasses(element).values) {
     assert(v is! FieldElement);
@@ -267,7 +263,7 @@ Set<FieldElement> _createSortedFieldSet(ClassElement element) {
 }
 
 int _sortByLocation(FieldElement a, FieldElement b) {
-  var checkerA = new TypeChecker.fromStatic(a.enclosingElement.type);
+  var checkerA = TypeChecker.fromStatic(a.enclosingElement.type);
 
   if (!checkerA.isExactly(b.enclosingElement)) {
     // in this case, you want to prioritize the enclosingElement that is more
@@ -277,7 +273,7 @@ int _sortByLocation(FieldElement a, FieldElement b) {
       return -1;
     }
 
-    var checkerB = new TypeChecker.fromStatic(b.enclosingElement.type);
+    var checkerB = TypeChecker.fromStatic(b.enclosingElement.type);
 
     if (checkerB.isSuperOf(a.enclosingElement)) {
       return 1;

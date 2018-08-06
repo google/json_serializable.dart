@@ -19,8 +19,8 @@ jobs:
       env: PKG="example"
       dart: dev
     - stage: analyzer_and_format
-      name: "SDK: dev - DIR: example - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      name: "SDK: dev - DIR: example - TASKS: dartanalyzer --fatal-warnings ."
+      script: ./tool/travis.sh dartanalyzer_0
       env: PKG="example"
       dart: dev
     - stage: unit_test
@@ -35,7 +35,7 @@ jobs:
       dart: dev
     - stage: analyzer_and_format
       name: "SDK: dev - DIR: json_annotation - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      script: ./tool/travis.sh dartanalyzer_1
       env: PKG="json_annotation"
       dart: dev
     - stage: analyzer_and_format
@@ -45,7 +45,7 @@ jobs:
       dart: dev
     - stage: analyzer_and_format
       name: "SDK: dev - DIR: json_serializable - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      script: ./tool/travis.sh dartanalyzer_1
       env: PKG="json_serializable"
       dart: dev
     - stage: unit_test
@@ -70,7 +70,7 @@ stages:
 
 # Only building master means that we don't run two builds for each pull request.
 branches:
-  only: [master,0_5_x]
+  only: [master]
 
 cache:
   directories:

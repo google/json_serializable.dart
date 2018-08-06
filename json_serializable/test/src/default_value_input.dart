@@ -48,7 +48,7 @@ class DefaultWithType {
     '`defaultValue` is `Duration`, it must be a literal.')
 @JsonSerializable()
 class DefaultWithConstObject {
-  @JsonKey(defaultValue: const Duration())
+  @JsonKey(defaultValue: Duration())
   Object field;
 
   DefaultWithConstObject();

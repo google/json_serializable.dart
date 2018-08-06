@@ -24,11 +24,11 @@ Matcher _throwsUnsupportedError(matcher) =>
     throwsA(const TypeMatcher<UnsupportedError>()
         .having((e) => e.message, 'message', matcher));
 
-final _formatter = new dart_style.DartFormatter();
+final _formatter = dart_style.DartFormatter();
 
 LibraryReader _library;
 
-const _shouldThrowChecker = const TypeChecker.fromRuntime(ShouldThrow);
+const _shouldThrowChecker = TypeChecker.fromRuntime(ShouldThrow);
 
 void main() async {
   var path = testFilePath('test', 'src', 'json_serializable_test_input.dart');
@@ -44,8 +44,7 @@ String _runForElementNamed(JsonSerializableGenerator generator, String name) {
   var element = _library.allElements.singleWhere((e) => e.name == name);
   var annotation = generator.typeChecker.firstAnnotationOf(element);
   var generated = generator
-      .generateForAnnotatedElement(
-          element, new ConstantReader(annotation), null)
+      .generateForAnnotatedElement(element, ConstantReader(annotation), null)
       .map((e) => e.trim())
       .where((e) => e.isNotEmpty)
       .map((e) => '$e\n\n')
@@ -126,7 +125,7 @@ void _registerTests(JsonSerializableGenerator generator) {
   group('explicit toJson', () {
     test('nullable', () {
       var output = _runForElementNamed(
-          new JsonSerializableGenerator(
+          JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
@@ -170,7 +169,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
     });
     test('non-nullable', () {
       var output = _runForElementNamed(
-          new JsonSerializableGenerator(
+          JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
@@ -379,7 +378,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
 
     test('class with child json-able object - anyMap', () {
       var output = _runForElementNamed(
-          new JsonSerializableGenerator(
+          JsonSerializableGenerator(
               anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
 

@@ -8,7 +8,7 @@ part of 'generic_class.dart';
 
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
-  return new GenericClass<T, S>()
+  return GenericClass<T, S>()
     ..fieldObject = json['fieldObject'] == null
         ? null
         : _dataFromJson(json['fieldObject'] as Map<String, dynamic>)

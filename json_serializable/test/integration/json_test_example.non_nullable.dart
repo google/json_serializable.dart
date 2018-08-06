@@ -69,7 +69,7 @@ class Order {
   String get platformValue => platform?.description;
 
   set platformValue(String value) {
-    throw new UnimplementedError('not impld');
+    throw UnimplementedError('not impld');
   }
 
   // Ignored getter without value set in ctor
@@ -79,8 +79,8 @@ class Order {
   bool shouldBeCached;
 
   Order(this.category, [Iterable<Item> items])
-      : this.items = new UnmodifiableListView<Item>(
-            new List<Item>.unmodifiable(items ?? const <Item>[]));
+      : this.items = UnmodifiableListView<Item>(
+            List<Item>.unmodifiable(items ?? const <Item>[]));
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 

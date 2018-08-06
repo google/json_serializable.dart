@@ -15,14 +15,14 @@ void $checkKeys(Map map,
     var invalidKeys =
         map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
     if (invalidKeys.isNotEmpty) {
-      throw new UnrecognizedKeysException(invalidKeys, map, allowedKeys);
+      throw UnrecognizedKeysException(invalidKeys, map, allowedKeys);
     }
   }
 
   if (requiredKeys != null) {
     var missingKeys = requiredKeys.where((k) => !map.keys.contains(k)).toList();
     if (missingKeys.isNotEmpty) {
-      throw new MissingRequiredKeysException(missingKeys, map);
+      throw MissingRequiredKeysException(missingKeys, map);
     }
   }
 
@@ -34,7 +34,7 @@ void $checkKeys(Map map,
         .toList();
 
     if (nullValuedKeys.isNotEmpty) {
-      throw new DisallowedNullValueException(nullValuedKeys, map);
+      throw DisallowedNullValueException(nullValuedKeys, map);
     }
   }
 }

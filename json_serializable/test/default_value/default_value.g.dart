@@ -7,7 +7,7 @@ part of 'default_value.dart';
 // **************************************************************************
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
-  return new DefaultValue()
+  return DefaultValue()
     ..fieldBool = json['fieldBool'] as bool ?? true
     ..fieldString = json['fieldString'] as String ?? 'string'
     ..fieldInt = json['fieldInt'] as int ?? 42
@@ -18,11 +18,11 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
         (json['fieldListSimple'] as List)?.map((e) => e as int)?.toList() ??
             [1, 2, 3]
     ..fieldMapSimple = (json['fieldMapSimple'] as Map<String, dynamic>)
-            ?.map((k, e) => new MapEntry(k, e as int)) ??
+            ?.map((k, e) => MapEntry(k, e as int)) ??
         {'answer': 42}
     ..fieldMapListString = (json['fieldMapListString'] as Map<String, dynamic>)
-            ?.map((k, e) => new MapEntry(
-                k, (e as List)?.map((e) => e as String)?.toList())) ??
+            ?.map((k, e) =>
+                MapEntry(k, (e as List)?.map((e) => e as String)?.toList())) ??
         {
           'root': ['child']
         }
@@ -55,12 +55,12 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {
-    throw new ArgumentError('A value must be provided. Supported values: '
+    throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
   return enumValues.entries
       .singleWhere((e) => e.value == source,
-          orElse: () => throw new ArgumentError(
+          orElse: () => throw ArgumentError(
               '`$source` is not one of the supported values: '
               '${enumValues.values.join(', ')}'))
       .key;
@@ -73,7 +73,7 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   return _$enumDecode<T>(enumValues, source);
 }
 
-const _$GreekEnumMap = const <Greek, dynamic>{
+const _$GreekEnumMap = <Greek, dynamic>{
   Greek.alpha: 'alpha',
   Greek.beta: 'beta',
   Greek.gamma: 'gamma',

@@ -8,7 +8,7 @@ import '../json_literal_generator.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
-final simpleExpression = new RegExp('^[a-zA-Z_]+\$');
+final simpleExpression = RegExp('^[a-zA-Z_]+\$');
 
 class EnumHelper extends TypeHelper {
   const EnumHelper();
@@ -61,21 +61,21 @@ String _enumValueMapFromType(DartType targetType) {
   }
 
   var items = enumMap.entries.map((e) => '  ${targetType.name}.${e.key.name}: '
-      '${jsonLiteralAsDart(e.value, false)}');
+      '${jsonLiteralAsDart(e.value)}');
 
   return 'const ${_constMapName(targetType)} = '
-      'const <${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';
+      '<${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';
 }
 
 const _enumDecodeHelper = r'''
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {
-    throw new ArgumentError('A value must be provided. Supported values: '
+    throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
   return enumValues.entries
       .singleWhere((e) => e.value == source,
-          orElse: () => throw new ArgumentError(
+          orElse: () => throw ArgumentError(
               '`$source` is not one of the supported values: '
               '${enumValues.values.join(', ')}'))
       .key;

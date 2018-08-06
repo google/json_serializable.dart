@@ -16,7 +16,7 @@ class UriHelper extends TypeHelper {
       return null;
     }
 
-    var buffer = new StringBuffer(expression);
+    var buffer = StringBuffer(expression);
 
     if (context.nullable) {
       buffer.write('?');

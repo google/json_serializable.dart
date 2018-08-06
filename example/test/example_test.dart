@@ -9,15 +9,13 @@ import 'package:test/test.dart';
 
 void main() {
   test('JsonSerializable', () {
-    final person = new Person('Inigo', 'Montoya', new DateTime(1560, 5, 5))
-      ..orders = [
-        new Order(new DateTime.now())..item = (new Item()..count = 42)
-      ];
+    final person = Person('Inigo', 'Montoya', DateTime(1560, 5, 5))
+      ..orders = [Order(DateTime.now())..item = (Item()..count = 42)];
 
     final personJson = _encode(person);
 
     final person2 =
-        new Person.fromJson(json.decode(personJson) as Map<String, dynamic>);
+        Person.fromJson(json.decode(personJson) as Map<String, dynamic>);
 
     expect(person.firstName, person2.firstName);
     expect(person.lastName, person2.lastName);

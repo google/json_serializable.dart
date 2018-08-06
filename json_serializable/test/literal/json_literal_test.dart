@@ -16,7 +16,7 @@ import 'json_literal.dart';
 void main() {
   test('literal round-trip', () {
     var dataFilePath = testFilePath('test', 'literal', 'json_literal.json');
-    var dataFile = new File(dataFilePath);
+    var dataFile = File(dataFilePath);
 
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
     // FYI: nice to re-write the test data when it's changed to keep it pretty
@@ -30,7 +30,7 @@ void main() {
   test('naughty strings', () {
     var dataFilePath =
         testFilePath('test', 'literal', 'big-list-of-naughty-strings.json');
-    var dataFile = new File(dataFilePath);
+    var dataFile = File(dataFilePath);
 
     var dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
     var dartString = loudEncode(naughtyStrings);

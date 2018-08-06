@@ -5,7 +5,9 @@ dart:
 stages:
   - analyzer_and_format:
     - dartfmt
-    - dartanalyzer: --fatal-infos --fatal-warnings .
+    # Skipping --fatal-infos  until we can regenerate this package with publish
+    # json_serializable
+    - dartanalyzer: --fatal-warnings .
   - unit_test:
     # Run the tests -- include the default-skipped presubmit tests
     - test: --run-skipped

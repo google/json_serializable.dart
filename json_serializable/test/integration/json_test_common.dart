@@ -23,11 +23,10 @@ enum StatusCode {
   notFound
 }
 
-Duration durationFromInt(int ms) => new Duration(milliseconds: ms);
+Duration durationFromInt(int ms) => Duration(milliseconds: ms);
 int durationToInt(Duration duration) => duration.inMilliseconds;
 
-DateTime dateTimeFromEpochUs(int us) =>
-    new DateTime.fromMicrosecondsSinceEpoch(us);
+DateTime dateTimeFromEpochUs(int us) => DateTime.fromMicrosecondsSinceEpoch(us);
 int dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 bool deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
@@ -35,8 +34,8 @@ bool deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
 class Platform {
   final String description;
 
-  static const Platform foo = const Platform._('foo');
-  static const Platform undefined = const Platform._('undefined');
+  static const Platform foo = Platform._('foo');
+  static const Platform undefined = Platform._('undefined');
   const Platform._(this.description);
 
   factory Platform.fromJson(String value) {
@@ -46,7 +45,7 @@ class Platform {
       case 'undefined':
         return undefined;
       default:
-        throw new ArgumentError.value(value, 'value', 'Not a supported value.');
+        throw ArgumentError.value(value, 'value', 'Not a supported value.');
     }
   }
 

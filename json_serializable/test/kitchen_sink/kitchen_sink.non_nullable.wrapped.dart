@@ -25,8 +25,8 @@ part 'kitchen_sink.non_nullable.wrapped.g.dart';
 
 List<T> _defaultList<T>() => <T>[];
 Map<String, T> _defaultMap<T>() => <String, T>{};
-SimpleObject _defaultSimpleObject() => new SimpleObject(42);
-StrictKeysObject _defaultStrictKeysObject() => new StrictKeysObject(10, 'cool');
+SimpleObject _defaultSimpleObject() => SimpleObject(42);
+StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
 
 k.KitchenSink testFactory(
         {int ctorValidatedNo42,
@@ -35,7 +35,7 @@ k.KitchenSink testFactory(
         Iterable<Object> objectIterable,
         Iterable<int> intIterable,
         Iterable<DateTime> dateTimeIterable}) =>
-    new KitchenSink(
+    KitchenSink(
         ctorValidatedNo42: ctorValidatedNo42,
         iterable: iterable,
         dynamicIterable: dynamicIterable,
@@ -43,7 +43,7 @@ k.KitchenSink testFactory(
         intIterable: intIterable,
         dateTimeIterable: dateTimeIterable);
 
-k.KitchenSink testFromJson(Map json) => new KitchenSink.fromJson(json);
+k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
 @JsonSerializable(nullable: false)
 class KitchenSink extends Object
@@ -78,7 +78,7 @@ class KitchenSink extends Object
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList() {
     if (ctorValidatedNo42 == 42) {
-      throw new ArgumentError.value(
+      throw ArgumentError.value(
           42, 'ctorValidatedNo42', 'The value `42` is not allowed.');
     }
   }
@@ -86,7 +86,7 @@ class KitchenSink extends Object
   factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime = new DateTime(1981, 6, 5);
+  DateTime dateTime = DateTime(1981, 6, 5);
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
@@ -130,7 +130,7 @@ class KitchenSink extends Object
 
   set validatedPropertyNo42(int value) {
     if (value == 42) {
-      throw new StateError('Cannot be 42!');
+      throw StateError('Cannot be 42!');
     }
     _validatedPropertyNo42 = value;
   }

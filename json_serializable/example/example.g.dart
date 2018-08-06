@@ -7,7 +7,7 @@ part of 'example.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return new Person(
+  return Person(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String));

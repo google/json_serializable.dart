@@ -40,10 +40,10 @@ abstract class HelperCore {
       genericClassArguments(element, withConstraints);
 
   JsonKeyWithConversion jsonKeyFor(FieldElement field) =>
-      new JsonKeyWithConversion(field, annotation);
+      JsonKeyWithConversion(field, annotation);
 
   TypeHelperContext getHelperContext(FieldElement field) =>
-      new TypeHelperContext(this, field.metadata, jsonKeyFor(field));
+      TypeHelperContext(this, field.metadata, jsonKeyFor(field));
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(
@@ -65,7 +65,7 @@ InvalidGenerationSourceError createInvalidGenerationError(
     message = '$message.\n${e.reason}';
   }
 
-  return new InvalidGenerationSourceError(message, todo: todo, element: field);
+  return InvalidGenerationSourceError(message, todo: todo, element: field);
 }
 
 /// Returns a [String] representing the type arguments that exist on

@@ -27,7 +27,7 @@ abstract class EncodeHelper implements HelperCore {
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(annotation.createToJson);
 
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
 
     if (generator.generateToJsonFunction) {
       var functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
@@ -53,7 +53,7 @@ abstract class EncodeHelper implements HelperCore {
 
     if (generator.useWrappers) {
       var param = generator.generateToJsonFunction ? _toJsonParamName : 'this';
-      buffer.writeln('=> new ${_wrapperClassName(false)}($param);');
+      buffer.writeln('=> ${_wrapperClassName(false)}($param);');
     } else {
       if (writeNaive) {
         // write simple `toJson` method that includes all keys...
@@ -77,7 +77,7 @@ abstract class EncodeHelper implements HelperCore {
   }
 
   String _createWrapperClass(Iterable<FieldElement> fields) {
-    var buffer = new StringBuffer();
+    var buffer = StringBuffer();
     buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
 

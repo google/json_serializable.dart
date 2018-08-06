@@ -9,32 +9,32 @@ import 'default_value.checked.dart' as checked;
 import 'default_value.dart' as normal;
 import 'default_value_interface.dart';
 
-const _defaultInstance = const {
+const _defaultInstance = {
   'fieldBool': true,
   'fieldString': 'string',
   'fieldInt': 42,
   'fieldDouble': 3.14,
-  'fieldListEmpty': const [],
-  'fieldMapEmpty': const <String, dynamic>{},
-  'fieldListSimple': const [1, 2, 3],
-  'fieldMapSimple': const <String, dynamic>{'answer': 42},
-  'fieldMapListString': const {
-    'root': const ['child']
+  'fieldListEmpty': [],
+  'fieldMapEmpty': <String, dynamic>{},
+  'fieldListSimple': [1, 2, 3],
+  'fieldMapSimple': <String, dynamic>{'answer': 42},
+  'fieldMapListString': {
+    'root': ['child']
   },
   'fieldEnum': 'beta'
 };
 
-const _otherValues = const {
+const _otherValues = {
   'fieldBool': false,
   'fieldString': 'other string',
   'fieldInt': 43,
   'fieldDouble': 2.718,
-  'fieldListEmpty': const [42],
-  'fieldMapEmpty': const {'question': false},
-  'fieldListSimple': const [4, 5, 6],
-  'fieldMapSimple': const <String, dynamic>{},
-  'fieldMapListString': const {
-    'root2': const ['alpha']
+  'fieldListEmpty': [42],
+  'fieldMapEmpty': {'question': false},
+  'fieldListSimple': [4, 5, 6],
+  'fieldMapSimple': <String, dynamic>{},
+  'fieldMapListString': {
+    'root2': ['alpha']
   },
   'fieldEnum': 'delta'
 };

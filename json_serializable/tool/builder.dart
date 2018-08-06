@@ -16,13 +16,13 @@ final _copyrightContent =
 
 final copyrightHeader = '$_copyrightContent\n$defaultFileHeader';
 
-Builder nonNull([_]) => new LibraryBuilder(new _NonNullableGenerator(),
+Builder nonNull([_]) => LibraryBuilder(_NonNullableGenerator(),
     generatedExtension: '.non_nullable.dart', header: copyrightHeader);
 
-Builder wrapped([_]) => new LibraryBuilder(new _WrappedGenerator(),
+Builder wrapped([_]) => LibraryBuilder(_WrappedGenerator(),
     generatedExtension: '.wrapped.dart', header: copyrightHeader);
 
-Builder checked([_]) => new LibraryBuilder(new _CheckedGenerator(),
+Builder checked([_]) => LibraryBuilder(_CheckedGenerator(),
     generatedExtension: '.checked.dart', header: copyrightHeader);
 
 class _NonNullableGenerator extends Generator {
@@ -33,29 +33,28 @@ class _NonNullableGenerator extends Generator {
 
     final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = [
-      new _Replacement(_copyrightContent, ''),
-      new _Replacement(
+      _Replacement(_copyrightContent, ''),
+      _Replacement(
         "part '$baseName.g.dart",
         "part '$baseName.non_nullable.g.dart",
       ),
-      new _Replacement(
-          '@JsonSerializable()', '@JsonSerializable(nullable: false)'),
+      _Replacement('@JsonSerializable()', '@JsonSerializable(nullable: false)'),
     ];
 
     if (baseName == 'kitchen_sink') {
       replacements.addAll([
-        new _Replacement('List<T> _defaultList<T>() => null;',
+        _Replacement('List<T> _defaultList<T>() => null;',
             'List<T> _defaultList<T>() => <T>[];'),
-        new _Replacement('Map _defaultMap() => null;',
+        _Replacement('Map _defaultMap() => null;',
             'Map<String, T> _defaultMap<T>() => <String, T>{};'),
-        new _Replacement('SimpleObject _defaultSimpleObject() => null;',
-            'SimpleObject _defaultSimpleObject() => new SimpleObject(42);'),
-        new _Replacement(
+        _Replacement('SimpleObject _defaultSimpleObject() => null;',
+            'SimpleObject _defaultSimpleObject() => SimpleObject(42);'),
+        _Replacement(
             'StrictKeysObject _defaultStrictKeysObject() => null;',
             'StrictKeysObject _defaultStrictKeysObject() => '
-            "new StrictKeysObject(10, 'cool');"),
-        new _Replacement('DateTime dateTime;',
-            'DateTime dateTime = new DateTime(1981, 6, 5);')
+            "StrictKeysObject(10, 'cool');"),
+        _Replacement(
+            'DateTime dateTime;', 'DateTime dateTime = DateTime(1981, 6, 5);')
       ]);
     }
 
@@ -71,8 +70,8 @@ class _CheckedGenerator extends Generator {
 
     final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = [
-      new _Replacement(_copyrightContent, ''),
-      new _Replacement(
+      _Replacement(_copyrightContent, ''),
+      _Replacement(
         "part '$baseName.g.dart",
         "part '$baseName.checked.g.dart",
       ),
@@ -90,8 +89,8 @@ class _WrappedGenerator extends Generator {
 
     final content = await buildStep.readAsString(buildStep.inputId);
     var replacements = [
-      new _Replacement(_copyrightContent, ''),
-      new _Replacement(
+      _Replacement(_copyrightContent, ''),
+      _Replacement(
         "part '$baseName.g.dart",
         "part '$baseName.wrapped.g.dart",
       ),
@@ -113,7 +112,7 @@ class _Replacement {
 
     for (var r in replacements) {
       if (!outputContent.contains(r.existing)) {
-        throw new StateError(
+        throw StateError(
             'Input string did not contain `${r.existing}` as expected.');
       }
       outputContent = outputContent.replaceAll(r.existing, r.replacement);

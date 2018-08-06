@@ -16,7 +16,7 @@ abstract class $JsonMapWrapper extends UnmodifiableMapBase<String, dynamic> {}
 /// Should not be used directly.
 Map<String, dynamic> $wrapMap<K, V>(
         Map<K, V> source, dynamic converter(V key)) =>
-    new _MappingMap(source, converter);
+    _MappingMap(source, converter);
 
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.useWrappers` is `true`.
@@ -24,14 +24,14 @@ Map<String, dynamic> $wrapMap<K, V>(
 /// Should not be used directly.
 Map<String, dynamic> $wrapMapHandleNull<K, V>(
         Map<K, V> source, dynamic converter(V key)) =>
-    source == null ? null : new _MappingMap(source, converter);
+    source == null ? null : _MappingMap(source, converter);
 
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
 List<dynamic> $wrapList<T>(List<T> source, dynamic converter(T key)) =>
-    new _MappingList(source, converter);
+    _MappingList(source, converter);
 
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.useWrappers` is `true`.
@@ -39,7 +39,7 @@ List<dynamic> $wrapList<T>(List<T> source, dynamic converter(T key)) =>
 /// Should not be used directly.
 List<dynamic> $wrapListHandleNull<T>(
         List<T> source, dynamic converter(T key)) =>
-    source == null ? null : new _MappingList(source, converter);
+    source == null ? null : _MappingList(source, converter);
 
 typedef dynamic _Convert<S>(S value);
 
@@ -53,13 +53,13 @@ class _MappingList<S> extends ListBase<dynamic> {
   dynamic operator [](int index) => _converter(_source[index]);
 
   @override
-  operator []=(int index, dynamic value) => throw new UnsupportedError('');
+  operator []=(int index, dynamic value) => throw UnsupportedError('');
 
   @override
   int get length => _source.length;
 
   @override
-  set length(int value) => throw new UnsupportedError('');
+  set length(int value) => throw UnsupportedError('');
 }
 
 class _MappingMap<K, V> extends UnmodifiableMapBase<String, dynamic> {

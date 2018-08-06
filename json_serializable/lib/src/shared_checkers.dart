@@ -6,11 +6,11 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
 /// A [TypeChecker] for [Iterable].
-const coreIterableTypeChecker = const TypeChecker.fromUrl('dart:core#Iterable');
+const coreIterableTypeChecker = TypeChecker.fromUrl('dart:core#Iterable');
 
-const coreStringTypeChecker = const TypeChecker.fromRuntime(String);
+const coreStringTypeChecker = TypeChecker.fromRuntime(String);
 
-const coreMapTypeChecker = const TypeChecker.fromUrl('dart:core#Map');
+const coreMapTypeChecker = TypeChecker.fromUrl('dart:core#Map');
 
 /// Returns the generic type of the [Iterable] represented by [type].
 ///
@@ -29,10 +29,10 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
 }
 
 /// A [TypeChecker] for [String], [bool] and [num].
-const simpleJsonTypeChecker = const TypeChecker.any(const [
+const simpleJsonTypeChecker = TypeChecker.any([
   coreStringTypeChecker,
-  const TypeChecker.fromRuntime(bool),
-  const TypeChecker.fromRuntime(num)
+  TypeChecker.fromRuntime(bool),
+  TypeChecker.fromRuntime(num)
 ]);
 
 String asStatement(DartType type) {

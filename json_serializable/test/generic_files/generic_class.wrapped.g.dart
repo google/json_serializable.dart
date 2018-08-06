@@ -8,7 +8,7 @@ part of 'generic_class.wrapped.dart';
 
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
-  return new GenericClass<T, S>()
+  return GenericClass<T, S>()
     ..fieldObject = json['fieldObject'] == null
         ? null
         : _dataFromJson(json['fieldObject'] as Map<String, dynamic>)
@@ -28,7 +28,7 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
         GenericClass<T, S> instance) =>
-    new _$GenericClassJsonMapWrapper<T, S>(instance);
+    _$GenericClassJsonMapWrapper<T, S>(instance);
 
 class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
   final GenericClass<T, S> _v;

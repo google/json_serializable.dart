@@ -11,12 +11,12 @@ import 'package:source_gen/source_gen.dart';
 
 @alwaysThrows
 void throwUnsupported(FieldElement element, String message) =>
-    throw new InvalidGenerationSourceError(
+    throw InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
 
 JsonSerializable valueForAnnotation(ConstantReader annotation) =>
-    new JsonSerializable(
+    JsonSerializable(
         disallowUnrecognizedKeys:
             annotation.read('disallowUnrecognizedKeys').boolValue,
         createToJson: annotation.read('createToJson').boolValue,
@@ -27,7 +27,7 @@ JsonSerializable valueForAnnotation(ConstantReader annotation) =>
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;
 
-final _enumMapExpando = new Expando<Map<FieldElement, dynamic>>();
+final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 
 /// If [targetType] is an enum, returns a [Map] of the [FieldElement] instances
 /// associated with the enum values mapped to the [String] values that represent
@@ -47,28 +47,28 @@ Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
     if (annotation == null) {
       fieldValue = fe.name;
     } else {
-      var reader = new ConstantReader(annotation);
+      var reader = ConstantReader(annotation);
 
       var valueReader = reader.read('value');
 
       if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
         fieldValue = valueReader.literalValue;
       } else {
-        throw new InvalidGenerationSourceError(
+        throw InvalidGenerationSourceError(
             'The `JsonValue` annotation on `$targetType.${fe.name}` does '
             'not have a value of type String, int, or null.',
             element: fe);
       }
     }
 
-    var entry = new MapEntry(fe, fieldValue);
+    var entry = MapEntry(fe, fieldValue);
 
     return entry;
   }
 
   if (targetType is InterfaceType && targetType.element.isEnum) {
     return _enumMapExpando[targetType] ??=
-        new Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
+        Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
             .where((p) => !p.isSynthetic)
             .map(_generateEntry));
   }
@@ -137,10 +137,10 @@ String escapeDartString(String value) {
   return "'$string'";
 }
 
-final _dollarQuoteRegexp = new RegExp(r"""(?=[$'"])""");
+final _dollarQuoteRegexp = RegExp(r"""(?=[$'"])""");
 
 /// A [Map] between whitespace characters & `\` and their escape sequences.
-const _escapeMap = const {
+const _escapeMap = {
   '\b': r'\b', // 08 - backspace
   '\t': r'\t', // 09 - tab
   '\n': r'\n', // 0A - new line
@@ -155,8 +155,7 @@ final _escapeMapRegexp = _escapeMap.keys.map(_getHexLiteral).join();
 
 /// A [RegExp] that matches whitespace characters that should be escaped and
 /// single-quote, double-quote, and `$`
-final _escapeRegExp =
-    new RegExp('[\$\'"\\x00-\\x07\\x0E-\\x1F$_escapeMapRegexp]');
+final _escapeRegExp = RegExp('[\$\'"\\x00-\\x07\\x0E-\\x1F$_escapeMapRegexp]');
 
 /// Given single-character string, return the hex-escaped equivalent.
 String _getHexLiteral(String input) {

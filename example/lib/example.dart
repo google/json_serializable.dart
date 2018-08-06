@@ -54,11 +54,11 @@ class Order {
 }
 
 Duration _durationFromMillseconds(int milliseconds) =>
-    new Duration(milliseconds: milliseconds);
+    Duration(milliseconds: milliseconds);
 int _durationToMilliseconds(Duration duration) => duration.inMilliseconds;
 
 DateTime _dateTimeFromEpochUs(int us) =>
-    new DateTime.fromMicrosecondsSinceEpoch(us);
+    DateTime.fromMicrosecondsSinceEpoch(us);
 int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 @JsonSerializable()

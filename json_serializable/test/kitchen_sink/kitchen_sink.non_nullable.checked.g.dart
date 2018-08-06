@@ -8,7 +8,7 @@ part of 'kitchen_sink.non_nullable.checked.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return $checkedNew('KitchenSink', json, () {
-    var val = new KitchenSink(
+    var val = KitchenSink(
         ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
         iterable: $checkedConvert(json, 'iterable', (v) => v as List),
         dynamicIterable:
@@ -33,21 +33,21 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
             (v as List).map((e) => DateTime.parse(e as String)).toList());
     $checkedConvert(json, 'map', (v) => val.map = v as Map);
     $checkedConvert(json, 'stringStringMap',
-        (v) => val.stringStringMap = new Map<String, String>.from(v as Map));
+        (v) => val.stringStringMap = Map<String, String>.from(v as Map));
     $checkedConvert(json, 'dynamicIntMap',
-        (v) => val.dynamicIntMap = new Map<String, int>.from(v as Map));
+        (v) => val.dynamicIntMap = Map<String, int>.from(v as Map));
     $checkedConvert(
         json,
         'objectDateTimeMap',
-        (v) => val.objectDateTimeMap = (v as Map)
-            .map((k, e) => new MapEntry(k, DateTime.parse(e as String))));
+        (v) => val.objectDateTimeMap =
+            (v as Map).map((k, e) => MapEntry(k, DateTime.parse(e as String))));
     $checkedConvert(
         json,
         'crazyComplex',
         (v) => val.crazyComplex = (v as List)
-            .map((e) => (e as Map).map((k, e) => new MapEntry(
+            .map((e) => (e as Map).map((k, e) => MapEntry(
                 k as String,
-                (e as Map).map((k, e) => new MapEntry(
+                (e as Map).map((k, e) => MapEntry(
                     k as String,
                     (e as List)
                         .map((e) => (e as List)
@@ -56,17 +56,17 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
                         .toList())))))
             .toList());
     $checkedConvert(
-        json, 'val', (v) => val.val = new Map<String, bool>.from(v as Map));
+        json, 'val', (v) => val.val = Map<String, bool>.from(v as Map));
     $checkedConvert(json, 'writeNotNull', (v) => val.writeNotNull = v as bool);
     $checkedConvert(json, r'$string', (v) => val.string = v as String);
     $checkedConvert(json, 'simpleObject',
-        (v) => val.simpleObject = new SimpleObject.fromJson(v as Map));
+        (v) => val.simpleObject = SimpleObject.fromJson(v as Map));
     $checkedConvert(json, 'strictKeysObject',
-        (v) => val.strictKeysObject = new StrictKeysObject.fromJson(v as Map));
+        (v) => val.strictKeysObject = StrictKeysObject.fromJson(v as Map));
     $checkedConvert(json, 'validatedPropertyNo42',
         (v) => val.validatedPropertyNo42 = v as int);
     return val;
-  }, fieldKeyMap: const {
+  }, fieldKeyMap: {
     'ctorValidatedNo42': 'no-42',
     'dateTimeIterable': 'datetime-iterable',
     'string': r'$string'
@@ -114,12 +114,12 @@ abstract class _$KitchenSinkSerializerMixin {
         'map': map,
         'stringStringMap': stringStringMap,
         'dynamicIntMap': dynamicIntMap,
-        'objectDateTimeMap': objectDateTimeMap
-            .map((k, e) => new MapEntry(k, e.toIso8601String())),
+        'objectDateTimeMap':
+            objectDateTimeMap.map((k, e) => MapEntry(k, e.toIso8601String())),
         'crazyComplex': crazyComplex
-            .map((e) => e.map((k, e) => new MapEntry(
+            .map((e) => e.map((k, e) => MapEntry(
                 k,
-                e.map((k, e) => new MapEntry(
+                e.map((k, e) => MapEntry(
                     k,
                     e
                         .map((e) => e.map((e) => e.toIso8601String()).toList())
