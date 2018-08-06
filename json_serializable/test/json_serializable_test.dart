@@ -133,7 +133,7 @@ void _registerTests(JsonSerializableGenerator generator) {
           ? r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
         TrivialNestedNullable instance) =>
-    new _$TrivialNestedNullableJsonMapWrapper(instance);
+    _$TrivialNestedNullableJsonMapWrapper(instance);
 
 class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
   final TrivialNestedNullable _v;
@@ -177,7 +177,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
           ? r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         TrivialNestedNonNullable instance) =>
-    new _$TrivialNestedNonNullableJsonMapWrapper(instance);
+    _$TrivialNestedNonNullableJsonMapWrapper(instance);
 
 class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
   final TrivialNestedNonNullable _v;
@@ -297,14 +297,14 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   if (!generator.useWrappers) {
     test('includes final field in toJson when set in ctor', () {
       var generateResult = runForElementNamed('FinalFields');
-      expect(generateResult, contains('new FinalFields(json[\'a\'] as int);'));
+      expect(generateResult, contains('FinalFields(json[\'a\'] as int);'));
       expect(generateResult, contains('<String, dynamic>{\'a\': instance.a};'));
     });
 
     test('excludes final field in toJson when not set in ctor', () {
       var generateResult = runForElementNamed('FinalFieldsNotSetInCtor');
-      expect(generateResult,
-          isNot(contains('new FinalFields(json[\'a\'] as int);')));
+      expect(
+          generateResult, isNot(contains('FinalFields(json[\'a\'] as int);')));
       expect(generateResult,
           isNot(contains('toJson() => <String, dynamic>{\'a\': a};')));
     });
@@ -316,7 +316,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         var output = runForElementNamed('Person');
         expect(output, r'''
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return new Person()
+  return Person()
     ..firstName = json['firstName'] as String
     ..lastName = json['lastName'] as String
     ..height = json['h'] as int
@@ -344,7 +344,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
         var output = runForElementNamed('Order');
         expect(output, r'''
 Order _$OrderFromJson(Map<String, dynamic> json) {
-  return new Order(json['height'] as int, json['firstName'] as String,
+  return Order(json['height'] as int, json['firstName'] as String,
       json['lastName'] as String)
     ..dateOfBirth = json['dateOfBirth'] == null
         ? null
@@ -364,7 +364,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
     test('class with fromJson() constructor with optional parameters', () {
       var output = runForElementNamed('FromJsonOptionalParameters');
 
-      expect(output, contains('new ChildWithFromJson.fromJson'));
+      expect(output, contains('ChildWithFromJson.fromJson'));
     });
 
     test('class with child json-able object', () {
@@ -372,7 +372,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
 
       expect(
           output,
-          contains("new ChildObject.fromJson(json['child'] "
+          contains("ChildObject.fromJson(json['child'] "
               'as Map<String, dynamic>)'));
     });
 
@@ -382,15 +382,14 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
               anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
 
-      expect(
-          output, contains("new ChildObject.fromJson(json['child'] as Map)"));
+      expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
     });
 
     test('class with child list of json-able objects', () {
       var output = runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
-      expect(output, contains('new ChildObject.fromJson'));
+      expect(output, contains('ChildObject.fromJson'));
     });
 
     test('class with child list of dynamic objects is left alone', () {
@@ -480,7 +479,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
         expect(output, r'''
 FromDynamicCollection _$FromDynamicCollectionFromJson(
     Map<String, dynamic> json) {
-  return new FromDynamicCollection()
+  return FromDynamicCollection()
     ..mapField = json['mapField'] == null
         ? null
         : _fromDynamicMap(json['mapField'] as Map)
@@ -522,7 +521,7 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
         ? r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
-  return new GenericClass<T, S>()
+  return GenericClass<T, S>()
     ..fieldObject =
         json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
     ..fieldDynamic = json['fieldDynamic'] == null
@@ -536,7 +535,7 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
         GenericClass<T, S> instance) =>
-    new _$GenericClassJsonMapWrapper<T, S>(instance);
+    _$GenericClassJsonMapWrapper<T, S>(instance);
 
 class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
   final GenericClass<T, S> _v;
@@ -569,7 +568,7 @@ class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
         : r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
-  return new GenericClass<T, S>()
+  return GenericClass<T, S>()
     ..fieldObject =
         json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
     ..fieldDynamic = json['fieldDynamic'] == null
@@ -606,14 +605,14 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
     var expected = generator.useWrappers
         ? r'''
 SubType _$SubTypeFromJson(Map<String, dynamic> json) {
-  return new SubType(
+  return SubType(
       json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
     ..superTypeReadWrite = json['superTypeReadWrite'] as int
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
 }
 
 Map<String, dynamic> _$SubTypeToJson(SubType instance) =>
-    new _$SubTypeJsonMapWrapper(instance);
+    _$SubTypeJsonMapWrapper(instance);
 
 class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
   final SubType _v;
@@ -649,7 +648,7 @@ class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
 '''
         : r'''
 SubType _$SubTypeFromJson(Map<String, dynamic> json) {
-  return new SubType(
+  return SubType(
       json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
     ..superTypeReadWrite = json['superTypeReadWrite'] as int
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
@@ -682,13 +681,14 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
         var output = runForElementNamed('JsonValueValid');
 
         expect(output, contains(r'''
-const _$GoodEnumEnumMap = const <GoodEnum, dynamic>{
+const _$GoodEnumEnumMap = <GoodEnum, dynamic>{
   GoodEnum.noAnnotation: 'noAnnotation',
   GoodEnum.stringAnnotation: 'string annotation',
   GoodEnum.stringAnnotationWeird: r"string annotation with $ funky 'values'",
   GoodEnum.intValue: 42,
   GoodEnum.nullValue: null
-};'''));
+};
+'''));
       });
     });
   }
