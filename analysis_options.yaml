@@ -69,7 +69,8 @@ linter:
     - type_init_formals
     - unawaited_futures
     - unnecessary_brace_in_string_interps
-    - unnecessary_const
+    # Waiting on https://github.com/dart-lang/test/issues/915
+    #- unnecessary_const
     - unnecessary_getters_setters
     - unnecessary_lambdas
     - unnecessary_new
