@@ -24,8 +24,8 @@ Builder jsonPartBuilder({
   bool explicitToJson = false,
   bool generateToJsonFunction = true,
 }) {
-  return new SharedPartBuilder([
-    new JsonSerializableGenerator(
+  return SharedPartBuilder([
+    JsonSerializableGenerator(
       useWrappers: useWrappers,
       anyMap: anyMap,
       checked: checked,

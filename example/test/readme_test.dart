@@ -13,7 +13,7 @@ void main() {
 
 void _expect(String fileName) {
   test(fileName, () {
-    final file = new File(fileName);
+    final file = File(fileName);
     expect(file.readAsStringSync(), contains(_pubspecContent));
   });
 }

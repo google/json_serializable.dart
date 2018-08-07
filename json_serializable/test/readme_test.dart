@@ -11,7 +11,7 @@ import 'package:path/path.dart' as p;
 
 void main() {
   test('README example', () {
-    var readmeContent = new File('README.md').readAsStringSync();
+    var readmeContent = File('README.md').readAsStringSync();
 
     var exampleContent = _getExampleContent('example.dart');
     expect(readmeContent, contains(exampleContent));
@@ -22,7 +22,7 @@ void main() {
 }
 
 String _getExampleContent(String fileName) {
-  var lines = new File(p.join('example', fileName)).readAsLinesSync();
+  var lines = File(p.join('example', fileName)).readAsLinesSync();
 
   var lastHadContent = false;
 

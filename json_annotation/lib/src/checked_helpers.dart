@@ -28,7 +28,7 @@ T $checkedNew<T>(String className, Map map, T constructor(),
     } else if (error is DisallowedNullValueException) {
       key = error.keysWithNullValues.first;
     }
-    throw new CheckedFromJsonException._(error, stack, map, key,
+    throw CheckedFromJsonException._(error, stack, map, key,
         className: className);
   }
 }
@@ -43,7 +43,7 @@ T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {
-    throw new CheckedFromJsonException._(error, stack, map, key);
+    throw CheckedFromJsonException._(error, stack, map, key);
   }
 }
 

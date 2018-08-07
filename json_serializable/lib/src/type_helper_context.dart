@@ -54,7 +54,7 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
           String invoke(TypeHelper instance)) =>
       allHelpersImpl(_helperCore.generator).map(invoke).firstWhere(
           (r) => r != null,
-          orElse: () => throw new UnsupportedTypeError(
+          orElse: () => throw UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
 

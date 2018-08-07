@@ -7,7 +7,7 @@ part of 'kitchen_sink.wrapped.dart';
 // **************************************************************************
 
 KitchenSink _$KitchenSinkFromJson(Map json) {
-  return new KitchenSink(
+  return KitchenSink(
       ctorValidatedNo42: json['no-42'] as int,
       iterable: json['iterable'] as List,
       dynamicIterable: json['dynamicIterable'] as List,
@@ -27,22 +27,22 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         ?.toList()
     ..map = json['map'] as Map
     ..stringStringMap = (json['stringStringMap'] as Map)
-        ?.map((k, e) => new MapEntry(k as String, e as String))
+        ?.map((k, e) => MapEntry(k as String, e as String))
     ..dynamicIntMap =
-        (json['dynamicIntMap'] as Map)?.map((k, e) => new MapEntry(k, e as int))
-    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map((k, e) =>
-        new MapEntry(k, e == null ? null : DateTime.parse(e as String)))
+        (json['dynamicIntMap'] as Map)?.map((k, e) => MapEntry(k, e as int))
+    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
+        (k, e) => MapEntry(k, e == null ? null : DateTime.parse(e as String)))
     ..crazyComplex = (json['crazyComplex'] as List)
-        ?.map((e) => (e as Map)?.map((k, e) => new MapEntry(
+        ?.map((e) => (e as Map)?.map((k, e) => MapEntry(
             k as String,
-            (e as Map)?.map((k, e) =>
-                new MapEntry(k as String, (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+            (e as Map)?.map((k, e) => MapEntry(k as String,
+                (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
         ?.toList()
-    ..val = (json['val'] as Map)?.map((k, e) => new MapEntry(k as String, e as bool))
+    ..val = (json['val'] as Map)?.map((k, e) => MapEntry(k as String, e as bool))
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
-    ..simpleObject = json['simpleObject'] == null ? null : new SimpleObject.fromJson(json['simpleObject'] as Map)
-    ..strictKeysObject = json['strictKeysObject'] == null ? null : new StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
+    ..simpleObject = json['simpleObject'] == null ? null : SimpleObject.fromJson(json['simpleObject'] as Map)
+    ..strictKeysObject = json['strictKeysObject'] == null ? null : StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -70,7 +70,7 @@ abstract class _$KitchenSinkSerializerMixin {
   SimpleObject get simpleObject;
   StrictKeysObject get strictKeysObject;
   int get validatedPropertyNo42;
-  Map<String, dynamic> toJson() => new _$KitchenSinkJsonMapWrapper(this);
+  Map<String, dynamic> toJson() => _$KitchenSinkJsonMapWrapper(this);
 }
 
 class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {

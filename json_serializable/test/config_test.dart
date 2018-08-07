@@ -43,7 +43,7 @@ void main() {
   });
 
   test('readme config', () async {
-    var configExampleContent = new File('README.md')
+    var configExampleContent = File('README.md')
         .readAsLinesSync()
         .skipWhile((line) => line != '```yaml')
         .skip(1)
@@ -62,18 +62,18 @@ void main() {
       yaml = yaml[key] as YamlMap;
     }
 
-    var config = new Map<String, dynamic>.from(yaml);
+    var config = Map<String, dynamic>.from(yaml);
 
     expect(config.keys, unorderedEquals(_validConfig.keys));
 
-    var builder = jsonSerializable(new BuilderOptions(config));
+    var builder = jsonSerializable(BuilderOptions(config));
     expect(builder, isNotNull);
     expect(records, isEmpty);
   });
 
   test('unsupported configuration', () async {
     var builder =
-        jsonSerializable(const BuilderOptions(const {'unsupported': 'config'}));
+        jsonSerializable(const BuilderOptions({'unsupported': 'config'}));
     expect(builder, isNotNull);
 
     expect(records.single.message,
@@ -83,17 +83,16 @@ void main() {
   group('invalid config', () {
     for (var entry in _invalidConfig.entries) {
       test(entry.key, () {
-        var config = new Map<String, dynamic>.from(_validConfig);
+        var config = Map<String, dynamic>.from(_validConfig);
         config[entry.key] = entry.value;
 
-        expect(() => jsonSerializable(new BuilderOptions(config)),
-            throwsCastError);
+        expect(() => jsonSerializable(BuilderOptions(config)), throwsCastError);
       });
     }
   });
 }
 
-const _validConfig = const {
+const _validConfig = {
   'use_wrappers': true,
   'any_map': true,
   'checked': true,
@@ -101,7 +100,7 @@ const _validConfig = const {
   'generate_to_json_function': false,
 };
 
-const _invalidConfig = const {
+const _invalidConfig = {
   'use_wrappers': 42,
   'any_map': 42,
   'checked': 42,

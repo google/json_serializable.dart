@@ -23,7 +23,7 @@ k.KitchenSink testFactory(
         Iterable<Object> objectIterable,
         Iterable<int> intIterable,
         Iterable<DateTime> dateTimeIterable}) =>
-    new KitchenSink(
+    KitchenSink(
         ctorValidatedNo42: ctorValidatedNo42,
         iterable: iterable,
         dynamicIterable: dynamicIterable,
@@ -31,7 +31,7 @@ k.KitchenSink testFactory(
         intIterable: intIterable,
         dateTimeIterable: dateTimeIterable);
 
-k.KitchenSink testFromJson(Map json) => new KitchenSink.fromJson(json);
+k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
 @JsonSerializable()
 class KitchenSink extends Object
@@ -66,7 +66,7 @@ class KitchenSink extends Object
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList() {
     if (ctorValidatedNo42 == 42) {
-      throw new ArgumentError.value(
+      throw ArgumentError.value(
           42, 'ctorValidatedNo42', 'The value `42` is not allowed.');
     }
   }
@@ -118,7 +118,7 @@ class KitchenSink extends Object
 
   set validatedPropertyNo42(int value) {
     if (value == 42) {
-      throw new StateError('Cannot be 42!');
+      throw StateError('Cannot be 42!');
     }
     _validatedPropertyNo42 = value;
   }

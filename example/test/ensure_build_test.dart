@@ -20,7 +20,7 @@ void main() {
     var currentDir = Directory.current.resolveSymbolicLinksSync();
 
     if (!p.equals(p.join(pkgRoot, 'example'), currentDir)) {
-      throw new StateError('Expected the git root ($pkgRoot) '
+      throw StateError('Expected the git root ($pkgRoot) '
           'to match the current directory ($currentDir).');
     }
   });
@@ -33,14 +33,14 @@ void main() {
     var result = _runProc('pub',
         ['run', 'build_runner', 'build', '--delete-conflicting-outputs']);
     expect(result,
-        contains(new RegExp(r'\[INFO\] Succeeded after \S+ with \d+ outputs')));
+        contains(RegExp(r'\[INFO\] Succeeded after \S+ with \d+ outputs')));
 
     // 3 - get a list of modified `.g.dart` files - should still be empty
     expect(_changedGeneratedFiles(), isEmpty);
   });
 }
 
-final _whitespace = new RegExp(r'\s');
+final _whitespace = RegExp(r'\s');
 
 Set<String> _changedGeneratedFiles() {
   var output = _runProc('git', ['status', '--porcelain']);
@@ -55,7 +55,7 @@ String _runProc(String proc, List<String> args) {
   var result = Process.runSync(proc, args);
 
   if (result.exitCode != 0) {
-    throw new ProcessException(
+    throw ProcessException(
         proc, args, result.stderr as String, result.exitCode);
   }
 

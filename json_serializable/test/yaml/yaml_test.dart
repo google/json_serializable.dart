@@ -16,7 +16,7 @@ import 'build_config.dart';
 
 final _root = p.join('test', 'yaml');
 
-List<String> _getTests() => new Directory(_root)
+List<String> _getTests() => Directory(_root)
     .listSync()
     .where((fse) => fse is File && p.extension(fse.path) == '.yaml')
     .map((fse) => fse.path)
@@ -26,11 +26,11 @@ void main() {
   group('valid configurations', () {
     for (var filePath in _getTests()) {
       test(p.basenameWithoutExtension(filePath), () {
-        var content = new File(filePath).readAsStringSync();
+        var content = File(filePath).readAsStringSync();
         var yamlContent = loadYaml(content, sourceUrl: filePath) as YamlMap;
 
         try {
-          var config = new Config.fromJson(yamlContent);
+          var config = Config.fromJson(yamlContent);
           expect(config, isNotNull);
         } on CheckedFromJsonException catch (e) {
           print(_prettyPrintCheckedFromJsonException(e));
@@ -51,7 +51,7 @@ void main() {
         printOnFailure(entry.key);
 
         try {
-          var config = new Config.fromJson(yamlContent);
+          var config = Config.fromJson(yamlContent);
           print(loudEncode(config));
           fail('parse should fail');
         } on CheckedFromJsonException catch (e) {
@@ -173,7 +173,7 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
       expect(err.key, innerError.keysWithNullValues.first);
       message += '\n${yamlMap.span.message(innerError.message)}';
     } else {
-      throw new UnsupportedError('${innerError.runtimeType} is not supported.');
+      throw UnsupportedError('${innerError.runtimeType} is not supported.');
     }
   } else {
     var yamlValue = yamlMap.nodes[err.key];

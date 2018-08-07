@@ -40,7 +40,7 @@ void main() {
 
   test('required keys', () {
     expect(
-        () => new StrictKeysObject.fromJson({}),
+        () => StrictKeysObject.fromJson({}),
         throwsA(_isMissingKeyException(
             'Required keys are missing: value, custom_field.')));
   });
@@ -117,7 +117,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   });
 
   test('list and map of DateTime', () {
-    var now = new DateTime.now();
+    var now = DateTime.now();
     var item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, null]
       ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
@@ -139,7 +139,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
             'items': [
               null,
               [],
-              [new DateTime.now()]
+              [DateTime.now()]
             ]
           }
         }
@@ -162,7 +162,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   test('list and map of DateTime - not null', () {
-    var now = new DateTime.now();
+    var now = DateTime.now();
     var item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, now]
       ..objectDateTimeMap = <Object, DateTime>{'value': now};
@@ -180,7 +180,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
             'empty': [],
             'items': [
               [],
-              [new DateTime.now()]
+              [DateTime.now()]
             ]
           }
         }
@@ -192,7 +192,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
     /// Explicitly setting values from [_excludeIfNullKeys] to ensure
     /// they exist for KitchenSink where they are excluded when null
     var item = ctor(iterable: [])
-      ..dateTime = new DateTime.now()
+      ..dateTime = DateTime.now()
       ..dateTimeList = []
       ..crazyComplex = []
       ..val = {};
@@ -228,7 +228,7 @@ void _testBadValue(bool isChecked, String key, Object badValue,
   for (var isJson in [true, false]) {
     test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
         () {
-      var copy = new Map.from(_validValues);
+      var copy = Map.from(_validValues);
       copy[key] = badValue;
 
       if (!isJson) {
@@ -278,7 +278,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           innerMatcher = isCastError;
           break;
         default:
-          throw new StateError('Not expected! - $expectedKey');
+          throw StateError('Not expected! - $expectedKey');
       }
     }
   }
@@ -289,26 +289,26 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 final _validValues = const {
   'no-42': 0,
   'dateTime': '2018-05-10T14:20:58.927',
-  'iterable': const [],
-  'dynamicIterable': const [],
-  'objectIterable': const [],
-  'intIterable': const [],
-  'datetime-iterable': const [],
-  'list': const [],
-  'dynamicList': const [],
-  'objectList': const [],
-  'intList': const [],
-  'dateTimeList': const [],
-  'map': const <String, dynamic>{},
-  'stringStringMap': const {},
-  'dynamicIntMap': const {},
-  'objectDateTimeMap': const <String, dynamic>{},
-  'crazyComplex': const [],
-  _generatedLocalVarName: const {},
+  'iterable': [],
+  'dynamicIterable': [],
+  'objectIterable': [],
+  'intIterable': [],
+  'datetime-iterable': [],
+  'list': [],
+  'dynamicList': [],
+  'objectList': [],
+  'intList': [],
+  'dateTimeList': [],
+  'map': <String, dynamic>{},
+  'stringStringMap': {},
+  'dynamicIntMap': {},
+  'objectDateTimeMap': <String, dynamic>{},
+  'crazyComplex': [],
+  _generatedLocalVarName: {},
   _toJsonMapHelperName: null,
   r'$string': null,
-  'simpleObject': const {'value': 42},
-  'strictKeysObject': const {'value': 10, 'custom_field': 'cool'},
+  'simpleObject': {'value': 42},
+  'strictKeysObject': {'value': 10, 'custom_field': 'cool'},
   'validatedPropertyNo42': 0
 };
 
@@ -323,18 +323,18 @@ final _invalidValueTypes = const {
   'list': true,
   'dynamicList': true,
   'objectList': true,
-  'intList': const [true],
-  'dateTimeList': const [true],
+  'intList': [true],
+  'dateTimeList': [true],
   'map': true,
-  'stringStringMap': const {'key': 42},
-  'dynamicIntMap': const {'key': 'value'},
-  'objectDateTimeMap': const {'key': 42},
-  'crazyComplex': const [true],
-  _generatedLocalVarName: const {'key': 42},
+  'stringStringMap': {'key': 42},
+  'dynamicIntMap': {'key': 'value'},
+  'objectDateTimeMap': {'key': 42},
+  'crazyComplex': [true],
+  _generatedLocalVarName: {'key': 42},
   _toJsonMapHelperName: 42,
   r'$string': true,
   'simpleObject': 42,
-  'strictKeysObject': const {
+  'strictKeysObject': {
     'value': 10,
     'invalid_key': true,
   },
@@ -345,8 +345,8 @@ final _invalidValueTypes = const {
 final _invalidCheckedValues = const {
   'no-42': 42,
   'validatedPropertyNo42': 42,
-  'intIterable': const [true],
-  'datetime-iterable': const [true],
+  'intIterable': [true],
+  'datetime-iterable': [true],
 };
 
 final _excludeIfNullKeys = const [

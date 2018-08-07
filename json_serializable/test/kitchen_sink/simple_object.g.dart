@@ -7,7 +7,7 @@ part of 'simple_object.dart';
 // **************************************************************************
 
 SimpleObject _$SimpleObjectFromJson(Map json) {
-  return new SimpleObject(json['value'] as int);
+  return SimpleObject(json['value'] as int);
 }
 
 abstract class _$SimpleObjectSerializerMixin {

@@ -13,7 +13,7 @@ void main() {
     GenericClass<T, S> roundTripGenericClass<T extends num, S>(
         GenericClass<T, S> p) {
       var outputJson = loudEncode(p);
-      var p2 = new GenericClass<T, S>.fromJson(
+      var p2 = GenericClass<T, S>.fromJson(
           jsonDecode(outputJson) as Map<String, dynamic>);
       var outputJson2 = loudEncode(p2);
       expect(outputJson2, outputJson);
@@ -21,7 +21,7 @@ void main() {
     }
 
     test('no type args', () {
-      roundTripGenericClass(new GenericClass()
+      roundTripGenericClass(GenericClass()
         ..fieldDynamic = 1
         ..fieldInt = 2
         ..fieldObject = 3
@@ -29,7 +29,7 @@ void main() {
         ..fieldS = 'six');
     });
     test('with type arguments', () {
-      roundTripGenericClass(new GenericClass<double, String>()
+      roundTripGenericClass(GenericClass<double, String>()
         ..fieldDynamic = 1
         ..fieldInt = 2
         ..fieldObject = 3
@@ -38,14 +38,14 @@ void main() {
     });
     test('with bad arguments', () {
       expect(
-          () => new GenericClass<double, String>()
+          () => GenericClass<double, String>()
             ..fieldT = (true as dynamic) as double,
           throwsCastError);
     });
     test('with bad arguments', () {
       expect(
-          () => new GenericClass<double, String>()
-            ..fieldS = (5 as dynamic) as String,
+          () =>
+              GenericClass<double, String>()..fieldS = (5 as dynamic) as String,
           throwsCastError);
     });
   });

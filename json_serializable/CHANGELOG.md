@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Explicit `new` and `const` are no longer generated.
+
 ## 1.0.0
 
 * **BREAKING** By default, code generated to support `toJson` now creates

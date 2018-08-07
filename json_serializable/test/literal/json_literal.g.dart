@@ -49,8 +49,8 @@ final _$dataJsonLiteral = [
   }
 ];
 
-const _$asConstJsonLiteral = const [
-  const {
+const _$asConstJsonLiteral = [
+  {
     'backspace': '\b',
     'tab': '\t',
     'new line': '\n',
@@ -81,18 +81,18 @@ const _$asConstJsonLiteral = const [
   5,
   5.5351,
   -5.5,
-  const {},
-  const {
+  {},
+  {
     'null': null,
     'int': 42,
     'double': 42.0,
     'string': 'string',
-    'list': const [],
+    'list': [],
     'bool': true
   }
 ];
 
-const _$naughtyStringsJsonLiteral = const [
+const _$naughtyStringsJsonLiteral = [
   '',
   'undefined',
   'undef',

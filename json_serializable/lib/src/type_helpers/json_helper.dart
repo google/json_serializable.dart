@@ -63,7 +63,7 @@ class JsonHelper extends TypeHelper {
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
-    var result = 'new ${targetType.name}.fromJson($expression$asCast)';
+    var result = '${targetType.name}.fromJson($expression$asCast)';
 
     return commonNullPrefix(context.nullable, expression, result);
   }
@@ -96,7 +96,7 @@ JsonSerializable _annotation(InterfaceType source) {
     return null;
   }
 
-  return valueForAnnotation(new ConstantReader(annotations.single));
+  return valueForAnnotation(ConstantReader(annotations.single));
 }
 
 MethodElement _toJsonMethod(DartType type) => typeImplementations(type)

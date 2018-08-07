@@ -21,18 +21,18 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
   Future<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) async {
     if (p.isAbsolute(annotation.read('path').stringValue)) {
-      throw new ArgumentError(
+      throw ArgumentError(
           '`annotation.path` must be relative path to the source file.');
     }
 
     var sourcePathDir = p.dirname(buildStep.inputId.path);
-    var fileId = new AssetId(buildStep.inputId.package,
+    var fileId = AssetId(buildStep.inputId.package,
         p.join(sourcePathDir, annotation.read('path').stringValue));
     var content = json.decode(await buildStep.readAsString(fileId));
 
     var asConst = annotation.read('asConst').boolValue;
 
-    var thing = jsonLiteralAsDart(content, asConst).toString();
+    var thing = jsonLiteralAsDart(content).toString();
     var marked = asConst ? 'const' : 'final';
 
     return '$marked _\$${element.name}JsonLiteral = $thing;';
@@ -40,10 +40,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 }
 
 /// Returns a [String] representing a valid Dart literal for [value].
-///
-/// If [asConst] is `true`, the returned [String] is encoded as a `const`
-/// literal.
-String jsonLiteralAsDart(dynamic value, bool asConst) {
+String jsonLiteralAsDart(dynamic value) {
   if (value == null) return 'null';
 
   if (value is String) return escapeDartString(value);
@@ -51,21 +48,18 @@ String jsonLiteralAsDart(dynamic value, bool asConst) {
   if (value is bool || value is num) return value.toString();
 
   if (value is List) {
-    var listItems = value.map((v) => jsonLiteralAsDart(v, asConst)).join(', ');
-    return '${asConst ? 'const ' : ''}[$listItems]';
+    var listItems = value.map(jsonLiteralAsDart).join(', ');
+    return '[$listItems]';
   }
 
-  if (value is Map) return jsonMapAsDart(value, asConst);
+  if (value is Map) return jsonMapAsDart(value);
 
-  throw new StateError(
+  throw StateError(
       'Should never get here – with ${value.runtimeType} - `$value`.');
 }
 
-String jsonMapAsDart(Map value, bool asConst) {
-  var buffer = new StringBuffer();
-  if (asConst) {
-    buffer.write('const ');
-  }
+String jsonMapAsDart(Map value) {
+  var buffer = StringBuffer();
   buffer.write('{');
 
   var first = true;
@@ -77,7 +71,7 @@ String jsonMapAsDart(Map value, bool asConst) {
     }
     buffer.write(escapeDartString(k as String));
     buffer.write(': ');
-    buffer.write(jsonLiteralAsDart(v, asConst));
+    buffer.write(jsonLiteralAsDart(v));
   });
 
   buffer.write('}');

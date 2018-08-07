@@ -23,7 +23,7 @@ import 'src/json_part_builder.dart';
 Builder jsonSerializable(BuilderOptions options) {
   // Paranoid copy of options.config - don't assume it's mutable or needed
   // elsewhere.
-  var optionsMap = new Map<String, dynamic>.from(options.config);
+  var optionsMap = Map<String, dynamic>.from(options.config);
 
   var builder = jsonPartBuilder(
     useWrappers: optionsMap.remove('use_wrappers') as bool,
@@ -36,7 +36,7 @@ Builder jsonSerializable(BuilderOptions options) {
 
   if (optionsMap.isNotEmpty) {
     if (log == null) {
-      throw new StateError('Upgrade `build_runner` to at least 0.8.2.');
+      throw StateError('Upgrade `build_runner` to at least 0.8.2.');
     } else {
       log.warning('These options were ignored: `$optionsMap`.');
     }

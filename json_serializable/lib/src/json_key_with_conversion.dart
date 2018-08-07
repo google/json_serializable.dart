@@ -23,7 +23,7 @@ JsonKeyWithConversion _from(
       _jsonKeyChecker.firstAnnotationOfExact(element.getter);
 
   if (obj == null) {
-    return new JsonKeyWithConversion._(classAnnotation);
+    return JsonKeyWithConversion._(classAnnotation);
   }
   var fromJsonName = _getFunctionName(obj, element, true);
   var toJsonName = _getFunctionName(obj, element, false);
@@ -33,7 +33,7 @@ JsonKeyWithConversion _from(
       return null;
     }
 
-    var reader = new ConstantReader(dartObject);
+    var reader = ConstantReader(dartObject);
 
     String badType;
     if (reader.isSymbol) {
@@ -64,7 +64,7 @@ JsonKeyWithConversion _from(
     } else if (literal is Map<DartObject, DartObject>) {
       var mapThings = things.followedBy(['Map']);
       return literal.map((k, v) =>
-          new MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
+          MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
     }
 
     badType = things.followedBy(['$dartObject']).join(' > ');
@@ -89,7 +89,7 @@ JsonKeyWithConversion _from(
   } else {
     defaultValueLiteral = _getLiteral(defaultValueObject, []);
     if (defaultValueLiteral != null) {
-      defaultValueLiteral = jsonLiteralAsDart(defaultValueLiteral, false);
+      defaultValueLiteral = jsonLiteralAsDart(defaultValueLiteral);
     }
   }
 
@@ -105,7 +105,7 @@ JsonKeyWithConversion _from(
     }
   }
 
-  return new JsonKeyWithConversion._(classAnnotation,
+  return JsonKeyWithConversion._(classAnnotation,
       name: obj.getField('name').toStringValue(),
       nullable: obj.getField('nullable').toBoolValue(),
       includeIfNull: includeIfNull,
@@ -125,7 +125,7 @@ class ConvertData {
 }
 
 class JsonKeyWithConversion extends JsonKey {
-  static final _jsonKeyExpando = new Expando<JsonKeyWithConversion>();
+  static final _jsonKeyExpando = Expando<JsonKeyWithConversion>();
 
   final ConvertData fromJsonData;
   final ConvertData toJsonData;
@@ -222,5 +222,5 @@ ConvertData _getFunctionName(
           ' `${element.type}`.');
     }
   }
-  return new ConvertData._(functionElement.name, argType);
+  return ConvertData._(functionElement.name, argType);
 }

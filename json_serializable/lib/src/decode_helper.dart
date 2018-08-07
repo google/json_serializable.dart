@@ -11,7 +11,7 @@ import 'type_helper.dart';
 import 'utils.dart';
 
 abstract class DecodeHelper implements HelperCore {
-  final StringBuffer _buffer = new StringBuffer();
+  final StringBuffer _buffer = StringBuffer();
 
   String createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
@@ -68,15 +68,15 @@ abstract class DecodeHelper implements HelperCore {
       _buffer.write('''\n    return val;
   }''');
 
-      var fieldKeyMap = new Map.fromEntries(fieldsSetByFactory
-          .map((k) => new MapEntry(k, nameAccess(accessibleFields[k])))
+      var fieldKeyMap = Map.fromEntries(fieldsSetByFactory
+          .map((k) => MapEntry(k, nameAccess(accessibleFields[k])))
           .where((me) => me.key != me.value));
 
       String fieldKeyMapArg;
       if (fieldKeyMap.isEmpty) {
         fieldKeyMapArg = '';
       } else {
-        var mapLiteral = jsonMapAsDart(fieldKeyMap, true);
+        var mapLiteral = jsonMapAsDart(fieldKeyMap);
         fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
       }
 
@@ -122,8 +122,8 @@ abstract class DecodeHelper implements HelperCore {
     var args = <String>[];
 
     if (classAnnotation.disallowUnrecognizedKeys) {
-      var allowKeysLiteral = jsonLiteralAsDart(
-          accessibleFields.values.map(nameAccess).toList(), true);
+      var allowKeysLiteral =
+          jsonLiteralAsDart(accessibleFields.values.map(nameAccess).toList());
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
@@ -132,7 +132,7 @@ abstract class DecodeHelper implements HelperCore {
         accessibleFields.values.where((fe) => jsonKeyFor(fe).required).toList();
     if (requiredKeys.isNotEmpty) {
       var requiredKeyLiteral =
-          jsonLiteralAsDart(requiredKeys.map(nameAccess).toList(), true);
+          jsonLiteralAsDart(requiredKeys.map(nameAccess).toList());
 
       args.add('requiredKeys: $requiredKeyLiteral');
     }
@@ -142,7 +142,7 @@ abstract class DecodeHelper implements HelperCore {
         .toList();
     if (disallowNullKeys.isNotEmpty) {
       var dissallowNullKeyLiteral =
-          jsonLiteralAsDart(disallowNullKeys.map(nameAccess).toList(), true);
+          jsonLiteralAsDart(disallowNullKeys.map(nameAccess).toList());
 
       args.add('disallowNullValues: $dissallowNullKeyLiteral');
     }
@@ -211,11 +211,11 @@ _ConstructorData _writeConstructorInvocation(
   var ctor = classElement.unnamedConstructor;
   if (ctor == null) {
     // TODO(kevmoo): support using another ctor - dart-lang/json_serializable#50
-    throw new UnsupportedError(
+    throw UnsupportedError(
         'The class `$className` has no default constructor.');
   }
 
-  var usedCtorParamsAndFields = new Set<String>();
+  var usedCtorParamsAndFields = Set<String>();
   var constructorArguments = <ParameterElement>[];
   var namedConstructorArguments = <ParameterElement>[];
 
@@ -231,7 +231,7 @@ _ConstructorData _writeConstructorInvocation(
           msg = '$msg $additionalInfo';
         }
 
-        throw new UnsupportedError(msg);
+        throw UnsupportedError(msg);
       }
 
       continue;
@@ -253,8 +253,8 @@ _ConstructorData _writeConstructorInvocation(
   var remainingFieldsForInvocationBody =
       writeableFields.toSet().difference(usedCtorParamsAndFields);
 
-  var buffer = new StringBuffer();
-  buffer.write('new $className${genericClassArguments(classElement, false)}(');
+  var buffer = StringBuffer();
+  buffer.write('$className${genericClassArguments(classElement, false)}(');
   if (constructorArguments.isNotEmpty) {
     buffer.writeln();
     buffer.writeAll(constructorArguments.map((paramElement) {
@@ -279,8 +279,8 @@ _ConstructorData _writeConstructorInvocation(
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
 
-  return new _ConstructorData(buffer.toString(),
-      remainingFieldsForInvocationBody, usedCtorParamsAndFields);
+  return _ConstructorData(buffer.toString(), remainingFieldsForInvocationBody,
+      usedCtorParamsAndFields);
 }
 
 class _ConstructorData {
