@@ -11,7 +11,7 @@ dependencies:
   json_annotation: ^1.0.0
 
 dev_dependencies:
-  build_runner: ^0.9.0
+  build_runner: ^0.10.0
   json_serializable: ^1.0.0
 ```
 
