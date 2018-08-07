@@ -7,14 +7,14 @@ part of 'example.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return new Person(json['firstName'] as String, json['lastName'] as String,
+  return Person(json['firstName'] as String, json['lastName'] as String,
       DateTime.parse(json['date-of-birth'] as String),
       middleName: json['middleName'] as String,
       lastOrder: json['last-order'] == null
           ? null
           : DateTime.parse(json['last-order'] as String),
       orders: (json['orders'] as List)
-          .map((e) => new Order.fromJson(e as Map<String, dynamic>))
+          .map((e) => Order.fromJson(e as Map<String, dynamic>))
           .toList());
 }
 
@@ -38,14 +38,14 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
-  return new Order(
+  return Order(
       json['date'] == null ? null : _dateTimeFromEpochUs(json['date'] as int))
     ..count = json['count'] as int
     ..itemNumber = json['itemNumber'] as int
     ..isRushed = json['isRushed'] as bool
     ..item = json['item'] == null
         ? null
-        : new Item.fromJson(json['item'] as Map<String, dynamic>)
+        : Item.fromJson(json['item'] as Map<String, dynamic>)
     ..prepTime = json['prep-time'] == null
         ? null
         : _durationFromMillseconds(json['prep-time'] as int);
@@ -75,7 +75,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
-  return new Item()
+  return Item()
     ..count = json['count'] as int
     ..itemNumber = json['itemNumber'] as int
     ..isRushed = json['isRushed'] as bool;
