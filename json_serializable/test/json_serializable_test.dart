@@ -48,7 +48,7 @@ String _runForElementNamed(JsonSerializableGenerator generator, String name) {
       .join();
 
   var output = _formatter.format(generated);
-  printOnFailure(output);
+  printOnFailure("r'''\n$output'''");
   return output;
 }
 
