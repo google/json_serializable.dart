@@ -11,7 +11,6 @@ import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
-import 'src/annotation.dart';
 import 'test_file_utils.dart';
 
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
@@ -28,10 +27,8 @@ final _formatter = dart_style.DartFormatter();
 
 LibraryReader _library;
 
-const _shouldThrowChecker = TypeChecker.fromRuntime(ShouldThrow);
-
 void main() async {
-  var path = testFilePath('test', 'src', 'json_serializable_test_input.dart');
+  var path = testFilePath('test', 'src');
   _library = await resolveCompilationUnit(path);
 
   group('without wrappers',
@@ -55,29 +52,32 @@ String _runForElementNamed(JsonSerializableGenerator generator, String name) {
   return output;
 }
 
+List<AnnotatedElement> _annotatedWithName(String name) => _library.allElements
+    .map((e) {
+      for (var md in e.metadata) {
+        var reader = ConstantReader(md.constantValue);
+        if (reader.objectValue.type.name == name) {
+          return AnnotatedElement(reader, e);
+        }
+      }
+      return null;
+    })
+    .where((ae) => ae != null)
+    .toList()
+      ..sort((a, b) => a.element.name.compareTo(b.element.name));
+
 void _registerTests(JsonSerializableGenerator generator) {
   String runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
-    if (messageMatcher == null) {
-      var element =
-          _library.allElements.singleWhere((e) => e.name == elementName);
-
-      var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
-      messageMatcher = constantValue.getField('errorMessage').toStringValue();
-      todoMatcher ??= constantValue.getField('todo').toStringValue();
-    }
     todoMatcher ??= isEmpty;
     expect(() => runForElementNamed(elementName),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
 
   group('fails when generating for', () {
-    var annotatedElements = _library
-        .annotatedWithExact(_shouldThrowChecker)
-        .toList()
-          ..sort((a, b) => a.element.name.compareTo(b.element.name));
+    var annotatedElements = _annotatedWithName('ShouldThrow');
 
     test('all expected members', () {
       expect(annotatedElements.map((ae) => ae.element.name), [
@@ -108,12 +108,10 @@ void _registerTests(JsonSerializableGenerator generator) {
 
     for (var annotatedElement in annotatedElements) {
       var element = annotatedElement.element;
-      var constantValue = _shouldThrowChecker.firstAnnotationOfExact(element);
-      var testDescription =
-          constantValue.getField('testDescription').toStringValue();
-      var messageMatcher =
-          constantValue.getField('errorMessage').toStringValue();
-      var todoMatcher = constantValue.getField('todo').toStringValue();
+      var constReader = annotatedElement.annotation;
+      var testDescription = constReader.read('testDescription').stringValue;
+      var messageMatcher = constReader.read('errorMessage').stringValue;
+      var todoMatcher = constReader.read('todo').literalValue;
 
       test('$testDescription (${element.name})', () {
         expectThrows(

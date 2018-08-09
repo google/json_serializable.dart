@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-part of 'json_serializable_test_input.dart';
+part of '_json_serializable_test_input.dart';
 
 int _toInt(bool input) => 42;
 int _twoArgFunction(int a, int b) => 42;
