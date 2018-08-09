@@ -25,7 +25,7 @@ abstract class HelperCore {
   String get targetClassReference =>
       '${element.name}${genericClassArgumentsImpl(false)}';
 
-  String nameAccess(FieldElement field) => jsonKeyFor(field).name ?? field.name;
+  String nameAccess(FieldElement field) => jsonKeyFor(field).name;
 
   String safeNameAccess(FieldElement field) =>
       escapeDartString(nameAccess(field));

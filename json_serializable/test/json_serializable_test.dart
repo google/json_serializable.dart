@@ -120,6 +120,28 @@ void _registerTests(JsonSerializableGenerator generator) {
     }
   });
 
+  if (!generator.useWrappers) {
+    group('succeeds when generating for', () {
+      var annotatedElements = _annotatedWithName('ShouldGenerate');
+
+      test('all expected members', () {
+        expect(annotatedElements.map((ae) => ae.element.name),
+            ['FieldNamerKebab', 'FieldNamerNone', 'FieldNamerSnake']);
+      });
+
+      for (var annotatedElement in annotatedElements) {
+        var element = annotatedElement.element;
+        var expectedOutput =
+            annotatedElement.annotation.read('expectedOutput').stringValue;
+
+        test(element.name, () {
+          var output = _runForElementNamed(generator, element.name);
+          expect(output, expectedOutput);
+        });
+      }
+    });
+  }
+
   group('explicit toJson', () {
     test('nullable', () {
       var output = _runForElementNamed(

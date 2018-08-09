@@ -2,6 +2,18 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+/// Values for the automatic field renaming behavior for [JsonSerializable].
+enum FieldRename {
+  /// Use the field name without changes.
+  none,
+
+  /// Encodes a field named `kebabCase` with a JSON key `kebab-case`.
+  kebab,
+
+  /// Encodes a field named `snakeCase` with a JSON key `snake_case`.
+  snake
+}
+
 /// An annotation used to specify a class to generate code for.
 class JsonSerializable {
   /// If `false` (the default), then any unrecognized keys passed to the
@@ -72,6 +84,18 @@ class JsonSerializable {
   /// `null` runtime validation if it's critical.
   final bool nullable;
 
+  /// Defines the automatic naming strategy when converting class field names
+  /// into JSON map keys.
+  ///
+  /// With a value [FieldRename.none], the default, the name of the field is
+  /// used without modification.
+  ///
+  /// See [FieldRename] for details on the other options.
+  ///
+  /// Note: the value for [JsonKey.name] takes precedence over this option for
+  /// fields annotated with [JsonKey].
+  final FieldRename fieldRename;
+
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
     bool disallowUnrecognizedKeys = false,
@@ -79,11 +103,13 @@ class JsonSerializable {
     bool createToJson = true,
     bool includeIfNull = true,
     bool nullable = true,
+    FieldRename fieldRename = FieldRename.none,
   })  : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
         this.createFactory = createFactory ?? true,
         this.createToJson = createToJson ?? true,
         this.includeIfNull = includeIfNull ?? true,
-        this.nullable = nullable ?? true;
+        this.nullable = nullable ?? true,
+        this.fieldRename = fieldRename ?? FieldRename.none;
 }
 
 /// An annotation used to specify how a field is serialized.

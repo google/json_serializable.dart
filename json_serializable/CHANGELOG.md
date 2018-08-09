@@ -1,5 +1,11 @@
 ## 1.1.0
 
+* Added support for automatically converting field names to JSON map keys as
+  `kebab-case` or `snake_case` with a new option on the `JsonSerializable`
+  annotation. 
+
+## 1.0.1
+
 * Explicit `new` and `const` are no longer generated.
 
 ## 1.0.0

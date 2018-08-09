@@ -8,3 +8,8 @@ class ShouldThrow {
   final String todo;
   const ShouldThrow(this.testDescription, this.errorMessage, [this.todo]);
 }
+
+class ShouldGenerate {
+  final String expectedOutput;
+  const ShouldGenerate(this.expectedOutput);
+}

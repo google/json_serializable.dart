@@ -9,11 +9,30 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
+final _upperCase = RegExp('[A-Z]');
+
+String kebabCase(String input) => _fixCase(input, '-');
+String snakeCase(String input) => _fixCase(input, '_');
+
+String _fixCase(String input, String seperator) =>
+    input.replaceAllMapped(_upperCase, (match) {
+      var lower = match.group(0).toLowerCase();
+
+      if (match.start > 0) {
+        lower = '$seperator$lower';
+      }
+
+      return lower;
+    });
+
 @alwaysThrows
 void throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
+
+FieldRename _fromDartObject(ConstantReader reader) =>
+    FieldRename.values[reader.objectValue.getField('index').toIntValue()];
 
 JsonSerializable valueForAnnotation(ConstantReader annotation) =>
     JsonSerializable(
@@ -22,7 +41,8 @@ JsonSerializable valueForAnnotation(ConstantReader annotation) =>
         createToJson: annotation.read('createToJson').boolValue,
         createFactory: annotation.read('createFactory').boolValue,
         nullable: annotation.read('nullable').boolValue,
-        includeIfNull: annotation.read('includeIfNull').boolValue);
+        includeIfNull: annotation.read('includeIfNull').boolValue,
+        fieldRename: _fromDartObject(annotation.read('fieldRename')));
 
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;

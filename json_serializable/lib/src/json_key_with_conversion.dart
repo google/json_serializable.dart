@@ -23,7 +23,7 @@ JsonKeyWithConversion _from(
       _jsonKeyChecker.firstAnnotationOfExact(element.getter);
 
   if (obj == null) {
-    return JsonKeyWithConversion._(classAnnotation);
+    return JsonKeyWithConversion._(classAnnotation, element);
   }
   var fromJsonName = _getFunctionName(obj, element, true);
   var toJsonName = _getFunctionName(obj, element, false);
@@ -105,7 +105,7 @@ JsonKeyWithConversion _from(
     }
   }
 
-  return JsonKeyWithConversion._(classAnnotation,
+  return JsonKeyWithConversion._(classAnnotation, element,
       name: obj.getField('name').toStringValue(),
       nullable: obj.getField('nullable').toBoolValue(),
       includeIfNull: includeIfNull,
@@ -135,7 +135,8 @@ class JsonKeyWithConversion extends JsonKey {
       _jsonKeyExpando[element] ??= _from(element, classAnnotation);
 
   JsonKeyWithConversion._(
-    JsonSerializable classAnnotation, {
+    JsonSerializable classAnnotation,
+    FieldElement fieldElement, {
     String name,
     bool nullable,
     bool includeIfNull,
@@ -146,7 +147,7 @@ class JsonKeyWithConversion extends JsonKey {
     this.fromJsonData,
     this.toJsonData,
   }) : super(
-            name: name,
+            name: _processName(classAnnotation, name, fieldElement),
             nullable: nullable ?? classAnnotation.nullable,
             includeIfNull: _includeIfNull(includeIfNull, disallowNullValue,
                 classAnnotation.includeIfNull),
@@ -155,6 +156,25 @@ class JsonKeyWithConversion extends JsonKey {
             required: required ?? false,
             disallowNullValue: disallowNullValue ?? false) {
     assert(!this.includeIfNull || !this.disallowNullValue);
+  }
+
+  static String _processName(JsonSerializable classAnnotation,
+      String jsonKeyNameValue, FieldElement fieldElement) {
+    if (jsonKeyNameValue != null) {
+      return jsonKeyNameValue;
+    }
+
+    switch (classAnnotation.fieldRename) {
+      case FieldRename.none:
+        // noop
+        break;
+      case FieldRename.snake:
+        return snakeCase(fieldElement.name);
+      case FieldRename.kebab:
+        return kebabCase(fieldElement.name);
+    }
+
+    return fieldElement.name;
   }
 
   static bool _includeIfNull(bool keyIncludeIfNull, bool keyDisallowNullValue,

@@ -1,3 +1,8 @@
+## 1.1.0
+
+* Added the `fieldRename` option to `JsonSerializable` and the associated
+  `FieldRename` enum. 
+
 ## 1.0.0
 
 * Added `JsonValue` class for annotating `enum` fields with a custom
