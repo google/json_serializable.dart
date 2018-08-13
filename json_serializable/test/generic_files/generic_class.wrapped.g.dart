@@ -11,19 +11,21 @@ GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
   return GenericClass<T, S>()
     ..fieldObject = json['fieldObject'] == null
         ? null
-        : _dataFromJson(json['fieldObject'] as Map<String, dynamic>)
+        : GenericClass._dataFromJson(
+            json['fieldObject'] as Map<String, dynamic>)
     ..fieldDynamic = json['fieldDynamic'] == null
         ? null
-        : _dataFromJson(json['fieldDynamic'] as Map<String, dynamic>)
+        : GenericClass._dataFromJson(
+            json['fieldDynamic'] as Map<String, dynamic>)
     ..fieldInt = json['fieldInt'] == null
         ? null
-        : _dataFromJson(json['fieldInt'] as Map<String, dynamic>)
+        : GenericClass._dataFromJson(json['fieldInt'] as Map<String, dynamic>)
     ..fieldT = json['fieldT'] == null
         ? null
-        : _dataFromJson(json['fieldT'] as Map<String, dynamic>)
+        : GenericClass._dataFromJson(json['fieldT'] as Map<String, dynamic>)
     ..fieldS = json['fieldS'] == null
         ? null
-        : _dataFromJson(json['fieldS'] as Map<String, dynamic>);
+        : GenericClass._dataFromJson(json['fieldS'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
@@ -43,15 +45,21 @@ class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
     if (key is String) {
       switch (key) {
         case 'fieldObject':
-          return _v.fieldObject == null ? null : _dataToJson(_v.fieldObject);
+          return _v.fieldObject == null
+              ? null
+              : GenericClass._dataToJson(_v.fieldObject);
         case 'fieldDynamic':
-          return _v.fieldDynamic == null ? null : _dataToJson(_v.fieldDynamic);
+          return _v.fieldDynamic == null
+              ? null
+              : GenericClass._dataToJson(_v.fieldDynamic);
         case 'fieldInt':
-          return _v.fieldInt == null ? null : _dataToJson(_v.fieldInt);
+          return _v.fieldInt == null
+              ? null
+              : GenericClass._dataToJson(_v.fieldInt);
         case 'fieldT':
-          return _v.fieldT == null ? null : _dataToJson(_v.fieldT);
+          return _v.fieldT == null ? null : GenericClass._dataToJson(_v.fieldT);
         case 'fieldS':
-          return _v.fieldS == null ? null : _dataToJson(_v.fieldS);
+          return _v.fieldS == null ? null : GenericClass._dataToJson(_v.fieldS);
       }
     }
     return null;

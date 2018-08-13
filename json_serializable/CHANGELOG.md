@@ -3,6 +3,8 @@
 * Now throws `InvalidGenerationSourceError` instead of `UnsupportedError` for
   some classes of constructor errors.
 
+* Supports class-static functions for `toJson` and `fromJson` on `JsonKey`. 
+
 ## 1.1.0
 
 * Added support for automatically converting field names to JSON map keys as

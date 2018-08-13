@@ -198,26 +198,20 @@ ConvertData _getFunctionName(
 
   var type = objectValue.type as FunctionType;
 
-  if (type.element is MethodElement) {
-    throwUnsupported(
-        element,
-        'The function provided for `$paramName` must be top-level. '
-        'Static class methods (`${type.element.name}`) are not supported.');
-  }
-  var functionElement = type.element as FunctionElement;
+  var executableElement = type.element as ExecutableElement;
 
-  if (functionElement.parameters.isEmpty ||
-      functionElement.parameters.first.isNamed ||
-      functionElement.parameters.where((pe) => !pe.isOptional).length > 1) {
+  if (executableElement.parameters.isEmpty ||
+      executableElement.parameters.first.isNamed ||
+      executableElement.parameters.where((pe) => !pe.isOptional).length > 1) {
     throwUnsupported(
         element,
-        'The `$paramName` function `${functionElement.name}` must have one '
+        'The `$paramName` function `${executableElement.name}` must have one '
         'positional paramater.');
   }
 
-  var argType = functionElement.parameters.first.type;
+  var argType = executableElement.parameters.first.type;
   if (isFrom) {
-    var returnType = functionElement.returnType;
+    var returnType = executableElement.returnType;
 
     if (returnType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
@@ -226,7 +220,7 @@ ConvertData _getFunctionName(
     } else if (!returnType.isAssignableTo(element.type)) {
       throwUnsupported(
           element,
-          'The `$paramName` function `${functionElement.name}` return type '
+          'The `$paramName` function `${executableElement.name}` return type '
           '`$returnType` is not compatible with field type `${element.type}`.');
     }
   } else {
@@ -237,10 +231,17 @@ ConvertData _getFunctionName(
     } else if (!element.type.isAssignableTo(argType)) {
       throwUnsupported(
           element,
-          'The `$paramName` function `${functionElement.name}` argument type '
+          'The `$paramName` function `${executableElement.name}` argument type '
           '`$argType` is not compatible with field type'
           ' `${element.type}`.');
     }
   }
-  return ConvertData._(functionElement.name, argType);
+
+  var name = executableElement.name;
+
+  if (executableElement is MethodElement) {
+    name = '${executableElement.enclosingElement.name}.$name';
+  }
+
+  return ConvertData._(name, argType);
 }

@@ -107,9 +107,7 @@ void _registerTests(JsonSerializableGenerator generator) {
         'IgnoredFieldCtorClass',
         'IncludeIfNullDisallowNullClass',
         'InvalidFromFunc2Args',
-        'InvalidFromFuncClassStatic',
         'InvalidToFunc2Args',
-        'InvalidToFuncClassStatic',
         'JsonValueWithBool',
         'KeyDupesField',
         'PrivateFieldCtorClass',
@@ -153,6 +151,7 @@ void _registerTests(JsonSerializableGenerator generator) {
           'Order',
           'Person',
           'TypedConvertMethods',
+          'ValidToFromFuncClassStatic',
         ]);
       });
 

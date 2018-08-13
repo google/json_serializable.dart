@@ -30,16 +30,28 @@ class InvalidFromFunc2Args {
   String field;
 }
 
-@ShouldThrow(
-    'with class static function',
-    'Error with `@JsonKey` on `field`. '
-    'The function provided for `fromJson` must be top-level. '
-    'Static class methods (`_staticFunc`) are not supported.')
-@JsonSerializable()
-class InvalidFromFuncClassStatic {
-  static Duration _staticFunc(int param) => null;
+@ShouldGenerate(r'''
+ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
+    Map<String, dynamic> json) {
+  return ValidToFromFuncClassStatic()
+    ..field = json['field'] == null
+        ? null
+        : ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
+}
 
-  @JsonKey(fromJson: _staticFunc)
+Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
+        ValidToFromFuncClassStatic instance) =>
+    <String, dynamic>{
+      'field': instance.field == null
+          ? null
+          : ValidToFromFuncClassStatic._staticFunc(instance.field)
+    };
+''')
+@JsonSerializable()
+class ValidToFromFuncClassStatic {
+  static String _staticFunc(String param) => null;
+
+  @JsonKey(fromJson: _staticFunc, toJson: _staticFunc)
   String field;
 }
 
@@ -60,19 +72,6 @@ class BadToFuncReturnType {
 @JsonSerializable()
 class InvalidToFunc2Args {
   @JsonKey(toJson: _twoArgFunction)
-  String field;
-}
-
-@ShouldThrow(
-    'toJson with class static function',
-    'Error with `@JsonKey` on `field`. '
-    'The function provided for `toJson` must be top-level. '
-    'Static class methods (`_staticFunc`) are not supported.')
-@JsonSerializable()
-class InvalidToFuncClassStatic {
-  static Duration _staticFunc(int param) => null;
-
-  @JsonKey(toJson: _staticFunc)
   String field;
 }
 
