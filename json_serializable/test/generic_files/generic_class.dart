@@ -30,10 +30,11 @@ class GenericClass<T extends num, S> {
 
   Map<String, dynamic> toJson() => _$GenericClassToJson(this);
 
-  static T _dataFromJson<T, S, U>(Map<String, dynamic> input, [S other1, U other2]) =>
+  static T _dataFromJson<T, S, U>(Map<String, dynamic> input,
+          [S other1, U other2]) =>
       input['value'] as T;
 
-  static Map<String, dynamic> _dataToJson<T, S, U>(T input, [S other1, U other2]) =>
+  static Map<String, dynamic> _dataToJson<T, S, U>(T input,
+          [S other1, U other2]) =>
       {'value': input};
 }
-
