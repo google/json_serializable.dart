@@ -22,6 +22,30 @@ const theAnswer = 42;
 @JsonSerializable()
 void annotatedMethod() => null;
 
+@ShouldGenerate(r'''
+Person _$PersonFromJson(Map<String, dynamic> json) {
+  return Person()
+    ..firstName = json['firstName'] as String
+    ..lastName = json['lastName'] as String
+    ..height = json['h'] as int
+    ..dateOfBirth = json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String)
+    ..dynamicType = json['dynamicType']
+    ..varType = json['varType']
+    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+}
+
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'h': instance.height,
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dynamicType': instance.dynamicType,
+      'varType': instance.varType,
+      'listOfInts': instance.listOfInts
+    };
+''')
 @JsonSerializable()
 class Person {
   String firstName, lastName;
@@ -34,6 +58,22 @@ class Person {
   List<int> listOfInts;
 }
 
+@ShouldGenerate(r'''
+Order _$OrderFromJson(Map<String, dynamic> json) {
+  return Order(json['height'] as int, json['firstName'] as String,
+      json['lastName'] as String)
+    ..dateOfBirth = json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String);
+}
+
+Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'height': instance.height,
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String()
+    };
+''')
 @JsonSerializable()
 class Order {
   final String firstName, lastName;
@@ -153,6 +193,23 @@ class IncludeIfNullAll {
   String str;
 }
 
+@ShouldGenerate(r'''
+Map<String, dynamic> _$IncludeIfNullOverrideToJson(
+    IncludeIfNullOverride instance) {
+  var val = <String, dynamic>{
+    'number': instance.number,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('str', instance.str);
+  return val;
+}
+''')
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {
   @JsonKey(includeIfNull: true)
@@ -193,6 +250,13 @@ class DupeKeys {
   String str;
 }
 
+@ShouldGenerate(r'''
+Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
+    <String, dynamic>{
+      'ignoredFalseField': instance.ignoredFalseField,
+      'ignoredNullField': instance.ignoredNullField
+    };
+''')
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
   @JsonKey(ignore: true)
@@ -204,6 +268,10 @@ class IgnoredFieldClass {
   int ignoredNullField;
 }
 
+@ShouldThrow(
+    'fails if ignored field is referenced by ctor',
+    'Cannot populate the required constructor argument: '
+    'ignoredTrueField. It is assigned to an ignored field.')
 @JsonSerializable()
 class IgnoredFieldCtorClass {
   @JsonKey(ignore: true)
@@ -211,6 +279,10 @@ class IgnoredFieldCtorClass {
   IgnoredFieldCtorClass(this.ignoredTrueField);
 }
 
+@ShouldThrow(
+    'fails if private field is referenced by ctor',
+    'Cannot populate the required constructor argument: '
+    '_privateField. It is assigned to a private field.')
 @JsonSerializable()
 class PrivateFieldCtorClass {
   // ignore: unused_field
@@ -282,6 +354,14 @@ enum BadEnum {
   value
 }
 
+@ShouldGenerate(r'''const _$GoodEnumEnumMap = <GoodEnum, dynamic>{
+  GoodEnum.noAnnotation: 'noAnnotation',
+  GoodEnum.stringAnnotation: 'string annotation',
+  GoodEnum.stringAnnotationWeird: r"string annotation with $ funky 'values'",
+  GoodEnum.intValue: 42,
+  GoodEnum.nullValue: null
+};
+''', contains: true)
 @JsonSerializable()
 class JsonValueValid {
   GoodEnum field;

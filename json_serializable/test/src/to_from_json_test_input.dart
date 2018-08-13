@@ -76,12 +76,14 @@ class InvalidToFuncClassStatic {
   String field;
 }
 
+@ShouldGenerate("_toObject(json['field'])", contains: true)
 @JsonSerializable()
 class ObjectConvertMethods {
   @JsonKey(fromJson: _toObject, toJson: _toObject)
   String field;
 }
 
+@ShouldGenerate("_toDynamic(json['field'])", contains: true)
 @JsonSerializable()
 class DynamicConvertMethods {
   @JsonKey(fromJson: _toDynamic, toJson: _toDynamic)
@@ -90,6 +92,7 @@ class DynamicConvertMethods {
 
 String _toString(String input) => null;
 
+@ShouldGenerate("_toString(json['field'] as String)", contains: true)
 @JsonSerializable()
 class TypedConvertMethods {
   @JsonKey(fromJson: _toString, toJson: _toString)
@@ -100,6 +103,21 @@ String _fromDynamicMap(Map input) => null;
 String _fromDynamicList(List input) => null;
 String _fromDynamicIterable(Iterable input) => null;
 
+@ShouldGenerate(r'''
+FromDynamicCollection _$FromDynamicCollectionFromJson(
+    Map<String, dynamic> json) {
+  return FromDynamicCollection()
+    ..mapField = json['mapField'] == null
+        ? null
+        : _fromDynamicMap(json['mapField'] as Map)
+    ..listField = json['listField'] == null
+        ? null
+        : _fromDynamicList(json['listField'] as List)
+    ..iterableField = json['iterableField'] == null
+        ? null
+        : _fromDynamicIterable(json['iterableField'] as List);
+}
+''')
 @JsonSerializable(createToJson: false)
 class FromDynamicCollection {
   @JsonKey(fromJson: _fromDynamicMap)
@@ -148,6 +166,7 @@ class BadOneNamed {
 
 String _oneNormalOnePositional(a, [b]) => null;
 
+@ShouldGenerate("_oneNormalOnePositional(json['field'])", contains: true)
 @JsonSerializable(createToJson: false)
 class OkayOneNormalOptionalPositional {
   @JsonKey(fromJson: _oneNormalOnePositional)
@@ -156,6 +175,7 @@ class OkayOneNormalOptionalPositional {
 
 String _oneNormalOptionalNamed(a, {b}) => null;
 
+@ShouldGenerate("_oneNormalOptionalNamed(json['field'])", contains: true)
 @JsonSerializable(createToJson: false)
 class OkayOneNormalOptionalNamed {
   @JsonKey(fromJson: _oneNormalOptionalNamed)
@@ -164,6 +184,7 @@ class OkayOneNormalOptionalNamed {
 
 String _onlyOptionalPositional([a, b]) => null;
 
+@ShouldGenerate("_onlyOptionalPositional(json['field'])", contains: true)
 @JsonSerializable(createToJson: false)
 class OkayOnlyOptionalPositional {
   @JsonKey(fromJson: _onlyOptionalPositional)
