@@ -1,3 +1,8 @@
+## 1.1.1
+
+* Now throws `InvalidGenerationSourceError` instead of `UnsupportedError` for
+  some classes of constructor errors.
+
 ## 1.1.0
 
 * Added support for automatically converting field names to JSON map keys as

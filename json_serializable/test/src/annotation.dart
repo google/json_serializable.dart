@@ -11,5 +11,6 @@ class ShouldThrow {
 
 class ShouldGenerate {
   final String expectedOutput;
-  const ShouldGenerate(this.expectedOutput);
+  final bool contains;
+  const ShouldGenerate(this.expectedOutput, {this.contains = false});
 }

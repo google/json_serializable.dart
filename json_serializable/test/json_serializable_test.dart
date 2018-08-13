@@ -13,6 +13,16 @@ import 'package:test/test.dart';
 import 'analysis_utils.dart';
 import 'test_file_utils.dart';
 
+Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader) {
+  var expectedOutput = reader.read('expectedOutput').stringValue;
+  var isContains = reader.read('contains').boolValue;
+
+  if (isContains) {
+    return contains(expectedOutput);
+  }
+  return equals(expectedOutput);
+}
+
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
     throwsA(const TypeMatcher<InvalidGenerationSourceError>()
         .having((e) => e.message, 'message', messageMatcher)
@@ -94,6 +104,7 @@ void _registerTests(JsonSerializableGenerator generator) {
         'DefaultWithSymbol',
         'DefaultWithType',
         'DupeKeys',
+        'IgnoredFieldCtorClass',
         'IncludeIfNullDisallowNullClass',
         'InvalidFromFunc2Args',
         'InvalidFromFuncClassStatic',
@@ -101,6 +112,7 @@ void _registerTests(JsonSerializableGenerator generator) {
         'InvalidToFuncClassStatic',
         'JsonValueWithBool',
         'KeyDupesField',
+        'PrivateFieldCtorClass',
         'annotatedMethod',
         'theAnswer',
       ]);
@@ -125,18 +137,34 @@ void _registerTests(JsonSerializableGenerator generator) {
       var annotatedElements = _annotatedWithName('ShouldGenerate');
 
       test('all expected members', () {
-        expect(annotatedElements.map((ae) => ae.element.name),
-            ['FieldNamerKebab', 'FieldNamerNone', 'FieldNamerSnake']);
+        expect(annotatedElements.map((ae) => ae.element.name), [
+          'DynamicConvertMethods',
+          'FieldNamerKebab',
+          'FieldNamerNone',
+          'FieldNamerSnake',
+          'FromDynamicCollection',
+          'IgnoredFieldClass',
+          'IncludeIfNullOverride',
+          'JsonValueValid',
+          'ObjectConvertMethods',
+          'OkayOneNormalOptionalNamed',
+          'OkayOneNormalOptionalPositional',
+          'OkayOnlyOptionalPositional',
+          'Order',
+          'Person',
+          'TypedConvertMethods',
+        ]);
       });
 
       for (var annotatedElement in annotatedElements) {
         var element = annotatedElement.element;
-        var expectedOutput =
-            annotatedElement.annotation.read('expectedOutput').stringValue;
+
+        var matcher =
+            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
 
         test(element.name, () {
           var output = _runForElementNamed(generator, element.name);
-          expect(output, expectedOutput);
+          expect(output, matcher);
         });
       }
     });
@@ -331,56 +359,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   }
 
   group('valid inputs', () {
-    if (!generator.useWrappers) {
-      test('class with no ctor params', () {
-        var output = runForElementNamed('Person');
-        expect(output, r'''
-Person _$PersonFromJson(Map<String, dynamic> json) {
-  return Person()
-    ..firstName = json['firstName'] as String
-    ..lastName = json['lastName'] as String
-    ..height = json['h'] as int
-    ..dateOfBirth = json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String)
-    ..dynamicType = json['dynamicType']
-    ..varType = json['varType']
-    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
-}
-
-Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'h': instance.height,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
-      'dynamicType': instance.dynamicType,
-      'varType': instance.varType,
-      'listOfInts': instance.listOfInts
-    };
-''');
-      });
-
-      test('class with ctor params', () {
-        var output = runForElementNamed('Order');
-        expect(output, r'''
-Order _$OrderFromJson(Map<String, dynamic> json) {
-  return Order(json['height'] as int, json['firstName'] as String,
-      json['lastName'] as String)
-    ..dateOfBirth = json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String);
-}
-
-Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'height': instance.height,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String()
-    };
-''');
-      });
-    }
-
     test('class with fromJson() constructor with optional parameters', () {
       var output = runForElementNamed('FromJsonOptionalParameters');
 
@@ -426,105 +404,12 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
     });
   });
 
-  group('JsonKey', () {
-    if (!generator.useWrappers) {
-      test('works to change the name of a field', () {
-        var output = runForElementNamed('Person');
-
-        expect(output, contains("'h': instance.height,"));
-        expect(output, contains("..height = json['h']"));
-      });
-
-      test('works to ignore a field', () {
-        var output = runForElementNamed('IgnoredFieldClass');
-
-        expect(output,
-            contains("'ignoredFalseField': instance.ignoredFalseField"));
-        expect(
-            output, contains("'ignoredNullField': instance.ignoredNullField"));
-        expect(output,
-            isNot(contains("'ignoredTrueField': instance.ignoredTrueField")));
-      });
-
-      test('fails if ignored field is referenced by ctor', () {
-        expect(
-            () => runForElementNamed('IgnoredFieldCtorClass'),
-            _throwsUnsupportedError(
-                'Cannot populate the required constructor argument: '
-                'ignoredTrueField. It is assigned to an ignored field.'));
-      });
-
-      test('fails if private field is referenced by ctor', () {
-        expect(
-            () => runForElementNamed('PrivateFieldCtorClass'),
-            _throwsUnsupportedError(
-                'Cannot populate the required constructor argument: '
-                '_privateField. It is assigned to a private field.'));
-      });
-    }
-  });
-
   group('includeIfNull', () {
     test('some', () {
       var output = runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
-
-    if (!generator.useWrappers) {
-      test('all', () {
-        var output = runForElementNamed('IncludeIfNullOverride');
-        expect(output, contains(r"'number': instance.number"));
-        expect(output, contains(r"writeNotNull('str', instance.str);"));
-      });
-    }
-  });
-
-  group('functions', () {
-    if (!generator.useWrappers) {
-      test('object', () {
-        var output = runForElementNamed('ObjectConvertMethods');
-        expect(output, contains("_toObject(json['field'])"));
-      });
-      test('dynamic', () {
-        var output = runForElementNamed('DynamicConvertMethods');
-        expect(output, contains("_toDynamic(json['field'])"));
-      });
-      test('typed', () {
-        var output = runForElementNamed('TypedConvertMethods');
-        expect(output, contains("_toString(json['field'] as String)"));
-      });
-      test('dynamic collections', () {
-        var output = runForElementNamed('FromDynamicCollection');
-        expect(output, r'''
-FromDynamicCollection _$FromDynamicCollectionFromJson(
-    Map<String, dynamic> json) {
-  return FromDynamicCollection()
-    ..mapField = json['mapField'] == null
-        ? null
-        : _fromDynamicMap(json['mapField'] as Map)
-    ..listField = json['listField'] == null
-        ? null
-        : _fromDynamicList(json['listField'] as List)
-    ..iterableField = json['iterableField'] == null
-        ? null
-        : _fromDynamicIterable(json['iterableField'] as List);
-}
-''');
-      });
-      test('OkayOneNormalOptionalPositional', () {
-        var output = runForElementNamed('OkayOneNormalOptionalPositional');
-        expect(output, contains("_oneNormalOnePositional(json['field'])"));
-      });
-      test('OkayOneNormalOptionalNamed', () {
-        var output = runForElementNamed('OkayOneNormalOptionalNamed');
-        expect(output, contains("_oneNormalOptionalNamed(json['field'])"));
-      });
-      test('OkayOnlyOptionalPositional', () {
-        var output = runForElementNamed('OkayOnlyOptionalPositional');
-        expect(output, contains("_onlyOptionalPositional(json['field'])"));
-      });
-    }
   });
 
   test('missing default ctor with a factory', () {
@@ -694,22 +579,4 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
 
     expect(output, expected);
   });
-
-  if (!generator.useWrappers) {
-    group('enums annotated with JsonValue', () {
-      test('can be interesting', () {
-        var output = runForElementNamed('JsonValueValid');
-
-        expect(output, contains(r'''
-const _$GoodEnumEnumMap = <GoodEnum, dynamic>{
-  GoodEnum.noAnnotation: 'noAnnotation',
-  GoodEnum.stringAnnotation: 'string annotation',
-  GoodEnum.stringAnnotationWeird: r"string annotation with $ funky 'values'",
-  GoodEnum.intValue: 42,
-  GoodEnum.nullValue: null
-};
-'''));
-      });
-    });
-  }
 }
