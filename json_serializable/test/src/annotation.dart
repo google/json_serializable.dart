@@ -13,6 +13,9 @@ class ShouldGenerate {
   final String expectedOutput;
   final bool contains;
   final List<String> expectedLogItems;
+  final bool checked;
   const ShouldGenerate(this.expectedOutput,
-      {this.contains = false, this.expectedLogItems = const []});
+      {this.contains = false,
+      this.expectedLogItems = const [],
+      this.checked = false});
 }

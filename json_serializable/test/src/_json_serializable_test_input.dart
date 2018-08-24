@@ -7,6 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'annotation.dart';
 
+part 'checked_test_input.dart';
 part 'default_value_input.dart';
 part 'field_namer_input.dart';
 part 'generic_test_input.dart';

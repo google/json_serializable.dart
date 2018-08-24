@@ -68,14 +68,14 @@ void main() async {
   });
 
   group('without wrappers', () {
-    var generator = const JsonSerializableGenerator();
-    _registerTests(generator);
+    _registerTests(const JsonSerializableGenerator());
 
     group('succeeds when generating for', () {
       var annotatedElements = _annotatedWithName('ShouldGenerate');
 
       test('all expected members', () {
         expect(annotatedElements.map((ae) => ae.element.name), [
+          'CheckedWithANonCtorGetter',
           'DynamicConvertMethods',
           'FieldNamerKebab',
           'FieldNamerNone',
@@ -103,17 +103,20 @@ void main() async {
       for (var annotatedElement in annotatedElements) {
         var element = annotatedElement.element;
 
-        var matcher =
-            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-        var expectedLogItems = annotatedElement.annotation
-            .read('expectedLogItems')
-            .listValue
-            .map((obj) => obj.toStringValue())
-            .toList();
-
         test(element.name, () {
-          var output = _runForElementNamed(generator, element.name);
+          var matcher =
+              _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
+
+          var expectedLogItems = annotatedElement.annotation
+              .read('expectedLogItems')
+              .listValue
+              .map((obj) => obj.toStringValue())
+              .toList();
+
+          var checked = annotatedElement.annotation.read('checked').boolValue;
+
+          var output = _runForElementNamed(
+              JsonSerializableGenerator(checked: checked), element.name);
           expect(output, matcher);
 
           expect(_buildLogItems, expectedLogItems);
