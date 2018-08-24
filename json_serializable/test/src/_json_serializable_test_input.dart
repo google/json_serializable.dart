@@ -85,6 +85,14 @@ class Order {
       : this.firstName = firstName;
 }
 
+@ShouldGenerate(r'''
+FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) {
+  return FinalFields(json['a'] as int);
+}
+
+Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance) =>
+    <String, dynamic>{'a': instance.a};
+''')
 @JsonSerializable()
 class FinalFields {
   final int a;
@@ -93,6 +101,16 @@ class FinalFields {
   FinalFields(this.a);
 }
 
+@ShouldGenerate(r'''
+FinalFieldsNotSetInCtor _$FinalFieldsNotSetInCtorFromJson(
+    Map<String, dynamic> json) {
+  return FinalFieldsNotSetInCtor();
+}
+
+Map<String, dynamic> _$FinalFieldsNotSetInCtorToJson(
+        FinalFieldsNotSetInCtor instance) =>
+    <String, dynamic>{};
+''')
 @JsonSerializable()
 class FinalFieldsNotSetInCtor {
   final int a = 1;

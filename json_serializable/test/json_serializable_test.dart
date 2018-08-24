@@ -39,12 +39,89 @@ final _formatter = dart_style.DartFormatter();
 
 LibraryReader _library;
 
+final _buildLogItems = <String>[];
+
 void main() async {
   var path = testFilePath('test', 'src');
   _library = await resolveCompilationUnit(path);
 
-  group('without wrappers',
-      () => _registerTests(const JsonSerializableGenerator()));
+  StreamSubscription logSubscription;
+
+  setUp(() {
+    assert(_buildLogItems.isEmpty);
+    assert(logSubscription == null);
+    logSubscription = log.onRecord.listen((r) => _buildLogItems.add(r.message));
+  });
+
+  tearDown(() async {
+    if (logSubscription != null) {
+      await logSubscription.cancel();
+      logSubscription = null;
+    }
+
+    var remainingItems = _buildLogItems.toList();
+    _buildLogItems.clear();
+    expect(remainingItems, isEmpty,
+        reason:
+            'Tests should validate entries and clear this before `tearDown`.');
+    _buildLogItems.clear();
+  });
+
+  group('without wrappers', () {
+    var generator = const JsonSerializableGenerator();
+    _registerTests(generator);
+
+    group('succeeds when generating for', () {
+      var annotatedElements = _annotatedWithName('ShouldGenerate');
+
+      test('all expected members', () {
+        expect(annotatedElements.map((ae) => ae.element.name), [
+          'DynamicConvertMethods',
+          'FieldNamerKebab',
+          'FieldNamerNone',
+          'FieldNamerSnake',
+          'FinalFields',
+          'FinalFieldsNotSetInCtor',
+          'FromDynamicCollection',
+          'IgnoredFieldClass',
+          'IncludeIfNullOverride',
+          'JsonValueValid',
+          'JustSetter',
+          'JustSetterNoFromJson',
+          'JustSetterNoToJson',
+          'ObjectConvertMethods',
+          'OkayOneNormalOptionalNamed',
+          'OkayOneNormalOptionalPositional',
+          'OkayOnlyOptionalPositional',
+          'Order',
+          'Person',
+          'TypedConvertMethods',
+          'ValidToFromFuncClassStatic',
+        ]);
+      });
+
+      for (var annotatedElement in annotatedElements) {
+        var element = annotatedElement.element;
+
+        var matcher =
+            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
+
+        var expectedLogItems = annotatedElement.annotation
+            .read('expectedLogItems')
+            .listValue
+            .map((obj) => obj.toStringValue())
+            .toList();
+
+        test(element.name, () {
+          var output = _runForElementNamed(generator, element.name);
+          expect(output, matcher);
+
+          expect(_buildLogItems, expectedLogItems);
+          _buildLogItems.clear();
+        });
+      }
+    });
+  });
   group('with wrapper',
       () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
 }
@@ -87,29 +164,6 @@ void _registerTests(JsonSerializableGenerator generator) {
     expect(() => runForElementNamed(elementName),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
-
-  StreamSubscription logSubscription;
-  var buildLogItems = <String>[];
-
-  setUp(() {
-    assert(buildLogItems.isEmpty);
-    assert(logSubscription == null);
-    logSubscription = log.onRecord.listen((r) => buildLogItems.add(r.message));
-  });
-
-  tearDown(() async {
-    if (logSubscription != null) {
-      await logSubscription.cancel();
-      logSubscription = null;
-    }
-
-    var remainingItems = buildLogItems.toList();
-    buildLogItems.clear();
-    expect(remainingItems, isEmpty,
-        reason:
-            'Tests should validate entries and clear this before `tearDown`.');
-    buildLogItems.clear();
-  });
 
   group('fails when generating for', () {
     var annotatedElements = _annotatedWithName('ShouldThrow');
@@ -157,57 +211,6 @@ void _registerTests(JsonSerializableGenerator generator) {
       });
     }
   });
-
-  if (!generator.useWrappers) {
-    group('succeeds when generating for', () {
-      var annotatedElements = _annotatedWithName('ShouldGenerate');
-
-      test('all expected members', () {
-        expect(annotatedElements.map((ae) => ae.element.name), [
-          'DynamicConvertMethods',
-          'FieldNamerKebab',
-          'FieldNamerNone',
-          'FieldNamerSnake',
-          'FromDynamicCollection',
-          'IgnoredFieldClass',
-          'IncludeIfNullOverride',
-          'JsonValueValid',
-          'JustSetter',
-          'JustSetterNoFromJson',
-          'JustSetterNoToJson',
-          'ObjectConvertMethods',
-          'OkayOneNormalOptionalNamed',
-          'OkayOneNormalOptionalPositional',
-          'OkayOnlyOptionalPositional',
-          'Order',
-          'Person',
-          'TypedConvertMethods',
-          'ValidToFromFuncClassStatic',
-        ]);
-      });
-
-      for (var annotatedElement in annotatedElements) {
-        var element = annotatedElement.element;
-
-        var matcher =
-            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-        var expectedLogItems = annotatedElement.annotation
-            .read('expectedLogItems')
-            .listValue
-            .map((obj) => obj.toStringValue())
-            .toList();
-
-        test(element.name, () {
-          var output = _runForElementNamed(generator, element.name);
-          expect(output, matcher);
-
-          expect(buildLogItems, expectedLogItems);
-          buildLogItems.clear();
-        });
-      }
-    });
-  }
 
   group('explicit toJson', () {
     test('nullable', () {
@@ -302,10 +305,10 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
   group('unknown types', () {
     tearDown(() {
-      expect(buildLogItems, hasLength(1));
-      expect(buildLogItems.first,
+      expect(_buildLogItems, hasLength(1));
+      expect(_buildLogItems.first,
           startsWith('This element has an undefined type.'));
-      buildLogItems.clear();
+      _buildLogItems.clear();
     });
     String flavorMessage(String flavor) =>
         'Could not generate `$flavor` code for `number` '
@@ -386,22 +389,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         contains(
             r'Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance)'));
   });
-
-  if (!generator.useWrappers) {
-    test('includes final field in toJson when set in ctor', () {
-      var generateResult = runForElementNamed('FinalFields');
-      expect(generateResult, contains('FinalFields(json[\'a\'] as int);'));
-      expect(generateResult, contains('<String, dynamic>{\'a\': instance.a};'));
-    });
-
-    test('excludes final field in toJson when not set in ctor', () {
-      var generateResult = runForElementNamed('FinalFieldsNotSetInCtor');
-      expect(
-          generateResult, isNot(contains('FinalFields(json[\'a\'] as int);')));
-      expect(generateResult,
-          isNot(contains('toJson() => <String, dynamic>{\'a\': a};')));
-    });
-  }
 
   group('valid inputs', () {
     test('class with fromJson() constructor with optional parameters', () {
