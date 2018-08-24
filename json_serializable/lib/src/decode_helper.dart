@@ -14,6 +14,8 @@ import 'utils.dart';
 abstract class DecodeHelper implements HelperCore {
   final StringBuffer _buffer = StringBuffer();
 
+  /// Note: fields in [accessibleFields] will be removed if they are not
+  /// populated by the generated factory.
   String createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
     assert(annotation.createFactory);
