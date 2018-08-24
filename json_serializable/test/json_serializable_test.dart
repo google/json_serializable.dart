@@ -3,7 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
+import 'dart:async';
 
+import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
@@ -86,35 +88,61 @@ void _registerTests(JsonSerializableGenerator generator) {
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
 
+  StreamSubscription logSubscription;
+  var buildLogItems = <String>[];
+
+  setUp(() {
+    assert(buildLogItems.isEmpty);
+    assert(logSubscription == null);
+    logSubscription = log.onRecord.listen((r) => buildLogItems.add(r.message));
+  });
+
+  tearDown(() async {
+    if (logSubscription != null) {
+      await logSubscription.cancel();
+      logSubscription = null;
+    }
+
+    var remainingItems = buildLogItems.toList();
+    buildLogItems.clear();
+    expect(remainingItems, isEmpty,
+        reason:
+            'Tests should validate entries and clear this before `tearDown`.');
+    buildLogItems.clear();
+  });
+
   group('fails when generating for', () {
     var annotatedElements = _annotatedWithName('ShouldThrow');
 
-    test('all expected members', () {
-      expect(annotatedElements.map((ae) => ae.element.name), [
-        'BadFromFuncReturnType',
-        'BadNoArgs',
-        'BadOneNamed',
-        'BadToFuncReturnType',
-        'BadTwoRequiredPositional',
-        'DefaultWithConstObject',
-        'DefaultWithFunction',
-        'DefaultWithNestedEnum',
-        'DefaultWithNonNullableClass',
-        'DefaultWithNonNullableField',
-        'DefaultWithSymbol',
-        'DefaultWithType',
-        'DupeKeys',
-        'IgnoredFieldCtorClass',
-        'IncludeIfNullDisallowNullClass',
-        'InvalidFromFunc2Args',
-        'InvalidToFunc2Args',
-        'JsonValueWithBool',
-        'KeyDupesField',
-        'PrivateFieldCtorClass',
-        'annotatedMethod',
-        'theAnswer',
-      ]);
-    });
+    if (!generator.useWrappers) {
+      // Only need to run this check once!
+      test('all expected members', () {
+        expect(annotatedElements.map((ae) => ae.element.name), [
+          'BadFromFuncReturnType',
+          'BadNoArgs',
+          'BadOneNamed',
+          'BadToFuncReturnType',
+          'BadTwoRequiredPositional',
+          'DefaultWithConstObject',
+          'DefaultWithFunction',
+          'DefaultWithNestedEnum',
+          'DefaultWithNonNullableClass',
+          'DefaultWithNonNullableField',
+          'DefaultWithSymbol',
+          'DefaultWithType',
+          'DupeKeys',
+          'IgnoredFieldCtorClass',
+          'IncludeIfNullDisallowNullClass',
+          'InvalidFromFunc2Args',
+          'InvalidToFunc2Args',
+          'JsonValueWithBool',
+          'KeyDupesField',
+          'PrivateFieldCtorClass',
+          'annotatedMethod',
+          'theAnswer',
+        ]);
+      });
+    }
 
     for (var annotatedElement in annotatedElements) {
       var element = annotatedElement.element;
@@ -144,6 +172,9 @@ void _registerTests(JsonSerializableGenerator generator) {
           'IgnoredFieldClass',
           'IncludeIfNullOverride',
           'JsonValueValid',
+          'JustSetter',
+          'JustSetterNoFromJson',
+          'JustSetterNoToJson',
           'ObjectConvertMethods',
           'OkayOneNormalOptionalNamed',
           'OkayOneNormalOptionalPositional',
@@ -161,9 +192,18 @@ void _registerTests(JsonSerializableGenerator generator) {
         var matcher =
             _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
 
+        var expectedLogItems = annotatedElement.annotation
+            .read('expectedLogItems')
+            .listValue
+            .map((obj) => obj.toStringValue())
+            .toList();
+
         test(element.name, () {
           var output = _runForElementNamed(generator, element.name);
           expect(output, matcher);
+
+          expect(buildLogItems, expectedLogItems);
+          buildLogItems.clear();
         });
       }
     });
@@ -261,6 +301,12 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   });
 
   group('unknown types', () {
+    tearDown(() {
+      expect(buildLogItems, hasLength(1));
+      expect(buildLogItems.first,
+          startsWith('This element has an undefined type.'));
+      buildLogItems.clear();
+    });
     String flavorMessage(String flavor) =>
         'Could not generate `$flavor` code for `number` '
         'because the type is undefined.';

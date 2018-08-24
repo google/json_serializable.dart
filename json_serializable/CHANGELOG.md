@@ -5,6 +5,8 @@
 
 * Supports class-static functions for `toJson` and `fromJson` on `JsonKey`. 
 
+* Provide a warning about ignored setter-only properties instead of crashing.
+
 ## 1.1.0
 
 * Added support for automatically converting field names to JSON map keys as

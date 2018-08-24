@@ -12,5 +12,7 @@ class ShouldThrow {
 class ShouldGenerate {
   final String expectedOutput;
   final bool contains;
-  const ShouldGenerate(this.expectedOutput, {this.contains = false});
+  final List<String> expectedLogItems;
+  const ShouldGenerate(this.expectedOutput,
+      {this.contains = false, this.expectedLogItems = const []});
 }

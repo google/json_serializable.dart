@@ -195,6 +195,11 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         <String, FieldElement>{}, (map, field) {
       if (!field.isPublic) {
         unavailableReasons[field.name] = 'It is assigned to a private field.';
+      } else if (field.getter == null) {
+        assert(field.setter != null);
+        unavailableReasons[field.name] =
+            'Setter-only properties are not supported.';
+        log.warning('Setters are ignored: ${element.name}.${field.name}');
       } else if (jsonKeyFor(field).ignore) {
         unavailableReasons[field.name] = 'It is assigned to an ignored field.';
       } else {
