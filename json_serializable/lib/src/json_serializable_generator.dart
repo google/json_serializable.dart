@@ -203,17 +203,23 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       } else if (jsonKeyFor(field).ignore) {
         unavailableReasons[field.name] = 'It is assigned to an ignored field.';
       } else {
+        assert(!map.containsKey(field.name));
         map[field.name] = field;
       }
 
       return map;
     });
 
-    if (annotation.createFactory) {
-      yield createFactory(accessibleFields, unavailableReasons);
-    }
-
     var accessibleFieldSet = accessibleFields.values.toSet();
+    if (annotation.createFactory) {
+      var createResult = createFactory(accessibleFields, unavailableReasons);
+      yield createResult.output;
+
+      accessibleFieldSet = accessibleFields.entries
+          .where((e) => createResult.usedFields.contains(e.key))
+          .map((e) => e.value)
+          .toSet();
+    }
 
     // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done

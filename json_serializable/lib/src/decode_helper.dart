@@ -11,10 +11,17 @@ import 'json_literal_generator.dart';
 import 'type_helper.dart';
 import 'utils.dart';
 
+class CreateFactoryResult {
+  final String output;
+  final Set<String> usedFields;
+
+  CreateFactoryResult(this.output, this.usedFields);
+}
+
 abstract class DecodeHelper implements HelperCore {
   final StringBuffer _buffer = StringBuffer();
 
-  String createFactory(Map<String, FieldElement> accessibleFields,
+  CreateFactoryResult createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
     assert(annotation.createFactory);
     assert(_buffer.isEmpty);
@@ -29,7 +36,7 @@ abstract class DecodeHelper implements HelperCore {
         _deserializeForField(accessibleFields[paramOrFieldName],
             ctorParam: ctorParam);
 
-    Set<String> fieldsSetByFactory;
+    _ConstructorData data;
     if (generator.checked) {
       var classLiteral = escapeDartString(element.name);
 
@@ -39,7 +46,7 @@ abstract class DecodeHelper implements HelperCore {
     json,
     () {\n''');
 
-      var data = _writeConstructorInvocation(
+      data = _writeConstructorInvocation(
           element,
           accessibleFields.keys,
           accessibleFields.values
@@ -49,9 +56,11 @@ abstract class DecodeHelper implements HelperCore {
           unavailableReasons,
           deserializeFun);
 
-      fieldsSetByFactory = data.usedCtorParamsAndFields;
-
-      _writeChecks(6, annotation, accessibleFields);
+      _writeChecks(
+          6,
+          annotation,
+          accessibleFields.values
+              .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
       _buffer.write('''
     var val = ${data.content};''');
 
@@ -69,7 +78,7 @@ abstract class DecodeHelper implements HelperCore {
       _buffer.write('''\n    return val;
   }''');
 
-      var fieldKeyMap = Map.fromEntries(fieldsSetByFactory
+      var fieldKeyMap = Map.fromEntries(data.usedCtorParamsAndFields
           .map((k) => MapEntry(k, nameAccess(accessibleFields[k])))
           .where((me) => me.key != me.value));
 
@@ -85,7 +94,7 @@ abstract class DecodeHelper implements HelperCore {
 
       _buffer.write(')');
     } else {
-      var data = _writeConstructorInvocation(
+      data = _writeConstructorInvocation(
           element,
           accessibleFields.keys,
           accessibleFields.values
@@ -95,9 +104,11 @@ abstract class DecodeHelper implements HelperCore {
           unavailableReasons,
           deserializeFun);
 
-      fieldsSetByFactory = data.usedCtorParamsAndFields;
-
-      _writeChecks(2, annotation, accessibleFields);
+      _writeChecks(
+          2,
+          annotation,
+          accessibleFields.values
+              .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
 
       _buffer.write('''
   return ${data.content}''');
@@ -110,27 +121,23 @@ abstract class DecodeHelper implements HelperCore {
     _buffer.writeln(';\n}');
     _buffer.writeln();
 
-    // If there are fields that are final – that are not set via the generated
-    // constructor, then don't output them when generating the `toJson` call.
-    accessibleFields
-        .removeWhere((name, fe) => !fieldsSetByFactory.contains(name));
-
-    return _buffer.toString();
+    return CreateFactoryResult(
+        _buffer.toString(), data.usedCtorParamsAndFields);
   }
 
   void _writeChecks(int indent, JsonSerializable classAnnotation,
-      Map<String, FieldElement> accessibleFields) {
+      Iterable<FieldElement> accessibleFields) {
     var args = <String>[];
 
     if (classAnnotation.disallowUnrecognizedKeys) {
       var allowKeysLiteral =
-          jsonLiteralAsDart(accessibleFields.values.map(nameAccess).toList());
+          jsonLiteralAsDart(accessibleFields.map(nameAccess).toList());
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
     var requiredKeys =
-        accessibleFields.values.where((fe) => jsonKeyFor(fe).required).toList();
+        accessibleFields.where((fe) => jsonKeyFor(fe).required).toList();
     if (requiredKeys.isNotEmpty) {
       var requiredKeyLiteral =
           jsonLiteralAsDart(requiredKeys.map(nameAccess).toList());
@@ -138,7 +145,7 @@ abstract class DecodeHelper implements HelperCore {
       args.add('requiredKeys: $requiredKeyLiteral');
     }
 
-    var disallowNullKeys = accessibleFields.values
+    var disallowNullKeys = accessibleFields
         .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {

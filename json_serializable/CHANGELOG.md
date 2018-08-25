@@ -7,6 +7,8 @@
 
 * Provide a warning about ignored setter-only properties instead of crashing.
 
+* Fixed a bug when `disallowUnrecognizedKeys` is enabled.
+
 ## 1.1.0
 
 * Added support for automatically converting field names to JSON map keys as

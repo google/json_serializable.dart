@@ -75,7 +75,6 @@ void main() async {
 
       test('all expected members', () {
         expect(annotatedElements.map((ae) => ae.element.name), [
-          'CheckedWithANonCtorGetter',
           'DynamicConvertMethods',
           'FieldNamerKebab',
           'FieldNamerNone',
@@ -97,6 +96,8 @@ void main() async {
           'Person',
           'TypedConvertMethods',
           'ValidToFromFuncClassStatic',
+          'WithANonCtorGetter',
+          'WithANonCtorGetterChecked'
         ]);
       });
 
