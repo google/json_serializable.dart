@@ -8,7 +8,7 @@ part of 'build_config.dart';
 
 Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
-    $checkKeys(json, requiredKeys: ['builders']);
+    $checkKeys(json, requiredKeys: const ['builders']);
     var val = Config(
         builders: $checkedConvert(
             json,
@@ -59,7 +59,7 @@ const _$AutoApplyEnumMap = <AutoApply, dynamic>{
 
 Builder _$BuilderFromJson(Map json) {
   return $checkedNew('Builder', json, () {
-    $checkKeys(json, allowedKeys: [
+    $checkKeys(json, allowedKeys: const [
       'target',
       'import',
       'is_optional',
@@ -71,7 +71,7 @@ Builder _$BuilderFromJson(Map json) {
       'applies_builders',
       'required_inputs',
       'build_extensions'
-    ], disallowNullValues: [
+    ], disallowNullValues: const [
       'configLocation',
       'auto_apply'
     ]);

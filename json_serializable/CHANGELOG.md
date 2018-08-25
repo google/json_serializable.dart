@@ -9,6 +9,9 @@
 
 * Fixed a bug when `disallowUnrecognizedKeys` is enabled.
 
+* Added back `const` for lists generated with `disallowUnrecognizedKeys`, 
+  `required`, and `disallowNullValue`.
+
 ## 1.1.0
 
 * Added support for automatically converting field names to JSON map keys as

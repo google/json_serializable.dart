@@ -8,8 +8,8 @@ part of 'strict_keys_object.dart';
 
 StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
   $checkKeys(json,
-      allowedKeys: ['value', 'custom_field'],
-      requiredKeys: ['value', 'custom_field']);
+      allowedKeys: const ['value', 'custom_field'],
+      requiredKeys: const ['value', 'custom_field']);
   return StrictKeysObject(json['value'] as int, json['custom_field'] as String);
 }
 
