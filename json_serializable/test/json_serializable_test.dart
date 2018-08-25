@@ -67,64 +67,64 @@ void main() async {
     _buildLogItems.clear();
   });
 
+  group('succeeds when generating for', () {
+    var annotatedElements = _annotatedWithName('ShouldGenerate');
+
+    test('all expected members', () {
+      expect(annotatedElements.map((ae) => ae.element.name), [
+        'DynamicConvertMethods',
+        'FieldNamerKebab',
+        'FieldNamerNone',
+        'FieldNamerSnake',
+        'FinalFields',
+        'FinalFieldsNotSetInCtor',
+        'FromDynamicCollection',
+        'IgnoredFieldClass',
+        'IncludeIfNullOverride',
+        'JsonValueValid',
+        'JustSetter',
+        'JustSetterNoFromJson',
+        'JustSetterNoToJson',
+        'ObjectConvertMethods',
+        'OkayOneNormalOptionalNamed',
+        'OkayOneNormalOptionalPositional',
+        'OkayOnlyOptionalPositional',
+        'Order',
+        'Person',
+        'TypedConvertMethods',
+        'ValidToFromFuncClassStatic',
+        'WithANonCtorGetter',
+        'WithANonCtorGetterChecked'
+      ]);
+    });
+
+    for (var annotatedElement in annotatedElements) {
+      var element = annotatedElement.element;
+
+      test(element.name, () {
+        var matcher =
+            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
+
+        var expectedLogItems = annotatedElement.annotation
+            .read('expectedLogItems')
+            .listValue
+            .map((obj) => obj.toStringValue())
+            .toList();
+
+        var checked = annotatedElement.annotation.read('checked').boolValue;
+
+        var output = _runForElementNamed(
+            JsonSerializableGenerator(checked: checked), element.name);
+        expect(output, matcher);
+
+        expect(_buildLogItems, expectedLogItems);
+        _buildLogItems.clear();
+      });
+    }
+  });
+
   group('without wrappers', () {
     _registerTests(const JsonSerializableGenerator());
-
-    group('succeeds when generating for', () {
-      var annotatedElements = _annotatedWithName('ShouldGenerate');
-
-      test('all expected members', () {
-        expect(annotatedElements.map((ae) => ae.element.name), [
-          'DynamicConvertMethods',
-          'FieldNamerKebab',
-          'FieldNamerNone',
-          'FieldNamerSnake',
-          'FinalFields',
-          'FinalFieldsNotSetInCtor',
-          'FromDynamicCollection',
-          'IgnoredFieldClass',
-          'IncludeIfNullOverride',
-          'JsonValueValid',
-          'JustSetter',
-          'JustSetterNoFromJson',
-          'JustSetterNoToJson',
-          'ObjectConvertMethods',
-          'OkayOneNormalOptionalNamed',
-          'OkayOneNormalOptionalPositional',
-          'OkayOnlyOptionalPositional',
-          'Order',
-          'Person',
-          'TypedConvertMethods',
-          'ValidToFromFuncClassStatic',
-          'WithANonCtorGetter',
-          'WithANonCtorGetterChecked'
-        ]);
-      });
-
-      for (var annotatedElement in annotatedElements) {
-        var element = annotatedElement.element;
-
-        test(element.name, () {
-          var matcher =
-              _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-          var expectedLogItems = annotatedElement.annotation
-              .read('expectedLogItems')
-              .listValue
-              .map((obj) => obj.toStringValue())
-              .toList();
-
-          var checked = annotatedElement.annotation.read('checked').boolValue;
-
-          var output = _runForElementNamed(
-              JsonSerializableGenerator(checked: checked), element.name);
-          expect(output, matcher);
-
-          expect(_buildLogItems, expectedLogItems);
-          _buildLogItems.clear();
-        });
-      }
-    });
   });
   group('with wrapper',
       () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
