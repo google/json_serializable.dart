@@ -129,9 +129,11 @@ abstract class DecodeHelper implements HelperCore {
       Iterable<FieldElement> accessibleFields) {
     var args = <String>[];
 
+    String constantList(Iterable<FieldElement> things) =>
+        'const ${jsonLiteralAsDart(things.map(nameAccess).toList())}';
+
     if (classAnnotation.disallowUnrecognizedKeys) {
-      var allowKeysLiteral =
-          jsonLiteralAsDart(accessibleFields.map(nameAccess).toList());
+      var allowKeysLiteral = constantList(accessibleFields);
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
@@ -139,8 +141,7 @@ abstract class DecodeHelper implements HelperCore {
     var requiredKeys =
         accessibleFields.where((fe) => jsonKeyFor(fe).required).toList();
     if (requiredKeys.isNotEmpty) {
-      var requiredKeyLiteral =
-          jsonLiteralAsDart(requiredKeys.map(nameAccess).toList());
+      var requiredKeyLiteral = constantList(requiredKeys);
 
       args.add('requiredKeys: $requiredKeyLiteral');
     }
@@ -149,8 +150,7 @@ abstract class DecodeHelper implements HelperCore {
         .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {
-      var dissallowNullKeyLiteral =
-          jsonLiteralAsDart(disallowNullKeys.map(nameAccess).toList());
+      var dissallowNullKeyLiteral = constantList(disallowNullKeys);
 
       args.add('disallowNullValues: $dissallowNullKeyLiteral');
     }

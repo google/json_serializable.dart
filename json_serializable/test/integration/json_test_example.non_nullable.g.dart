@@ -55,7 +55,7 @@ const _$CategoryEnumMap = <Category, dynamic>{
 };
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
-  $checkKeys(json, disallowNullValues: ['count']);
+  $checkKeys(json, disallowNullValues: const ['count']);
   return Order(
       _$enumDecode(_$CategoryEnumMap, json['category']),
       (json['items'] as List)
