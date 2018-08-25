@@ -15,8 +15,19 @@ import 'package:test/test.dart';
 import 'analysis_utils.dart';
 import 'test_file_utils.dart';
 
-Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader) {
-  var expectedOutput = reader.read('expectedOutput').stringValue;
+Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
+    {bool wrapped = false}) {
+  String expectedOutput;
+  if (wrapped) {
+    var expectedWrappedOutput = reader.read('expectedWrappedOutput');
+    if (expectedWrappedOutput.isNull) {
+      return null;
+    }
+    expectedOutput = expectedWrappedOutput.stringValue;
+  } else {
+    expectedOutput = reader.read('expectedOutput').stringValue;
+  }
+
   var isContains = reader.read('contains').boolValue;
 
   if (isContains) {
@@ -79,6 +90,7 @@ void main() async {
         'FinalFields',
         'FinalFieldsNotSetInCtor',
         'FromDynamicCollection',
+        'GenericClass',
         'IgnoredFieldClass',
         'IncludeIfNullOverride',
         'JsonValueValid',
@@ -91,6 +103,7 @@ void main() async {
         'OkayOnlyOptionalPositional',
         'Order',
         'Person',
+        'SubType',
         'TypedConvertMethods',
         'ValidToFromFuncClassStatic',
         'WithANonCtorGetter',
@@ -101,18 +114,18 @@ void main() async {
     for (var annotatedElement in annotatedElements) {
       var element = annotatedElement.element;
 
+      var matcher =
+          _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
+
+      var expectedLogItems = annotatedElement.annotation
+          .read('expectedLogItems')
+          .listValue
+          .map((obj) => obj.toStringValue())
+          .toList();
+
+      var checked = annotatedElement.annotation.read('checked').boolValue;
+
       test(element.name, () {
-        var matcher =
-            _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-        var expectedLogItems = annotatedElement.annotation
-            .read('expectedLogItems')
-            .listValue
-            .map((obj) => obj.toStringValue())
-            .toList();
-
-        var checked = annotatedElement.annotation.read('checked').boolValue;
-
         var output = _runForElementNamed(
             JsonSerializableGenerator(checked: checked), element.name);
         expect(output, matcher);
@@ -120,6 +133,21 @@ void main() async {
         expect(_buildLogItems, expectedLogItems);
         _buildLogItems.clear();
       });
+
+      var wrappedMatcher = _matcherFromShouldGenerateAnnotation(
+          annotatedElement.annotation,
+          wrapped: true);
+      if (wrappedMatcher != null) {
+        test('wrapped - ${element.name}', () {
+          var output = _runForElementNamed(
+              JsonSerializableGenerator(checked: checked, useWrappers: true),
+              element.name);
+          expect(output, wrappedMatcher);
+
+          expect(_buildLogItems, expectedLogItems);
+          _buildLogItems.clear();
+        });
+      }
     }
   });
 
@@ -453,166 +481,5 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         () => runForElementNamed('NoCtorClass'),
         _throwsUnsupportedError(
             'The class `NoCtorClass` has no default constructor.'));
-  });
-
-  test('generic classes', () {
-    var output = runForElementNamed('GenericClass');
-
-    var expected = generator.useWrappers
-        ? r'''
-GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
-  return GenericClass<T, S>()
-    ..fieldObject =
-        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
-    ..fieldDynamic = json['fieldDynamic'] == null
-        ? null
-        : _dataFromJson(json['fieldDynamic'])
-    ..fieldInt =
-        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
-}
-
-Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
-        GenericClass<T, S> instance) =>
-    _$GenericClassJsonMapWrapper<T, S>(instance);
-
-class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
-  final GenericClass<T, S> _v;
-  _$GenericClassJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys =>
-      const ['fieldObject', 'fieldDynamic', 'fieldInt', 'fieldT', 'fieldS'];
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'fieldObject':
-          return _v.fieldObject == null ? null : _dataToJson(_v.fieldObject);
-        case 'fieldDynamic':
-          return _v.fieldDynamic == null ? null : _dataToJson(_v.fieldDynamic);
-        case 'fieldInt':
-          return _v.fieldInt == null ? null : _dataToJson(_v.fieldInt);
-        case 'fieldT':
-          return _v.fieldT == null ? null : _dataToJson(_v.fieldT);
-        case 'fieldS':
-          return _v.fieldS == null ? null : _dataToJson(_v.fieldS);
-      }
-    }
-    return null;
-  }
-}
-'''
-        : r'''
-GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
-  return GenericClass<T, S>()
-    ..fieldObject =
-        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
-    ..fieldDynamic = json['fieldDynamic'] == null
-        ? null
-        : _dataFromJson(json['fieldDynamic'])
-    ..fieldInt =
-        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
-}
-
-Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
-        GenericClass<T, S> instance) =>
-    <String, dynamic>{
-      'fieldObject': instance.fieldObject == null
-          ? null
-          : _dataToJson(instance.fieldObject),
-      'fieldDynamic': instance.fieldDynamic == null
-          ? null
-          : _dataToJson(instance.fieldDynamic),
-      'fieldInt':
-          instance.fieldInt == null ? null : _dataToJson(instance.fieldInt),
-      'fieldT': instance.fieldT == null ? null : _dataToJson(instance.fieldT),
-      'fieldS': instance.fieldS == null ? null : _dataToJson(instance.fieldS)
-    };
-''';
-
-    expect(output, expected);
-  });
-
-  test('super types', () {
-    var output = runForElementNamed('SubType');
-
-    var expected = generator.useWrappers
-        ? r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) {
-  return SubType(
-      json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
-    ..superTypeReadWrite = json['superTypeReadWrite'] as int
-    ..subTypeReadWrite = json['subTypeReadWrite'] as int;
-}
-
-Map<String, dynamic> _$SubTypeToJson(SubType instance) =>
-    _$SubTypeJsonMapWrapper(instance);
-
-class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
-  final SubType _v;
-  _$SubTypeJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys sync* {
-    yield 'super-type-via-ctor';
-    if (_v.superTypeReadWrite != null) {
-      yield 'superTypeReadWrite';
-    }
-    yield 'subTypeViaCtor';
-    yield 'subTypeReadWrite';
-  }
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'super-type-via-ctor':
-          return _v.superTypeViaCtor;
-        case 'superTypeReadWrite':
-          return _v.superTypeReadWrite;
-        case 'subTypeViaCtor':
-          return _v.subTypeViaCtor;
-        case 'subTypeReadWrite':
-          return _v.subTypeReadWrite;
-      }
-    }
-    return null;
-  }
-}
-'''
-        : r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) {
-  return SubType(
-      json['subTypeViaCtor'] as int, json['super-type-via-ctor'] as int)
-    ..superTypeReadWrite = json['superTypeReadWrite'] as int
-    ..subTypeReadWrite = json['subTypeReadWrite'] as int;
-}
-
-Map<String, dynamic> _$SubTypeToJson(SubType instance) {
-  var val = <String, dynamic>{
-    'super-type-via-ctor': instance.superTypeViaCtor,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('superTypeReadWrite', instance.superTypeReadWrite);
-  val['subTypeViaCtor'] = instance.subTypeViaCtor;
-  val['subTypeReadWrite'] = instance.subTypeReadWrite;
-  return val;
-}
-''';
-
-    expect(output, expected);
   });
 }
