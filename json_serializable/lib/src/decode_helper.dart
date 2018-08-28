@@ -87,7 +87,7 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = '';
       } else {
         var mapLiteral = jsonMapAsDart(fieldKeyMap);
-        fieldKeyMapArg = ', fieldKeyMap: $mapLiteral';
+        fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
       _buffer.write(fieldKeyMapArg);

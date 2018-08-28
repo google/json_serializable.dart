@@ -99,7 +99,7 @@ Builder _$BuilderFromJson(Map json) {
         configLocation: $checkedConvert(json, 'configLocation',
             (v) => v == null ? null : Uri.parse(v as String)));
     return val;
-  }, fieldKeyMap: {
+  }, fieldKeyMap: const {
     'isOptional': 'is_optional',
     'autoApply': 'auto_apply',
     'buildTo': 'build_to',

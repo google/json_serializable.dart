@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Added back `const` for maps generated with `checked: true` configuration.
+
 ## 1.2.0
 
 * Now throws `InvalidGenerationSourceError` instead of `UnsupportedError` for
