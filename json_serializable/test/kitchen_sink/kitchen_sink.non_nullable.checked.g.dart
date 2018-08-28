@@ -66,7 +66,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(json, 'validatedPropertyNo42',
         (v) => val.validatedPropertyNo42 = v as int);
     return val;
-  }, fieldKeyMap: {
+  }, fieldKeyMap: const {
     'ctorValidatedNo42': 'no-42',
     'dateTimeIterable': 'datetime-iterable',
     'string': r'$string'
