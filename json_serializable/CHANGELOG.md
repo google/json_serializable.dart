@@ -1,4 +1,4 @@
-## 1.1.1
+## 1.2.0
 
 * Now throws `InvalidGenerationSourceError` instead of `UnsupportedError` for
   some classes of constructor errors.
@@ -7,10 +7,12 @@
 
 * Provide a warning about ignored setter-only properties instead of crashing.
 
-* Fixed a bug when `disallowUnrecognizedKeys` is enabled.
-
 * Added back `const` for lists generated with `disallowUnrecognizedKeys`, 
   `required`, and `disallowNullValue`.
+
+* Fixed a bug when `disallowUnrecognizedKeys` is enabled.
+
+* Fixed a number of issues when dealing with inherited properties.
 
 ## 1.1.0
 
