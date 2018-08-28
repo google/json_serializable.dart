@@ -1,15 +1,10 @@
 # Created with https://github.com/dart-lang/mono_repo
 language: dart
 
-####################
-# Begin hand edits #
-####################
+# Custom configuration
 sudo: required
 addons:
   chrome: stable
-##################
-# End hand edits #
-##################
 
 jobs:
   include:
@@ -70,9 +65,10 @@ stages:
 
 # Only building master means that we don't run two builds for each pull request.
 branches:
-  only: [master]
+  only:
+    - master
 
 cache:
   directories:
-    - $HOME/.pub-cache
+    - "$HOME/.pub-cache"
     - json_serializable/.dart_tool/build
