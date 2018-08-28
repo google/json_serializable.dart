@@ -14,13 +14,22 @@ import 'utils.dart';
 
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
+DartObject _jsonKeyAnnotation(FieldElement element) =>
+    _jsonKeyChecker.firstAnnotationOfExact(element) ??
+    (element.getter == null
+        ? null
+        : _jsonKeyChecker.firstAnnotationOfExact(element.getter));
+
+/// Returns `true` if [element] is annotated with [JsonKey].
+bool hasJsonKeyAnnotation(FieldElement element) =>
+    _jsonKeyAnnotation(element) != null;
+
 JsonKeyWithConversion _from(
     FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
-  var obj = _jsonKeyChecker.firstAnnotationOfExact(element) ??
-      _jsonKeyChecker.firstAnnotationOfExact(element.getter);
+  var obj = _jsonKeyAnnotation(element);
 
   if (obj == null) {
     return JsonKeyWithConversion._(classAnnotation, element);

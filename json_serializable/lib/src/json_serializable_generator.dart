@@ -3,15 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-// ignore: implementation_imports
-import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
-    show InheritanceManager;
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'decode_helper.dart';
 import 'encoder_helper.dart';
+import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
@@ -184,7 +182,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
-    var sortedFields = _createSortedFieldSet(element);
+    var sortedFields = createSortedFieldSet(element);
 
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of
@@ -242,66 +240,3 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     yield* _addedMembers;
   }
 }
-
-/// Returns a [Set] of all instance [FieldElement] items for [element] and
-/// super classes, sorted first by their location in the inheritance hierarchy
-/// (super first) and then by their location in the source file.
-Set<FieldElement> _createSortedFieldSet(ClassElement element) {
-  // Get all of the fields that need to be assigned
-  // TODO: support overriding the field set with an annotation option
-  var fieldsList = element.fields.where((e) => !e.isStatic).toList();
-
-  var manager = InheritanceManager(element.library);
-
-  for (var v in manager.getMembersInheritedFromClasses(element).values) {
-    assert(v is! FieldElement);
-    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
-      continue;
-    }
-
-    if (v is PropertyAccessorElement && v.variable is FieldElement) {
-      fieldsList.add(v.variable as FieldElement);
-    }
-  }
-
-  warnUndefinedElements(fieldsList);
-
-  // Sort these in the order in which they appear in the class
-  // Sadly, `classElement.fields` puts properties after fields
-  fieldsList.sort(_sortByLocation);
-
-  return fieldsList.toSet();
-}
-
-int _sortByLocation(FieldElement a, FieldElement b) {
-  var checkerA = TypeChecker.fromStatic(a.enclosingElement.type);
-
-  if (!checkerA.isExactly(b.enclosingElement)) {
-    // in this case, you want to prioritize the enclosingElement that is more
-    // "super".
-
-    if (checkerA.isSuperOf(b.enclosingElement)) {
-      return -1;
-    }
-
-    var checkerB = TypeChecker.fromStatic(b.enclosingElement.type);
-
-    if (checkerB.isSuperOf(a.enclosingElement)) {
-      return 1;
-    }
-  }
-
-  /// Returns the offset of given field/property in its source file – with a
-  /// preference for the getter if it's defined.
-  int _offsetFor(FieldElement e) {
-    if (e.getter != null && e.getter.nameOffset != e.nameOffset) {
-      assert(e.nameOffset == -1);
-      return e.getter.nameOffset;
-    }
-    return e.nameOffset;
-  }
-
-  return _offsetFor(a).compareTo(_offsetFor(b));
-}
-
-final _dartCoreObjectChecker = const TypeChecker.fromRuntime(Object);
