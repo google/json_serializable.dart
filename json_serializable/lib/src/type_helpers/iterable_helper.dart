@@ -82,6 +82,8 @@ class IterableHelper extends TypeHelper {
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
       output += '$optionalQuestion.toList()';
+    } else if (_coreSetChecker.isAssignableFromType(targetType)) {
+      output += '$optionalQuestion.toSet()';
     }
 
     return output;
@@ -89,3 +91,4 @@ class IterableHelper extends TypeHelper {
 }
 
 final _coreListChecker = const TypeChecker.fromUrl('dart:core#List');
+final _coreSetChecker = const TypeChecker.fromUrl('dart:core#Set');

@@ -1,3 +1,7 @@
+## 1.3.0
+
+* Added support for `Set` type as a target.
+
 ## 1.2.1
 
 * Added back `const` for maps generated with `checked: true` configuration.
