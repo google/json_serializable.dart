@@ -24,6 +24,7 @@ import 'strict_keys_object.dart';
 part 'kitchen_sink.non_nullable.wrapped.g.dart';
 
 List<T> _defaultList<T>() => <T>[];
+Set<T> _defaultSet<T>() => Set<T>();
 Map<String, T> _defaultMap<T>() => <String, T>{};
 SimpleObject _defaultSimpleObject() => SimpleObject(42);
 StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
@@ -93,6 +94,12 @@ class KitchenSink extends Object
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
   Iterable<int> get intIterable => _intIterable;
+
+  Set set = _defaultSet();
+  Set<dynamic> dynamicSet = _defaultSet();
+  Set<Object> objectSet = _defaultSet();
+  Set<int> intSet = _defaultSet();
+  Set<DateTime> dateTimeSet = _defaultSet();
 
   // Added a one-off annotation on a property (not a field)
   @JsonKey(name: 'datetime-iterable')

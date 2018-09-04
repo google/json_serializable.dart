@@ -22,6 +22,12 @@ abstract class KitchenSink {
   List<int> intList;
   List<DateTime> dateTimeList;
 
+  Set set;
+  Set<dynamic> dynamicSet;
+  Set<Object> objectSet;
+  Set<int> intSet;
+  Set<DateTime> dateTimeSet;
+
   Map map;
   Map<String, String> stringStringMap;
   Map<dynamic, int> dynamicIntMap;
