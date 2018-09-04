@@ -70,8 +70,10 @@ class IterableHelper extends TypeHelper {
 
     var itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    // If `itemSubVal` is the same, then we don't need to do anything fancy
-    if (closureArg == itemSubVal) {
+    // If `itemSubVal` is the same and it's not a Set, then we don't need to do
+    // anything fancy
+    if (closureArg == itemSubVal &&
+        !_coreSetChecker.isAssignableFromType(targetType)) {
       return '$expression as List';
     }
 

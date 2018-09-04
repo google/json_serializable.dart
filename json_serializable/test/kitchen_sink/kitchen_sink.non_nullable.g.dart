@@ -16,6 +16,13 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
       dateTimeIterable: (json['datetime-iterable'] as List)
           .map((e) => DateTime.parse(e as String)))
     ..dateTime = DateTime.parse(json['dateTime'] as String)
+    ..set = (json['set'] as List).map((e) => e).toSet()
+    ..dynamicSet = (json['dynamicSet'] as List).map((e) => e).toSet()
+    ..objectSet = (json['objectSet'] as List).map((e) => e).toSet()
+    ..intSet = (json['intSet'] as List).map((e) => e as int).toSet()
+    ..dateTimeSet = (json['dateTimeSet'] as List)
+        .map((e) => DateTime.parse(e as String))
+        .toSet()
     ..list = json['list'] as List
     ..dynamicList = json['dynamicList'] as List
     ..objectList = json['objectList'] as List
@@ -34,9 +41,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
             (e as Map).map((k, e) => MapEntry(
                 k as String,
                 (e as List)
-                    .map((e) => (e as List)
-                        .map((e) => DateTime.parse(e as String))
-                        .toList())
+                    .map((e) =>
+                        (e as List).map((e) => DateTime.parse(e as String)).toList())
                     .toList())))))
         .toList()
     ..val = Map<String, bool>.from(json['val'] as Map)
@@ -54,6 +60,11 @@ abstract class _$KitchenSinkSerializerMixin {
   Iterable<dynamic> get dynamicIterable;
   Iterable<Object> get objectIterable;
   Iterable<int> get intIterable;
+  Set<dynamic> get set;
+  Set<dynamic> get dynamicSet;
+  Set<Object> get objectSet;
+  Set<int> get intSet;
+  Set<DateTime> get dateTimeSet;
   Iterable<DateTime> get dateTimeIterable;
   List<dynamic> get list;
   List<dynamic> get dynamicList;
@@ -78,6 +89,11 @@ abstract class _$KitchenSinkSerializerMixin {
         'dynamicIterable': dynamicIterable.toList(),
         'objectIterable': objectIterable.toList(),
         'intIterable': intIterable.toList(),
+        'set': set.toList(),
+        'dynamicSet': dynamicSet.toList(),
+        'objectSet': objectSet.toList(),
+        'intSet': intSet.toList(),
+        'dateTimeSet': dateTimeSet.map((e) => e.toIso8601String()).toList(),
         'datetime-iterable':
             dateTimeIterable.map((e) => e.toIso8601String()).toList(),
         'list': list,
