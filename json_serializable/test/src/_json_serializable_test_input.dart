@@ -120,6 +120,21 @@ class FinalFieldsNotSetInCtor {
   FinalFieldsNotSetInCtor();
 }
 
+@ShouldGenerate(r'''
+SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
+  return SetSupport((json['values'] as List)?.map((e) => e as int)?.toSet());
+}
+
+Map<String, dynamic> _$SetSupportToJson(SetSupport instance) =>
+    <String, dynamic>{'values': instance.values?.toList()};
+''')
+@JsonSerializable()
+class SetSupport {
+  final Set<int> values;
+
+  SetSupport(this.values);
+}
+
 @JsonSerializable(createToJson: false)
 class FromJsonOptionalParameters {
   final ChildWithFromJson child;

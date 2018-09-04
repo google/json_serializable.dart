@@ -103,6 +103,7 @@ void main() async {
         'OkayOnlyOptionalPositional',
         'Order',
         'Person',
+        'SetSupport',
         'SubType',
         'SubTypeWithAnnotatedFieldOverrideExtends',
         'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
