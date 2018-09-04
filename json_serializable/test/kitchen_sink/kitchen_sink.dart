@@ -11,6 +11,8 @@ import 'strict_keys_object.dart';
 
 part 'kitchen_sink.g.dart';
 
+// NOTE: these methods are replaced in the `non_nullable` cases to return
+// non-null values.
 List<T> _defaultList<T>() => null;
 Set<T> _defaultSet<T>() => null;
 Map _defaultMap() => null;
