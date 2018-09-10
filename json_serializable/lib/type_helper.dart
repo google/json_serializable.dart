@@ -5,6 +5,11 @@
 export 'src/shared_checkers.dart' show simpleJsonTypeChecker, typeArgumentsOf;
 export 'src/type_helper.dart'
     show SerializeContext, DeserializeContext, TypeHelper, UnsupportedTypeError;
+export 'src/type_helpers/convert_helper.dart';
 export 'src/type_helpers/date_time_helper.dart';
+export 'src/type_helpers/enum_helper.dart';
+export 'src/type_helpers/iterable_helper.dart';
 export 'src/type_helpers/json_helper.dart';
+export 'src/type_helpers/map_helper.dart';
 export 'src/type_helpers/uri_helper.dart';
+export 'src/type_helpers/value_helper.dart';
