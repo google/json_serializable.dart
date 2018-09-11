@@ -1,3 +1,8 @@
+## 1.3.1
+
+* Export the following `TypeHelper` implementations in `package:json_serializable/type_helper.dart`:  
+  `ConvertHelper`, `MapHelper`, `EnumHelper`, `IterableHelper`, `ValueHelper`
+
 ## 1.3.0
 
 * Added support for `Set` type as a target.
