@@ -52,6 +52,74 @@ LibraryReader _library;
 
 final _buildLogItems = <String>[];
 
+const _expectedAnnotatedTests = {
+  '_json_serializable_test_input.dart': [
+    'theAnswer',
+    'annotatedMethod',
+    'Person',
+    'Order',
+    'FinalFields',
+    'FinalFieldsNotSetInCtor',
+    'SetSupport',
+    'IncludeIfNullOverride',
+    'KeyDupesField',
+    'DupeKeys',
+    'IgnoredFieldClass',
+    'IgnoredFieldCtorClass',
+    'PrivateFieldCtorClass',
+    'IncludeIfNullDisallowNullClass',
+    'JsonValueWithBool',
+    'JsonValueValid'
+  ],
+  'checked_test_input.dart': [
+    'WithANonCtorGetterChecked',
+    'WithANonCtorGetter'
+  ],
+  'default_value_input.dart': [
+    'DefaultWithSymbol',
+    'DefaultWithFunction',
+    'DefaultWithType',
+    'DefaultWithConstObject',
+    'DefaultWithNestedEnum',
+    'DefaultWithNonNullableField',
+    'DefaultWithNonNullableClass'
+  ],
+  'field_namer_input.dart': [
+    'FieldNamerNone',
+    'FieldNamerKebab',
+    'FieldNamerSnake'
+  ],
+  'generic_test_input.dart': ['GenericClass'],
+  'inheritance_test_input.dart': [
+    'SubType',
+    'SubTypeWithAnnotatedFieldOverrideExtends',
+    'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
+    'SubTypeWithAnnotatedFieldOverrideImplements'
+  ],
+  'setter_test_input.dart': [
+    'JustSetter',
+    'JustSetterNoToJson',
+    'JustSetterNoFromJson'
+  ],
+  'to_from_json_test_input.dart': [
+    'BadFromFuncReturnType',
+    'InvalidFromFunc2Args',
+    'ValidToFromFuncClassStatic',
+    'BadToFuncReturnType',
+    'InvalidToFunc2Args',
+    'ObjectConvertMethods',
+    'DynamicConvertMethods',
+    'TypedConvertMethods',
+    'FromDynamicCollection',
+    'BadNoArgs',
+    'BadTwoRequiredPositional',
+    'BadOneNamed',
+    'OkayOneNormalOptionalPositional',
+    'OkayOneNormalOptionalNamed',
+    'OkayOnlyOptionalPositional'
+  ],
+};
+
 void main() async {
   var path = testFilePath('test', 'src');
   _library = await resolveCompilationUnit(path);
@@ -78,145 +146,105 @@ void main() async {
     _buildLogItems.clear();
   });
 
-  group('succeeds when generating for', () {
-    var annotatedElements = _annotatedWithName('ShouldGenerate');
+  // Only need to run this check once!
+  test('[all expected files]', () {
+    expect(_annotatedElements.keys, _expectedAnnotatedTests.keys);
+  });
 
-    test('all expected members', () {
-      expect(annotatedElements.map((ae) => ae.element.name), [
-        'DynamicConvertMethods',
-        'FieldNamerKebab',
-        'FieldNamerNone',
-        'FieldNamerSnake',
-        'FinalFields',
-        'FinalFieldsNotSetInCtor',
-        'FromDynamicCollection',
-        'GenericClass',
-        'IgnoredFieldClass',
-        'IncludeIfNullOverride',
-        'JsonValueValid',
-        'JustSetter',
-        'JustSetterNoFromJson',
-        'JustSetterNoToJson',
-        'ObjectConvertMethods',
-        'OkayOneNormalOptionalNamed',
-        'OkayOneNormalOptionalPositional',
-        'OkayOnlyOptionalPositional',
-        'Order',
-        'Person',
-        'SetSupport',
-        'SubType',
-        'SubTypeWithAnnotatedFieldOverrideExtends',
-        'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
-        'SubTypeWithAnnotatedFieldOverrideImplements',
-        'TypedConvertMethods',
-        'ValidToFromFuncClassStatic',
-        'WithANonCtorGetter',
-        'WithANonCtorGetterChecked'
-      ]);
-    });
-
-    for (var annotatedElement in annotatedElements) {
-      var element = annotatedElement.element;
-
-      var matcher =
-          _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-      var expectedLogItems = annotatedElement.annotation
-          .read('expectedLogItems')
-          .listValue
-          .map((obj) => obj.toStringValue())
-          .toList();
-
-      var checked = annotatedElement.annotation.read('checked').boolValue;
-
-      test(element.name, () {
-        var output = _runForElementNamed(
-            JsonSerializableGenerator(checked: checked), element.name);
-        expect(output, matcher);
-
-        expect(_buildLogItems, expectedLogItems);
-        _buildLogItems.clear();
+  for (var entry in _annotatedElements.entries) {
+    group(entry.key, () {
+      test('[all expected classes]', () {
+        expect(entry.value.map((ae) => ae.element.name),
+            _expectedAnnotatedTests[entry.key]);
       });
 
-      var wrappedMatcher = _matcherFromShouldGenerateAnnotation(
-          annotatedElement.annotation,
-          wrapped: true);
-      if (wrappedMatcher != null) {
-        test('wrapped - ${element.name}', () {
-          var output = _runForElementNamed(
-              JsonSerializableGenerator(checked: checked, useWrappers: true),
-              element.name);
-          expect(output, wrappedMatcher);
-
-          expect(_buildLogItems, expectedLogItems);
-          _buildLogItems.clear();
-        });
+      for (var annotatedElement in entry.value) {
+        _testAnnotatedClass(annotatedElement);
       }
-    }
-  });
-
-  group('fails when generating for', () {
-    var annotatedElements = _annotatedWithName('ShouldThrow');
-
-    // Only need to run this check once!
-    test('all expected members', () {
-      expect(annotatedElements.map((ae) => ae.element.name), [
-        'BadFromFuncReturnType',
-        'BadNoArgs',
-        'BadOneNamed',
-        'BadToFuncReturnType',
-        'BadTwoRequiredPositional',
-        'DefaultWithConstObject',
-        'DefaultWithFunction',
-        'DefaultWithNestedEnum',
-        'DefaultWithNonNullableClass',
-        'DefaultWithNonNullableField',
-        'DefaultWithSymbol',
-        'DefaultWithType',
-        'DupeKeys',
-        'IgnoredFieldCtorClass',
-        'IncludeIfNullDisallowNullClass',
-        'InvalidFromFunc2Args',
-        'InvalidToFunc2Args',
-        'JsonValueWithBool',
-        'KeyDupesField',
-        'PrivateFieldCtorClass',
-        'annotatedMethod',
-        'theAnswer',
-      ]);
     });
-
-    for (var annotatedElement in annotatedElements) {
-      var element = annotatedElement.element;
-      var constReader = annotatedElement.annotation;
-      var messageMatcher = constReader.read('errorMessage').stringValue;
-      var todoMatcher = constReader.read('todo').literalValue;
-
-      test(element.name, () {
-        todoMatcher ??= isEmpty;
-
-        expect(
-            () => _runForElementNamed(
-                const JsonSerializableGenerator(useWrappers: false),
-                element.name),
-            _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
-            reason: 'Should fail without wrappers.');
-
-        expect(
-            () => _runForElementNamed(
-                const JsonSerializableGenerator(useWrappers: true),
-                element.name),
-            _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
-            reason: 'Should fail with wrappers.');
-      });
-    }
-  });
+  }
 
   group('without wrappers', () {
     _registerTests(const JsonSerializableGenerator());
   });
   group('with wrapper',
       () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
+}
+
+void _testAnnotatedClass(AnnotatedElement annotatedElement) {
+  var annotationName = annotatedElement.annotation.objectValue.type.name;
+  switch (annotationName) {
+    case 'ShouldThrow':
+      _testShouldThrow(annotatedElement);
+      break;
+    case 'ShouldGenerate':
+      _testShouldGenerate(annotatedElement);
+      break;
+    default:
+      throw UnsupportedError("We don't support $annotationName");
+  }
+}
+
+void _testShouldThrow(AnnotatedElement annotatedElement) {
+  var element = annotatedElement.element;
+  var constReader = annotatedElement.annotation;
+  var messageMatcher = constReader.read('errorMessage').stringValue;
+  var todoMatcher = constReader.read('todo').literalValue;
+
+  test(element.name, () {
+    todoMatcher ??= isEmpty;
+
+    expect(
+        () => _runForElementNamed(
+            const JsonSerializableGenerator(useWrappers: false), element.name),
+        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
+        reason: 'Should fail without wrappers.');
+
+    expect(
+        () => _runForElementNamed(
+            const JsonSerializableGenerator(useWrappers: true), element.name),
+        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
+        reason: 'Should fail with wrappers.');
+  });
+}
+
+void _testShouldGenerate(AnnotatedElement annotatedElement) {
+  var element = annotatedElement.element;
+
+  var matcher =
+      _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
+
+  var expectedLogItems = annotatedElement.annotation
+      .read('expectedLogItems')
+      .listValue
+      .map((obj) => obj.toStringValue())
+      .toList();
+
+  var checked = annotatedElement.annotation.read('checked').boolValue;
+
+  test(element.name, () {
+    var output = _runForElementNamed(
+        JsonSerializableGenerator(checked: checked), element.name);
+    expect(output, matcher);
+
+    expect(_buildLogItems, expectedLogItems);
+    _buildLogItems.clear();
+  });
+
+  var wrappedMatcher = _matcherFromShouldGenerateAnnotation(
+      annotatedElement.annotation,
+      wrapped: true);
+  if (wrappedMatcher != null) {
+    test('${element.name} - (wrapped)', () {
+      var output = _runForElementNamed(
+          JsonSerializableGenerator(checked: checked, useWrappers: true),
+          element.name);
+      expect(output, wrappedMatcher);
+
+      expect(_buildLogItems, expectedLogItems);
+      _buildLogItems.clear();
+    });
+  }
 }
 
 String _runForElementNamed(JsonSerializableGenerator generator, String name) {
@@ -234,19 +262,26 @@ String _runForElementNamed(JsonSerializableGenerator generator, String name) {
   return output;
 }
 
-List<AnnotatedElement> _annotatedWithName(String name) => _library.allElements
-    .map((e) {
+final _annotatedElements = _library.allElements
+    .map<AnnotatedElement>((e) {
       for (var md in e.metadata) {
         var reader = ConstantReader(md.constantValue);
-        if (reader.objectValue.type.name == name) {
+        if (const ['ShouldGenerate', 'ShouldThrow']
+            .contains(reader.objectValue.type.name)) {
           return AnnotatedElement(reader, e);
         }
       }
       return null;
     })
     .where((ae) => ae != null)
-    .toList()
-      ..sort((a, b) => a.element.name.compareTo(b.element.name));
+    .fold<Map<String, List<AnnotatedElement>>>(
+        <String, List<AnnotatedElement>>{}, (map, annotatedElement) {
+      var list = map.putIfAbsent(
+          annotatedElement.element.source.uri.pathSegments.last,
+          () => <AnnotatedElement>[]);
+      list.add(annotatedElement);
+      return map;
+    });
 
 void _registerTests(JsonSerializableGenerator generator) {
   String runForElementNamed(String name) =>
