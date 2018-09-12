@@ -154,8 +154,8 @@ void main() async {
   for (var entry in _annotatedElements.entries) {
     group(entry.key, () {
       test('[all expected classes]', () {
-        expect(entry.value.map((ae) => ae.element.name),
-            _expectedAnnotatedTests[entry.key]);
+        expect(_expectedAnnotatedTests,
+            containsPair(entry.key, entry.value.map((ae) => ae.element.name)));
       });
 
       for (var annotatedElement in entry.value) {
