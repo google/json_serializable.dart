@@ -237,11 +237,10 @@ void _registerTests(JsonSerializableGenerator generator) {
     for (var annotatedElement in annotatedElements) {
       var element = annotatedElement.element;
       var constReader = annotatedElement.annotation;
-      var testDescription = constReader.read('testDescription').stringValue;
       var messageMatcher = constReader.read('errorMessage').stringValue;
       var todoMatcher = constReader.read('todo').literalValue;
 
-      test('$testDescription (${element.name})', () {
+      test(element.name, () {
         expectThrows(
             annotatedElement.element.name, messageMatcher, todoMatcher);
       });
