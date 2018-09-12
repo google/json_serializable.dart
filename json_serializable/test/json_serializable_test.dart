@@ -155,6 +155,63 @@ void main() async {
     }
   });
 
+  group('fails when generating for', () {
+    var annotatedElements = _annotatedWithName('ShouldThrow');
+
+    // Only need to run this check once!
+    test('all expected members', () {
+      expect(annotatedElements.map((ae) => ae.element.name), [
+        'BadFromFuncReturnType',
+        'BadNoArgs',
+        'BadOneNamed',
+        'BadToFuncReturnType',
+        'BadTwoRequiredPositional',
+        'DefaultWithConstObject',
+        'DefaultWithFunction',
+        'DefaultWithNestedEnum',
+        'DefaultWithNonNullableClass',
+        'DefaultWithNonNullableField',
+        'DefaultWithSymbol',
+        'DefaultWithType',
+        'DupeKeys',
+        'IgnoredFieldCtorClass',
+        'IncludeIfNullDisallowNullClass',
+        'InvalidFromFunc2Args',
+        'InvalidToFunc2Args',
+        'JsonValueWithBool',
+        'KeyDupesField',
+        'PrivateFieldCtorClass',
+        'annotatedMethod',
+        'theAnswer',
+      ]);
+    });
+
+    for (var annotatedElement in annotatedElements) {
+      var element = annotatedElement.element;
+      var constReader = annotatedElement.annotation;
+      var messageMatcher = constReader.read('errorMessage').stringValue;
+      var todoMatcher = constReader.read('todo').literalValue;
+
+      test(element.name, () {
+        todoMatcher ??= isEmpty;
+
+        expect(
+            () => _runForElementNamed(
+                const JsonSerializableGenerator(useWrappers: false),
+                element.name),
+            _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
+            reason: 'Should fail without wrappers.');
+
+        expect(
+            () => _runForElementNamed(
+                const JsonSerializableGenerator(useWrappers: true),
+                element.name),
+            _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
+            reason: 'Should fail with wrappers.');
+      });
+    }
+  });
+
   group('without wrappers', () {
     _registerTests(const JsonSerializableGenerator());
   });
@@ -200,52 +257,6 @@ void _registerTests(JsonSerializableGenerator generator) {
     expect(() => runForElementNamed(elementName),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
   }
-
-  group('fails when generating for', () {
-    var annotatedElements = _annotatedWithName('ShouldThrow');
-
-    if (!generator.useWrappers) {
-      // Only need to run this check once!
-      test('all expected members', () {
-        expect(annotatedElements.map((ae) => ae.element.name), [
-          'BadFromFuncReturnType',
-          'BadNoArgs',
-          'BadOneNamed',
-          'BadToFuncReturnType',
-          'BadTwoRequiredPositional',
-          'DefaultWithConstObject',
-          'DefaultWithFunction',
-          'DefaultWithNestedEnum',
-          'DefaultWithNonNullableClass',
-          'DefaultWithNonNullableField',
-          'DefaultWithSymbol',
-          'DefaultWithType',
-          'DupeKeys',
-          'IgnoredFieldCtorClass',
-          'IncludeIfNullDisallowNullClass',
-          'InvalidFromFunc2Args',
-          'InvalidToFunc2Args',
-          'JsonValueWithBool',
-          'KeyDupesField',
-          'PrivateFieldCtorClass',
-          'annotatedMethod',
-          'theAnswer',
-        ]);
-      });
-    }
-
-    for (var annotatedElement in annotatedElements) {
-      var element = annotatedElement.element;
-      var constReader = annotatedElement.annotation;
-      var messageMatcher = constReader.read('errorMessage').stringValue;
-      var todoMatcher = constReader.read('todo').literalValue;
-
-      test(element.name, () {
-        expectThrows(
-            annotatedElement.element.name, messageMatcher, todoMatcher);
-      });
-    }
-  });
 
   group('explicit toJson', () {
     test('nullable', () {
