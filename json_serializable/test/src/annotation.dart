@@ -3,10 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 class ShouldThrow {
-  final String testDescription;
   final String errorMessage;
   final String todo;
-  const ShouldThrow(this.testDescription, this.errorMessage, [this.todo]);
+  const ShouldThrow(this.errorMessage, [this.todo]);
 }
 
 class ShouldGenerate {

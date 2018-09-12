@@ -15,12 +15,12 @@ part 'inheritance_test_input.dart';
 part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';
 
-@ShouldThrow('field', 'Generator cannot target `theAnswer`.',
+@ShouldThrow('Generator cannot target `theAnswer`.',
     'Remove the JsonSerializable annotation from `theAnswer`.')
 @JsonSerializable()
 const theAnswer = 42;
 
-@ShouldThrow('function', 'Generator cannot target `annotatedMethod`.',
+@ShouldThrow('Generator cannot target `annotatedMethod`.',
     'Remove the JsonSerializable annotation from `annotatedMethod`.')
 @JsonSerializable()
 void annotatedMethod() => null;
@@ -261,9 +261,7 @@ class NoCtorClass {
   factory NoCtorClass.fromJson(Map<String, dynamic> json) => null;
 }
 
-@ShouldThrow(
-    'fails if name duplicates existing field',
-    'More than one field has the JSON key `str`.',
+@ShouldThrow('More than one field has the JSON key `str`.',
     'Check the `JsonKey` annotations on fields.')
 @JsonSerializable(createFactory: false)
 class KeyDupesField {
@@ -273,9 +271,7 @@ class KeyDupesField {
   String str;
 }
 
-@ShouldThrow(
-    'fails if two names collide',
-    'More than one field has the JSON key `a`.',
+@ShouldThrow('More than one field has the JSON key `a`.',
     'Check the `JsonKey` annotations on fields.')
 @JsonSerializable(createFactory: false)
 class DupeKeys {
@@ -304,9 +300,7 @@ class IgnoredFieldClass {
   int ignoredNullField;
 }
 
-@ShouldThrow(
-    'fails if ignored field is referenced by ctor',
-    'Cannot populate the required constructor argument: '
+@ShouldThrow('Cannot populate the required constructor argument: '
     'ignoredTrueField. It is assigned to an ignored field.')
 @JsonSerializable()
 class IgnoredFieldCtorClass {
@@ -315,9 +309,7 @@ class IgnoredFieldCtorClass {
   IgnoredFieldCtorClass(this.ignoredTrueField);
 }
 
-@ShouldThrow(
-    'fails if private field is referenced by ctor',
-    'Cannot populate the required constructor argument: '
+@ShouldThrow('Cannot populate the required constructor argument: '
     '_privateField. It is assigned to a private field.')
 @JsonSerializable()
 class PrivateFieldCtorClass {
@@ -326,9 +318,7 @@ class PrivateFieldCtorClass {
   PrivateFieldCtorClass(this._privateField);
 }
 
-@ShouldThrow(
-    '`disallowNullvalue` and `includeIfNull` both `true`',
-    'Error with `@JsonKey` on `field`. '
+@ShouldThrow('Error with `@JsonKey` on `field`. '
     'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
     'This leads to incompatible `toJson` and `fromJson` behavior.')
 @JsonSerializable()
@@ -350,7 +340,6 @@ class TrivialNestedNonNullable {
 }
 
 @ShouldThrow(
-    'enums annotated with JsonValue must be string, int or null',
     'The `JsonValue` annotation on `BadEnum.value` does not have a value '
     'of type String, int, or null.')
 @JsonSerializable()
