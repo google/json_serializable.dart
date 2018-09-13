@@ -156,3 +156,105 @@ abstract class _$KitchenSinkSerializerMixin {
         'validatedPropertyNo42': validatedPropertyNo42
       };
 }
+
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+  return $checkedNew('JsonConverterTestClass', json, () {
+    var val = JsonConverterTestClass();
+    $checkedConvert(json, 'duration',
+        (v) => val.duration = durationConverter.fromJson(v as int));
+    $checkedConvert(
+        json,
+        'durationList',
+        (v) => val.durationList = (v as List)
+            .map((e) => durationConverter.fromJson(e as int))
+            .toList());
+    $checkedConvert(
+        json,
+        'bigInt',
+        (v) =>
+            val.bigInt = const BigIntStringConverter().fromJson(v as String));
+    $checkedConvert(
+        json,
+        'bigIntMap',
+        (v) => val.bigIntMap = (v as Map).map((k, e) => MapEntry(
+            k as String, const BigIntStringConverter().fromJson(e as String))));
+    $checkedConvert(
+        json,
+        'numberSilly',
+        (v) => val.numberSilly =
+            TrivialNumberConverter.instance.fromJson(v as int));
+    $checkedConvert(
+        json,
+        'numberSillySet',
+        (v) => val.numberSillySet = (v as List)
+            .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+            .toSet());
+    $checkedConvert(
+        json,
+        'dateTime',
+        (v) =>
+            val.dateTime = const EpochDateTimeConverter().fromJson(v as int));
+    return val;
+  });
+}
+
+abstract class _$JsonConverterTestClassSerializerMixin {
+  Duration get duration;
+  List<Duration> get durationList;
+  BigInt get bigInt;
+  Map<String, BigInt> get bigIntMap;
+  TrivialNumber get numberSilly;
+  Set<TrivialNumber> get numberSillySet;
+  DateTime get dateTime;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'duration': durationConverter.toJson(duration),
+        'durationList':
+            durationList.map((e) => durationConverter.toJson(e)).toList(),
+        'bigInt': const BigIntStringConverter().toJson(bigInt),
+        'bigIntMap': bigIntMap.map(
+            (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
+        'numberSilly': TrivialNumberConverter.instance.toJson(numberSilly),
+        'numberSillySet': numberSillySet
+            .map((e) => TrivialNumberConverter.instance.toJson(e))
+            .toList(),
+        'dateTime': const EpochDateTimeConverter().toJson(dateTime)
+      };
+}
+
+JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
+    Map json) {
+  return $checkedNew('JsonConverterGeneric', json, () {
+    var val = JsonConverterGeneric<S, T, U>();
+    $checkedConvert(
+        json,
+        'item',
+        (v) => val.item =
+            GenericConverter<S>().fromJson(v as Map<String, dynamic>));
+    $checkedConvert(
+        json,
+        'itemList',
+        (v) => val.itemList = (v as List)
+            .map((e) =>
+                GenericConverter<T>().fromJson(e as Map<String, dynamic>))
+            .toList());
+    $checkedConvert(
+        json,
+        'itemMap',
+        (v) => val.itemMap = (v as Map).map((k, e) => MapEntry(k as String,
+            GenericConverter<U>().fromJson(e as Map<String, dynamic>))));
+    return val;
+  });
+}
+
+abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
+  S get item;
+  List<T> get itemList;
+  Map<String, U> get itemMap;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'item': GenericConverter<S>().toJson(item),
+        'itemList':
+            itemList.map((e) => GenericConverter<T>().toJson(e)).toList(),
+        'itemMap':
+            itemMap.map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
+      };
+}

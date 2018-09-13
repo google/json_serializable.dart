@@ -211,3 +211,120 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
     return null;
   }
 }
+
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+  return JsonConverterTestClass()
+    ..duration = durationConverter.fromJson(json['duration'] as int)
+    ..durationList = (json['durationList'] as List)
+        ?.map((e) => durationConverter.fromJson(e as int))
+        ?.toList()
+    ..bigInt = const BigIntStringConverter().fromJson(json['bigInt'] as String)
+    ..bigIntMap = (json['bigIntMap'] as Map)?.map((k, e) => MapEntry(
+        k as String, const BigIntStringConverter().fromJson(e as String)))
+    ..numberSilly =
+        TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
+    ..numberSillySet = (json['numberSillySet'] as List)
+        ?.map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+        ?.toSet()
+    ..dateTime =
+        const EpochDateTimeConverter().fromJson(json['dateTime'] as int);
+}
+
+abstract class _$JsonConverterTestClassSerializerMixin {
+  Duration get duration;
+  List<Duration> get durationList;
+  BigInt get bigInt;
+  Map<String, BigInt> get bigIntMap;
+  TrivialNumber get numberSilly;
+  Set<TrivialNumber> get numberSillySet;
+  DateTime get dateTime;
+  Map<String, dynamic> toJson() => _$JsonConverterTestClassJsonMapWrapper(this);
+}
+
+class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
+  final _$JsonConverterTestClassSerializerMixin _v;
+  _$JsonConverterTestClassJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const [
+        'duration',
+        'durationList',
+        'bigInt',
+        'bigIntMap',
+        'numberSilly',
+        'numberSillySet',
+        'dateTime'
+      ];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'duration':
+          return durationConverter.toJson(_v.duration);
+        case 'durationList':
+          return $wrapListHandleNull<Duration>(
+              _v.durationList, (e) => durationConverter.toJson(e));
+        case 'bigInt':
+          return const BigIntStringConverter().toJson(_v.bigInt);
+        case 'bigIntMap':
+          return $wrapMapHandleNull<String, BigInt>(
+              _v.bigIntMap, (e) => const BigIntStringConverter().toJson(e));
+        case 'numberSilly':
+          return TrivialNumberConverter.instance.toJson(_v.numberSilly);
+        case 'numberSillySet':
+          return _v.numberSillySet
+              ?.map((e) => TrivialNumberConverter.instance.toJson(e))
+              ?.toList();
+        case 'dateTime':
+          return const EpochDateTimeConverter().toJson(_v.dateTime);
+      }
+    }
+    return null;
+  }
+}
+
+JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
+    Map json) {
+  return JsonConverterGeneric<S, T, U>()
+    ..item =
+        GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
+    ..itemList = (json['itemList'] as List)
+        ?.map((e) => GenericConverter<T>().fromJson(e as Map<String, dynamic>))
+        ?.toList()
+    ..itemMap = (json['itemMap'] as Map)?.map((k, e) => MapEntry(k as String,
+        GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
+}
+
+abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
+  S get item;
+  List<T> get itemList;
+  Map<String, U> get itemMap;
+  Map<String, dynamic> toJson() =>
+      _$JsonConverterGenericJsonMapWrapper<S, T, U>(this);
+}
+
+class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
+  final _$JsonConverterGenericSerializerMixin<S, T, U> _v;
+  _$JsonConverterGenericJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const ['item', 'itemList', 'itemMap'];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'item':
+          return GenericConverter<S>().toJson(_v.item);
+        case 'itemList':
+          return $wrapListHandleNull<T>(
+              _v.itemList, (e) => GenericConverter<T>().toJson(e));
+        case 'itemMap':
+          return $wrapMapHandleNull<String, U>(
+              _v.itemMap, (e) => GenericConverter<U>().toJson(e));
+      }
+    }
+    return null;
+  }
+}

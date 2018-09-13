@@ -123,3 +123,69 @@ abstract class _$KitchenSinkSerializerMixin {
         'validatedPropertyNo42': validatedPropertyNo42
       };
 }
+
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+  return JsonConverterTestClass()
+    ..duration = durationConverter.fromJson(json['duration'] as int)
+    ..durationList = (json['durationList'] as List)
+        .map((e) => durationConverter.fromJson(e as int))
+        .toList()
+    ..bigInt = const BigIntStringConverter().fromJson(json['bigInt'] as String)
+    ..bigIntMap = (json['bigIntMap'] as Map).map((k, e) => MapEntry(
+        k as String, const BigIntStringConverter().fromJson(e as String)))
+    ..numberSilly =
+        TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
+    ..numberSillySet = (json['numberSillySet'] as List)
+        .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+        .toSet()
+    ..dateTime =
+        const EpochDateTimeConverter().fromJson(json['dateTime'] as int);
+}
+
+abstract class _$JsonConverterTestClassSerializerMixin {
+  Duration get duration;
+  List<Duration> get durationList;
+  BigInt get bigInt;
+  Map<String, BigInt> get bigIntMap;
+  TrivialNumber get numberSilly;
+  Set<TrivialNumber> get numberSillySet;
+  DateTime get dateTime;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'duration': durationConverter.toJson(duration),
+        'durationList':
+            durationList.map((e) => durationConverter.toJson(e)).toList(),
+        'bigInt': const BigIntStringConverter().toJson(bigInt),
+        'bigIntMap': bigIntMap.map(
+            (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
+        'numberSilly': TrivialNumberConverter.instance.toJson(numberSilly),
+        'numberSillySet': numberSillySet
+            .map((e) => TrivialNumberConverter.instance.toJson(e))
+            .toList(),
+        'dateTime': const EpochDateTimeConverter().toJson(dateTime)
+      };
+}
+
+JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
+    Map json) {
+  return JsonConverterGeneric<S, T, U>()
+    ..item =
+        GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
+    ..itemList = (json['itemList'] as List)
+        .map((e) => GenericConverter<T>().fromJson(e as Map<String, dynamic>))
+        .toList()
+    ..itemMap = (json['itemMap'] as Map).map((k, e) => MapEntry(k as String,
+        GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
+}
+
+abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
+  S get item;
+  List<T> get itemList;
+  Map<String, U> get itemMap;
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'item': GenericConverter<S>().toJson(item),
+        'itemList':
+            itemList.map((e) => GenericConverter<T>().toJson(e)).toList(),
+        'itemMap':
+            itemMap.map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
+      };
+}
