@@ -16,6 +16,7 @@ import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/enum_helper.dart';
 import 'type_helpers/iterable_helper.dart';
+import 'type_helpers/json_converter_helper.dart';
 import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
@@ -31,16 +32,17 @@ class JsonSerializableGenerator
     IterableHelper(),
     MapHelper(),
     EnumHelper(),
-    ValueHelper()
+    ValueHelper(),
   ];
 
   static const _defaultHelpers = [JsonHelper(), DateTimeHelper(), UriHelper()];
 
   final List<TypeHelper> _typeHelpers;
 
-  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[ConvertHelper()]
-      .followedBy(_typeHelpers)
-      .followedBy(_coreHelpers);
+  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
+        ConvertHelper(),
+        JsonConverterHelper()
+      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   /// If `true`, wrappers are used to minimize the number of
   /// [Map] and [List] instances created during serialization.

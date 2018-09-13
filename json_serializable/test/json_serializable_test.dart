@@ -96,6 +96,11 @@ const _expectedAnnotatedTests = {
     'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
     'SubTypeWithAnnotatedFieldOverrideImplements'
   ],
+  'json_converter_test_input.dart': [
+    'JsonConverterNamedCtor',
+    'JsonConverterDuplicateAnnotations',
+    'JsonConverterCtorParams',
+  ],
   'setter_test_input.dart': [
     'JustSetter',
     'JustSetterNoToJson',

@@ -9,6 +9,7 @@ export 'src/type_helpers/convert_helper.dart';
 export 'src/type_helpers/date_time_helper.dart';
 export 'src/type_helpers/enum_helper.dart';
 export 'src/type_helpers/iterable_helper.dart';
+export 'src/type_helpers/json_converter_helper.dart';
 export 'src/type_helpers/json_helper.dart';
 export 'src/type_helpers/map_helper.dart';
 export 'src/type_helpers/uri_helper.dart';
