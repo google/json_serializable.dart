@@ -1,3 +1,7 @@
+## 1.2.0
+
+* Added `JsonConverter` class to support custom conversion of types.
+
 ## 1.1.0
 
 * Added the `fieldRename` option to `JsonSerializable` and the associated
