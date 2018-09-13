@@ -52,7 +52,8 @@ linter:
     - prefer_adjacent_string_concatenation
     - prefer_collection_literals
     - prefer_conditional_assignment
-    - prefer_const_constructors
+    # Waiting on SDK >=2.1.0-dev.5.0 with linter fix
+    #- prefer_const_constructors
     - prefer_contains
     - prefer_equal_for_default_values
     - prefer_final_fields
@@ -73,7 +74,8 @@ linter:
     # Waiting on https://github.com/dart-lang/test/issues/915
     #- unnecessary_const
     - unnecessary_getters_setters
-    - unnecessary_lambdas
+    # We'll need a way to return a lambda from a TypeHelper to re-enable this
+    #- unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_statements
