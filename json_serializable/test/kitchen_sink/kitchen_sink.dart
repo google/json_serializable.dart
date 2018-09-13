@@ -5,6 +5,7 @@
 // ignore_for_file: annotate_overrides, hash_and_equals
 import 'package:json_annotation/json_annotation.dart';
 
+import 'json_converters.dart';
 import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
@@ -133,4 +134,44 @@ class KitchenSink extends Object
   }
 
   bool operator ==(Object other) => k.sinkEquals(this, other);
+}
+
+@JsonSerializable()
+// referencing a top-level field should work
+@durationConverter
+// referencing via a const constructor should work
+@BigIntStringConverter()
+@TrivialNumberConverter.instance
+@EpochDateTimeConverter()
+class JsonConverterTestClass extends Object
+    with _$JsonConverterTestClassSerializerMixin {
+  JsonConverterTestClass();
+
+  factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
+      _$JsonConverterTestClassFromJson(json);
+
+  Duration duration;
+  List<Duration> durationList;
+
+  BigInt bigInt;
+  Map<String, BigInt> bigIntMap;
+
+  TrivialNumber numberSilly;
+  Set<TrivialNumber> numberSillySet;
+
+  DateTime dateTime;
+}
+
+@JsonSerializable()
+@GenericConverter()
+class JsonConverterGeneric<S, T, U> extends Object
+    with _$JsonConverterGenericSerializerMixin<S, T, U> {
+  S item;
+  List<T> itemList;
+  Map<String, U> itemMap;
+
+  JsonConverterGeneric();
+
+  factory JsonConverterGeneric.fromJson(Map<String, dynamic> json) =>
+      _$JsonConverterGenericFromJson(json);
 }
