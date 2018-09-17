@@ -98,6 +98,7 @@ const _expectedAnnotatedTests = {
   ],
   'json_converter_test_input.dart': [
     'JsonConverterNamedCtor',
+    'JsonConverterWithBadTypeArg',
     'JsonConverterDuplicateAnnotations',
     'JsonConverterCtorParams',
   ],
