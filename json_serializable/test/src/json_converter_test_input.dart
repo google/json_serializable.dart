@@ -55,7 +55,24 @@ class _GenericConverter<T> implements JsonConverter<T, int> {
   int toJson(T object) => 0;
 }
 
-// More than one matching converter on a class
+@ShouldThrow('`JsonConverter` implementations can have no more than one type '
+    'argument. `_BadConverter` has 2.')
+@JsonSerializable()
+@_BadConverter()
+class JsonConverterWithBadTypeArg<T> {
+  T value;
+}
+
+class _BadConverter<T, S> implements JsonConverter<S, int> {
+  const _BadConverter();
+
+  @override
+  S fromJson(int json) => null;
+
+  @override
+  int toJson(S object) => 0;
+}
+
 @ShouldThrow('Found more than one matching converter for `Duration`.')
 @JsonSerializable()
 @_durationConverter
@@ -79,7 +96,6 @@ class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
   int toJson(Duration object) => object?.inMilliseconds;
 }
 
-// converter has parameters
 @ShouldThrow('Generators with constructor arguments are not supported.')
 @JsonSerializable()
 @_ConverterWithCtorParams(42)
