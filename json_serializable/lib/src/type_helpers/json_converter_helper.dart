@@ -125,12 +125,11 @@ _ConverterMatch _compatibleMatch(
     DartType targetType, ElementAnnotation annotation) {
   var constantValue = annotation.computeConstantValue();
 
-  var jsonConverterSuper = (constantValue.type.element as ClassElement)
-      .allSupertypes
-      .singleWhere(
-          (e) =>
-              e is InterfaceType && _jsonConverterChecker.isExactly(e.element),
-          orElse: () => null);
+  var converterClassElement = constantValue.type.element as ClassElement;
+
+  var jsonConverterSuper = converterClassElement.allSupertypes.singleWhere(
+      (e) => e is InterfaceType && _jsonConverterChecker.isExactly(e.element),
+      orElse: () => null);
 
   if (jsonConverterSuper == null) {
     return null;
@@ -148,6 +147,14 @@ _ConverterMatch _compatibleMatch(
 
   if (fieldType is TypeParameterType && targetType is TypeParameterType) {
     assert(annotation.element is! PropertyAccessorElement);
+    assert(converterClassElement.typeParameters.isNotEmpty);
+    if (converterClassElement.typeParameters.length > 1) {
+      throw InvalidGenerationSourceError(
+          '`JsonConverter` implementations can have no more than one type '
+          'argument. `${converterClassElement.name}` has '
+          '${converterClassElement.typeParameters.length}.',
+          element: converterClassElement);
+    }
 
     return _ConverterMatch(annotation, constantValue,
         jsonConverterSuper.typeArguments[1], targetType.name);
