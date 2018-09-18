@@ -12,6 +12,7 @@ import 'encoder_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
+import 'type_helper_context.dart';
 import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/enum_helper.dart';
@@ -40,7 +41,7 @@ class JsonSerializableGenerator
   final List<TypeHelper> _typeHelpers;
 
   Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
-        ConvertHelper(),
+        ConvertHelper(serializeData, deserializeData),
         JsonConverterHelper()
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 

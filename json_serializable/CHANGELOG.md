@@ -1,3 +1,13 @@
+## 2.0.0
+
+* `package:json_serializable/type_helper.dart`
+
+  * **BREAKING** `ConvertHelper` constructor now has two required arguments
+    which allow it to find `ConvertData` associated with custom field serialize
+    methods.
+  
+  * Added new class `ConvertData`.
+
 ## 1.3.0
 
 * Add support for types annotated with classes that extend `JsonConverter` from
