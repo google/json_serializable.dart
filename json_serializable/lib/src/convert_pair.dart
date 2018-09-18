@@ -30,8 +30,7 @@ class ConvertPair {
   }
 }
 
-ConvertData _convertData(
-    DartObject obj, FieldElement element, bool isFrom) {
+ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
   var paramName = isFrom ? 'fromJson' : 'toJson';
   var objectValue = obj.getField(paramName);
 
