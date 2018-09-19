@@ -5,10 +5,10 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/constant/value.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'convert_pair.dart';
 import 'json_literal_generator.dart';
 import 'utils.dart';
 
@@ -24,18 +24,20 @@ DartObject _jsonKeyAnnotation(FieldElement element) =>
 bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
 
-JsonKeyWithConversion _from(
-    FieldElement element, JsonSerializable classAnnotation) {
+final _jsonKeyExpando = Expando<JsonKey>();
+
+JsonKey jsonKeyForField(FieldElement field, JsonSerializable classAnnotation) =>
+    _jsonKeyExpando[field] ??= _from(field, classAnnotation);
+
+JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
   var obj = _jsonKeyAnnotation(element);
 
   if (obj == null) {
-    return JsonKeyWithConversion._(classAnnotation, element);
+    return _populateJsonKey(classAnnotation, element);
   }
-  var fromJsonName = _getFunctionName(obj, element, true);
-  var toJsonName = _getFunctionName(obj, element, false);
 
   Object _getLiteral(DartObject dartObject, Iterable<String> things) {
     if (dartObject.isNull) {
@@ -114,143 +116,69 @@ JsonKeyWithConversion _from(
     }
   }
 
-  return JsonKeyWithConversion._(classAnnotation, element,
-      name: obj.getField('name').toStringValue(),
-      nullable: obj.getField('nullable').toBoolValue(),
-      includeIfNull: includeIfNull,
-      ignore: obj.getField('ignore').toBoolValue(),
-      defaultValue: defaultValueLiteral,
-      required: obj.getField('required').toBoolValue(),
-      disallowNullValue: disallowNullValue,
-      fromJsonData: fromJsonName,
-      toJsonData: toJsonName);
+  return _populateJsonKey(
+    classAnnotation,
+    element,
+    name: obj.getField('name').toStringValue(),
+    nullable: obj.getField('nullable').toBoolValue(),
+    includeIfNull: includeIfNull,
+    ignore: obj.getField('ignore').toBoolValue(),
+    defaultValue: defaultValueLiteral,
+    required: obj.getField('required').toBoolValue(),
+    disallowNullValue: disallowNullValue,
+    jsonConvertPair: ConvertPair(obj, element),
+  );
 }
 
-class ConvertData {
-  final String name;
-  final DartType paramType;
-
-  ConvertData._(this.name, this.paramType);
-}
-
-class JsonKeyWithConversion extends JsonKey {
-  static final _jsonKeyExpando = Expando<JsonKeyWithConversion>();
-
-  final ConvertData fromJsonData;
-  final ConvertData toJsonData;
-
-  factory JsonKeyWithConversion(
-          FieldElement element, JsonSerializable classAnnotation) =>
-      _jsonKeyExpando[element] ??= _from(element, classAnnotation);
-
-  JsonKeyWithConversion._(
-    JsonSerializable classAnnotation,
-    FieldElement fieldElement, {
-    String name,
+JsonKey _populateJsonKey(
+    JsonSerializable classAnnotation, FieldElement fieldElement,
+    {String name,
     bool nullable,
     bool includeIfNull,
     bool ignore,
     Object defaultValue,
     bool required,
     bool disallowNullValue,
-    this.fromJsonData,
-    this.toJsonData,
-  }) : super(
-            name: _processName(classAnnotation, name, fieldElement),
-            nullable: nullable ?? classAnnotation.nullable,
-            includeIfNull: _includeIfNull(includeIfNull, disallowNullValue,
-                classAnnotation.includeIfNull),
-            ignore: ignore ?? false,
-            defaultValue: defaultValue,
-            required: required ?? false,
-            disallowNullValue: disallowNullValue ?? false) {
-    assert(!this.includeIfNull || !this.disallowNullValue);
-  }
+    ConvertPair jsonConvertPair}) {
+  var jsonKey = JsonKey(
+      name: _encodedFieldName(classAnnotation, name, fieldElement),
+      nullable: nullable ?? classAnnotation.nullable,
+      includeIfNull: _includeIfNull(
+          includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
+      ignore: ignore ?? false,
+      defaultValue: defaultValue,
+      required: required ?? false,
+      disallowNullValue: disallowNullValue ?? false);
 
-  static String _processName(JsonSerializable classAnnotation,
-      String jsonKeyNameValue, FieldElement fieldElement) {
-    if (jsonKeyNameValue != null) {
-      return jsonKeyNameValue;
-    }
+  jsonConvertPair?.populate(jsonKey);
 
-    switch (classAnnotation.fieldRename) {
-      case FieldRename.none:
-        // noop
-        break;
-      case FieldRename.snake:
-        return snakeCase(fieldElement.name);
-      case FieldRename.kebab:
-        return kebabCase(fieldElement.name);
-    }
-
-    return fieldElement.name;
-  }
-
-  static bool _includeIfNull(bool keyIncludeIfNull, bool keyDisallowNullValue,
-      bool classIncludeIfNull) {
-    if (keyDisallowNullValue == true) {
-      assert(keyIncludeIfNull != true);
-      return false;
-    }
-    return keyIncludeIfNull ?? classIncludeIfNull;
-  }
+  return jsonKey;
 }
 
-ConvertData _getFunctionName(
-    DartObject obj, FieldElement element, bool isFrom) {
-  var paramName = isFrom ? 'fromJson' : 'toJson';
-  var objectValue = obj.getField(paramName);
-
-  if (objectValue.isNull) {
-    return null;
+String _encodedFieldName(JsonSerializable classAnnotation,
+    String jsonKeyNameValue, FieldElement fieldElement) {
+  if (jsonKeyNameValue != null) {
+    return jsonKeyNameValue;
   }
 
-  var type = objectValue.type as FunctionType;
-
-  var executableElement = type.element as ExecutableElement;
-
-  if (executableElement.parameters.isEmpty ||
-      executableElement.parameters.first.isNamed ||
-      executableElement.parameters.where((pe) => !pe.isOptional).length > 1) {
-    throwUnsupported(
-        element,
-        'The `$paramName` function `${executableElement.name}` must have one '
-        'positional paramater.');
+  switch (classAnnotation.fieldRename) {
+    case FieldRename.none:
+      // noop
+      break;
+    case FieldRename.snake:
+      return snakeCase(fieldElement.name);
+    case FieldRename.kebab:
+      return kebabCase(fieldElement.name);
   }
 
-  var argType = executableElement.parameters.first.type;
-  if (isFrom) {
-    var returnType = executableElement.returnType;
+  return fieldElement.name;
+}
 
-    if (returnType is TypeParameterType) {
-      // We keep things simple in this case. We rely on inferred type arguments
-      // to the `fromJson` function.
-      // TODO: consider adding error checking here if there is confusion.
-    } else if (!returnType.isAssignableTo(element.type)) {
-      throwUnsupported(
-          element,
-          'The `$paramName` function `${executableElement.name}` return type '
-          '`$returnType` is not compatible with field type `${element.type}`.');
-    }
-  } else {
-    if (argType is TypeParameterType) {
-      // We keep things simple in this case. We rely on inferred type arguments
-      // to the `fromJson` function.
-      // TODO: consider adding error checking here if there is confusion.
-    } else if (!element.type.isAssignableTo(argType)) {
-      throwUnsupported(
-          element,
-          'The `$paramName` function `${executableElement.name}` argument type '
-          '`$argType` is not compatible with field type'
-          ' `${element.type}`.');
-    }
+bool _includeIfNull(
+    bool keyIncludeIfNull, bool keyDisallowNullValue, bool classIncludeIfNull) {
+  if (keyDisallowNullValue == true) {
+    assert(keyIncludeIfNull != true);
+    return false;
   }
-
-  var name = executableElement.name;
-
-  if (executableElement is MethodElement) {
-    name = '${executableElement.enclosingElement.name}.$name';
-  }
-
-  return ConvertData._(name, argType);
+  return keyIncludeIfNull ?? classIncludeIfNull;
 }

@@ -4,11 +4,23 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+import 'convert_pair.dart';
 import 'helper_core.dart';
-import 'json_key_with_conversion.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
+
+import 'type_helpers/convert_helper.dart';
+
+ConvertData serializeData(SerializeContext ctx) =>
+    _pairFromContext(ctx as TypeHelperContext)?.toJson;
+
+ConvertData deserializeData(DeserializeContext ctx) =>
+    _pairFromContext(ctx as TypeHelperContext)?.fromJson;
+
+ConvertPair _pairFromContext(TypeHelperContext ctx) =>
+    ConvertPair.fromJsonKey(ctx._key);
 
 class TypeHelperContext implements SerializeContext, DeserializeContext {
   final HelperCore _helperCore;
@@ -16,7 +28,7 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
   @override
   final List<ElementAnnotation> metadata;
 
-  final JsonKeyWithConversion _key;
+  final JsonKey _key;
 
   @override
   bool get useWrappers => _helperCore.generator.useWrappers;
@@ -29,9 +41,6 @@ class TypeHelperContext implements SerializeContext, DeserializeContext {
 
   @override
   bool get nullable => _key.nullable;
-
-  ConvertData get fromJsonData => _key.fromJsonData;
-  ConvertData get toJsonData => _key.toJsonData;
 
   TypeHelperContext(this._helperCore, this.metadata, this._key);
 

@@ -6,15 +6,24 @@ import 'package:analyzer/dart/element/type.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../type_helper_context.dart';
+
+class ConvertData {
+  final String name;
+  final DartType paramType;
+
+  ConvertData(this.name, this.paramType);
+}
 
 class ConvertHelper extends TypeHelper {
-  const ConvertHelper();
+  final ConvertData Function(SerializeContext) serializeConvertData;
+  final ConvertData Function(DeserializeContext) deserializeConvertData;
+
+  const ConvertHelper(this.serializeConvertData, this.deserializeConvertData);
 
   @override
   String serialize(
       DartType targetType, String expression, SerializeContext context) {
-    var toJsonData = (context as TypeHelperContext).toJsonData;
+    var toJsonData = serializeConvertData(context);
     if (toJsonData != null) {
       assert(toJsonData.paramType is TypeParameterType ||
           targetType.isAssignableTo(toJsonData.paramType));
@@ -27,7 +36,7 @@ class ConvertHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, DeserializeContext context) {
-    var fromJsonData = (context as TypeHelperContext).fromJsonData;
+    var fromJsonData = deserializeConvertData(context);
     if (fromJsonData != null) {
       var asContent = asStatement(fromJsonData.paramType);
       var result = '${fromJsonData.name}($expression$asContent)';

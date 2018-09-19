@@ -39,8 +39,7 @@ abstract class HelperCore {
   String genericClassArgumentsImpl(bool withConstraints) =>
       genericClassArguments(element, withConstraints);
 
-  JsonKeyWithConversion jsonKeyFor(FieldElement field) =>
-      JsonKeyWithConversion(field, annotation);
+  JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, annotation);
 
   TypeHelperContext getHelperContext(FieldElement field) =>
       TypeHelperContext(this, field.metadata, jsonKeyFor(field));
