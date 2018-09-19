@@ -7,7 +7,6 @@ import 'package:analyzer/dart/element/type.dart';
 import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../type_helper_context.dart';
 import '../utils.dart';
 
 const _keyParam = 'k';
@@ -17,7 +16,7 @@ class MapHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -53,7 +52,7 @@ class MapHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -66,12 +65,11 @@ class MapHelper extends TypeHelper {
     _checkSafeKeyType(expression, keyArg);
 
     final valueArgIsAny = _isObjectOrDynamic(valueArg);
-    var isAnyMap = context is TypeHelperContext && context.anyMap;
     final isEnumKey = isEnum(keyArg);
 
     if (!isEnumKey) {
       if (valueArgIsAny) {
-        if (isAnyMap) {
+        if (context.anyMap) {
           if (_isObjectOrDynamic(keyArg)) {
             return '$expression as Map';
           }
@@ -97,12 +95,12 @@ class MapHelper extends TypeHelper {
 
     final optionalQuestion = context.nullable ? '?' : '';
 
-    final mapCast = isAnyMap ? 'as Map' : 'as Map<String, dynamic>';
+    final mapCast = context.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
     String keyUsage;
     if (isEnumKey) {
       keyUsage = context.deserialize(keyArg, _keyParam);
-    } else if (isAnyMap && !_isObjectOrDynamic(keyArg)) {
+    } else if (context.anyMap && !_isObjectOrDynamic(keyArg)) {
       keyUsage = '$_keyParam as String';
     } else {
       keyUsage = _keyParam;

@@ -13,7 +13,7 @@ class ValueHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (targetType.isUndefined) {
       return null;
     }
@@ -28,7 +28,7 @@ class ValueHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (targetType.isUndefined) {
       return null;
     }

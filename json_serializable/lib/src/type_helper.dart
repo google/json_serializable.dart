@@ -5,25 +5,34 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
-abstract class SerializeContext {
-  /// `true` if [serialize] should handle the case of `expression` being null.
-  bool get nullable;
+/// Context information provided in calls to [TypeHelper.serialize] and
+/// [TypeHelper.deserialize].
+abstract class TypeHelperContext {
+  /// The annotated class that code is being generated for.
+  ClassElement get classElement;
+
+  /// The field that code is being generated for.
+  FieldElement get fieldElement;
+
+  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
+  bool get explicitToJson;
+
+  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
+  bool get anyMap;
+
+  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
   bool get useWrappers;
+
+  /// Returns `true` if [fieldElement] could potentially contain a `null` value.
+  bool get nullable;
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
   String serialize(DartType fieldType, String expression);
-  List<ElementAnnotation> get metadata;
 
-  /// Adds [memberContent] to the set of generated, top-level members.
-  void addMember(String memberContent);
-}
-
-abstract class DeserializeContext {
-  /// `true` if [deserialize] should handle the case of `expression` being null.
-  bool get nullable;
+  /// [expression] may be just the name of the field or it may an expression
+  /// representing the serialization of a value.
   String deserialize(DartType fieldType, String expression);
-  List<ElementAnnotation> get metadata;
 
   /// Adds [memberContent] to the set of generated, top-level members.
   void addMember(String memberContent);
@@ -47,9 +56,8 @@ abstract class TypeHelper {
   /// String serialize(DartType targetType, String expression) =>
   ///   "$expression.id";
   /// ```.
-  // TODO(kevmoo) – document `context`
   String serialize(
-      DartType targetType, String expression, SerializeContext context);
+      DartType targetType, String expression, TypeHelperContext context);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
   /// literal to into [targetType].
@@ -74,9 +82,8 @@ abstract class TypeHelper {
   /// String deserialize(DartType targetType, String expression) =>
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
-  // TODO(kevmoo) – document `context`
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context);
+      DartType targetType, String expression, TypeHelperContext context);
 }
 
 class UnsupportedTypeError extends Error {

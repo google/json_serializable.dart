@@ -10,7 +10,6 @@ import 'package:source_gen/source_gen.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../type_helper_context.dart';
 import '../utils.dart';
 
 class JsonHelper extends TypeHelper {
@@ -22,12 +21,12 @@ class JsonHelper extends TypeHelper {
   /// provided objects.
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!_canSerialize(targetType)) {
       return null;
     }
 
-    if (context is TypeHelperContext && context.explicitToJson) {
+    if (context.explicitToJson) {
       return '$expression${context.nullable ? '?' : ''}.toJson()';
     }
     return expression;
@@ -35,7 +34,7 @@ class JsonHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (targetType is! InterfaceType) {
       return null;
     }
@@ -52,7 +51,7 @@ class JsonHelper extends TypeHelper {
       var asCastType = fromJsonCtor.parameters.first.type;
       asCast = asStatement(asCastType);
     } else if (_annotation(type)?.createFactory == true) {
-      if ((context as TypeHelperContext).anyMap) {
+      if (context.anyMap) {
         asCast = ' as Map';
       } else {
         asCast = ' as Map<String, dynamic>';

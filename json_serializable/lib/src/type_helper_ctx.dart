@@ -10,39 +10,44 @@ import 'convert_pair.dart';
 import 'helper_core.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
-
 import 'type_helpers/convert_helper.dart';
 
-ConvertData serializeData(SerializeContext ctx) =>
-    _pairFromContext(ctx as TypeHelperContext)?.toJson;
+ConvertData serializeData(TypeHelperContext ctx) =>
+    _pairFromContext(ctx)?.toJson;
 
-ConvertData deserializeData(DeserializeContext ctx) =>
-    _pairFromContext(ctx as TypeHelperContext)?.fromJson;
+ConvertData deserializeData(TypeHelperContext ctx) =>
+    _pairFromContext(ctx)?.fromJson;
 
 ConvertPair _pairFromContext(TypeHelperContext ctx) =>
-    ConvertPair.fromJsonKey(ctx._key);
+    ConvertPair.fromJsonKey((ctx as _TypeHelperCtx)._key);
 
-class TypeHelperContext implements SerializeContext, DeserializeContext {
+TypeHelperContext typeHelperContext(
+        HelperCore helperCore, FieldElement fieldElement, JsonKey key) =>
+    _TypeHelperCtx(helperCore, fieldElement, key);
+
+class _TypeHelperCtx implements TypeHelperContext {
   final HelperCore _helperCore;
-
-  @override
-  final List<ElementAnnotation> metadata;
-
   final JsonKey _key;
 
   @override
-  bool get useWrappers => _helperCore.generator.useWrappers;
-
-  bool get anyMap => _helperCore.generator.anyMap;
-
-  bool get explicitToJson => _helperCore.generator.explicitToJson;
-
-  ClassElement get classElement => _helperCore.element;
+  final FieldElement fieldElement;
 
   @override
   bool get nullable => _key.nullable;
 
-  TypeHelperContext(this._helperCore, this.metadata, this._key);
+  @override
+  ClassElement get classElement => _helperCore.element;
+
+  @override
+  bool get useWrappers => _helperCore.generator.useWrappers;
+
+  @override
+  bool get anyMap => _helperCore.generator.anyMap;
+
+  @override
+  bool get explicitToJson => _helperCore.generator.explicitToJson;
+
+  _TypeHelperCtx(this._helperCore, this.fieldElement, this._key);
 
   @override
   void addMember(String memberContent) {

@@ -1,6 +1,9 @@
 ## 2.0.0
 
-* `package:json_serializable/type_helper.dart`
+* `type_helper.dart`
+
+  * **BREAKING** `SerializeContext` and `DeserializeContext` have been replaced
+    with new `TypeHelperContext` class.
 
   * **BREAKING** `ConvertHelper` constructor now has two required arguments
     which allow it to find `ConvertData` associated with custom field serialize
