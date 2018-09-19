@@ -10,7 +10,7 @@ import 'package:source_gen/source_gen.dart';
 import 'json_key_with_conversion.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
-import 'type_helper_context.dart';
+import 'type_helper_ctx.dart';
 import 'utils.dart';
 
 abstract class HelperCore {
@@ -42,7 +42,7 @@ abstract class HelperCore {
   JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, annotation);
 
   TypeHelperContext getHelperContext(FieldElement field) =>
-      TypeHelperContext(this, field.metadata, jsonKeyFor(field));
+      typeHelperContext(this, field, jsonKeyFor(field));
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(

@@ -11,7 +11,6 @@ import 'package:source_gen/source_gen.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../type_helper_context.dart';
 
 /// A [TypeHelper] that supports classes annotated with implementations of
 /// [JsonConverter].
@@ -20,8 +19,8 @@ class JsonConverterHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
-    var converter = _typeConverter(targetType, context as TypeHelperContext);
+      DartType targetType, String expression, TypeHelperContext context) {
+    var converter = _typeConverter(targetType, context);
 
     if (converter == null) {
       return null;
@@ -32,8 +31,8 @@ class JsonConverterHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
-    var converter = _typeConverter(targetType, context as TypeHelperContext);
+      DartType targetType, String expression, TypeHelperContext context) {
+    var converter = _typeConverter(targetType, context);
     if (converter == null) {
       return null;
     }

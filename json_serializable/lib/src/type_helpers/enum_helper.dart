@@ -15,7 +15,7 @@ class EnumHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     var memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {
@@ -29,7 +29,7 @@ class EnumHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     var memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {

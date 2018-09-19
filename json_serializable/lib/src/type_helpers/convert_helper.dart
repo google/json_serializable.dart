@@ -15,14 +15,14 @@ class ConvertData {
 }
 
 class ConvertHelper extends TypeHelper {
-  final ConvertData Function(SerializeContext) serializeConvertData;
-  final ConvertData Function(DeserializeContext) deserializeConvertData;
+  final ConvertData Function(TypeHelperContext) serializeConvertData;
+  final ConvertData Function(TypeHelperContext) deserializeConvertData;
 
   const ConvertHelper(this.serializeConvertData, this.deserializeConvertData);
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     var toJsonData = serializeConvertData(context);
     if (toJsonData != null) {
       assert(toJsonData.paramType is TypeParameterType ||
@@ -35,7 +35,7 @@ class ConvertHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     var fromJsonData = deserializeConvertData(context);
     if (fromJsonData != null) {
       var asContent = asStatement(fromJsonData.paramType);

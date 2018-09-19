@@ -14,7 +14,7 @@ class IterableHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!coreIterableTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -61,7 +61,7 @@ class IterableHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!coreIterableTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }

@@ -4,7 +4,7 @@
 
 export 'src/shared_checkers.dart' show simpleJsonTypeChecker, typeArgumentsOf;
 export 'src/type_helper.dart'
-    show SerializeContext, DeserializeContext, TypeHelper, UnsupportedTypeError;
+    show TypeHelperContext, TypeHelper, UnsupportedTypeError;
 export 'src/type_helpers/convert_helper.dart';
 export 'src/type_helpers/date_time_helper.dart';
 export 'src/type_helpers/enum_helper.dart';

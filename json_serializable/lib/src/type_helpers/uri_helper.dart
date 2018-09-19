@@ -11,7 +11,7 @@ class UriHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, SerializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!_matchesType(targetType)) {
       return null;
     }
@@ -29,7 +29,7 @@ class UriHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, DeserializeContext context) {
+      DartType targetType, String expression, TypeHelperContext context) {
     if (!_matchesType(targetType)) {
       return null;
     }
