@@ -70,8 +70,7 @@ linter:
     - type_init_formals
     - unawaited_futures
     - unnecessary_brace_in_string_interps
-    # Waiting on https://github.com/dart-lang/test/issues/915
-    #- unnecessary_const
+    - unnecessary_const
     - unnecessary_getters_setters
     # We'll need a way to return a lambda from a TypeHelper to re-enable this
     #- unnecessary_lambdas
