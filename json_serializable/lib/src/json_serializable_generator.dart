@@ -12,7 +12,6 @@ import 'encoder_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
-import 'type_helper_ctx.dart';
 import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/enum_helper.dart';
@@ -29,19 +28,23 @@ Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
-  static const _coreHelpers = [
+  static const _coreHelpers = <TypeHelper>[
     IterableHelper(),
     MapHelper(),
     EnumHelper(),
     ValueHelper(),
   ];
 
-  static const _defaultHelpers = [JsonHelper(), DateTimeHelper(), UriHelper()];
+  static const _defaultHelpers = <TypeHelper>[
+    JsonHelper(),
+    DateTimeHelper(),
+    UriHelper()
+  ];
 
   final List<TypeHelper> _typeHelpers;
 
   Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
-        ConvertHelper(serializeData, deserializeData),
+        ConvertHelper(),
         JsonConverterHelper()
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 

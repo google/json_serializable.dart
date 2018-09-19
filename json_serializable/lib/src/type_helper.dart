@@ -14,15 +14,6 @@ abstract class TypeHelperContext {
   /// The field that code is being generated for.
   FieldElement get fieldElement;
 
-  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
-  bool get explicitToJson;
-
-  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
-  bool get anyMap;
-
-  /// Represents the corresponding configuration on `JsonSerializableGenerator`.
-  bool get useWrappers;
-
   /// Returns `true` if [fieldElement] could potentially contain a `null` value.
   bool get nullable;
 
@@ -38,7 +29,15 @@ abstract class TypeHelperContext {
   void addMember(String memberContent);
 }
 
-abstract class TypeHelper {
+/// Extended context information with includes configuration values
+/// corresponding to `JsonSerializableGenerator` settings.
+abstract class TypeHelperContextWithConfig extends TypeHelperContext {
+  bool get explicitToJson;
+  bool get anyMap;
+  bool get useWrappers;
+}
+
+abstract class TypeHelper<T extends TypeHelperContext> {
   const TypeHelper();
 
   /// Returns Dart code that serializes an [expression] representing a Dart
@@ -56,8 +55,7 @@ abstract class TypeHelper {
   /// String serialize(DartType targetType, String expression) =>
   ///   "$expression.id";
   /// ```.
-  String serialize(
-      DartType targetType, String expression, TypeHelperContext context);
+  String serialize(DartType targetType, String expression, T context);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
   /// literal to into [targetType].
@@ -82,8 +80,7 @@ abstract class TypeHelper {
   /// String deserialize(DartType targetType, String expression) =>
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
-  String deserialize(
-      DartType targetType, String expression, TypeHelperContext context);
+  String deserialize(DartType targetType, String expression, T context);
 }
 
 class UnsupportedTypeError extends Error {

@@ -12,7 +12,7 @@ import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
-class JsonHelper extends TypeHelper {
+class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const JsonHelper();
 
   /// Simply returns the [expression] provided.
@@ -20,8 +20,8 @@ class JsonHelper extends TypeHelper {
   /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
   /// provided objects.
   @override
-  String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+  String serialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
     if (!_canSerialize(targetType)) {
       return null;
     }
@@ -33,8 +33,8 @@ class JsonHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+  String deserialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
     if (targetType is! InterfaceType) {
       return null;
     }

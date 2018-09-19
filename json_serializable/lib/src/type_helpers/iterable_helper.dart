@@ -9,12 +9,12 @@ import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
-class IterableHelper extends TypeHelper {
+class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const IterableHelper();
 
   @override
-  String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+  String serialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
     if (!coreIterableTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
