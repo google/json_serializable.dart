@@ -1,3 +1,13 @@
+## 1.4.0
+
+* `type_helper.dart`
+
+  * `TypeHelper` `serialize` and `deserialize` have return type `Object` instead
+    of `String`. This allows coordination between instances to support more
+    advanced features – like using the new `LambdaResult` class to avoid
+    creating unnecessary lambdas. When creating `TypeHelper` implementations,
+    handle non-`String` results by calling `toString()` on unrecognized values.
+
 ## 1.3.0
 
 * Add support for types annotated with classes that extend `JsonConverter` from

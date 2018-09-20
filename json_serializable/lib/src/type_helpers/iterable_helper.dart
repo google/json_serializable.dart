@@ -33,18 +33,17 @@ class IterableHelper extends TypeHelper {
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
     if (subField != closureArg) {
+      var lambda = LambdaResult.process(subField, closureArg);
       if (context.useWrappers && isList) {
         var method = '\$wrapList';
         if (context.nullable) {
           method = '${method}HandleNull';
         }
 
-        return '$method<$itemType>($expression, ($closureArg) => $subField)';
+        return '$method<$itemType>($expression, $lambda)';
       }
 
-      // TODO: the type could be imported from a library with a prefix!
-      expression =
-          '$expression$optionalQuestion.map(($closureArg) => $subField)';
+      expression = '$expression$optionalQuestion.map($lambda)';
 
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
@@ -79,8 +78,9 @@ class IterableHelper extends TypeHelper {
 
     var optionalQuestion = context.nullable ? '?' : '';
 
-    var output =
-        '($expression as List)$optionalQuestion.map(($closureArg) => $itemSubVal)';
+    var lambda = LambdaResult.process(itemSubVal, closureArg);
+
+    var output = '($expression as List)$optionalQuestion.map($lambda)';
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
       output += '$optionalQuestion.toList()';

@@ -12,7 +12,7 @@ abstract class SerializeContext {
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  String serialize(DartType fieldType, String expression);
+  Object serialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
 
   /// Adds [memberContent] to the set of generated, top-level members.
@@ -22,7 +22,7 @@ abstract class SerializeContext {
 abstract class DeserializeContext {
   /// `true` if [deserialize] should handle the case of `expression` being null.
   bool get nullable;
-  String deserialize(DartType fieldType, String expression);
+  Object deserialize(DartType fieldType, String expression);
   List<ElementAnnotation> get metadata;
 
   /// Adds [memberContent] to the set of generated, top-level members.
@@ -48,7 +48,7 @@ abstract class TypeHelper {
   ///   "$expression.id";
   /// ```.
   // TODO(kevmoo) – document `context`
-  String serialize(
+  Object serialize(
       DartType targetType, String expression, SerializeContext context);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
@@ -75,8 +75,22 @@ abstract class TypeHelper {
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
   // TODO(kevmoo) – document `context`
-  String deserialize(
+  Object deserialize(
       DartType targetType, String expression, DeserializeContext context);
+}
+
+class LambdaResult {
+  final String expression;
+  final String lambda;
+  LambdaResult(this.expression, this.lambda);
+
+  @override
+  String toString() => '$lambda($expression)';
+
+  static String process(Object subField, String closureArg) =>
+      (subField is LambdaResult && closureArg == subField.expression)
+          ? subField.lambda
+          : '($closureArg) => $subField';
 }
 
 class UnsupportedTypeError extends Error {
