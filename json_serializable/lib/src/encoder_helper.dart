@@ -224,7 +224,9 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
 
   String _serializeField(FieldElement field, String accessExpression) {
     try {
-      return getHelperContext(field).serialize(field.type, accessExpression);
+      return getHelperContext(field)
+          .serialize(field.type, accessExpression)
+          .toString();
     } on UnsupportedTypeError catch (e) {
       throw createInvalidGenerationError('toJson', field, e);
     }

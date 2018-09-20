@@ -208,15 +208,13 @@ abstract class _$JsonConverterTestClassSerializerMixin {
   DateTime get dateTime;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'duration': durationConverter.toJson(duration),
-        'durationList':
-            durationList.map((e) => durationConverter.toJson(e)).toList(),
+        'durationList': durationList.map(durationConverter.toJson).toList(),
         'bigInt': const BigIntStringConverter().toJson(bigInt),
         'bigIntMap': bigIntMap.map(
             (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
         'numberSilly': TrivialNumberConverter.instance.toJson(numberSilly),
-        'numberSillySet': numberSillySet
-            .map((e) => TrivialNumberConverter.instance.toJson(e))
-            .toList(),
+        'numberSillySet':
+            numberSillySet.map(TrivialNumberConverter.instance.toJson).toList(),
         'dateTime': const EpochDateTimeConverter().toJson(dateTime)
       };
 }
@@ -252,8 +250,7 @@ abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
   Map<String, U> get itemMap;
   Map<String, dynamic> toJson() => <String, dynamic>{
         'item': GenericConverter<S>().toJson(item),
-        'itemList':
-            itemList.map((e) => GenericConverter<T>().toJson(e)).toList(),
+        'itemList': itemList.map(GenericConverter<T>().toJson).toList(),
         'itemMap':
             itemMap.map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
       };

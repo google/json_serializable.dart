@@ -41,7 +41,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         method = '${method}HandleNull';
       }
 
-      return '$method<$keyType, $valueType>($expression, ($closureArg) => $subFieldValue)';
+      var lambda = LambdaResult.process(subFieldValue, closureArg);
+      return '$method<$keyType, $valueType>($expression, $lambda)';
     }
 
     final optionalQuestion = context.nullable ? '?' : '';
@@ -99,7 +100,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     String keyUsage;
     if (isEnumKey) {
-      keyUsage = context.deserialize(keyArg, _keyParam);
+      keyUsage = context.deserialize(keyArg, _keyParam).toString();
     } else if (context.anyMap && !_isObjectOrDynamic(keyArg)) {
       keyUsage = '$_keyParam as String';
     } else {

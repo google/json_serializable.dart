@@ -249,18 +249,17 @@ class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
         case 'duration':
           return durationConverter.toJson(_v.duration);
         case 'durationList':
-          return $wrapList<Duration>(
-              _v.durationList, (e) => durationConverter.toJson(e));
+          return $wrapList<Duration>(_v.durationList, durationConverter.toJson);
         case 'bigInt':
           return const BigIntStringConverter().toJson(_v.bigInt);
         case 'bigIntMap':
           return $wrapMap<String, BigInt>(
-              _v.bigIntMap, (e) => const BigIntStringConverter().toJson(e));
+              _v.bigIntMap, const BigIntStringConverter().toJson);
         case 'numberSilly':
           return TrivialNumberConverter.instance.toJson(_v.numberSilly);
         case 'numberSillySet':
           return _v.numberSillySet
-              .map((e) => TrivialNumberConverter.instance.toJson(e))
+              .map(TrivialNumberConverter.instance.toJson)
               .toList();
         case 'dateTime':
           return const EpochDateTimeConverter().toJson(_v.dateTime);
@@ -304,11 +303,9 @@ class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
         case 'item':
           return GenericConverter<S>().toJson(_v.item);
         case 'itemList':
-          return $wrapList<T>(
-              _v.itemList, (e) => GenericConverter<T>().toJson(e));
+          return $wrapList<T>(_v.itemList, GenericConverter<T>().toJson);
         case 'itemMap':
-          return $wrapMap<String, U>(
-              _v.itemMap, (e) => GenericConverter<U>().toJson(e));
+          return $wrapMap<String, U>(_v.itemMap, GenericConverter<U>().toJson);
       }
     }
     return null;
