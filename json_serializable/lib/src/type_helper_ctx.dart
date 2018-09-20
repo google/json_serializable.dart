@@ -12,20 +12,12 @@ import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 
-ConvertData serializeData(TypeHelperContext ctx) =>
-    _pairFromContext(ctx)?.toJson;
-
-ConvertData deserializeData(TypeHelperContext ctx) =>
-    _pairFromContext(ctx)?.fromJson;
-
-ConvertPair _pairFromContext(TypeHelperContext ctx) =>
-    ConvertPair.fromJsonKey((ctx as _TypeHelperCtx)._key);
-
 TypeHelperContext typeHelperContext(
         HelperCore helperCore, FieldElement fieldElement, JsonKey key) =>
     _TypeHelperCtx(helperCore, fieldElement, key);
 
-class _TypeHelperCtx implements TypeHelperContext {
+class _TypeHelperCtx
+    implements TypeHelperContextWithConfig, TypeHelperContextWithConvert {
   final HelperCore _helperCore;
   final JsonKey _key;
 
@@ -48,6 +40,14 @@ class _TypeHelperCtx implements TypeHelperContext {
   bool get explicitToJson => _helperCore.generator.explicitToJson;
 
   _TypeHelperCtx(this._helperCore, this.fieldElement, this._key);
+
+  @override
+  ConvertData get serializeConvertData => _pairFromContext?.toJson;
+
+  @override
+  ConvertData get deserializeConvertData => _pairFromContext?.fromJson;
+
+  ConvertPair get _pairFromContext => ConvertPair.fromJsonKey(_key);
 
   @override
   void addMember(String memberContent) {

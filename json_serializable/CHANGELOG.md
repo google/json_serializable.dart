@@ -5,11 +5,10 @@
   * **BREAKING** `SerializeContext` and `DeserializeContext` have been replaced
     with new `TypeHelperContext` class.
 
-  * **BREAKING** `ConvertHelper` constructor now has two required arguments
-    which allow it to find `ConvertData` associated with custom field serialize
-    methods.
-  
-  * Added new class `ConvertData`.
+  * `TypeHelper` now has a type argument allowing implementors to specify a
+    specific implementation of `TypeHelperContext` for calls to `serialize` and 
+    `deserialize`. Many of the included `TypeHelper` implementations have been
+    updated to indicate they expect more information from the source generator.
 
 ## 1.3.0
 

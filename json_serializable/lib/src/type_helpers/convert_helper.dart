@@ -7,6 +7,8 @@ import 'package:analyzer/dart/element/type.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
+/// Information used by [ConvertHelper] when handling `JsonKey`-annotated
+/// fields with `toJson` or `fromJson` values set.
 class ConvertData {
   final String name;
   final DartType paramType;
@@ -14,16 +16,18 @@ class ConvertData {
   ConvertData(this.name, this.paramType);
 }
 
-class ConvertHelper extends TypeHelper {
-  final ConvertData Function(TypeHelperContext) serializeConvertData;
-  final ConvertData Function(TypeHelperContext) deserializeConvertData;
+abstract class TypeHelperContextWithConvert extends TypeHelperContext {
+  ConvertData get serializeConvertData;
+  ConvertData get deserializeConvertData;
+}
 
-  const ConvertHelper(this.serializeConvertData, this.deserializeConvertData);
+class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
+  const ConvertHelper();
 
   @override
-  String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    var toJsonData = serializeConvertData(context);
+  String serialize(DartType targetType, String expression,
+      TypeHelperContextWithConvert context) {
+    var toJsonData = context.serializeConvertData;
     if (toJsonData != null) {
       assert(toJsonData.paramType is TypeParameterType ||
           targetType.isAssignableTo(toJsonData.paramType));
@@ -34,9 +38,9 @@ class ConvertHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    var fromJsonData = deserializeConvertData(context);
+  String deserialize(DartType targetType, String expression,
+      TypeHelperContextWithConvert context) {
+    var fromJsonData = context.deserializeConvertData;
     if (fromJsonData != null) {
       var asContent = asStatement(fromJsonData.paramType);
       var result = '${fromJsonData.name}($expression$asContent)';

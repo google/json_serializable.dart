@@ -11,12 +11,12 @@ import '../utils.dart';
 
 const _keyParam = 'k';
 
-class MapHelper extends TypeHelper {
+class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const MapHelper();
 
   @override
-  String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+  String serialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
@@ -51,8 +51,8 @@ class MapHelper extends TypeHelper {
   }
 
   @override
-  String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+  String deserialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
