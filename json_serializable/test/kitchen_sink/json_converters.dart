@@ -19,7 +19,7 @@ class TrivialNumber {
 }
 
 class TrivialNumberConverter implements JsonConverter<TrivialNumber, int> {
-  static const instance = const TrivialNumberConverter();
+  static const instance = TrivialNumberConverter();
 
   const TrivialNumberConverter();
 

@@ -15,7 +15,7 @@ jobs:
       dart: stable
     - stage: analyzer_and_format
       name: "SDK: stable - DIR: example - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      script: ./tool/travis.sh dartanalyzer_0
       env: PKG="example"
       dart: stable
     - stage: unit_test
@@ -30,7 +30,7 @@ jobs:
       dart: stable
     - stage: analyzer_and_format
       name: "SDK: stable - DIR: json_annotation - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      script: ./tool/travis.sh dartanalyzer_0
       env: PKG="json_annotation"
       dart: stable
     - stage: analyzer_and_format
@@ -39,8 +39,13 @@ jobs:
       env: PKG="json_serializable"
       dart: stable
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: json_serializable - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer
+      name: "SDK: dev - DIR: json_serializable - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
+      script: ./tool/travis.sh dartanalyzer_0
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: analyzer_and_format
+      name: "SDK: stable - DIR: json_serializable - TASKS: dartanalyzer --fatal-warnings ."
+      script: ./tool/travis.sh dartanalyzer_1
       env: PKG="json_serializable"
       dart: stable
     - stage: unit_test

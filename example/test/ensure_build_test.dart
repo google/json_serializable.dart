@@ -4,7 +4,7 @@
 
 // TODO(kevmoo): replace with a common utility
 //               https://github.com/dart-lang/build/issues/716
-@Tags(const ['presubmit-only'])
+@Tags(['presubmit-only'])
 
 import 'dart:convert';
 import 'dart:io';
