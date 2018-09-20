@@ -55,19 +55,19 @@ class _TypeHelperCtx
   }
 
   @override
-  String serialize(DartType targetType, String expression) => _run(
+  Object serialize(DartType targetType, String expression) => _run(
       targetType,
       expression,
       (TypeHelper th) => th.serialize(targetType, expression, this));
 
   @override
-  String deserialize(DartType targetType, String expression) => _run(
+  Object deserialize(DartType targetType, String expression) => _run(
       targetType,
       expression,
       (TypeHelper th) => th.deserialize(targetType, expression, this));
 
-  String _run(DartType targetType, String expression,
-          String invoke(TypeHelper instance)) =>
+  Object _run(DartType targetType, String expression,
+          Object invoke(TypeHelper instance)) =>
       allHelpersImpl(_helperCore.generator).map(invoke).firstWhere(
           (r) => r != null,
           orElse: () => throw UnsupportedTypeError(
