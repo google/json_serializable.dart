@@ -170,7 +170,7 @@ abstract class DecodeHelper implements HelperCore {
     String value;
     try {
       if (generator.checked) {
-        value = contextHelper.deserialize(targetType, 'v');
+        value = contextHelper.deserialize(targetType, 'v').toString();
         if (!checkedProperty) {
           value = '\$checkedConvert(json, $jsonKeyName, (v) => $value)';
         }
@@ -178,7 +178,9 @@ abstract class DecodeHelper implements HelperCore {
         assert(!checkedProperty,
             'should only be true if `_generator.checked` is true.');
 
-        value = contextHelper.deserialize(targetType, 'json[$jsonKeyName]');
+        value = contextHelper
+            .deserialize(targetType, 'json[$jsonKeyName]')
+            .toString();
       }
     } on UnsupportedTypeError catch (e) {
       throw createInvalidGenerationError('fromJson', field, e);

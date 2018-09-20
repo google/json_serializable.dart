@@ -74,8 +74,7 @@ linter:
     # Waiting on https://github.com/dart-lang/test/issues/915
     #- unnecessary_const
     - unnecessary_getters_setters
-    # We'll need a way to return a lambda from a TypeHelper to re-enable this
-    #- unnecessary_lambdas
+    - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_statements

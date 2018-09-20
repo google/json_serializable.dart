@@ -19,7 +19,7 @@ class JsonConverterHelper extends TypeHelper {
   const JsonConverterHelper();
 
   @override
-  String serialize(
+  LambdaResult serialize(
       DartType targetType, String expression, SerializeContext context) {
     var converter = _typeConverter(targetType, context as TypeHelperContext);
 
@@ -27,11 +27,11 @@ class JsonConverterHelper extends TypeHelper {
       return null;
     }
 
-    return '${converter.accessString}.toJson($expression)';
+    return LambdaResult(expression, '${converter.accessString}.toJson');
   }
 
   @override
-  String deserialize(
+  Object deserialize(
       DartType targetType, String expression, DeserializeContext context) {
     var converter = _typeConverter(targetType, context as TypeHelperContext);
     if (converter == null) {
@@ -40,7 +40,8 @@ class JsonConverterHelper extends TypeHelper {
 
     var asContent = asStatement(converter.jsonType);
 
-    return '${converter.accessString}.fromJson($expression$asContent)';
+    return LambdaResult(
+        '$expression$asContent', '${converter.accessString}.fromJson');
   }
 }
 
