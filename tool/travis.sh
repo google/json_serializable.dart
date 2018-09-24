@@ -1,5 +1,5 @@
 #!/bin/bash
-# Created with https://github.com/dart-lang/mono_repo
+# Created with package:mono_repo v1.2.0
 
 if [ -z "$PKG" ]; then
   echo -e '\033[31mPKG environment variable must be set!\033[0m'
