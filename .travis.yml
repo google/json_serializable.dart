@@ -1,10 +1,14 @@
-# Created with https://github.com/dart-lang/mono_repo
+# Created with package:mono_repo v1.2.0
 language: dart
 
 # Custom configuration
 sudo: required
 addons:
   chrome: stable
+branches:
+  only:
+    - master
+    - v1_x
 
 jobs:
   include:
@@ -67,11 +71,6 @@ jobs:
 stages:
   - analyzer_and_format
   - unit_test
-
-# Only building master means that we don't run two builds for each pull request.
-branches:
-  only:
-    - master
 
 cache:
   directories:

@@ -10,6 +10,10 @@
     `deserialize`. Many of the included `TypeHelper` implementations have been
     updated to indicate they expect more information from the source generator.
 
+## 1.4.0
+
+* `type_helper.dart`
+
   * `TypeHelper` `serialize` and `deserialize` have return type `Object` instead
     of `String`. This allows coordination between instances to support more
     advanced features – like using the new `LambdaResult` class to avoid
