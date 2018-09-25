@@ -20,14 +20,16 @@
     creating unnecessary lambdas. When creating `TypeHelper` implementations,
     handle non-`String` results by calling `toString()` on unrecognized values.
 
+* Declare support for `package:build` version `1.x.x`.
+
 ## 1.3.0
 
 * Add support for types annotated with classes that extend `JsonConverter` from
   `package:json_annotation`.
 
-* Export the following `TypeHelper` implementations in 
-  `package:json_serializable/type_helper.dart`:  
-  `ConvertHelper`, `EnumHelper`, `IterableHelper`, `JsonConverterHelper`, 
+* Export the following `TypeHelper` implementations in
+  `package:json_serializable/type_helper.dart`:
+  `ConvertHelper`, `EnumHelper`, `IterableHelper`, `JsonConverterHelper`,
   `MapHelper`, `ValueHelper`
 
 * Added support for `Set` type as a target.
@@ -41,11 +43,11 @@
 * Now throws `InvalidGenerationSourceError` instead of `UnsupportedError` for
   some classes of constructor errors.
 
-* Supports class-static functions for `toJson` and `fromJson` on `JsonKey`. 
+* Supports class-static functions for `toJson` and `fromJson` on `JsonKey`.
 
 * Provide a warning about ignored setter-only properties instead of crashing.
 
-* Added back `const` for lists generated with `disallowUnrecognizedKeys`, 
+* Added back `const` for lists generated with `disallowUnrecognizedKeys`,
   `required`, and `disallowNullValue`.
 
 * Fixed a bug when `disallowUnrecognizedKeys` is enabled.
@@ -56,7 +58,7 @@
 
 * Added support for automatically converting field names to JSON map keys as
   `kebab-case` or `snake_case` with a new option on the `JsonSerializable`
-  annotation. 
+  annotation.
 
 ## 1.0.1
 

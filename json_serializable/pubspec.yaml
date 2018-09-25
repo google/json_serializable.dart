@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   analyzer: ^0.32.2
-  build: ^0.12.6
+  build: '>=0.12.6 <2.0.0'
   build_config: '>=0.2.6 <0.4.0'
 
   # Use a tight version constraint to ensure that a constraint on
