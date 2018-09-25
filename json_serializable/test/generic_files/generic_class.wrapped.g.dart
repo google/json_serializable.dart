@@ -65,3 +65,65 @@ class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
     return null;
   }
 }
+
+GenericClassWithConverter<T, S>
+    _$GenericClassWithConverterFromJson<T extends num, S>(
+        Map<String, dynamic> json) {
+  return GenericClassWithConverter<T, S>()
+    ..fieldObject = json['fieldObject']
+    ..fieldDynamic = json['fieldDynamic']
+    ..fieldInt = json['fieldInt'] as int
+    ..fieldT =
+        _SimpleConverter<T>().fromJson(json['fieldT'] as Map<String, dynamic>)
+    ..fieldS =
+        _SimpleConverter<S>().fromJson(json['fieldS'] as Map<String, dynamic>)
+    ..duration =
+        const _DurationMillisecondConverter().fromJson(json['duration'] as int)
+    ..listDuration = const _DurationListMillisecondConverter()
+        .fromJson(json['listDuration'] as int);
+}
+
+Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
+        GenericClassWithConverter<T, S> instance) =>
+    _$GenericClassWithConverterJsonMapWrapper<T, S>(instance);
+
+class _$GenericClassWithConverterJsonMapWrapper<T extends num, S>
+    extends $JsonMapWrapper {
+  final GenericClassWithConverter<T, S> _v;
+  _$GenericClassWithConverterJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys => const [
+        'fieldObject',
+        'fieldDynamic',
+        'fieldInt',
+        'fieldT',
+        'fieldS',
+        'duration',
+        'listDuration'
+      ];
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'fieldObject':
+          return _v.fieldObject;
+        case 'fieldDynamic':
+          return _v.fieldDynamic;
+        case 'fieldInt':
+          return _v.fieldInt;
+        case 'fieldT':
+          return _SimpleConverter<T>().toJson(_v.fieldT);
+        case 'fieldS':
+          return _SimpleConverter<S>().toJson(_v.fieldS);
+        case 'duration':
+          return const _DurationMillisecondConverter().toJson(_v.duration);
+        case 'listDuration':
+          return const _DurationListMillisecondConverter()
+              .toJson(_v.listDuration);
+      }
+    }
+    return null;
+  }
+}
