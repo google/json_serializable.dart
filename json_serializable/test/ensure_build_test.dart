@@ -5,58 +5,19 @@
 @TestOn('vm')
 @Tags(['presubmit-only'])
 
-import 'dart:convert';
-import 'dart:io';
-
+import 'package:build_verify/build_verify.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
-  // TODO(kevmoo): replace with a common utility
-  //               https://github.com/dart-lang/build/issues/716
-  test('ensure local build succeeds with no changes', () {
-    var pkgRoot = _runProc('git', ['rev-parse', '--show-toplevel']);
-    var currentDir = Directory.current.resolveSymbolicLinksSync();
-
-    if (!p.equals(p.join(pkgRoot, 'json_serializable'), currentDir)) {
-      throw StateError('Expected the git root ($pkgRoot) '
-          'to match the current directory ($currentDir).');
-    }
-
-    // 1 - get a list of modified `.g.dart` files - should be empty
-    expect(_changedGeneratedFiles(), isEmpty);
-
-    // 2 - run build - should be no output, since nothing should change
-    var result = _runProc(
-        'dart', ['tool/build.dart', 'build', '--delete-conflicting-outputs']);
-
-    print(result);
-    expect(result,
-        contains(RegExp(r'\[INFO\] Succeeded after \S+ with \d+ outputs')));
-
-    // 3 - get a list of modified `.g.dart` files - should still be empty
-    expect(_changedGeneratedFiles(), isEmpty);
-  });
-}
-
-final _whitespace = RegExp(r'\s');
-
-Set<String> _changedGeneratedFiles() {
-  var output = _runProc('git', ['status', '--porcelain']);
-
-  return LineSplitter.split(output)
-      .map((line) => line.split(_whitespace).last)
-      .where((path) => path.endsWith('.dart'))
-      .toSet();
-}
-
-String _runProc(String proc, List<String> args) {
-  var result = Process.runSync(proc, args);
-
-  if (result.exitCode != 0) {
-    throw ProcessException(
-        proc, args, result.stderr as String, result.exitCode);
-  }
-
-  return (result.stdout as String).trim();
+  test(
+      'ensure_build',
+      () => expectBuildClean(
+              packageRelativeDirectory: 'json_serializable',
+              customCommand: [
+                'DART',
+                p.join('tool', 'build.dart'),
+                'build',
+                '--delete-conflicting-outputs',
+              ]));
 }
