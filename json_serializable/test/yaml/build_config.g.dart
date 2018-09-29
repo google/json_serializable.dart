@@ -111,7 +111,7 @@ Builder _$BuilderFromJson(Map json) {
 }
 
 Map<String, dynamic> _$BuilderToJson(Builder instance) {
-  var val = <String, dynamic>{};
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {

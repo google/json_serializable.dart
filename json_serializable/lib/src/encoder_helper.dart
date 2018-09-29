@@ -167,7 +167,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       StringBuffer buffer, Iterable<FieldElement> fields) {
     buffer.writeln('{');
 
-    buffer.writeln('    var $generatedLocalVarName = <String, dynamic>{');
+    buffer.writeln('    final $generatedLocalVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them

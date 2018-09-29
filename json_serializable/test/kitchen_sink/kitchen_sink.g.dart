@@ -83,7 +83,7 @@ abstract class _$KitchenSinkSerializerMixin {
   StrictKeysObject get strictKeysObject;
   int get validatedPropertyNo42;
   Map<String, dynamic> toJson() {
-    var val = <String, dynamic>{
+    final val = <String, dynamic>{
       'no-42': ctorValidatedNo42,
     };
 

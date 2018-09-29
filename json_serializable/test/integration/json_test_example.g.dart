@@ -88,7 +88,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
-  var val = <String, dynamic>{};
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -122,7 +122,7 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'price': instance.price,
   };
 
