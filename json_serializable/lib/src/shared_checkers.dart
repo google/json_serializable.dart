@@ -23,7 +23,7 @@ DartType coreIterableGenericType(DartType type) =>
 ///
 /// If the [checker] [Type] doesn't have generic arguments, `null` is returned.
 List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
-  var implementation = _getImplementationType(type, checker) as InterfaceType;
+  final implementation = _getImplementationType(type, checker) as InterfaceType;
 
   return implementation?.typeArguments;
 }
@@ -41,14 +41,14 @@ String asStatement(DartType type) {
   }
 
   if (coreIterableTypeChecker.isAssignableFromType(type)) {
-    var itemType = coreIterableGenericType(type);
+    final itemType = coreIterableGenericType(type);
     if (itemType.isDynamic || itemType.isObject) {
       return ' as List';
     }
   }
 
   if (coreMapTypeChecker.isAssignableFromType(type)) {
-    var args = typeArgumentsOf(type, coreMapTypeChecker);
+    final args = typeArgumentsOf(type, coreMapTypeChecker);
     assert(args.length == 2);
 
     if (args.every((dt) => dt.isDynamic || dt.isObject)) {

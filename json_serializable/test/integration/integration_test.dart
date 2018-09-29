@@ -37,13 +37,13 @@ void main() {
     });
 
     test('empty json', () {
-      var person = Person.fromJson({});
+      final person = Person.fromJson({});
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });
 
     test('enum map', () {
-      var person = Person(null, null, null)
+      final person = Person(null, null, null)
         ..houseMap = {'bob': Category.strange}
         ..categoryCounts = {Category.strange: 1};
       expect(person.dateOfBirth, isNull);
@@ -79,7 +79,7 @@ void main() {
     });
 
     test('almost empty json', () {
-      var order = Order.fromJson({'category': 'not_discovered_yet'});
+      final order = Order.fromJson({'category': 'not_discovered_yet'});
       expect(order.items, isEmpty);
       expect(order.category, Category.notDiscoveredYet);
       expect(order.statusCode, StatusCode.success);
@@ -101,7 +101,7 @@ void main() {
     });
 
     test('platform', () {
-      var order = Order(Category.charmed)
+      final order = Order(Category.charmed)
         ..statusCode = StatusCode.success
         ..platform = Platform.undefined
         ..altPlatforms = {
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('homepage', () {
-      var order = Order(Category.charmed)
+      final order = Order(Category.charmed)
         ..platform = Platform.undefined
         ..statusCode = StatusCode.success
         ..altPlatforms = {
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('statusCode', () {
-      var order = Order.fromJson(
+      final order = Order.fromJson(
           {'category': 'not_discovered_yet', 'status_code': 404});
       expect(order.statusCode, StatusCode.notFound);
       roundTripOrder(order);
@@ -141,7 +141,7 @@ void main() {
     }
 
     test('empty json', () {
-      var item = Item.fromJson({});
+      final item = Item.fromJson({});
       expect(item.saleDates, isNull);
       roundTripItem(item);
 
@@ -150,7 +150,7 @@ void main() {
     });
 
     test('set itemNumber - with custom JSON key', () {
-      var item = Item.fromJson({'item-number': 42});
+      final item = Item.fromJson({'item-number': 42});
       expect(item.itemNumber, 42);
       roundTripItem(item);
 
@@ -176,13 +176,14 @@ void main() {
     });
 
     test('custom DateTime', () {
-      var instance = Numbers()..date = DateTime.fromMillisecondsSinceEpoch(42);
-      var json = instance.toJson();
+      final instance = Numbers()
+        ..date = DateTime.fromMillisecondsSinceEpoch(42);
+      final json = instance.toJson();
       expect(json, containsPair('date', 42000));
     });
 
     test('support ints as doubles', () {
-      var value = {
+      final value = {
         'doubles': [0, 0.0, null],
         'nnDoubles': [0, 0.0]
       };
@@ -191,7 +192,7 @@ void main() {
     });
 
     test('does not support doubles as ints', () {
-      var value = {
+      final value = {
         'ints': [3.14, 0],
       };
 

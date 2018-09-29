@@ -8,7 +8,7 @@ part of 'default_value.checked.dart';
 
 DefaultValue _$DefaultValueFromJson(Map json) {
   return $checkedNew('DefaultValue', json, () {
-    var val = DefaultValue();
+    final val = DefaultValue();
     $checkedConvert(
         json, 'fieldBool', (v) => val.fieldBool = v as bool ?? true);
     $checkedConvert(

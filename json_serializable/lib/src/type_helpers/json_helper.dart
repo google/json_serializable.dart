@@ -39,16 +39,16 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    var type = targetType as InterfaceType;
-    var classElement = type.element;
+    final type = targetType as InterfaceType;
+    final classElement = type.element;
 
-    var fromJsonCtor = classElement.constructors
+    final fromJsonCtor = classElement.constructors
         .singleWhere((ce) => ce.name == 'fromJson', orElse: () => null);
 
     String asCast;
     if (fromJsonCtor != null) {
       // TODO: should verify that this type is a valid JSON type
-      var asCastType = fromJsonCtor.parameters.first.type;
+      final asCastType = fromJsonCtor.parameters.first.type;
       asCast = asStatement(asCastType);
     } else if (_annotation(type)?.createFactory == true) {
       if (context.anyMap) {
@@ -62,7 +62,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
-    var result = '${targetType.name}.fromJson($expression$asCast)';
+    final result = '${targetType.name}.fromJson($expression$asCast)';
 
     return commonNullPrefix(context.nullable, expression, result);
   }
@@ -70,7 +70,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
 bool _canSerialize(DartType type) {
   if (type is InterfaceType) {
-    var toJsonMethod = _toJsonMethod(type);
+    final toJsonMethod = _toJsonMethod(type);
 
     if (toJsonMethod != null) {
       // TODO: validate there are no required parameters
@@ -87,7 +87,7 @@ bool _canSerialize(DartType type) {
 }
 
 JsonSerializable _annotation(InterfaceType source) {
-  var annotations = const TypeChecker.fromRuntime(JsonSerializable)
+  final annotations = const TypeChecker.fromRuntime(JsonSerializable)
       .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();
 

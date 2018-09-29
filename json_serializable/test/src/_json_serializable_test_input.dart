@@ -58,7 +58,7 @@ class Person {
   DateTime dateOfBirth;
   dynamic dynamicType;
   //ignore: prefer_typing_uninitialized_variables
-  var varType;
+  final varType;
   List<int> listOfInts;
 }
 
@@ -233,7 +233,7 @@ class IncludeIfNullAll {
 @ShouldGenerate(r'''
 Map<String, dynamic> _$IncludeIfNullOverrideToJson(
     IncludeIfNullOverride instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'number': instance.number,
   };
 

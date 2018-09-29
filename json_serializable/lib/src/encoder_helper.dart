@@ -27,10 +27,10 @@ abstract class EncodeHelper implements HelperCore {
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(annotation.createToJson);
 
-    var buffer = StringBuffer();
+    final buffer = StringBuffer();
 
     if (generator.generateToJsonFunction) {
-      var functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
+      final functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
       buffer.write('Map<String, dynamic> $functionName'
           '($targetClassReference $_toJsonParamName) ');
     } else {
@@ -41,7 +41,7 @@ abstract class EncodeHelper implements HelperCore {
 
       // write copies of the fields - this allows the toJson method to access
       // the fields of the target class
-      for (var field in accessibleFields) {
+      for (final field in accessibleFields) {
         //TODO - handle aliased imports
         buffer.writeln('  ${field.type} get ${field.name};');
       }
@@ -49,10 +49,11 @@ abstract class EncodeHelper implements HelperCore {
       buffer.write('  Map<String, dynamic> toJson() ');
     }
 
-    var writeNaive = accessibleFields.every(_writeJsonValueNaive);
+    final writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
     if (generator.useWrappers) {
-      var param = generator.generateToJsonFunction ? _toJsonParamName : 'this';
+      final param =
+          generator.generateToJsonFunction ? _toJsonParamName : 'this';
       buffer.writeln('=> ${_wrapperClassName(false)}($param);');
     } else {
       if (writeNaive) {
@@ -77,11 +78,11 @@ abstract class EncodeHelper implements HelperCore {
   }
 
   String _createWrapperClass(Iterable<FieldElement> fields) {
-    var buffer = StringBuffer();
+    final buffer = StringBuffer();
     buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
 
-    var fieldType = generator.generateToJsonFunction
+    final fieldType = generator.generateToJsonFunction
         ? targetClassReference
         : _mixinClassName(false);
 
@@ -94,7 +95,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     if (fields.every(_writeJsonValueNaive)) {
       // TODO(kevmoo): consider just doing one code path – if it's fast
       //               enough
-      var jsonKeys = fields.map(safeNameAccess).join(', ');
+      final jsonKeys = fields.map(safeNameAccess).join(', ');
 
       // TODO(kevmoo): maybe put this in a static field instead?
       //               const lists have unfortunate overhead
@@ -106,8 +107,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       // At least one field should be excluded if null
       buffer.writeln('  @override\n  Iterable<String> get keys sync* {');
 
-      for (var field in fields) {
-        var nullCheck = !_writeJsonValueNaive(field);
+      for (final field in fields) {
+        final nullCheck = !_writeJsonValueNaive(field);
         if (nullCheck) {
           buffer.write('    if (_v.${field.name} != null) {\n  ');
         }
@@ -126,8 +127,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     if (key is String) {
       switch (key) {''');
 
-    for (var field in fields) {
-      var valueAccess = '_v.${field.name}';
+    for (final field in fields) {
+      final valueAccess = '_v.${field.name}';
       buffer.writeln('''
         case ${safeNameAccess(field)}:
           return ${_serializeField(field, valueAccess)};''');
@@ -147,8 +148,9 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     buffer.writeln('=> <String, dynamic>{');
 
     buffer.writeAll(fields.map((field) {
-      var access = _fieldAccess(field);
-      var value = '${safeNameAccess(field)}: ${_serializeField(field, access)}';
+      final access = _fieldAccess(field);
+      final value =
+          '${safeNameAccess(field)}: ${_serializeField(field, access)}';
       return '        $value';
     }), ',\n');
 
@@ -175,9 +177,9 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
     // serialization.
     var directWrite = true;
 
-    for (var field in fields) {
+    for (final field in fields) {
       var safeFieldAccess = _fieldAccess(field);
-      var safeJsonKeyString = safeNameAccess(field);
+      final safeJsonKeyString = safeNameAccess(field);
 
       // If `fieldName` collides with one of the local helpers, prefix
       // access with `this.`.
@@ -188,7 +190,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
-      var expression = _serializeField(field, safeFieldAccess);
+      final expression = _serializeField(field, safeFieldAccess);
       if (_writeJsonValueNaive(field)) {
         if (directWrite) {
           buffer.writeln('      $safeJsonKeyString: $expression,');

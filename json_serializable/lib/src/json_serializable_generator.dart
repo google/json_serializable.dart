@@ -161,15 +161,15 @@ class JsonSerializableGenerator
   Iterable<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
     if (element is! ClassElement) {
-      var name = element.name;
+      final name = element.name;
       throw InvalidGenerationSourceError('Generator cannot target `$name`.',
           todo: 'Remove the JsonSerializable annotation from `$name`.',
           element: element);
     }
 
-    var classElement = element as ClassElement;
-    var classAnnotation = valueForAnnotation(annotation);
-    var helper = _GeneratorHelper(this, classElement, classAnnotation);
+    final classElement = element as ClassElement;
+    final classAnnotation = valueForAnnotation(annotation);
+    final helper = _GeneratorHelper(this, classElement, classAnnotation);
     return helper._generate();
   }
 }
@@ -188,14 +188,14 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
-    var sortedFields = createSortedFieldSet(element);
+    final sortedFields = createSortedFieldSet(element);
 
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of
     // these fields.
-    var unavailableReasons = <String, String>{};
+    final unavailableReasons = <String, String>{};
 
-    var accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
+    final accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
         <String, FieldElement>{}, (map, field) {
       if (!field.isPublic) {
         unavailableReasons[field.name] = 'It is assigned to a private field.';
@@ -216,7 +216,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
     var accessibleFieldSet = accessibleFields.values.toSet();
     if (annotation.createFactory) {
-      var createResult = createFactory(accessibleFields, unavailableReasons);
+      final createResult = createFactory(accessibleFields, unavailableReasons);
       yield createResult.output;
 
       accessibleFieldSet = accessibleFields.entries
@@ -229,7 +229,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
     accessibleFieldSet.fold(Set<String>(), (Set<String> set, fe) {
-      var jsonKey = nameAccess(fe);
+      final jsonKey = nameAccess(fe);
       if (!set.add(jsonKey)) {
         throw InvalidGenerationSourceError(
             'More than one field has the JSON key `$jsonKey`.',

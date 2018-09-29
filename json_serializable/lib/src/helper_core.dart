@@ -93,15 +93,15 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
   if (withConstraints == null || element.typeParameters.isEmpty) {
     return '';
   }
-  var values = element.typeParameters
+  final values = element.typeParameters
       .map((t) => withConstraints ? t.toString() : t.name)
       .join(', ');
   return '<$values>';
 }
 
 void warnUndefinedElements(Iterable<VariableElement> elements) {
-  for (var element in elements.where((fe) => fe.type.isUndefined)) {
-    var span = spanForElement(element);
+  for (final element in elements.where((fe) => fe.type.isUndefined)) {
+    final span = spanForElement(element);
     log.warning('''
 This element has an undefined type. It may causes issues when generated code.
 ${span.start.toolString}

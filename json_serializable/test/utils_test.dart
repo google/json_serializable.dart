@@ -16,7 +16,7 @@ const _items = {
 
 void main() {
   group('kebab', () {
-    for (var entry in _items.entries) {
+    for (final entry in _items.entries) {
       test('"${entry.key}"', () {
         expect(kebabCase(entry.key), entry.value);
       });
@@ -24,7 +24,7 @@ void main() {
   });
 
   group('snake', () {
-    for (var entry in _items.entries) {
+    for (final entry in _items.entries) {
       test('"${entry.key}"', () {
         expect(snakeCase(entry.key), entry.value.replaceAll('-', '_'));
       });

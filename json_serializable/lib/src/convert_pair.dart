@@ -19,8 +19,8 @@ class ConvertPair {
   ConvertPair._(this.fromJson, this.toJson);
 
   factory ConvertPair(DartObject obj, FieldElement element) {
-    var toJson = _convertData(obj, element, false);
-    var fromJson = _convertData(obj, element, true);
+    final toJson = _convertData(obj, element, false);
+    final fromJson = _convertData(obj, element, true);
 
     return ConvertPair._(fromJson, toJson);
   }
@@ -31,16 +31,16 @@ class ConvertPair {
 }
 
 ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
-  var paramName = isFrom ? 'fromJson' : 'toJson';
-  var objectValue = obj.getField(paramName);
+  final paramName = isFrom ? 'fromJson' : 'toJson';
+  final objectValue = obj.getField(paramName);
 
   if (objectValue.isNull) {
     return null;
   }
 
-  var type = objectValue.type as FunctionType;
+  final type = objectValue.type as FunctionType;
 
-  var executableElement = type.element as ExecutableElement;
+  final executableElement = type.element as ExecutableElement;
 
   if (executableElement.parameters.isEmpty ||
       executableElement.parameters.first.isNamed ||
@@ -51,9 +51,9 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
         'positional paramater.');
   }
 
-  var argType = executableElement.parameters.first.type;
+  final argType = executableElement.parameters.first.type;
   if (isFrom) {
-    var returnType = executableElement.returnType;
+    final returnType = executableElement.returnType;
 
     if (returnType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments

@@ -12,10 +12,10 @@ void main() {
   group('generic', () {
     GenericClass<T, S> roundTripGenericClass<T extends num, S>(
         GenericClass<T, S> p) {
-      var outputJson = loudEncode(p);
-      var p2 = GenericClass<T, S>.fromJson(
+      final outputJson = loudEncode(p);
+      final p2 = GenericClass<T, S>.fromJson(
           jsonDecode(outputJson) as Map<String, dynamic>);
-      var outputJson2 = loudEncode(p2);
+      final outputJson2 = loudEncode(p2);
       expect(outputJson2, outputJson);
       return p2;
     }

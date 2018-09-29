@@ -27,11 +27,11 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   @override
   String serialize(DartType targetType, String expression,
       TypeHelperContextWithConvert context) {
-    var toJsonData = context.serializeConvertData;
+    final toJsonData = context.serializeConvertData;
     if (toJsonData != null) {
       assert(toJsonData.paramType is TypeParameterType ||
           targetType.isAssignableTo(toJsonData.paramType));
-      var result = '${toJsonData.name}($expression)';
+      final result = '${toJsonData.name}($expression)';
       return commonNullPrefix(context.nullable, expression, result);
     }
     return null;
@@ -40,10 +40,10 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   @override
   String deserialize(DartType targetType, String expression,
       TypeHelperContextWithConvert context) {
-    var fromJsonData = context.deserializeConvertData;
+    final fromJsonData = context.deserializeConvertData;
     if (fromJsonData != null) {
-      var asContent = asStatement(fromJsonData.paramType);
-      var result = '${fromJsonData.name}($expression$asContent)';
+      final asContent = asStatement(fromJsonData.paramType);
+      final result = '${fromJsonData.name}($expression$asContent)';
       return commonNullPrefix(context.nullable, expression, result);
     }
     return null;

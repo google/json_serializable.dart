@@ -14,7 +14,7 @@ String _packagePathCache;
 String _packagePath() {
   if (_packagePathCache == null) {
     // Getting the location of this file – via reflection
-    var currentFilePath = (reflect(_packagePath) as ClosureMirror)
+    final currentFilePath = (reflect(_packagePath) as ClosureMirror)
         .function
         .location
         .sourceUri

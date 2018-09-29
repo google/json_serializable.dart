@@ -20,7 +20,7 @@ class JsonConverterHelper extends TypeHelper {
   @override
   LambdaResult serialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    var converter = _typeConverter(targetType, context);
+    final converter = _typeConverter(targetType, context);
 
     if (converter == null) {
       return null;
@@ -32,12 +32,12 @@ class JsonConverterHelper extends TypeHelper {
   @override
   LambdaResult deserialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    var converter = _typeConverter(targetType, context);
+    final converter = _typeConverter(targetType, context);
     if (converter == null) {
       return null;
     }
 
-    var asContent = asStatement(converter.jsonType);
+    final asContent = asStatement(converter.jsonType);
 
     return LambdaResult(
         '$expression$asContent', '${converter.accessString}.fromJson');
@@ -63,7 +63,7 @@ class _JsonConvertData {
 }
 
 _JsonConvertData _typeConverter(DartType targetType, TypeHelperContext ctx) {
-  var matchingAnnotations = ctx.classElement.metadata
+  final matchingAnnotations = ctx.classElement.metadata
       .map((annotation) => _compatibleMatch(targetType, annotation))
       .where((dt) => dt != null)
       .toList();
@@ -78,11 +78,11 @@ _JsonConvertData _typeConverter(DartType targetType, TypeHelperContext ctx) {
         element: matchingAnnotations[1].elementAnnotation.element);
   }
 
-  var match = matchingAnnotations.single;
+  final match = matchingAnnotations.single;
 
-  var annotationElement = match.elementAnnotation.element;
+  final annotationElement = match.elementAnnotation.element;
   if (annotationElement is PropertyAccessorElement) {
-    var enclosing = annotationElement.enclosingElement;
+    final enclosing = annotationElement.enclosingElement;
 
     var accessString = annotationElement.name;
 
@@ -93,7 +93,7 @@ _JsonConvertData _typeConverter(DartType targetType, TypeHelperContext ctx) {
     return _JsonConvertData.propertyAccess(accessString, match.jsonType);
   }
 
-  var reviver = ConstantReader(match.annotation).revive();
+  final reviver = ConstantReader(match.annotation).revive();
 
   if (reviver.namedArguments.isNotEmpty ||
       reviver.positionalArguments.isNotEmpty) {
@@ -123,11 +123,11 @@ class _ConverterMatch {
 
 _ConverterMatch _compatibleMatch(
     DartType targetType, ElementAnnotation annotation) {
-  var constantValue = annotation.computeConstantValue();
+  final constantValue = annotation.computeConstantValue();
 
-  var converterClassElement = constantValue.type.element as ClassElement;
+  final converterClassElement = constantValue.type.element as ClassElement;
 
-  var jsonConverterSuper = converterClassElement.allSupertypes.singleWhere(
+  final jsonConverterSuper = converterClassElement.allSupertypes.singleWhere(
       (e) => e is InterfaceType && _jsonConverterChecker.isExactly(e.element),
       orElse: () => null);
 
@@ -138,7 +138,7 @@ _ConverterMatch _compatibleMatch(
   assert(jsonConverterSuper.typeParameters.length == 2);
   assert(jsonConverterSuper.typeArguments.length == 2);
 
-  var fieldType = jsonConverterSuper.typeArguments[0];
+  final fieldType = jsonConverterSuper.typeArguments[0];
 
   if (fieldType.isEquivalentTo(targetType)) {
     return _ConverterMatch(

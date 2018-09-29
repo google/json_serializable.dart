@@ -16,7 +16,7 @@ class EnumHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    var memberContent = _enumValueMapFromType(targetType);
+    final memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -30,7 +30,7 @@ class EnumHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    var memberContent = _enumValueMapFromType(targetType);
+    final memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -44,7 +44,7 @@ class EnumHelper extends TypeHelper {
 
     context.addMember(memberContent);
 
-    var functionName =
+    final functionName =
         context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
     return '$functionName(${_constMapName(targetType)}, '
         '$expression)';
@@ -54,14 +54,15 @@ class EnumHelper extends TypeHelper {
 String _constMapName(DartType targetType) => '_\$${targetType.name}EnumMap';
 
 String _enumValueMapFromType(DartType targetType) {
-  var enumMap = enumFieldsMap(targetType);
+  final enumMap = enumFieldsMap(targetType);
 
   if (enumMap == null) {
     return null;
   }
 
-  var items = enumMap.entries.map((e) => '  ${targetType.name}.${e.key.name}: '
-      '${jsonLiteralAsDart(e.value)}');
+  final items =
+      enumMap.entries.map((e) => '  ${targetType.name}.${e.key.name}: '
+          '${jsonLiteralAsDart(e.value)}');
 
   return 'const ${_constMapName(targetType)} = '
       '<${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';

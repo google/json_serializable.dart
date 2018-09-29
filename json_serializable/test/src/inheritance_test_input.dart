@@ -9,7 +9,7 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$SubTypeToJson(SubType instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'super-final-field': instance.superFinalField,
   };
 
@@ -98,7 +98,7 @@ class SuperType {
 @ShouldGenerate(r'''
 Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
     SubTypeWithAnnotatedFieldOverrideExtends instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'super-final-field': instance.superFinalField,
   };
 

@@ -19,7 +19,7 @@ Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
     {bool wrapped = false}) {
   String expectedOutput;
   if (wrapped) {
-    var expectedWrappedOutput = reader.read('expectedWrappedOutput');
+    final expectedWrappedOutput = reader.read('expectedWrappedOutput');
     if (expectedWrappedOutput.isNull) {
       return null;
     }
@@ -28,7 +28,7 @@ Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
     expectedOutput = reader.read('expectedOutput').stringValue;
   }
 
-  var isContains = reader.read('contains').boolValue;
+  final isContains = reader.read('contains').boolValue;
 
   if (isContains) {
     return contains(expectedOutput);
@@ -127,7 +127,7 @@ const _expectedAnnotatedTests = {
 };
 
 void main() async {
-  var path = testFilePath('test', 'src');
+  final path = testFilePath('test', 'src');
   _library = await resolveCompilationUnit(path);
 
   StreamSubscription logSubscription;
@@ -144,7 +144,7 @@ void main() async {
       logSubscription = null;
     }
 
-    var remainingItems = _buildLogItems.toList();
+    final remainingItems = _buildLogItems.toList();
     _buildLogItems.clear();
     expect(remainingItems, isEmpty,
         reason:
@@ -157,14 +157,14 @@ void main() async {
     expect(_annotatedElements.keys, _expectedAnnotatedTests.keys);
   });
 
-  for (var entry in _annotatedElements.entries) {
+  for (final entry in _annotatedElements.entries) {
     group(entry.key, () {
       test('[all expected classes]', () {
         expect(_expectedAnnotatedTests,
             containsPair(entry.key, entry.value.map((ae) => ae.element.name)));
       });
 
-      for (var annotatedElement in entry.value) {
+      for (final annotatedElement in entry.value) {
         _testAnnotatedClass(annotatedElement);
       }
     });
@@ -178,7 +178,7 @@ void main() async {
 }
 
 void _testAnnotatedClass(AnnotatedElement annotatedElement) {
-  var annotationName = annotatedElement.annotation.objectValue.type.name;
+  final annotationName = annotatedElement.annotation.objectValue.type.name;
   switch (annotationName) {
     case 'ShouldThrow':
       _testShouldThrow(annotatedElement);
@@ -192,9 +192,9 @@ void _testAnnotatedClass(AnnotatedElement annotatedElement) {
 }
 
 void _testShouldThrow(AnnotatedElement annotatedElement) {
-  var element = annotatedElement.element;
-  var constReader = annotatedElement.annotation;
-  var messageMatcher = constReader.read('errorMessage').stringValue;
+  final element = annotatedElement.element;
+  final constReader = annotatedElement.annotation;
+  final messageMatcher = constReader.read('errorMessage').stringValue;
   var todoMatcher = constReader.read('todo').literalValue;
 
   test(element.name, () {
@@ -215,21 +215,21 @@ void _testShouldThrow(AnnotatedElement annotatedElement) {
 }
 
 void _testShouldGenerate(AnnotatedElement annotatedElement) {
-  var element = annotatedElement.element;
+  final element = annotatedElement.element;
 
-  var matcher =
+  final matcher =
       _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
 
-  var expectedLogItems = annotatedElement.annotation
+  final expectedLogItems = annotatedElement.annotation
       .read('expectedLogItems')
       .listValue
       .map((obj) => obj.toStringValue())
       .toList();
 
-  var checked = annotatedElement.annotation.read('checked').boolValue;
+  final checked = annotatedElement.annotation.read('checked').boolValue;
 
   test(element.name, () {
-    var output = _runForElementNamed(
+    final output = _runForElementNamed(
         JsonSerializableGenerator(checked: checked), element.name);
     expect(output, matcher);
 
@@ -237,12 +237,12 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
     _buildLogItems.clear();
   });
 
-  var wrappedMatcher = _matcherFromShouldGenerateAnnotation(
+  final wrappedMatcher = _matcherFromShouldGenerateAnnotation(
       annotatedElement.annotation,
       wrapped: true);
   if (wrappedMatcher != null) {
     test('${element.name} - (wrapped)', () {
-      var output = _runForElementNamed(
+      final output = _runForElementNamed(
           JsonSerializableGenerator(checked: checked, useWrappers: true),
           element.name);
       expect(output, wrappedMatcher);
@@ -254,24 +254,24 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
 }
 
 String _runForElementNamed(JsonSerializableGenerator generator, String name) {
-  var element = _library.allElements.singleWhere((e) => e.name == name);
-  var annotation = generator.typeChecker.firstAnnotationOf(element);
-  var generated = generator
+  final element = _library.allElements.singleWhere((e) => e.name == name);
+  final annotation = generator.typeChecker.firstAnnotationOf(element);
+  final generated = generator
       .generateForAnnotatedElement(element, ConstantReader(annotation), null)
       .map((e) => e.trim())
       .where((e) => e.isNotEmpty)
       .map((e) => '$e\n\n')
       .join();
 
-  var output = _formatter.format(generated);
+  final output = _formatter.format(generated);
   printOnFailure("r'''\n$output'''");
   return output;
 }
 
 final _annotatedElements = _library.allElements
     .map<AnnotatedElement>((e) {
-      for (var md in e.metadata) {
-        var reader = ConstantReader(md.constantValue);
+      for (final md in e.metadata) {
+        final reader = ConstantReader(md.constantValue);
         if (const ['ShouldGenerate', 'ShouldThrow']
             .contains(reader.objectValue.type.name)) {
           return AnnotatedElement(reader, e);
@@ -282,7 +282,7 @@ final _annotatedElements = _library.allElements
     .where((ae) => ae != null)
     .fold<Map<String, List<AnnotatedElement>>>(
         <String, List<AnnotatedElement>>{}, (map, annotatedElement) {
-      var list = map.putIfAbsent(
+      final list = map.putIfAbsent(
           annotatedElement.element.source.uri.pathSegments.last,
           () => <AnnotatedElement>[]);
       list.add(annotatedElement);
@@ -301,12 +301,12 @@ void _registerTests(JsonSerializableGenerator generator) {
 
   group('explicit toJson', () {
     test('nullable', () {
-      var output = _runForElementNamed(
+      final output = _runForElementNamed(
           JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
-      var expected = generator.useWrappers
+      final expected = generator.useWrappers
           ? r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
         TrivialNestedNullable instance) =>
@@ -345,12 +345,12 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
       expect(output, expected);
     });
     test('non-nullable', () {
-      var output = _runForElementNamed(
+      final output = _runForElementNamed(
           JsonSerializableGenerator(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
-      var expected = generator.useWrappers
+      final expected = generator.useWrappers
           ? r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         TrivialNestedNonNullable instance) =>
@@ -407,8 +407,8 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         'in the associated `@JsonKey` annotation.';
 
     group('fromJson', () {
-      var msg = flavorMessage('fromJson');
-      var todo = flavorTodo('fromJson');
+      final msg = flavorMessage('fromJson');
+      final todo = flavorTodo('fromJson');
       test('in constructor arguments', () {
         expectThrows('UnknownCtorParamType', msg, todo);
       });
@@ -426,7 +426,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     });
 
     test('with proper convert methods', () {
-      var output = runForElementNamed('UnknownFieldTypeWithConvert');
+      final output = runForElementNamed('UnknownFieldTypeWithConvert');
       expect(output, contains("_everythingIs42(json['number'])"));
       if (generator.useWrappers) {
         expect(output, contains('_everythingIs42(_v.number)'));
@@ -470,7 +470,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   });
 
   test('class with final fields', () {
-    var generateResult = runForElementNamed('FinalFields');
+    final generateResult = runForElementNamed('FinalFields');
     expect(
         generateResult,
         contains(
@@ -479,13 +479,13 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
   group('valid inputs', () {
     test('class with fromJson() constructor with optional parameters', () {
-      var output = runForElementNamed('FromJsonOptionalParameters');
+      final output = runForElementNamed('FromJsonOptionalParameters');
 
       expect(output, contains('ChildWithFromJson.fromJson'));
     });
 
     test('class with child json-able object', () {
-      var output = runForElementNamed('ParentObject');
+      final output = runForElementNamed('ParentObject');
 
       expect(
           output,
@@ -494,7 +494,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     });
 
     test('class with child json-able object - anyMap', () {
-      var output = _runForElementNamed(
+      final output = _runForElementNamed(
           JsonSerializableGenerator(
               anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
@@ -503,20 +503,20 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     });
 
     test('class with child list of json-able objects', () {
-      var output = runForElementNamed('ParentObjectWithChildren');
+      final output = runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
       expect(output, contains('ChildObject.fromJson'));
     });
 
     test('class with child list of dynamic objects is left alone', () {
-      var output = runForElementNamed('ParentObjectWithDynamicChildren');
+      final output = runForElementNamed('ParentObjectWithDynamicChildren');
 
       expect(output, contains('children = json[\'children\'] as List;'));
     });
 
     test('class with list of int is cast for strong mode', () {
-      var output = runForElementNamed('Person');
+      final output = runForElementNamed('Person');
 
       expect(output,
           contains("json['listOfInts'] as List)?.map((e) => e as int)"));
@@ -525,7 +525,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
   group('includeIfNull', () {
     test('some', () {
-      var output = runForElementNamed('IncludeIfNullAll');
+      final output = runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
