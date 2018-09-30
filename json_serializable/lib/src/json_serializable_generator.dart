@@ -21,6 +21,7 @@ import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
 import 'type_helpers/value_helper.dart';
+import 'type_helpers/duration_helper.dart';
 import 'utils.dart';
 
 Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
@@ -38,7 +39,8 @@ class JsonSerializableGenerator
   static const _defaultHelpers = <TypeHelper>[
     JsonHelper(),
     DateTimeHelper(),
-    UriHelper()
+    UriHelper(),
+    DurationHelper(),
   ];
 
   final List<TypeHelper> _typeHelpers;
@@ -122,7 +124,7 @@ class JsonSerializableGenerator
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, three built-in helpers are used:
-  /// [JsonHelper], [DateTimeHelper], and [UriHelper].
+  /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   const JsonSerializableGenerator({
     List<TypeHelper> typeHelpers,
     bool useWrappers = false,
@@ -141,7 +143,7 @@ class JsonSerializableGenerator
   ///
   /// [typeHelpers] provides a set of [TypeHelper] that will be used along with
   /// the built-in helpers:
-  /// [JsonHelper], [DateTimeHelper], and [UriHelper].
+  /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
     bool useWrappers = false,

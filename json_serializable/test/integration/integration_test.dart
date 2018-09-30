@@ -133,6 +133,39 @@ void main() {
       expect(order.statusCode, StatusCode.notFound);
       roundTripOrder(order);
     });
+
+    test('duration toJson', () {
+      final order = Order(Category.notDiscoveredYet)
+        ..statusCode = StatusCode.success
+        ..duration = const Duration(
+          days: 2,
+          hours: 4,
+          minutes: 54,
+          seconds: 33,
+          milliseconds: 23,
+          microseconds: 12,
+        );
+      expect(order.toJson()['duration'], equals('52:54:33.023012'));
+      roundTripOrder(order);
+    });
+
+    test('duration fromJson', () {
+      final order = Order.fromJson({
+        'category': 'not_discovered_yet',
+        'duration': '52:54:33.023012',
+      });
+      expect(
+          order.duration,
+          equals(const Duration(
+            days: 2,
+            hours: 4,
+            minutes: 54,
+            seconds: 33,
+            milliseconds: 23,
+            microseconds: 12,
+          )));
+      roundTripOrder(order);
+    });
   });
 
   group('Item', () {

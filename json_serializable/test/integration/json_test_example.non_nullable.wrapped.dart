@@ -59,6 +59,8 @@ class Order {
   int count;
   bool isRushed;
 
+  Duration duration;
+
   @JsonKey(nullable: false)
   final Category category;
   final UnmodifiableListView<Item> items;
