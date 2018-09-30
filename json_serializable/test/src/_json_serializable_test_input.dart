@@ -58,7 +58,7 @@ class Person {
   DateTime dateOfBirth;
   dynamic dynamicType;
   //ignore: prefer_typing_uninitialized_variables
-  final varType;
+  var varType;
   List<int> listOfInts;
 }
 
