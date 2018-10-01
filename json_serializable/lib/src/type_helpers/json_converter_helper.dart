@@ -63,11 +63,22 @@ class _JsonConvertData {
 }
 
 _JsonConvertData _typeConverter(DartType targetType, TypeHelperContext ctx) {
-  var matchingAnnotations = ctx.classElement.metadata
+  List<_ConverterMatch> converterMatches(List<ElementAnnotation> items) => items
       .map((annotation) => _compatibleMatch(targetType, annotation))
       .where((dt) => dt != null)
       .toList();
 
+  var matchingAnnotations = converterMatches(ctx.fieldElement.metadata);
+
+  if (matchingAnnotations.isEmpty) {
+    matchingAnnotations = converterMatches(ctx.classElement.metadata);
+  }
+
+  return _typeConverterFrom(matchingAnnotations, targetType);
+}
+
+_JsonConvertData _typeConverterFrom(
+    List<_ConverterMatch> matchingAnnotations, DartType targetType) {
   if (matchingAnnotations.isEmpty) {
     return null;
   }
