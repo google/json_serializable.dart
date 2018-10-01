@@ -4,8 +4,15 @@ dart:
 
 stages:
   - analyzer_and_format:
-    - dartfmt
-    - dartanalyzer: --fatal-infos --fatal-warnings .
+    - group:
+      - dartfmt
+      - dartanalyzer: --fatal-infos --fatal-warnings .
+      dart: [dev]
+  - analyzer_and_format_stable:
+    - group:
+      - dartfmt
+      - dartanalyzer: --fatal-warnings .
+      dart: [stable]
   - unit_test:
     # Run the tests -- include the default-skipped presubmit tests
     - test
