@@ -1,5 +1,7 @@
 ## 1.4.0
 
+* Added support for `JsonConvert` annotation on fields.
+
 * `type_helper.dart`
 
   * `TypeHelper` `serialize` and `deserialize` have return type `Object` instead
