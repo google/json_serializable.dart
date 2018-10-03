@@ -44,6 +44,47 @@ class JsonConverterNamedCtor<E> {
   static int _toJson(Duration object) => 42;
 }
 
+@ShouldGenerate(r'''
+JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
+    Map<String, dynamic> json) {
+  return JsonConvertOnField<E>()
+    ..annotatedField = const _DurationMillisecondConverter()
+        .fromJson(json['annotatedField'] as int)
+    ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
+        .fromJson(json['annotatedWithNamedCtor'] as int)
+    ..classAnnotatedWithField =
+        _durationConverter.fromJson(json['classAnnotatedWithField'] as int)
+    ..genericValue =
+        _GenericConverter<E>().fromJson(json['genericValue'] as int);
+}
+
+Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
+        JsonConvertOnField<E> instance) =>
+    <String, dynamic>{
+      'annotatedField':
+          const _DurationMillisecondConverter().toJson(instance.annotatedField),
+      'annotatedWithNamedCtor': const _DurationMillisecondConverter.named()
+          .toJson(instance.annotatedWithNamedCtor),
+      'classAnnotatedWithField':
+          _durationConverter.toJson(instance.classAnnotatedWithField),
+      'genericValue': _GenericConverter<E>().toJson(instance.genericValue)
+    };
+''')
+@JsonSerializable()
+@_durationConverter
+class JsonConvertOnField<E> {
+  @_DurationMillisecondConverter()
+  Duration annotatedField;
+
+  @_DurationMillisecondConverter.named()
+  Duration annotatedWithNamedCtor;
+
+  Duration classAnnotatedWithField;
+
+  @_GenericConverter()
+  E genericValue;
+}
+
 class _GenericConverter<T> implements JsonConverter<T, int> {
   const _GenericConverter();
   const _GenericConverter.named();
