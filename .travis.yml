@@ -38,18 +38,13 @@ jobs:
       env: PKG="json_annotation"
       dart: stable
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: json_serializable - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
-      env: PKG="json_serializable"
-      dart: stable
-    - stage: analyzer_and_format
-      name: "SDK: dev - DIR: json_serializable - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer_0
+      name: "SDK: dev - DIR: json_serializable - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer_0
       env: PKG="json_serializable"
       dart: dev
-    - stage: analyzer_and_format
-      name: "SDK: stable - DIR: json_serializable - TASKS: dartanalyzer --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer_1
+    - stage: analyzer_and_format_stable
+      name: "SDK: stable - DIR: json_serializable - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="json_serializable"
       dart: stable
     - stage: unit_test
@@ -70,6 +65,7 @@ jobs:
 
 stages:
   - analyzer_and_format
+  - analyzer_and_format_stable
   - unit_test
 
 cache:
