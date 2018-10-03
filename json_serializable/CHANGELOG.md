@@ -1,6 +1,8 @@
-## 1.4.0
+## 1.5.0
 
 * Added support for `JsonConvert` annotation on fields.
+
+## 1.4.0
 
 * `type_helper.dart`
 
