@@ -6,18 +6,6 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import '../type_helper.dart';
 
-Duration durationFromString(String d) {
-  final split = d.split(':').map((v) => int.tryParse(v) ?? 0).toList();
-  return Duration(
-    days: split[0],
-    hours: split[1],
-    minutes: split[2],
-    seconds: split[3],
-    milliseconds: split[4],
-    microseconds: split[5],
-  );
-}
-
 class DurationHelper extends TypeHelper {
   const DurationHelper();
 
