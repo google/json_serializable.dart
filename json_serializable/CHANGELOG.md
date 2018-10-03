@@ -10,9 +10,11 @@
     `deserialize`. Many of the included `TypeHelper` implementations have been
     updated to indicate they expect more information from the source generator.
 
-## 1.4.0
+## 1.5.0
 
 * Added support for `JsonConvert` annotation on fields.
+
+## 1.4.0
 
 * `type_helper.dart`
 
