@@ -9,7 +9,7 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
-import 'json_key_with_conversion.dart';
+import 'utils.dart';
 
 class _FieldSet implements Comparable<_FieldSet> {
   final FieldElement field;

@@ -8,21 +8,8 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'convert_pair.dart';
 import 'json_literal_generator.dart';
 import 'utils.dart';
-
-final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
-
-DartObject _jsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyChecker.firstAnnotationOfExact(element) ??
-    (element.getter == null
-        ? null
-        : _jsonKeyChecker.firstAnnotationOfExact(element.getter));
-
-/// Returns `true` if [element] is annotated with [JsonKey].
-bool hasJsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyAnnotation(element) != null;
 
 final _jsonKeyExpando = Expando<JsonKey>();
 
@@ -33,7 +20,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
-  var obj = _jsonKeyAnnotation(element);
+  var obj = jsonKeyAnnotation(element);
 
   if (obj == null) {
     return _populateJsonKey(classAnnotation, element);
@@ -126,7 +113,6 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     defaultValue: defaultValueLiteral,
     required: obj.getField('required').toBoolValue(),
     disallowNullValue: disallowNullValue,
-    jsonConvertPair: ConvertPair(obj, element),
   );
 }
 
@@ -138,8 +124,7 @@ JsonKey _populateJsonKey(
     bool ignore,
     Object defaultValue,
     bool required,
-    bool disallowNullValue,
-    ConvertPair jsonConvertPair}) {
+    bool disallowNullValue}) {
   var jsonKey = JsonKey(
       name: _encodedFieldName(classAnnotation, name, fieldElement),
       nullable: nullable ?? classAnnotation.nullable,
@@ -149,8 +134,6 @@ JsonKey _populateJsonKey(
       defaultValue: defaultValue,
       required: required ?? false,
       disallowNullValue: disallowNullValue ?? false);
-
-  jsonConvertPair?.populate(jsonKey);
 
   return jsonKey;
 }

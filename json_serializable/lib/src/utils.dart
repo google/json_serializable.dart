@@ -4,10 +4,23 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/constant/value.dart';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
+
+final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
+
+DartObject jsonKeyAnnotation(FieldElement element) =>
+    _jsonKeyChecker.firstAnnotationOfExact(element) ??
+    (element.getter == null
+        ? null
+        : _jsonKeyChecker.firstAnnotationOfExact(element.getter));
+
+/// Returns `true` if [element] is annotated with [JsonKey].
+bool hasJsonKeyAnnotation(FieldElement element) =>
+    jsonKeyAnnotation(element) != null;
 
 final _upperCase = RegExp('[A-Z]');
 
