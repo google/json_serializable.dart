@@ -145,14 +145,14 @@ void main() {
           milliseconds: 23,
           microseconds: 12,
         );
-      expect(order.toJson()['duration'], equals('52:54:33.023012'));
+      expect(order.toJson()['duration'], equals(190473023012));
       roundTripOrder(order);
     });
 
     test('duration fromJson', () {
       final order = Order.fromJson({
         'category': 'not_discovered_yet',
-        'duration': '52:54:33.023012',
+        'duration': 190473023012,
       });
       expect(
           order.duration,

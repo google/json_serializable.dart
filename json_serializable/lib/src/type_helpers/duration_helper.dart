@@ -22,7 +22,7 @@ class DurationHelper extends TypeHelper {
       buffer.write('?');
     }
 
-    buffer.write('.toString()');
+    buffer.write('.inMicroseconds');
 
     return buffer.toString();
   }
@@ -35,7 +35,10 @@ class DurationHelper extends TypeHelper {
     }
 
     return commonNullPrefix(
-        context.nullable, expression, '\$parseDuration($expression as String)');
+      context.nullable,
+      expression,
+      'Duration(microseconds: $expression as int)',
+    );
   }
 }
 

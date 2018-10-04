@@ -95,7 +95,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
           .map((e) => Item.fromJson(e as Map<String, dynamic>)))
     ..count = json['count'] as int
     ..isRushed = json['isRushed'] as bool
-    ..duration = $parseDuration(json['duration'] as String)
+    ..duration = Duration(microseconds: json['duration'] as int)
     ..platform = Platform.fromJson(json['platform'] as String)
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
         .map((k, e) => MapEntry(k, Platform.fromJson(e as String)))
@@ -134,7 +134,7 @@ class _$OrderJsonMapWrapper extends $JsonMapWrapper {
         case 'isRushed':
           return _v.isRushed;
         case 'duration':
-          return _v.duration.toString();
+          return _v.duration.inMicroseconds;
         case 'category':
           return _$CategoryEnumMap[_v.category];
         case 'items':

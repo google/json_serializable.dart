@@ -76,7 +76,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..isRushed = json['isRushed'] as bool
     ..duration = json['duration'] == null
         ? null
-        : $parseDuration(json['duration'] as String)
+        : Duration(microseconds: json['duration'] as int)
     ..platform = json['platform'] == null
         ? null
         : Platform.fromJson(json['platform'] as String)
@@ -101,7 +101,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 
   writeNotNull('count', instance.count);
   val['isRushed'] = instance.isRushed;
-  val['duration'] = instance.duration?.toString();
+  val['duration'] = instance.duration?.inMicroseconds;
   val['category'] = _$CategoryEnumMap[instance.category];
   val['items'] = instance.items;
   val['platform'] = instance.platform;
