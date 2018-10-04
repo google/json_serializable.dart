@@ -7,7 +7,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'json_key_with_conversion.dart';
+import 'json_key_utils.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
