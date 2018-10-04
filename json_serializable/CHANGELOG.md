@@ -10,7 +10,7 @@
     `deserialize`. Many of the included `TypeHelper` implementations have been
     updated to indicate they expect more information from the source generator.
 
-* Support decode/encode of dart:core Duration
+* Support decode/encode of `dart:core` `Duration`
 
 ## 1.5.0
 
