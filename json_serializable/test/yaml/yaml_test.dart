@@ -24,13 +24,13 @@ List<String> _getTests() => Directory(_root)
 
 void main() {
   group('valid configurations', () {
-    for (var filePath in _getTests()) {
+    for (final filePath in _getTests()) {
       test(p.basenameWithoutExtension(filePath), () {
-        var content = File(filePath).readAsStringSync();
-        var yamlContent = loadYaml(content, sourceUrl: filePath) as YamlMap;
+        final content = File(filePath).readAsStringSync();
+        final yamlContent = loadYaml(content, sourceUrl: filePath) as YamlMap;
 
         try {
-          var config = Config.fromJson(yamlContent);
+          final config = Config.fromJson(yamlContent);
           expect(config, isNotNull);
         } on CheckedFromJsonException catch (e) {
           print(_prettyPrintCheckedFromJsonException(e));
@@ -42,20 +42,20 @@ void main() {
 
   group('bad configs', () {
     var index = 0;
-    for (var entry in _badConfigs.entries) {
+    for (final entry in _badConfigs.entries) {
       test('${index++}', () {
-        var yamlContent =
+        final yamlContent =
             loadYaml(entry.key, sourceUrl: 'file.yaml') as YamlMap;
 
         expect(yamlContent, isNotNull);
         printOnFailure(entry.key);
 
         try {
-          var config = Config.fromJson(yamlContent);
+          final config = Config.fromJson(yamlContent);
           print(loudEncode(config));
           fail('parse should fail');
         } on CheckedFromJsonException catch (e) {
-          var prettyOutput = _prettyPrintCheckedFromJsonException(e);
+          final prettyOutput = _prettyPrintCheckedFromJsonException(e);
           printOnFailure(prettyOutput);
           expect(prettyOutput, entry.value);
         }
@@ -146,14 +146,14 @@ builders:
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
-  var yamlMap = err.map as YamlMap;
+  final yamlMap = err.map as YamlMap;
 
   YamlScalar _getYamlKey(String key) {
     return yamlMap.nodes.keys.singleWhere((k) => (k as YamlScalar).value == key,
         orElse: () => null) as YamlScalar;
   }
 
-  var innerError = err.innerError;
+  final innerError = err.innerError;
 
   var message = 'Could not create `${err.className}`.';
   if (innerError is BadKeyException) {
@@ -161,8 +161,8 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
 
     if (innerError is UnrecognizedKeysException) {
       message += '\n${innerError.message}\n';
-      for (var key in innerError.unrecognizedKeys) {
-        var yamlKey = _getYamlKey(key);
+      for (final key in innerError.unrecognizedKeys) {
+        final yamlKey = _getYamlKey(key);
         assert(yamlKey != null);
         message += '\n${yamlKey.span.message('Invalid key "$key"')}';
       }
@@ -176,7 +176,7 @@ String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
       throw UnsupportedError('${innerError.runtimeType} is not supported.');
     }
   } else {
-    var yamlValue = yamlMap.nodes[err.key];
+    final yamlValue = yamlMap.nodes[err.key];
 
     if (yamlValue == null) {
       assert(err.key == null);

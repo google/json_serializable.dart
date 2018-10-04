@@ -8,7 +8,7 @@ part of 'kitchen_sink.non_nullable.checked.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return $checkedNew('KitchenSink', json, () {
-    var val = KitchenSink(
+    final val = KitchenSink(
         ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
         iterable: $checkedConvert(json, 'iterable', (v) => v as List),
         dynamicIterable:
@@ -159,7 +159,7 @@ abstract class _$KitchenSinkSerializerMixin {
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
   return $checkedNew('JsonConverterTestClass', json, () {
-    var val = JsonConverterTestClass();
+    final val = JsonConverterTestClass();
     $checkedConvert(json, 'duration',
         (v) => val.duration = durationConverter.fromJson(v as int));
     $checkedConvert(
@@ -222,7 +222,7 @@ abstract class _$JsonConverterTestClassSerializerMixin {
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     Map json) {
   return $checkedNew('JsonConverterGeneric', json, () {
-    var val = JsonConverterGeneric<S, T, U>();
+    final val = JsonConverterGeneric<S, T, U>();
     $checkedConvert(
         json,
         'item',

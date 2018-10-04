@@ -9,7 +9,7 @@ part of 'build_config.dart';
 Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
     $checkKeys(json, requiredKeys: const ['builders']);
-    var val = Config(
+    final val = Config(
         builders: $checkedConvert(
             json,
             'builders',
@@ -75,7 +75,7 @@ Builder _$BuilderFromJson(Map json) {
       'configLocation',
       'auto_apply'
     ]);
-    var val = Builder(
+    final val = Builder(
         import: $checkedConvert(json, 'import', (v) => v as String),
         target: $checkedConvert(json, 'target', (v) => v as String),
         isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
@@ -111,7 +111,7 @@ Builder _$BuilderFromJson(Map json) {
 }
 
 Map<String, dynamic> _$BuilderToJson(Builder instance) {
-  var val = <String, dynamic>{};
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {

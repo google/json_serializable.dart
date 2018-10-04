@@ -26,7 +26,7 @@ abstract class DecodeHelper implements HelperCore {
     assert(annotation.createFactory);
     assert(_buffer.isEmpty);
 
-    var mapType = generator.anyMap ? 'Map' : 'Map<String, dynamic>';
+    final mapType = generator.anyMap ? 'Map' : 'Map<String, dynamic>';
     _buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
         '($mapType json) {\n');
@@ -38,7 +38,7 @@ abstract class DecodeHelper implements HelperCore {
 
     _ConstructorData data;
     if (generator.checked) {
-      var classLiteral = escapeDartString(element.name);
+      final classLiteral = escapeDartString(element.name);
 
       _buffer.write('''
   return \$checkedNew(
@@ -62,11 +62,11 @@ abstract class DecodeHelper implements HelperCore {
           accessibleFields.values
               .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
       _buffer.write('''
-    var val = ${data.content};''');
+    final val = ${data.content};''');
 
-      for (var field in data.fieldsToSet) {
+      for (final field in data.fieldsToSet) {
         _buffer.writeln();
-        var safeName = safeNameAccess(accessibleFields[field]);
+        final safeName = safeNameAccess(accessibleFields[field]);
         _buffer.write('''
     \$checkedConvert(json, $safeName, (v) => ''');
         _buffer.write('val.$field = ');
@@ -78,7 +78,7 @@ abstract class DecodeHelper implements HelperCore {
       _buffer.write('''\n    return val;
   }''');
 
-      var fieldKeyMap = Map.fromEntries(data.usedCtorParamsAndFields
+      final fieldKeyMap = Map.fromEntries(data.usedCtorParamsAndFields
           .map((k) => MapEntry(k, nameAccess(accessibleFields[k])))
           .where((me) => me.key != me.value));
 
@@ -86,7 +86,7 @@ abstract class DecodeHelper implements HelperCore {
       if (fieldKeyMap.isEmpty) {
         fieldKeyMapArg = '';
       } else {
-        var mapLiteral = jsonMapAsDart(fieldKeyMap);
+        final mapLiteral = jsonMapAsDart(fieldKeyMap);
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
@@ -112,7 +112,7 @@ abstract class DecodeHelper implements HelperCore {
 
       _buffer.write('''
   return ${data.content}''');
-      for (var field in data.fieldsToSet) {
+      for (final field in data.fieldsToSet) {
         _buffer.writeln();
         _buffer.write('    ..$field = ');
         _buffer.write(deserializeFun(field));
@@ -127,30 +127,30 @@ abstract class DecodeHelper implements HelperCore {
 
   void _writeChecks(int indent, JsonSerializable classAnnotation,
       Iterable<FieldElement> accessibleFields) {
-    var args = <String>[];
+    final args = <String>[];
 
     String constantList(Iterable<FieldElement> things) =>
         'const ${jsonLiteralAsDart(things.map(nameAccess).toList())}';
 
     if (classAnnotation.disallowUnrecognizedKeys) {
-      var allowKeysLiteral = constantList(accessibleFields);
+      final allowKeysLiteral = constantList(accessibleFields);
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
-    var requiredKeys =
+    final requiredKeys =
         accessibleFields.where((fe) => jsonKeyFor(fe).required).toList();
     if (requiredKeys.isNotEmpty) {
-      var requiredKeyLiteral = constantList(requiredKeys);
+      final requiredKeyLiteral = constantList(requiredKeys);
 
       args.add('requiredKeys: $requiredKeyLiteral');
     }
 
-    var disallowNullKeys = accessibleFields
+    final disallowNullKeys = accessibleFields
         .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {
-      var dissallowNullKeyLiteral = constantList(disallowNullKeys);
+      final dissallowNullKeyLiteral = constantList(disallowNullKeys);
 
       args.add('disallowNullValues: $dissallowNullKeyLiteral');
     }
@@ -163,9 +163,9 @@ abstract class DecodeHelper implements HelperCore {
   String _deserializeForField(FieldElement field,
       {ParameterElement ctorParam, bool checkedProperty}) {
     checkedProperty ??= false;
-    var jsonKeyName = safeNameAccess(field);
-    var targetType = ctorParam?.type ?? field.type;
-    var contextHelper = getHelperContext(field);
+    final jsonKeyName = safeNameAccess(field);
+    final targetType = ctorParam?.type ?? field.type;
+    final contextHelper = getHelperContext(field);
 
     String value;
     try {
@@ -186,7 +186,7 @@ abstract class DecodeHelper implements HelperCore {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
-    var defaultValue = jsonKeyFor(field).defaultValue;
+    final defaultValue = jsonKeyFor(field).defaultValue;
     if (defaultValue != null) {
       if (!contextHelper.nullable) {
         throwUnsupported(field,
@@ -216,26 +216,26 @@ _ConstructorData _writeConstructorInvocation(
     Map<String, String> unavailableReasons,
     String deserializeForField(String paramOrFieldName,
         {ParameterElement ctorParam})) {
-  var className = classElement.name;
+  final className = classElement.name;
 
-  var ctor = classElement.unnamedConstructor;
+  final ctor = classElement.unnamedConstructor;
   if (ctor == null) {
     // TODO(kevmoo): support using another ctor - dart-lang/json_serializable#50
     throw UnsupportedError(
         'The class `$className` has no default constructor.');
   }
 
-  var usedCtorParamsAndFields = Set<String>();
-  var constructorArguments = <ParameterElement>[];
-  var namedConstructorArguments = <ParameterElement>[];
+  final usedCtorParamsAndFields = Set<String>();
+  final constructorArguments = <ParameterElement>[];
+  final namedConstructorArguments = <ParameterElement>[];
 
-  for (var arg in ctor.parameters) {
+  for (final arg in ctor.parameters) {
     if (!availableConstructorParameters.contains(arg.name)) {
       if (arg.isNotOptional) {
         var msg = 'Cannot populate the required constructor '
             'argument: ${arg.name}.';
 
-        var additionalInfo = unavailableReasons[arg.name];
+        final additionalInfo = unavailableReasons[arg.name];
 
         if (additionalInfo != null) {
           msg = '$msg $additionalInfo';
@@ -260,15 +260,15 @@ _ConstructorData _writeConstructorInvocation(
       constructorArguments.followedBy(namedConstructorArguments));
 
   // fields that aren't already set by the constructor and that aren't final
-  var remainingFieldsForInvocationBody =
+  final remainingFieldsForInvocationBody =
       writeableFields.toSet().difference(usedCtorParamsAndFields);
 
-  var buffer = StringBuffer();
+  final buffer = StringBuffer();
   buffer.write('$className${genericClassArguments(classElement, false)}(');
   if (constructorArguments.isNotEmpty) {
     buffer.writeln();
     buffer.writeAll(constructorArguments.map((paramElement) {
-      var content =
+      final content =
           deserializeForField(paramElement.name, ctorParam: paramElement);
       return '      $content';
     }), ',\n');
@@ -279,7 +279,7 @@ _ConstructorData _writeConstructorInvocation(
   if (namedConstructorArguments.isNotEmpty) {
     buffer.writeln();
     buffer.writeAll(namedConstructorArguments.map((paramElement) {
-      var value =
+      final value =
           deserializeForField(paramElement.name, ctorParam: paramElement);
       return '      ${paramElement.name}: $value';
     }), ',\n');

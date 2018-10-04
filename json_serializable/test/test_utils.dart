@@ -10,13 +10,13 @@ final isCastError = const TypeMatcher<CastError>();
 final throwsCastError = throwsA(isCastError);
 
 T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
-  var data = loudEncode(object);
+  final data = loudEncode(object);
 
-  var object2 = factory(json.decode(data) as Map<String, dynamic>);
+  final object2 = factory(json.decode(data) as Map<String, dynamic>);
 
   expect(object2, equals(object));
 
-  var json2 = loudEncode(object2);
+  final json2 = loudEncode(object2);
 
   expect(json2, equals(data));
   return object2;
@@ -29,7 +29,7 @@ String loudEncode(Object object) {
   } on JsonUnsupportedObjectError catch (e) {
     var error = e;
     do {
-      var cause = error.cause;
+      final cause = error.cause;
       print(cause);
       error = (cause is JsonUnsupportedObjectError) ? cause : null;
     } while (error != null);

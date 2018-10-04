@@ -73,16 +73,16 @@ final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 /// If [targetType] is not an enum, `null` is returned.
 Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
   MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
-    var annotation =
+    final annotation =
         const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
 
     dynamic fieldValue;
     if (annotation == null) {
       fieldValue = fe.name;
     } else {
-      var reader = ConstantReader(annotation);
+      final reader = ConstantReader(annotation);
 
-      var valueReader = reader.read('value');
+      final valueReader = reader.read('value');
 
       if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
         fieldValue = valueReader.literalValue;
@@ -94,7 +94,7 @@ Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
       }
     }
 
-    var entry = MapEntry(fe, fieldValue);
+    final entry = MapEntry(fe, fieldValue);
 
     return entry;
   }
@@ -124,7 +124,7 @@ String escapeDartString(String value) {
   var canBeRaw = true;
 
   value = value.replaceAllMapped(_escapeRegExp, (match) {
-    var value = match[0];
+    final value = match[0];
     if (value == "'") {
       hasSingleQuote = true;
       return value;
@@ -166,7 +166,7 @@ String escapeDartString(String value) {
 
   // The only safe way to wrap the content is to escape all of the
   // problematic characters - `$`, `'`, and `"`
-  var string = value.replaceAll(_dollarQuoteRegexp, r'\');
+  final string = value.replaceAll(_dollarQuoteRegexp, r'\');
   return "'$string'";
 }
 
@@ -192,7 +192,7 @@ final _escapeRegExp = RegExp('[\$\'"\\x00-\\x07\\x0E-\\x1F$_escapeMapRegexp]');
 
 /// Given single-character string, return the hex-escaped equivalent.
 String _getHexLiteral(String input) {
-  var rune = input.runes.single;
-  var value = rune.toRadixString(16).toUpperCase().padLeft(2, '0');
+  final rune = input.runes.single;
+  final value = rune.toRadixString(16).toUpperCase().padLeft(2, '0');
   return '\\x$value';
 }

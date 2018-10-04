@@ -233,7 +233,7 @@ class IncludeIfNullAll {
 @ShouldGenerate(r'''
 Map<String, dynamic> _$IncludeIfNullOverrideToJson(
     IncludeIfNullOverride instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'number': instance.number,
   };
 

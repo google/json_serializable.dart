@@ -19,21 +19,21 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    var itemType = coreIterableGenericType(targetType);
+    final itemType = coreIterableGenericType(targetType);
 
     // This block will yield a regular list, which works fine for JSON
     // Although it's possible that child elements may be marked unsafe
 
     var isList = _coreListChecker.isAssignableFromType(targetType);
-    var subField = context.serialize(itemType, closureArg);
+    final subField = context.serialize(itemType, closureArg);
 
-    var optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = context.nullable ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subField`
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
     if (subField != closureArg) {
-      var lambda = LambdaResult.process(subField, closureArg);
+      final lambda = LambdaResult.process(subField, closureArg);
       if (context.useWrappers && isList) {
         var method = '\$wrapList';
         if (context.nullable) {
@@ -65,9 +65,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    var iterableGenericType = coreIterableGenericType(targetType);
+    final iterableGenericType = coreIterableGenericType(targetType);
 
-    var itemSubVal = context.deserialize(iterableGenericType, closureArg);
+    final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy
@@ -76,9 +76,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return '$expression as List';
     }
 
-    var optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = context.nullable ? '?' : '';
 
-    var lambda = LambdaResult.process(itemSubVal, closureArg);
+    final lambda = LambdaResult.process(itemSubVal, closureArg);
 
     var output = '($expression as List)$optionalQuestion.map($lambda)';
 

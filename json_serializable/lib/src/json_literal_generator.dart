@@ -25,15 +25,15 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
           '`annotation.path` must be relative path to the source file.');
     }
 
-    var sourcePathDir = p.dirname(buildStep.inputId.path);
-    var fileId = AssetId(buildStep.inputId.package,
+    final sourcePathDir = p.dirname(buildStep.inputId.path);
+    final fileId = AssetId(buildStep.inputId.package,
         p.join(sourcePathDir, annotation.read('path').stringValue));
-    var content = json.decode(await buildStep.readAsString(fileId));
+    final content = json.decode(await buildStep.readAsString(fileId));
 
-    var asConst = annotation.read('asConst').boolValue;
+    final asConst = annotation.read('asConst').boolValue;
 
-    var thing = jsonLiteralAsDart(content).toString();
-    var marked = asConst ? 'const' : 'final';
+    final thing = jsonLiteralAsDart(content).toString();
+    final marked = asConst ? 'const' : 'final';
 
     return '$marked _\$${element.name}JsonLiteral = $thing;';
   }
@@ -48,7 +48,7 @@ String jsonLiteralAsDart(dynamic value) {
   if (value is bool || value is num) return value.toString();
 
   if (value is List) {
-    var listItems = value.map(jsonLiteralAsDart).join(', ');
+    final listItems = value.map(jsonLiteralAsDart).join(', ');
     return '[$listItems]';
   }
 
@@ -59,7 +59,7 @@ String jsonLiteralAsDart(dynamic value) {
 }
 
 String jsonMapAsDart(Map value) {
-  var buffer = StringBuffer();
+  final buffer = StringBuffer();
   buffer.write('{');
 
   var first = true;

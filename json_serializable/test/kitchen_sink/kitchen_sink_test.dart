@@ -102,23 +102,23 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   }
 
   test('Fields with `!includeIfNull` should not be included when null', () {
-    var item = ctor();
+    final item = ctor();
 
-    var expectedDefaultKeys = _validValues.keys.toSet()
+    final expectedDefaultKeys = _validValues.keys.toSet()
       ..removeAll(_excludeIfNullKeys);
 
-    var encoded = item.toJson();
+    final encoded = item.toJson();
 
     expect(encoded.keys, orderedEquals(expectedDefaultKeys));
 
-    for (var key in expectedDefaultKeys) {
+    for (final key in expectedDefaultKeys) {
       expect(encoded, containsPair(key, isNull));
     }
   });
 
   test('list and map of DateTime', () {
-    var now = DateTime.now();
-    var item = ctor(dateTimeIterable: <DateTime>[now])
+    final now = DateTime.now();
+    final item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, null]
       ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
 
@@ -126,7 +126,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   });
 
   test('complex nested type', () {
-    var item = ctor()
+    final item = ctor()
       ..crazyComplex = [
         null,
         {},
@@ -157,13 +157,13 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   }
 
   test('empty', () {
-    var item = ctor();
+    final item = ctor();
     roundTripSink(item);
   });
 
   test('list and map of DateTime - not null', () {
-    var now = DateTime.now();
-    var item = ctor(dateTimeIterable: <DateTime>[now])
+    final now = DateTime.now();
+    final item = ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, now]
       ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
@@ -171,7 +171,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   test('complex nested type - not null', () {
-    var item = ctor()
+    final item = ctor()
       ..crazyComplex = [
         {},
         {
@@ -191,13 +191,13 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   test('JSON keys should be defined in field/property order', () {
     /// Explicitly setting values from [_excludeIfNullKeys] to ensure
     /// they exist for KitchenSink where they are excluded when null
-    var item = ctor(iterable: [])
+    final item = ctor(iterable: [])
       ..dateTime = DateTime.now()
       ..dateTimeList = []
       ..crazyComplex = []
       ..val = {};
 
-    var json = item.toJson();
+    final json = item.toJson();
     expect(json.keys, orderedEquals(_validValues.keys));
   });
 
@@ -206,16 +206,16 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   test('valid values round-trip - yaml', () {
-    var jsonEncoded = loudEncode(_validValues);
-    var yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
+    final jsonEncoded = loudEncode(_validValues);
+    final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
     expect(jsonEncoded, loudEncode(fromJson(yaml as YamlMap)));
   });
 
   group('a bad value for', () {
-    for (var e in _invalidValueTypes.entries) {
+    for (final e in _invalidValueTypes.entries) {
       _testBadValue(isChecked, e.key, e.value, fromJson, false);
     }
-    for (var e in _invalidCheckedValues.entries) {
+    for (final e in _invalidCheckedValues.entries) {
       _testBadValue(isChecked, e.key, e.value, fromJson, true);
     }
   });
@@ -225,7 +225,7 @@ void _testBadValue(bool isChecked, String key, Object badValue,
     KitchenSink fromJson(Map json), bool checkedAssignment) {
   final matcher = _getMatcher(isChecked, key, checkedAssignment);
 
-  for (var isJson in [true, false]) {
+  for (final isJson in [true, false]) {
     test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
         () {
       var copy = Map.from(_validValues);

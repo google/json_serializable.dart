@@ -20,7 +20,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
-  var obj = jsonKeyAnnotation(element);
+  final obj = jsonKeyAnnotation(element);
 
   if (obj == null) {
     return _populateJsonKey(classAnnotation, element);
@@ -31,7 +31,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       return null;
     }
 
-    var reader = ConstantReader(dartObject);
+    final reader = ConstantReader(dartObject);
 
     String badType;
     if (reader.isSymbol) {
@@ -51,7 +51,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
           element, '`defaultValue` is `$badType`, it must be a literal.');
     }
 
-    var literal = reader.literalValue;
+    final literal = reader.literalValue;
 
     if (literal is num || literal is String || literal is bool) {
       return literal;
@@ -60,7 +60,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
           .map((e) => _getLiteral(e, things.followedBy(['List'])))
           .toList();
     } else if (literal is Map<DartObject, DartObject>) {
-      var mapThings = things.followedBy(['Map']);
+      final mapThings = things.followedBy(['Map']);
       return literal.map((k, v) =>
           MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
     }
@@ -74,14 +74,14 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         'Please rerun your build with `--verbose` and file an issue.');
   }
 
-  var defaultValueObject = obj.getField('defaultValue');
+  final defaultValueObject = obj.getField('defaultValue');
 
   Object defaultValueLiteral;
 
-  var enumFields = iterateEnumFields(defaultValueObject.type);
+  final enumFields = iterateEnumFields(defaultValueObject.type);
   if (enumFields != null) {
-    var allowedValues = enumFields.map((p) => p.name).toList();
-    var enumValueIndex = defaultValueObject.getField('index').toIntValue();
+    final allowedValues = enumFields.map((p) => p.name).toList();
+    final enumValueIndex = defaultValueObject.getField('index').toIntValue();
     defaultValueLiteral =
         '${defaultValueObject.type.name}.${allowedValues[enumValueIndex]}';
   } else {
@@ -91,8 +91,8 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     }
   }
 
-  var disallowNullValue = obj.getField('disallowNullValue').toBoolValue();
-  var includeIfNull = obj.getField('includeIfNull').toBoolValue();
+  final disallowNullValue = obj.getField('disallowNullValue').toBoolValue();
+  final includeIfNull = obj.getField('includeIfNull').toBoolValue();
 
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -117,15 +117,17 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
 }
 
 JsonKey _populateJsonKey(
-    JsonSerializable classAnnotation, FieldElement fieldElement,
-    {String name,
-    bool nullable,
-    bool includeIfNull,
-    bool ignore,
-    Object defaultValue,
-    bool required,
-    bool disallowNullValue}) {
-  var jsonKey = JsonKey(
+  JsonSerializable classAnnotation,
+  FieldElement fieldElement, {
+  String name,
+  bool nullable,
+  bool includeIfNull,
+  bool ignore,
+  Object defaultValue,
+  bool required,
+  bool disallowNullValue,
+}) {
+  final jsonKey = JsonKey(
       name: _encodedFieldName(classAnnotation, name, fieldElement),
       nullable: nullable ?? classAnnotation.nullable,
       includeIfNull: _includeIfNull(

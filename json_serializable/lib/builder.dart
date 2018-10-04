@@ -23,9 +23,9 @@ import 'src/json_part_builder.dart';
 Builder jsonSerializable(BuilderOptions options) {
   // Paranoid copy of options.config - don't assume it's mutable or needed
   // elsewhere.
-  var optionsMap = Map<String, dynamic>.from(options.config);
+  final optionsMap = Map<String, dynamic>.from(options.config);
 
-  var builder = jsonPartBuilder(
+  final builder = jsonPartBuilder(
     useWrappers: optionsMap.remove('use_wrappers') as bool,
     checked: optionsMap.remove('checked') as bool,
     anyMap: optionsMap.remove('any_map') as bool,

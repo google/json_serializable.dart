@@ -12,7 +12,7 @@ void $checkKeys(Map map,
     List<String> requiredKeys,
     List<String> disallowNullValues}) {
   if (map != null && allowedKeys != null) {
-    var invalidKeys =
+    final invalidKeys =
         map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
     if (invalidKeys.isNotEmpty) {
       throw UnrecognizedKeysException(invalidKeys, map, allowedKeys);
@@ -20,14 +20,15 @@ void $checkKeys(Map map,
   }
 
   if (requiredKeys != null) {
-    var missingKeys = requiredKeys.where((k) => !map.keys.contains(k)).toList();
+    final missingKeys =
+        requiredKeys.where((k) => !map.keys.contains(k)).toList();
     if (missingKeys.isNotEmpty) {
       throw MissingRequiredKeysException(missingKeys, map);
     }
   }
 
   if (map != null && disallowNullValues != null) {
-    var nullValuedKeys = map.entries
+    final nullValuedKeys = map.entries
         .where((entry) =>
             disallowNullValues.contains(entry.key) && entry.value == null)
         .map((entry) => entry.key as String)

@@ -46,15 +46,15 @@ void main() {
 
 void _test(DefaultValue fromJson(Map<String, dynamic> json)) {
   test('empty map yields all default values', () {
-    var object = fromJson({});
+    final object = fromJson({});
     expect(loudEncode(object), loudEncode(_defaultInstance));
   });
   test('default value input round-trips', () {
-    var object = fromJson(_defaultInstance);
+    final object = fromJson(_defaultInstance);
     expect(loudEncode(object), loudEncode(_defaultInstance));
   });
   test('non-default values round-trip', () {
-    var object = fromJson(_otherValues);
+    final object = fromJson(_otherValues);
     expect(loudEncode(object), loudEncode(_otherValues));
   });
 }
