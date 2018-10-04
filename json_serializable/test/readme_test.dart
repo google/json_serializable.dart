@@ -11,24 +11,24 @@ import 'package:path/path.dart' as p;
 
 void main() {
   test('README example', () {
-    var readmeContent = File('README.md').readAsStringSync();
+    final readmeContent = File('README.md').readAsStringSync();
 
-    var exampleContent = _getExampleContent('example.dart');
+    final exampleContent = _getExampleContent('example.dart');
     expect(readmeContent, contains(exampleContent));
 
-    var exampleGeneratedContent = _getExampleContent('example.g.dart');
+    final exampleGeneratedContent = _getExampleContent('example.g.dart');
     expect(readmeContent, contains(exampleGeneratedContent));
   });
 }
 
 String _getExampleContent(String fileName) {
-  var lines = File(p.join('example', fileName)).readAsLinesSync();
+  final lines = File(p.join('example', fileName)).readAsLinesSync();
 
   var lastHadContent = false;
 
   // All lines with content, except those starting with `/`.
   // Also exclude blank lines that follow other blank lines
-  var cleanedSource = lines.where((l) {
+  final cleanedSource = lines.where((l) {
     if (l.startsWith(r'/')) {
       return false;
     }

@@ -32,7 +32,7 @@ class _NonNullableGenerator extends Generator {
     final baseName = p.basenameWithoutExtension(path);
 
     final content = await buildStep.readAsString(buildStep.inputId);
-    var replacements = [
+    final replacements = [
       _Replacement(_copyrightContent, ''),
       _Replacement(
         "part '$baseName.g.dart",
@@ -71,7 +71,7 @@ class _CheckedGenerator extends Generator {
     final baseName = p.basenameWithoutExtension(path);
 
     final content = await buildStep.readAsString(buildStep.inputId);
-    var replacements = [
+    final replacements = [
       _Replacement(_copyrightContent, ''),
       _Replacement(
         "part '$baseName.g.dart",
@@ -90,7 +90,7 @@ class _WrappedGenerator extends Generator {
     final baseName = p.basenameWithoutExtension(path);
 
     final content = await buildStep.readAsString(buildStep.inputId);
-    var replacements = [
+    final replacements = [
       _Replacement(_copyrightContent, ''),
       _Replacement(
         "part '$baseName.g.dart",
@@ -112,7 +112,7 @@ class _Replacement {
       String inputContent, Iterable<_Replacement> replacements) {
     var outputContent = inputContent;
 
-    for (var r in replacements) {
+    for (final r in replacements) {
       if (!outputContent.contains(r.existing)) {
         throw StateError(
             'Input string did not contain `${r.existing}` as expected.');

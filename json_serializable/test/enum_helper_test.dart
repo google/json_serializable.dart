@@ -10,7 +10,7 @@ import 'package:json_serializable/src/type_helpers/enum_helper.dart';
 void main() {
   group('expression test', () {
     group('simple', () {
-      for (var expression in [
+      for (final expression in [
         'hello',
         'HELLO',
         'hi_to',
@@ -24,7 +24,7 @@ void main() {
     });
 
     group('not simple', () {
-      for (var expression in ['nice[thing]', 'a.b']) {
+      for (final expression in ['nice[thing]', 'a.b']) {
         test(expression, () {
           expect(simpleExpression.hasMatch(expression), isFalse);
         });

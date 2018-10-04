@@ -8,7 +8,7 @@ WithANonCtorGetterChecked _$WithANonCtorGetterCheckedFromJson(
         allowedKeys: const ['items'],
         requiredKeys: const ['items'],
         disallowNullValues: const ['items']);
-    var val = WithANonCtorGetterChecked($checkedConvert(
+    final val = WithANonCtorGetterChecked($checkedConvert(
         json, 'items', (v) => (v as List)?.map((e) => e as String)?.toList()));
     return val;
   });

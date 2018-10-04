@@ -30,20 +30,20 @@ void main() {
   setUp(records.clear);
 
   test('empty', () async {
-    var builder = jsonSerializable(BuilderOptions.empty);
+    final builder = jsonSerializable(BuilderOptions.empty);
     expect(builder, isNotNull);
     expect(records, isEmpty);
   });
 
   test('valid config', () async {
-    var builder = jsonSerializable(const BuilderOptions(_validConfig));
+    final builder = jsonSerializable(const BuilderOptions(_validConfig));
     expect(builder, isNotNull);
 
     expect(records, isEmpty);
   });
 
   test('readme config', () async {
-    var configExampleContent = File('README.md')
+    final configExampleContent = File('README.md')
         .readAsLinesSync()
         .skipWhile((line) => line != '```yaml')
         .skip(1)
@@ -52,7 +52,7 @@ void main() {
 
     var yaml = loadYaml(configExampleContent) as YamlMap;
 
-    for (var key in [
+    for (final key in [
       'targets',
       r'$default',
       'builders',
@@ -62,17 +62,17 @@ void main() {
       yaml = yaml[key] as YamlMap;
     }
 
-    var config = Map<String, dynamic>.from(yaml);
+    final config = Map<String, dynamic>.from(yaml);
 
     expect(config.keys, unorderedEquals(_validConfig.keys));
 
-    var builder = jsonSerializable(BuilderOptions(config));
+    final builder = jsonSerializable(BuilderOptions(config));
     expect(builder, isNotNull);
     expect(records, isEmpty);
   });
 
   test('unsupported configuration', () async {
-    var builder =
+    final builder =
         jsonSerializable(const BuilderOptions({'unsupported': 'config'}));
     expect(builder, isNotNull);
 
@@ -81,9 +81,9 @@ void main() {
   });
 
   group('invalid config', () {
-    for (var entry in _invalidConfig.entries) {
+    for (final entry in _invalidConfig.entries) {
       test(entry.key, () {
-        var config = Map<String, dynamic>.from(_validConfig);
+        final config = Map<String, dynamic>.from(_validConfig);
         config[entry.key] = entry.value;
 
         expect(() => jsonSerializable(BuilderOptions(config)), throwsCastError);

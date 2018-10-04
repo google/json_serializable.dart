@@ -31,7 +31,7 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
-  var val = <String, dynamic>{
+  final val = <String, dynamic>{
     'fieldBool': instance.fieldBool,
   };
 

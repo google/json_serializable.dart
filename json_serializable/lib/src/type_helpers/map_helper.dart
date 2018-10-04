@@ -20,16 +20,16 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
-    var args = typeArgumentsOf(targetType, coreMapTypeChecker);
+    final args = typeArgumentsOf(targetType, coreMapTypeChecker);
     assert(args.length == 2);
 
-    var keyType = args[0];
-    var valueType = args[1];
+    final keyType = args[0];
+    final valueType = args[1];
 
     _checkSafeKeyType(expression, keyType);
 
-    var subFieldValue = context.serialize(valueType, closureArg);
-    var subKeyValue = context.serialize(keyType, _keyParam);
+    final subFieldValue = context.serialize(valueType, closureArg);
+    final subKeyValue = context.serialize(keyType, _keyParam);
 
     if (closureArg == subFieldValue && _keyParam == subKeyValue) {
       return expression;
@@ -41,7 +41,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         method = '${method}HandleNull';
       }
 
-      var lambda = LambdaResult.process(subFieldValue, closureArg);
+      final lambda = LambdaResult.process(subFieldValue, closureArg);
       return '$method<$keyType, $valueType>($expression, $lambda)';
     }
 
@@ -58,10 +58,10 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    var typeArgs = typeArgumentsOf(targetType, coreMapTypeChecker);
+    final typeArgs = typeArgumentsOf(targetType, coreMapTypeChecker);
     assert(typeArgs.length == 2);
-    var keyArg = typeArgs.first;
-    var valueArg = typeArgs.last;
+    final keyArg = typeArgs.first;
+    final valueArg = typeArgs.last;
 
     _checkSafeKeyType(expression, keyArg);
 
@@ -117,7 +117,7 @@ bool _isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
-  var safeKey = _isObjectOrDynamic(keyArg) ||
+  final safeKey = _isObjectOrDynamic(keyArg) ||
       coreStringTypeChecker.isExactlyType(keyArg) ||
       isEnum(keyArg);
 
