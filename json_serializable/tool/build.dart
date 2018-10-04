@@ -8,6 +8,7 @@ import 'dart:io' show exitCode;
 import 'package:build/build.dart';
 import 'package:build_config/build_config.dart';
 import 'package:build_runner/build_runner.dart';
+import 'package:build_runner_core/build_runner_core.dart';
 import 'package:build_test/builder.dart';
 import 'package:json_serializable/src/json_part_builder.dart' as jpb;
 import 'package:source_gen/builder.dart';
