@@ -62,6 +62,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
           .map((e) => Item.fromJson(e as Map<String, dynamic>)))
     ..count = json['count'] as int
     ..isRushed = json['isRushed'] as bool
+    ..duration = Duration(microseconds: json['duration'] as int)
     ..platform = Platform.fromJson(json['platform'] as String)
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
         .map((k, e) => MapEntry(k, Platform.fromJson(e as String)))
@@ -74,6 +75,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'count': instance.count,
       'isRushed': instance.isRushed,
+      'duration': instance.duration.inMicroseconds,
       'category': _$CategoryEnumMap[instance.category],
       'items': instance.items,
       'platform': instance.platform,
