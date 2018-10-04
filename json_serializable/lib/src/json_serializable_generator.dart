@@ -14,6 +14,7 @@ import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
+import 'type_helpers/duration_helper.dart';
 import 'type_helpers/enum_helper.dart';
 import 'type_helpers/iterable_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
@@ -21,7 +22,6 @@ import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
 import 'type_helpers/value_helper.dart';
-import 'type_helpers/duration_helper.dart';
 import 'utils.dart';
 
 Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
