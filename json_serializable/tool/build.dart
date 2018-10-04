@@ -60,17 +60,11 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: [
           'example/example.dart',
-          'test/literal/json_literal.dart',
-          'test/integration/json_test_example.dart',
-          'test/integration/json_test_example.non_nullable.dart'
-        ],
-      ),
-      hideOutput: true),
-  applyToRoot(_jsonPartBuilder(),
-      generateFor: const InputSet(
-        include: [
-          'test/generic_files/generic_class.dart',
           'test/default_value/default_value.dart',
+          'test/generic_files/generic_class.dart',
+          'test/integration/json_test_example.dart',
+          'test/integration/json_test_example.non_nullable.dart',
+          'test/literal/json_literal.dart',
         ],
       ),
       hideOutput: true),
