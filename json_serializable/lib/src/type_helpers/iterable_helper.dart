@@ -34,7 +34,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // If they are not equal, then we to write out the substitution.
     if (subField != closureArg) {
       final lambda = LambdaResult.process(subField, closureArg);
-      if (context.useWrappers && isList) {
+      if (context.config.useWrappers && isList) {
         var method = '\$wrapList';
         if (context.nullable) {
           method = '${method}HandleNull';

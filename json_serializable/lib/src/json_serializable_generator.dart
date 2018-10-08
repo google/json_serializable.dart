@@ -10,6 +10,7 @@ import 'package:source_gen/source_gen.dart';
 import 'decode_helper.dart';
 import 'encoder_helper.dart';
 import 'field_helpers.dart';
+import 'generator_config.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
@@ -23,9 +24,6 @@ import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
 import 'type_helpers/value_helper.dart';
 import 'utils.dart';
-
-Iterable<TypeHelper> allHelpersImpl(JsonSerializableGenerator generator) =>
-    generator._allHelpers;
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
@@ -50,93 +48,16 @@ class JsonSerializableGenerator
         JsonConverterHelper()
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
-  /// If `true`, wrappers are used to minimize the number of
-  /// [Map] and [List] instances created during serialization.
-  ///
-  /// This will increase the code size, but it may improve runtime performance,
-  /// especially for large object graphs.
-  final bool useWrappers;
-
-  /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
-  /// – which is the default type of [Map] instances return by JSON decode in
-  /// `dart:convert`.
-  ///
-  /// This will increase the code size, but allows [Map] types returned
-  /// from other sources, such as `package:yaml`.
-  ///
-  /// *Note: in many cases the key values are still assumed to be [String]*.
-  final bool anyMap;
-
-  /// If `true`, generated `fromJson` functions include extra checks to validate
-  /// proper deserialization of types.
-  ///
-  /// If an exception is thrown during deserialization, a
-  /// [CheckedFromJsonException] is thrown.
-  final bool checked;
-
-  /// If `true`, generated `toJson` methods will explicitly call `toJson` on
-  /// nested objects.
-  ///
-  /// When using JSON encoding support in `dart:convert`, `toJson` is
-  /// automatically called on objects, so the default behavior
-  /// (`explicitToJson: false`) is to omit the `toJson` call.
-  ///
-  /// Example of `explicitToJson: false` (default)
-  ///
-  /// ```dart
-  /// Map<String, dynamic> toJson() => {'child': child};
-  /// ```
-  ///
-  /// Example of `explicitToJson: true`
-  ///
-  /// ```dart
-  /// Map<String, dynamic> toJson() => {'child': child?.toJson()};
-  /// ```
-  final bool explicitToJson;
-
-  /// Controls how `toJson` functionality is generated for all types processed
-  /// by this generator.
-  ///
-  /// If `true` (the default), then a top-level function is created that you can reference
-  /// from your class.
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example {
-  ///   // ...
-  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
-  /// }
-  /// ```
-  ///
-  /// If `false`, a private `_$ClassNameSerializerMixin` class is
-  /// created in the generated part file which contains a `toJson` method.
-  ///
-  /// Mix in this class to the source class:
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example extends Object with _$ExampleSerializerMixin {
-  ///   // ...
-  /// }
-  /// ```
-  final bool generateToJsonFunction;
+  final GeneratorConfig config;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, three built-in helpers are used:
   /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   const JsonSerializableGenerator({
+    GeneratorConfig config,
     List<TypeHelper> typeHelpers,
-    bool useWrappers = false,
-    bool anyMap = false,
-    bool checked = false,
-    bool explicitToJson = false,
-    bool generateToJsonFunction = true,
-  })  : this.useWrappers = useWrappers ?? false,
-        this.anyMap = anyMap ?? false,
-        this.checked = checked ?? false,
-        this.explicitToJson = explicitToJson ?? false,
-        this.generateToJsonFunction = generateToJsonFunction ?? true,
+  })  : this.config = config ?? const GeneratorConfig(),
         this._typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
@@ -145,17 +66,10 @@ class JsonSerializableGenerator
   /// the built-in helpers:
   /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
-    Iterable<TypeHelper> typeHelpers, {
-    bool useWrappers = false,
-    bool anyMap = false,
-    bool checked = false,
-    bool generateToJsonFunction = false,
-  }) =>
+          Iterable<TypeHelper> typeHelpers,
+          {GeneratorConfig config}) =>
       JsonSerializableGenerator(
-          useWrappers: useWrappers,
-          anyMap: anyMap,
-          checked: checked,
-          generateToJsonFunction: generateToJsonFunction,
+          config: config,
           typeHelpers:
               List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
@@ -187,6 +101,9 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   void addMember(String memberContent) {
     _addedMembers.add(memberContent);
   }
+
+  @override
+  Iterable<TypeHelper> get allTypeHelpers => generator._allHelpers;
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);

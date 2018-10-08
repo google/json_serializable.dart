@@ -5,8 +5,10 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'generator_config.dart';
 import 'json_key_utils.dart';
 import 'json_serializable_generator.dart';
 import 'type_helper.dart';
@@ -14,9 +16,17 @@ import 'type_helper_ctx.dart';
 import 'utils.dart';
 
 abstract class HelperCore {
-  final ClassElement element;
+  @protected
   final JsonSerializable annotation;
+
+  @protected
   final JsonSerializableGenerator generator;
+
+  final ClassElement element;
+
+  GeneratorConfig get config => generator.config;
+
+  Iterable<TypeHelper> get allTypeHelpers;
 
   HelperCore(this.generator, this.element, this.annotation);
 

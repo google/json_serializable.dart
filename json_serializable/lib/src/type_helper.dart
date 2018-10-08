@@ -5,6 +5,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
+import 'generator_config.dart';
+
 /// Context information provided in calls to [TypeHelper.serialize] and
 /// [TypeHelper.deserialize].
 abstract class TypeHelperContext {
@@ -32,9 +34,7 @@ abstract class TypeHelperContext {
 /// Extended context information with includes configuration values
 /// corresponding to `JsonSerializableGenerator` settings.
 abstract class TypeHelperContextWithConfig extends TypeHelperContext {
-  bool get explicitToJson;
-  bool get anyMap;
-  bool get useWrappers;
+  GeneratorConfig get config;
 }
 
 abstract class TypeHelper<T extends TypeHelperContext> {

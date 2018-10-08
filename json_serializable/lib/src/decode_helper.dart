@@ -26,7 +26,7 @@ abstract class DecodeHelper implements HelperCore {
     assert(annotation.createFactory);
     assert(_buffer.isEmpty);
 
-    final mapType = generator.anyMap ? 'Map' : 'Map<String, dynamic>';
+    final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
     _buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
         '($mapType json) {\n');
@@ -37,7 +37,7 @@ abstract class DecodeHelper implements HelperCore {
             ctorParam: ctorParam);
 
     _ConstructorData data;
-    if (generator.checked) {
+    if (config.checked) {
       final classLiteral = escapeDartString(element.name);
 
       _buffer.write('''
@@ -169,7 +169,7 @@ abstract class DecodeHelper implements HelperCore {
 
     String value;
     try {
-      if (generator.checked) {
+      if (config.checked) {
         value = contextHelper.deserialize(targetType, 'v').toString();
         if (!checkedProperty) {
           value = '\$checkedConvert(json, $jsonKeyName, (v) => $value)';

@@ -5,14 +5,14 @@
 import 'package:analyzer/dart/element/element.dart';
 
 import 'constants.dart';
+import 'generator_config.dart';
 import 'helper_core.dart';
-import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) {
     var fieldAccess = field.name;
-    if (generator.generateToJsonFunction) {
+    if (config.generateToJsonFunction) {
       fieldAccess = '$_toJsonParamName.$fieldAccess';
     }
     return fieldAccess;
@@ -29,7 +29,7 @@ abstract class EncodeHelper implements HelperCore {
 
     final buffer = StringBuffer();
 
-    if (generator.generateToJsonFunction) {
+    if (config.generateToJsonFunction) {
       final functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
       buffer.write('Map<String, dynamic> $functionName'
           '($targetClassReference $_toJsonParamName) ');
@@ -51,9 +51,8 @@ abstract class EncodeHelper implements HelperCore {
 
     final writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
-    if (generator.useWrappers) {
-      final param =
-          generator.generateToJsonFunction ? _toJsonParamName : 'this';
+    if (config.useWrappers) {
+      final param = config.generateToJsonFunction ? _toJsonParamName : 'this';
       buffer.writeln('=> ${_wrapperClassName(false)}($param);');
     } else {
       if (writeNaive) {
@@ -65,14 +64,14 @@ abstract class EncodeHelper implements HelperCore {
       }
     }
 
-    if (!generator.generateToJsonFunction) {
+    if (!config.generateToJsonFunction) {
       // end of the mixin class
       buffer.writeln('}');
     }
 
     yield buffer.toString();
 
-    if (generator.useWrappers) {
+    if (config.useWrappers) {
       yield _createWrapperClass(accessibleFields);
     }
   }
@@ -82,7 +81,7 @@ abstract class EncodeHelper implements HelperCore {
     buffer.writeln();
     // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
 
-    final fieldType = generator.generateToJsonFunction
+    final fieldType = config.generateToJsonFunction
         ? targetClassReference
         : _mixinClassName(false);
 
@@ -162,7 +161,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
   }
 
   /// Name of the parameter used when generating top-level `toJson` functions
-  /// if [JsonSerializableGenerator.generateToJsonFunction] is `true`.
+  /// if [GeneratorConfig.generateToJsonFunction] is `true`.
   static const _toJsonParamName = 'instance';
 
   void _writeToJsonWithNullChecks(
@@ -185,7 +184,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       // access with `this.`.
       if (safeFieldAccess == generatedLocalVarName ||
           safeFieldAccess == toJsonMapHelperName) {
-        assert(!generator.generateToJsonFunction,
+        assert(!config.generateToJsonFunction,
             'This code path should only be hit during the mixin codepath.');
         safeFieldAccess = 'this.$safeFieldAccess';
       }
