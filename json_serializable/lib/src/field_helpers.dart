@@ -80,6 +80,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
   var inheritedFields = <String, FieldElement>{};
   var manager = InheritanceManager(element.library);
 
+  // ignore: deprecated_member_use
   for (var v in manager.getMembersInheritedFromClasses(element).values) {
     assert(v is! FieldElement);
     if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
