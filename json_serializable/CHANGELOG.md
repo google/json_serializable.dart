@@ -1,3 +1,7 @@
+## 1.5.1
+
+* Support the latest `pkg:analyzer`.
+
 ## 1.5.0
 
 * Added support for `JsonConvert` annotation on fields.
