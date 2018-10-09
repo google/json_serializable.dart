@@ -59,6 +59,11 @@ final List<BuilderApplication> builders = [
         'test/integration/json_test_example.non_nullable.dart',
       ])),
   applyToRoot(_jsonPartBuilder(),
+      generateFor: const InputSet(include: [
+        'lib/src/generator_config.dart',
+      ]),
+      hideOutput: true),
+  applyToRoot(_jsonPartBuilder(),
       generateFor: const InputSet(
         include: [
           'example/example.dart',

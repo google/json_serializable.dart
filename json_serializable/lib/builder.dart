@@ -22,26 +22,6 @@ import 'src/json_part_builder.dart';
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
-  // Paranoid copy of options.config - don't assume it's mutable or needed
-  // elsewhere.
-  final optionsMap = Map<String, dynamic>.from(options.config);
-
-  var config = GeneratorConfig(
-    useWrappers: optionsMap.remove('use_wrappers') as bool,
-    checked: optionsMap.remove('checked') as bool,
-    anyMap: optionsMap.remove('any_map') as bool,
-    explicitToJson: optionsMap.remove('explicit_to_json') as bool,
-    generateToJsonFunction:
-        optionsMap.remove('generate_to_json_function') as bool,
-  );
-
-  if (optionsMap.isNotEmpty) {
-    if (log == null) {
-      throw StateError('Upgrade `build_runner` to at least 0.8.2.');
-    } else {
-      log.warning('These options were ignored: `$optionsMap`.');
-    }
-  }
-
+  var config = GeneratorConfig.fromJson(options.config);
   return jsonPartBuilder(config: config);
 }

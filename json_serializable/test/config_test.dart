@@ -3,43 +3,25 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-
-import 'dart:async';
 import 'dart:io';
 
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/builder.dart';
-import 'package:logging/logging.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import 'test_utils.dart';
 
 void main() {
-  StreamSubscription sub;
-  final records = <LogRecord>[];
-
-  setUpAll(() {
-    sub = log.onRecord.listen(records.add);
-  });
-
-  tearDownAll(() async {
-    await sub.cancel();
-  });
-
-  setUp(records.clear);
-
   test('empty', () async {
     final builder = jsonSerializable(BuilderOptions.empty);
     expect(builder, isNotNull);
-    expect(records, isEmpty);
   });
 
   test('valid config', () async {
     final builder = jsonSerializable(const BuilderOptions(_validConfig));
     expect(builder, isNotNull);
-
-    expect(records, isEmpty);
   });
 
   test('readme config', () async {
@@ -68,16 +50,18 @@ void main() {
 
     final builder = jsonSerializable(BuilderOptions(config));
     expect(builder, isNotNull);
-    expect(records, isEmpty);
   });
 
   test('unsupported configuration', () async {
-    final builder =
-        jsonSerializable(const BuilderOptions({'unsupported': 'config'}));
-    expect(builder, isNotNull);
+    var matcher = const TypeMatcher<UnrecognizedKeysException>().having(
+        (e) => e.unrecognizedKeys, 'unrecognizedKeys', [
+      'unsupported'
+    ]).having((e) => e.allowedKeys, 'allowedKeys',
+        unorderedEquals(_validConfig.keys));
 
-    expect(records.single.message,
-        'These options were ignored: `{unsupported: config}`.');
+    expect(
+        () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
+        throwsA(matcher));
   });
 
   group('invalid config', () {

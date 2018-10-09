@@ -1,5 +1,10 @@
 ## 2.0.0
 
+* Build configuration
+
+  * **BREAKING** Unsupported options defined in `build.yaml` will cause
+    exceptions instead of being logged and ignored.
+
 * `json_serializable.dart`
 
   * **BREAKING** `JsonSerializableGenerator` now exposes a `config` property

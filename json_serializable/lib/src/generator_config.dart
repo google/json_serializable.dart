@@ -6,7 +6,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'json_serializable_generator.dart';
 
+part 'generator_config.g.dart';
+
 /// Represents the configuration for [JsonSerializableGenerator].
+@JsonSerializable(
+    disallowUnrecognizedKeys: true, fieldRename: FieldRename.snake)
 class GeneratorConfig {
   /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
   /// – which is the default type of [Map] instances return by JSON decode in
@@ -55,8 +59,8 @@ class GeneratorConfig {
   /// Controls how `toJson` functionality is generated for all types processed
   /// by this generator.
   ///
-  /// If `true` (the default), then a top-level function is created that you can reference
-  /// from your class.
+  /// If `true` (the default), then a top-level function is created that you can
+  /// reference from your class.
   ///
   /// ```dart
   /// @JsonSerializable()
@@ -90,4 +94,9 @@ class GeneratorConfig {
         this.explicitToJson = explicitToJson ?? false,
         this.generateToJsonFunction = generateToJsonFunction ?? true,
         this.useWrappers = useWrappers ?? false;
+
+  factory GeneratorConfig.fromJson(Map<String, dynamic> json) =>
+      _$GeneratorConfigFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GeneratorConfigToJson(this);
 }
