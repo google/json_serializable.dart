@@ -11,7 +11,7 @@ part 'generator_config.g.dart';
 /// Represents the configuration for [JsonSerializableGenerator].
 @JsonSerializable(
     disallowUnrecognizedKeys: true, fieldRename: FieldRename.snake)
-class GeneratorConfig {
+class GeneratorConfig extends JsonSerializable {
   /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
   /// – which is the default type of [Map] instances return by JSON decode in
   /// `dart:convert`.
@@ -89,11 +89,24 @@ class GeneratorConfig {
     bool explicitToJson = false,
     bool generateToJsonFunction = true,
     bool useWrappers = false,
+    bool disallowUnrecognizedKeys = false,
+    bool createFactory = true,
+    bool createToJson = true,
+    bool includeIfNull = true,
+    bool nullable = true,
+    FieldRename fieldRename = FieldRename.none,
   })  : this.anyMap = anyMap ?? false,
         this.checked = checked ?? false,
         this.explicitToJson = explicitToJson ?? false,
         this.generateToJsonFunction = generateToJsonFunction ?? true,
-        this.useWrappers = useWrappers ?? false;
+        this.useWrappers = useWrappers ?? false,
+        super(
+            disallowUnrecognizedKeys: disallowUnrecognizedKeys ?? false,
+            createFactory: createFactory ?? true,
+            createToJson: createToJson ?? true,
+            includeIfNull: includeIfNull ?? true,
+            nullable: nullable ?? true,
+            fieldRename: fieldRename ?? FieldRename.none);
 
   factory GeneratorConfig.fromJson(Map<String, dynamic> json) =>
       _$GeneratorConfigFromJson(json);

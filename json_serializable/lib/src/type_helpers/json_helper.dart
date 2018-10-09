@@ -4,10 +4,10 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import '../generator_config.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
@@ -22,7 +22,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   @override
   String serialize(DartType targetType, String expression,
       TypeHelperContextWithConfig context) {
-    if (!_canSerialize(targetType)) {
+    if (!_canSerialize(context.config, targetType)) {
       return null;
     }
 
@@ -50,7 +50,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       // TODO: should verify that this type is a valid JSON type
       final asCastType = fromJsonCtor.parameters.first.type;
       asCast = asStatement(asCastType);
-    } else if (_annotation(type)?.createFactory == true) {
+    } else if (_annotation(context.config, type)?.createFactory == true) {
       if (context.config.anyMap) {
         asCast = ' as Map';
       } else {
@@ -68,7 +68,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 }
 
-bool _canSerialize(DartType type) {
+bool _canSerialize(GeneratorConfig config, DartType type) {
   if (type is InterfaceType) {
     final toJsonMethod = _toJsonMethod(type);
 
@@ -77,7 +77,7 @@ bool _canSerialize(DartType type) {
       return true;
     }
 
-    if (_annotation(type)?.createToJson == true) {
+    if (_annotation(config, type)?.createToJson == true) {
       // TODO: consider logging that we're assuming a user will wire up the
       // generated mixin at some point...
       return true;
@@ -86,7 +86,7 @@ bool _canSerialize(DartType type) {
   return false;
 }
 
-JsonSerializable _annotation(InterfaceType source) {
+JsonSerializable _annotation(GeneratorConfig config, InterfaceType source) {
   final annotations = const TypeChecker.fromRuntime(JsonSerializable)
       .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();
@@ -95,7 +95,7 @@ JsonSerializable _annotation(InterfaceType source) {
     return null;
   }
 
-  return valueForAnnotation(ConstantReader(annotations.single));
+  return mergeConfig(config, ConstantReader(annotations.single));
 }
 
 MethodElement _toJsonMethod(DartType type) => typeImplementations(type)

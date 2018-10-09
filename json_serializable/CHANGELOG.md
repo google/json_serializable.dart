@@ -2,6 +2,9 @@
 
 * Build configuration
 
+  * You can now configure all settings exposed by the `JsonSerializable`
+    annotation within `build.yaml`.
+
   * **BREAKING** Unsupported options defined in `build.yaml` will cause
     exceptions instead of being logged and ignored.
 

@@ -1,3 +1,11 @@
+## 2.0.0
+
+* **Potentially Breaking** `JsonSerializable` no longer sets default values for
+  fields when constructor arguments are unset or `null`. This is not likely an
+  issue for developers using this class as an annotation with a compatible
+  version of `package:json_serializable`, but it may cause issues if class is
+  used in other contexts. 
+
 ## 1.2.0
 
 * Added `JsonConverter` class to support custom conversion of types.

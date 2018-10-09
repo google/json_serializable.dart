@@ -5,14 +5,17 @@
 @TestOn('vm')
 import 'dart:async';
 
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
+import 'package:json_serializable/src/type_helper.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
 import 'analysis_utils.dart';
+import 'shared_config.dart';
 import 'test_file_utils.dart';
 
 Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
@@ -176,6 +179,81 @@ void main() async {
   });
   group('with wrapper',
       () => _registerTests(const GeneratorConfig(useWrappers: true)));
+
+  group('configuration', () {
+    void runWithConfigAndLogger(GeneratorConfig config, String className) {
+      _runForElementNamedWithGenerator(
+          JsonSerializableGenerator(
+              config: config, typeHelpers: const [_ConfigLogger()]),
+          className);
+    }
+
+    setUp(_ConfigLogger.configurations.clear);
+
+    group('defaults', () {
+      for (var className in [
+        'ConfigurationImplicitDefaults',
+        'ConfigurationExplicitDefaults',
+      ]) {
+        for (var nullConfig in [true, false]) {
+          var testDescription =
+              '$className with ${nullConfig ? 'null' : 'default'} config';
+
+          test(testDescription, () {
+            runWithConfigAndLogger(
+                nullConfig ? null : const GeneratorConfig(), className);
+
+            expect(_ConfigLogger.configurations, hasLength(2));
+            expect(_ConfigLogger.configurations.first,
+                same(_ConfigLogger.configurations.last));
+            expect(_ConfigLogger.configurations.first.toJson(),
+                generatorConfigDefaultJson);
+          });
+        }
+      }
+    });
+
+    test(
+        'values in config override unconfigured (default) values in annotation',
+        () {
+      runWithConfigAndLogger(
+          GeneratorConfig.fromJson(generatorConfigNonDefaultJson),
+          'ConfigurationImplicitDefaults');
+
+      expect(_ConfigLogger.configurations, isEmpty,
+          reason: 'all generation is disabled');
+
+      // Create a configuration with just `create_to_json` set to true so we
+      // can validate the configuration that is run with
+      var configMap = Map<String, dynamic>.from(generatorConfigNonDefaultJson);
+      configMap['create_to_json'] = true;
+
+      runWithConfigAndLogger(
+          GeneratorConfig.fromJson(configMap), 'ConfigurationImplicitDefaults');
+    });
+
+    test(
+        'explicit values in annotation override corresponding settings in config',
+        () {
+      runWithConfigAndLogger(
+          GeneratorConfig.fromJson(generatorConfigNonDefaultJson),
+          'ConfigurationExplicitDefaults');
+
+      expect(_ConfigLogger.configurations, hasLength(2));
+      expect(_ConfigLogger.configurations.first,
+          same(_ConfigLogger.configurations.last));
+
+      // The effective configuration should be non-Default configuration, but
+      // with all fields set from JsonSerializable as the defaults
+
+      var expected = Map.from(generatorConfigNonDefaultJson);
+      for (var jsonSerialKey in jsonSerializableFields) {
+        expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
+      }
+
+      expect(_ConfigLogger.configurations.first.toJson(), expected);
+    });
+  });
 }
 
 void _testAnnotatedClass(AnnotatedElement annotatedElement) {
@@ -254,8 +332,13 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
 }
 
 String _runForElementNamed(GeneratorConfig config, String name) {
-  final element = _library.allElements.singleWhere((e) => e.name == name);
   final generator = JsonSerializableGenerator(config: config);
+  return _runForElementNamedWithGenerator(generator, name);
+}
+
+String _runForElementNamedWithGenerator(
+    JsonSerializableGenerator generator, String name) {
+  final element = _library.allElements.singleWhere((e) => e.name == name);
   final annotation = generator.typeChecker.firstAnnotationOf(element);
   final generated = generator
       .generateForAnnotatedElement(element, ConstantReader(annotation), null)
@@ -537,4 +620,24 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         _throwsUnsupportedError(
             'The class `NoCtorClass` has no default constructor.'));
   });
+}
+
+class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
+  static final configurations = <GeneratorConfig>[];
+
+  const _ConfigLogger();
+
+  @override
+  Object deserialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
+    configurations.add(context.config);
+    return null;
+  }
+
+  @override
+  Object serialize(DartType targetType, String expression,
+      TypeHelperContextWithConfig context) {
+    configurations.add(context.config);
+    return null;
+  }
 }

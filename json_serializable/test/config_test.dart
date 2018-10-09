@@ -8,9 +8,11 @@ import 'dart:io';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/builder.dart';
+import 'package:json_serializable/src/generator_config.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
+import 'shared_config.dart';
 import 'test_utils.dart';
 
 void main() {
@@ -19,9 +21,33 @@ void main() {
     expect(builder, isNotNull);
   });
 
-  test('valid config', () async {
-    final builder = jsonSerializable(const BuilderOptions(_validConfig));
+  test('valid default config', () async {
+    final builder =
+        jsonSerializable(BuilderOptions(generatorConfigDefaultJson));
     expect(builder, isNotNull);
+  });
+
+  test('valid, non-default config', () {
+    expect(generatorConfigNonDefaultJson.keys,
+        unorderedEquals(generatorConfigDefaultJson.keys));
+
+    for (var entry in generatorConfigDefaultJson.entries) {
+      expect(generatorConfigNonDefaultJson,
+          containsPair(entry.key, isNot(entry.value)),
+          reason: 'should have values that are different than the defaults');
+    }
+
+    final builder =
+        jsonSerializable(BuilderOptions(generatorConfigNonDefaultJson));
+    expect(builder, isNotNull);
+  });
+
+  test('config is null-protected', () {
+    var nullValueMap = Map.fromEntries(
+        generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)));
+
+    var config = GeneratorConfig.fromJson(nullValueMap);
+    expect(config.toJson(), generatorConfigDefaultJson);
   });
 
   test('readme config', () async {
@@ -44,11 +70,16 @@ void main() {
       yaml = yaml[key] as YamlMap;
     }
 
-    final config = Map<String, dynamic>.from(yaml);
+    final configMap = Map<String, dynamic>.from(yaml);
 
-    expect(config.keys, unorderedEquals(_validConfig.keys));
+    expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
+        reason: 'All supported keys are documented.');
 
-    final builder = jsonSerializable(BuilderOptions(config));
+    expect(GeneratorConfig.fromJson(configMap).toJson(),
+        generatorConfigDefaultJson,
+        reason: 'All keys specify their default value.');
+
+    final builder = jsonSerializable(BuilderOptions(configMap));
     expect(builder, isNotNull);
   });
 
@@ -57,7 +88,7 @@ void main() {
         (e) => e.unrecognizedKeys, 'unrecognizedKeys', [
       'unsupported'
     ]).having((e) => e.allowedKeys, 'allowedKeys',
-        unorderedEquals(_validConfig.keys));
+        unorderedEquals(generatorConfigDefaultJson.keys));
 
     expect(
         () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
@@ -65,28 +96,35 @@ void main() {
   });
 
   group('invalid config', () {
+    test('validated for all supported keys', () {
+      expect(_invalidConfig.keys, generatorConfigDefaultJson.keys);
+    });
     for (final entry in _invalidConfig.entries) {
       test(entry.key, () {
-        final config = Map<String, dynamic>.from(_validConfig);
+        final config = Map<String, dynamic>.from(generatorConfigDefaultJson);
         config[entry.key] = entry.value;
 
-        expect(() => jsonSerializable(BuilderOptions(config)), throwsCastError);
+        var matcher = (entry.key == 'field_rename')
+            ? isArgumentError.having((e) => e.message, 'message',
+                '`42` is not one of the supported values: none, kebab, snake')
+            : isCastError;
+
+        expect(
+            () => jsonSerializable(BuilderOptions(config)), throwsA(matcher));
       });
     }
   });
 }
 
-const _validConfig = {
-  'use_wrappers': true,
-  'any_map': true,
-  'checked': true,
-  'explicit_to_json': true,
-  'generate_to_json_function': false,
-};
-
 const _invalidConfig = {
-  'use_wrappers': 42,
+  'disallow_unrecognized_keys': 42,
+  'create_factory': 42,
+  'create_to_json': 42,
+  'include_if_null': 42,
+  'nullable': 42,
+  'field_rename': 42,
   'any_map': 42,
+  'use_wrappers': 42,
   'checked': 42,
   'explicit_to_json': 42,
   'generate_to_json_function': 42,

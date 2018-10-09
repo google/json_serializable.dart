@@ -74,11 +74,17 @@ targets:
           #
           # For usage information, reference the corresponding field in
           # `JsonSerializableGenerator`.
-          use_wrappers: false
           any_map: false
           checked: false
+          create_factory: true
+          create_to_json: true
+          disallow_unrecognized_keys: false
           explicit_to_json: false
+          field_rename: none
           generate_to_json_function: true
+          include_if_null: true
+          nullable: true
+          use_wrappers: false
 ```
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example

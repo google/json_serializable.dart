@@ -84,18 +84,18 @@ class JsonSerializableGenerator
     }
 
     final classElement = element as ClassElement;
-    final classAnnotation = valueForAnnotation(annotation);
-    final helper = _GeneratorHelper(this, classElement, classAnnotation);
+    final helper = _GeneratorHelper(this, classElement, annotation);
     return helper._generate();
   }
 }
 
 class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
-  _GeneratorHelper(JsonSerializableGenerator generator, ClassElement element,
-      JsonSerializable annotation)
-      : super(generator, element, annotation);
-
+  final JsonSerializableGenerator _generator;
   final _addedMembers = Set<String>();
+
+  _GeneratorHelper(
+      this._generator, ClassElement element, ConstantReader annotation)
+      : super(element, mergeConfig(_generator.config, annotation));
 
   @override
   void addMember(String memberContent) {
@@ -103,7 +103,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   }
 
   @override
-  Iterable<TypeHelper> get allTypeHelpers => generator._allHelpers;
+  Iterable<TypeHelper> get allTypeHelpers => _generator._allHelpers;
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
@@ -134,7 +134,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     });
 
     var accessibleFieldSet = accessibleFields.values.toSet();
-    if (annotation.createFactory) {
+    if (config.createFactory) {
       final createResult = createFactory(accessibleFields, unavailableReasons);
       yield createResult.output;
 
@@ -158,7 +158,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       return set;
     });
 
-    if (annotation.createToJson) {
+    if (config.createToJson) {
       yield* createToJson(accessibleFieldSet);
     }
 

@@ -10,47 +10,46 @@ import 'package:source_gen/source_gen.dart';
 
 import 'generator_config.dart';
 import 'json_key_utils.dart';
-import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
 import 'utils.dart';
 
 abstract class HelperCore {
-  @protected
-  final JsonSerializable annotation;
-
-  @protected
-  final JsonSerializableGenerator generator;
-
   final ClassElement element;
+  final GeneratorConfig config;
 
-  GeneratorConfig get config => generator.config;
+  HelperCore(this.element, this.config);
 
   Iterable<TypeHelper> get allTypeHelpers;
 
-  HelperCore(this.generator, this.element, this.annotation);
-
   void addMember(String memberContent);
 
+  @protected
   String get targetClassReference =>
       '${element.name}${genericClassArgumentsImpl(false)}';
 
+  @protected
   String nameAccess(FieldElement field) => jsonKeyFor(field).name;
 
+  @protected
   String safeNameAccess(FieldElement field) =>
       escapeDartString(nameAccess(field));
 
+  @protected
   String get prefix => '_\$${element.name}';
 
   /// Returns a [String] representing the type arguments that exist on
   /// [element].
   ///
   /// Returns the output of calling [genericClassArguments] with [element].
+  @protected
   String genericClassArgumentsImpl(bool withConstraints) =>
       genericClassArguments(element, withConstraints);
 
-  JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, annotation);
+  @protected
+  JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);
 
+  @protected
   TypeHelperContext getHelperContext(FieldElement field) =>
       typeHelperContext(this, field, jsonKeyFor(field));
 }

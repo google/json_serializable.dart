@@ -23,7 +23,7 @@ abstract class DecodeHelper implements HelperCore {
 
   CreateFactoryResult createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
-    assert(annotation.createFactory);
+    assert(config.createFactory);
     assert(_buffer.isEmpty);
 
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
@@ -58,7 +58,7 @@ abstract class DecodeHelper implements HelperCore {
 
       _writeChecks(
           6,
-          annotation,
+          config,
           accessibleFields.values
               .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
       _buffer.write('''
@@ -106,7 +106,7 @@ abstract class DecodeHelper implements HelperCore {
 
       _writeChecks(
           2,
-          annotation,
+          config,
           accessibleFields.values
               .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
 

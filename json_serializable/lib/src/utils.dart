@@ -2,13 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/dart/constant/value.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
+
+import 'generator_config.dart';
 
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
@@ -25,6 +26,7 @@ bool hasJsonKeyAnnotation(FieldElement element) =>
 final _upperCase = RegExp('[A-Z]');
 
 String kebabCase(String input) => _fixCase(input, '-');
+
 String snakeCase(String input) => _fixCase(input, '_');
 
 String _fixCase(String input, String seperator) =>
@@ -44,18 +46,44 @@ void throwUnsupported(FieldElement element, String message) =>
         'Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
 
-FieldRename _fromDartObject(ConstantReader reader) =>
-    FieldRename.values[reader.objectValue.getField('index').toIntValue()];
+FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
+    ? null
+    : FieldRename.values[reader.objectValue.getField('index').toIntValue()];
 
-JsonSerializable valueForAnnotation(ConstantReader annotation) =>
-    JsonSerializable(
-        disallowUnrecognizedKeys:
-            annotation.read('disallowUnrecognizedKeys').boolValue,
-        createToJson: annotation.read('createToJson').boolValue,
-        createFactory: annotation.read('createFactory').boolValue,
-        nullable: annotation.read('nullable').boolValue,
-        includeIfNull: annotation.read('includeIfNull').boolValue,
-        fieldRename: _fromDartObject(annotation.read('fieldRename')));
+/// Return an instance of [JsonSerializable] corresponding to a the provided
+/// [reader].
+JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
+    disallowUnrecognizedKeys:
+        reader.read('disallowUnrecognizedKeys').literalValue as bool,
+    createToJson: reader.read('createToJson').literalValue as bool,
+    createFactory: reader.read('createFactory').literalValue as bool,
+    nullable: reader.read('nullable').literalValue as bool,
+    includeIfNull: reader.read('includeIfNull').literalValue as bool,
+    fieldRename: _fromDartObject(reader.read('fieldRename')));
+
+/// Returns a [GeneratorConfig] with values from the [JsonSerializable] instance
+/// represented by [reader].
+///
+/// For fields that are not defined in [JsonSerializable] or `null` in [reader],
+/// use the values in [config].
+GeneratorConfig mergeConfig(GeneratorConfig config, ConstantReader reader) {
+  var annotation = _valueForAnnotation(reader);
+
+  return GeneratorConfig(
+    anyMap: config.anyMap,
+    checked: config.checked,
+    createFactory: annotation.createFactory ?? config.createFactory,
+    createToJson: annotation.createToJson ?? config.createToJson,
+    disallowUnrecognizedKeys:
+        annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
+    explicitToJson: config.explicitToJson,
+    fieldRename: annotation.fieldRename ?? config.fieldRename,
+    generateToJsonFunction: config.generateToJsonFunction,
+    includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
+    nullable: annotation.nullable ?? config.nullable,
+    useWrappers: config.useWrappers,
+  );
+}
 
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;

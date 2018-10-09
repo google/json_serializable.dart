@@ -98,18 +98,13 @@ class JsonSerializable {
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
-    bool disallowUnrecognizedKeys = false,
-    bool createFactory = true,
-    bool createToJson = true,
-    bool includeIfNull = true,
-    bool nullable = true,
-    FieldRename fieldRename = FieldRename.none,
-  })  : this.disallowUnrecognizedKeys = disallowUnrecognizedKeys ?? false,
-        this.createFactory = createFactory ?? true,
-        this.createToJson = createToJson ?? true,
-        this.includeIfNull = includeIfNull ?? true,
-        this.nullable = nullable ?? true,
-        this.fieldRename = fieldRename ?? FieldRename.none;
+    this.disallowUnrecognizedKeys,
+    this.createFactory,
+    this.createToJson,
+    this.includeIfNull,
+    this.nullable,
+    this.fieldRename,
+  });
 }
 
 /// An annotation used to specify how a field is serialized.

@@ -25,7 +25,7 @@ abstract class EncodeHelper implements HelperCore {
       '${prefix}JsonMapWrapper${genericClassArgumentsImpl(withConstraints)}';
 
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
-    assert(annotation.createToJson);
+    assert(config.createToJson);
 
     final buffer = StringBuffer();
 
