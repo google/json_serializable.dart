@@ -1,5 +1,12 @@
 ## 2.0.0
 
+* `json_serializable.dart`
+
+  * **BREAKING** `JsonSerializableGenerator` now exposes a `config` property
+    of type `GeneratorConfig` instead of individual properties for `checked`,
+    `anyMay`, etc. This will affect anyone creating or using this class via
+    code.
+
 * `type_helper.dart`
 
   * **BREAKING** `SerializeContext` and `DeserializeContext` have been replaced

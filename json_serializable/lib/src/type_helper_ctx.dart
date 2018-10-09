@@ -6,9 +6,9 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/src/generator_config.dart';
 
 import 'helper_core.dart';
-import 'json_serializable_generator.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 import 'utils.dart';
@@ -32,13 +32,7 @@ class _TypeHelperCtx
   ClassElement get classElement => _helperCore.element;
 
   @override
-  bool get useWrappers => _helperCore.generator.useWrappers;
-
-  @override
-  bool get anyMap => _helperCore.generator.anyMap;
-
-  @override
-  bool get explicitToJson => _helperCore.generator.explicitToJson;
+  GeneratorConfig get config => _helperCore.config;
 
   _TypeHelperCtx(this._helperCore, this.fieldElement, this._key);
 
@@ -69,8 +63,7 @@ class _TypeHelperCtx
 
   Object _run(DartType targetType, String expression,
           Object invoke(TypeHelper instance)) =>
-      allHelpersImpl(_helperCore.generator).map(invoke).firstWhere(
-          (r) => r != null,
+      _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
           orElse: () => throw UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }

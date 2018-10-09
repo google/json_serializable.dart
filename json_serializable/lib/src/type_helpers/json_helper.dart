@@ -26,7 +26,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    if (context.explicitToJson) {
+    if (context.config.explicitToJson) {
       return '$expression${context.nullable ? '?' : ''}.toJson()';
     }
     return expression;
@@ -51,7 +51,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       final asCastType = fromJsonCtor.parameters.first.type;
       asCast = asStatement(asCastType);
     } else if (_annotation(type)?.createFactory == true) {
-      if (context.anyMap) {
+      if (context.config.anyMap) {
         asCast = ' as Map';
       } else {
         asCast = ' as Map<String, dynamic>';

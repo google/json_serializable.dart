@@ -5,6 +5,7 @@
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'generator_config.dart';
 import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
 
@@ -13,25 +14,9 @@ import 'json_serializable_generator.dart';
 ///
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
-///
-/// For details on [useWrappers], [anyMap], and [checked] see
-/// [JsonSerializableGenerator].
-Builder jsonPartBuilder({
-  String formatOutput(String code),
-  bool useWrappers = false,
-  bool anyMap = false,
-  bool checked = false,
-  bool explicitToJson = false,
-  bool generateToJsonFunction = true,
-}) {
-  return SharedPartBuilder([
-    JsonSerializableGenerator(
-      useWrappers: useWrappers,
-      anyMap: anyMap,
-      checked: checked,
-      explicitToJson: explicitToJson,
-      generateToJsonFunction: generateToJsonFunction,
-    ),
-    const JsonLiteralGenerator()
-  ], 'json_serializable', formatOutput: formatOutput);
-}
+Builder jsonPartBuilder(
+        {String formatOutput(String code), GeneratorConfig config}) =>
+    SharedPartBuilder([
+      JsonSerializableGenerator(config: config),
+      const JsonLiteralGenerator()
+    ], 'json_serializable', formatOutput: formatOutput);

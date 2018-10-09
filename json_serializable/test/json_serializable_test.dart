@@ -172,10 +172,10 @@ void main() async {
   }
 
   group('without wrappers', () {
-    _registerTests(const JsonSerializableGenerator());
+    _registerTests(const GeneratorConfig());
   });
   group('with wrapper',
-      () => _registerTests(const JsonSerializableGenerator(useWrappers: true)));
+      () => _registerTests(const GeneratorConfig(useWrappers: true)));
 }
 
 void _testAnnotatedClass(AnnotatedElement annotatedElement) {
@@ -203,13 +203,13 @@ void _testShouldThrow(AnnotatedElement annotatedElement) {
 
     expect(
         () => _runForElementNamed(
-            const JsonSerializableGenerator(useWrappers: false), element.name),
+            const GeneratorConfig(useWrappers: false), element.name),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
         reason: 'Should fail without wrappers.');
 
     expect(
         () => _runForElementNamed(
-            const JsonSerializableGenerator(useWrappers: true), element.name),
+            const GeneratorConfig(useWrappers: true), element.name),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
         reason: 'Should fail with wrappers.');
   });
@@ -230,8 +230,8 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   final checked = annotatedElement.annotation.read('checked').boolValue;
 
   test(element.name, () {
-    final output = _runForElementNamed(
-        JsonSerializableGenerator(checked: checked), element.name);
+    final output =
+        _runForElementNamed(GeneratorConfig(checked: checked), element.name);
     expect(output, matcher);
 
     expect(_buildLogItems, expectedLogItems);
@@ -244,8 +244,7 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   if (wrappedMatcher != null) {
     test('${element.name} - (wrapped)', () {
       final output = _runForElementNamed(
-          JsonSerializableGenerator(checked: checked, useWrappers: true),
-          element.name);
+          GeneratorConfig(checked: checked, useWrappers: true), element.name);
       expect(output, wrappedMatcher);
 
       expect(_buildLogItems, expectedLogItems);
@@ -254,8 +253,9 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   }
 }
 
-String _runForElementNamed(JsonSerializableGenerator generator, String name) {
+String _runForElementNamed(GeneratorConfig config, String name) {
   final element = _library.allElements.singleWhere((e) => e.name == name);
+  final generator = JsonSerializableGenerator(config: config);
   final annotation = generator.typeChecker.firstAnnotationOf(element);
   final generated = generator
       .generateForAnnotatedElement(element, ConstantReader(annotation), null)
@@ -290,7 +290,7 @@ final _annotatedElements = _library.allElements
       return map;
     });
 
-void _registerTests(JsonSerializableGenerator generator) {
+void _registerTests(GeneratorConfig generator) {
   String runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
@@ -303,7 +303,7 @@ void _registerTests(JsonSerializableGenerator generator) {
   group('explicit toJson', () {
     test('nullable', () {
       final output = _runForElementNamed(
-          JsonSerializableGenerator(
+          GeneratorConfig(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
@@ -347,7 +347,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
     });
     test('non-nullable', () {
       final output = _runForElementNamed(
-          JsonSerializableGenerator(
+          GeneratorConfig(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
@@ -496,8 +496,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
     test('class with child json-able object - anyMap', () {
       final output = _runForElementNamed(
-          JsonSerializableGenerator(
-              anyMap: true, useWrappers: generator.useWrappers),
+          GeneratorConfig(anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
 
       expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));

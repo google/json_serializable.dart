@@ -11,6 +11,7 @@ import 'package:build_runner/build_runner.dart';
 import 'package:build_runner_core/build_runner_core.dart';
 import 'package:build_test/builder.dart';
 import 'package:json_serializable/src/json_part_builder.dart' as jpb;
+import 'package:json_serializable/src/generator_config.dart';
 import 'package:source_gen/builder.dart';
 
 import 'builder.dart';
@@ -31,10 +32,11 @@ Builder _jsonPartBuilder({
 
   return jpb.jsonPartBuilder(
       formatOutput: formatOutput,
-      useWrappers: useWrappers,
-      anyMap: anyMap,
-      checked: checked,
-      generateToJsonFunction: generateToJsonFunction);
+      config: GeneratorConfig(
+          useWrappers: useWrappers,
+          anyMap: anyMap,
+          checked: checked,
+          generateToJsonFunction: generateToJsonFunction));
 }
 
 final List<BuilderApplication> builders = [

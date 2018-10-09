@@ -35,7 +35,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return expression;
     }
 
-    if (context.useWrappers) {
+    if (context.config.useWrappers) {
       var method = '\$wrapMap';
       if (context.nullable) {
         method = '${method}HandleNull';
@@ -70,7 +70,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     if (!isEnumKey) {
       if (valueArgIsAny) {
-        if (context.anyMap) {
+        if (context.config.anyMap) {
           if (_isObjectOrDynamic(keyArg)) {
             return '$expression as Map';
           }
@@ -96,12 +96,13 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final optionalQuestion = context.nullable ? '?' : '';
 
-    final mapCast = context.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    final mapCast =
+        context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
     String keyUsage;
     if (isEnumKey) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
-    } else if (context.anyMap && !_isObjectOrDynamic(keyArg)) {
+    } else if (context.config.anyMap && !_isObjectOrDynamic(keyArg)) {
       keyUsage = '$_keyParam as String';
     } else {
       keyUsage = _keyParam;

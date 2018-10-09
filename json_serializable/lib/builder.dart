@@ -14,6 +14,7 @@ library json_serializable.builder;
 
 import 'package:build/build.dart';
 
+import 'src/generator_config.dart';
 import 'src/json_part_builder.dart';
 
 /// Supports `package:build_runner` creation and configuration of
@@ -25,7 +26,7 @@ Builder jsonSerializable(BuilderOptions options) {
   // elsewhere.
   final optionsMap = Map<String, dynamic>.from(options.config);
 
-  final builder = jsonPartBuilder(
+  var config = GeneratorConfig(
     useWrappers: optionsMap.remove('use_wrappers') as bool,
     checked: optionsMap.remove('checked') as bool,
     anyMap: optionsMap.remove('any_map') as bool,
@@ -41,5 +42,6 @@ Builder jsonSerializable(BuilderOptions options) {
       log.warning('These options were ignored: `$optionsMap`.');
     }
   }
-  return builder;
+
+  return jsonPartBuilder(config: config);
 }
