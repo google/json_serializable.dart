@@ -43,7 +43,7 @@ final List<BuilderApplication> builders = [
   applyToRoot(nonNull(),
       generateFor: const InputSet(include: [
         'test/kitchen_sink/kitchen_sink.dart',
-        'test/integration/json_test_example.dart'
+        'test/integration/json_test_example.dart',
       ])),
   applyToRoot(checked(),
       generateFor: const InputSet(include: [
@@ -76,7 +76,7 @@ final List<BuilderApplication> builders = [
           'test/kitchen_sink/kitchen_sink.dart',
           'test/kitchen_sink/kitchen_sink.non_nullable.dart',
           'test/kitchen_sink/simple_object.dart',
-          'test/kitchen_sink/strict_keys_object.dart'
+          'test/kitchen_sink/strict_keys_object.dart',
         ],
       ),
       hideOutput: true),
@@ -93,12 +93,6 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: [
           'test/yaml/build_config.dart',
-        ],
-      ),
-      hideOutput: true),
-  applyToRoot(_jsonPartBuilder(checked: true, anyMap: true),
-      generateFor: const InputSet(
-        include: [
           'test/default_value/default_value.checked.dart',
         ],
       ),
@@ -107,12 +101,6 @@ final List<BuilderApplication> builders = [
       generateFor: const InputSet(
         include: [
           'test/integration/json_test_example*wrapped.dart',
-        ],
-      ),
-      hideOutput: true),
-  applyToRoot(_jsonPartBuilder(useWrappers: true),
-      generateFor: const InputSet(
-        include: [
           'test/generic_files/generic_class*wrapped.dart',
         ],
       ),
