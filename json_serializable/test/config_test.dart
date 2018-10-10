@@ -43,10 +43,10 @@ void main() {
   });
 
   test('config is null-protected', () {
-    var nullValueMap = Map.fromEntries(
+    final nullValueMap = Map.fromEntries(
         generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)));
 
-    var config = GeneratorConfig.fromJson(nullValueMap);
+    final config = GeneratorConfig.fromJson(nullValueMap);
     expect(config.toJson(), generatorConfigDefaultJson);
   });
 
@@ -84,7 +84,7 @@ void main() {
   });
 
   test('unsupported configuration', () async {
-    var matcher = const TypeMatcher<UnrecognizedKeysException>().having(
+    final matcher = const TypeMatcher<UnrecognizedKeysException>().having(
         (e) => e.unrecognizedKeys, 'unrecognizedKeys', [
       'unsupported'
     ]).having((e) => e.allowedKeys, 'allowedKeys',
@@ -104,7 +104,7 @@ void main() {
         final config = Map<String, dynamic>.from(generatorConfigDefaultJson);
         config[entry.key] = entry.value;
 
-        var matcher = (entry.key == 'field_rename')
+        final matcher = (entry.key == 'field_rename')
             ? isArgumentError.having((e) => e.message, 'message',
                 '`42` is not one of the supported values: none, kebab, snake')
             : isCastError;
