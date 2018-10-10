@@ -25,5 +25,5 @@ class JsonLiteral {
 
   /// Creates a new [JsonLiteral] instance.
   const JsonLiteral(this.path, {bool asConst = false})
-      : this.asConst = asConst ?? false;
+      : asConst = asConst ?? false;
 }

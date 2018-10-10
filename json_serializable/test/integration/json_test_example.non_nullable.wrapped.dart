@@ -87,7 +87,7 @@ class Order {
   bool shouldBeCached;
 
   Order(this.category, [Iterable<Item> items])
-      : this.items = UnmodifiableListView<Item>(
+      : items = UnmodifiableListView<Item>(
             List<Item>.unmodifiable(items ?? const <Item>[]));
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
