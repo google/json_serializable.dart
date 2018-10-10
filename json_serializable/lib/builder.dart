@@ -22,6 +22,6 @@ import 'src/json_part_builder.dart';
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
-  var config = JsonSerializable.fromJson(options.config);
+  final config = JsonSerializable.fromJson(options.config);
   return jsonPartBuilder(config: config);
 }

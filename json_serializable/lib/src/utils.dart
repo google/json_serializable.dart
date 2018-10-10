@@ -72,7 +72,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
 /// For fields that are not defined in [JsonSerializable] or `null` in [reader],
 /// use the values in [config].
 JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
-  var annotation = _valueForAnnotation(reader);
+  final annotation = _valueForAnnotation(reader);
 
   return JsonSerializable(
     anyMap: annotation.anyMap ?? config.anyMap,

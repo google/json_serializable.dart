@@ -199,7 +199,7 @@ void main() async {
         'ConfigurationExplicitDefaults',
       ]) {
         for (var nullConfig in [true, false]) {
-          var testDescription =
+          final testDescription =
               '$className with ${nullConfig ? 'null' : 'default'} config';
 
           test(testDescription, () {
@@ -228,7 +228,8 @@ void main() async {
 
       // Create a configuration with just `create_to_json` set to true so we
       // can validate the configuration that is run with
-      var configMap = Map<String, dynamic>.from(generatorConfigNonDefaultJson);
+      final configMap =
+          Map<String, dynamic>.from(generatorConfigNonDefaultJson);
       configMap['create_to_json'] = true;
 
       runWithConfigAndLogger(JsonSerializable.fromJson(configMap),
@@ -249,7 +250,7 @@ void main() async {
       // The effective configuration should be non-Default configuration, but
       // with all fields set from JsonSerializable as the defaults
 
-      var expected = Map.from(generatorConfigNonDefaultJson);
+      final expected = Map.from(generatorConfigNonDefaultJson);
       for (var jsonSerialKey in jsonSerializableFields) {
         expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
       }
