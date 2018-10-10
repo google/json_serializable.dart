@@ -58,8 +58,8 @@ class JsonSerializableGenerator
   const JsonSerializableGenerator({
     JsonSerializable config,
     List<TypeHelper> typeHelpers,
-  })  : this._config = config ?? JsonSerializable.defaults,
-        this._typeHelpers = typeHelpers ?? _defaultHelpers;
+  })  : _config = config ?? JsonSerializable.defaults,
+        _typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///

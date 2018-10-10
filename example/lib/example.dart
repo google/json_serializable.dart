@@ -23,7 +23,7 @@ class Person {
 
   Person(this.firstName, this.lastName, this.dateOfBirth,
       {this.middleName, this.lastOrder, List<Order> orders})
-      : this.orders = orders ?? <Order>[];
+      : orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
