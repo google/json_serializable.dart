@@ -13,10 +13,7 @@ targets:
             - test/kitchen_sink/*
             - test/literal/*
             - test/yaml/*
-      build_test|test_bootstrap:
-        enabled: false
       build_web_compilers|entrypoint:
-        enabled: false
         generate_for:
         - test/default_value/**
         - test/generic_files/*_test.dart
