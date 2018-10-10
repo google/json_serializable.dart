@@ -1,21 +1,28 @@
+# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 targets:
   $default:
     builders:
       json_serializable:
         enabled: true
         generate_for:
-          exclude: [test/src/**]
-#      build_test|test_bootstrap:
-#        enabled: false
-#      build_web_compilers|entrypoint:
-#        enabled: false
-#        generate_for:
-#        - test/default_value/**
-#        - test/generic_files/*_test.dart
-#        - test/integration/*_test.dart
-#        - test/kitchen_sink/**
+          include:
+            - example/*
+            - test/default_value/*
+            - test/generic_files/*
+            - test/integration/*
+            - test/kitchen_sink/*
+            - test/literal/*
+            - test/yaml/*
+      build_test|test_bootstrap:
+        enabled: false
+      build_web_compilers|entrypoint:
+        enabled: false
+        generate_for:
+        - test/default_value/**
+        - test/generic_files/*_test.dart
+        - test/integration/*_test.dart
+        - test/kitchen_sink/**
 
-# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
   checked:
     import: 'tool/builder.dart'
