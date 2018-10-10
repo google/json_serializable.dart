@@ -85,8 +85,7 @@ class Order {
   int height;
   DateTime dateOfBirth;
 
-  Order(this.height, String firstName, [this.lastName])
-      : this.firstName = firstName;
+  Order(this.height, String firstName, [this.lastName]) : firstName = firstName;
 }
 
 @ShouldGenerate(r'''
@@ -180,7 +179,7 @@ class UnknownCtorParamType {
   int number;
 
   // ignore: undefined_class, field_initializer_not_assignable
-  UnknownCtorParamType(Bob number) : this.number = number;
+  UnknownCtorParamType(Bob number) : number = number;
 }
 
 @JsonSerializable()

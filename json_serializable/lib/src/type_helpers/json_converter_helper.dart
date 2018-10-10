@@ -49,11 +49,11 @@ class _JsonConvertData {
   final DartType jsonType;
 
   _JsonConvertData.className(String className, String accessor, this.jsonType)
-      : this.accessString = 'const $className${_withAccessor(accessor)}()';
+      : accessString = 'const $className${_withAccessor(accessor)}()';
 
   _JsonConvertData.genericClass(
       String className, String genericTypeArg, String accessor, this.jsonType)
-      : this.accessString =
+      : accessString =
             '$className<$genericTypeArg>${_withAccessor(accessor)}()';
 
   _JsonConvertData.propertyAccess(this.accessString, this.jsonType);
