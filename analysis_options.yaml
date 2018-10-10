@@ -77,8 +77,7 @@ linter:
     - unnecessary_new
     - unnecessary_null_aware_assignments
     - unnecessary_statements
-    # Seems to have some false positives with 2.1.0-dev.7.0
-    #- unnecessary_this
+    - unnecessary_this
     - unrelated_type_equality_checks
     - use_rethrow_when_possible
     - valid_regexps
