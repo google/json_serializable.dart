@@ -6,12 +6,18 @@ class ConfigurationImplicitDefaults {
 }
 
 @JsonSerializable(
-    createToJson: true,
-    includeIfNull: true,
-    nullable: true,
-    disallowUnrecognizedKeys: false,
-    fieldRename: FieldRename.none,
-    createFactory: true)
+  anyMap: false,
+  checked: false,
+  createFactory: true,
+  createToJson: true,
+  disallowUnrecognizedKeys: false,
+  explicitToJson: false,
+  fieldRename: FieldRename.none,
+  generateToJsonFunction: true,
+  includeIfNull: true,
+  nullable: true,
+  useWrappers: false,
+)
 class ConfigurationExplicitDefaults {
   int field;
 }

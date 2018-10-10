@@ -3,9 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 import 'constants.dart';
-import 'generator_config.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 
@@ -161,7 +161,7 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
   }
 
   /// Name of the parameter used when generating top-level `toJson` functions
-  /// if [GeneratorConfig.generateToJsonFunction] is `true`.
+  /// if [JsonSerializable.generateToJsonFunction] is `true`.
   static const _toJsonParamName = 'instance';
 
   void _writeToJsonWithNullChecks(

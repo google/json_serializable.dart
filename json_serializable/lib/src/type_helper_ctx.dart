@@ -6,7 +6,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/src/generator_config.dart';
 
 import 'helper_core.dart';
 import 'type_helper.dart';
@@ -32,7 +31,7 @@ class _TypeHelperCtx
   ClassElement get classElement => _helperCore.element;
 
   @override
-  GeneratorConfig get config => _helperCore.config;
+  JsonSerializable get config => _helperCore.config;
 
   _TypeHelperCtx(this._helperCore, this.fieldElement, this._key);
 

@@ -9,8 +9,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
-import 'generator_config.dart';
-
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
 DartObject jsonKeyAnnotation(FieldElement element) =>
@@ -53,35 +51,43 @@ FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
 /// Return an instance of [JsonSerializable] corresponding to a the provided
 /// [reader].
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
-    disallowUnrecognizedKeys:
-        reader.read('disallowUnrecognizedKeys').literalValue as bool,
-    createToJson: reader.read('createToJson').literalValue as bool,
-    createFactory: reader.read('createFactory').literalValue as bool,
-    nullable: reader.read('nullable').literalValue as bool,
-    includeIfNull: reader.read('includeIfNull').literalValue as bool,
-    fieldRename: _fromDartObject(reader.read('fieldRename')));
+      anyMap: reader.read('anyMap').literalValue as bool,
+      checked: reader.read('checked').literalValue as bool,
+      createFactory: reader.read('createFactory').literalValue as bool,
+      createToJson: reader.read('createToJson').literalValue as bool,
+      disallowUnrecognizedKeys:
+          reader.read('disallowUnrecognizedKeys').literalValue as bool,
+      explicitToJson: reader.read('explicitToJson').literalValue as bool,
+      fieldRename: _fromDartObject(reader.read('fieldRename')),
+      generateToJsonFunction:
+          reader.read('generateToJsonFunction').literalValue as bool,
+      includeIfNull: reader.read('includeIfNull').literalValue as bool,
+      nullable: reader.read('nullable').literalValue as bool,
+      useWrappers: reader.read('useWrappers').literalValue as bool,
+    );
 
-/// Returns a [GeneratorConfig] with values from the [JsonSerializable] instance
+/// Returns a [JsonSerializable] with values from the [JsonSerializable] instance
 /// represented by [reader].
 ///
 /// For fields that are not defined in [JsonSerializable] or `null` in [reader],
 /// use the values in [config].
-GeneratorConfig mergeConfig(GeneratorConfig config, ConstantReader reader) {
+JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
   var annotation = _valueForAnnotation(reader);
 
-  return GeneratorConfig(
-    anyMap: config.anyMap,
-    checked: config.checked,
+  return JsonSerializable(
+    anyMap: annotation.anyMap ?? config.anyMap,
+    checked: annotation.checked ?? config.checked,
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
-    explicitToJson: config.explicitToJson,
+    explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
-    generateToJsonFunction: config.generateToJsonFunction,
+    generateToJsonFunction:
+        annotation.generateToJsonFunction ?? config.generateToJsonFunction,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,
-    useWrappers: config.useWrappers,
+    useWrappers: annotation.useWrappers ?? config.useWrappers,
   );
 }
 

@@ -1,15 +1,61 @@
 targets:
   $default:
     builders:
-      build_web_compilers|entrypoint:
+      json_serializable:
+        enabled: true
         generate_for:
-          - test/default_value/**
-          - test/generic_files/*_test.dart
-          - test/integration/*_test.dart
-          - test/kitchen_sink/**
+          exclude: [test/src/**]
+#      build_test|test_bootstrap:
+#        enabled: false
+#      build_web_compilers|entrypoint:
+#        enabled: false
+#        generate_for:
+#        - test/default_value/**
+#        - test/generic_files/*_test.dart
+#        - test/integration/*_test.dart
+#        - test/kitchen_sink/**
 
 # Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
 builders:
+  checked:
+    import: 'tool/builder.dart'
+    builder_factories: ['checked']
+    build_extensions: {".dart": [".checked.dart"]}
+    auto_apply: root_package
+    build_to: source
+    runs_before: ["json_serializable"]
+    defaults:
+      generate_for:
+      - test/default_value/default_value.dart
+      - test/kitchen_sink/kitchen_sink.non_nullable.dart
+
+  non_null:
+    import: 'tool/builder.dart'
+    builder_factories: ['nonNull']
+    build_extensions: {".dart": [".non_nullable.dart"]}
+    auto_apply: root_package
+    build_to: source
+    runs_before: ["json_serializable"]
+    defaults:
+      generate_for:
+      - test/kitchen_sink/kitchen_sink.dart
+      - test/integration/json_test_example.dart
+
+  wrapped:
+    import: 'tool/builder.dart'
+    builder_factories: ['wrapped']
+    build_extensions: {".dart": [".wrapped.dart"]}
+    auto_apply: root_package
+    build_to: source
+    runs_before: ["json_serializable"]
+    defaults:
+      generate_for:
+      - test/generic_files/generic_class.dart
+      - test/kitchen_sink/kitchen_sink.dart
+      - test/kitchen_sink/kitchen_sink.non_nullable.dart
+      - test/integration/json_test_example.dart
+      - test/integration/json_test_example.non_nullable.dart
+
   json_serializable:
     import: "package:json_serializable/builder.dart"
     builder_factories: ["jsonSerializable"]

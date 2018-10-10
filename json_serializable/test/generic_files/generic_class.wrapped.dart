@@ -12,7 +12,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'generic_class.wrapped.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(
+  useWrappers: true,
+)
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   Object fieldObject;
@@ -45,7 +47,9 @@ class GenericClass<T extends num, S> {
       {'value': input};
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  useWrappers: true,
+)
 @_DurationMillisecondConverter()
 @_DurationListMillisecondConverter()
 class GenericClassWithConverter<T extends num, S> {

@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 
 part 'build_config.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(checked: true, anyMap: true)
 class Config {
   @JsonKey(required: true)
   final Map<String, Builder> builders;
@@ -18,10 +18,15 @@ class Config {
   Config({@required this.builders});
 
   factory Config.fromJson(Map map) => _$ConfigFromJson(map);
+
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
 }
 
-@JsonSerializable(includeIfNull: false, disallowUnrecognizedKeys: true)
+@JsonSerializable(
+    includeIfNull: false,
+    disallowUnrecognizedKeys: true,
+    checked: true,
+    anyMap: true)
 class Builder {
   @JsonKey(nullable: true)
   final String target;

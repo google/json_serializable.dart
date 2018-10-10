@@ -8,7 +8,7 @@ import 'dart:io';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/builder.dart';
-import 'package:json_serializable/src/generator_config.dart';
+import 'package:json_serializable/src/json_serializable_generator.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
@@ -16,6 +16,11 @@ import 'shared_config.dart';
 import 'test_utils.dart';
 
 void main() {
+  test('fields in JsonSerializable are sorted', () {
+    expect(generatorConfigDefaultJson.keys,
+        orderedEquals(generatorConfigDefaultJson.keys.toList()..sort()));
+  });
+
   test('empty', () async {
     final builder = jsonSerializable(BuilderOptions.empty);
     expect(builder, isNotNull);
@@ -42,12 +47,12 @@ void main() {
     expect(builder, isNotNull);
   });
 
-  test('config is null-protected', () {
+  test('config is null-protected when passed to JsonSerializableGenerator', () {
     var nullValueMap = Map.fromEntries(
         generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)));
-
-    var config = GeneratorConfig.fromJson(nullValueMap);
-    expect(config.toJson(), generatorConfigDefaultJson);
+    var config = JsonSerializable.fromJson(nullValueMap);
+    var generator = JsonSerializableGenerator(config: config);
+    expect(generator.config.toJson(), generatorConfigDefaultJson);
   });
 
   test('readme config', () async {
@@ -75,7 +80,7 @@ void main() {
     expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
         reason: 'All supported keys are documented.');
 
-    expect(GeneratorConfig.fromJson(configMap).toJson(),
+    expect(JsonSerializable.fromJson(configMap).toJson(),
         generatorConfigDefaultJson,
         reason: 'All keys specify their default value.');
 
@@ -117,15 +122,15 @@ void main() {
 }
 
 const _invalidConfig = {
-  'disallow_unrecognized_keys': 42,
+  'any_map': 42,
+  'checked': 42,
   'create_factory': 42,
   'create_to_json': 42,
+  'disallow_unrecognized_keys': 42,
+  'explicit_to_json': 42,
+  'field_rename': 42,
+  'generate_to_json_function': 42,
   'include_if_null': 42,
   'nullable': 42,
-  'field_rename': 42,
-  'any_map': 42,
   'use_wrappers': 42,
-  'checked': 42,
-  'explicit_to_json': 42,
-  'generate_to_json_function': 42,
 };

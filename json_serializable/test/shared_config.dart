@@ -3,31 +3,23 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/src/generator_config.dart';
 
-const jsonSerializableFields = [
-  'create_factory',
-  'create_to_json',
-  'disallow_unrecognized_keys',
-  'include_if_null',
-  'nullable',
-  'field_rename',
-];
+final jsonSerializableFields = generatorConfigDefaultJson.keys.toList();
 
-final generatorConfigDefaultJson =
-    Map<String, dynamic>.unmodifiable(const GeneratorConfig().toJson());
+final generatorConfigDefaultJson = Map<String, dynamic>.unmodifiable(
+    const JsonSerializable().withDefaults().toJson());
 
-final generatorConfigNonDefaultJson = Map<String, dynamic>.unmodifiable(
-    const GeneratorConfig(
-            createFactory: false,
-            fieldRename: FieldRename.kebab,
-            disallowUnrecognizedKeys: true,
-            nullable: false,
-            includeIfNull: false,
-            createToJson: false,
-            useWrappers: true,
-            explicitToJson: true,
-            generateToJsonFunction: false,
-            checked: true,
-            anyMap: true)
-        .toJson());
+final generatorConfigNonDefaultJson =
+    Map<String, dynamic>.unmodifiable(const JsonSerializable(
+  anyMap: true,
+  checked: true,
+  createFactory: false,
+  createToJson: false,
+  disallowUnrecognizedKeys: true,
+  explicitToJson: true,
+  fieldRename: FieldRename.kebab,
+  generateToJsonFunction: false,
+  includeIfNull: false,
+  nullable: false,
+  useWrappers: true,
+).toJson());

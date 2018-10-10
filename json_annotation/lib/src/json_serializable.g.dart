@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'generator_config.dart';
+part of 'json_serializable.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GeneratorConfig _$GeneratorConfigFromJson(Map<String, dynamic> json) {
+JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
   $checkKeys(json, allowedKeys: const [
-    'disallow_unrecognized_keys',
+    'any_map',
+    'checked',
     'create_factory',
     'create_to_json',
+    'disallow_unrecognized_keys',
+    'explicit_to_json',
+    'field_rename',
+    'generate_to_json_function',
     'include_if_null',
     'nullable',
-    'field_rename',
-    'any_map',
-    'use_wrappers',
-    'checked',
-    'explicit_to_json',
-    'generate_to_json_function'
+    'use_wrappers'
   ]);
-  return GeneratorConfig(
+  return JsonSerializable(
       anyMap: json['any_map'] as bool,
       checked: json['checked'] as bool,
       explicitToJson: json['explicit_to_json'] as bool,
@@ -35,19 +35,19 @@ GeneratorConfig _$GeneratorConfigFromJson(Map<String, dynamic> json) {
           _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']));
 }
 
-Map<String, dynamic> _$GeneratorConfigToJson(GeneratorConfig instance) =>
+Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
     <String, dynamic>{
-      'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
+      'any_map': instance.anyMap,
+      'checked': instance.checked,
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
+      'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
+      'explicit_to_json': instance.explicitToJson,
+      'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
+      'generate_to_json_function': instance.generateToJsonFunction,
       'include_if_null': instance.includeIfNull,
       'nullable': instance.nullable,
-      'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
-      'any_map': instance.anyMap,
-      'use_wrappers': instance.useWrappers,
-      'checked': instance.checked,
-      'explicit_to_json': instance.explicitToJson,
-      'generate_to_json_function': instance.generateToJsonFunction
+      'use_wrappers': instance.useWrappers
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

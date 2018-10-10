@@ -7,7 +7,6 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../generator_config.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
@@ -68,7 +67,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 }
 
-bool _canSerialize(GeneratorConfig config, DartType type) {
+bool _canSerialize(JsonSerializable config, DartType type) {
   if (type is InterfaceType) {
     final toJsonMethod = _toJsonMethod(type);
 
@@ -86,7 +85,7 @@ bool _canSerialize(GeneratorConfig config, DartType type) {
   return false;
 }
 
-JsonSerializable _annotation(GeneratorConfig config, InterfaceType source) {
+JsonSerializable _annotation(JsonSerializable config, InterfaceType source) {
   final annotations = const TypeChecker.fromRuntime(JsonSerializable)
       .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();

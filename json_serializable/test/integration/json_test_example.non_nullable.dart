@@ -16,7 +16,9 @@ import 'json_test_common.dart';
 
 part 'json_test_example.non_nullable.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(
+  nullable: false,
+)
 class Person {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
@@ -46,7 +48,9 @@ class Person {
       deepEquals(houseMap, other.houseMap);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(
+  nullable: false,
+)
 class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
   @JsonKey(disallowNullValue: true)
@@ -97,7 +101,9 @@ class Order {
       deepEquals(altPlatforms, other.altPlatforms);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(
+  nullable: false,
+)
 class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int itemNumber;
@@ -118,7 +124,9 @@ class Item extends ItemCore {
       deepEquals(saleDates, other.saleDates);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(
+  nullable: false,
+)
 class Numbers {
   List<int> ints;
   List<num> nums;
