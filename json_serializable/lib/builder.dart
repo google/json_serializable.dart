@@ -13,8 +13,8 @@
 library json_serializable.builder;
 
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'src/generator_config.dart';
 import 'src/json_part_builder.dart';
 
 /// Supports `package:build_runner` creation and configuration of
@@ -22,6 +22,6 @@ import 'src/json_part_builder.dart';
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
-  final config = GeneratorConfig.fromJson(options.config);
+  final config = JsonSerializable.fromJson(options.config);
   return jsonPartBuilder(config: config);
 }

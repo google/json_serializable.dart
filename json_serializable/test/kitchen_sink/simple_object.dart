@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'simple_object.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(anyMap: true, generateToJsonFunction: false)
 class SimpleObject extends Object with _$SimpleObjectSerializerMixin {
   @override
   final int value;

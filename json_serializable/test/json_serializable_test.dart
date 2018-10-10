@@ -8,6 +8,7 @@ import 'dart:async';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
+import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:json_serializable/src/type_helper.dart';
@@ -175,13 +176,15 @@ void main() async {
   }
 
   group('without wrappers', () {
-    _registerTests(const GeneratorConfig());
+    _registerTests(JsonSerializable.defaults);
   });
-  group('with wrapper',
-      () => _registerTests(const GeneratorConfig(useWrappers: true)));
+  group(
+      'with wrapper',
+      () => _registerTests(
+          const JsonSerializable(useWrappers: true).withDefaults()));
 
   group('configuration', () {
-    void runWithConfigAndLogger(GeneratorConfig config, String className) {
+    void runWithConfigAndLogger(JsonSerializable config, String className) {
       _runForElementNamedWithGenerator(
           JsonSerializableGenerator(
               config: config, typeHelpers: const [_ConfigLogger()]),
@@ -201,7 +204,7 @@ void main() async {
 
           test(testDescription, () {
             runWithConfigAndLogger(
-                nullConfig ? null : const GeneratorConfig(), className);
+                nullConfig ? null : const JsonSerializable(), className);
 
             expect(_ConfigLogger.configurations, hasLength(2));
             expect(_ConfigLogger.configurations.first,
@@ -217,7 +220,7 @@ void main() async {
         'values in config override unconfigured (default) values in annotation',
         () {
       runWithConfigAndLogger(
-          GeneratorConfig.fromJson(generatorConfigNonDefaultJson),
+          JsonSerializable.fromJson(generatorConfigNonDefaultJson),
           'ConfigurationImplicitDefaults');
 
       expect(_ConfigLogger.configurations, isEmpty,
@@ -229,15 +232,15 @@ void main() async {
           Map<String, dynamic>.from(generatorConfigNonDefaultJson);
       configMap['create_to_json'] = true;
 
-      runWithConfigAndLogger(
-          GeneratorConfig.fromJson(configMap), 'ConfigurationImplicitDefaults');
+      runWithConfigAndLogger(JsonSerializable.fromJson(configMap),
+          'ConfigurationImplicitDefaults');
     });
 
     test(
         'explicit values in annotation override corresponding settings in config',
         () {
       runWithConfigAndLogger(
-          GeneratorConfig.fromJson(generatorConfigNonDefaultJson),
+          JsonSerializable.fromJson(generatorConfigNonDefaultJson),
           'ConfigurationExplicitDefaults');
 
       expect(_ConfigLogger.configurations, hasLength(2));
@@ -282,13 +285,13 @@ void _testShouldThrow(AnnotatedElement annotatedElement) {
 
     expect(
         () => _runForElementNamed(
-            const GeneratorConfig(useWrappers: false), element.name),
+            const JsonSerializable(useWrappers: false), element.name),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
         reason: 'Should fail without wrappers.');
 
     expect(
         () => _runForElementNamed(
-            const GeneratorConfig(useWrappers: true), element.name),
+            const JsonSerializable(useWrappers: true), element.name),
         _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
         reason: 'Should fail with wrappers.');
   });
@@ -310,7 +313,7 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
 
   test(element.name, () {
     final output =
-        _runForElementNamed(GeneratorConfig(checked: checked), element.name);
+        _runForElementNamed(JsonSerializable(checked: checked), element.name);
     expect(output, matcher);
 
     expect(_buildLogItems, expectedLogItems);
@@ -323,7 +326,7 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   if (wrappedMatcher != null) {
     test('${element.name} - (wrapped)', () {
       final output = _runForElementNamed(
-          GeneratorConfig(checked: checked, useWrappers: true), element.name);
+          JsonSerializable(checked: checked, useWrappers: true), element.name);
       expect(output, wrappedMatcher);
 
       expect(_buildLogItems, expectedLogItems);
@@ -332,7 +335,7 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   }
 }
 
-String _runForElementNamed(GeneratorConfig config, String name) {
+String _runForElementNamed(JsonSerializable config, String name) {
   final generator = JsonSerializableGenerator(config: config);
   return _runForElementNamedWithGenerator(generator, name);
 }
@@ -374,7 +377,7 @@ final _annotatedElements = _library.allElements
       return map;
     });
 
-void _registerTests(GeneratorConfig generator) {
+void _registerTests(JsonSerializable generator) {
   String runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
@@ -387,7 +390,7 @@ void _registerTests(GeneratorConfig generator) {
   group('explicit toJson', () {
     test('nullable', () {
       final output = _runForElementNamed(
-          GeneratorConfig(
+          JsonSerializable(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
@@ -431,7 +434,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
     });
     test('non-nullable', () {
       final output = _runForElementNamed(
-          GeneratorConfig(
+          JsonSerializable(
               explicitToJson: true, useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
@@ -580,7 +583,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
     test('class with child json-able object - anyMap', () {
       final output = _runForElementNamed(
-          GeneratorConfig(anyMap: true, useWrappers: generator.useWrappers),
+          JsonSerializable(anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
 
       expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
@@ -624,7 +627,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 }
 
 class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
-  static final configurations = <GeneratorConfig>[];
+  static final configurations = <JsonSerializable>[];
 
   const _ConfigLogger();
 

@@ -4,7 +4,11 @@
   fields when constructor arguments are unset or `null`. This is not likely an
   issue for developers using this class as an annotation with a compatible
   version of `package:json_serializable`, but it may cause issues if class is
-  used in other contexts. 
+  used in other contexts.
+
+* Support all `build.yaml` configuration options on classes by adding a number
+  of fields to `JsonSerializable`: `anyMap`, `checked`, `explicitToJson`,
+  `generateToJsonFunction`, and `useWrappers`.
 
 ## 1.2.0
 
@@ -13,7 +17,7 @@
 ## 1.1.0
 
 * Added the `fieldRename` option to `JsonSerializable` and the associated
-  `FieldRename` enum. 
+  `FieldRename` enum.
 
 ## 1.0.0
 
@@ -37,7 +41,7 @@
 * Added `$checkKeys` helper function and deprecated `$checkAllowedKeys`.
   Upgrading to the latest `json_serializable` and re-running your build will
   eliminate any `@deprecated` hints you see.
-  
+
 * Added `BadKeyException` exception which is the abstract super class for
   `MissingRequiredKeysException`, `UnrecognizedKeysException`, and
   `DisallowedNullValueException`.
@@ -45,8 +49,8 @@
 * Added `JsonKey.required` field and an associated
   `MissingRequiredKeysException` that is thrown when `required` fields don't
   have corresponding keys in a source JSON map.
-  
-* Added `JsonKey.disallowNullValue`  field and an associated 
+
+* Added `JsonKey.disallowNullValue`  field and an associated
   `DisallowedNullValueException` that is thrown when corresponding keys exist in
   a source JSON map, but their values are `null`.
 

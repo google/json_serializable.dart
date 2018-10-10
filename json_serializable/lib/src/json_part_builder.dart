@@ -3,9 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'generator_config.dart';
 import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
 
@@ -15,7 +15,7 @@ import 'json_serializable_generator.dart';
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
 Builder jsonPartBuilder(
-        {String formatOutput(String code), GeneratorConfig config}) =>
+        {String formatOutput(String code), JsonSerializable config}) =>
     SharedPartBuilder([
       JsonSerializableGenerator(config: config),
       const JsonLiteralGenerator()

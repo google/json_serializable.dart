@@ -10,7 +10,6 @@ import 'package:source_gen/source_gen.dart';
 import 'decode_helper.dart';
 import 'encoder_helper.dart';
 import 'field_helpers.dart';
-import 'generator_config.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
@@ -48,16 +47,18 @@ class JsonSerializableGenerator
         JsonConverterHelper()
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
-  final GeneratorConfig config;
+  final JsonSerializable _config;
+
+  JsonSerializable get config => _config.withDefaults();
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, three built-in helpers are used:
   /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   const JsonSerializableGenerator({
-    GeneratorConfig config,
+    JsonSerializable config,
     List<TypeHelper> typeHelpers,
-  })  : config = config ?? const GeneratorConfig(),
+  })  : _config = config ?? JsonSerializable.defaults,
         _typeHelpers = typeHelpers ?? _defaultHelpers;
 
   /// Creates an instance of [JsonSerializableGenerator].
@@ -67,7 +68,7 @@ class JsonSerializableGenerator
   /// [JsonHelper], [DateTimeHelper], [DurationHelper] and [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
           Iterable<TypeHelper> typeHelpers,
-          {GeneratorConfig config}) =>
+          {JsonSerializable config}) =>
       JsonSerializableGenerator(
           config: config,
           typeHelpers:

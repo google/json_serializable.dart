@@ -22,7 +22,10 @@ const _intValue = 42;
 dvi.DefaultValue fromJson(Map<String, dynamic> json) =>
     _$DefaultValueFromJson(json);
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+  checked: true,
+)
 class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: true)
   bool fieldBool;

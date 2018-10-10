@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'generator_config.dart';
 import 'json_key_utils.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
@@ -16,7 +15,7 @@ import 'utils.dart';
 
 abstract class HelperCore {
   final ClassElement element;
-  final GeneratorConfig config;
+  final JsonSerializable config;
 
   HelperCore(this.element, this.config);
 

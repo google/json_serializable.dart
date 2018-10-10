@@ -10,8 +10,12 @@
 
 * `json_serializable.dart`
 
+* Support all `build.yaml` configuration options on classes by adding a number
+  of fields to `JsonSerializable`: `anyMap`, `checked`, `explicitToJson`,
+  `generateToJsonFunction`, and `useWrappers`.
+
   * **BREAKING** `JsonSerializableGenerator` now exposes a `config` property
-    of type `GeneratorConfig` instead of individual properties for `checked`,
+    of type `JsonSerializable` instead of individual properties for `checked`,
     `anyMay`, etc. This will affect anyone creating or using this class via
     code.
 
@@ -21,7 +25,7 @@
     with new `TypeHelperContext` class.
 
   * `TypeHelper` now has a type argument allowing implementors to specify a
-    specific implementation of `TypeHelperContext` for calls to `serialize` and 
+    specific implementation of `TypeHelperContext` for calls to `serialize` and
     `deserialize`. Many of the included `TypeHelper` implementations have been
     updated to indicate they expect more information from the source generator.
 

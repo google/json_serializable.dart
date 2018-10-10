@@ -4,20 +4,10 @@
 
 @TestOn('vm')
 @Tags(['presubmit-only'])
-
 import 'package:build_verify/build_verify.dart';
-import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
-  test(
-      'ensure_build',
-      () => expectBuildClean(
-              packageRelativeDirectory: 'json_serializable',
-              customCommand: [
-                'DART',
-                p.join('tool', 'build.dart'),
-                'build',
-                '--delete-conflicting-outputs',
-              ]));
+  test('ensure_build',
+      () => expectBuildClean(packageRelativeDirectory: 'json_serializable'));
 }

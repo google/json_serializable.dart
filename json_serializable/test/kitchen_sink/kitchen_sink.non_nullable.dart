@@ -43,7 +43,7 @@ k.KitchenSink testFactory(
 
 k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, anyMap: true, generateToJsonFunction: false)
 class KitchenSink extends Object
     with _$KitchenSinkSerializerMixin
     implements k.KitchenSink {
@@ -142,7 +142,7 @@ class KitchenSink extends Object
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, anyMap: true, generateToJsonFunction: false)
 // referencing a top-level field should work
 @durationConverter
 // referencing via a const constructor should work
@@ -168,7 +168,7 @@ class JsonConverterTestClass extends Object
   DateTime dateTime = DateTime(1981, 6, 5);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable(nullable: false, anyMap: true, generateToJsonFunction: false)
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> extends Object
     with _$JsonConverterGenericSerializerMixin<S, T, U> {

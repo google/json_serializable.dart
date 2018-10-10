@@ -3,8 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
-import 'package:build/build.dart';
 
+import 'package:build/build.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 
@@ -38,7 +38,7 @@ class _NonNullableGenerator extends Generator {
         "part '$baseName.g.dart",
         "part '$baseName.non_nullable.g.dart",
       ),
-      _Replacement('@JsonSerializable()', '@JsonSerializable(nullable: false)'),
+      _Replacement('@JsonSerializable(', '@JsonSerializable(nullable: false,'),
     ];
 
     if (baseName == 'kitchen_sink') {
@@ -72,12 +72,19 @@ class _CheckedGenerator extends Generator {
 
     final content = await buildStep.readAsString(buildStep.inputId);
     final replacements = [
+      _Replacement('@JsonSerializable(', '@JsonSerializable(checked: true,'),
       _Replacement(_copyrightContent, ''),
       _Replacement(
         "part '$baseName.g.dart",
         "part '$baseName.checked.g.dart",
       ),
     ];
+
+    if (baseName == 'default_value') {
+      replacements.add(
+        _Replacement('@JsonSerializable(', '@JsonSerializable(anyMap: true,'),
+      );
+    }
 
     return _Replacement.generate(content, replacements);
   }
@@ -96,6 +103,8 @@ class _WrappedGenerator extends Generator {
         "part '$baseName.g.dart",
         "part '$baseName.wrapped.g.dart",
       ),
+      _Replacement(
+          '@JsonSerializable(', '@JsonSerializable(useWrappers: true,'),
     ];
 
     return _Replacement.generate(content, replacements);
