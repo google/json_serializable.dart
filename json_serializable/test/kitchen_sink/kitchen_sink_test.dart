@@ -2,20 +2,20 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:test/test.dart';
-
 import 'package:json_annotation/json_annotation.dart';
+import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import '../test_utils.dart';
-import 'kitchen_sink.dart' as nullable show testFactory, testFromJson;
+import 'kitchen_sink.dart' as nullable
+    show testFactory, testFromJson, JsonConverterTestClass;
 import 'kitchen_sink.non_nullable.checked.dart' as checked
     show testFactory, testFromJson;
-import 'kitchen_sink.non_nullable.dart' as nn show testFactory, testFromJson;
+import 'kitchen_sink.non_nullable.dart' as nn
+    show testFactory, testFromJson, JsonConverterTestClass;
 import 'kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
     show testFactory, testFromJson;
 import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
-
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
 
@@ -67,6 +67,42 @@ void main() {
 
     group('wrapped', () {
       _nonNullableTests(nnwrapped.testFactory, nnwrapped.testFromJson);
+    });
+  });
+
+  group('JsonConverterTestClass', () {
+    final validValues = {
+      'duration': 5,
+      'durationList': [5],
+      'bigInt': '5',
+      'bigIntMap': {'vaule': '5'},
+      'numberSilly': 5,
+      'numberSillySet': [5],
+      'dateTime': 5
+    };
+
+    test('nullable values are allowed in the nullable version', () {
+      var instance = nullable.JsonConverterTestClass();
+      var json = instance.toJson();
+      expect(json.values, everyElement(isNull));
+      expect(json.keys, unorderedEquals(validValues.keys));
+
+      var instance2 = nullable.JsonConverterTestClass.fromJson(json);
+      expect(instance2.toJson(), json);
+    });
+
+    test('nullable values are not allowed in non-nullable version', () {
+      var instance = nn.JsonConverterTestClass();
+      expect(() => instance.toJson(), throwsNoSuchMethodError,
+          reason: 'Trying to call `map` on a null list');
+
+      instance = nn.JsonConverterTestClass.fromJson(validValues);
+      var json = instance.toJson();
+      expect(json, validValues);
+      expect(json.values, everyElement(isNotNull));
+
+      var instance2 = nn.JsonConverterTestClass.fromJson(json);
+      expect(instance2.toJson(), json);
     });
   });
 }
