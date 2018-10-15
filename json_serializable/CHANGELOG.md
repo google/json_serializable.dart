@@ -1,5 +1,11 @@
 ## 2.0.0
 
+* Support all `build.yaml` configuration options on classes by adding a number
+  of fields to `JsonSerializable`: `anyMap`, `checked`, `explicitToJson`,
+  `generateToJsonFunction`, and `useWrappers`.
+
+* Support decode/encode of `dart:core` `Duration`
+
 * Code generated for fields and classes annotated with `JsonConverter` instances
   now properly handles nullable fields.
 
@@ -12,10 +18,6 @@
     exceptions instead of being logged and ignored.
 
 * `json_serializable.dart`
-
-* Support all `build.yaml` configuration options on classes by adding a number
-  of fields to `JsonSerializable`: `anyMap`, `checked`, `explicitToJson`,
-  `generateToJsonFunction`, and `useWrappers`.
 
   * **BREAKING** `JsonSerializableGenerator` now exposes a `config` property
     of type `JsonSerializable` instead of individual properties for `checked`,
@@ -31,8 +33,6 @@
     specific implementation of `TypeHelperContext` for calls to `serialize` and
     `deserialize`. Many of the included `TypeHelper` implementations have been
     updated to indicate they expect more information from the source generator.
-
-* Support decode/encode of `dart:core` `Duration`
 
 ## 1.5.1
 
