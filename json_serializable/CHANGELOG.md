@@ -1,5 +1,8 @@
 ## 2.0.0
 
+* Code generated for fields and classes annotated with `JsonConverter` instances
+  now properly handles nullable fields.
+
 * Build configuration
 
   * You can now configure all settings exposed by the `JsonSerializable`

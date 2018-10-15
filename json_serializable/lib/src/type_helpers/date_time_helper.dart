@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+
 import '../type_helper.dart';
 
 class DateTimeHelper extends TypeHelper {
@@ -34,8 +35,9 @@ class DateTimeHelper extends TypeHelper {
       return null;
     }
 
-    return commonNullPrefix(
-        context.nullable, expression, 'DateTime.parse($expression as String)');
+    return commonNullPrefix(context.nullable, expression,
+            'DateTime.parse($expression as String)')
+        .toString();
   }
 }
 

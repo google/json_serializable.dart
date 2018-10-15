@@ -32,7 +32,7 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
       assert(toJsonData.paramType is TypeParameterType ||
           targetType.isAssignableTo(toJsonData.paramType));
       final result = '${toJsonData.name}($expression)';
-      return commonNullPrefix(context.nullable, expression, result);
+      return commonNullPrefix(context.nullable, expression, result).toString();
     }
     return null;
   }
@@ -44,7 +44,7 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     if (fromJsonData != null) {
       final asContent = asStatement(fromJsonData.paramType);
       final result = '${fromJsonData.name}($expression$asContent)';
-      return commonNullPrefix(context.nullable, expression, result);
+      return commonNullPrefix(context.nullable, expression, result).toString();
     }
     return null;
   }

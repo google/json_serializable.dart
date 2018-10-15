@@ -5,7 +5,6 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -18,7 +17,7 @@ class JsonConverterHelper extends TypeHelper {
   const JsonConverterHelper();
 
   @override
-  LambdaResult serialize(
+  Object serialize(
       DartType targetType, String expression, TypeHelperContext context) {
     final converter = _typeConverter(targetType, context);
 
@@ -26,11 +25,12 @@ class JsonConverterHelper extends TypeHelper {
       return null;
     }
 
-    return LambdaResult(expression, '${converter.accessString}.toJson');
+    return commonNullPrefix(context.nullable, expression,
+        LambdaResult(expression, '${converter.accessString}.toJson'));
   }
 
   @override
-  LambdaResult deserialize(
+  Object deserialize(
       DartType targetType, String expression, TypeHelperContext context) {
     final converter = _typeConverter(targetType, context);
     if (converter == null) {
@@ -39,8 +39,11 @@ class JsonConverterHelper extends TypeHelper {
 
     final asContent = asStatement(converter.jsonType);
 
-    return LambdaResult(
-        '$expression$asContent', '${converter.accessString}.fromJson');
+    return commonNullPrefix(
+        context.nullable,
+        expression,
+        LambdaResult(
+            '$expression$asContent', '${converter.accessString}.fromJson'));
   }
 }
 

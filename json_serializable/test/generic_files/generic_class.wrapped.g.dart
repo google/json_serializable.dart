@@ -73,14 +73,20 @@ GenericClassWithConverter<T, S>
     ..fieldObject = json['fieldObject']
     ..fieldDynamic = json['fieldDynamic']
     ..fieldInt = json['fieldInt'] as int
-    ..fieldT =
-        _SimpleConverter<T>().fromJson(json['fieldT'] as Map<String, dynamic>)
-    ..fieldS =
-        _SimpleConverter<S>().fromJson(json['fieldS'] as Map<String, dynamic>)
-    ..duration =
-        const _DurationMillisecondConverter().fromJson(json['duration'] as int)
-    ..listDuration = const _DurationListMillisecondConverter()
-        .fromJson(json['listDuration'] as int);
+    ..fieldT = json['fieldT'] == null
+        ? null
+        : _SimpleConverter<T>().fromJson(json['fieldT'] as Map<String, dynamic>)
+    ..fieldS = json['fieldS'] == null
+        ? null
+        : _SimpleConverter<S>().fromJson(json['fieldS'] as Map<String, dynamic>)
+    ..duration = json['duration'] == null
+        ? null
+        : const _DurationMillisecondConverter()
+            .fromJson(json['duration'] as int)
+    ..listDuration = json['listDuration'] == null
+        ? null
+        : const _DurationListMillisecondConverter()
+            .fromJson(json['listDuration'] as int);
 }
 
 Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
@@ -114,14 +120,22 @@ class _$GenericClassWithConverterJsonMapWrapper<T extends num, S>
         case 'fieldInt':
           return _v.fieldInt;
         case 'fieldT':
-          return _SimpleConverter<T>().toJson(_v.fieldT);
+          return _v.fieldT == null
+              ? null
+              : _SimpleConverter<T>().toJson(_v.fieldT);
         case 'fieldS':
-          return _SimpleConverter<S>().toJson(_v.fieldS);
+          return _v.fieldS == null
+              ? null
+              : _SimpleConverter<S>().toJson(_v.fieldS);
         case 'duration':
-          return const _DurationMillisecondConverter().toJson(_v.duration);
+          return _v.duration == null
+              ? null
+              : const _DurationMillisecondConverter().toJson(_v.duration);
         case 'listDuration':
-          return const _DurationListMillisecondConverter()
-              .toJson(_v.listDuration);
+          return _v.listDuration == null
+              ? null
+              : const _DurationListMillisecondConverter()
+                  .toJson(_v.listDuration);
       }
     }
     return null;
