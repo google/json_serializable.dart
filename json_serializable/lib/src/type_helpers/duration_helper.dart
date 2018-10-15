@@ -38,7 +38,7 @@ class DurationHelper extends TypeHelper {
       context.nullable,
       expression,
       'Duration(microseconds: $expression as int)',
-    );
+    ).toString();
   }
 }
 

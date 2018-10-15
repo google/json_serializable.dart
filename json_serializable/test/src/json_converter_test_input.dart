@@ -8,10 +8,13 @@ part of '_json_serializable_test_input.dart';
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConverterNamedCtor<E>()
-    ..value = const _DurationMillisecondConverter.named()
-        .fromJson(json['value'] as int)
-    ..genericValue =
-        _GenericConverter<E>.named().fromJson(json['genericValue'] as int)
+    ..value = json['value'] == null
+        ? null
+        : const _DurationMillisecondConverter.named()
+            .fromJson(json['value'] as int)
+    ..genericValue = json['genericValue'] == null
+        ? null
+        : _GenericConverter<E>.named().fromJson(json['genericValue'] as int)
     ..keyAnnotationFirst = json['keyAnnotationFirst'] == null
         ? null
         : JsonConverterNamedCtor._fromJson(json['keyAnnotationFirst'] as int);
@@ -20,10 +23,12 @@ JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
 Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
         JsonConverterNamedCtor<E> instance) =>
     <String, dynamic>{
-      'value':
-          const _DurationMillisecondConverter.named().toJson(instance.value),
-      'genericValue':
-          _GenericConverter<E>.named().toJson(instance.genericValue),
+      'value': instance.value == null
+          ? null
+          : const _DurationMillisecondConverter.named().toJson(instance.value),
+      'genericValue': instance.genericValue == null
+          ? null
+          : _GenericConverter<E>.named().toJson(instance.genericValue),
       'keyAnnotationFirst': instance.keyAnnotationFirst == null
           ? null
           : JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst)
@@ -48,26 +53,39 @@ class JsonConverterNamedCtor<E> {
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConvertOnField<E>()
-    ..annotatedField = const _DurationMillisecondConverter()
-        .fromJson(json['annotatedField'] as int)
-    ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
-        .fromJson(json['annotatedWithNamedCtor'] as int)
-    ..classAnnotatedWithField =
-        _durationConverter.fromJson(json['classAnnotatedWithField'] as int)
-    ..genericValue =
-        _GenericConverter<E>().fromJson(json['genericValue'] as int);
+    ..annotatedField = json['annotatedField'] == null
+        ? null
+        : const _DurationMillisecondConverter()
+            .fromJson(json['annotatedField'] as int)
+    ..annotatedWithNamedCtor = json['annotatedWithNamedCtor'] == null
+        ? null
+        : const _DurationMillisecondConverter.named()
+            .fromJson(json['annotatedWithNamedCtor'] as int)
+    ..classAnnotatedWithField = json['classAnnotatedWithField'] == null
+        ? null
+        : _durationConverter.fromJson(json['classAnnotatedWithField'] as int)
+    ..genericValue = json['genericValue'] == null
+        ? null
+        : _GenericConverter<E>().fromJson(json['genericValue'] as int);
 }
 
 Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
         JsonConvertOnField<E> instance) =>
     <String, dynamic>{
-      'annotatedField':
-          const _DurationMillisecondConverter().toJson(instance.annotatedField),
-      'annotatedWithNamedCtor': const _DurationMillisecondConverter.named()
-          .toJson(instance.annotatedWithNamedCtor),
-      'classAnnotatedWithField':
-          _durationConverter.toJson(instance.classAnnotatedWithField),
-      'genericValue': _GenericConverter<E>().toJson(instance.genericValue)
+      'annotatedField': instance.annotatedField == null
+          ? null
+          : const _DurationMillisecondConverter()
+              .toJson(instance.annotatedField),
+      'annotatedWithNamedCtor': instance.annotatedWithNamedCtor == null
+          ? null
+          : const _DurationMillisecondConverter.named()
+              .toJson(instance.annotatedWithNamedCtor),
+      'classAnnotatedWithField': instance.classAnnotatedWithField == null
+          ? null
+          : _durationConverter.toJson(instance.classAnnotatedWithField),
+      'genericValue': instance.genericValue == null
+          ? null
+          : _GenericConverter<E>().toJson(instance.genericValue)
     };
 ''')
 @JsonSerializable()

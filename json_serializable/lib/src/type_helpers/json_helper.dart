@@ -63,7 +63,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // github.com/dart-lang/json_serializable/issues/19
     final result = '${targetType.name}.fromJson($expression$asCast)';
 
-    return commonNullPrefix(context.nullable, expression, result);
+    return commonNullPrefix(context.nullable, expression, result).toString();
   }
 }
 

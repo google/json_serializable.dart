@@ -141,20 +141,29 @@ abstract class _$KitchenSinkSerializerMixin {
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
   return JsonConverterTestClass()
-    ..duration = durationConverter.fromJson(json['duration'] as int)
+    ..duration = json['duration'] == null
+        ? null
+        : durationConverter.fromJson(json['duration'] as int)
     ..durationList = (json['durationList'] as List)
-        ?.map((e) => durationConverter.fromJson(e as int))
+        ?.map((e) => e == null ? null : durationConverter.fromJson(e as int))
         ?.toList()
-    ..bigInt = const BigIntStringConverter().fromJson(json['bigInt'] as String)
+    ..bigInt = json['bigInt'] == null
+        ? null
+        : const BigIntStringConverter().fromJson(json['bigInt'] as String)
     ..bigIntMap = (json['bigIntMap'] as Map)?.map((k, e) => MapEntry(
-        k as String, const BigIntStringConverter().fromJson(e as String)))
-    ..numberSilly =
-        TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
+        k as String,
+        e == null ? null : const BigIntStringConverter().fromJson(e as String)))
+    ..numberSilly = json['numberSilly'] == null
+        ? null
+        : TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
     ..numberSillySet = (json['numberSillySet'] as List)
-        ?.map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+        ?.map((e) => e == null
+            ? null
+            : TrivialNumberConverter.instance.fromJson(e as int))
         ?.toSet()
-    ..dateTime =
-        const EpochDateTimeConverter().fromJson(json['dateTime'] as int);
+    ..dateTime = json['dateTime'] == null
+        ? null
+        : const EpochDateTimeConverter().fromJson(json['dateTime'] as int);
 }
 
 abstract class _$JsonConverterTestClassSerializerMixin {
@@ -166,29 +175,45 @@ abstract class _$JsonConverterTestClassSerializerMixin {
   Set<TrivialNumber> get numberSillySet;
   DateTime get dateTime;
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'duration': durationConverter.toJson(duration),
-        'durationList': durationList?.map(durationConverter.toJson)?.toList(),
-        'bigInt': const BigIntStringConverter().toJson(bigInt),
-        'bigIntMap': bigIntMap?.map(
-            (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
-        'numberSilly': TrivialNumberConverter.instance.toJson(numberSilly),
-        'numberSillySet': numberSillySet
-            ?.map(TrivialNumberConverter.instance.toJson)
+        'duration':
+            duration == null ? null : durationConverter.toJson(duration),
+        'durationList': durationList
+            ?.map((e) => e == null ? null : durationConverter.toJson(e))
             ?.toList(),
-        'dateTime': const EpochDateTimeConverter().toJson(dateTime)
+        'bigInt': bigInt == null
+            ? null
+            : const BigIntStringConverter().toJson(bigInt),
+        'bigIntMap': bigIntMap?.map((k, e) => MapEntry(
+            k, e == null ? null : const BigIntStringConverter().toJson(e))),
+        'numberSilly': numberSilly == null
+            ? null
+            : TrivialNumberConverter.instance.toJson(numberSilly),
+        'numberSillySet': numberSillySet
+            ?.map((e) =>
+                e == null ? null : TrivialNumberConverter.instance.toJson(e))
+            ?.toList(),
+        'dateTime': dateTime == null
+            ? null
+            : const EpochDateTimeConverter().toJson(dateTime)
       };
 }
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     Map json) {
   return JsonConverterGeneric<S, T, U>()
-    ..item =
-        GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
+    ..item = json['item'] == null
+        ? null
+        : GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
     ..itemList = (json['itemList'] as List)
-        ?.map((e) => GenericConverter<T>().fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null
+            ? null
+            : GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..itemMap = (json['itemMap'] as Map)?.map((k, e) => MapEntry(k as String,
-        GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
+    ..itemMap = (json['itemMap'] as Map)?.map((k, e) => MapEntry(
+        k as String,
+        e == null
+            ? null
+            : GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
 }
 
 abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
@@ -196,9 +221,11 @@ abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
   List<T> get itemList;
   Map<String, U> get itemMap;
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'item': GenericConverter<S>().toJson(item),
-        'itemList': itemList?.map(GenericConverter<T>().toJson)?.toList(),
-        'itemMap':
-            itemMap?.map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
+        'item': item == null ? null : GenericConverter<S>().toJson(item),
+        'itemList': itemList
+            ?.map((e) => e == null ? null : GenericConverter<T>().toJson(e))
+            ?.toList(),
+        'itemMap': itemMap?.map((k, e) =>
+            MapEntry(k, e == null ? null : GenericConverter<U>().toJson(e)))
       };
 }

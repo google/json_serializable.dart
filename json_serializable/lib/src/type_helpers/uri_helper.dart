@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+
 import '../type_helper.dart';
 
 class UriHelper extends TypeHelper {
@@ -35,7 +36,8 @@ class UriHelper extends TypeHelper {
     }
 
     return commonNullPrefix(
-        context.nullable, expression, 'Uri.parse($expression as String)');
+            context.nullable, expression, 'Uri.parse($expression as String)')
+        .toString();
   }
 }
 
