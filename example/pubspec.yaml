@@ -2,14 +2,14 @@ name: example
 author: Dart Team <misc@dartlang.org>
 
 environment:
-  sdk: '>=2.0.0-dev.54 <3.0.0'
+  sdk: '>=2.0.0 <3.0.0'
 
 dependencies:
-  json_annotation: ^1.0.0
+  json_annotation: ^1.2.0
 
 dev_dependencies:
-  build_runner: ^0.10.0
-  json_serializable: ^1.0.0
+  build_runner: ^1.0.0
+  json_serializable: ^1.5.1
 
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^1.0.0
