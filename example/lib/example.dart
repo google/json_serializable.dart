@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
+
 part 'example.g.dart';
 
 @JsonSerializable()
@@ -39,7 +40,7 @@ class Order {
 
   @JsonKey(
       name: 'prep-time',
-      fromJson: _durationFromMillseconds,
+      fromJson: _durationFromMilliseconds,
       toJson: _durationToMilliseconds)
   Duration prepTime;
 
@@ -51,15 +52,19 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);
+
+  static Duration _durationFromMilliseconds(int milliseconds) =>
+      Duration(milliseconds: milliseconds);
+
+  static int _durationToMilliseconds(Duration duration) =>
+      duration.inMilliseconds;
+
+  static DateTime _dateTimeFromEpochUs(int us) =>
+      DateTime.fromMicrosecondsSinceEpoch(us);
+
+  static int _dateTimeToEpochUs(DateTime dateTime) =>
+      dateTime.microsecondsSinceEpoch;
 }
-
-Duration _durationFromMillseconds(int milliseconds) =>
-    Duration(milliseconds: milliseconds);
-int _durationToMilliseconds(Duration duration) => duration.inMilliseconds;
-
-DateTime _dateTimeFromEpochUs(int us) =>
-    DateTime.fromMicrosecondsSinceEpoch(us);
-int _dateTimeToEpochUs(DateTime dateTime) => dateTime.microsecondsSinceEpoch;
 
 @JsonSerializable()
 class Item {

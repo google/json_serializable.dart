@@ -1,4 +1,4 @@
-# Created with package:mono_repo v1.2.0
+# Created with package:mono_repo v1.2.1
 language: dart
 
 # Custom configuration
@@ -13,13 +13,13 @@ branches:
 jobs:
   include:
     - stage: analyzer_and_format
-      name: "SDK: stable - DIR: example - TASKS: dartfmt -n --set-exit-if-changed ."
-      script: ./tool/travis.sh dartfmt
+      name: "SDK: dev - DIR: example - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-infos --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer_0
       env: PKG="example"
-      dart: stable
-    - stage: analyzer_and_format
-      name: "SDK: stable - DIR: example - TASKS: dartanalyzer --fatal-infos --fatal-warnings ."
-      script: ./tool/travis.sh dartanalyzer_0
+      dart: dev
+    - stage: analyzer_and_format_stable
+      name: "SDK: stable - DIR: example - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-warnings .]"
+      script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="example"
       dart: stable
     - stage: unit_test
@@ -71,4 +71,5 @@ stages:
 cache:
   directories:
     - "$HOME/.pub-cache"
+    - example/.dart_tool/build
     - json_serializable/.dart_tool/build
