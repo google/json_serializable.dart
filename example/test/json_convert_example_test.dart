@@ -9,11 +9,11 @@ import 'package:test/test.dart';
 
 void main() {
   test('trivial case', () {
-    var collection = GenericCollection<int>(
+    final collection = GenericCollection<int>(
         page: 0, totalPages: 3, totalResults: 10, results: [1, 2, 3]);
 
-    var encoded = _encode(collection);
-    var collection2 = GenericCollection<int>.fromJson(
+    final encoded = _encode(collection);
+    final collection2 = GenericCollection<int>.fromJson(
         jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [1, 2, 3]);
@@ -22,14 +22,14 @@ void main() {
   });
 
   test('custom result', () {
-    var collection = GenericCollection<CustomResult>(
+    final collection = GenericCollection<CustomResult>(
         page: 0,
         totalPages: 3,
         totalResults: 10,
         results: [CustomResult('bob', 42)]);
 
-    var encoded = _encode(collection);
-    var collection2 = GenericCollection<CustomResult>.fromJson(
+    final encoded = _encode(collection);
+    final collection2 = GenericCollection<CustomResult>.fromJson(
         jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [CustomResult('bob', 42)]);
@@ -38,7 +38,7 @@ void main() {
   });
 
   test('mixed values in generic collection', () {
-    var collection =
+    final collection =
         GenericCollection(page: 0, totalPages: 3, totalResults: 10, results: [
       1,
       3.14,
@@ -49,7 +49,7 @@ void main() {
       CustomResult('bob', 42)
     ]);
 
-    var encoded = _encode(collection);
+    final encoded = _encode(collection);
 
     expect(
         () => GenericCollection<CustomResult>.fromJson(
@@ -64,7 +64,7 @@ void main() {
             jsonDecode(encoded) as Map<String, dynamic>),
         _throwsCastSomething);
 
-    var collection2 =
+    final collection2 =
         GenericCollection.fromJson(jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [

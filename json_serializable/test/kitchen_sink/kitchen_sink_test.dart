@@ -82,12 +82,12 @@ void main() {
     };
 
     test('nullable values are allowed in the nullable version', () {
-      var instance = nullable.JsonConverterTestClass();
-      var json = instance.toJson();
+      final instance = nullable.JsonConverterTestClass();
+      final json = instance.toJson();
       expect(json.values, everyElement(isNull));
       expect(json.keys, unorderedEquals(validValues.keys));
 
-      var instance2 = nullable.JsonConverterTestClass.fromJson(json);
+      final instance2 = nullable.JsonConverterTestClass.fromJson(json);
       expect(instance2.toJson(), json);
     });
 
@@ -97,11 +97,11 @@ void main() {
           reason: 'Trying to call `map` on a null list');
 
       instance = nn.JsonConverterTestClass.fromJson(validValues);
-      var json = instance.toJson();
+      final json = instance.toJson();
       expect(json, validValues);
       expect(json.values, everyElement(isNotNull));
 
-      var instance2 = nn.JsonConverterTestClass.fromJson(json);
+      final instance2 = nn.JsonConverterTestClass.fromJson(json);
       expect(instance2.toJson(), json);
     });
   });
