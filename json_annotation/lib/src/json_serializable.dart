@@ -54,7 +54,7 @@ class JsonSerializable {
   /// ```
   final bool createFactory;
 
-  /// If `true` (the default), code for decoding JSON is generated fon this
+  /// If `true` (the default), code for encoding JSON is generated for this
   /// class.
   ///
   /// By default, a private `_$ClassNameMixin` class is created
