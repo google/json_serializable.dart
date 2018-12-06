@@ -157,8 +157,8 @@ class JsonSerializable {
   final bool includeIfNull;
 
   /// When `true` (the default), `null` values are handled gracefully when
-  /// serializing fields to JSON and when deserializing `null` and nonexistent
-  /// values from a JSON map.
+  /// serializing to JSON and when deserializing `null` and nonexistent values
+  /// from a JSON map.
   ///
   /// Setting to `false` eliminates `null` verification in the generated code,
   /// which reduces the code size. Errors may be thrown at runtime if `null`
