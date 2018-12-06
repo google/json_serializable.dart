@@ -12,9 +12,8 @@ class JsonKey {
   /// If `null`, the field name is used.
   final String name;
 
-  /// When `true`, `null` values are handled gracefully when
-  /// serializing the field to JSON and when deserializing `null` and
-  /// nonexistent values from a JSON map.
+  /// When `true`, `null` values are handled gracefully when serializing to JSON
+  /// and when deserializing `null` and nonexistent values from a JSON map.
   ///
   /// Setting to `false` eliminates `null` verification in the generated code
   /// for the annotated field, which reduces the code size. Errors may be thrown
@@ -26,7 +25,10 @@ class JsonKey {
   /// enclosing class.
   final bool nullable;
 
-  /// `true` if the generator should include the this field in the serialized
+  /// Whether the generator should include fields with `null` values in the
+  /// serialized output.
+  ///
+  /// If `true`, the generator should include the field in the serialized
   /// output, even if the value is `null`.
   ///
   /// The default value, `null`, indicates that the behavior should be
