@@ -1,0 +1,9 @@
+# Read about `build.yaml` at https://pub.dartlang.org/packages/build_config
+
+builders:
+  json_annotation:
+    import: "tool/builder.dart"
+    builder_factories: ["docBuilder"]
+    build_extensions: {"lib/json_annotation.dart": ["doc/doc.md"]}
+    build_to: source
+    auto_apply: root_package
