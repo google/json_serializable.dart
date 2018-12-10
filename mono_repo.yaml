@@ -6,4 +6,3 @@ travis:
   branches:
     only:
       - master
-      - v1_x
