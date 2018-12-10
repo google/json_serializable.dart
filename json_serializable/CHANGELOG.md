@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Support `pkg:analyzer` v0.34.0.
+
 ## 2.0.0
 
 * Support all `build.yaml` configuration options on classes by adding a number

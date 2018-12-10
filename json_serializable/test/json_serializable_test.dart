@@ -6,6 +6,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/src/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_annotation/json_annotation.dart';
@@ -165,8 +166,10 @@ void main() async {
   for (final entry in _annotatedElements.entries) {
     group(entry.key, () {
       test('[all expected classes]', () {
-        expect(_expectedAnnotatedTests,
-            containsPair(entry.key, entry.value.map((ae) => ae.element.name)));
+        expect(
+            _expectedAnnotatedTests,
+            containsPair(entry.key,
+                unorderedEquals(entry.value.map((ae) => ae.element.name))));
       });
 
       for (final annotatedElement in entry.value) {
@@ -342,7 +345,8 @@ String _runForElementNamed(JsonSerializable config, String name) {
 
 String _runForElementNamedWithGenerator(
     JsonSerializableGenerator generator, String name) {
-  final element = _library.allElements.singleWhere((e) => e.name == name);
+  final element = _library.allElements
+      .singleWhere((e) => e is! ConstVariableElement && e.name == name);
   final annotation = generator.typeChecker.firstAnnotationOf(element);
   final generated = generator
       .generateForAnnotatedElement(element, ConstantReader(annotation), null)
