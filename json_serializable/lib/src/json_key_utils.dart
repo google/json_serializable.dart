@@ -113,6 +113,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     defaultValue: defaultValueLiteral,
     required: obj.getField('required').toBoolValue(),
     disallowNullValue: disallowNullValue,
+    unknowable: obj.getField('unknowable').toBoolValue(),
   );
 }
 
@@ -126,6 +127,7 @@ JsonKey _populateJsonKey(
   Object defaultValue,
   bool required,
   bool disallowNullValue,
+  bool unknowable,
 }) {
   final jsonKey = JsonKey(
       name: _encodedFieldName(classAnnotation, name, fieldElement),
@@ -135,7 +137,8 @@ JsonKey _populateJsonKey(
       ignore: ignore ?? false,
       defaultValue: defaultValue,
       required: required ?? false,
-      disallowNullValue: disallowNullValue ?? false);
+      disallowNullValue: disallowNullValue ?? false,
+      unknowable: unknowable ?? false);
 
   return jsonKey;
 }

@@ -18,6 +18,9 @@ abstract class TypeHelperContext {
   /// Returns `true` if [fieldElement] could potentially contain a `null` value.
   bool get nullable;
 
+  /// Returns `true` if [fieldElement] could potentially contain a nonexistent value.
+  bool get unknowable;
+
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
   Object serialize(DartType fieldType, String expression);

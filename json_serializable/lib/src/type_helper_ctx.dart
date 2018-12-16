@@ -28,6 +28,9 @@ class _TypeHelperCtx
   bool get nullable => _key.nullable;
 
   @override
+  bool get unknowable => _key.unknowable;
+
+  @override
   ClassElement get classElement => _helperCore.element;
 
   @override
