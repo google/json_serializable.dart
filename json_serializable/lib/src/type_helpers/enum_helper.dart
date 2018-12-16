@@ -42,9 +42,14 @@ class EnumHelper extends TypeHelper {
       context.addMember(_enumDecodeHelperNullable);
     }
 
+    if (context.unknowable) {
+      context.addMember(_enumDecodeHelperUnknowable);
+    }
+
     context.addMember(memberContent);
 
     final functionName =
+        context.unknowable ? r'_$enumDecodeUnknowable' :
         context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
     return '$functionName(${_constMapName(targetType)}, '
         '$expression)';
@@ -85,6 +90,17 @@ T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
 const _enumDecodeHelperNullable = r'''
 T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}''';
+
+const _enumDecodeHelperUnknowable = r'''
+T _$enumDecodeUnknowable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  if (enumValues.values.singleWhere((v)=> v == source) == null){
     return null;
   }
   return _$enumDecode<T>(enumValues, source);
