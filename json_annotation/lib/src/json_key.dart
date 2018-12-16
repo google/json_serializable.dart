@@ -26,6 +26,20 @@ class JsonKey {
   /// enclosing class.
   final bool nullable;
 
+  /// When `true`, `null` values are handled gracefully when
+  /// serializing the field to JSON and when deserializing `null` and
+  /// nonexistent values from a JSON map.
+  ///
+  /// Setting to `false` eliminates `null` verification in the generated code
+  /// for the annotated field, which reduces the code size. Errors may be thrown
+  /// at runtime if `null` values are encountered, but the original class should
+  /// also implement `null` runtime validation if it's critical.
+  ///
+  /// The default value, `null`, indicates that the behavior should be
+  /// acquired from the [JsonSerializable.unknowable] annotation on the
+  /// enclosing class.
+  final bool unknowable;
+
   /// `true` if the generator should include the this field in the serialized
   /// output, even if the value is `null`.
   ///
@@ -102,6 +116,7 @@ class JsonKey {
   const JsonKey({
     this.name,
     this.nullable,
+    this.unknowable,
     this.includeIfNull,
     this.ignore,
     this.fromJson,
