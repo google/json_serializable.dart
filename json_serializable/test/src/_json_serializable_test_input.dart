@@ -377,3 +377,62 @@ enum GoodEnum {
   @JsonValue(null)
   nullValue
 }
+
+@ShouldGenerate(r'''
+JsonValueWithUnknowableField _$JsonValueWithUnknowableFieldFromJson(
+    Map<String, dynamic> json) {
+  return JsonValueWithUnknowableField()
+    ..field =
+        _$enumDecodeUnknowable(_$UnknowableEnumValueEnumMap, json['field']) ??
+            UnknowableEnumValue.unknown;
+}
+
+Map<String, dynamic> _$JsonValueWithUnknowableFieldToJson(
+        JsonValueWithUnknowableField instance) =>
+    <String, dynamic>{'field': _$UnknowableEnumValueEnumMap[instance.field]};
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+T _$enumDecodeUnknowable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  if (enumValues.values.singleWhere((v) => v == source) == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$UnknowableEnumValueEnumMap = <UnknowableEnumValue, dynamic>{
+  UnknowableEnumValue.specificEnum: 'specificEnum',
+  UnknowableEnumValue.unknown: 'unknown'
+};
+''', contains: true)
+@JsonSerializable()
+class JsonValueWithUnknowableField {
+  @JsonKey(nullable: true, unknowable: true, defaultValue: UnknowableEnumValue.unknown)
+  UnknowableEnumValue field;
+}
+
+enum UnknowableEnumValue {
+  specificEnum,
+  unknown
+}
