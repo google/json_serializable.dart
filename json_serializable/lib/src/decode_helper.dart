@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -192,7 +193,12 @@ abstract class DecodeHelper implements HelperCore {
         throwUnsupported(field,
             'Cannot use `defaultValue` on a field with `nullable` false.');
       }
-
+      if (contextHelper.deserializeConvertData != null) {
+        log.warning('The field `${field.name}` has both `defaultValue` and '
+            '`fromJson` defined which likely won\'t work for your scenario.\n'
+            'Instead of using `defaultValue`, set `nullable: false` and handle '
+            '`null` in the `fromJson` function.');
+      }
       value = '$value ?? $defaultValue';
     }
     return value;
@@ -297,6 +303,7 @@ class _ConstructorData {
   final String content;
   final Set<String> fieldsToSet;
   final Set<String> usedCtorParamsAndFields;
+
   _ConstructorData(
       this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
 }

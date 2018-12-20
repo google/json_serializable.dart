@@ -49,7 +49,7 @@ abstract class HelperCore {
   JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);
 
   @protected
-  TypeHelperContext getHelperContext(FieldElement field) =>
+  TypeHelperCtx getHelperContext(FieldElement field) =>
       typeHelperContext(this, field, jsonKeyFor(field));
 }
 
