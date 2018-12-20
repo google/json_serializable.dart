@@ -1,3 +1,8 @@
+## 2.0.2
+
+* Log a warning when `defaultValue` is used with `toJson` in `JsonKey`. In this
+  case, use `nullable: false` instead of `defaultValue`.
+
 ## 2.0.1
 
 * Support `pkg:analyzer` v0.34.0.

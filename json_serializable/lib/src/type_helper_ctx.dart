@@ -12,11 +12,11 @@ import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 import 'utils.dart';
 
-TypeHelperContext typeHelperContext(
+TypeHelperCtx typeHelperContext(
         HelperCore helperCore, FieldElement fieldElement, JsonKey key) =>
-    _TypeHelperCtx(helperCore, fieldElement, key);
+    TypeHelperCtx._(helperCore, fieldElement, key);
 
-class _TypeHelperCtx
+class TypeHelperCtx
     implements TypeHelperContextWithConfig, TypeHelperContextWithConvert {
   final HelperCore _helperCore;
   final JsonKey _key;
@@ -33,7 +33,7 @@ class _TypeHelperCtx
   @override
   JsonSerializable get config => _helperCore.config;
 
-  _TypeHelperCtx(this._helperCore, this.fieldElement, this._key);
+  TypeHelperCtx._(this._helperCore, this.fieldElement, this._key);
 
   @override
   ConvertData get serializeConvertData => _pairFromContext?.toJson;
