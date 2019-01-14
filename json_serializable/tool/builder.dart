@@ -47,7 +47,7 @@ class _NonNullableGenerator extends Generator {
             'List<T> _defaultList<T>() => <T>[];'),
         _Replacement('Set<T> _defaultSet<T>() => null;',
             'Set<T> _defaultSet<T>() => Set<T>();'),
-        _Replacement('Map _defaultMap() => null;',
+        _Replacement('Map<K, V> _defaultMap<K, V>() => null;',
             'Map<String, T> _defaultMap<T>() => <String, T>{};'),
         _Replacement('SimpleObject _defaultSimpleObject() => null;',
             'SimpleObject _defaultSimpleObject() => SimpleObject(42);'),
