@@ -3,6 +3,8 @@ dart:
   - stable
 
 stages:
-  - analyzer_and_format:
-    - dartfmt
-    - dartanalyzer: --fatal-infos --fatal-warnings .
+  - analyzer_and_format_stable:
+      - group:
+          - dartfmt
+          - dartanalyzer: --fatal-warnings .
+        dart: [stable]
