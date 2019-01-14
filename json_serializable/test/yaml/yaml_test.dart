@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -56,7 +55,7 @@ void main() {
           fail('parse should fail');
         } on CheckedFromJsonException catch (e) {
           final prettyOutput = _prettyPrintCheckedFromJsonException(e);
-          printOnFailure(prettyOutput);
+          printOnFailure("r'''\n$prettyOutput'''");
           expect(prettyOutput, entry.value);
         }
       });
@@ -71,24 +70,30 @@ builders:
 - b
 ''': r'''
 line 2, column 1 of file.yaml: Could not create `Config`. Unsupported value for `builders`.
-- a
-^^^^''',
+  ╷
+2 │ ┌ - a
+3 │ └ - b
+  ╵''',
   r'''
 builders:
   sample:
     defaultEnumTest: bob
 ''': r'''
 line 3, column 22 of file.yaml: Could not create `Builder`. Unsupported value for `defaultEnumTest`. `bob` is not one of the supported values: none, dependents, all_packages, root_package
-    defaultEnumTest: bob
-                     ^^^''',
+  ╷
+3 │     defaultEnumTest: bob
+  │                      ^^^
+  ╵''',
   r'''
 builders:
   a:
     target: 42
   ''': r'''
 line 3, column 13 of file.yaml: Could not create `Builder`. Unsupported value for `target`.
-    target: 42
-            ^^''',
+  ╷
+3 │     target: 42
+  │             ^^
+  ╵''',
   r'''
 builders:
   a:
@@ -96,16 +101,20 @@ builders:
     auto_apply: unsupported
 ''': r'''
 line 4, column 17 of file.yaml: Could not create `Builder`. Unsupported value for `auto_apply`. `unsupported` is not one of the supported values: none, dependents, all_packages, root_package
-    auto_apply: unsupported
-                ^^^^^^^^^^^''',
+  ╷
+4 │     auto_apply: unsupported
+  │                 ^^^^^^^^^^^
+  ╵''',
   r'''
 builders:
   a:
     builder_factories: []
   ''': r'''
 line 3, column 24 of file.yaml: Could not create `Builder`. Unsupported value for `builder_factories`. Must have at least one value.
-    builder_factories: []
-                       ^^''',
+  ╷
+3 │     builder_factories: []
+  │                        ^^
+  ╵''',
   r'''
 builders:
   a:
@@ -116,33 +125,43 @@ Could not create `Builder`.
 Unrecognized keys: [baz, foo]; supported keys: [target, import, is_optional, configLocation, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
 
 line 4, column 5 of file.yaml: Invalid key "baz"
-    baz: zap
-    ^^^
+  ╷
+4 │     baz: zap
+  │     ^^^
+  ╵
 line 3, column 5 of file.yaml: Invalid key "foo"
-    foo: bar
-    ^^^''',
+  ╷
+3 │     foo: bar
+  │     ^^^
+  ╵''',
   r'''
-  bob: cool
-  ''': '''
+  bob: cool''': r'''
 Could not create `Config`.
 line 1, column 3 of file.yaml: Required keys are missing: builders.
-  bob: cool
-  ^^^^^^^^^^''',
+  ╷
+1 │   bob: cool
+  │   ^^^^^^^^^
+  ╵''',
   r'''
 builders:
   builder_name:
-    auto_apply:''': '''Could not create `Builder`.
+    auto_apply:''': '''
+Could not create `Builder`.
 line 3, column 5 of file.yaml: These keys had `null` values, which is not allowed: [auto_apply]
-    auto_apply:
-    ^^^^^^^^^^^''',
+  ╷
+3 │     auto_apply:
+  │     ^^^^^^^^^^^
+  ╵''',
   r'''
 builders:
   builder_name:
     builder_factories: ["scssBuilder"]
-    configLocation: "user@host:invalid/uri"''':
-      '''line 4, column 21 of file.yaml: Could not create `Builder`. Unsupported value for `configLocation`. Illegal scheme character at offset 4.
-    configLocation: "user@host:invalid/uri"
-                    ^^^^^^^^^^^^^^^^^^^^^^^'''
+    configLocation: "user@host:invalid/uri"''': '''
+line 4, column 21 of file.yaml: Could not create `Builder`. Unsupported value for `configLocation`. Illegal scheme character at offset 4.
+  ╷
+4 │     configLocation: "user@host:invalid/uri"
+  │                     ^^^^^^^^^^^^^^^^^^^^^^^
+  ╵'''
 };
 
 String _prettyPrintCheckedFromJsonException(CheckedFromJsonException err) {
