@@ -16,7 +16,7 @@ part 'kitchen_sink.g.dart';
 // non-null values.
 List<T> _defaultList<T>() => null;
 Set<T> _defaultSet<T>() => null;
-Map _defaultMap() => null;
+Map<K, V> _defaultMap<K, V>() => null;
 SimpleObject _defaultSimpleObject() => null;
 StrictKeysObject _defaultStrictKeysObject() => null;
 
