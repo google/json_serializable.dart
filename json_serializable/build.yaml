@@ -30,8 +30,8 @@ builders:
     runs_before: ["json_serializable"]
     defaults:
       generate_for:
-      - test/default_value/default_value.dart
-      - test/kitchen_sink/kitchen_sink.non_nullable.dart
+        - test/default_value/default_value.dart
+        - test/kitchen_sink/kitchen_sink.non_nullable.dart
 
   non_null:
     import: 'tool/builder.dart'
@@ -42,8 +42,8 @@ builders:
     runs_before: ["json_serializable"]
     defaults:
       generate_for:
-      - test/kitchen_sink/kitchen_sink.dart
-      - test/integration/json_test_example.dart
+        - test/kitchen_sink/kitchen_sink.dart
+        - test/integration/json_test_example.dart
 
   wrapped:
     import: 'tool/builder.dart'
@@ -54,11 +54,11 @@ builders:
     runs_before: ["json_serializable"]
     defaults:
       generate_for:
-      - test/generic_files/generic_class.dart
-      - test/kitchen_sink/kitchen_sink.dart
-      - test/kitchen_sink/kitchen_sink.non_nullable.dart
-      - test/integration/json_test_example.dart
-      - test/integration/json_test_example.non_nullable.dart
+        - test/generic_files/generic_class.dart
+        - test/kitchen_sink/kitchen_sink.dart
+        - test/kitchen_sink/kitchen_sink.non_nullable.dart
+        - test/integration/json_test_example.dart
+        - test/integration/json_test_example.non_nullable.dart
 
   json_serializable:
     import: "package:json_serializable/builder.dart"
