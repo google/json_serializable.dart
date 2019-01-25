@@ -16,98 +16,95 @@ final _copyrightContent =
 
 final copyrightHeader = '$_copyrightContent\n$defaultFileHeader';
 
-Builder nonNull([_]) => LibraryBuilder(_NonNullableGenerator(),
-    generatedExtension: '.non_nullable.dart', header: copyrightHeader);
+LibraryBuilder _builder(_ReplaceGenerator generator) => LibraryBuilder(
+      generator,
+      generatedExtension: '.${generator.gName}.dart',
+      header: copyrightHeader,
+      formatOutput: (a) => a,
+    );
 
-Builder wrapped([_]) => LibraryBuilder(_WrappedGenerator(),
-    generatedExtension: '.wrapped.dart', header: copyrightHeader);
+Builder nonNull([_]) => _builder(_NonNullableGenerator());
 
-Builder checked([_]) => LibraryBuilder(_CheckedGenerator(),
-    generatedExtension: '.checked.dart', header: copyrightHeader);
+Builder wrapped([_]) => _builder(_WrappedGenerator());
 
-class _NonNullableGenerator extends Generator {
+Builder checked([_]) => _builder(_CheckedGenerator());
+
+abstract class _ReplaceGenerator extends Generator {
+  final String gName;
+
+  _ReplaceGenerator(this.gName);
+
   @override
   FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
     final path = buildStep.inputId.path;
     final baseName = p.basenameWithoutExtension(path);
 
     final content = await buildStep.readAsString(buildStep.inputId);
-    final replacements = [
-      _Replacement(_copyrightContent, ''),
-      _Replacement(
-        "part '$baseName.g.dart",
-        "part '$baseName.non_nullable.g.dart",
-      ),
-      _Replacement('@JsonSerializable(', '@JsonSerializable(nullable: false,'),
-    ];
+
+    return _Replacement.generate(content, createReplacements(baseName));
+  }
+
+  Iterable<_Replacement> createReplacements(String baseName) sync* {
+    yield _Replacement(_copyrightContent, '');
+
+    yield _Replacement(
+      "part '$baseName.g.dart",
+      "part '$baseName.$gName.g.dart",
+    );
+  }
+}
+
+class _NonNullableGenerator extends _ReplaceGenerator {
+  _NonNullableGenerator() : super('non_nullable');
+
+  @override
+  Iterable<_Replacement> createReplacements(String baseName) sync* {
+    yield* super.createReplacements(baseName);
+
+    yield _Replacement.addJsonSerializableKey('nullable', false);
 
     if (baseName == 'kitchen_sink') {
-      replacements.addAll([
-        _Replacement('List<T> _defaultList<T>() => null;',
-            'List<T> _defaultList<T>() => <T>[];'),
-        _Replacement('Set<T> _defaultSet<T>() => null;',
-            'Set<T> _defaultSet<T>() => Set<T>();'),
-        _Replacement('Map<K, V> _defaultMap<K, V>() => null;',
-            'Map<String, T> _defaultMap<T>() => <String, T>{};'),
-        _Replacement('SimpleObject _defaultSimpleObject() => null;',
-            'SimpleObject _defaultSimpleObject() => SimpleObject(42);'),
-        _Replacement(
-            'StrictKeysObject _defaultStrictKeysObject() => null;',
-            'StrictKeysObject _defaultStrictKeysObject() => '
-            "StrictKeysObject(10, 'cool');"),
-        _Replacement(
-            'DateTime dateTime;', 'DateTime dateTime = DateTime(1981, 6, 5);')
-      ]);
+      yield _Replacement('List<T> _defaultList<T>() => null;',
+          'List<T> _defaultList<T>() => <T>[];');
+      yield _Replacement('Set<T> _defaultSet<T>() => null;',
+          'Set<T> _defaultSet<T>() => Set<T>();');
+      yield _Replacement('Map<K, V> _defaultMap<K, V>() => null;',
+          'Map<String, T> _defaultMap<T>() => <String, T>{};');
+      yield _Replacement('SimpleObject _defaultSimpleObject() => null;',
+          'SimpleObject _defaultSimpleObject() => SimpleObject(42);');
+      yield _Replacement(
+          'StrictKeysObject _defaultStrictKeysObject() => null;',
+          'StrictKeysObject _defaultStrictKeysObject() => '
+          "StrictKeysObject(10, 'cool');");
+      yield _Replacement(
+          'DateTime dateTime;', 'DateTime dateTime = DateTime(1981, 6, 5);');
     }
-
-    return _Replacement.generate(content, replacements);
   }
 }
 
-class _CheckedGenerator extends Generator {
-  @override
-  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
-    final path = buildStep.inputId.path;
-    final baseName = p.basenameWithoutExtension(path);
+class _CheckedGenerator extends _ReplaceGenerator {
+  _CheckedGenerator() : super('checked');
 
-    final content = await buildStep.readAsString(buildStep.inputId);
-    final replacements = [
-      _Replacement('@JsonSerializable(', '@JsonSerializable(checked: true,'),
-      _Replacement(_copyrightContent, ''),
-      _Replacement(
-        "part '$baseName.g.dart",
-        "part '$baseName.checked.g.dart",
-      ),
-    ];
+  @override
+  Iterable<_Replacement> createReplacements(String baseName) sync* {
+    yield* super.createReplacements(baseName);
+
+    yield _Replacement.addJsonSerializableKey('checked', true);
 
     if (baseName == 'default_value') {
-      replacements.add(
-        _Replacement('@JsonSerializable(', '@JsonSerializable(anyMap: true,'),
-      );
+      yield _Replacement.addJsonSerializableKey('anyMap', true);
     }
-
-    return _Replacement.generate(content, replacements);
   }
 }
 
-class _WrappedGenerator extends Generator {
+class _WrappedGenerator extends _ReplaceGenerator {
+  _WrappedGenerator() : super('wrapped');
+
   @override
-  FutureOr<String> generate(LibraryReader library, BuildStep buildStep) async {
-    final path = buildStep.inputId.path;
-    final baseName = p.basenameWithoutExtension(path);
+  Iterable<_Replacement> createReplacements(String baseName) sync* {
+    yield* super.createReplacements(baseName);
 
-    final content = await buildStep.readAsString(buildStep.inputId);
-    final replacements = [
-      _Replacement(_copyrightContent, ''),
-      _Replacement(
-        "part '$baseName.g.dart",
-        "part '$baseName.wrapped.g.dart",
-      ),
-      _Replacement(
-          '@JsonSerializable(', '@JsonSerializable(useWrappers: true,'),
-    ];
-
-    return _Replacement.generate(content, replacements);
+    yield _Replacement.addJsonSerializableKey('useWrappers', true);
   }
 }
 
@@ -116,6 +113,9 @@ class _Replacement {
   final String replacement;
 
   _Replacement(this.existing, this.replacement);
+
+  factory _Replacement.addJsonSerializableKey(String key, bool value) =>
+      _Replacement('@JsonSerializable(', '@JsonSerializable(\n  $key: $value,');
 
   static String generate(
       String inputContent, Iterable<_Replacement> replacements) {
@@ -128,6 +128,8 @@ class _Replacement {
       }
       outputContent = outputContent.replaceAll(r.existing, r.replacement);
     }
+
+    outputContent = outputContent.replaceAll(',)', ',\n)');
 
     return outputContent;
   }
