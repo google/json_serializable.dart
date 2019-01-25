@@ -50,10 +50,11 @@ k.KitchenSink testFactory(
 k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
 @JsonSerializable(
-    useWrappers: true,
-    nullable: false,
-    anyMap: true,
-    generateToJsonFunction: false)
+  useWrappers: true,
+  nullable: false,
+  anyMap: true,
+  generateToJsonFunction: false,
+)
 class KitchenSink extends Object
     with _$KitchenSinkSerializerMixin
     implements k.KitchenSink {
@@ -153,10 +154,11 @@ class KitchenSink extends Object
 }
 
 @JsonSerializable(
-    useWrappers: true,
-    nullable: false,
-    anyMap: true,
-    generateToJsonFunction: false)
+  useWrappers: true,
+  nullable: false,
+  anyMap: true,
+  generateToJsonFunction: false,
+)
 // referencing a top-level field should work
 @durationConverter
 // referencing via a const constructor should work
@@ -183,10 +185,11 @@ class JsonConverterTestClass extends Object
 }
 
 @JsonSerializable(
-    useWrappers: true,
-    nullable: false,
-    anyMap: true,
-    generateToJsonFunction: false)
+  useWrappers: true,
+  nullable: false,
+  anyMap: true,
+  generateToJsonFunction: false,
+)
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> extends Object
     with _$JsonConverterGenericSerializerMixin<S, T, U> {
