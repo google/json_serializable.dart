@@ -18,9 +18,9 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)
-    ..set = (json['set'] as List)?.map((e) => e)?.toSet()
-    ..dynamicSet = (json['dynamicSet'] as List)?.map((e) => e)?.toSet()
-    ..objectSet = (json['objectSet'] as List)?.map((e) => e)?.toSet()
+    ..set = (json['set'] as List)?.toSet()
+    ..dynamicSet = (json['dynamicSet'] as List)?.toSet()
+    ..objectSet = (json['objectSet'] as List)?.toSet()
     ..intSet = (json['intSet'] as List)?.map((e) => e as int)?.toSet()
     ..dateTimeSet = (json['dateTimeSet'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))

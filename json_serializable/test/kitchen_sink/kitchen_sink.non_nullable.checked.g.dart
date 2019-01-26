@@ -21,12 +21,11 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
             (v) => (v as List).map((e) => DateTime.parse(e as String))));
     $checkedConvert(
         json, 'dateTime', (v) => val.dateTime = DateTime.parse(v as String));
+    $checkedConvert(json, 'set', (v) => val.set = (v as List).toSet());
     $checkedConvert(
-        json, 'set', (v) => val.set = (v as List).map((e) => e).toSet());
-    $checkedConvert(json, 'dynamicSet',
-        (v) => val.dynamicSet = (v as List).map((e) => e).toSet());
-    $checkedConvert(json, 'objectSet',
-        (v) => val.objectSet = (v as List).map((e) => e).toSet());
+        json, 'dynamicSet', (v) => val.dynamicSet = (v as List).toSet());
+    $checkedConvert(
+        json, 'objectSet', (v) => val.objectSet = (v as List).toSet());
     $checkedConvert(json, 'intSet',
         (v) => val.intSet = (v as List).map((e) => e as int).toSet());
     $checkedConvert(
