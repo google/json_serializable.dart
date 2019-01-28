@@ -18,21 +18,22 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'generate_to_json_function',
     'include_if_null',
     'nullable',
-    'use_wrappers'
+    'use_wrappers',
   ]);
   return JsonSerializable(
-      anyMap: json['any_map'] as bool,
-      checked: json['checked'] as bool,
-      explicitToJson: json['explicit_to_json'] as bool,
-      generateToJsonFunction: json['generate_to_json_function'] as bool,
-      useWrappers: json['use_wrappers'] as bool,
-      disallowUnrecognizedKeys: json['disallow_unrecognized_keys'] as bool,
-      createFactory: json['create_factory'] as bool,
-      createToJson: json['create_to_json'] as bool,
-      includeIfNull: json['include_if_null'] as bool,
-      nullable: json['nullable'] as bool,
-      fieldRename:
-          _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']));
+    anyMap: json['any_map'] as bool,
+    checked: json['checked'] as bool,
+    createFactory: json['create_factory'] as bool,
+    createToJson: json['create_to_json'] as bool,
+    disallowUnrecognizedKeys: json['disallow_unrecognized_keys'] as bool,
+    explicitToJson: json['explicit_to_json'] as bool,
+    fieldRename:
+        _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']),
+    generateToJsonFunction: json['generate_to_json_function'] as bool,
+    includeIfNull: json['include_if_null'] as bool,
+    nullable: json['nullable'] as bool,
+    useWrappers: json['use_wrappers'] as bool,
+  );
 }
 
 Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>

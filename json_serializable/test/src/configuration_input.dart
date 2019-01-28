@@ -23,12 +23,13 @@ class ConfigurationExplicitDefaults {
 }
 
 @JsonSerializable(
-    createToJson: true,
-    includeIfNull: true,
-    nullable: true,
-    disallowUnrecognizedKeys: true,
-    fieldRename: FieldRename.snake,
-    createFactory: true)
+  createFactory: true,
+  createToJson: true,
+  disallowUnrecognizedKeys: true,
+  fieldRename: FieldRename.snake,
+  includeIfNull: true,
+  nullable: true,
+)
 class ConfigurationAllDefaultsOpposite {
   int field;
 }

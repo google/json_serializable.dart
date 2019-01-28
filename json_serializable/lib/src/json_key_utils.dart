@@ -106,36 +106,37 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   return _populateJsonKey(
     classAnnotation,
     element,
+    defaultValue: defaultValueLiteral,
+    disallowNullValue: disallowNullValue,
+    ignore: obj.getField('ignore').toBoolValue(),
+    includeIfNull: includeIfNull,
     name: obj.getField('name').toStringValue(),
     nullable: obj.getField('nullable').toBoolValue(),
-    includeIfNull: includeIfNull,
-    ignore: obj.getField('ignore').toBoolValue(),
-    defaultValue: defaultValueLiteral,
     required: obj.getField('required').toBoolValue(),
-    disallowNullValue: disallowNullValue,
   );
 }
 
 JsonKey _populateJsonKey(
   JsonSerializable classAnnotation,
   FieldElement fieldElement, {
+  Object defaultValue,
+  bool disallowNullValue,
+  bool ignore,
+  bool includeIfNull,
   String name,
   bool nullable,
-  bool includeIfNull,
-  bool ignore,
-  Object defaultValue,
   bool required,
-  bool disallowNullValue,
 }) {
   final jsonKey = JsonKey(
-      name: _encodedFieldName(classAnnotation, name, fieldElement),
-      nullable: nullable ?? classAnnotation.nullable,
-      includeIfNull: _includeIfNull(
-          includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
-      ignore: ignore ?? false,
-      defaultValue: defaultValue,
-      required: required ?? false,
-      disallowNullValue: disallowNullValue ?? false);
+    defaultValue: defaultValue,
+    disallowNullValue: disallowNullValue ?? false,
+    ignore: ignore ?? false,
+    includeIfNull: _includeIfNull(
+        includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
+    name: _encodedFieldName(classAnnotation, name, fieldElement),
+    nullable: nullable ?? classAnnotation.nullable,
+    required: required ?? false,
+  );
 
   return jsonKey;
 }

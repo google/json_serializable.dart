@@ -194,17 +194,18 @@ class JsonSerializable {
   /// An instance of [JsonSerializable] with all fields set to their default
   /// values.
   static const defaults = JsonSerializable(
-      anyMap: false,
-      checked: false,
-      createFactory: true,
-      createToJson: true,
-      disallowUnrecognizedKeys: false,
-      explicitToJson: false,
-      fieldRename: FieldRename.none,
-      generateToJsonFunction: true,
-      includeIfNull: true,
-      nullable: true,
-      useWrappers: false);
+    anyMap: false,
+    checked: false,
+    createFactory: true,
+    createToJson: true,
+    disallowUnrecognizedKeys: false,
+    explicitToJson: false,
+    fieldRename: FieldRename.none,
+    generateToJsonFunction: true,
+    includeIfNull: true,
+    nullable: true,
+    useWrappers: false,
+  );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
   /// corresponding values in `this`, if not `null`.
