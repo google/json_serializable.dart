@@ -78,9 +78,12 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final optionalQuestion = context.nullable ? '?' : '';
 
-    final lambda = LambdaResult.process(itemSubVal, closureArg);
+    var output = '($expression as List)';
 
-    var output = '($expression as List)$optionalQuestion.map($lambda)';
+    if (closureArg != itemSubVal) {
+      final lambda = LambdaResult.process(itemSubVal, closureArg);
+      output += '$optionalQuestion.map($lambda)';
+    }
 
     if (_coreListChecker.isAssignableFromType(targetType)) {
       output += '$optionalQuestion.toList()';
