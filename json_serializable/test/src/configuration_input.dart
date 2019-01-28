@@ -21,15 +21,3 @@ class ConfigurationImplicitDefaults {
 class ConfigurationExplicitDefaults {
   int field;
 }
-
-@JsonSerializable(
-  createFactory: true,
-  createToJson: true,
-  disallowUnrecognizedKeys: true,
-  fieldRename: FieldRename.snake,
-  includeIfNull: true,
-  nullable: true,
-)
-class ConfigurationAllDefaultsOpposite {
-  int field;
-}
