@@ -81,7 +81,6 @@ class DefaultWithNonNullableClass {
 @ShouldGenerate(r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
     Map<String, dynamic> json) {
-  $checkKeys(json, allowedKeys: const ['fieldDefaultValueToJson']);
   return DefaultWithToJsonClass()
     ..fieldDefaultValueToJson = json['fieldDefaultValueToJson'] == null
         ? null
@@ -94,7 +93,7 @@ DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
 The field `fieldDefaultValueToJson` has both `defaultValue` and `fromJson` defined which likely won't work for your scenario.
 Instead of using `defaultValue`, set `nullable: false` and handle `null` in the `fromJson` function.'''
 ])
-@JsonSerializable(disallowUnrecognizedKeys: true, createToJson: false)
+@JsonSerializable(createToJson: false)
 class DefaultWithToJsonClass {
   @JsonKey(defaultValue: 7, fromJson: _fromJson)
   int fieldDefaultValueToJson;
