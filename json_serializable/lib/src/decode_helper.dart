@@ -187,11 +187,17 @@ abstract class DecodeHelper implements HelperCore {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
-    final defaultValue = jsonKeyFor(field).defaultValue;
+    final jsonKey = jsonKeyFor(field);
+    final defaultValue = jsonKey.defaultValue;
     if (defaultValue != null) {
       if (!contextHelper.nullable) {
         throwUnsupported(field,
             'Cannot use `defaultValue` on a field with `nullable` false.');
+      }
+      if (jsonKey.disallowNullValue && jsonKey.required) {
+        log.warning('The `defaultValue` on field `${field.name}` will have no '
+            'effect because both `disallowNullValue` and `required` are set to '
+            '`true`.');
       }
       if (contextHelper.deserializeConvertData != null) {
         log.warning('The field `${field.name}` has both `defaultValue` and '

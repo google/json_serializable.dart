@@ -89,6 +89,7 @@ const _expectedAnnotatedTests = {
     'DefaultWithNonNullableField',
     'DefaultWithNonNullableClass',
     'DefaultWithToJsonClass',
+    'DefaultWithDisallowNullRequiredClass',
   ],
   'field_namer_input.dart': [
     'FieldNamerNone',
