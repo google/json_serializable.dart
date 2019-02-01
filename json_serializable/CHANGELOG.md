@@ -1,16 +1,16 @@
 ## 2.0.2
 
-* Log a warning when `defaultValue` is used with `toJson` in `JsonKey`. In this
-  case, use `nullable: false` instead of `defaultValue`.
+* Log warnings when `JsonKey.defaultValue` is set with other fields.
+  * With `toJson`: use `nullable: false` instead of `defaultValue`.
+  * With both `disallowNullValue` and `required` set to `true`.
 
 * Avoid no-op call to `map` when decoding a field of type `Set`. 
 
-* A warning is now printed if a field as a `defaultValue` and both
-  `disallowNullValue` and `required` set to `true`.
+* Support `package:analyzer` `>=0.33.3 <0.36.0`
 
 ## 2.0.1
 
-* Support `pkg:analyzer` v0.34.0.
+* Support `package:analyzer` v0.34.0.
 
 ## 2.0.0
 
@@ -50,7 +50,7 @@
 
 ## 1.5.1
 
-* Support the latest `pkg:analyzer`.
+* Support the latest `package:analyzer`.
 
 ## 1.5.0
 
