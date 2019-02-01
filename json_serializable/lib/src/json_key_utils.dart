@@ -2,9 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/dart/constant/value.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -80,10 +80,14 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
 
   final enumFields = iterateEnumFields(defaultValueObject.type);
   if (enumFields != null) {
-    final allowedValues = enumFields.map((p) => p.name).toList();
-    final enumValueIndex = defaultValueObject.getField('index').toIntValue();
-    defaultValueLiteral =
-        '${defaultValueObject.type.name}.${allowedValues[enumValueIndex]}';
+    var enumValueName = enumFields.map((p) => p.name).singleWhere(
+          (s) => defaultValueObject.getField(s) != null,
+          // TODO: remove once pkg:analyzer < 0.35.0 is no longer supported
+          orElse: () =>
+              enumFields.elementAt(getEnumIndex(defaultValueObject)).name,
+        );
+
+    defaultValueLiteral = '${defaultValueObject.type.name}.$enumValueName';
   } else {
     defaultValueLiteral = _getLiteral(defaultValueObject, []);
     if (defaultValueLiteral != null) {
