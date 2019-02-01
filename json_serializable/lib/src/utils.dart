@@ -46,19 +46,16 @@ void throwUnsupported(FieldElement element, String message) =>
 
 FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
     ? null
-    : FieldRename.values.singleWhere(
-        (thing) {
-          var name = thing.toString().split('.')[1];
-          var result = reader.objectValue.getField(name);
-          return result != null;
-        },
-        // TODO: remove once pkg:analyzer < 0.35.0 is no longer supported
-        orElse: () => FieldRename.values[getEnumIndex(reader.objectValue)],
-      );
+    : enumValueForDartObject(reader.objectValue, FieldRename.values,
+        (f) => f.toString().split('.')[1]);
 
-// TODO: remove once pkg:analyzer < 0.35.0 is no longer supported
-/// Only valid for for pkg:analyzer < 0.35.0
-int getEnumIndex(DartObject object) => object.getField('index').toIntValue();
+T enumValueForDartObject<T>(
+        DartObject source, List<T> items, String Function(T) name) =>
+    items.singleWhere(
+      (v) => source.getField(name(v)) != null,
+      // TODO: remove once pkg:analyzer < 0.35.0 is no longer supported
+      orElse: () => items[source.getField('index').toIntValue()],
+    );
 
 /// Return an instance of [JsonSerializable] corresponding to a the provided
 /// [reader].
