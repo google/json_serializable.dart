@@ -365,6 +365,7 @@ String _runForElementNamedWithGenerator(
 final _annotatedElements = _library.allElements
     .map<AnnotatedElement>((e) {
       for (final md in e.metadata) {
+        md.computeConstantValue();
         final reader = ConstantReader(md.constantValue);
         if (const ['ShouldGenerate', 'ShouldThrow']
             .contains(reader.objectValue.type.name)) {
