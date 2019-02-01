@@ -80,12 +80,10 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
 
   final enumFields = iterateEnumFields(defaultValueObject.type);
   if (enumFields != null) {
-    var enumValueName = enumFields.map((p) => p.name).singleWhere(
-          (s) => defaultValueObject.getField(s) != null,
-          // TODO: remove once pkg:analyzer < 0.35.0 is no longer supported
-          orElse: () =>
-              enumFields.elementAt(getEnumIndex(defaultValueObject)).name,
-        );
+    var enumValueNames = enumFields.map((p) => p.name).toList(growable: false);
+
+    var enumValueName = enumValueForDartObject<String>(
+        defaultValueObject, enumValueNames, (n) => n);
 
     defaultValueLiteral = '${defaultValueObject.type.name}.$enumValueName';
   } else {
