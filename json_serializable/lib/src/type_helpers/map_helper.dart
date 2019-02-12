@@ -54,7 +54,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
   @override
   String deserialize(DartType targetType, String expression,
       TypeHelperContextWithConfig context) {
-    if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
+    if (!coreMapTypeChecker.isExactlyType(targetType)) {
       return null;
     }
 
