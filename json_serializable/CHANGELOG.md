@@ -1,3 +1,9 @@
+## 2.0.3
+
+* Throw an error when an unsupported `List`, `Set`, or `Map` type is used
+  without a corresponding converter.
+  (Previously, invalid code would be generated.)
+
 ## 2.0.2
 
 * Log warnings when `JsonKey.defaultValue` is set with other fields.

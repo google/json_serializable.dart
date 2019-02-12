@@ -61,7 +61,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   @override
   String deserialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    if (!coreIterableTypeChecker.isAssignableFromType(targetType)) {
+    if (!(coreIterableTypeChecker.isExactlyType(targetType) ||
+        _coreListChecker.isExactlyType(targetType) ||
+        _coreSetChecker.isExactlyType(targetType))) {
       return null;
     }
 
@@ -72,7 +74,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy
     if (closureArg == itemSubVal &&
-        !_coreSetChecker.isAssignableFromType(targetType)) {
+        !_coreSetChecker.isExactlyType(targetType)) {
       return '$expression as List';
     }
 
@@ -85,9 +87,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       output += '$optionalQuestion.map($lambda)';
     }
 
-    if (_coreListChecker.isAssignableFromType(targetType)) {
+    if (_coreListChecker.isExactlyType(targetType)) {
       output += '$optionalQuestion.toList()';
-    } else if (_coreSetChecker.isAssignableFromType(targetType)) {
+    } else if (_coreSetChecker.isExactlyType(targetType)) {
       output += '$optionalQuestion.toSet()';
     }
 

@@ -3,11 +3,15 @@
 // BSD-style license that can be found in the LICENSE file.
 
 //ignore_for_file: avoid_unused_constructor_parameters, prefer_initializing_formals
+
+import 'dart:collection';
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'annotation.dart';
 
 part 'checked_test_input.dart';
+part 'collection_type_input.dart';
 part 'configuration_input.dart';
 part 'default_value_input.dart';
 part 'field_namer_input.dart';
