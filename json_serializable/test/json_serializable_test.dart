@@ -43,7 +43,10 @@ Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
 
 Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
     throwsA(const TypeMatcher<InvalidGenerationSourceError>()
-        .having((e) => e.message, 'message', messageMatcher)
+        .having((e) {
+          printOnFailure("r'''\n${e.message}'''");
+          return e.message;
+        }, 'message', messageMatcher)
         .having((e) => e.todo, 'todo', todoMatcher)
         .having((e) => e.element, 'element', isNotNull));
 
