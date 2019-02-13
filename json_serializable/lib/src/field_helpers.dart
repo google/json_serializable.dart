@@ -3,9 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+
 // ignore: implementation_imports
 import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
-    show InheritanceManager;
+    show InheritanceManager; // ignore: deprecated_member_use
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
@@ -78,6 +79,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
       element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)));
 
   final inheritedFields = <String, FieldElement>{};
+  // ignore: deprecated_member_use
   final manager = InheritanceManager(element.library);
 
   // ignore: deprecated_member_use
