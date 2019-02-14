@@ -1,8 +1,9 @@
 ## 2.0.3
 
-* Throw an error when an unsupported `List`, `Set`, or `Map` type is used
-  without a corresponding converter.
-  (Previously, invalid code would be generated.)
+* Be more strict about the supported `List`, `Set`, or `Map` types.
+  This may causes errors to be raised in cases where invalid code was generated
+  before. It also allows implementations of these types to add a `fromJson`
+  constructor to support custom decoding.
 
 ## 2.0.2
 
