@@ -1,7 +1,9 @@
 name: json_serializable
 version: 2.0.3-dev
 author: Dart Team <misc@dartlang.org>
-description: Generates utilities to aid in serializing to/from JSON.
+description: >-
+  Automatically generate code for converting to and from JSON by annotating
+  Dart classes.
 homepage: https://github.com/dart-lang/json_serializable
 environment:
   sdk: '>=2.0.0 <3.0.0'
