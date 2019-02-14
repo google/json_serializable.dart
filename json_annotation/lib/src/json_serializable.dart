@@ -70,7 +70,7 @@ class JsonSerializable {
   /// ```
   ///
   /// If `json_serializable` is configured with
-  /// `generate_to_json_function: true`, then a top-level function is created
+  /// `generateToJsonFunction: true`, then a top-level function is created
   /// that you can reference from your class.
   ///
   /// ```dart
