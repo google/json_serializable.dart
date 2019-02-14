@@ -11,7 +11,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'annotation.dart';
 
 part 'checked_test_input.dart';
-part 'collection_type_input.dart';
+part 'core_subclass_type_input.dart';
 part 'configuration_input.dart';
 part 'default_value_input.dart';
 part 'field_namer_input.dart';

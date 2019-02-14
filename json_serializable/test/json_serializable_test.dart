@@ -83,10 +83,13 @@ const _expectedAnnotatedTests = {
     'WithANonCtorGetterChecked',
     'WithANonCtorGetter'
   ],
-  'collection_type_input.dart': [
+  'core_subclass_type_input.dart': [
     'UnsupportedMapField',
     'UnsupportedListField',
     'UnsupportedSetField',
+    'UnsupportedDurationField',
+    'UnsupportedUriField',
+    'UnsupportedDateTimeField',
   ],
   'default_value_input.dart': [
     'DefaultWithSymbol',
