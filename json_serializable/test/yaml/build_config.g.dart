@@ -91,7 +91,7 @@ Builder _$BuilderFromJson(Map json) {
             (v) => (v as List)?.map((e) => e as String)?.toList()),
         requiredInputs: $checkedConvert(json, 'required_inputs',
             (v) => (v as List)?.map((e) => e as String)?.toList()),
-        buildExtentions: $checkedConvert(
+        buildExtensions: $checkedConvert(
             json,
             'build_extensions',
             (v) => (v as Map)?.map((k, e) => MapEntry(
@@ -106,7 +106,7 @@ Builder _$BuilderFromJson(Map json) {
     'builderFactories': 'builder_factories',
     'appliesBuilders': 'applies_builders',
     'requiredInputs': 'required_inputs',
-    'buildExtentions': 'build_extensions'
+    'buildExtensions': 'build_extensions'
   });
 }
 
@@ -129,7 +129,7 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   val['builder_factories'] = instance.builderFactories;
   writeNotNull('applies_builders', instance.appliesBuilders);
   writeNotNull('required_inputs', instance.requiredInputs);
-  writeNotNull('build_extensions', instance.buildExtentions);
+  writeNotNull('build_extensions', instance.buildExtensions);
   return val;
 }
 

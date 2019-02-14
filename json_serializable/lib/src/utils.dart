@@ -27,12 +27,12 @@ String kebabCase(String input) => _fixCase(input, '-');
 
 String snakeCase(String input) => _fixCase(input, '_');
 
-String _fixCase(String input, String seperator) =>
+String _fixCase(String input, String separator) =>
     input.replaceAllMapped(_upperCase, (match) {
       var lower = match.group(0).toLowerCase();
 
       if (match.start > 0) {
-        lower = '$seperator$lower';
+        lower = '$separator$lower';
       }
 
       return lower;

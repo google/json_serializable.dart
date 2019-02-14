@@ -10,7 +10,7 @@ in [package:json_annotation].
   configure the generated code. You can also customize individual fields
   by annotating them with `JsonKey` and providing custom arguments.
 
-- To generate a Dart field with the contents of a file containting JSON, use the
+- To generate a Dart field with the contents of a file containing JSON, use the
   `JsonLiteral` annotation.
 
 To configure your project for the latest released version of,

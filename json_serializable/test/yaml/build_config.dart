@@ -57,7 +57,7 @@ class Builder {
   final List<String> requiredInputs;
 
   @JsonKey(name: 'build_extensions')
-  final Map<String, List<String>> buildExtentions;
+  final Map<String, List<String>> buildExtensions;
 
   Builder(
       {@required this.import,
@@ -69,7 +69,7 @@ class Builder {
       this.builderFactories,
       this.appliesBuilders,
       this.requiredInputs,
-      this.buildExtentions,
+      this.buildExtensions,
       this.configLocation}) {
     if (builderFactories.isEmpty) {
       throw ArgumentError.value(builderFactories, 'builderFactories',

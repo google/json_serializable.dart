@@ -151,9 +151,9 @@ abstract class DecodeHelper implements HelperCore {
         .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {
-      final dissallowNullKeyLiteral = constantList(disallowNullKeys);
+      final disallowNullKeyLiteral = constantList(disallowNullKeys);
 
-      args.add('disallowNullValues: $dissallowNullKeyLiteral');
+      args.add('disallowNullValues: $disallowNullKeyLiteral');
     }
 
     if (args.isNotEmpty) {
@@ -219,12 +219,12 @@ abstract class DecodeHelper implements HelperCore {
 /// unavailable constructor parameter. If the value is not `null`, it is
 /// included in the [UnsupportedError] message.
 ///
-/// [writeableFields] are also populated, but only if they have not already
+/// [writableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
 _ConstructorData _writeConstructorInvocation(
     ClassElement classElement,
     Iterable<String> availableConstructorParameters,
-    Iterable<String> writeableFields,
+    Iterable<String> writableFields,
     Map<String, String> unavailableReasons,
     String deserializeForField(String paramOrFieldName,
         {ParameterElement ctorParam})) {
@@ -273,7 +273,7 @@ _ConstructorData _writeConstructorInvocation(
 
   // fields that aren't already set by the constructor and that aren't final
   final remainingFieldsForInvocationBody =
-      writeableFields.toSet().difference(usedCtorParamsAndFields);
+      writableFields.toSet().difference(usedCtorParamsAndFields);
 
   final buffer = StringBuffer();
   buffer.write('$className${genericClassArguments(classElement, false)}(');
