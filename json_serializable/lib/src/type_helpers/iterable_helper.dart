@@ -71,16 +71,18 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
+    var output = '$expression as List';
+
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy
     if (closureArg == itemSubVal &&
         !_coreSetChecker.isExactlyType(targetType)) {
-      return '$expression as List';
+      return output;
     }
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    output = '($output)';
 
-    var output = '($expression as List)';
+    final optionalQuestion = context.nullable ? '?' : '';
 
     if (closureArg != itemSubVal) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);
