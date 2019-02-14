@@ -381,3 +381,44 @@ enum GoodEnum {
   @JsonValue(null)
   nullValue
 }
+
+@ShouldGenerate(r'''
+FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
+    Map<String, dynamic> json) {
+  return FieldWithFromJsonCtorAndTypeParams()
+    ..customOrders = json['customOrders'] == null
+        ? null
+        : MyList.fromJson((json['customOrders'] as List)
+            ?.map((e) =>
+                e == null ? null : Order.fromJson(e as Map<String, dynamic>))
+            ?.toList());
+}
+''')
+@JsonSerializable(createToJson: false)
+class FieldWithFromJsonCtorAndTypeParams {
+  MyList<Order, int> customOrders;
+}
+
+class MyList<T, Q> extends ListBase<T> {
+  final List<T> _data;
+
+  MyList(Iterable<T> source) : _data = source.toList() ?? [];
+
+  factory MyList.fromJson(List<T> items) => MyList(items);
+
+  @override
+  int get length => _data.length;
+
+  @override
+  set length(int value) {
+    _data.length = value;
+  }
+
+  @override
+  T operator [](int index) => _data[index];
+
+  @override
+  void operator []=(int index, T value) {
+    _data[index] = value;
+  }
+}

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:collection';
+
 import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -56,4 +58,28 @@ abstract class ItemCore {
   final int price;
 
   ItemCore(this.price);
+}
+
+class MyList<T> extends ListBase<T> {
+  final List<T> _data;
+
+  MyList(Iterable<T> source) : _data = source.toList() ?? [];
+
+  factory MyList.fromJson(List<T> items) => MyList(items);
+
+  @override
+  int get length => _data.length;
+
+  @override
+  set length(int value) {
+    _data.length = value;
+  }
+
+  @override
+  T operator [](int index) => _data[index];
+
+  @override
+  void operator []=(int index, T value) {
+    _data[index] = value;
+  }
 }

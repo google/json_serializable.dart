@@ -19,6 +19,8 @@ class Person {
 
   Order order;
 
+  MyList<Order> customOrders;
+
   Map<String, Category> houseMap;
   Map<Category, int> categoryCounts;
 

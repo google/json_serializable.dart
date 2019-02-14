@@ -16,6 +16,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     ..order = json['order'] == null
         ? null
         : Order.fromJson(json['order'] as Map<String, dynamic>)
+    ..customOrders = json['customOrders'] == null
+        ? null
+        : MyList.fromJson((json['customOrders'] as List)
+            ?.map((e) =>
+                e == null ? null : Order.fromJson(e as Map<String, dynamic>))
+            ?.toList())
     ..houseMap = (json['houseMap'] as Map<String, dynamic>)
         ?.map((k, e) => MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)))
     ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>)?.map(
@@ -38,6 +44,7 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
         'dateOfBirth',
         r'$house',
         'order',
+        'customOrders',
         'houseMap',
         'categoryCounts'
       ];
@@ -58,6 +65,8 @@ class _$PersonJsonMapWrapper extends $JsonMapWrapper {
           return _$CategoryEnumMap[_v.house];
         case 'order':
           return _v.order;
+        case 'customOrders':
+          return _v.customOrders;
         case 'houseMap':
           return $wrapMapHandleNull<String, Category>(
               _v.houseMap, (e) => _$CategoryEnumMap[e]);

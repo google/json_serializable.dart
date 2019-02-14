@@ -77,7 +77,8 @@ const _expectedAnnotatedTests = {
     'PrivateFieldCtorClass',
     'IncludeIfNullDisallowNullClass',
     'JsonValueWithBool',
-    'JsonValueValid'
+    'JsonValueValid',
+    'FieldWithFromJsonCtorAndTypeParams',
   ],
   'checked_test_input.dart': [
     'WithANonCtorGetterChecked',

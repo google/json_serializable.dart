@@ -16,6 +16,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     ..order = json['order'] == null
         ? null
         : Order.fromJson(json['order'] as Map<String, dynamic>)
+    ..customOrders = json['customOrders'] == null
+        ? null
+        : MyList.fromJson((json['customOrders'] as List)
+            ?.map((e) =>
+                e == null ? null : Order.fromJson(e as Map<String, dynamic>))
+            ?.toList())
     ..houseMap = (json['houseMap'] as Map<String, dynamic>)
         ?.map((k, e) => MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)))
     ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>)?.map(
@@ -30,6 +36,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
       r'$house': _$CategoryEnumMap[instance.house],
       'order': instance.order,
+      'customOrders': instance.customOrders,
       'houseMap':
           instance.houseMap?.map((k, e) => MapEntry(k, _$CategoryEnumMap[e])),
       'categoryCounts': instance.categoryCounts

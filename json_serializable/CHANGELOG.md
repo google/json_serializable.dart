@@ -1,5 +1,8 @@
 ## 2.0.3
 
+* When invoking a `fromJson` constructor on a field type, generate a conversion
+  expression derived from the the constructor parameter type.
+
 * Be more strict about the supported `List`, `Set`, or `Map` types.
   This may causes errors to be raised in cases where invalid code was generated
   before. It also allows implementations of these types to add a `fromJson`

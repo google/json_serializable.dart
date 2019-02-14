@@ -44,16 +44,24 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final fromJsonCtor = classElement.constructors
         .singleWhere((ce) => ce.name == 'fromJson', orElse: () => null);
 
-    String asCast;
+    var output = expression;
     if (fromJsonCtor != null) {
-      // TODO: should verify that this type is a valid JSON type
-      final asCastType = fromJsonCtor.parameters.first.type;
-      asCast = asStatement(asCastType);
+      var asCastType =
+          fromJsonCtor.parameters.singleWhere((pe) => pe.isPositional).type;
+
+      if (asCastType is InterfaceType) {
+        var instantiated = _instantiate(asCastType as InterfaceType, type);
+        if (instantiated != null) {
+          asCastType = instantiated;
+        }
+      }
+
+      output = context.deserialize(asCastType, output).toString();
     } else if (_annotation(context.config, type)?.createFactory == true) {
       if (context.config.anyMap) {
-        asCast = ' as Map';
+        output += ' as Map';
       } else {
-        asCast = ' as Map<String, dynamic>';
+        output += ' as Map<String, dynamic>';
       }
     } else {
       return null;
@@ -61,9 +69,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
-    final result = '${targetType.name}.fromJson($expression$asCast)';
+    output = '${targetType.name}.fromJson($output)';
 
-    return commonNullPrefix(context.nullable, expression, result).toString();
+    return commonNullPrefix(context.nullable, expression, output).toString();
   }
 }
 
@@ -83,6 +91,29 @@ bool _canSerialize(JsonSerializable config, DartType type) {
     }
   }
   return false;
+}
+
+/// Returns an instantiation of [ctorParamType] by providing argument types
+/// derived by matching corresponding type parameters from [classType].
+InterfaceType _instantiate(
+    InterfaceType ctorParamType, InterfaceType classType) {
+  var argTypes = ctorParamType.typeArguments.map((arg) {
+    final typeParamIndex =
+        classType.typeParameters.indexWhere((e) => e.type == arg);
+    if (typeParamIndex >= 0) {
+      return classType.typeArguments[typeParamIndex];
+    } else {
+      // TODO: perhaps throw UnsupportedTypeError?
+      return null;
+    }
+  }).toList();
+
+  if (argTypes.any((e) => e == null)) {
+    // TODO: perhaps throw UnsupportedTypeError?
+    return null;
+  }
+
+  return ctorParamType.instantiate(argTypes);
 }
 
 JsonSerializable _annotation(JsonSerializable config, InterfaceType source) {
