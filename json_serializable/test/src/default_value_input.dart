@@ -4,8 +4,11 @@
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    '`defaultValue` is `Symbol`, it must be a literal.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      '`defaultValue` is `Symbol`, it must be a literal.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithSymbol {
   @JsonKey(defaultValue: #symbol)
@@ -16,8 +19,11 @@ class DefaultWithSymbol {
 
 int _function() => 42;
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    '`defaultValue` is `Function`, it must be a literal.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      '`defaultValue` is `Function`, it must be a literal.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithFunction {
   @JsonKey(defaultValue: _function)
@@ -26,8 +32,11 @@ class DefaultWithFunction {
   DefaultWithFunction();
 }
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    '`defaultValue` is `Type`, it must be a literal.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      '`defaultValue` is `Type`, it must be a literal.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithType {
   @JsonKey(defaultValue: Object)
@@ -36,8 +45,11 @@ class DefaultWithType {
   DefaultWithType();
 }
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    '`defaultValue` is `Duration`, it must be a literal.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      '`defaultValue` is `Duration`, it must be a literal.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithConstObject {
   @JsonKey(defaultValue: Duration())
@@ -48,8 +60,11 @@ class DefaultWithConstObject {
 
 enum Enum { value }
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    '`defaultValue` is `List > Enum`, it must be a literal.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      '`defaultValue` is `List > Enum`, it must be a literal.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithNestedEnum {
   @JsonKey(defaultValue: [Enum.value])
@@ -58,8 +73,11 @@ class DefaultWithNestedEnum {
   DefaultWithNestedEnum();
 }
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    'Cannot use `defaultValue` on a field with `nullable` false.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      'Cannot use `defaultValue` on a field with `nullable` false.',
+  element: 'field',
+)
 @JsonSerializable()
 class DefaultWithNonNullableField {
   @JsonKey(defaultValue: 42, nullable: false)
@@ -68,8 +86,11 @@ class DefaultWithNonNullableField {
   DefaultWithNonNullableField();
 }
 
-@ShouldThrow('Error with `@JsonKey` on `field`. '
-    'Cannot use `defaultValue` on a field with `nullable` false.')
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. '
+      'Cannot use `defaultValue` on a field with `nullable` false.',
+  element: 'field',
+)
 @JsonSerializable(nullable: false)
 class DefaultWithNonNullableClass {
   @JsonKey(defaultValue: 42)

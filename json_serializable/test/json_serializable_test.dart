@@ -6,191 +6,110 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:analyzer/src/dart/element/element.dart';
-import 'package:build/build.dart';
-import 'package:dart_style/dart_style.dart' as dart_style;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:json_serializable/src/type_helper.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
 
-import 'analysis_utils.dart';
 import 'shared_config.dart';
 import 'test_file_utils.dart';
-
-Matcher _matcherFromShouldGenerateAnnotation(ConstantReader reader,
-    {bool wrapped = false}) {
-  String expectedOutput;
-  if (wrapped) {
-    final expectedWrappedOutput = reader.read('expectedWrappedOutput');
-    if (expectedWrappedOutput.isNull) {
-      return null;
-    }
-    expectedOutput = expectedWrappedOutput.stringValue;
-  } else {
-    expectedOutput = reader.read('expectedOutput').stringValue;
-  }
-
-  final isContains = reader.read('contains').boolValue;
-
-  if (isContains) {
-    return contains(expectedOutput);
-  }
-  return equals(expectedOutput);
-}
-
-Matcher _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher) =>
-    throwsA(const TypeMatcher<InvalidGenerationSourceError>()
-        .having((e) {
-          printOnFailure("r'''\n${e.message}'''");
-          return e.message;
-        }, 'message', messageMatcher)
-        .having((e) => e.todo, 'todo', todoMatcher)
-        .having((e) => e.element, 'element', isNotNull));
 
 Matcher _throwsUnsupportedError(matcher) =>
     throwsA(const TypeMatcher<UnsupportedError>()
         .having((e) => e.message, 'message', matcher));
 
-final _formatter = dart_style.DartFormatter();
+const _expectedAnnotatedTests = [
+  'theAnswer',
+  'annotatedMethod',
+  'FinalFields',
+  'FinalFieldsNotSetInCtor',
+  'SetSupport',
+  'IncludeIfNullOverride',
+  'KeyDupesField',
+  'DupeKeys',
+  'IgnoredFieldClass',
+  'IgnoredFieldCtorClass',
+  'PrivateFieldCtorClass',
+  'IncludeIfNullDisallowNullClass',
+  'JsonValueWithBool',
+  'JsonValueValid',
+  'FieldWithFromJsonCtorAndTypeParams',
+  'WithANonCtorGetterChecked',
+  'WithANonCtorGetter',
+  'UnsupportedMapField',
+  'UnsupportedListField',
+  'UnsupportedSetField',
+  'UnsupportedDurationField',
+  'UnsupportedUriField',
+  'UnsupportedDateTimeField',
+  'DefaultWithSymbol',
+  'DefaultWithFunction',
+  'DefaultWithType',
+  'DefaultWithConstObject',
+  'DefaultWithNestedEnum',
+  'DefaultWithNonNullableField',
+  'DefaultWithNonNullableClass',
+  'DefaultWithToJsonClass',
+  'DefaultWithDisallowNullRequiredClass',
+  'FieldNamerNone',
+  'FieldNamerKebab',
+  'FieldNamerSnake',
+  'GenericClass',
+  'GenericClass',
+  'SubType',
+  'SubType',
+  'SubTypeWithAnnotatedFieldOverrideExtends',
+  'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
+  'SubTypeWithAnnotatedFieldOverrideImplements',
+  'JsonConverterNamedCtor',
+  'JsonConvertOnField',
+  'JsonConverterWithBadTypeArg',
+  'JsonConverterDuplicateAnnotations',
+  'JsonConverterCtorParams',
+  'JustSetter',
+  'JustSetterNoToJson',
+  'GeneralTestClass1',
+  'GeneralTestClass2',
+  'JustSetterNoFromJson',
+  'BadFromFuncReturnType',
+  'InvalidFromFunc2Args',
+  'ValidToFromFuncClassStatic',
+  'BadToFuncReturnType',
+  'InvalidToFunc2Args',
+  'ObjectConvertMethods',
+  'DynamicConvertMethods',
+  'TypedConvertMethods',
+  'FromDynamicCollection',
+  'BadNoArgs',
+  'BadTwoRequiredPositional',
+  'BadOneNamed',
+  'OkayOneNormalOptionalPositional',
+  'OkayOneNormalOptionalNamed',
+  'OkayOnlyOptionalPositional'
+];
 
-LibraryReader _library;
-
-final _buildLogItems = <String>[];
-
-const _expectedAnnotatedTests = {
-  '_json_serializable_test_input.dart': [
-    'theAnswer',
-    'annotatedMethod',
-    'Person',
-    'Order',
-    'FinalFields',
-    'FinalFieldsNotSetInCtor',
-    'SetSupport',
-    'IncludeIfNullOverride',
-    'KeyDupesField',
-    'DupeKeys',
-    'IgnoredFieldClass',
-    'IgnoredFieldCtorClass',
-    'PrivateFieldCtorClass',
-    'IncludeIfNullDisallowNullClass',
-    'JsonValueWithBool',
-    'JsonValueValid',
-    'FieldWithFromJsonCtorAndTypeParams',
-  ],
-  'checked_test_input.dart': [
-    'WithANonCtorGetterChecked',
-    'WithANonCtorGetter'
-  ],
-  'core_subclass_type_input.dart': [
-    'UnsupportedMapField',
-    'UnsupportedListField',
-    'UnsupportedSetField',
-    'UnsupportedDurationField',
-    'UnsupportedUriField',
-    'UnsupportedDateTimeField',
-  ],
-  'default_value_input.dart': [
-    'DefaultWithSymbol',
-    'DefaultWithFunction',
-    'DefaultWithType',
-    'DefaultWithConstObject',
-    'DefaultWithNestedEnum',
-    'DefaultWithNonNullableField',
-    'DefaultWithNonNullableClass',
-    'DefaultWithToJsonClass',
-    'DefaultWithDisallowNullRequiredClass',
-  ],
-  'field_namer_input.dart': [
-    'FieldNamerNone',
-    'FieldNamerKebab',
-    'FieldNamerSnake'
-  ],
-  'generic_test_input.dart': ['GenericClass'],
-  'inheritance_test_input.dart': [
-    'SubType',
-    'SubTypeWithAnnotatedFieldOverrideExtends',
-    'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
-    'SubTypeWithAnnotatedFieldOverrideImplements'
-  ],
-  'json_converter_test_input.dart': [
-    'JsonConverterNamedCtor',
-    'JsonConvertOnField',
-    'JsonConverterWithBadTypeArg',
-    'JsonConverterDuplicateAnnotations',
-    'JsonConverterCtorParams',
-  ],
-  'setter_test_input.dart': [
-    'JustSetter',
-    'JustSetterNoToJson',
-    'JustSetterNoFromJson'
-  ],
-  'to_from_json_test_input.dart': [
-    'BadFromFuncReturnType',
-    'InvalidFromFunc2Args',
-    'ValidToFromFuncClassStatic',
-    'BadToFuncReturnType',
-    'InvalidToFunc2Args',
-    'ObjectConvertMethods',
-    'DynamicConvertMethods',
-    'TypedConvertMethods',
-    'FromDynamicCollection',
-    'BadNoArgs',
-    'BadTwoRequiredPositional',
-    'BadOneNamed',
-    'OkayOneNormalOptionalPositional',
-    'OkayOneNormalOptionalNamed',
-    'OkayOnlyOptionalPositional'
-  ],
-};
+LibraryReader _libraryReader;
 
 void main() async {
-  final path = testFilePath('test', 'src');
-  _library = await resolveCompilationUnit(path);
+  initializeBuildLogTracking();
+  _libraryReader = await initializeLibraryReaderForDirectory(
+    testFilePath('test', 'src'),
+    '_json_serializable_test_input.dart',
+  );
 
-  StreamSubscription logSubscription;
-
-  setUp(() {
-    assert(_buildLogItems.isEmpty);
-    assert(logSubscription == null);
-    logSubscription = log.onRecord.listen((r) => _buildLogItems.add(r.message));
-  });
-
-  tearDown(() async {
-    if (logSubscription != null) {
-      await logSubscription.cancel();
-      logSubscription = null;
-    }
-
-    final remainingItems = _buildLogItems.toList();
-    _buildLogItems.clear();
-    expect(remainingItems, isEmpty,
-        reason:
-            'Tests should validate entries and clear this before `tearDown`.');
-    _buildLogItems.clear();
-  });
-
-  // Only need to run this check once!
-  test('[all expected files]', () {
-    expect(_annotatedElements.keys, _expectedAnnotatedTests.keys);
-  });
-
-  for (final entry in _annotatedElements.entries) {
-    group(entry.key, () {
-      test('[all expected classes]', () {
-        expect(
-            _expectedAnnotatedTests,
-            containsPair(entry.key,
-                unorderedEquals(entry.value.map((ae) => ae.element.name))));
-      });
-
-      for (final annotatedElement in entry.value) {
-        _testAnnotatedClass(annotatedElement);
-      }
-    });
-  }
+  testAnnotatedElements(
+    _libraryReader,
+    const JsonSerializableGenerator(),
+    additionalGenerators: const {
+      'wrapped': JsonSerializableGenerator(
+        config: JsonSerializable(useWrappers: true),
+      ),
+    },
+    expectedAnnotatedTests: _expectedAnnotatedTests,
+  );
 
   group('without wrappers', () {
     _registerTests(JsonSerializable.defaults);
@@ -201,10 +120,12 @@ void main() async {
           const JsonSerializable(useWrappers: true).withDefaults()));
 
   group('configuration', () {
-    void runWithConfigAndLogger(JsonSerializable config, String className) {
-      _runForElementNamedWithGenerator(
+    Future<Null> runWithConfigAndLogger(
+        JsonSerializable config, String className) async {
+      await generateForElement(
           JsonSerializableGenerator(
               config: config, typeHelpers: const [_ConfigLogger()]),
+          _libraryReader,
           className);
     }
 
@@ -219,8 +140,8 @@ void main() async {
           final testDescription =
               '$className with ${nullConfig ? 'null' : 'default'} config';
 
-          test(testDescription, () {
-            runWithConfigAndLogger(
+          test(testDescription, () async {
+            await runWithConfigAndLogger(
                 nullConfig ? null : const JsonSerializable(), className);
 
             expect(_ConfigLogger.configurations, hasLength(2));
@@ -235,8 +156,8 @@ void main() async {
 
     test(
         'values in config override unconfigured (default) values in annotation',
-        () {
-      runWithConfigAndLogger(
+        () async {
+      await runWithConfigAndLogger(
           JsonSerializable.fromJson(generatorConfigNonDefaultJson),
           'ConfigurationImplicitDefaults');
 
@@ -249,14 +170,14 @@ void main() async {
           Map<String, dynamic>.from(generatorConfigNonDefaultJson);
       configMap['create_to_json'] = true;
 
-      runWithConfigAndLogger(JsonSerializable.fromJson(configMap),
+      await runWithConfigAndLogger(JsonSerializable.fromJson(configMap),
           'ConfigurationImplicitDefaults');
     });
 
     test(
         'explicit values in annotation override corresponding settings in config',
-        () {
-      runWithConfigAndLogger(
+        () async {
+      await runWithConfigAndLogger(
           JsonSerializable.fromJson(generatorConfigNonDefaultJson),
           'ConfigurationExplicitDefaults');
 
@@ -277,137 +198,30 @@ void main() async {
   });
 }
 
-void _testAnnotatedClass(AnnotatedElement annotatedElement) {
-  final annotationName = annotatedElement.annotation.objectValue.type.name;
-  switch (annotationName) {
-    case 'ShouldThrow':
-      _testShouldThrow(annotatedElement);
-      break;
-    case 'ShouldGenerate':
-      _testShouldGenerate(annotatedElement);
-      break;
-    default:
-      throw UnsupportedError("We don't support $annotationName");
-  }
-}
-
-void _testShouldThrow(AnnotatedElement annotatedElement) {
-  final element = annotatedElement.element;
-  final constReader = annotatedElement.annotation;
-  final messageMatcher = constReader.read('errorMessage').stringValue;
-  var todoMatcher = constReader.read('todo').literalValue;
-
-  test(element.name, () {
-    todoMatcher ??= isEmpty;
-
-    expect(
-        () => _runForElementNamed(
-            const JsonSerializable(useWrappers: false), element.name),
-        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
-        reason: 'Should fail without wrappers.');
-
-    expect(
-        () => _runForElementNamed(
-            const JsonSerializable(useWrappers: true), element.name),
-        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher),
-        reason: 'Should fail with wrappers.');
-  });
-}
-
-void _testShouldGenerate(AnnotatedElement annotatedElement) {
-  final element = annotatedElement.element;
-
-  final matcher =
-      _matcherFromShouldGenerateAnnotation(annotatedElement.annotation);
-
-  final expectedLogItems = annotatedElement.annotation
-      .read('expectedLogItems')
-      .listValue
-      .map((obj) => obj.toStringValue())
-      .toList();
-
-  test(element.name, () {
-    final output = _runForElementNamed(const JsonSerializable(), element.name);
-    expect(output, matcher);
-
-    expect(_buildLogItems, expectedLogItems);
-    _buildLogItems.clear();
-  });
-
-  final wrappedMatcher = _matcherFromShouldGenerateAnnotation(
-      annotatedElement.annotation,
-      wrapped: true);
-  if (wrappedMatcher != null) {
-    test('${element.name} - (wrapped)', () {
-      final output = _runForElementNamed(
-          const JsonSerializable(useWrappers: true), element.name);
-      expect(output, wrappedMatcher);
-
-      expect(_buildLogItems, expectedLogItems);
-      _buildLogItems.clear();
-    });
-  }
-}
-
-String _runForElementNamed(JsonSerializable config, String name) {
+Future<String> _runForElementNamed(JsonSerializable config, String name) async {
   final generator = JsonSerializableGenerator(config: config);
-  return _runForElementNamedWithGenerator(generator, name);
+  return generateForElement(generator, _libraryReader, name);
 }
-
-String _runForElementNamedWithGenerator(
-    JsonSerializableGenerator generator, String name) {
-  final element = _library.allElements
-      .singleWhere((e) => e is! ConstVariableElement && e.name == name);
-  final annotation = generator.typeChecker.firstAnnotationOf(element);
-  final generated = generator
-      .generateForAnnotatedElement(element, ConstantReader(annotation), null)
-      .map((e) => e.trim())
-      .where((e) => e.isNotEmpty)
-      .map((e) => '$e\n\n')
-      .join();
-
-  final output = _formatter.format(generated);
-  printOnFailure("r'''\n$output'''");
-  return output;
-}
-
-final _annotatedElements = _library.allElements
-    .map<AnnotatedElement>((e) {
-      for (final md in e.metadata) {
-        md.computeConstantValue();
-        final reader = ConstantReader(md.constantValue);
-        if (const ['ShouldGenerate', 'ShouldThrow']
-            .contains(reader.objectValue.type.name)) {
-          return AnnotatedElement(reader, e);
-        }
-      }
-      return null;
-    })
-    .where((ae) => ae != null)
-    .fold<Map<String, List<AnnotatedElement>>>(
-        <String, List<AnnotatedElement>>{}, (map, annotatedElement) {
-      final list = map.putIfAbsent(
-          annotatedElement.element.source.uri.pathSegments.last,
-          () => <AnnotatedElement>[]);
-      list.add(annotatedElement);
-      return map;
-    });
 
 void _registerTests(JsonSerializable generator) {
-  String runForElementNamed(String name) =>
+  Future<String> runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
     todoMatcher ??= isEmpty;
-    expect(() => runForElementNamed(elementName),
-        _throwsInvalidGenerationSourceError(messageMatcher, todoMatcher));
+    expect(
+      () => runForElementNamed(elementName),
+      throwsInvalidGenerationSourceError(
+        messageMatcher,
+        todoMatcher: todoMatcher,
+      ),
+    );
   }
 
   group('explicit toJson', () {
-    test('nullable', () {
-      final output = _runForElementNamed(
-          JsonSerializable(
-              explicitToJson: true, useWrappers: generator.useWrappers),
+    test('nullable', () async {
+      final output = await _runForElementNamed(
+          JsonSerializable(useWrappers: generator.useWrappers),
           'TrivialNestedNullable');
 
       final expected = generator.useWrappers
@@ -448,10 +262,9 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
 
       expect(output, expected);
     });
-    test('non-nullable', () {
-      final output = _runForElementNamed(
-          JsonSerializable(
-              explicitToJson: true, useWrappers: generator.useWrappers),
+    test('non-nullable', () async {
+      final output = await _runForElementNamed(
+          JsonSerializable(useWrappers: generator.useWrappers),
           'TrivialNestedNonNullable');
 
       final expected = generator.useWrappers
@@ -496,10 +309,10 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
   group('unknown types', () {
     tearDown(() {
-      expect(_buildLogItems, hasLength(1));
-      expect(_buildLogItems.first,
+      expect(buildLogItems, hasLength(1));
+      expect(buildLogItems.first,
           startsWith('This element has an undefined type.'));
-      _buildLogItems.clear();
+      clearBuildLog();
     });
     String flavorMessage(String flavor) =>
         'Could not generate `$flavor` code for `number` '
@@ -529,8 +342,8 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
       });
     });
 
-    test('with proper convert methods', () {
-      final output = runForElementNamed('UnknownFieldTypeWithConvert');
+    test('with proper convert methods', () async {
+      final output = await runForElementNamed('UnknownFieldTypeWithConvert');
       expect(output, contains("_everythingIs42(json['number'])"));
       if (generator.useWrappers) {
         expect(output, contains('_everythingIs42(_v.number)'));
@@ -573,8 +386,8 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     });
   });
 
-  test('class with final fields', () {
-    final generateResult = runForElementNamed('FinalFields');
+  test('class with final fields', () async {
+    final generateResult = await runForElementNamed('FinalFields');
     expect(
         generateResult,
         contains(
@@ -582,14 +395,15 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   });
 
   group('valid inputs', () {
-    test('class with fromJson() constructor with optional parameters', () {
-      final output = runForElementNamed('FromJsonOptionalParameters');
+    test('class with fromJson() constructor with optional parameters',
+        () async {
+      final output = await runForElementNamed('FromJsonOptionalParameters');
 
       expect(output, contains('ChildWithFromJson.fromJson'));
     });
 
-    test('class with child json-able object', () {
-      final output = runForElementNamed('ParentObject');
+    test('class with child json-able object', () async {
+      final output = await runForElementNamed('ParentObject');
 
       expect(
           output,
@@ -597,38 +411,32 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
               'as Map<String, dynamic>)'));
     });
 
-    test('class with child json-able object - anyMap', () {
-      final output = _runForElementNamed(
+    test('class with child json-able object - anyMap', () async {
+      final output = await _runForElementNamed(
           JsonSerializable(anyMap: true, useWrappers: generator.useWrappers),
           'ParentObject');
 
       expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
     });
 
-    test('class with child list of json-able objects', () {
-      final output = runForElementNamed('ParentObjectWithChildren');
+    test('class with child list of json-able objects', () async {
+      final output = await runForElementNamed('ParentObjectWithChildren');
 
       expect(output, contains('.toList()'));
       expect(output, contains('ChildObject.fromJson'));
     });
 
-    test('class with child list of dynamic objects is left alone', () {
-      final output = runForElementNamed('ParentObjectWithDynamicChildren');
+    test('class with child list of dynamic objects is left alone', () async {
+      final output =
+          await runForElementNamed('ParentObjectWithDynamicChildren');
 
       expect(output, contains('children = json[\'children\'] as List;'));
-    });
-
-    test('class with list of int is cast for strong mode', () {
-      final output = runForElementNamed('Person');
-
-      expect(output,
-          contains("json['listOfInts'] as List)?.map((e) => e as int)"));
     });
   });
 
   group('includeIfNull', () {
-    test('some', () {
-      final output = runForElementNamed('IncludeIfNullAll');
+    test('some', () async {
+      final output = await runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });

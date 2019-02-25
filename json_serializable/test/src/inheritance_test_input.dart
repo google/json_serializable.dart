@@ -1,6 +1,7 @@
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 SubType _$SubTypeFromJson(Map<String, dynamic> json) {
   return SubType(
       json['subTypeViaCtor'] as int, json['super-final-field'] as int)
@@ -24,7 +25,11 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
   val['subTypeReadWrite'] = instance.subTypeReadWrite;
   return val;
 }
-''', expectedWrappedOutput: r'''
+''',
+  configurations: ['default'],
+)
+@ShouldGenerate(
+  r'''
 SubType _$SubTypeFromJson(Map<String, dynamic> json) {
   return SubType(
       json['subTypeViaCtor'] as int, json['super-final-field'] as int)
@@ -66,7 +71,9 @@ class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
     return null;
   }
 }
-''')
+''',
+  configurations: ['wrapped'],
+)
 @JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
@@ -95,7 +102,8 @@ class SuperType {
       superFinalField == null ? null : superFinalField ~/ other;
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
     SubTypeWithAnnotatedFieldOverrideExtends instance) {
   final val = <String, dynamic>{
@@ -112,14 +120,17 @@ Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
   val['priceHalf'] = instance.priceHalf;
   return val;
 }
-''')
+''',
+  configurations: ['default'],
+)
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideExtends extends SuperType {
   SubTypeWithAnnotatedFieldOverrideExtends(int superTypeViaCtor)
       : super(superTypeViaCtor);
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 Map<String, dynamic>
     _$SubTypeWithAnnotatedFieldOverrideExtendsWithOverridesToJson(
             SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides instance) =>
@@ -128,7 +139,9 @@ Map<String, dynamic>
           'superReadWriteField': instance.superReadWriteField,
           'super-final-field': instance.superFinalField
         };
-''')
+''',
+  configurations: ['default'],
+)
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
   SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides(int superTypeViaCtor)
@@ -150,14 +163,17 @@ class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
   int get superFinalField => super.superFinalField;
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideImplementsToJson(
         SubTypeWithAnnotatedFieldOverrideImplements instance) =>
     <String, dynamic>{
       'superReadWriteField': instance.superReadWriteField,
       'superFinalField': instance.superFinalField
     };
-''')
+''',
+  configurations: ['default'],
+)
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideImplements implements SuperType {
   // Note the order of fields in the output is determined by this class
