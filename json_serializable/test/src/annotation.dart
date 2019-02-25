@@ -5,6 +5,7 @@
 class ShouldThrow {
   final String errorMessage;
   final String todo;
+
   const ShouldThrow(this.errorMessage, [this.todo]);
 }
 
@@ -13,10 +14,11 @@ class ShouldGenerate {
   final String expectedWrappedOutput;
   final bool contains;
   final List<String> expectedLogItems;
-  final bool checked;
-  const ShouldGenerate(this.expectedOutput,
-      {this.expectedWrappedOutput,
-      this.contains = false,
-      this.expectedLogItems = const [],
-      this.checked = false});
+
+  const ShouldGenerate(
+    this.expectedOutput, {
+    this.expectedWrappedOutput,
+    this.contains = false,
+    this.expectedLogItems = const [],
+  });
 }
