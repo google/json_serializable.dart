@@ -13,11 +13,16 @@ WithANonCtorGetterChecked _$WithANonCtorGetterCheckedFromJson(
     return val;
   });
 }
-''', checked: true)
-@JsonSerializable(disallowUnrecognizedKeys: true, createToJson: false)
+''')
+@JsonSerializable(
+  disallowUnrecognizedKeys: true,
+  createToJson: false,
+  checked: true,
+)
 class WithANonCtorGetterChecked {
   @JsonKey(required: true, disallowNullValue: true)
   final List<String> items;
+
   int get length => items.length;
 
   WithANonCtorGetterChecked(this.items);
@@ -37,6 +42,7 @@ WithANonCtorGetter _$WithANonCtorGetterFromJson(Map<String, dynamic> json) {
 class WithANonCtorGetter {
   @JsonKey(required: true, disallowNullValue: true)
   final List<String> items;
+
   int get length => items.length;
 
   WithANonCtorGetter(this.items);

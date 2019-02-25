@@ -326,11 +326,8 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
       .map((obj) => obj.toStringValue())
       .toList();
 
-  final checked = annotatedElement.annotation.read('checked').boolValue;
-
   test(element.name, () {
-    final output =
-        _runForElementNamed(JsonSerializable(checked: checked), element.name);
+    final output = _runForElementNamed(const JsonSerializable(), element.name);
     expect(output, matcher);
 
     expect(_buildLogItems, expectedLogItems);
@@ -343,7 +340,7 @@ void _testShouldGenerate(AnnotatedElement annotatedElement) {
   if (wrappedMatcher != null) {
     test('${element.name} - (wrapped)', () {
       final output = _runForElementNamed(
-          JsonSerializable(checked: checked, useWrappers: true), element.name);
+          const JsonSerializable(useWrappers: true), element.name);
       expect(output, wrappedMatcher);
 
       expect(_buildLogItems, expectedLogItems);
