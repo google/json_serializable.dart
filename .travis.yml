@@ -42,8 +42,13 @@ jobs:
       env: PKG="json_serializable"
       dart: stable
     - stage: unit_test
-      name: "SDK: stable - DIR: json_serializable - TASKS: pub run test"
-      script: ./tool/travis.sh test_1
+      name: "SDK: dev - DIR: json_serializable - TASKS: [pub run test --run-skipped, pub run build_runner test -- -p chrome]"
+      script: ./tool/travis.sh test_0 command
+      env: PKG="json_serializable"
+      dart: dev
+    - stage: unit_test
+      name: "SDK: stable - DIR: json_serializable - TASKS: [pub run test --run-skipped, pub run build_runner test -- -p chrome]"
+      script: ./tool/travis.sh test_0 command
       env: PKG="json_serializable"
       dart: stable
     - stage: unit_test
@@ -51,41 +56,6 @@ jobs:
       script: ./tool/travis.sh test_1
       env: PKG="json_serializable"
       dart: "2.0.0"
-    - stage: unit_test
-      name: "SDK: dev - DIR: json_serializable - TASKS: pub run test"
-      script: ./tool/travis.sh test_1
-      env: PKG="json_serializable"
-      dart: dev
-    - stage: unit_test
-      name: "SDK: stable - DIR: json_serializable - TASKS: pub run test --run-skipped test/ensure_build_test.dart"
-      script: ./tool/travis.sh test_2
-      env: PKG="json_serializable"
-      dart: stable
-    - stage: unit_test
-      name: "SDK: 2.0.0 - DIR: json_serializable - TASKS: pub run test --run-skipped test/ensure_build_test.dart"
-      script: ./tool/travis.sh test_2
-      env: PKG="json_serializable"
-      dart: "2.0.0"
-    - stage: unit_test
-      name: "SDK: dev - DIR: json_serializable - TASKS: pub run test --run-skipped test/ensure_build_test.dart"
-      script: ./tool/travis.sh test_2
-      env: PKG="json_serializable"
-      dart: dev
-    - stage: unit_test
-      name: "SDK: stable - DIR: json_serializable - TASKS: pub run build_runner test -- -p chrome"
-      script: ./tool/travis.sh command
-      env: PKG="json_serializable"
-      dart: stable
-    - stage: unit_test
-      name: "SDK: 2.0.0 - DIR: json_serializable - TASKS: pub run build_runner test -- -p chrome"
-      script: ./tool/travis.sh command
-      env: PKG="json_serializable"
-      dart: "2.0.0"
-    - stage: unit_test
-      name: "SDK: dev - DIR: json_serializable - TASKS: pub run build_runner test -- -p chrome"
-      script: ./tool/travis.sh command
-      env: PKG="json_serializable"
-      dart: dev
 
 stages:
   - analyzer_and_format
