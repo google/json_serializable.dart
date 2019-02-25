@@ -4,7 +4,8 @@
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConverterNamedCtor<E>()
@@ -33,7 +34,9 @@ Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
           ? null
           : JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst)
     };
-''')
+''',
+  configurations: ['default'],
+)
 @JsonSerializable()
 @_DurationMillisecondConverter.named()
 @_GenericConverter.named()
@@ -46,10 +49,12 @@ class JsonConverterNamedCtor<E> {
   Duration keyAnnotationFirst;
 
   static Duration _fromJson(int value) => null;
+
   static int _toJson(Duration object) => 42;
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConvertOnField<E>()
@@ -87,7 +92,9 @@ Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
           ? null
           : _GenericConverter<E>().toJson(instance.genericValue)
     };
-''')
+''',
+  configurations: ['default'],
+)
 @JsonSerializable()
 @_durationConverter
 class JsonConvertOnField<E> {
@@ -105,6 +112,7 @@ class JsonConvertOnField<E> {
 
 class _GenericConverter<T> implements JsonConverter<T, int> {
   const _GenericConverter();
+
   const _GenericConverter.named();
 
   @override
@@ -114,8 +122,11 @@ class _GenericConverter<T> implements JsonConverter<T, int> {
   int toJson(T object) => 0;
 }
 
-@ShouldThrow('`JsonConverter` implementations can have no more than one type '
-    'argument. `_BadConverter` has 2.')
+@ShouldThrow(
+  '`JsonConverter` implementations can have no more than one type argument. '
+      '`_BadConverter` has 2.',
+  element: '_BadConverter',
+)
 @JsonSerializable()
 @_BadConverter()
 class JsonConverterWithBadTypeArg<T> {
@@ -132,7 +143,10 @@ class _BadConverter<T, S> implements JsonConverter<S, int> {
   int toJson(S object) => 0;
 }
 
-@ShouldThrow('Found more than one matching converter for `Duration`.')
+@ShouldThrow(
+  'Found more than one matching converter for `Duration`.',
+  element: '',
+)
 @JsonSerializable()
 @_durationConverter
 @_DurationMillisecondConverter()
@@ -155,7 +169,10 @@ class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
   int toJson(Duration object) => object?.inMilliseconds;
 }
 
-@ShouldThrow('Generators with constructor arguments are not supported.')
+@ShouldThrow(
+  'Generators with constructor arguments are not supported.',
+  element: '',
+)
 @JsonSerializable()
 @_ConverterWithCtorParams(42)
 class JsonConverterCtorParams {
@@ -164,6 +181,7 @@ class JsonConverterCtorParams {
 
 class _ConverterWithCtorParams implements JsonConverter<Duration, int> {
   final int param;
+
   const _ConverterWithCtorParams(this.param);
 
   @override

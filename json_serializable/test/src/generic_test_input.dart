@@ -33,7 +33,9 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
       'fieldT': instance.fieldT == null ? null : _dataToJson(instance.fieldT),
       'fieldS': instance.fieldS == null ? null : _dataToJson(instance.fieldS)
     };
-''', expectedWrappedOutput: r'''
+''')
+@ShouldGenerate(
+  r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
   return GenericClass<T, S>()
@@ -79,7 +81,9 @@ class _$GenericClassJsonMapWrapper<T extends num, S> extends $JsonMapWrapper {
     return null;
   }
 }
-''')
+''',
+  configurations: ['wrapped'],
+)
 @JsonSerializable()
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
@@ -101,4 +105,5 @@ class GenericClass<T extends num, S> {
 }
 
 T _dataFromJson<T extends num>(Object input) => null;
+
 Object _dataToJson<T extends num>(T input) => null;
