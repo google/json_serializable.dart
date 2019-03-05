@@ -67,6 +67,10 @@ const _expectedAnnotatedTests = [
   'JustSetterNoFromJson',
   'JustSetterNoToJson',
   'KeyDupesField',
+  'NoDeserializeBadKey',
+  'NoDeserializeFieldType',
+  'NoSerializeBadKey',
+  'NoSerializeFieldType',
   'ObjectConvertMethods',
   'OkayOneNormalOptionalNamed',
   'OkayOneNormalOptionalPositional',
@@ -212,18 +216,6 @@ void _registerTests(JsonSerializable generator) {
   Future<String> runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
-  @deprecated
-  void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
-    todoMatcher ??= isEmpty;
-    expect(
-      () => runForElementNamed(elementName),
-      throwsInvalidGenerationSourceError(
-        messageMatcher,
-        todoMatcher: todoMatcher,
-      ),
-    );
-  }
-
   group('explicit toJson', () {
     test('nullable', () async {
       final output = await _runForElementNamed(
@@ -310,39 +302,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 ''';
 
       expect(output, expected);
-    });
-  });
-
-  group('unserializable types', () {
-    final noSupportHelperFyi = 'Could not generate `toJson` code for `watch`.\n'
-        'None of the provided `TypeHelper` instances support the defined type.';
-
-    test('for toJson', () {
-      expectThrows('NoSerializeFieldType', noSupportHelperFyi,
-          'Make sure all of the types are serializable.');
-    });
-
-    test('for fromJson', () {
-      expectThrows(
-          'NoDeserializeFieldType',
-          noSupportHelperFyi.replaceFirst('toJson', 'fromJson'),
-          'Make sure all of the types are serializable.');
-    });
-
-    final mapKeyFyi = 'Could not generate `toJson` code for `intDateTimeMap` '
-        'because of type `int`.\nMap keys must be of type '
-        '`String`, enum, `Object` or `dynamic`.';
-
-    test('for toJson in Map key', () {
-      expectThrows('NoSerializeBadKey', mapKeyFyi,
-          'Make sure all of the types are serializable.');
-    });
-
-    test('for fromJson', () {
-      expectThrows(
-          'NoDeserializeBadKey',
-          mapKeyFyi.replaceFirst('toJson', 'fromJson'),
-          'Make sure all of the types are serializable.');
     });
   });
 
