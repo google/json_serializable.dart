@@ -10,23 +10,14 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
-
 part 'configuration_input.dart';
-
 part 'core_subclass_type_input.dart';
-
 part 'default_value_input.dart';
-
 part 'field_namer_input.dart';
-
 part 'generic_test_input.dart';
-
 part 'inheritance_test_input.dart';
-
 part 'json_converter_test_input.dart';
-
 part 'setter_test_input.dart';
-
 part 'to_from_json_test_input.dart';
 
 @ShouldThrow('Generator cannot target `theAnswer`.',
