@@ -22,73 +22,78 @@ Matcher _throwsUnsupportedError(matcher) =>
         .having((e) => e.message, 'message', matcher));
 
 const _expectedAnnotatedTests = [
-  'theAnswer',
   'annotatedMethod',
+  'BadFromFuncReturnType',
+  'BadNoArgs',
+  'BadOneNamed',
+  'BadToFuncReturnType',
+  'BadTwoRequiredPositional',
+  'DefaultWithConstObject',
+  'DefaultWithDisallowNullRequiredClass',
+  'DefaultWithFunction',
+  'DefaultWithNestedEnum',
+  'DefaultWithNonNullableClass',
+  'DefaultWithNonNullableField',
+  'DefaultWithSymbol',
+  'DefaultWithToJsonClass',
+  'DefaultWithType',
+  'DupeKeys',
+  'DynamicConvertMethods',
+  'FieldNamerKebab',
+  'FieldNamerNone',
+  'FieldNamerSnake',
+  'FieldWithFromJsonCtorAndTypeParams',
   'FinalFields',
   'FinalFieldsNotSetInCtor',
-  'SetSupport',
-  'IncludeIfNullOverride',
-  'KeyDupesField',
-  'DupeKeys',
+  'FromDynamicCollection',
+  'GeneralTestClass1',
+  'GeneralTestClass2',
+  'GenericClass',
+  'GenericClass',
   'IgnoredFieldClass',
   'IgnoredFieldCtorClass',
-  'PrivateFieldCtorClass',
   'IncludeIfNullDisallowNullClass',
-  'JsonValueWithBool',
+  'IncludeIfNullOverride',
+  'InvalidFromFunc2Args',
+  'InvalidToFunc2Args',
+  'JsonConverterCtorParams',
+  'JsonConverterDuplicateAnnotations',
+  'JsonConverterNamedCtor',
+  'JsonConverterWithBadTypeArg',
+  'JsonConvertOnField',
   'JsonValueValid',
-  'FieldWithFromJsonCtorAndTypeParams',
-  'WithANonCtorGetterChecked',
-  'WithANonCtorGetter',
-  'UnsupportedMapField',
-  'UnsupportedListField',
-  'UnsupportedSetField',
-  'UnsupportedDurationField',
-  'UnsupportedUriField',
-  'UnsupportedDateTimeField',
-  'DefaultWithSymbol',
-  'DefaultWithFunction',
-  'DefaultWithType',
-  'DefaultWithConstObject',
-  'DefaultWithNestedEnum',
-  'DefaultWithNonNullableField',
-  'DefaultWithNonNullableClass',
-  'DefaultWithToJsonClass',
-  'DefaultWithDisallowNullRequiredClass',
-  'FieldNamerNone',
-  'FieldNamerKebab',
-  'FieldNamerSnake',
-  'GenericClass',
-  'GenericClass',
+  'JsonValueWithBool',
+  'JustSetter',
+  'JustSetterNoFromJson',
+  'JustSetterNoToJson',
+  'KeyDupesField',
+  'ObjectConvertMethods',
+  'OkayOneNormalOptionalNamed',
+  'OkayOneNormalOptionalPositional',
+  'OkayOnlyOptionalPositional',
+  'PrivateFieldCtorClass',
+  'SetSupport',
   'SubType',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
   'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
   'SubTypeWithAnnotatedFieldOverrideImplements',
-  'JsonConverterNamedCtor',
-  'JsonConvertOnField',
-  'JsonConverterWithBadTypeArg',
-  'JsonConverterDuplicateAnnotations',
-  'JsonConverterCtorParams',
-  'JustSetter',
-  'JustSetterNoToJson',
-  'GeneralTestClass1',
-  'GeneralTestClass2',
-  'JustSetterNoFromJson',
-  'BadFromFuncReturnType',
-  'InvalidFromFunc2Args',
-  'ValidToFromFuncClassStatic',
-  'BadToFuncReturnType',
-  'InvalidToFunc2Args',
-  'ObjectConvertMethods',
-  'DynamicConvertMethods',
+  'theAnswer',
   'TypedConvertMethods',
-  'FromDynamicCollection',
-  'BadNoArgs',
-  'BadTwoRequiredPositional',
-  'BadOneNamed',
-  'OkayOneNormalOptionalPositional',
-  'OkayOneNormalOptionalNamed',
-  'OkayOnlyOptionalPositional'
+  'UnknownCtorParamType',
+  'UnknownFieldType',
+  'UnknownFieldTypeToJsonOnly',
+  'UnknownFieldTypeWithConvert',
+  'UnknownFieldTypeWithConvert',
+  'UnsupportedDateTimeField',
+  'UnsupportedDurationField',
+  'UnsupportedListField',
+  'UnsupportedMapField',
+  'UnsupportedSetField',
+  'UnsupportedUriField',
+  'ValidToFromFuncClassStatic',
+  'WithANonCtorGetter',
+  'WithANonCtorGetterChecked',
 ];
 
 LibraryReader _libraryReader;
@@ -207,6 +212,7 @@ void _registerTests(JsonSerializable generator) {
   Future<String> runForElementNamed(String name) =>
       _runForElementNamed(generator, name);
 
+  @deprecated
   void expectThrows(String elementName, messageMatcher, [todoMatcher]) {
     todoMatcher ??= isEmpty;
     expect(
@@ -304,52 +310,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 ''';
 
       expect(output, expected);
-    });
-  });
-
-  group('unknown types', () {
-    tearDown(() {
-      expect(buildLogItems, hasLength(1));
-      expect(buildLogItems.first,
-          startsWith('This element has an undefined type.'));
-      clearBuildLog();
-    });
-    String flavorMessage(String flavor) =>
-        'Could not generate `$flavor` code for `number` '
-        'because the type is undefined.';
-
-    String flavorTodo(String flavor) =>
-        'Check your imports. If you\'re trying to generate code for a '
-        'Platform-provided type, you may have to specify a custom `$flavor` '
-        'in the associated `@JsonKey` annotation.';
-
-    group('fromJson', () {
-      final msg = flavorMessage('fromJson');
-      final todo = flavorTodo('fromJson');
-      test('in constructor arguments', () {
-        expectThrows('UnknownCtorParamType', msg, todo);
-      });
-
-      test('in fields', () {
-        expectThrows('UnknownFieldType', msg, todo);
-      });
-    });
-
-    group('toJson', () {
-      test('in fields', () {
-        expectThrows('UnknownFieldTypeToJsonOnly', flavorMessage('toJson'),
-            flavorTodo('toJson'));
-      });
-    });
-
-    test('with proper convert methods', () async {
-      final output = await runForElementNamed('UnknownFieldTypeWithConvert');
-      expect(output, contains("_everythingIs42(json['number'])"));
-      if (generator.useWrappers) {
-        expect(output, contains('_everythingIs42(_v.number)'));
-      } else {
-        expect(output, contains('_everythingIs42(instance.number)'));
-      }
     });
   });
 

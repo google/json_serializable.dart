@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-//ignore_for_file: avoid_unused_constructor_parameters, prefer_initializing_formals
+//ignore_for_file: avoid_unused_constructor_parameters
 
 import 'dart:collection';
 
@@ -19,6 +19,7 @@ part 'inheritance_test_input.dart';
 part 'json_converter_test_input.dart';
 part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';
+part 'unknown_type_test_input.dart';
 
 @ShouldThrow('Generator cannot target `theAnswer`.',
     todo: 'Remove the JsonSerializable annotation from `theAnswer`.')
@@ -98,7 +99,9 @@ class GeneralTestClass2 {
   DateTime dateOfBirth;
 
   GeneralTestClass2(this.height, String firstName, [this.lastName])
-      : firstName = firstName;
+      :
+        // ignore: prefer_initializing_formals
+        firstName = firstName;
 }
 
 @ShouldGenerate(
@@ -196,35 +199,6 @@ class ParentObjectWithDynamicChildren {
   String str;
   List<dynamic> children;
 }
-
-@JsonSerializable()
-class UnknownCtorParamType {
-  int number;
-
-  // ignore: undefined_class, field_initializer_not_assignable
-  UnknownCtorParamType(Bob number) : number = number;
-}
-
-@JsonSerializable()
-class UnknownFieldType {
-  // ignore: undefined_class
-  Bob number;
-}
-
-@JsonSerializable(createFactory: false)
-class UnknownFieldTypeToJsonOnly {
-  // ignore: undefined_class
-  Bob number;
-}
-
-@JsonSerializable()
-class UnknownFieldTypeWithConvert {
-  @JsonKey(fromJson: _everythingIs42, toJson: _everythingIs42)
-  // ignore: undefined_class
-  Bob number;
-}
-
-dynamic _everythingIs42(Object input) => 42;
 
 @JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
