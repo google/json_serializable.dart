@@ -200,21 +200,41 @@ class ParentObjectWithDynamicChildren {
   List<dynamic> children;
 }
 
+@ShouldThrow(
+  'Could not generate `toJson` code for `watch`.\n'
+      'None of the provided `TypeHelper` instances support the defined type.',
+  configurations: ['default'],
+)
 @JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
   Stopwatch watch;
 }
 
+@ShouldThrow(
+  'Could not generate `fromJson` code for `watch`.\n'
+      'None of the provided `TypeHelper` instances support the defined type.',
+  configurations: ['default'],
+)
 @JsonSerializable(createToJson: false)
 class NoDeserializeFieldType {
   Stopwatch watch;
 }
 
+@ShouldThrow(
+  'Could not generate `toJson` code for `intDateTimeMap` because of type `int`.\n'
+      'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  configurations: ['default'],
+)
 @JsonSerializable(createFactory: false)
 class NoSerializeBadKey {
   Map<int, DateTime> intDateTimeMap;
 }
 
+@ShouldThrow(
+  'Could not generate `fromJson` code for `intDateTimeMap` because of type `int`.\n'
+      'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  configurations: ['default'],
+)
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
   Map<int, DateTime> intDateTimeMap;
