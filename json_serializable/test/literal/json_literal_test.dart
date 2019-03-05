@@ -3,19 +3,18 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
-import '../test_file_utils.dart';
 import '../test_utils.dart';
 import 'json_literal.dart';
 
 void main() {
   test('literal round-trip', () {
-    final dataFilePath = testFilePath('test', 'literal', 'json_literal.json');
+    final dataFilePath = p.join('test', 'literal', 'json_literal.json');
     final dataFile = File(dataFilePath);
 
     final dataString = loudEncode(json.decode(dataFile.readAsStringSync()));
@@ -29,7 +28,7 @@ void main() {
 
   test('naughty strings', () {
     final dataFilePath =
-        testFilePath('test', 'literal', 'big-list-of-naughty-strings.json');
+        p.join('test', 'literal', 'big-list-of-naughty-strings.json');
     final dataFile = File(dataFilePath);
 
     final dataString = loudEncode(json.decode(dataFile.readAsStringSync()));

@@ -2,15 +2,12 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-//ignore_for_file: avoid_unused_constructor_parameters
-
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
-part 'configuration_input.dart';
 part 'core_subclass_type_input.dart';
 part 'default_value_input.dart';
 part 'field_namer_input.dart';
@@ -162,44 +159,6 @@ class SetSupport {
   SetSupport(this.values);
 }
 
-@JsonSerializable(createToJson: false)
-class FromJsonOptionalParameters {
-  final ChildWithFromJson child;
-
-  FromJsonOptionalParameters(this.child);
-}
-
-class ChildWithFromJson {
-  ChildWithFromJson.fromJson(json, {initValue = false});
-}
-
-@JsonSerializable()
-class ParentObject {
-  int number;
-  String str;
-  ChildObject child;
-}
-
-@JsonSerializable()
-class ChildObject {
-  int number;
-  String str;
-}
-
-@JsonSerializable()
-class ParentObjectWithChildren {
-  int number;
-  String str;
-  List<ChildObject> children;
-}
-
-@JsonSerializable()
-class ParentObjectWithDynamicChildren {
-  int number;
-  String str;
-  List<dynamic> children;
-}
-
 @ShouldThrow(
   'Could not generate `toJson` code for `watch`.\n'
       'None of the provided `TypeHelper` instances support the defined type.',
@@ -240,13 +199,6 @@ class NoDeserializeBadKey {
   Map<int, DateTime> intDateTimeMap;
 }
 
-@JsonSerializable(createFactory: false)
-class IncludeIfNullAll {
-  @JsonKey(includeIfNull: true)
-  int number;
-  String str;
-}
-
 @ShouldGenerate(
   r'''
 Map<String, dynamic> _$IncludeIfNullOverrideToJson(
@@ -283,6 +235,7 @@ class IncludeIfNullOverride {
 class NoCtorClass {
   final int member;
 
+  //ignore: avoid_unused_constructor_parameters
   factory NoCtorClass.fromJson(Map<String, dynamic> json) => null;
 }
 
@@ -370,18 +323,6 @@ class PrivateFieldCtorClass {
 class IncludeIfNullDisallowNullClass {
   @JsonKey(includeIfNull: true, disallowNullValue: true)
   int field;
-}
-
-@JsonSerializable(createFactory: false, explicitToJson: true)
-class TrivialNestedNullable {
-  TrivialNestedNullable child;
-  int otherField;
-}
-
-@JsonSerializable(createFactory: false, nullable: false, explicitToJson: true)
-class TrivialNestedNonNullable {
-  TrivialNestedNonNullable child;
-  int otherField;
 }
 
 @ShouldThrow(
