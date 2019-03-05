@@ -17,10 +17,6 @@ import 'package:test/test.dart';
 import 'shared_config.dart';
 import 'test_file_utils.dart';
 
-Matcher _throwsUnsupportedError(matcher) =>
-    throwsA(const TypeMatcher<UnsupportedError>()
-        .having((e) => e.message, 'message', matcher));
-
 const _expectedAnnotatedTests = [
   'annotatedMethod',
   'BadFromFuncReturnType',
@@ -67,6 +63,7 @@ const _expectedAnnotatedTests = [
   'JustSetterNoFromJson',
   'JustSetterNoToJson',
   'KeyDupesField',
+  'NoCtorClass',
   'NoDeserializeBadKey',
   'NoDeserializeFieldType',
   'NoSerializeBadKey',
@@ -359,13 +356,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
       expect(output, isNot(contains(generatedLocalVarName)));
       expect(output, isNot(contains(toJsonMapHelperName)));
     });
-  });
-
-  test('missing default ctor with a factory', () {
-    expect(
-        () => runForElementNamed('NoCtorClass'),
-        _throwsUnsupportedError(
-            'The class `NoCtorClass` has no default constructor.'));
   });
 }
 

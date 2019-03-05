@@ -275,6 +275,10 @@ class IncludeIfNullOverride {
 }
 
 // https://github.com/dart-lang/json_serializable/issues/7 regression
+@ShouldThrow(
+  'The class `NoCtorClass` has no default constructor.',
+  configurations: ['default'],
+)
 @JsonSerializable()
 class NoCtorClass {
   final int member;
