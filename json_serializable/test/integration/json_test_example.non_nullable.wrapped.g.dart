@@ -15,10 +15,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     ..customOrders = MyList.fromJson((json['customOrders'] as List)
         .map((e) => Order.fromJson(e as Map<String, dynamic>))
         .toList())
-    ..houseMap = (json['houseMap'] as Map<String, dynamic>)
-        .map((k, e) => MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)))
-    ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>)
-        .map((k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int));
+    ..houseMap = (json['houseMap'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)),
+    )
+    ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int),
+    );
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) =>
@@ -103,8 +105,9 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..isRushed = json['isRushed'] as bool
     ..duration = Duration(microseconds: json['duration'] as int)
     ..platform = Platform.fromJson(json['platform'] as String)
-    ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)
-        .map((k, e) => MapEntry(k, Platform.fromJson(e as String)))
+    ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, Platform.fromJson(e as String)),
+    )
     ..homepage = Uri.parse(json['homepage'] as String)
     ..statusCode =
         _$enumDecodeNullable(_$StatusCodeEnumMap, json['status_code']) ??

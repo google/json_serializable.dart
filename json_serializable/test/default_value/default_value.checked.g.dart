@@ -28,14 +28,17 @@ DefaultValue _$DefaultValueFromJson(Map json) {
     $checkedConvert(
         json,
         'fieldMapSimple',
-        (v) => val.fieldMapSimple =
-            (v as Map)?.map((k, e) => MapEntry(k as String, e as int)) ??
-                {'answer': 42});
+        (v) => val.fieldMapSimple = (v as Map)?.map(
+              (k, e) => MapEntry(k as String, e as int),
+            ) ??
+            {'answer': 42});
     $checkedConvert(
         json,
         'fieldMapListString',
-        (v) => val.fieldMapListString = (v as Map)?.map((k, e) => MapEntry(
-                k as String, (e as List)?.map((e) => e as String)?.toList())) ??
+        (v) => val.fieldMapListString = (v as Map)?.map(
+              (k, e) => MapEntry(
+                  k as String, (e as List)?.map((e) => e as String)?.toList()),
+            ) ??
             {
               'root': ['child']
             });

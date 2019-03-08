@@ -8,6 +8,9 @@
   before. It also allows implementations of these types to add a `fromJson`
   constructor to support custom decoding.
 
+* Small change to the whitespace around converted maps to improve a very slow
+  path when formatting generated code.
+
 ## 2.0.2
 
 * Log warnings when `JsonKey.defaultValue` is set with other fields.

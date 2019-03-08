@@ -22,11 +22,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
             ?.map((e) =>
                 e == null ? null : Order.fromJson(e as Map<String, dynamic>))
             ?.toList())
-    ..houseMap = (json['houseMap'] as Map<String, dynamic>)
-        ?.map((k, e) => MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)))
+    ..houseMap = (json['houseMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, _$enumDecodeNullable(_$CategoryEnumMap, e)),
+    )
     ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>)?.map(
-        (k, e) =>
-            MapEntry(_$enumDecodeNullable(_$CategoryEnumMap, k), e as int));
+      (k, e) => MapEntry(_$enumDecodeNullable(_$CategoryEnumMap, k), e as int),
+    );
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -88,8 +89,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         ? null
         : Platform.fromJson(json['platform'] as String)
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)?.map(
-        (k, e) =>
-            MapEntry(k, e == null ? null : Platform.fromJson(e as String)))
+      (k, e) => MapEntry(k, e == null ? null : Platform.fromJson(e as String)),
+    )
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
     ..statusCode =
