@@ -51,21 +51,26 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(
         json,
         'objectDateTimeMap',
-        (v) => val.objectDateTimeMap =
-            (v as Map).map((k, e) => MapEntry(k, DateTime.parse(e as String))));
+        (v) => val.objectDateTimeMap = (v as Map).map(
+              (k, e) => MapEntry(k, DateTime.parse(e as String)),
+            ));
     $checkedConvert(
         json,
         'crazyComplex',
         (v) => val.crazyComplex = (v as List)
-            .map((e) => (e as Map).map((k, e) => MapEntry(
-                k as String,
-                (e as Map).map((k, e) => MapEntry(
-                    k as String,
-                    (e as List)
-                        .map((e) => (e as List)
-                            .map((e) => DateTime.parse(e as String))
-                            .toList())
-                        .toList())))))
+            .map((e) => (e as Map).map(
+                  (k, e) => MapEntry(
+                      k as String,
+                      (e as Map).map(
+                        (k, e) => MapEntry(
+                            k as String,
+                            (e as List)
+                                .map((e) => (e as List)
+                                    .map((e) => DateTime.parse(e as String))
+                                    .toList())
+                                .toList()),
+                      )),
+                ))
             .toList());
     $checkedConvert(
         json, 'val', (v) => val.val = Map<String, bool>.from(v as Map));
@@ -175,8 +180,10 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
     $checkedConvert(
         json,
         'bigIntMap',
-        (v) => val.bigIntMap = (v as Map).map((k, e) => MapEntry(
-            k as String, const BigIntStringConverter().fromJson(e as String))));
+        (v) => val.bigIntMap = (v as Map).map(
+              (k, e) => MapEntry(k as String,
+                  const BigIntStringConverter().fromJson(e as String)),
+            ));
     $checkedConvert(
         json,
         'numberSilly',
@@ -237,8 +244,10 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     $checkedConvert(
         json,
         'itemMap',
-        (v) => val.itemMap = (v as Map).map((k, e) => MapEntry(k as String,
-            GenericConverter<U>().fromJson(e as Map<String, dynamic>))));
+        (v) => val.itemMap = (v as Map).map(
+              (k, e) => MapEntry(k as String,
+                  GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
+            ));
     return val;
   });
 }

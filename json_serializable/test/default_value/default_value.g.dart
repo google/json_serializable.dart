@@ -17,15 +17,18 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     ..fieldListSimple =
         (json['fieldListSimple'] as List)?.map((e) => e as int)?.toList() ??
             [1, 2, 3]
-    ..fieldMapSimple = (json['fieldMapSimple'] as Map<String, dynamic>)
-            ?.map((k, e) => MapEntry(k, e as int)) ??
+    ..fieldMapSimple = (json['fieldMapSimple'] as Map<String, dynamic>)?.map(
+          (k, e) => MapEntry(k, e as int),
+        ) ??
         {'answer': 42}
-    ..fieldMapListString = (json['fieldMapListString'] as Map<String, dynamic>)
-            ?.map((k, e) =>
-                MapEntry(k, (e as List)?.map((e) => e as String)?.toList())) ??
-        {
-          'root': ['child']
-        }
+    ..fieldMapListString =
+        (json['fieldMapListString'] as Map<String, dynamic>)?.map(
+              (k, e) =>
+                  MapEntry(k, (e as List)?.map((e) => e as String)?.toList()),
+            ) ??
+            {
+              'root': ['child']
+            }
     ..fieldEnum =
         _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta;
 }

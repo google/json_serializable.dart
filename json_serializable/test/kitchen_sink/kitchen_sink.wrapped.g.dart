@@ -33,23 +33,43 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         ?.toList()
     ..map = json['map'] as Map
-    ..stringStringMap = (json['stringStringMap'] as Map)
-        ?.map((k, e) => MapEntry(k as String, e as String))
-    ..dynamicIntMap =
-        (json['dynamicIntMap'] as Map)?.map((k, e) => MapEntry(k, e as int))
+    ..stringStringMap = (json['stringStringMap'] as Map)?.map(
+      (k, e) => MapEntry(k as String, e as String),
+    )
+    ..dynamicIntMap = (json['dynamicIntMap'] as Map)?.map(
+      (k, e) => MapEntry(k, e as int),
+    )
     ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
-        (k, e) => MapEntry(k, e == null ? null : DateTime.parse(e as String)))
+      (k, e) => MapEntry(k, e == null ? null : DateTime.parse(e as String)),
+    )
     ..crazyComplex = (json['crazyComplex'] as List)
-        ?.map((e) => (e as Map)?.map((k, e) => MapEntry(
-            k as String,
-            (e as Map)?.map((k, e) => MapEntry(k as String,
-                (e as List)?.map((e) => (e as List)?.map((e) => e == null ? null : DateTime.parse(e as String))?.toList())?.toList())))))
+        ?.map((e) => (e as Map)?.map(
+              (k, e) => MapEntry(
+                  k as String,
+                  (e as Map)?.map(
+                    (k, e) => MapEntry(
+                        k as String,
+                        (e as List)
+                            ?.map((e) => (e as List)
+                                ?.map((e) => e == null
+                                    ? null
+                                    : DateTime.parse(e as String))
+                                ?.toList())
+                            ?.toList()),
+                  )),
+            ))
         ?.toList()
-    ..val = (json['val'] as Map)?.map((k, e) => MapEntry(k as String, e as bool))
+    ..val = (json['val'] as Map)?.map(
+      (k, e) => MapEntry(k as String, e as bool),
+    )
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
-    ..simpleObject = json['simpleObject'] == null ? null : SimpleObject.fromJson(json['simpleObject'] as Map)
-    ..strictKeysObject = json['strictKeysObject'] == null ? null : StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
+    ..simpleObject = json['simpleObject'] == null
+        ? null
+        : SimpleObject.fromJson(json['simpleObject'] as Map)
+    ..strictKeysObject = json['strictKeysObject'] == null
+        ? null
+        : StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -223,9 +243,13 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
     ..bigInt = json['bigInt'] == null
         ? null
         : const BigIntStringConverter().fromJson(json['bigInt'] as String)
-    ..bigIntMap = (json['bigIntMap'] as Map)?.map((k, e) => MapEntry(
-        k as String,
-        e == null ? null : const BigIntStringConverter().fromJson(e as String)))
+    ..bigIntMap = (json['bigIntMap'] as Map)?.map(
+      (k, e) => MapEntry(
+          k as String,
+          e == null
+              ? null
+              : const BigIntStringConverter().fromJson(e as String)),
+    )
     ..numberSilly = json['numberSilly'] == null
         ? null
         : TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
@@ -315,11 +339,13 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
             ? null
             : GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..itemMap = (json['itemMap'] as Map)?.map((k, e) => MapEntry(
-        k as String,
-        e == null
-            ? null
-            : GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
+    ..itemMap = (json['itemMap'] as Map)?.map(
+      (k, e) => MapEntry(
+          k as String,
+          e == null
+              ? null
+              : GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
+    );
 }
 
 abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {

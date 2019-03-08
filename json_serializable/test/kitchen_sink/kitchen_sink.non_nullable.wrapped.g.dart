@@ -33,23 +33,30 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..map = json['map'] as Map
     ..stringStringMap = Map<String, String>.from(json['stringStringMap'] as Map)
     ..dynamicIntMap = Map<String, int>.from(json['dynamicIntMap'] as Map)
-    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)
-        .map((k, e) => MapEntry(k, DateTime.parse(e as String)))
+    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map).map(
+      (k, e) => MapEntry(k, DateTime.parse(e as String)),
+    )
     ..crazyComplex = (json['crazyComplex'] as List)
-        .map((e) => (e as Map).map((k, e) => MapEntry(
-            k as String,
-            (e as Map).map((k, e) => MapEntry(
-                k as String,
-                (e as List)
-                    .map((e) =>
-                        (e as List).map((e) => DateTime.parse(e as String)).toList())
-                    .toList())))))
+        .map((e) => (e as Map).map(
+              (k, e) => MapEntry(
+                  k as String,
+                  (e as Map).map(
+                    (k, e) => MapEntry(
+                        k as String,
+                        (e as List)
+                            .map((e) => (e as List)
+                                .map((e) => DateTime.parse(e as String))
+                                .toList())
+                            .toList()),
+                  )),
+            ))
         .toList()
     ..val = Map<String, bool>.from(json['val'] as Map)
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
     ..simpleObject = SimpleObject.fromJson(json['simpleObject'] as Map)
-    ..strictKeysObject = StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
+    ..strictKeysObject =
+        StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -205,8 +212,10 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
         .map((e) => durationConverter.fromJson(e as int))
         .toList()
     ..bigInt = const BigIntStringConverter().fromJson(json['bigInt'] as String)
-    ..bigIntMap = (json['bigIntMap'] as Map).map((k, e) => MapEntry(
-        k as String, const BigIntStringConverter().fromJson(e as String)))
+    ..bigIntMap = (json['bigIntMap'] as Map).map(
+      (k, e) => MapEntry(
+          k as String, const BigIntStringConverter().fromJson(e as String)),
+    )
     ..numberSilly =
         TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
     ..numberSillySet = (json['numberSillySet'] as List)
@@ -277,8 +286,10 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     ..itemList = (json['itemList'] as List)
         .map((e) => GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         .toList()
-    ..itemMap = (json['itemMap'] as Map).map((k, e) => MapEntry(k as String,
-        GenericConverter<U>().fromJson(e as Map<String, dynamic>)));
+    ..itemMap = (json['itemMap'] as Map).map(
+      (k, e) => MapEntry(k as String,
+          GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
+    );
 }
 
 abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {

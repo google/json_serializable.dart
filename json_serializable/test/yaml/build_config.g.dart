@@ -13,13 +13,17 @@ Config _$ConfigFromJson(Map json) {
         builders: $checkedConvert(
             json,
             'builders',
-            (v) => (v as Map)?.map((k, e) => MapEntry(
-                k as String, e == null ? null : Builder.fromJson(e as Map)))));
+            (v) => (v as Map)?.map(
+                  (k, e) => MapEntry(k as String,
+                      e == null ? null : Builder.fromJson(e as Map)),
+                )));
     $checkedConvert(
         json,
         'weights',
-        (v) => val.weights = (v as Map)?.map((k, e) =>
-            MapEntry(_$enumDecodeNullable(_$AutoApplyEnumMap, k), e as int)));
+        (v) => val.weights = (v as Map)?.map(
+              (k, e) => MapEntry(
+                  _$enumDecodeNullable(_$AutoApplyEnumMap, k), e as int),
+            ));
     return val;
   });
 }
@@ -94,8 +98,10 @@ Builder _$BuilderFromJson(Map json) {
         buildExtensions: $checkedConvert(
             json,
             'build_extensions',
-            (v) => (v as Map)?.map((k, e) => MapEntry(
-                k as String, (e as List)?.map((e) => e as String)?.toList()))),
+            (v) => (v as Map)?.map(
+                  (k, e) => MapEntry(k as String,
+                      (e as List)?.map((e) => e as String)?.toList()),
+                )),
         configLocation: $checkedConvert(json, 'configLocation',
             (v) => v == null ? null : Uri.parse(v as String)));
     return val;

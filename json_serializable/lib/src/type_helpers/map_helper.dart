@@ -109,7 +109,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     return '($expression $mapCast)$optionalQuestion.map('
-        '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal))';
+        '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
   }
 }
 
