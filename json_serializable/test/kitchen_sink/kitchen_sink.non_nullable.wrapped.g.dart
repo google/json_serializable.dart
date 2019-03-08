@@ -60,40 +60,11 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
-abstract class _$KitchenSinkSerializerMixin {
-  int get ctorValidatedNo42;
-  DateTime get dateTime;
-  Iterable<dynamic> get iterable;
-  Iterable<dynamic> get dynamicIterable;
-  Iterable<Object> get objectIterable;
-  Iterable<int> get intIterable;
-  Set<dynamic> get set;
-  Set<dynamic> get dynamicSet;
-  Set<Object> get objectSet;
-  Set<int> get intSet;
-  Set<DateTime> get dateTimeSet;
-  Iterable<DateTime> get dateTimeIterable;
-  List<dynamic> get list;
-  List<dynamic> get dynamicList;
-  List<Object> get objectList;
-  List<int> get intList;
-  List<DateTime> get dateTimeList;
-  Map<dynamic, dynamic> get map;
-  Map<String, String> get stringStringMap;
-  Map<dynamic, int> get dynamicIntMap;
-  Map<Object, DateTime> get objectDateTimeMap;
-  List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
-  Map<String, bool> get val;
-  bool get writeNotNull;
-  String get string;
-  SimpleObject get simpleObject;
-  StrictKeysObject get strictKeysObject;
-  int get validatedPropertyNo42;
-  Map<String, dynamic> toJson() => _$KitchenSinkJsonMapWrapper(this);
-}
+Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
+    _$KitchenSinkJsonMapWrapper(instance);
 
 class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
-  final _$KitchenSinkSerializerMixin _v;
+  final KitchenSink _v;
   _$KitchenSinkJsonMapWrapper(this._v);
 
   @override
@@ -225,19 +196,12 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
         const EpochDateTimeConverter().fromJson(json['dateTime'] as int);
 }
 
-abstract class _$JsonConverterTestClassSerializerMixin {
-  Duration get duration;
-  List<Duration> get durationList;
-  BigInt get bigInt;
-  Map<String, BigInt> get bigIntMap;
-  TrivialNumber get numberSilly;
-  Set<TrivialNumber> get numberSillySet;
-  DateTime get dateTime;
-  Map<String, dynamic> toJson() => _$JsonConverterTestClassJsonMapWrapper(this);
-}
+Map<String, dynamic> _$JsonConverterTestClassToJson(
+        JsonConverterTestClass instance) =>
+    _$JsonConverterTestClassJsonMapWrapper(instance);
 
 class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
-  final _$JsonConverterTestClassSerializerMixin _v;
+  final JsonConverterTestClass _v;
   _$JsonConverterTestClassJsonMapWrapper(this._v);
 
   @override
@@ -292,16 +256,12 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     );
 }
 
-abstract class _$JsonConverterGenericSerializerMixin<S, T, U> {
-  S get item;
-  List<T> get itemList;
-  Map<String, U> get itemMap;
-  Map<String, dynamic> toJson() =>
-      _$JsonConverterGenericJsonMapWrapper<S, T, U>(this);
-}
+Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
+        JsonConverterGeneric<S, T, U> instance) =>
+    _$JsonConverterGenericJsonMapWrapper<S, T, U>(instance);
 
 class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
-  final _$JsonConverterGenericSerializerMixin<S, T, U> _v;
+  final JsonConverterGeneric<S, T, U> _v;
   _$JsonConverterGenericJsonMapWrapper(this._v);
 
   @override

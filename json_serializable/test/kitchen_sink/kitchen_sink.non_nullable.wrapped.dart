@@ -53,11 +53,8 @@ k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
   useWrappers: true,
   nullable: false,
   anyMap: true,
-  generateToJsonFunction: false,
 )
-class KitchenSink extends Object
-    with _$KitchenSinkSerializerMixin
-    implements k.KitchenSink {
+class KitchenSink implements k.KitchenSink {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
   static final reason = 42;
@@ -93,6 +90,8 @@ class KitchenSink extends Object
   }
 
   factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
+
+  Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
   @JsonKey(includeIfNull: false)
   DateTime dateTime = DateTime(1981, 6, 5);
@@ -157,7 +156,6 @@ class KitchenSink extends Object
   useWrappers: true,
   nullable: false,
   anyMap: true,
-  generateToJsonFunction: false,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -165,12 +163,13 @@ class KitchenSink extends Object
 @BigIntStringConverter()
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
-class JsonConverterTestClass extends Object
-    with _$JsonConverterTestClassSerializerMixin {
+class JsonConverterTestClass {
   JsonConverterTestClass();
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterTestClassFromJson(json);
+
+  Map<String, dynamic> toJson() => _$JsonConverterTestClassToJson(this);
 
   Duration duration;
   List<Duration> durationList;
@@ -188,11 +187,9 @@ class JsonConverterTestClass extends Object
   useWrappers: true,
   nullable: false,
   anyMap: true,
-  generateToJsonFunction: false,
 )
 @GenericConverter()
-class JsonConverterGeneric<S, T, U> extends Object
-    with _$JsonConverterGenericSerializerMixin<S, T, U> {
+class JsonConverterGeneric<S, T, U> {
   S item;
   List<T> itemList;
   Map<String, U> itemMap;
@@ -201,4 +198,6 @@ class JsonConverterGeneric<S, T, U> extends Object
 
   factory JsonConverterGeneric.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterGenericFromJson(json);
+
+  Map<String, dynamic> toJson() => _$JsonConverterGenericToJson(this);
 }
