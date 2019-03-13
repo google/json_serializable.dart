@@ -95,8 +95,8 @@ Iterable<_Replacement> _optionReplacement(
 
         if (baseName == 'kitchen_sink') {
           yield _Replacement(
-            'testFromJson(Map<String, dynamic> json)',
-            'testFromJson(Map json)',
+            'return KitchenSink.fromJson(json.cast<String, dynamic>());',
+            'return KitchenSink.fromJson(json);',
           );
           yield _Replacement(
             'factory KitchenSink.fromJson(Map<String, dynamic> json)',
@@ -108,6 +108,12 @@ Iterable<_Replacement> _optionReplacement(
     case 'checked':
       if (value) {
         yield _Replacement.addJsonSerializableKey('checked', true);
+        if (baseName == 'kitchen_sink') {
+          yield _Replacement(
+            'bool get checked => false;',
+            'bool get checked => true;',
+          );
+        }
       }
       break;
     case 'non_nullable':
@@ -115,20 +121,35 @@ Iterable<_Replacement> _optionReplacement(
         yield _Replacement.addJsonSerializableKey('nullable', false);
 
         if (baseName == 'kitchen_sink') {
-          yield _Replacement('List<T> _defaultList<T>() => null;',
-              'List<T> _defaultList<T>() => <T>[];');
-          yield _Replacement('Set<T> _defaultSet<T>() => null;',
-              'Set<T> _defaultSet<T>() => Set<T>();');
-          yield _Replacement('Map<K, V> _defaultMap<K, V>() => null;',
-              'Map<String, T> _defaultMap<T>() => <String, T>{};');
-          yield _Replacement('SimpleObject _defaultSimpleObject() => null;',
-              'SimpleObject _defaultSimpleObject() => SimpleObject(42);');
           yield _Replacement(
-              'StrictKeysObject _defaultStrictKeysObject() => null;',
-              'StrictKeysObject _defaultStrictKeysObject() => '
-              "StrictKeysObject(10, 'cool');");
-          yield _Replacement('DateTime dateTime;',
-              'DateTime dateTime = DateTime(1981, 6, 5);');
+            'List<T> _defaultList<T>() => null;',
+            'List<T> _defaultList<T>() => <T>[];',
+          );
+          yield _Replacement(
+            'Set<T> _defaultSet<T>() => null;',
+            'Set<T> _defaultSet<T>() => Set<T>();',
+          );
+          yield _Replacement(
+            'Map<K, V> _defaultMap<K, V>() => null;',
+            'Map<String, T> _defaultMap<T>() => <String, T>{};',
+          );
+          yield _Replacement(
+            'SimpleObject _defaultSimpleObject() => null;',
+            'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
+          );
+          yield _Replacement(
+            'StrictKeysObject _defaultStrictKeysObject() => null;',
+            'StrictKeysObject _defaultStrictKeysObject() => '
+                "StrictKeysObject(10, 'cool');",
+          );
+          yield _Replacement(
+            'DateTime dateTime;',
+            'DateTime dateTime = DateTime(1981, 6, 5);',
+          );
+          yield _Replacement(
+            'bool get nullable => true;',
+            'bool get nullable => false;',
+          );
         }
       }
       break;
@@ -218,10 +239,10 @@ class _Replacement {
 
     for (final r in replacements) {
       if (!outputContent.contains(r.existing)) {
-        throw StateError(
-            'Input string did not contain `${r.existing}` as expected.');
+        print('Input string did not contain `${r.existing}` as expected.');
+      } else {
+        outputContent = outputContent.replaceAll(r.existing, r.replacement);
       }
-      outputContent = outputContent.replaceAll(r.existing, r.replacement);
     }
 
     outputContent = outputContent.replaceAll(',)', ',\n)');
