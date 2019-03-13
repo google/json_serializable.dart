@@ -41,7 +41,7 @@ List<dynamic> $wrapListHandleNull<T>(
         List<T> source, dynamic converter(T key)) =>
     source == null ? null : _MappingList(source, converter);
 
-typedef dynamic _Convert<S>(S value);
+typedef _Convert<S> = dynamic Function(S value);
 
 class _MappingList<S> extends ListBase<dynamic> {
   final List<S> _source;
