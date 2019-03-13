@@ -9,7 +9,6 @@ stages:
     - dartfmt
     - dartanalyzer: --fatal-infos --fatal-warnings .
     dart: [dev]
-- analyzer_and_format_2_0:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings .

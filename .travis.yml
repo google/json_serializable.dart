@@ -16,7 +16,7 @@ jobs:
       script: ./tool/travis.sh dartfmt dartanalyzer_0
       env: PKG="example"
       dart: dev
-    - stage: analyzer_and_format_2_0
+    - stage: analyzer_and_format
       name: "SDK: 2.0.0 - DIR: example - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-warnings .]"
       script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="example"
@@ -36,7 +36,7 @@ jobs:
       script: ./tool/travis.sh dartfmt dartanalyzer_2
       env: PKG="json_annotation"
       dart: dev
-    - stage: analyzer_and_format_2_0
+    - stage: analyzer_and_format
       name: "SDK: 2.0.0 - DIR: json_annotation - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-warnings .]"
       script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="json_annotation"
@@ -46,7 +46,7 @@ jobs:
       script: ./tool/travis.sh dartfmt dartanalyzer_0
       env: PKG="json_serializable"
       dart: dev
-    - stage: analyzer_and_format_2_0
+    - stage: analyzer_and_format
       name: "SDK: 2.0.0 - DIR: json_serializable - TASKS: [dartfmt -n --set-exit-if-changed ., dartanalyzer --fatal-warnings .]"
       script: ./tool/travis.sh dartfmt dartanalyzer_1
       env: PKG="json_serializable"
@@ -84,7 +84,6 @@ jobs:
 
 stages:
   - analyzer_and_format
-  - analyzer_and_format_2_0
   - unit_test
 
 cache:
