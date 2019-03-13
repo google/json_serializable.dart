@@ -108,7 +108,7 @@ void main() {
   });
 }
 
-typedef KitchenSink KitchenSinkCtor(
+typedef KitchenSinkCtor = KitchenSink Function(
     {int ctorValidatedNo42,
     Iterable iterable,
     Iterable<dynamic> dynamicIterable,

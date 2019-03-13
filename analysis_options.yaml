@@ -60,6 +60,7 @@ linter:
     - prefer_equal_for_default_values
     - prefer_final_fields
     - prefer_final_locals
+    - prefer_generic_function_type_aliases
     - prefer_initializing_formals
     - prefer_interpolation_to_compose_strings
     - prefer_is_empty
@@ -81,5 +82,6 @@ linter:
     - unnecessary_statements
     - unnecessary_this
     - unrelated_type_equality_checks
+    #- use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
     - valid_regexps
