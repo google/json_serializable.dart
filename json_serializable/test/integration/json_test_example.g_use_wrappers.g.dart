@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'json_test_example.wrapped.dart';
+part of 'json_test_example.g_use_wrappers.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

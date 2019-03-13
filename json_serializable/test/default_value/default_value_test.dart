@@ -5,8 +5,8 @@
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
-import 'default_value.checked.dart' as checked;
 import 'default_value.dart' as normal;
+import 'default_value.g_any_map__checked.dart' as checked;
 import 'default_value_interface.dart';
 
 const _defaultInstance = {

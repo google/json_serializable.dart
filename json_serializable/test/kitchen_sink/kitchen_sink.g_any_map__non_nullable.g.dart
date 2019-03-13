@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'kitchen_sink.non_nullable.dart';
+part of 'kitchen_sink.g_any_map__non_nullable.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

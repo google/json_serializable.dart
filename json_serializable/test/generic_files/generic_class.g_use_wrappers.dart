@@ -2,15 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _WrappedGenerator
-// **************************************************************************
-
 import 'package:json_annotation/json_annotation.dart';
 
-part 'generic_class.wrapped.g.dart';
+part 'generic_class.g_use_wrappers.g.dart';
 
 @JsonSerializable(
   useWrappers: true,

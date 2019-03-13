@@ -10,15 +10,15 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g.dart';
+part 'kitchen_sink.g_any_map__non_nullable.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
-List<T> _defaultList<T>() => null;
-Set<T> _defaultSet<T>() => null;
-Map<K, V> _defaultMap<K, V>() => null;
-SimpleObject _defaultSimpleObject() => null;
-StrictKeysObject _defaultStrictKeysObject() => null;
+List<T> _defaultList<T>() => <T>[];
+Set<T> _defaultSet<T>() => Set<T>();
+Map<String, T> _defaultMap<T>() => <String, T>{};
+SimpleObject _defaultSimpleObject() => SimpleObject(42);
+StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
 
 k.KitchenSink testFactory(
         {int ctorValidatedNo42,
@@ -35,10 +35,12 @@ k.KitchenSink testFactory(
         intIterable: intIterable,
         dateTimeIterable: dateTimeIterable);
 
-k.KitchenSink testFromJson(Map<String, dynamic> json) =>
-    KitchenSink.fromJson(json);
+k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
-@JsonSerializable()
+@JsonSerializable(
+  nullable: false,
+  anyMap: true,
+)
 class KitchenSink implements k.KitchenSink {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
@@ -74,13 +76,12 @@ class KitchenSink implements k.KitchenSink {
     }
   }
 
-  factory KitchenSink.fromJson(Map<String, dynamic> json) =>
-      _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime;
+  DateTime dateTime = DateTime(1981, 6, 5);
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
@@ -138,7 +139,10 @@ class KitchenSink implements k.KitchenSink {
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  nullable: false,
+  anyMap: true,
+)
 // referencing a top-level field should work
 @durationConverter
 // referencing via a const constructor should work
@@ -162,10 +166,13 @@ class JsonConverterTestClass {
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime;
+  DateTime dateTime = DateTime(1981, 6, 5);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  nullable: false,
+  anyMap: true,
+)
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
   S item;

@@ -2,22 +2,16 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _NonNullableGenerator
-// **************************************************************************
-
 // ignore_for_file: hash_and_equals
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'json_test_common.dart';
 
-part 'json_test_example.non_nullable.g.dart';
+part 'json_test_example.g_use_wrappers.g.dart';
 
 @JsonSerializable(
-  nullable: false,
+  useWrappers: true,
 )
 class Person {
   final String firstName, middleName, lastName;
@@ -51,7 +45,7 @@ class Person {
 }
 
 @JsonSerializable(
-  nullable: false,
+  useWrappers: true,
 )
 class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
@@ -104,7 +98,7 @@ class Order {
 }
 
 @JsonSerializable(
-  nullable: false,
+  useWrappers: true,
 )
 class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
@@ -127,7 +121,7 @@ class Item extends ItemCore {
 }
 
 @JsonSerializable(
-  nullable: false,
+  useWrappers: true,
 )
 class Numbers {
   List<int> ints;

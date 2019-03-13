@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'kitchen_sink.dart';
+part of 'kitchen_sink.g_any_map.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
+KitchenSink _$KitchenSinkFromJson(Map json) {
   return KitchenSink(
       ctorValidatedNo42: json['no-42'] as int,
       iterable: json['iterable'] as List,
@@ -32,24 +32,23 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
     ..dateTimeList = (json['dateTimeList'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         ?.toList()
-    ..map = json['map'] as Map<String, dynamic>
-    ..stringStringMap = (json['stringStringMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as String),
+    ..map = json['map'] as Map
+    ..stringStringMap = (json['stringStringMap'] as Map)?.map(
+      (k, e) => MapEntry(k as String, e as String),
     )
-    ..dynamicIntMap = (json['dynamicIntMap'] as Map<String, dynamic>)?.map(
+    ..dynamicIntMap = (json['dynamicIntMap'] as Map)?.map(
       (k, e) => MapEntry(k, e as int),
     )
-    ..objectDateTimeMap =
-        (json['objectDateTimeMap'] as Map<String, dynamic>)?.map(
+    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
       (k, e) => MapEntry(k, e == null ? null : DateTime.parse(e as String)),
     )
     ..crazyComplex = (json['crazyComplex'] as List)
-        ?.map((e) => (e as Map<String, dynamic>)?.map(
+        ?.map((e) => (e as Map)?.map(
               (k, e) => MapEntry(
-                  k,
-                  (e as Map<String, dynamic>)?.map(
+                  k as String,
+                  (e as Map)?.map(
                     (k, e) => MapEntry(
-                        k,
+                        k as String,
                         (e as List)
                             ?.map((e) => (e as List)
                                 ?.map((e) => e == null
@@ -60,18 +59,17 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
                   )),
             ))
         ?.toList()
-    ..val = (json['val'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(k, e as bool),
+    ..val = (json['val'] as Map)?.map(
+      (k, e) => MapEntry(k as String, e as bool),
     )
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
     ..simpleObject = json['simpleObject'] == null
         ? null
-        : SimpleObject.fromJson(json['simpleObject'] as Map<String, dynamic>)
+        : SimpleObject.fromJson(json['simpleObject'] as Map)
     ..strictKeysObject = json['strictKeysObject'] == null
         ? null
-        : StrictKeysObject.fromJson(
-            json['strictKeysObject'] as Map<String, dynamic>)
+        : StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -131,8 +129,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   return val;
 }
 
-JsonConverterTestClass _$JsonConverterTestClassFromJson(
-    Map<String, dynamic> json) {
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
   return JsonConverterTestClass()
     ..duration = json['duration'] == null
         ? null
@@ -143,9 +140,9 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
     ..bigInt = json['bigInt'] == null
         ? null
         : const BigIntStringConverter().fromJson(json['bigInt'] as String)
-    ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>)?.map(
+    ..bigIntMap = (json['bigIntMap'] as Map)?.map(
       (k, e) => MapEntry(
-          k,
+          k as String,
           e == null
               ? null
               : const BigIntStringConverter().fromJson(e as String)),
@@ -190,7 +187,7 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
-    Map<String, dynamic> json) {
+    Map json) {
   return JsonConverterGeneric<S, T, U>()
     ..item = json['item'] == null
         ? null
@@ -200,9 +197,9 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
             ? null
             : GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..itemMap = (json['itemMap'] as Map<String, dynamic>)?.map(
+    ..itemMap = (json['itemMap'] as Map)?.map(
       (k, e) => MapEntry(
-          k,
+          k as String,
           e == null
               ? null
               : GenericConverter<U>().fromJson(e as Map<String, dynamic>)),

@@ -2,12 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _CheckedGenerator
-// **************************************************************************
-
 // ignore_for_file: annotate_overrides
 
 import 'package:json_annotation/json_annotation.dart';
@@ -15,7 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'default_value_interface.dart' as dvi hide Greek;
 import 'default_value_interface.dart' show Greek;
 
-part 'default_value.checked.g.dart';
+part 'default_value.g_any_map__checked.g.dart';
 
 const _intValue = 42;
 
@@ -23,8 +17,8 @@ dvi.DefaultValue fromJson(Map<String, dynamic> json) =>
     _$DefaultValueFromJson(json);
 
 @JsonSerializable(
-  anyMap: true,
   checked: true,
+  anyMap: true,
 )
 class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: true)

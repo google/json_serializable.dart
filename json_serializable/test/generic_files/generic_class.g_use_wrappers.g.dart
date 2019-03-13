@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'generic_class.wrapped.dart';
+part of 'generic_class.g_use_wrappers.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

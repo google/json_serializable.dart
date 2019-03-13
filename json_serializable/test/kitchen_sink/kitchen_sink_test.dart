@@ -7,15 +7,16 @@ import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import '../test_utils.dart';
-import 'kitchen_sink.dart' as nullable
+import 'kitchen_sink.g_any_map.dart' as nullable
     show testFactory, testFromJson, JsonConverterTestClass;
-import 'kitchen_sink.non_nullable.checked.dart' as checked
+import 'kitchen_sink.g_any_map__checked__non_nullable.dart' as checked
     show testFactory, testFromJson;
-import 'kitchen_sink.non_nullable.dart' as nn
+import 'kitchen_sink.g_any_map__non_nullable.dart' as nn
     show testFactory, testFromJson, JsonConverterTestClass;
-import 'kitchen_sink.non_nullable.wrapped.dart' as nnwrapped
+import 'kitchen_sink.g_any_map__non_nullable__use_wrappers.dart' as nnwrapped
     show testFactory, testFromJson;
-import 'kitchen_sink.wrapped.dart' as wrapped show testFactory, testFromJson;
+import 'kitchen_sink.g_any_map__use_wrappers.dart' as wrapped
+    show testFactory, testFromJson;
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
 

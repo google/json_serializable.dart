@@ -2,12 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _WrappedGenerator
-// **************************************************************************
-
 // ignore_for_file: annotate_overrides, hash_and_equals
 import 'package:json_annotation/json_annotation.dart';
 
@@ -16,7 +10,7 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.wrapped.g.dart';
+part 'kitchen_sink.g_any_map.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
@@ -44,7 +38,6 @@ k.KitchenSink testFactory(
 k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
 
 @JsonSerializable(
-  useWrappers: true,
   anyMap: true,
 )
 class KitchenSink implements k.KitchenSink {
@@ -146,7 +139,6 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  useWrappers: true,
   anyMap: true,
 )
 // referencing a top-level field should work
@@ -176,7 +168,6 @@ class JsonConverterTestClass {
 }
 
 @JsonSerializable(
-  useWrappers: true,
   anyMap: true,
 )
 @GenericConverter()

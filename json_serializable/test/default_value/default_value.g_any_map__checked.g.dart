@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'default_value.checked.dart';
+part of 'default_value.g_any_map__checked.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

@@ -2,25 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _WrappedGenerator
-// **************************************************************************
-
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
-// **************************************************************************
-// _NonNullableGenerator
-// **************************************************************************
-
 // ignore_for_file: hash_and_equals
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'json_test_common.dart';
 
-part 'json_test_example.non_nullable.wrapped.g.dart';
+part 'json_test_example.g_non_nullable__use_wrappers.g.dart';
 
 @JsonSerializable(
   useWrappers: true,
