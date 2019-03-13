@@ -80,7 +80,8 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
 
   final enumFields = iterateEnumFields(defaultValueObject.type);
   if (enumFields != null) {
-    final enumValueNames = enumFields.map((p) => p.name).toList(growable: false);
+    final enumValueNames =
+        enumFields.map((p) => p.name).toList(growable: false);
 
     final enumValueName = enumValueForDartObject<String>(
         defaultValueObject, enumValueNames, (n) => n);
