@@ -7,16 +7,13 @@ import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import '../test_utils.dart';
-import 'kitchen_sink.g_any_map.dart' as nullable
-    show testFactory, testFromJson, JsonConverterTestClass;
+import 'kitchen_sink.g_any_map.dart' as nullable show factory;
 import 'kitchen_sink.g_any_map__checked__non_nullable.dart' as checked
-    show testFactory, testFromJson;
-import 'kitchen_sink.g_any_map__non_nullable.dart' as nn
-    show testFactory, testFromJson, JsonConverterTestClass;
-import 'kitchen_sink.g_any_map__non_nullable__use_wrappers.dart' as nnwrapped
-    show testFactory, testFromJson;
-import 'kitchen_sink.g_any_map__use_wrappers.dart' as wrapped
-    show testFactory, testFromJson;
+    show factory;
+import 'kitchen_sink.g_any_map__non_nullable.dart' as non_null show factory;
+import 'kitchen_sink.g_any_map__non_nullable__use_wrappers.dart'
+    as non_null_wrapped show factory;
+import 'kitchen_sink.g_any_map__use_wrappers.dart' as wrapped show factory;
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
 
@@ -26,7 +23,7 @@ const _toJsonMapHelperName = 'writeNotNull';
 
 final _isATypeError = const TypeMatcher<TypeError>();
 
-Matcher _isAUnrecognizedKeysEexception(expectedMessage) =>
+Matcher _isAUnrecognizedKeysException(expectedMessage) =>
     const TypeMatcher<UnrecognizedKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
 
@@ -46,100 +43,81 @@ void main() {
             'Required keys are missing: value, custom_field.')));
   });
 
-  group('nullable', () {
-    group('unwrapped', () {
-      _nullableTests(nullable.testFactory, nullable.testFromJson);
-    });
+  for (var factory in [
+    nullable.factory,
+    checked.factory,
+    non_null.factory,
+    non_null_wrapped.factory,
+    wrapped.factory,
+  ]) {
+    if (factory.nullable) {
+      _nullableTests(factory);
+    } else {
+      _nonNullableTests(factory, isChecked: factory.checked);
+    }
 
-    group('wrapped', () {
-      _nullableTests(wrapped.testFactory, wrapped.testFromJson);
-    });
-  });
-
-  group('non-nullable', () {
-    group('checked', () {
-      _nonNullableTests(checked.testFactory, checked.testFromJson,
-          isChecked: true);
-    });
-
-    group('unwrapped', () {
-      _nonNullableTests(nn.testFactory, nn.testFromJson);
-    });
-
-    group('wrapped', () {
-      _nonNullableTests(nnwrapped.testFactory, nnwrapped.testFromJson);
-    });
-  });
-
-  group('JsonConverterTestClass', () {
-    final validValues = {
-      'duration': 5,
-      'durationList': [5],
-      'bigInt': '5',
-      'bigIntMap': {'vaule': '5'},
-      'numberSilly': 5,
-      'numberSillySet': [5],
-      'dateTime': 5
-    };
-
-    test('nullable values are allowed in the nullable version', () {
-      final instance = nullable.JsonConverterTestClass();
-      final json = instance.toJson();
-      expect(json.values, everyElement(isNull));
-      expect(json.keys, unorderedEquals(validValues.keys));
-
-      final instance2 = nullable.JsonConverterTestClass.fromJson(json);
-      expect(instance2.toJson(), json);
-    });
-
-    test('nullable values are not allowed in non-nullable version', () {
-      var instance = nn.JsonConverterTestClass();
-      expect(() => instance.toJson(), throwsNoSuchMethodError,
-          reason: 'Trying to call `map` on a null list');
-
-      instance = nn.JsonConverterTestClass.fromJson(validValues);
-      final json = instance.toJson();
-      expect(json, validValues);
-      expect(json.values, everyElement(isNotNull));
-
-      final instance2 = nn.JsonConverterTestClass.fromJson(json);
-      expect(instance2.toJson(), json);
-    });
-  });
+    _sharedTests(factory, isChecked: factory.checked);
+  }
 }
 
-typedef KitchenSinkCtor = KitchenSink Function(
-    {int ctorValidatedNo42,
-    Iterable iterable,
-    Iterable<dynamic> dynamicIterable,
-    Iterable<Object> objectIterable,
-    Iterable<int> intIterable,
-    Iterable<DateTime> dateTimeIterable});
+const _jsonConverterValidValues = {
+  'duration': 5,
+  'durationList': [5],
+  'bigInt': '5',
+  'bigIntMap': {'vaule': '5'},
+  'numberSilly': 5,
+  'numberSillySet': [5],
+  'dateTime': 5
+};
 
-void _nonNullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
-    {bool isChecked = false}) {
+void _nonNullableTests(KitchenSinkFactory factory, {bool isChecked = false}) {
   test('with null values fails serialization', () {
-    expect(() => (ctor()..objectDateTimeMap = null).toJson(),
+    expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
   });
 
   test('with empty json fails deserialization', () {
     if (isChecked) {
-      expect(() => fromJson({}), throwsA(_checkedMatcher('intIterable')));
+      expect(
+          () => factory.fromJson({}), throwsA(_checkedMatcher('intIterable')));
     } else {
-      expect(() => fromJson({}), throwsNoSuchMethodError);
+      expect(() => factory.fromJson({}), throwsNoSuchMethodError);
     }
   });
-  _sharedTests(ctor, fromJson, isChecked: isChecked);
+
+  test('nullable values are not allowed in non-nullable version', () {
+    var instance = non_null.factory.jsonConverterCtor();
+    expect(() => instance.toJson(), throwsNoSuchMethodError,
+        reason: 'Trying to call `map` on a null list');
+
+    instance =
+        non_null.factory.jsonConverterFromJson(_jsonConverterValidValues);
+    final json = instance.toJson();
+    expect(json, _jsonConverterValidValues);
+    expect(json.values, everyElement(isNotNull));
+
+    final instance2 = non_null.factory.jsonConverterFromJson(json);
+    expect(instance2.toJson(), json);
+  });
 }
 
-void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
+void _nullableTests(KitchenSinkFactory factory) {
   void roundTripItem(KitchenSink p) {
-    roundTripObject(p, (json) => fromJson(json));
+    roundTripObject(p, (json) => factory.fromJson(json));
   }
 
+  test('nullable values are allowed in the nullable version', () {
+    final instance = nullable.factory.jsonConverterCtor();
+    final json = instance.toJson();
+    expect(json.values, everyElement(isNull));
+    expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
+
+    final instance2 = nullable.factory.jsonConverterFromJson(json);
+    expect(instance2.toJson(), json);
+  });
+
   test('Fields with `!includeIfNull` should not be included when null', () {
-    final item = ctor();
+    final item = factory.ctor();
 
     final expectedDefaultKeys = _validValues.keys.toSet()
       ..removeAll(_excludeIfNullKeys);
@@ -155,7 +133,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
 
   test('list and map of DateTime', () {
     final now = DateTime.now();
-    final item = ctor(dateTimeIterable: <DateTime>[now])
+    final item = factory.ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, null]
       ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
 
@@ -163,7 +141,7 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
   });
 
   test('complex nested type', () {
-    final item = ctor()
+    final item = factory.ctor()
       ..crazyComplex = [
         null,
         {},
@@ -183,24 +161,21 @@ void _nullableTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json)) {
       ];
     roundTripItem(item);
   });
-
-  _sharedTests(ctor, fromJson);
 }
 
-void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
-    {bool isChecked = false}) {
+void _sharedTests(KitchenSinkFactory factory, {bool isChecked = false}) {
   void roundTripSink(KitchenSink p) {
-    roundTripObject(p, fromJson);
+    roundTripObject(p, factory.fromJson);
   }
 
   test('empty', () {
-    final item = ctor();
+    final item = factory.ctor();
     roundTripSink(item);
   });
 
   test('list and map of DateTime - not null', () {
     final now = DateTime.now();
-    final item = ctor(dateTimeIterable: <DateTime>[now])
+    final item = factory.ctor(dateTimeIterable: <DateTime>[now])
       ..dateTimeList = <DateTime>[now, now]
       ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
@@ -208,7 +183,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   test('complex nested type - not null', () {
-    final item = ctor()
+    final item = factory.ctor()
       ..crazyComplex = [
         {},
         {
@@ -228,7 +203,7 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   test('JSON keys should be defined in field/property order', () {
     /// Explicitly setting values from [_excludeIfNullKeys] to ensure
     /// they exist for KitchenSink where they are excluded when null
-    final item = ctor(iterable: [])
+    final item = factory.ctor(iterable: [])
       ..dateTime = DateTime.now()
       ..dateTimeList = []
       ..crazyComplex = []
@@ -239,21 +214,22 @@ void _sharedTests(KitchenSinkCtor ctor, KitchenSink fromJson(Map json),
   });
 
   test('valid values round-trip - json', () {
-    expect(loudEncode(_validValues), loudEncode(fromJson(_validValues)));
+    expect(
+        loudEncode(_validValues), loudEncode(factory.fromJson(_validValues)));
   });
 
   test('valid values round-trip - yaml', () {
     final jsonEncoded = loudEncode(_validValues);
     final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
-    expect(jsonEncoded, loudEncode(fromJson(yaml as YamlMap)));
+    expect(jsonEncoded, loudEncode(factory.fromJson(yaml as YamlMap)));
   });
 
   group('a bad value for', () {
     for (final e in _invalidValueTypes.entries) {
-      _testBadValue(isChecked, e.key, e.value, fromJson, false);
+      _testBadValue(isChecked, e.key, e.value, factory.fromJson, false);
     }
     for (final e in _invalidCheckedValues.entries) {
-      _testBadValue(isChecked, e.key, e.value, fromJson, true);
+      _testBadValue(isChecked, e.key, e.value, factory.fromJson, true);
     }
   });
 }
@@ -296,7 +272,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
     innerMatcher = anyOf(
         isCastError,
         _isATypeError,
-        _isAUnrecognizedKeysEexception(
+        _isAUnrecognizedKeysException(
             'Unrecognized keys: [invalid_key]; supported keys: [value, custom_field]'));
 
     if (checkedAssignment) {
@@ -308,7 +284,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           innerMatcher = isArgumentError;
           break;
         case 'strictKeysObject':
-          innerMatcher = _isAUnrecognizedKeysEexception('bob');
+          innerMatcher = _isAUnrecognizedKeysException('bob');
           break;
         case 'intIterable':
         case 'datetime-iterable':

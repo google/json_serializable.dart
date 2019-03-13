@@ -5,6 +5,30 @@
 import 'package:collection/collection.dart';
 import 'simple_object.dart';
 
+abstract class KitchenSinkFactory {
+  bool get checked;
+  bool get nullable;
+
+  KitchenSink ctor({
+    int ctorValidatedNo42,
+    Iterable iterable,
+    Iterable<dynamic> dynamicIterable,
+    Iterable<Object> objectIterable,
+    Iterable<int> intIterable,
+    Iterable<DateTime> dateTimeIterable,
+  });
+
+  KitchenSink fromJson(Map json);
+
+  JsonConverterTestClass jsonConverterCtor();
+
+  JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json);
+}
+
+abstract class JsonConverterTestClass {
+  Map<String, dynamic> toJson();
+}
+
 abstract class KitchenSink {
   int get ctorValidatedNo42;
   DateTime dateTime;

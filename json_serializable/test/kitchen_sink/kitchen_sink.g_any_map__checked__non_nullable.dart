@@ -20,22 +20,40 @@ Map<String, T> _defaultMap<T>() => <String, T>{};
 SimpleObject _defaultSimpleObject() => SimpleObject(42);
 StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
 
-k.KitchenSink testFactory(
-        {int ctorValidatedNo42,
-        Iterable iterable,
-        Iterable<dynamic> dynamicIterable,
-        Iterable<Object> objectIterable,
-        Iterable<int> intIterable,
-        Iterable<DateTime> dateTimeIterable}) =>
-    KitchenSink(
+const k.KitchenSinkFactory factory = _Factory();
+
+class _Factory implements k.KitchenSinkFactory {
+  const _Factory();
+
+  bool get checked => true;
+  bool get nullable => false;
+
+  k.KitchenSink ctor({
+    int ctorValidatedNo42,
+    Iterable iterable,
+    Iterable dynamicIterable,
+    Iterable<Object> objectIterable,
+    Iterable<int> intIterable,
+    Iterable<DateTime> dateTimeIterable,
+  }) =>
+      KitchenSink(
         ctorValidatedNo42: ctorValidatedNo42,
         iterable: iterable,
         dynamicIterable: dynamicIterable,
         objectIterable: objectIterable,
         intIterable: intIterable,
-        dateTimeIterable: dateTimeIterable);
+        dateTimeIterable: dateTimeIterable,
+      );
 
-k.KitchenSink testFromJson(Map json) => KitchenSink.fromJson(json);
+  k.KitchenSink fromJson(Map json) {
+    return KitchenSink.fromJson(json);
+  }
+
+  k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
+
+  k.JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json) =>
+      JsonConverterTestClass.fromJson(json);
+}
 
 @JsonSerializable(
   nullable: false,
@@ -59,14 +77,14 @@ class KitchenSink implements k.KitchenSink {
   @JsonKey(name: 'no-42')
   final int ctorValidatedNo42;
 
-  KitchenSink(
-      {this.ctorValidatedNo42,
-      Iterable iterable,
-      Iterable<dynamic> dynamicIterable,
-      Iterable<Object> objectIterable,
-      Iterable<int> intIterable,
-      Iterable<DateTime> dateTimeIterable})
-      : _iterable = iterable?.toList() ?? _defaultList(),
+  KitchenSink({
+    this.ctorValidatedNo42,
+    Iterable iterable,
+    Iterable<dynamic> dynamicIterable,
+    Iterable<Object> objectIterable,
+    Iterable<int> intIterable,
+    Iterable<DateTime> dateTimeIterable,
+  })  : _iterable = iterable?.toList() ?? _defaultList(),
         _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
         _objectIterable = objectIterable?.toList() ?? _defaultList(),
         _intIterable = intIterable?.toList() ?? _defaultList(),
@@ -151,7 +169,7 @@ class KitchenSink implements k.KitchenSink {
 @BigIntStringConverter()
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
-class JsonConverterTestClass {
+class JsonConverterTestClass implements k.JsonConverterTestClass {
   JsonConverterTestClass();
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
