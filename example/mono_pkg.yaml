@@ -1,21 +1,22 @@
 # See https://github.com/dart-lang/mono_repo for details
 dart:
-  - stable
+- 2.0.0
+- dev
 
 stages:
-  - analyzer_and_format:
-    - group:
-      - dartfmt
-      - dartanalyzer: --fatal-infos --fatal-warnings .
-      dart: [dev]
-  - analyzer_and_format_stable:
-    - group:
-      - dartfmt
-      - dartanalyzer: --fatal-warnings .
-      dart: [stable]
-  - unit_test:
-    # Run the tests -- include the default-skipped presubmit tests
-    - test: --run-skipped
+- analyzer_and_format:
+  - group:
+    - dartfmt
+    - dartanalyzer: --fatal-infos --fatal-warnings .
+    dart: [dev]
+- analyzer_and_format_2_0:
+  - group:
+    - dartfmt
+    - dartanalyzer: --fatal-warnings .
+    dart: [2.0.0]
+- unit_test:
+  # Run the tests -- include the default-skipped presubmit tests
+  - test: --run-skipped
 
 cache:
   directories:
