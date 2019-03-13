@@ -23,6 +23,8 @@ void main() async {
       'wrapped': JsonSerializableGenerator(
         config: JsonSerializable(useWrappers: true),
       ),
+      'mixin': JsonSerializableGenerator(
+          config: JsonSerializable(generateToJsonFunction: false)),
     },
     expectedAnnotatedTests: _expectedAnnotatedTests,
   );
@@ -54,7 +56,9 @@ const _expectedAnnotatedTests = [
   'FinalFieldsNotSetInCtor',
   'FromDynamicCollection',
   'GeneralTestClass1',
+  'GeneralTestClass1',
   'GeneralTestClass2',
+  'GenericClass',
   'GenericClass',
   'GenericClass',
   'IgnoredFieldClass',
