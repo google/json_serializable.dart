@@ -50,7 +50,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
           fromJsonCtor.parameters.singleWhere((pe) => pe.isPositional).type;
 
       if (asCastType is InterfaceType) {
-        var instantiated = _instantiate(asCastType as InterfaceType, type);
+        final instantiated = _instantiate(asCastType as InterfaceType, type);
         if (instantiated != null) {
           asCastType = instantiated;
         }
@@ -97,7 +97,7 @@ bool _canSerialize(JsonSerializable config, DartType type) {
 /// derived by matching corresponding type parameters from [classType].
 InterfaceType _instantiate(
     InterfaceType ctorParamType, InterfaceType classType) {
-  var argTypes = ctorParamType.typeArguments.map((arg) {
+  final argTypes = ctorParamType.typeArguments.map((arg) {
     final typeParamIndex =
         classType.typeParameters.indexWhere((e) => e.type == arg);
     if (typeParamIndex >= 0) {
