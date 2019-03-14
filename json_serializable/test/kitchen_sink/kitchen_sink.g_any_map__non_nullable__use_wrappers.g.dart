@@ -16,6 +16,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
       dateTimeIterable: (json['datetime-iterable'] as List)
           .map((e) => DateTime.parse(e as String)))
     ..dateTime = DateTime.parse(json['dateTime'] as String)
+    ..bigInt = BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List).toSet()
     ..dynamicSet = (json['dynamicSet'] as List).toSet()
     ..objectSet = (json['objectSet'] as List).toSet()
@@ -71,6 +72,7 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
   Iterable<String> get keys => const [
         'no-42',
         'dateTime',
+        'bigInt',
         'iterable',
         'dynamicIterable',
         'objectIterable',
@@ -107,6 +109,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
           return _v.ctorValidatedNo42;
         case 'dateTime':
           return _v.dateTime.toIso8601String();
+        case 'bigInt':
+          return _v.bigInt.toString();
         case 'iterable':
           return _v.iterable.toList();
         case 'dynamicIterable':

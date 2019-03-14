@@ -96,6 +96,9 @@ class KitchenSink implements k.KitchenSink {
   DateTime dateTime;
 
   @JsonKey(includeIfNull: false)
+  BigInt bigInt;
+
+  @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;

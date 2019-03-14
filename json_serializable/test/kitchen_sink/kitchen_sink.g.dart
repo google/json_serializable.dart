@@ -18,6 +18,8 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)
+    ..bigInt =
+        json['bigInt'] == null ? null : BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List)?.toSet()
     ..dynamicSet = (json['dynamicSet'] as List)?.toSet()
     ..objectSet = (json['objectSet'] as List)?.toSet()
@@ -87,6 +89,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   }
 
   writeNotNull('dateTime', instance.dateTime?.toIso8601String());
+  writeNotNull('bigInt', instance.bigInt?.toString());
   writeNotNull('iterable', instance.iterable?.toList());
   val['dynamicIterable'] = instance.dynamicIterable?.toList();
   val['objectIterable'] = instance.objectIterable?.toList();

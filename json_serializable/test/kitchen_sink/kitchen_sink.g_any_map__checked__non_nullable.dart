@@ -99,6 +99,9 @@ class KitchenSink implements k.KitchenSink {
   DateTime dateTime = DateTime(1981, 6, 5);
 
   @JsonKey(includeIfNull: false)
+  BigInt bigInt = BigInt.parse('10000000000000000000');
+
+  @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
@@ -176,7 +179,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   Duration duration;
   List<Duration> durationList;
 
-  BigInt bigInt;
+  BigInt bigInt = BigInt.parse('10000000000000000000');
   Map<String, BigInt> bigIntMap;
 
   TrivialNumber numberSilly;

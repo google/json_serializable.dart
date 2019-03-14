@@ -1,3 +1,9 @@
+## 2.1.0
+
+* Added support for `BigInt`.
+
+* Added `BigIntTypeHelper` to `type_helper.dart` library.
+
 ## 2.0.3
 
 * When invoking a `fromJson` constructor on a field type, generate a conversion
