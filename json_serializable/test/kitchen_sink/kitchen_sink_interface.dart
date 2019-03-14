@@ -36,6 +36,7 @@ abstract class JsonConverterTestClass {
 abstract class KitchenSink {
   int get ctorValidatedNo42;
   DateTime dateTime;
+  BigInt bigInt;
 
   Iterable get iterable;
   Iterable<dynamic> get dynamicIterable;

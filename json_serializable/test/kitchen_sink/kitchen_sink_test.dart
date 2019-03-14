@@ -207,6 +207,7 @@ void _sharedTests(KitchenSinkFactory factory, {bool isChecked = false}) {
     /// they exist for KitchenSink where they are excluded when null
     final item = factory.ctor(iterable: [])
       ..dateTime = DateTime.now()
+      ..bigInt = BigInt.from(42)
       ..dateTimeList = []
       ..crazyComplex = []
       ..val = {};
@@ -304,6 +305,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
 final _validValues = const {
   'no-42': 0,
   'dateTime': '2018-05-10T14:20:58.927',
+  'bigInt': '10000000000000000000',
   'iterable': [],
   'dynamicIterable': [],
   'objectIterable': [],
@@ -335,6 +337,7 @@ final _validValues = const {
 final _invalidValueTypes = const {
   'no-42': true,
   'dateTime': true,
+  'bigInt': true,
   'iterable': true,
   'dynamicIterable': true,
   'objectIterable': true,
@@ -375,6 +378,7 @@ final _invalidCheckedValues = const {
 };
 
 final _excludeIfNullKeys = const [
+  'bigInt',
   'dateTime',
   'iterable',
   'dateTimeList',

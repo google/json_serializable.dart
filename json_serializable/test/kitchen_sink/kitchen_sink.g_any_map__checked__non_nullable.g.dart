@@ -21,6 +21,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
             (v) => (v as List).map((e) => DateTime.parse(e as String))));
     $checkedConvert(
         json, 'dateTime', (v) => val.dateTime = DateTime.parse(v as String));
+    $checkedConvert(
+        json, 'bigInt', (v) => val.bigInt = BigInt.parse(v as String));
     $checkedConvert(json, 'set', (v) => val.set = (v as List).toSet());
     $checkedConvert(
         json, 'dynamicSet', (v) => val.dynamicSet = (v as List).toSet());
@@ -94,6 +96,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
     <String, dynamic>{
       'no-42': instance.ctorValidatedNo42,
       'dateTime': instance.dateTime.toIso8601String(),
+      'bigInt': instance.bigInt.toString(),
       'iterable': instance.iterable.toList(),
       'dynamicIterable': instance.dynamicIterable.toList(),
       'objectIterable': instance.objectIterable.toList(),

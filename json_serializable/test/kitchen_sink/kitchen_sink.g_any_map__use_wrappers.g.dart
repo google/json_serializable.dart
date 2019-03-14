@@ -18,6 +18,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)
+    ..bigInt =
+        json['bigInt'] == null ? null : BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List)?.toSet()
     ..dynamicSet = (json['dynamicSet'] as List)?.toSet()
     ..objectSet = (json['objectSet'] as List)?.toSet()
@@ -86,6 +88,9 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
     if (_v.dateTime != null) {
       yield 'dateTime';
     }
+    if (_v.bigInt != null) {
+      yield 'bigInt';
+    }
     if (_v.iterable != null) {
       yield 'iterable';
     }
@@ -130,6 +135,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
           return _v.ctorValidatedNo42;
         case 'dateTime':
           return _v.dateTime?.toIso8601String();
+        case 'bigInt':
+          return _v.bigInt?.toString();
         case 'iterable':
           return _v.iterable?.toList();
         case 'dynamicIterable':

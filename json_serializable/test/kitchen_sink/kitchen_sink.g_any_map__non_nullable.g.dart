@@ -16,6 +16,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
       dateTimeIterable: (json['datetime-iterable'] as List)
           .map((e) => DateTime.parse(e as String)))
     ..dateTime = DateTime.parse(json['dateTime'] as String)
+    ..bigInt = BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List).toSet()
     ..dynamicSet = (json['dynamicSet'] as List).toSet()
     ..objectSet = (json['objectSet'] as List).toSet()
@@ -64,6 +65,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
     <String, dynamic>{
       'no-42': instance.ctorValidatedNo42,
       'dateTime': instance.dateTime.toIso8601String(),
+      'bigInt': instance.bigInt.toString(),
       'iterable': instance.iterable.toList(),
       'dynamicIterable': instance.dynamicIterable.toList(),
       'objectIterable': instance.objectIterable.toList(),

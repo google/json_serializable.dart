@@ -146,6 +146,10 @@ Iterable<_Replacement> _optionReplacement(
           'DateTime dateTime = DateTime(1981, 6, 5);',
         );
         yield _Replacement(
+          'BigInt bigInt;',
+          "BigInt bigInt = BigInt.parse('10000000000000000000');",
+        );
+        yield _Replacement(
           'bool get nullable => true;',
           'bool get nullable => false;',
         );
