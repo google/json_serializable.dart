@@ -25,6 +25,7 @@ const k.KitchenSinkFactory factory = _Factory();
 class _Factory implements k.KitchenSinkFactory {
   const _Factory();
 
+  String get description => 'any_map__checked__non_nullable';
   bool get checked => true;
   bool get nullable => false;
 

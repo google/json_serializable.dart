@@ -50,13 +50,15 @@ void main() {
     non_null_wrapped.factory,
     wrapped.factory,
   ]) {
-    if (factory.nullable) {
-      _nullableTests(factory);
-    } else {
-      _nonNullableTests(factory, isChecked: factory.checked);
-    }
+    group(factory.description, () {
+      if (factory.nullable) {
+        _nullableTests(factory);
+      } else {
+        _nonNullableTests(factory, isChecked: factory.checked);
+      }
 
-    _sharedTests(factory, isChecked: factory.checked);
+      _sharedTests(factory, isChecked: factory.checked);
+    });
   }
 }
 

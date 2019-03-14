@@ -67,6 +67,14 @@ class _SmartBuilder implements Builder {
         )
       ];
 
+      if (baseName == 'kitchen_sink') {
+        final description = _configToName(config.toSet());
+        replacements.add(_Replacement(
+          "String get description => '--defaults--';",
+          "String get description => '$description';",
+        ));
+      }
+
       for (var entry in config) {
         replacements.addAll(_optionReplacement(baseName, entry));
       }
