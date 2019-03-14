@@ -30,6 +30,25 @@ void annotatedMethod() => null;
 
 @ShouldGenerate(
   r'''
+OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) {
+  return OnlyStaticMembers();
+}
+
+Map<String, dynamic> _$OnlyStaticMembersToJson(OnlyStaticMembers instance) =>
+    <String, dynamic>{};
+''',
+  configurations: ['default'],
+)
+@JsonSerializable()
+class OnlyStaticMembers {
+  // To ensure static members are not considered for serialization.
+  static const answer = 42;
+  static final reason = 42;
+  static int get understand => 42;
+}
+
+@ShouldGenerate(
+  r'''
 GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
   return GeneralTestClass1()
     ..firstName = json['firstName'] as String

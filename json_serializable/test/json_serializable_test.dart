@@ -87,6 +87,7 @@ const _expectedAnnotatedTests = [
   'OkayOneNormalOptionalNamed',
   'OkayOneNormalOptionalPositional',
   'OkayOnlyOptionalPositional',
+  'OnlyStaticMembers',
   'PrivateFieldCtorClass',
   'SetSupport',
   'SubType',
