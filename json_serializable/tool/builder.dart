@@ -67,9 +67,8 @@ class _SmartBuilder implements Builder {
         )
       ];
 
-      for (var entry in config.entries) {
-        replacements
-            .addAll(_optionReplacement(baseName, entry.key, entry.value));
+      for (var entry in config) {
+        replacements.addAll(_optionReplacement(baseName, entry));
       }
 
       final content = _Replacement.generate(sourceContent, replacements);
@@ -84,118 +83,79 @@ class _SmartBuilder implements Builder {
 }
 
 Iterable<_Replacement> _optionReplacement(
-  String baseName,
-  String optionKey,
-  bool value,
-) sync* {
+    String baseName, String optionKey) sync* {
   switch (optionKey) {
     case 'any_map':
-      if (value) {
-        yield _Replacement.addJsonSerializableKey('anyMap', true);
+      yield _Replacement.addJsonSerializableKey('anyMap', true);
 
-        if (baseName == 'kitchen_sink') {
-          yield _Replacement(
-            'return KitchenSink.fromJson(json.cast<String, dynamic>());',
-            'return KitchenSink.fromJson(json);',
-          );
-          yield _Replacement(
-            'factory KitchenSink.fromJson(Map<String, dynamic> json)',
-            'factory KitchenSink.fromJson(Map json)',
-          );
-        }
+      if (baseName == 'kitchen_sink') {
+        yield _Replacement(
+          'return KitchenSink.fromJson(json.cast<String, dynamic>());',
+          'return KitchenSink.fromJson(json);',
+        );
+        yield _Replacement(
+          'factory KitchenSink.fromJson(Map<String, dynamic> json)',
+          'factory KitchenSink.fromJson(Map json)',
+        );
       }
       break;
     case 'checked':
-      if (value) {
-        yield _Replacement.addJsonSerializableKey('checked', true);
-        if (baseName == 'kitchen_sink') {
-          yield _Replacement(
-            'bool get checked => false;',
-            'bool get checked => true;',
-          );
-        }
+      yield _Replacement.addJsonSerializableKey('checked', true);
+      if (baseName == 'kitchen_sink') {
+        yield _Replacement(
+          'bool get checked => false;',
+          'bool get checked => true;',
+        );
       }
       break;
     case 'non_nullable':
-      if (value) {
-        yield _Replacement.addJsonSerializableKey('nullable', false);
+      yield _Replacement.addJsonSerializableKey('nullable', false);
 
-        if (baseName == 'kitchen_sink') {
-          yield _Replacement(
-            'List<T> _defaultList<T>() => null;',
-            'List<T> _defaultList<T>() => <T>[];',
-          );
-          yield _Replacement(
-            'Set<T> _defaultSet<T>() => null;',
-            'Set<T> _defaultSet<T>() => Set<T>();',
-          );
-          yield _Replacement(
-            'Map<K, V> _defaultMap<K, V>() => null;',
-            'Map<String, T> _defaultMap<T>() => <String, T>{};',
-          );
-          yield _Replacement(
-            'SimpleObject _defaultSimpleObject() => null;',
-            'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
-          );
-          yield _Replacement(
-            'StrictKeysObject _defaultStrictKeysObject() => null;',
-            'StrictKeysObject _defaultStrictKeysObject() => '
-                "StrictKeysObject(10, 'cool');",
-          );
-          yield _Replacement(
-            'DateTime dateTime;',
-            'DateTime dateTime = DateTime(1981, 6, 5);',
-          );
-          yield _Replacement(
-            'bool get nullable => true;',
-            'bool get nullable => false;',
-          );
-        }
+      if (baseName == 'kitchen_sink') {
+        yield _Replacement(
+          'List<T> _defaultList<T>() => null;',
+          'List<T> _defaultList<T>() => <T>[];',
+        );
+        yield _Replacement(
+          'Set<T> _defaultSet<T>() => null;',
+          'Set<T> _defaultSet<T>() => Set<T>();',
+        );
+        yield _Replacement(
+          'Map<K, V> _defaultMap<K, V>() => null;',
+          'Map<String, T> _defaultMap<T>() => <String, T>{};',
+        );
+        yield _Replacement(
+          'SimpleObject _defaultSimpleObject() => null;',
+          'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
+        );
+        yield _Replacement(
+          'StrictKeysObject _defaultStrictKeysObject() => null;',
+          'StrictKeysObject _defaultStrictKeysObject() => '
+              "StrictKeysObject(10, 'cool');",
+        );
+        yield _Replacement(
+          'DateTime dateTime;',
+          'DateTime dateTime = DateTime(1981, 6, 5);',
+        );
+        yield _Replacement(
+          'bool get nullable => true;',
+          'bool get nullable => false;',
+        );
       }
       break;
     case 'use_wrappers':
-      if (value) {
-        yield _Replacement.addJsonSerializableKey('useWrappers', true);
-      }
+      yield _Replacement.addJsonSerializableKey('useWrappers', true);
       break;
     default:
       throw UnimplementedError('not yet!: $optionKey');
   }
 }
 
-String _configToExtension(Map<String, dynamic> config) =>
-    '.g_${_configToName(config)}.dart';
+String _configToExtension(Iterable<String> config) =>
+    '.g_${_configToName(config.toSet())}.dart';
 
-String _configToName(Map<String, dynamic> config) =>
-    (config.entries.where((e) => e.value != false).map((e) => e.key).toList()
-          ..sort())
-        .join('__');
-
-const _options = <String, List<bool>>{
-  'any_map': [false, true],
-  'checked': [false, true],
-  'use_wrappers': [false, true],
-  'non_nullable': [false, true],
-};
-
-Iterable<Map<String, bool>> allConfigurations({
-  Map<String, bool> parts = const {},
-}) sync* {
-  assert(parts.length <= _options.length);
-  if (parts.length == _options.length) {
-    if (parts.values.any((v) => v)) {
-      yield parts;
-    }
-  } else {
-    final entry = _options.entries.skip(parts.length).first;
-    for (var option in entry.value) {
-      final newMap = Map.of(parts);
-      assert(!newMap.containsKey(entry.key));
-      newMap[entry.key] = option;
-      yield* allConfigurations(parts: newMap);
-    }
-  }
-}
+String _configToName(Set<String> config) =>
+    (config.toList()..sort()).join('__');
 
 List<String> get _fileConfigurations => _fileConfigurationMap.values
     .expand((v) => v)
@@ -203,24 +163,25 @@ List<String> get _fileConfigurations => _fileConfigurationMap.values
     .toSet()
     .toList();
 
-const _fileConfigurationMap = {
+// TODO: use a set of sets, once we're >=2.2.0
+const _fileConfigurationMap = <String, List<List<String>>>{
   'kitchen_sink': [
-    {'any_map': true},
-    {'any_map': true, 'checked': true, 'non_nullable': true},
-    {'any_map': true, 'non_nullable': true},
-    {'any_map': true, 'non_nullable': true, 'use_wrappers': true},
-    {'any_map': true, 'use_wrappers': true},
+    ['any_map'],
+    ['any_map', 'checked', 'non_nullable'],
+    ['any_map', 'non_nullable'],
+    ['any_map', 'non_nullable', 'use_wrappers'],
+    ['any_map', 'use_wrappers'],
   ],
   'default_value': [
-    {'any_map': true, 'checked': true},
+    ['any_map', 'checked'],
   ],
   'generic_class': [
-    {'use_wrappers': true},
+    ['use_wrappers'],
   ],
   'json_test_example': [
-    {'non_nullable': true, 'use_wrappers': true},
-    {'non_nullable': true},
-    {'use_wrappers': true},
+    ['non_nullable', 'use_wrappers'],
+    ['non_nullable'],
+    ['use_wrappers'],
   ]
 };
 
