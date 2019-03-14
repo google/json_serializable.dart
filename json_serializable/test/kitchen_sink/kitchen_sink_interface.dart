@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'simple_object.dart';
 
 abstract class KitchenSinkFactory {
+  String get description;
   bool get checked;
   bool get nullable;
 
@@ -23,6 +24,9 @@ abstract class KitchenSinkFactory {
   JsonConverterTestClass jsonConverterCtor();
 
   JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json);
+
+  @override
+  String toString() => description;
 }
 
 abstract class JsonConverterTestClass {
