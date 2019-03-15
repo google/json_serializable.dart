@@ -29,6 +29,7 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   bool get anyMap => false;
   bool get checked => true;
   bool get nullable => false;
+  bool get excludeNull => false;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,

@@ -10,6 +10,7 @@ abstract class KitchenSinkFactory<K, V> {
   bool get anyMap;
   bool get checked;
   bool get nullable;
+  bool get excludeNull;
 
   KitchenSink ctor({
     int ctorValidatedNo42,

@@ -115,6 +115,8 @@ const _configReplacements = {
   'checked': _Replacement.addJsonSerializableKey('checked', true),
   'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
   'use_wrappers': _Replacement.addJsonSerializableKey('useWrappers', true),
+  //'explicit_to_json': _Replacement.addJsonSerializableKey('explicitToJson', true),
+  'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
 };
 
 const _kitchenSinkReplacements = {
@@ -142,7 +144,17 @@ const _kitchenSinkReplacements = {
       'bool get checked => true;',
     )
   ],
+  'exclude_null': [
+    _Replacement(
+      'bool get excludeNull => false;',
+      'bool get excludeNull => true;',
+    ),
+  ],
   'non_nullable': [
+    _Replacement(
+      'bool get nullable => true;',
+      'bool get nullable => false;',
+    ),
     _Replacement(
       'List<T> _defaultList<T>() => null;',
       'List<T> _defaultList<T>() => <T>[];',
@@ -172,10 +184,6 @@ const _kitchenSinkReplacements = {
       'BigInt bigInt;',
       "BigInt bigInt = BigInt.parse('10000000000000000000');",
     ),
-    _Replacement(
-      'bool get nullable => true;',
-      'bool get nullable => false;',
-    )
   ],
 };
 

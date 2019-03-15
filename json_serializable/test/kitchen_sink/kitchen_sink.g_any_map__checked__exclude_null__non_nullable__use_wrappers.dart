@@ -10,7 +10,7 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_any_map__checked__non_nullable.g.dart';
+part 'kitchen_sink.g_any_map__checked__exclude_null__non_nullable__use_wrappers.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
@@ -25,11 +25,12 @@ const k.KitchenSinkFactory factory = _Factory();
 class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
   const _Factory();
 
-  String get description => 'any_map__checked__non_nullable';
+  String get description =>
+      'any_map__checked__exclude_null__non_nullable__use_wrappers';
   bool get anyMap => true;
   bool get checked => true;
   bool get nullable => false;
-  bool get excludeNull => false;
+  bool get excludeNull => true;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
@@ -57,6 +58,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
+  useWrappers: true,
   nullable: false,
   checked: true,
   anyMap: true,
@@ -158,6 +161,8 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
+  useWrappers: true,
   nullable: false,
   checked: true,
   anyMap: true,
@@ -189,6 +194,8 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
+  useWrappers: true,
   nullable: false,
   checked: true,
   anyMap: true,

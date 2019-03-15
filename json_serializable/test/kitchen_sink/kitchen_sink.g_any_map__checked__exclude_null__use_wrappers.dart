@@ -10,26 +10,26 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_any_map__checked__non_nullable.g.dart';
+part 'kitchen_sink.g_any_map__checked__exclude_null__use_wrappers.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
-List<T> _defaultList<T>() => <T>[];
-Set<T> _defaultSet<T>() => Set<T>();
-Map<String, T> _defaultMap<T>() => <String, T>{};
-SimpleObject _defaultSimpleObject() => SimpleObject(42);
-StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
+List<T> _defaultList<T>() => null;
+Set<T> _defaultSet<T>() => null;
+Map<K, V> _defaultMap<K, V>() => null;
+SimpleObject _defaultSimpleObject() => null;
+StrictKeysObject _defaultStrictKeysObject() => null;
 
 const k.KitchenSinkFactory factory = _Factory();
 
 class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
   const _Factory();
 
-  String get description => 'any_map__checked__non_nullable';
+  String get description => 'any_map__checked__exclude_null__use_wrappers';
   bool get anyMap => true;
   bool get checked => true;
-  bool get nullable => false;
-  bool get excludeNull => false;
+  bool get nullable => true;
+  bool get excludeNull => true;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
@@ -57,7 +57,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 }
 
 @JsonSerializable(
-  nullable: false,
+  includeIfNull: false,
+  useWrappers: true,
   checked: true,
   anyMap: true,
 )
@@ -96,10 +97,10 @@ class KitchenSink implements k.KitchenSink {
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 
   @JsonKey(includeIfNull: false)
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
@@ -158,7 +159,8 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  nullable: false,
+  includeIfNull: false,
+  useWrappers: true,
   checked: true,
   anyMap: true,
 )
@@ -179,17 +181,18 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   Duration duration;
   List<Duration> durationList;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
   Map<String, BigInt> bigIntMap;
 
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 }
 
 @JsonSerializable(
-  nullable: false,
+  includeIfNull: false,
+  useWrappers: true,
   checked: true,
   anyMap: true,
 )

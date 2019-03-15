@@ -10,7 +10,7 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_any_map__checked__non_nullable.g.dart';
+part 'kitchen_sink.g_exclude_null__non_nullable.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
@@ -22,14 +22,14 @@ StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
 
 const k.KitchenSinkFactory factory = _Factory();
 
-class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
+class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
 
-  String get description => 'any_map__checked__non_nullable';
-  bool get anyMap => true;
-  bool get checked => true;
+  String get description => 'exclude_null__non_nullable';
+  bool get anyMap => false;
+  bool get checked => false;
   bool get nullable => false;
-  bool get excludeNull => false;
+  bool get excludeNull => true;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
@@ -48,7 +48,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
         dateTimeIterable: dateTimeIterable,
       );
 
-  k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
+  k.KitchenSink fromJson(Map<String, dynamic> json) =>
+      KitchenSink.fromJson(json);
 
   k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
 
@@ -57,9 +58,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
   nullable: false,
-  checked: true,
-  anyMap: true,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
@@ -91,7 +91,8 @@ class KitchenSink implements k.KitchenSink {
     }
   }
 
-  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map<String, dynamic> json) =>
+      _$KitchenSinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
@@ -158,9 +159,8 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
   nullable: false,
-  checked: true,
-  anyMap: true,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -189,9 +189,8 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 }
 
 @JsonSerializable(
+  includeIfNull: false,
   nullable: false,
-  checked: true,
-  anyMap: true,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
