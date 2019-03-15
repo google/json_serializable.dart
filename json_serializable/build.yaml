@@ -35,6 +35,7 @@ builders:
     builder_factories: ['internal']
     build_extensions:
       .dart:
+      - .factories.dart
       - .g_non_nullable.dart
       - .g_use_wrappers.dart
       - .g_non_nullable__use_wrappers.dart

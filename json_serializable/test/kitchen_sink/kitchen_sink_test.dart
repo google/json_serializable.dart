@@ -7,13 +7,7 @@ import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import '../test_utils.dart';
-import 'kitchen_sink.g_any_map.dart' as nullable show factory;
-import 'kitchen_sink.g_any_map__checked__non_nullable.dart' as checked
-    show factory;
-import 'kitchen_sink.g_any_map__non_nullable.dart' as non_null show factory;
-import 'kitchen_sink.g_any_map__non_nullable__use_wrappers.dart'
-    as non_null_wrapped show factory;
-import 'kitchen_sink.g_any_map__use_wrappers.dart' as wrapped show factory;
+import 'kitchen_sink.factories.dart';
 import 'kitchen_sink_interface.dart';
 import 'strict_keys_object.dart';
 
@@ -43,21 +37,18 @@ void main() {
             'Required keys are missing: value, custom_field.')));
   });
 
-  for (var factory in [
-    nullable.factory,
-    checked.factory,
-    non_null.factory,
-    non_null_wrapped.factory,
-    wrapped.factory,
-  ]) {
+  for (var factory in factories) {
     group(factory.description, () {
       if (factory.nullable) {
         _nullableTests(factory);
       } else {
-        _nonNullableTests(factory, isChecked: factory.checked);
+        _nonNullableTests(factory);
       }
 
-      _sharedTests(factory, isChecked: factory.checked);
+      _sharedTests(factory);
+      if (factory.anyMap) {
+        _anyMapTests(factory);
+      }
     });
   }
 }
@@ -72,33 +63,33 @@ const _jsonConverterValidValues = {
   'dateTime': 5
 };
 
-void _nonNullableTests(KitchenSinkFactory factory, {bool isChecked = false}) {
+void _nonNullableTests(KitchenSinkFactory factory) {
   test('with null values fails serialization', () {
     expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
   });
 
   test('with empty json fails deserialization', () {
-    if (isChecked) {
-      expect(
-          () => factory.fromJson({}), throwsA(_checkedMatcher('intIterable')));
+    if (factory.checked) {
+      expect(() => factory.fromJson(<String, dynamic>{}),
+          throwsA(_checkedMatcher('intIterable')));
     } else {
-      expect(() => factory.fromJson({}), throwsNoSuchMethodError);
+      expect(
+          () => factory.fromJson(<String, dynamic>{}), throwsNoSuchMethodError);
     }
   });
 
   test('nullable values are not allowed in non-nullable version', () {
-    var instance = non_null.factory.jsonConverterCtor();
+    var instance = factory.jsonConverterCtor();
     expect(() => instance.toJson(), throwsNoSuchMethodError,
         reason: 'Trying to call `map` on a null list');
 
-    instance =
-        non_null.factory.jsonConverterFromJson(_jsonConverterValidValues);
+    instance = factory.jsonConverterFromJson(_jsonConverterValidValues);
     final json = instance.toJson();
     expect(json, _jsonConverterValidValues);
     expect(json.values, everyElement(isNotNull));
 
-    final instance2 = non_null.factory.jsonConverterFromJson(json);
+    final instance2 = factory.jsonConverterFromJson(json);
     expect(instance2.toJson(), json);
   });
 }
@@ -109,12 +100,12 @@ void _nullableTests(KitchenSinkFactory factory) {
   }
 
   test('nullable values are allowed in the nullable version', () {
-    final instance = nullable.factory.jsonConverterCtor();
+    final instance = factory.jsonConverterCtor();
     final json = instance.toJson();
     expect(json.values, everyElement(isNull));
     expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
 
-    final instance2 = nullable.factory.jsonConverterFromJson(json);
+    final instance2 = factory.jsonConverterFromJson(json);
     expect(instance2.toJson(), json);
   });
 
@@ -165,7 +156,24 @@ void _nullableTests(KitchenSinkFactory factory) {
   });
 }
 
-void _sharedTests(KitchenSinkFactory factory, {bool isChecked = false}) {
+void _anyMapTests(KitchenSinkFactory factory) {
+  test('valid values round-trip - yaml', () {
+    final jsonEncoded = loudEncode(_validValues);
+    final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
+    expect(jsonEncoded, loudEncode(factory.fromJson(yaml as YamlMap)));
+  });
+
+  group('a bad value for', () {
+    for (final e in _invalidValueTypes.entries) {
+      _testBadValue(e.key, e.value, factory, false);
+    }
+    for (final e in _invalidCheckedValues.entries) {
+      _testBadValue(e.key, e.value, factory, true);
+    }
+  });
+}
+
+void _sharedTests(KitchenSinkFactory factory) {
   void roundTripSink(KitchenSink p) {
     roundTripObject(p, factory.fromJson);
   }
@@ -217,29 +225,27 @@ void _sharedTests(KitchenSinkFactory factory, {bool isChecked = false}) {
   });
 
   test('valid values round-trip - json', () {
-    expect(
-        loudEncode(_validValues), loudEncode(factory.fromJson(_validValues)));
-  });
+    final validInstance = factory.fromJson(_validValues);
+    for (var entry in validInstance.toJson().entries) {
+      expect(entry.value, isNotNull,
+          reason: 'key "${entry.key}" should not be null');
 
-  test('valid values round-trip - yaml', () {
-    final jsonEncoded = loudEncode(_validValues);
-    final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
-    expect(jsonEncoded, loudEncode(factory.fromJson(yaml as YamlMap)));
-  });
+      if (_iterableMapKeys.contains(entry.key)) {
+        expect(entry.value, anyOf(isMap, isList),
+            reason: 'key "${entry.key}" should be a Map/List');
+      } else {
+        expect(entry.value, isNot(anyOf(isMap, isList)),
+            reason: 'key "${entry.key}" should not be a Map/List');
+      }
+    }
 
-  group('a bad value for', () {
-    for (final e in _invalidValueTypes.entries) {
-      _testBadValue(isChecked, e.key, e.value, factory.fromJson, false);
-    }
-    for (final e in _invalidCheckedValues.entries) {
-      _testBadValue(isChecked, e.key, e.value, factory.fromJson, true);
-    }
+    expect(loudEncode(_validValues), loudEncode(validInstance));
   });
 }
 
-void _testBadValue(bool isChecked, String key, Object badValue,
-    KitchenSink fromJson(Map json), bool checkedAssignment) {
-  final matcher = _getMatcher(isChecked, key, checkedAssignment);
+void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
+    bool checkedAssignment) {
+  final matcher = _getMatcher(factory.checked, key, checkedAssignment);
 
   for (final isJson in [true, false]) {
     test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
@@ -251,7 +257,7 @@ void _testBadValue(bool isChecked, String key, Object badValue,
         copy = loadYaml(loudEncode(copy)) as YamlMap;
       }
 
-      expect(() => fromJson(copy), matcher);
+      expect(() => factory.fromJson(copy), matcher);
     });
   }
 }
@@ -302,7 +308,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
   return throwsA(innerMatcher);
 }
 
-final _validValues = const {
+const _validValues = <String, dynamic>{
   'no-42': 0,
   'dateTime': '2018-05-10T14:20:58.927',
   'bigInt': '10000000000000000000',
@@ -322,19 +328,19 @@ final _validValues = const {
   'intList': [],
   'dateTimeList': [],
   'map': <String, dynamic>{},
-  'stringStringMap': {},
-  'dynamicIntMap': {},
+  'stringStringMap': <String, dynamic>{},
+  'dynamicIntMap': <String, dynamic>{},
   'objectDateTimeMap': <String, dynamic>{},
   'crazyComplex': [],
-  _generatedLocalVarName: {},
-  _toJsonMapHelperName: null,
-  r'$string': null,
+  _generatedLocalVarName: <String, dynamic>{},
+  _toJsonMapHelperName: true,
+  r'$string': 'string',
   'simpleObject': {'value': 42},
   'strictKeysObject': {'value': 10, 'custom_field': 'cool'},
   'validatedPropertyNo42': 0
 };
 
-final _invalidValueTypes = const {
+const _invalidValueTypes = {
   'no-42': true,
   'dateTime': true,
   'bigInt': true,
@@ -370,18 +376,42 @@ final _invalidValueTypes = const {
 };
 
 /// Invalid values that are found after the property set or ctor call
-final _invalidCheckedValues = const {
+const _invalidCheckedValues = {
   'no-42': 42,
   'validatedPropertyNo42': 42,
   'intIterable': [true],
   'datetime-iterable': [true],
 };
 
-final _excludeIfNullKeys = const [
+const _excludeIfNullKeys = [
   'bigInt',
   'dateTime',
   'iterable',
   'dateTimeList',
   'crazyComplex',
   _generatedLocalVarName
+];
+
+const _iterableMapKeys = [
+  'crazyComplex',
+  'datetime-iterable',
+  'dateTimeList',
+  'dateTimeSet',
+  'dynamicIntMap',
+  'dynamicIterable',
+  'dynamicList',
+  'dynamicSet',
+  'intIterable',
+  'intList',
+  'intSet',
+  'iterable',
+  'list',
+  'map',
+  'objectDateTimeMap',
+  'objectIterable',
+  'objectList',
+  'objectSet',
+  'set',
+  'stringStringMap',
+  _generatedLocalVarName,
 ];
