@@ -115,7 +115,8 @@ const _configReplacements = {
   'checked': _Replacement.addJsonSerializableKey('checked', true),
   'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
   'use_wrappers': _Replacement.addJsonSerializableKey('useWrappers', true),
-  //'explicit_to_json': _Replacement.addJsonSerializableKey('explicitToJson', true),
+  'explicit_to_json':
+      _Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
 };
 
@@ -148,6 +149,12 @@ const _kitchenSinkReplacements = {
     _Replacement(
       'bool get excludeNull => false;',
       'bool get excludeNull => true;',
+    ),
+  ],
+  'explicit_to_json': [
+    _Replacement(
+      'bool get explicitToJson => false;',
+      'bool get explicitToJson => true;',
     ),
   ],
   'non_nullable': [

@@ -249,11 +249,17 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(_validValues);
+
+    bool containsKey(String key) {
+      return _iterableMapKeys.contains(key) ||
+          (factory.explicitToJson && _encodedAsMapKeys.contains(key));
+    }
+
     for (var entry in validInstance.toJson().entries) {
       expect(entry.value, isNotNull,
           reason: 'key "${entry.key}" should not be null');
 
-      if (_iterableMapKeys.contains(entry.key)) {
+      if (containsKey(entry.key)) {
         expect(entry.value, anyOf(isMap, isList),
             reason: 'key "${entry.key}" should be a Map/List');
       } else {
@@ -414,6 +420,8 @@ const _excludeIfNullKeys = [
   'crazyComplex',
   _generatedLocalVarName
 ];
+
+const _encodedAsMapKeys = ['simpleObject', 'strictKeysObject'];
 
 const _iterableMapKeys = [
   'crazyComplex',

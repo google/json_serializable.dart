@@ -11,6 +11,7 @@ abstract class KitchenSinkFactory<K, V> {
   bool get checked;
   bool get nullable;
   bool get excludeNull;
+  bool get explicitToJson;
 
   KitchenSink ctor({
     int ctorValidatedNo42,
