@@ -22,10 +22,11 @@ StrictKeysObject _defaultStrictKeysObject() => null;
 
 const k.KitchenSinkFactory factory = _Factory();
 
-class _Factory implements k.KitchenSinkFactory {
+class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
   const _Factory();
 
   String get description => 'any_map__use_wrappers';
+  bool get anyMap => true;
   bool get checked => false;
   bool get nullable => true;
 
@@ -46,9 +47,7 @@ class _Factory implements k.KitchenSinkFactory {
         dateTimeIterable: dateTimeIterable,
       );
 
-  k.KitchenSink fromJson(Map json) {
-    return KitchenSink.fromJson(json);
-  }
+  k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
 
   k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
 

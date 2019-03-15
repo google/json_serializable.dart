@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:build/build.dart';
@@ -54,6 +55,9 @@ class _SmartBuilder implements Builder {
 
     final sourceContent = await buildStep.readAsString(buildStep.inputId);
 
+    final factories =
+        SplayTreeMap.from({'$_kitchenSinkBaseName.dart': 'normal'});
+
     for (var config in _fileConfigurationMap[baseName]) {
       final extension = _configToExtension(config);
       final newId = buildStep.inputId.changeExtension(extension);
@@ -67,12 +71,14 @@ class _SmartBuilder implements Builder {
         )
       ];
 
-      if (baseName == 'kitchen_sink') {
+      if (baseName == _kitchenSinkBaseName) {
         final description = _configToName(config.toSet());
         replacements.add(_Replacement(
           "String get description => '--defaults--';",
           "String get description => '$description';",
         ));
+
+        factories['$baseName$partName.dart'] = description;
       }
 
       for (var entry in config) {
@@ -83,6 +89,19 @@ class _SmartBuilder implements Builder {
 
       await buildStep.writeAsString(newId, _formatter.format(content));
     }
+
+    if (baseName == _kitchenSinkBaseName) {
+      final newId = buildStep.inputId.changeExtension('.factories.dart');
+
+      final lines = <String>[]..addAll(
+          factories.entries.map((e) => "import '${e.key}' as ${e.value};"));
+
+      lines.add('const factories = [');
+      lines.addAll(factories.values.map((e) => '$e.factory,'));
+      lines.add('];');
+
+      await buildStep.writeAsString(newId, _formatter.format(lines.join('\n')));
+    }
   }
 
   @override
@@ -90,76 +109,82 @@ class _SmartBuilder implements Builder {
       {'.dart': _fileConfigurations};
 }
 
+const _configReplacements = {
+  'any_map': _Replacement.addJsonSerializableKey('anyMap', true),
+  'checked': _Replacement.addJsonSerializableKey('checked', true),
+  'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
+  'use_wrappers': _Replacement.addJsonSerializableKey('useWrappers', true),
+};
+
+const _kitchenSinkReplacements = {
+  'any_map': [
+    _Replacement(
+      'bool get anyMap => false;',
+      'bool get anyMap => true;',
+    ),
+    _Replacement(
+      'class _Factory implements k.KitchenSinkFactory<String, dynamic>',
+      'class _Factory implements k.KitchenSinkFactory<dynamic, dynamic>',
+    ),
+    _Replacement(
+      'k.KitchenSink fromJson(Map<String, dynamic> json)',
+      'k.KitchenSink fromJson(Map json)',
+    ),
+    _Replacement(
+      'factory KitchenSink.fromJson(Map<String, dynamic> json)',
+      'factory KitchenSink.fromJson(Map json)',
+    ),
+  ],
+  'checked': [
+    _Replacement(
+      'bool get checked => false;',
+      'bool get checked => true;',
+    )
+  ],
+  'non_nullable': [
+    _Replacement(
+      'List<T> _defaultList<T>() => null;',
+      'List<T> _defaultList<T>() => <T>[];',
+    ),
+    _Replacement(
+      'Set<T> _defaultSet<T>() => null;',
+      'Set<T> _defaultSet<T>() => Set<T>();',
+    ),
+    _Replacement(
+      'Map<K, V> _defaultMap<K, V>() => null;',
+      'Map<String, T> _defaultMap<T>() => <String, T>{};',
+    ),
+    _Replacement(
+      'SimpleObject _defaultSimpleObject() => null;',
+      'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
+    ),
+    _Replacement(
+      'StrictKeysObject _defaultStrictKeysObject() => null;',
+      'StrictKeysObject _defaultStrictKeysObject() => '
+          "StrictKeysObject(10, 'cool');",
+    ),
+    _Replacement(
+      'DateTime dateTime;',
+      'DateTime dateTime = DateTime(1981, 6, 5);',
+    ),
+    _Replacement(
+      'BigInt bigInt;',
+      "BigInt bigInt = BigInt.parse('10000000000000000000');",
+    ),
+    _Replacement(
+      'bool get nullable => true;',
+      'bool get nullable => false;',
+    )
+  ],
+};
+
 Iterable<_Replacement> _optionReplacement(
     String baseName, String optionKey) sync* {
-  switch (optionKey) {
-    case 'any_map':
-      yield _Replacement.addJsonSerializableKey('anyMap', true);
+  yield _configReplacements[optionKey];
 
-      if (baseName == 'kitchen_sink') {
-        yield _Replacement(
-          'return KitchenSink.fromJson(json.cast<String, dynamic>());',
-          'return KitchenSink.fromJson(json);',
-        );
-        yield _Replacement(
-          'factory KitchenSink.fromJson(Map<String, dynamic> json)',
-          'factory KitchenSink.fromJson(Map json)',
-        );
-      }
-      break;
-    case 'checked':
-      yield _Replacement.addJsonSerializableKey('checked', true);
-      if (baseName == 'kitchen_sink') {
-        yield _Replacement(
-          'bool get checked => false;',
-          'bool get checked => true;',
-        );
-      }
-      break;
-    case 'non_nullable':
-      yield _Replacement.addJsonSerializableKey('nullable', false);
-
-      if (baseName == 'kitchen_sink') {
-        yield _Replacement(
-          'List<T> _defaultList<T>() => null;',
-          'List<T> _defaultList<T>() => <T>[];',
-        );
-        yield _Replacement(
-          'Set<T> _defaultSet<T>() => null;',
-          'Set<T> _defaultSet<T>() => Set<T>();',
-        );
-        yield _Replacement(
-          'Map<K, V> _defaultMap<K, V>() => null;',
-          'Map<String, T> _defaultMap<T>() => <String, T>{};',
-        );
-        yield _Replacement(
-          'SimpleObject _defaultSimpleObject() => null;',
-          'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
-        );
-        yield _Replacement(
-          'StrictKeysObject _defaultStrictKeysObject() => null;',
-          'StrictKeysObject _defaultStrictKeysObject() => '
-              "StrictKeysObject(10, 'cool');",
-        );
-        yield _Replacement(
-          'DateTime dateTime;',
-          'DateTime dateTime = DateTime(1981, 6, 5);',
-        );
-        yield _Replacement(
-          'BigInt bigInt;',
-          "BigInt bigInt = BigInt.parse('10000000000000000000');",
-        );
-        yield _Replacement(
-          'bool get nullable => true;',
-          'bool get nullable => false;',
-        );
-      }
-      break;
-    case 'use_wrappers':
-      yield _Replacement.addJsonSerializableKey('useWrappers', true);
-      break;
-    default:
-      throw UnimplementedError('not yet!: $optionKey');
+  if (baseName == _kitchenSinkBaseName &&
+      _kitchenSinkReplacements.containsKey(optionKey)) {
+    yield* _kitchenSinkReplacements[optionKey];
   }
 }
 
@@ -172,12 +197,16 @@ String _configToName(Set<String> config) =>
 List<String> get _fileConfigurations => _fileConfigurationMap.values
     .expand((v) => v)
     .map(_configToExtension)
+    .followedBy(['.factories.dart'])
     .toSet()
-    .toList();
+    .toList()
+      ..sort();
+
+const _kitchenSinkBaseName = 'kitchen_sink';
 
 // TODO: use a set of sets, once we're >=2.2.0
 const _fileConfigurationMap = <String, List<List<String>>>{
-  'kitchen_sink': [
+  _kitchenSinkBaseName: [
     ['any_map'],
     ['any_map', 'checked', 'non_nullable'],
     ['any_map', 'non_nullable'],
@@ -201,10 +230,11 @@ class _Replacement {
   final Pattern existing;
   final String replacement;
 
-  _Replacement(this.existing, this.replacement);
+  const _Replacement(this.existing, this.replacement);
 
-  factory _Replacement.addJsonSerializableKey(String key, bool value) =>
-      _Replacement('@JsonSerializable(', '@JsonSerializable(\n  $key: $value,');
+  const _Replacement.addJsonSerializableKey(String key, bool value)
+      : existing = '@JsonSerializable(',
+        replacement = '@JsonSerializable(\n  $key: $value,';
 
   static String generate(
       String inputContent, Iterable<_Replacement> replacements) {

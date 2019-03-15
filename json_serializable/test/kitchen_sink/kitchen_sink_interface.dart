@@ -5,8 +5,9 @@
 import 'package:collection/collection.dart';
 import 'simple_object.dart';
 
-abstract class KitchenSinkFactory {
+abstract class KitchenSinkFactory<K, V> {
   String get description;
+  bool get anyMap;
   bool get checked;
   bool get nullable;
 
@@ -19,7 +20,7 @@ abstract class KitchenSinkFactory {
     Iterable<DateTime> dateTimeIterable,
   });
 
-  KitchenSink fromJson(Map json);
+  KitchenSink fromJson(Map<K, V> json);
 
   JsonConverterTestClass jsonConverterCtor();
 
