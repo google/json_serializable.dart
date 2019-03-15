@@ -36,15 +36,21 @@ builders:
     build_extensions:
       .dart:
       - .factories.dart
-      - .g_non_nullable.dart
-      - .g_use_wrappers.dart
-      - .g_non_nullable__use_wrappers.dart
       - .g_any_map.dart
-      - .g_any_map__non_nullable.dart
-      - .g_any_map__use_wrappers.dart
-      - .g_any_map__non_nullable__use_wrappers.dart
       - .g_any_map__checked.dart
       - .g_any_map__checked__non_nullable.dart
+      - .g_any_map__checked__non_nullable__use_wrappers.dart
+      - .g_any_map__checked__use_wrappers.dart
+      - .g_any_map__non_nullable.dart
+      - .g_any_map__non_nullable__use_wrappers.dart
+      - .g_any_map__use_wrappers.dart
+      - .g_checked.dart
+      - .g_checked__non_nullable.dart
+      - .g_checked__non_nullable__use_wrappers.dart
+      - .g_checked__use_wrappers.dart
+      - .g_non_nullable.dart
+      - .g_non_nullable__use_wrappers.dart
+      - .g_use_wrappers.dart
     build_to: source
     runs_before: ["json_serializable"]
 

@@ -3,7 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart';
@@ -54,7 +56,8 @@ class _SmartBuilder implements Builder {
 
     final sourceContent = await buildStep.readAsString(buildStep.inputId);
 
-    final factories = {'$_kitchenSinkBaseName.dart': 'normal'};
+    final factories =
+        SplayTreeMap.from({'$_kitchenSinkBaseName.dart': 'normal'});
 
     for (var config in _fileConfigurationMap[baseName]) {
       final extension = _configToExtension(config);
@@ -203,14 +206,8 @@ List<String> get _fileConfigurations => _fileConfigurationMap.values
 const _kitchenSinkBaseName = 'kitchen_sink';
 
 // TODO: use a set of sets, once we're >=2.2.0
-const _fileConfigurationMap = <String, List<List<String>>>{
-  _kitchenSinkBaseName: [
-    ['any_map'],
-    ['any_map', 'checked', 'non_nullable'],
-    ['any_map', 'non_nullable'],
-    ['any_map', 'non_nullable', 'use_wrappers'],
-    ['any_map', 'use_wrappers'],
-  ],
+final _fileConfigurationMap = <String, List<List<String>>>{
+  _kitchenSinkBaseName: _allConfigurations().toList(),
   'default_value': [
     ['any_map', 'checked'],
   ],
@@ -223,6 +220,18 @@ const _fileConfigurationMap = <String, List<List<String>>>{
     ['use_wrappers'],
   ]
 };
+
+Iterable<List<String>> _allConfigurations() sync* {
+  for (var i = 1; i < math.pow(2, _configReplacements.length); i++) {
+    final config = <String>[];
+    for (var j = 0; j < _configReplacements.length; j++) {
+      if (0 != math.pow(2, j).toInt() & i) {
+        config.add(_configReplacements.keys.elementAt(j));
+      }
+    }
+    yield config;
+  }
+}
 
 class _Replacement {
   final Pattern existing;
