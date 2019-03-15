@@ -17,7 +17,7 @@ stages:
   # Run the tests -- include the default-skipped presubmit tests
   - test
   - test: --run-skipped test/ensure_build_test.dart
-  - command: pub run build_runner test -- -p chrome
+  - command: pub run build_runner test --delete-conflicting-outputs -- -p chrome
 
 cache:
   directories:
