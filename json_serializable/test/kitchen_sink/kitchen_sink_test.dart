@@ -121,12 +121,9 @@ void _nullableTests(KitchenSinkFactory factory) {
     if (factory.excludeNull) {
       expect(encoded, isEmpty);
     } else {
-      final expectedDefaultKeys = _validValues.keys.toSet()
-        ..removeAll(_excludeIfNullKeys);
+      expect(encoded.keys, orderedEquals(_validValues.keys));
 
-      expect(encoded.keys, orderedEquals(expectedDefaultKeys));
-
-      for (final key in expectedDefaultKeys) {
+      for (final key in _validValues.keys) {
         expect(encoded, containsPair(key, isNull));
       }
     }
@@ -219,29 +216,9 @@ void _sharedTests(KitchenSinkFactory factory) {
   });
 
   test('JSON keys should be defined in field/property order', () {
-    /// Explicitly setting values from [_excludeIfNullKeys] to ensure
-    /// they exist for KitchenSink where they are excluded when null
-    final item = factory.ctor(iterable: [])
-      ..dateTime = DateTime.now()
-      ..bigInt = BigInt.from(42)
-      ..dateTimeList = []
-      ..crazyComplex = []
-      ..val = {};
-
-    final json = item.toJson();
-
+    final json = factory.ctor().toJson();
     if (factory.excludeNull && factory.nullable) {
-      expect(
-        json.keys,
-        orderedEquals([
-          'dateTime',
-          'bigInt',
-          'iterable',
-          'dateTimeList',
-          'crazyComplex',
-          'val'
-        ]),
-      );
+      expect(json.keys, isEmpty);
     } else {
       expect(json.keys, orderedEquals(_validValues.keys));
     }
@@ -411,15 +388,6 @@ const _invalidCheckedValues = {
   'intIterable': [true],
   'datetime-iterable': [true],
 };
-
-const _excludeIfNullKeys = [
-  'bigInt',
-  'dateTime',
-  'iterable',
-  'dateTimeList',
-  'crazyComplex',
-  _generatedLocalVarName
-];
 
 const _encodedAsMapKeys = ['simpleObject', 'strictKeysObject'];
 

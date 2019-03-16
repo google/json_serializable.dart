@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'kitchen_sink.g_any_map__use_wrappers.dart';
+part of 'kitchen_sink.g_exclude_null__use_wrappers.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) {
+KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
       ctorValidatedNo42: json['no-42'] as int,
       iterable: json['iterable'] as List,
@@ -34,23 +34,24 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..dateTimeList = (json['dateTimeList'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         ?.toList()
-    ..map = json['map'] as Map
-    ..stringStringMap = (json['stringStringMap'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e as String),
+    ..map = json['map'] as Map<String, dynamic>
+    ..stringStringMap = (json['stringStringMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as String),
     )
-    ..dynamicIntMap = (json['dynamicIntMap'] as Map)?.map(
+    ..dynamicIntMap = (json['dynamicIntMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as int),
     )
-    ..objectDateTimeMap = (json['objectDateTimeMap'] as Map)?.map(
+    ..objectDateTimeMap =
+        (json['objectDateTimeMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e == null ? null : DateTime.parse(e as String)),
     )
     ..crazyComplex = (json['crazyComplex'] as List)
-        ?.map((e) => (e as Map)?.map(
+        ?.map((e) => (e as Map<String, dynamic>)?.map(
               (k, e) => MapEntry(
-                  k as String,
-                  (e as Map)?.map(
+                  k,
+                  (e as Map<String, dynamic>)?.map(
                     (k, e) => MapEntry(
-                        k as String,
+                        k,
                         (e as List)
                             ?.map((e) => (e as List)
                                 ?.map((e) => e == null
@@ -61,17 +62,18 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
                   )),
             ))
         ?.toList()
-    ..val = (json['val'] as Map)?.map(
-      (k, e) => MapEntry(k as String, e as bool),
+    ..val = (json['val'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e as bool),
     )
     ..writeNotNull = json['writeNotNull'] as bool
     ..string = json[r'$string'] as String
     ..simpleObject = json['simpleObject'] == null
         ? null
-        : SimpleObject.fromJson(json['simpleObject'] as Map)
+        : SimpleObject.fromJson(json['simpleObject'] as Map<String, dynamic>)
     ..strictKeysObject = json['strictKeysObject'] == null
         ? null
-        : StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
+        : StrictKeysObject.fromJson(
+            json['strictKeysObject'] as Map<String, dynamic>)
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
@@ -84,7 +86,9 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys sync* {
-    yield 'no-42';
+    if (_v.ctorValidatedNo42 != null) {
+      yield 'no-42';
+    }
     if (_v.dateTime != null) {
       yield 'dateTime';
     }
@@ -94,37 +98,81 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
     if (_v.iterable != null) {
       yield 'iterable';
     }
-    yield 'dynamicIterable';
-    yield 'objectIterable';
-    yield 'intIterable';
-    yield 'set';
-    yield 'dynamicSet';
-    yield 'objectSet';
-    yield 'intSet';
-    yield 'dateTimeSet';
-    yield 'datetime-iterable';
-    yield 'list';
-    yield 'dynamicList';
-    yield 'objectList';
-    yield 'intList';
+    if (_v.dynamicIterable != null) {
+      yield 'dynamicIterable';
+    }
+    if (_v.objectIterable != null) {
+      yield 'objectIterable';
+    }
+    if (_v.intIterable != null) {
+      yield 'intIterable';
+    }
+    if (_v.set != null) {
+      yield 'set';
+    }
+    if (_v.dynamicSet != null) {
+      yield 'dynamicSet';
+    }
+    if (_v.objectSet != null) {
+      yield 'objectSet';
+    }
+    if (_v.intSet != null) {
+      yield 'intSet';
+    }
+    if (_v.dateTimeSet != null) {
+      yield 'dateTimeSet';
+    }
+    if (_v.dateTimeIterable != null) {
+      yield 'datetime-iterable';
+    }
+    if (_v.list != null) {
+      yield 'list';
+    }
+    if (_v.dynamicList != null) {
+      yield 'dynamicList';
+    }
+    if (_v.objectList != null) {
+      yield 'objectList';
+    }
+    if (_v.intList != null) {
+      yield 'intList';
+    }
     if (_v.dateTimeList != null) {
       yield 'dateTimeList';
     }
-    yield 'map';
-    yield 'stringStringMap';
-    yield 'dynamicIntMap';
-    yield 'objectDateTimeMap';
+    if (_v.map != null) {
+      yield 'map';
+    }
+    if (_v.stringStringMap != null) {
+      yield 'stringStringMap';
+    }
+    if (_v.dynamicIntMap != null) {
+      yield 'dynamicIntMap';
+    }
+    if (_v.objectDateTimeMap != null) {
+      yield 'objectDateTimeMap';
+    }
     if (_v.crazyComplex != null) {
       yield 'crazyComplex';
     }
     if (_v.val != null) {
       yield 'val';
     }
-    yield 'writeNotNull';
-    yield r'$string';
-    yield 'simpleObject';
-    yield 'strictKeysObject';
-    yield 'validatedPropertyNo42';
+    if (_v.writeNotNull != null) {
+      yield 'writeNotNull';
+    }
+    if (_v.string != null) {
+      yield r'$string';
+    }
+    if (_v.simpleObject != null) {
+      yield 'simpleObject';
+    }
+    if (_v.strictKeysObject != null) {
+      yield 'strictKeysObject';
+    }
+    if (_v.validatedPropertyNo42 != null) {
+      yield 'validatedPropertyNo42';
+    }
   }
 
   @override
@@ -210,7 +258,8 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
   }
 }
 
-JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+JsonConverterTestClass _$JsonConverterTestClassFromJson(
+    Map<String, dynamic> json) {
   return JsonConverterTestClass()
     ..duration = json['duration'] == null
         ? null
@@ -221,9 +270,9 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
     ..bigInt = json['bigInt'] == null
         ? null
         : const BigIntStringConverter().fromJson(json['bigInt'] as String)
-    ..bigIntMap = (json['bigIntMap'] as Map)?.map(
+    ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
-          k as String,
+          k,
           e == null
               ? null
               : const BigIntStringConverter().fromJson(e as String)),
@@ -250,15 +299,29 @@ class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
   _$JsonConverterTestClassJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys => const [
-        'duration',
-        'durationList',
-        'bigInt',
-        'bigIntMap',
-        'numberSilly',
-        'numberSillySet',
-        'dateTime'
-      ];
+  Iterable<String> get keys sync* {
+    if (_v.duration != null) {
+      yield 'duration';
+    }
+    if (_v.durationList != null) {
+      yield 'durationList';
+    }
+    if (_v.bigInt != null) {
+      yield 'bigInt';
+    }
+    if (_v.bigIntMap != null) {
+      yield 'bigIntMap';
+    }
+    if (_v.numberSilly != null) {
+      yield 'numberSilly';
+    }
+    if (_v.numberSillySet != null) {
+      yield 'numberSillySet';
+    }
+    if (_v.dateTime != null) {
+      yield 'dateTime';
+    }
+  }
 
   @override
   dynamic operator [](Object key) {
@@ -300,7 +363,7 @@ class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
 }
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
-    Map json) {
+    Map<String, dynamic> json) {
   return JsonConverterGeneric<S, T, U>()
     ..item = json['item'] == null
         ? null
@@ -310,9 +373,9 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
             ? null
             : GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..itemMap = (json['itemMap'] as Map)?.map(
+    ..itemMap = (json['itemMap'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(
-          k as String,
+          k,
           e == null
               ? null
               : GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
@@ -328,7 +391,17 @@ class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
   _$JsonConverterGenericJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys => const ['item', 'itemList', 'itemMap'];
+  Iterable<String> get keys sync* {
+    if (_v.item != null) {
+      yield 'item';
+    }
+    if (_v.itemList != null) {
+      yield 'itemList';
+    }
+    if (_v.itemMap != null) {
+      yield 'itemMap';
+    }
+  }
 
   @override
   dynamic operator [](Object key) {

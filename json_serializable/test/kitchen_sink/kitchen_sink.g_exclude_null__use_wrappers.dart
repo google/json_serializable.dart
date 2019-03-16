@@ -10,7 +10,7 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_any_map__use_wrappers.g.dart';
+part 'kitchen_sink.g_exclude_null__use_wrappers.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
@@ -22,14 +22,14 @@ StrictKeysObject _defaultStrictKeysObject() => null;
 
 const k.KitchenSinkFactory factory = _Factory();
 
-class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
+class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
 
-  String get description => 'any_map__use_wrappers';
-  bool get anyMap => true;
+  String get description => 'exclude_null__use_wrappers';
+  bool get anyMap => false;
   bool get checked => false;
   bool get nullable => true;
-  bool get excludeNull => false;
+  bool get excludeNull => true;
   bool get explicitToJson => false;
 
   k.KitchenSink ctor({
@@ -49,7 +49,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
         dateTimeIterable: dateTimeIterable,
       );
 
-  k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
+  k.KitchenSink fromJson(Map<String, dynamic> json) =>
+      KitchenSink.fromJson(json);
 
   k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
 
@@ -59,7 +60,7 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 
 @JsonSerializable(
   useWrappers: true,
-  anyMap: true,
+  includeIfNull: false,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
@@ -91,17 +92,15 @@ class KitchenSink implements k.KitchenSink {
     }
   }
 
-  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map<String, dynamic> json) =>
+      _$KitchenSinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
-  @JsonKey(includeIfNull: false)
   DateTime dateTime;
 
-  @JsonKey(includeIfNull: false)
   BigInt bigInt;
 
-  @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
@@ -121,7 +120,6 @@ class KitchenSink implements k.KitchenSink {
   List<dynamic> dynamicList = _defaultList();
   List<Object> objectList = _defaultList();
   List<int> intList = _defaultList();
-  @JsonKey(includeIfNull: false)
   List<DateTime> dateTimeList = _defaultList();
 
   Map map = _defaultMap();
@@ -129,12 +127,10 @@ class KitchenSink implements k.KitchenSink {
   Map<dynamic, int> dynamicIntMap = _defaultMap();
   Map<Object, DateTime> objectDateTimeMap = _defaultMap();
 
-  @JsonKey(includeIfNull: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex =
       _defaultList();
 
   // Handle fields with names that collide with helper names
-  @JsonKey(includeIfNull: false)
   Map<String, bool> val = _defaultMap();
   bool writeNotNull;
   @JsonKey(name: r'$string')
@@ -159,7 +155,7 @@ class KitchenSink implements k.KitchenSink {
 
 @JsonSerializable(
   useWrappers: true,
-  anyMap: true,
+  includeIfNull: false,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -189,7 +185,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 
 @JsonSerializable(
   useWrappers: true,
-  anyMap: true,
+  includeIfNull: false,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
