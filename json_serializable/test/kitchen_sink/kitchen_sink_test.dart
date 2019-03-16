@@ -30,6 +30,17 @@ void main() {
     expect(_invalidValueTypes.keys, orderedEquals(_validValues.keys));
   });
 
+  test('tracking Map/Iterable types correctly', () {
+    for (var entry in _validValues.entries) {
+      if (_iterableMapKeys.contains(entry.key) ||
+          _encodedAsMapKeys.contains(entry.key)) {
+        expect(entry.value, anyOf(isMap, isList));
+      } else {
+        expect(entry.value, isNot(anyOf(isMap, isList)));
+      }
+    }
+  });
+
   test('required keys', () {
     expect(
         () => StrictKeysObject.fromJson({}),
@@ -226,25 +237,6 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(_validValues);
-
-    bool containsKey(String key) {
-      return _iterableMapKeys.contains(key) ||
-          (factory.explicitToJson && _encodedAsMapKeys.contains(key));
-    }
-
-    for (var entry in validInstance.toJson().entries) {
-      expect(entry.value, isNotNull,
-          reason: 'key "${entry.key}" should not be null');
-
-      if (containsKey(entry.key)) {
-        expect(entry.value, anyOf(isMap, isList),
-            reason: 'key "${entry.key}" should be a Map/List');
-      } else {
-        expect(entry.value, isNot(anyOf(isMap, isList)),
-            reason: 'key "${entry.key}" should not be a Map/List');
-      }
-    }
-
     expect(loudEncode(_validValues), loudEncode(validInstance));
   });
 }
