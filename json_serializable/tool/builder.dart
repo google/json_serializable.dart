@@ -114,6 +114,9 @@ const _configReplacements = {
   'checked': _Replacement.addJsonSerializableKey('checked', true),
   'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
   'use_wrappers': _Replacement.addJsonSerializableKey('useWrappers', true),
+  'explicit_to_json':
+      _Replacement.addJsonSerializableKey('explicitToJson', true),
+  'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
 };
 
 const _kitchenSinkReplacements = {
@@ -141,7 +144,23 @@ const _kitchenSinkReplacements = {
       'bool get checked => true;',
     )
   ],
+  'exclude_null': [
+    _Replacement(
+      'bool get excludeNull => false;',
+      'bool get excludeNull => true;',
+    ),
+  ],
+  'explicit_to_json': [
+    _Replacement(
+      'bool get explicitToJson => false;',
+      'bool get explicitToJson => true;',
+    ),
+  ],
   'non_nullable': [
+    _Replacement(
+      'bool get nullable => true;',
+      'bool get nullable => false;',
+    ),
     _Replacement(
       'List<T> _defaultList<T>() => null;',
       'List<T> _defaultList<T>() => <T>[];',
@@ -171,10 +190,6 @@ const _kitchenSinkReplacements = {
       'BigInt bigInt;',
       "BigInt bigInt = BigInt.parse('10000000000000000000');",
     ),
-    _Replacement(
-      'bool get nullable => true;',
-      'bool get nullable => false;',
-    )
   ],
 };
 
@@ -207,11 +222,14 @@ const _kitchenSinkBaseName = 'kitchen_sink';
 // TODO: use a set of sets, once we're >=2.2.0
 const _fileConfigurationMap = <String, List<List<String>>>{
   _kitchenSinkBaseName: [
-    ['any_map'],
     ['any_map', 'checked', 'non_nullable'],
-    ['any_map', 'non_nullable'],
     ['any_map', 'non_nullable', 'use_wrappers'],
+    ['any_map', 'non_nullable'],
     ['any_map', 'use_wrappers'],
+    ['any_map'],
+    ['exclude_null', 'non_nullable'],
+    ['exclude_null'],
+    ['explicit_to_json'],
   ],
   'default_value': [
     ['any_map', 'checked'],

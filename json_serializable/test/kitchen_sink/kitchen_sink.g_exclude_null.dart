@@ -10,26 +10,26 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_any_map__non_nullable__use_wrappers.g.dart';
+part 'kitchen_sink.g_exclude_null.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
-List<T> _defaultList<T>() => <T>[];
-Set<T> _defaultSet<T>() => Set<T>();
-Map<String, T> _defaultMap<T>() => <String, T>{};
-SimpleObject _defaultSimpleObject() => SimpleObject(42);
-StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
+List<T> _defaultList<T>() => null;
+Set<T> _defaultSet<T>() => null;
+Map<K, V> _defaultMap<K, V>() => null;
+SimpleObject _defaultSimpleObject() => null;
+StrictKeysObject _defaultStrictKeysObject() => null;
 
 const k.KitchenSinkFactory factory = _Factory();
 
-class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
+class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
 
-  String get description => 'any_map__non_nullable__use_wrappers';
-  bool get anyMap => true;
+  String get description => 'exclude_null';
+  bool get anyMap => false;
   bool get checked => false;
-  bool get nullable => false;
-  bool get excludeNull => false;
+  bool get nullable => true;
+  bool get excludeNull => true;
   bool get explicitToJson => false;
 
   k.KitchenSink ctor({
@@ -49,7 +49,8 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
         dateTimeIterable: dateTimeIterable,
       );
 
-  k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
+  k.KitchenSink fromJson(Map<String, dynamic> json) =>
+      KitchenSink.fromJson(json);
 
   k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
 
@@ -58,9 +59,7 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 }
 
 @JsonSerializable(
-  useWrappers: true,
-  nullable: false,
-  anyMap: true,
+  includeIfNull: false,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
@@ -92,15 +91,16 @@ class KitchenSink implements k.KitchenSink {
     }
   }
 
-  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map<String, dynamic> json) =>
+      _$KitchenSinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
   @JsonKey(includeIfNull: false)
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 
   @JsonKey(includeIfNull: false)
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
 
   @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
@@ -159,9 +159,7 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  useWrappers: true,
-  nullable: false,
-  anyMap: true,
+  includeIfNull: false,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -180,19 +178,17 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   Duration duration;
   List<Duration> durationList;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
   Map<String, BigInt> bigIntMap;
 
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 }
 
 @JsonSerializable(
-  useWrappers: true,
-  nullable: false,
-  anyMap: true,
+  includeIfNull: false,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
