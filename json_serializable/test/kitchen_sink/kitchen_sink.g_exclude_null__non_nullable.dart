@@ -97,13 +97,10 @@ class KitchenSink implements k.KitchenSink {
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
-  @JsonKey(includeIfNull: false)
   DateTime dateTime = DateTime(1981, 6, 5);
 
-  @JsonKey(includeIfNull: false)
   BigInt bigInt = BigInt.parse('10000000000000000000');
 
-  @JsonKey(includeIfNull: false)
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
@@ -123,7 +120,6 @@ class KitchenSink implements k.KitchenSink {
   List<dynamic> dynamicList = _defaultList();
   List<Object> objectList = _defaultList();
   List<int> intList = _defaultList();
-  @JsonKey(includeIfNull: false)
   List<DateTime> dateTimeList = _defaultList();
 
   Map map = _defaultMap();
@@ -131,12 +127,10 @@ class KitchenSink implements k.KitchenSink {
   Map<dynamic, int> dynamicIntMap = _defaultMap();
   Map<Object, DateTime> objectDateTimeMap = _defaultMap();
 
-  @JsonKey(includeIfNull: false)
   List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex =
       _defaultList();
 
   // Handle fields with names that collide with helper names
-  @JsonKey(includeIfNull: false)
   Map<String, bool> val = _defaultMap();
   bool writeNotNull;
   @JsonKey(name: r'$string')

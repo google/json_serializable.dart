@@ -83,49 +83,37 @@ class _$KitchenSinkJsonMapWrapper extends $JsonMapWrapper {
   _$KitchenSinkJsonMapWrapper(this._v);
 
   @override
-  Iterable<String> get keys sync* {
-    yield 'no-42';
-    if (_v.dateTime != null) {
-      yield 'dateTime';
-    }
-    if (_v.bigInt != null) {
-      yield 'bigInt';
-    }
-    if (_v.iterable != null) {
-      yield 'iterable';
-    }
-    yield 'dynamicIterable';
-    yield 'objectIterable';
-    yield 'intIterable';
-    yield 'set';
-    yield 'dynamicSet';
-    yield 'objectSet';
-    yield 'intSet';
-    yield 'dateTimeSet';
-    yield 'datetime-iterable';
-    yield 'list';
-    yield 'dynamicList';
-    yield 'objectList';
-    yield 'intList';
-    if (_v.dateTimeList != null) {
-      yield 'dateTimeList';
-    }
-    yield 'map';
-    yield 'stringStringMap';
-    yield 'dynamicIntMap';
-    yield 'objectDateTimeMap';
-    if (_v.crazyComplex != null) {
-      yield 'crazyComplex';
-    }
-    if (_v.val != null) {
-      yield 'val';
-    }
-    yield 'writeNotNull';
-    yield r'$string';
-    yield 'simpleObject';
-    yield 'strictKeysObject';
-    yield 'validatedPropertyNo42';
-  }
+  Iterable<String> get keys => const [
+        'no-42',
+        'dateTime',
+        'bigInt',
+        'iterable',
+        'dynamicIterable',
+        'objectIterable',
+        'intIterable',
+        'set',
+        'dynamicSet',
+        'objectSet',
+        'intSet',
+        'dateTimeSet',
+        'datetime-iterable',
+        'list',
+        'dynamicList',
+        'objectList',
+        'intList',
+        'dateTimeList',
+        'map',
+        'stringStringMap',
+        'dynamicIntMap',
+        'objectDateTimeMap',
+        'crazyComplex',
+        'val',
+        'writeNotNull',
+        r'$string',
+        'simpleObject',
+        'strictKeysObject',
+        'validatedPropertyNo42'
+      ];
 
   @override
   dynamic operator [](Object key) {
