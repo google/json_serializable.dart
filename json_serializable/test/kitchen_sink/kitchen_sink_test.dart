@@ -95,32 +95,40 @@ void _nonNullableTests(KitchenSinkFactory factory) {
 }
 
 void _nullableTests(KitchenSinkFactory factory) {
-  void roundTripItem(KitchenSink p) {
-    roundTripObject(p, (json) => factory.fromJson(json));
+  void roundTripSink(KitchenSink p) {
+    roundTripObject(p, factory.fromJson);
   }
 
   test('nullable values are allowed in the nullable version', () {
     final instance = factory.jsonConverterCtor();
     final json = instance.toJson();
-    expect(json.values, everyElement(isNull));
-    expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
 
-    final instance2 = factory.jsonConverterFromJson(json);
-    expect(instance2.toJson(), json);
+    if (factory.excludeNull) {
+      expect(json, isEmpty);
+    } else {
+      expect(json.values, everyElement(isNull));
+      expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
+
+      final instance2 = factory.jsonConverterFromJson(json);
+      expect(instance2.toJson(), json);
+    }
   });
 
   test('Fields with `!includeIfNull` should not be included when null', () {
     final item = factory.ctor();
-
-    final expectedDefaultKeys = _validValues.keys.toSet()
-      ..removeAll(_excludeIfNullKeys);
-
     final encoded = item.toJson();
 
-    expect(encoded.keys, orderedEquals(expectedDefaultKeys));
+    if (factory.excludeNull) {
+      expect(encoded, isEmpty);
+    } else {
+      final expectedDefaultKeys = _validValues.keys.toSet()
+        ..removeAll(_excludeIfNullKeys);
 
-    for (final key in expectedDefaultKeys) {
-      expect(encoded, containsPair(key, isNull));
+      expect(encoded.keys, orderedEquals(expectedDefaultKeys));
+
+      for (final key in expectedDefaultKeys) {
+        expect(encoded, containsPair(key, isNull));
+      }
     }
   });
 
@@ -130,7 +138,7 @@ void _nullableTests(KitchenSinkFactory factory) {
       ..dateTimeList = <DateTime>[now, null]
       ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
 
-    roundTripItem(item);
+    roundTripSink(item);
   });
 
   test('complex nested type', () {
@@ -152,7 +160,7 @@ void _nullableTests(KitchenSinkFactory factory) {
           }
         }
       ];
-    roundTripItem(item);
+    roundTripSink(item);
   });
 }
 
@@ -221,16 +229,37 @@ void _sharedTests(KitchenSinkFactory factory) {
       ..val = {};
 
     final json = item.toJson();
-    expect(json.keys, orderedEquals(_validValues.keys));
+
+    if (factory.excludeNull && factory.nullable) {
+      expect(
+        json.keys,
+        orderedEquals([
+          'dateTime',
+          'bigInt',
+          'iterable',
+          'dateTimeList',
+          'crazyComplex',
+          'val'
+        ]),
+      );
+    } else {
+      expect(json.keys, orderedEquals(_validValues.keys));
+    }
   });
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(_validValues);
+
+    bool containsKey(String key) {
+      return _iterableMapKeys.contains(key) ||
+          (factory.explicitToJson && _encodedAsMapKeys.contains(key));
+    }
+
     for (var entry in validInstance.toJson().entries) {
       expect(entry.value, isNotNull,
           reason: 'key "${entry.key}" should not be null');
 
-      if (_iterableMapKeys.contains(entry.key)) {
+      if (containsKey(entry.key)) {
         expect(entry.value, anyOf(isMap, isList),
             reason: 'key "${entry.key}" should be a Map/List');
       } else {
@@ -391,6 +420,8 @@ const _excludeIfNullKeys = [
   'crazyComplex',
   _generatedLocalVarName
 ];
+
+const _encodedAsMapKeys = ['simpleObject', 'strictKeysObject'];
 
 const _iterableMapKeys = [
   'crazyComplex',
