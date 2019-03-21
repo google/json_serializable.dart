@@ -6,6 +6,8 @@
 
 * Added `BigIntTypeHelper` to `type_helper.dart` library.
 
+* Provide a more helpful error if the builder is improperly configured.
+
 ## 2.0.3
 
 * When invoking a `fromJson` constructor on a field type, generate a conversion

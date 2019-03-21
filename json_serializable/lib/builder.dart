@@ -22,6 +22,23 @@ import 'src/json_part_builder.dart';
 ///
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
-  final config = JsonSerializable.fromJson(options.config);
-  return jsonPartBuilder(config: config);
+  try {
+    final config = JsonSerializable.fromJson(options.config);
+    return jsonPartBuilder(config: config);
+  } on CheckedFromJsonException catch (e) {
+    final lines = <String>[
+      'Could not parse the options provided for `json_serializable`.'
+    ];
+
+    if (e.key != null) {
+      lines.add('There is a problem with "${e.key}".');
+    }
+    if (e.message != null) {
+      lines.add(e.message);
+    } else if (e.innerError != null) {
+      lines.add(e.innerError.toString());
+    }
+
+    throw StateError(lines.join('\n'));
+  }
 }

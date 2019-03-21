@@ -2,6 +2,11 @@
 
 * Added to `encodeEmptyCollection` to `JsonKey` and `JsonSerializable`.
 
+* `JsonSerializable.fromJson` now throws `CheckedFromJsonException` on errors.
+  This is potentially a breaking change. 
+
+* Added a more helpful `toString` to `CheckedFromJsonException`.
+
 ## 2.0.0
 
 * **Potentially Breaking** `JsonSerializable` no longer sets default values for

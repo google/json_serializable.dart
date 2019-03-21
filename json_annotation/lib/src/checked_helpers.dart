@@ -105,4 +105,22 @@ class CheckedFromJsonException implements Exception {
     }
     return null;
   }
+
+  @override
+  String toString() {
+    final lines = <String>['CheckedFromJsonException'];
+
+    if (_className != null) {
+      lines.add('Could not create `$_className`.');
+    }
+    if (key != null) {
+      lines.add('There is a problem with "$key".');
+    }
+    if (message != null) {
+      lines.add(message);
+    } else if (innerError != null) {
+      lines.add(innerError.toString());
+    }
+    return lines.join('\n');
+  }
 }
