@@ -112,8 +112,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
         if (!_writeJsonValueNaive(field)) {
           check = '_v.${field.name} != null';
 
-          if (!jsonKeyFor(field).encodeEmptyCollection &&
-              !jsonKeyFor(field).includeIfNull) {
+          if (!jsonKeyFor(field).encodeEmptyCollection) {
+            assert(!jsonKeyFor(field).includeIfNull);
             if (jsonKeyFor(field).nullable) {
               check = '_v.${field.name}?.isNotEmpty ?? false';
             } else {
