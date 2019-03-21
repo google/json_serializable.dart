@@ -79,6 +79,7 @@ targets:
           create_factory: true
           create_to_json: true
           disallow_unrecognized_keys: false
+          encode_empty_collection: true
           explicit_to_json: false
           field_rename: none
           generate_to_json_function: true

@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Added to `encodeEmptyCollection` to `JsonKey` and `JsonSerializable`.
+
 ## 2.0.0
 
 * **Potentially Breaking** `JsonSerializable` no longer sets default values for

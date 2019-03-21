@@ -21,6 +21,10 @@ enum FieldRename {
 }
 
 /// An annotation used to specify a class to generate code for.
+@JsonSerializable(
+  fieldRename: FieldRename.snake,
+  disallowUnrecognizedKeys: true,
+)
 class JsonSerializable {
   /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
   /// – which is the default type of [Map] instances return by JSON decode in
@@ -86,6 +90,21 @@ class JsonSerializable {
   ///
   /// If `true`, any unrecognized keys will be treated as an error.
   final bool disallowUnrecognizedKeys;
+
+  /// Whether the generator should include empty collection field values in the
+  /// serialized output.
+  ///
+  /// If `true` (the default), empty collection fields
+  /// (of type [Iterable], [Set], [List], and [Map])
+  /// are included in generated `toJson` functions.
+  ///
+  /// If `false`, fields with empty collections are omitted from `toJson`.
+  ///
+  /// Note: setting this property to `false` overrides the [includeIfNull]
+  /// value to `false` as well.
+  ///
+  /// This value has no effect on non-collection fields.
+  final bool encodeEmptyCollection;
 
   /// If `true`, generated `toJson` methods will explicitly call `toJson` on
   /// nested objects.
@@ -180,6 +199,7 @@ class JsonSerializable {
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
+    this.encodeEmptyCollection,
     this.explicitToJson,
     this.fieldRename,
     this.generateToJsonFunction,
@@ -199,6 +219,7 @@ class JsonSerializable {
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
+    encodeEmptyCollection: true,
     explicitToJson: false,
     fieldRename: FieldRename.none,
     generateToJsonFunction: true,
@@ -219,6 +240,8 @@ class JsonSerializable {
       createToJson: createToJson ?? defaults.createToJson,
       disallowUnrecognizedKeys:
           disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
+      encodeEmptyCollection:
+          encodeEmptyCollection ?? defaults.encodeEmptyCollection,
       explicitToJson: explicitToJson ?? defaults.explicitToJson,
       fieldRename: fieldRename ?? defaults.fieldRename,
       generateToJsonFunction:

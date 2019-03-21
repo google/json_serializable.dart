@@ -55,11 +55,10 @@ void main() {
       } else {
         _nonNullableTests(factory);
       }
-
-      _sharedTests(factory);
       if (factory.anyMap) {
         _anyMapTests(factory);
       }
+      _sharedTests(factory);
     });
   }
 }
@@ -75,19 +74,21 @@ const _jsonConverterValidValues = {
 };
 
 void _nonNullableTests(KitchenSinkFactory factory) {
-  test('with null values fails serialization', () {
-    expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
-        throwsNoSuchMethodError);
-  });
+  if (!factory.noEncodeEmpty) {
+    test('with null values fails serialization', () {
+      expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
+          throwsNoSuchMethodError);
+    });
+  }
 
   test('with empty json fails deserialization', () {
+    Matcher matcher;
     if (factory.checked) {
-      expect(() => factory.fromJson(<String, dynamic>{}),
-          throwsA(_checkedMatcher('intIterable')));
+      matcher = _checkedMatcher('intIterable');
     } else {
-      expect(
-          () => factory.fromJson(<String, dynamic>{}), throwsNoSuchMethodError);
+      matcher = isNoSuchMethodError;
     }
+    expect(() => factory.fromJson(<String, dynamic>{}), throwsA(matcher));
   });
 
   test('nullable values are not allowed in non-nullable version', () {
@@ -107,7 +108,8 @@ void _nonNullableTests(KitchenSinkFactory factory) {
 
 void _nullableTests(KitchenSinkFactory factory) {
   void roundTripSink(KitchenSink p) {
-    roundTripObject(p, factory.fromJson);
+    roundTripObject(p, factory.fromJson,
+        skipObjectEquals: factory.noEncodeEmpty);
   }
 
   test('nullable values are allowed in the nullable version', () {
@@ -116,6 +118,9 @@ void _nullableTests(KitchenSinkFactory factory) {
 
     if (factory.excludeNull) {
       expect(json, isEmpty);
+    } else if (factory.noEncodeEmpty) {
+      expect(json.keys,
+          _jsonConverterValidValues.keys.toSet()..removeAll(_iterableMapKeys));
     } else {
       expect(json.values, everyElement(isNull));
       expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
@@ -131,6 +136,8 @@ void _nullableTests(KitchenSinkFactory factory) {
 
     if (factory.excludeNull) {
       expect(encoded, isEmpty);
+    } else if (factory.noEncodeEmpty) {
+      expect(encoded.keys, _validValueMinusIterableMapKeys);
     } else {
       expect(encoded.keys, orderedEquals(_validValues.keys));
 
@@ -190,46 +197,70 @@ void _anyMapTests(KitchenSinkFactory factory) {
 }
 
 void _sharedTests(KitchenSinkFactory factory) {
-  void roundTripSink(KitchenSink p) {
-    roundTripObject(p, factory.fromJson);
-  }
+  if (factory.noEncodeEmpty && !factory.nullable) {
+    test('empty collections throw errors on round-trip', () {
+      final item = factory.ctor();
+      expect(() => factory.fromJson(item.toJson()), throwsNoSuchMethodError);
+    });
+  } else {
+    test('empty', () {
+      final item = factory.ctor();
+      roundTripObject(item, factory.fromJson);
+    });
 
-  test('empty', () {
-    final item = factory.ctor();
-    roundTripSink(item);
-  });
+    test('list and map of DateTime - not null', () {
+      final now = DateTime.now();
+      final item = factory.ctor(dateTimeIterable: <DateTime>[now])
+        ..dateTimeList = <DateTime>[now, now]
+        ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
-  test('list and map of DateTime - not null', () {
-    final now = DateTime.now();
-    final item = factory.ctor(dateTimeIterable: <DateTime>[now])
-      ..dateTimeList = <DateTime>[now, now]
-      ..objectDateTimeMap = <Object, DateTime>{'value': now};
+      roundTripObject(item, factory.fromJson);
+    });
 
-    roundTripSink(item);
-  });
+    test('complex nested type - not null', () {
+      final item = factory.ctor()
+        ..crazyComplex = [
+          {},
+          {
+            'empty': {},
+            'items': {
+              'empty': [],
+              'items': [
+                [],
+                [DateTime.now()]
+              ]
+            }
+          }
+        ];
+      roundTripObject(item, factory.fromJson);
+    });
 
-  test('complex nested type - not null', () {
-    final item = factory.ctor()
-      ..crazyComplex = [
-        {},
-        {
-          'empty': {},
-          'items': {
-            'empty': [],
-            'items': [
-              [],
-              [DateTime.now()]
-            ]
+    test('round trip valid, empty values', () {
+      final values = Map.fromEntries(_validValues.entries.map((e) {
+        var value = e.value;
+        if (_iterableMapKeys.contains(e.key)) {
+          if (value is List) {
+            value = [];
+          } else {
+            assert(value is Map);
+            value = <String, dynamic>{};
           }
         }
-      ];
-    roundTripSink(item);
-  });
+        return MapEntry(e.key, value);
+      }));
+
+      final validInstance = factory.fromJson(values);
+
+      roundTripObject(validInstance, factory.fromJson, skipObjectEquals: true);
+    });
+  }
 
   test('JSON keys should be defined in field/property order', () {
     final json = factory.ctor().toJson();
     if (factory.excludeNull && factory.nullable) {
       expect(json.keys, isEmpty);
+    } else if (factory.noEncodeEmpty) {
+      expect(json.keys, orderedEquals(_validValueMinusIterableMapKeys));
     } else {
       expect(json.keys, orderedEquals(_validValues.keys));
     }
@@ -237,7 +268,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(_validValues);
-    expect(loudEncode(_validValues), loudEncode(validInstance));
+    roundTripObject(validInstance, factory.fromJson);
   });
 }
 
@@ -310,27 +341,27 @@ const _validValues = <String, dynamic>{
   'no-42': 0,
   'dateTime': '2018-05-10T14:20:58.927',
   'bigInt': '10000000000000000000',
-  'iterable': [],
-  'dynamicIterable': [],
-  'objectIterable': [],
-  'intIterable': [],
-  'set': [],
-  'dynamicSet': [],
-  'objectSet': [],
-  'intSet': [],
-  'dateTimeSet': [],
-  'datetime-iterable': [],
-  'list': [],
-  'dynamicList': [],
-  'objectList': [],
-  'intList': [],
-  'dateTimeList': [],
-  'map': <String, dynamic>{},
-  'stringStringMap': <String, dynamic>{},
-  'dynamicIntMap': <String, dynamic>{},
-  'objectDateTimeMap': <String, dynamic>{},
-  'crazyComplex': [],
-  _generatedLocalVarName: <String, dynamic>{},
+  'iterable': [true],
+  'dynamicIterable': [true],
+  'objectIterable': [true],
+  'intIterable': [42],
+  'set': [true],
+  'dynamicSet': [true],
+  'objectSet': [true],
+  'intSet': [42],
+  'dateTimeSet': ['2018-05-10T14:20:58.927'],
+  'datetime-iterable': ['2018-05-10T14:20:58.927'],
+  'list': [true],
+  'dynamicList': [true],
+  'objectList': [true],
+  'intList': [42],
+  'dateTimeList': ['2018-05-10T14:20:58.927'],
+  'map': <String, dynamic>{'key': true},
+  'stringStringMap': <String, dynamic>{'key': 'vaule'},
+  'dynamicIntMap': <String, dynamic>{'key': 42},
+  'objectDateTimeMap': <String, dynamic>{'key': '2018-05-10T14:20:58.927'},
+  'crazyComplex': [<String, dynamic>{}],
+  _generatedLocalVarName: <String, dynamic>{'key': true},
   _toJsonMapHelperName: true,
   r'$string': 'string',
   'simpleObject': {'value': 42},
@@ -384,10 +415,12 @@ const _invalidCheckedValues = {
 const _encodedAsMapKeys = ['simpleObject', 'strictKeysObject'];
 
 const _iterableMapKeys = [
+  'bigIntMap',
   'crazyComplex',
   'datetime-iterable',
   'dateTimeList',
   'dateTimeSet',
+  'durationList',
   'dynamicIntMap',
   'dynamicIterable',
   'dynamicList',
@@ -398,6 +431,7 @@ const _iterableMapKeys = [
   'iterable',
   'list',
   'map',
+  'numberSillySet',
   'objectDateTimeMap',
   'objectIterable',
   'objectList',
@@ -406,3 +440,6 @@ const _iterableMapKeys = [
   'stringStringMap',
   _generatedLocalVarName,
 ];
+
+final _validValueMinusIterableMapKeys =
+    List.unmodifiable(_validValues.keys.toSet()..removeAll(_iterableMapKeys));

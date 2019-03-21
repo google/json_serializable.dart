@@ -1,5 +1,7 @@
 ## 2.1.0
 
+* Added support for `encodeEmptyCollection` on `JsonKey` and `JsonSerializable`.
+
 * Added support for `BigInt`.
 
 * Added `BigIntTypeHelper` to `type_helper.dart` library.

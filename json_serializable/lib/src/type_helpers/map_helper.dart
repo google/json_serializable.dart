@@ -11,6 +11,11 @@ import '../utils.dart';
 
 const _keyParam = 'k';
 
+const _helperFunctionDefinition = '''T $_helperName<T extends Map>(T source) =>
+    (source == null || source.isEmpty) ? null : source;''';
+
+const _helperName = r'_$nullIfEmptyMap';
+
 class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const MapHelper();
 
@@ -31,13 +36,20 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final subFieldValue = context.serialize(valueType, closureArg);
     final subKeyValue = context.serialize(keyType, _keyParam);
 
+    final contextNullable = context.nullable || encodeEmptyAsNullRoot(context);
+
+    if (encodeEmptyAsNullRoot(context)) {
+      context.addMember(_helperFunctionDefinition);
+      expression = '$_helperName($expression)';
+    }
+
     if (closureArg == subFieldValue && _keyParam == subKeyValue) {
       return expression;
     }
 
     if (context.config.useWrappers) {
       var method = '\$wrapMap';
-      if (context.nullable) {
+      if (contextNullable) {
         method = '${method}HandleNull';
       }
 
@@ -45,7 +57,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return '$method<$keyType, $valueType>($expression, $lambda)';
     }
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = contextNullable ? '?' : '';
 
     return '$expression$optionalQuestion'
         '.map(($_keyParam, $closureArg) => MapEntry($subKeyValue, $subFieldValue))';

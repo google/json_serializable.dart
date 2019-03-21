@@ -46,8 +46,11 @@ void throwUnsupported(FieldElement element, String message) =>
 
 FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
     ? null
-    : enumValueForDartObject(reader.objectValue, FieldRename.values,
-        (f) => f.toString().split('.')[1]);
+    : enumValueForDartObject(
+        reader.objectValue,
+        FieldRename.values,
+        (f) => f.toString().split('.')[1],
+      );
 
 T enumValueForDartObject<T>(
         DartObject source, List<T> items, String Function(T) name) =>
@@ -66,6 +69,8 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       createToJson: reader.read('createToJson').literalValue as bool,
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool,
+      encodeEmptyCollection:
+          reader.read('encodeEmptyCollection').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
       generateToJsonFunction:
@@ -90,6 +95,8 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
+    encodeEmptyCollection:
+        annotation.encodeEmptyCollection ?? config.encodeEmptyCollection,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     generateToJsonFunction:

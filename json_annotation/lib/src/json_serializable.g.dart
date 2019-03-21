@@ -13,27 +13,28 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'create_factory',
     'create_to_json',
     'disallow_unrecognized_keys',
+    'encode_empty_collection',
     'explicit_to_json',
     'field_rename',
     'generate_to_json_function',
     'include_if_null',
     'nullable',
-    'use_wrappers',
+    'use_wrappers'
   ]);
   return JsonSerializable(
-    anyMap: json['any_map'] as bool,
-    checked: json['checked'] as bool,
-    createFactory: json['create_factory'] as bool,
-    createToJson: json['create_to_json'] as bool,
-    disallowUnrecognizedKeys: json['disallow_unrecognized_keys'] as bool,
-    explicitToJson: json['explicit_to_json'] as bool,
-    fieldRename:
-        _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']),
-    generateToJsonFunction: json['generate_to_json_function'] as bool,
-    includeIfNull: json['include_if_null'] as bool,
-    nullable: json['nullable'] as bool,
-    useWrappers: json['use_wrappers'] as bool,
-  );
+      anyMap: json['any_map'] as bool,
+      checked: json['checked'] as bool,
+      createFactory: json['create_factory'] as bool,
+      createToJson: json['create_to_json'] as bool,
+      disallowUnrecognizedKeys: json['disallow_unrecognized_keys'] as bool,
+      encodeEmptyCollection: json['encode_empty_collection'] as bool,
+      explicitToJson: json['explicit_to_json'] as bool,
+      fieldRename:
+          _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']),
+      generateToJsonFunction: json['generate_to_json_function'] as bool,
+      includeIfNull: json['include_if_null'] as bool,
+      nullable: json['nullable'] as bool,
+      useWrappers: json['use_wrappers'] as bool);
 }
 
 Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
@@ -43,6 +44,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
+      'encode_empty_collection': instance.encodeEmptyCollection,
       'explicit_to_json': instance.explicitToJson,
       'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
       'generate_to_json_function': instance.generateToJsonFunction,

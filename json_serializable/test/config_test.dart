@@ -109,10 +109,24 @@ void main() {
         final config = Map<String, dynamic>.from(generatorConfigDefaultJson);
         config[entry.key] = entry.value;
 
-        final matcher = (entry.key == 'field_rename')
-            ? isArgumentError.having((e) => e.message, 'message',
-                '`42` is not one of the supported values: none, kebab, snake')
-            : isCastError;
+        Matcher matcher;
+        switch (entry.key) {
+          case 'field_rename':
+            matcher = isArgumentError.having((e) => e.message, 'message',
+                '`42` is not one of the supported values: none, kebab, snake');
+            break;
+          case 'empty_collection_behavior':
+            matcher = isArgumentError.having(
+              (e) => e.message,
+              'message',
+              '`42` is not one of the supported values: no_change, '
+                  'empty_as_null, null_as_empty',
+            );
+            break;
+          default:
+            matcher = isCastError;
+            break;
+        }
 
         expect(
             () => jsonSerializable(BuilderOptions(config)), throwsA(matcher));
@@ -127,6 +141,7 @@ const _invalidConfig = {
   'create_factory': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,
+  'encode_empty_collection': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
   'generate_to_json_function': 42,

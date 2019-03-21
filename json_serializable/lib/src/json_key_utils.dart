@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
+import 'shared_checkers.dart';
 import 'utils.dart';
 
 final _jsonKeyExpando = Expando<JsonKey>();
@@ -94,9 +95,35 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     }
   }
 
-  final disallowNullValue = obj.getField('disallowNullValue').toBoolValue();
-  final includeIfNull = obj.getField('includeIfNull').toBoolValue();
+  return _populateJsonKey(
+    classAnnotation,
+    element,
+    defaultValue: defaultValueLiteral,
+    disallowNullValue: obj.getField('disallowNullValue').toBoolValue(),
+    encodeEmptyCollection: obj.getField('encodeEmptyCollection').toBoolValue(),
+    ignore: obj.getField('ignore').toBoolValue(),
+    includeIfNull: obj.getField('includeIfNull').toBoolValue(),
+    name: obj.getField('name').toStringValue(),
+    nullable: obj.getField('nullable').toBoolValue(),
+    required: obj.getField('required').toBoolValue(),
+  );
+}
 
+const _iterableOrMapChecker =
+    TypeChecker.any([coreIterableTypeChecker, coreMapTypeChecker]);
+
+JsonKey _populateJsonKey(
+  JsonSerializable classAnnotation,
+  FieldElement element, {
+  Object defaultValue,
+  bool disallowNullValue,
+  bool ignore,
+  bool includeIfNull,
+  String name,
+  bool nullable,
+  bool required,
+  bool encodeEmptyCollection,
+}) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
       throwUnsupported(
@@ -106,39 +133,46 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     }
   }
 
-  return _populateJsonKey(
-    classAnnotation,
-    element,
-    defaultValue: defaultValueLiteral,
-    disallowNullValue: disallowNullValue,
-    ignore: obj.getField('ignore').toBoolValue(),
-    includeIfNull: includeIfNull,
-    name: obj.getField('name').toStringValue(),
-    nullable: obj.getField('nullable').toBoolValue(),
-    required: obj.getField('required').toBoolValue(),
-  );
-}
+  if (encodeEmptyCollection == null) {
+    // If set on the class, but not set on the field – set the key to false
+    // iif the type is compatible.
+    if (_iterableOrMapChecker.isAssignableFromType(element.type) &&
+        !classAnnotation.encodeEmptyCollection) {
+      encodeEmptyCollection = false;
+    } else {
+      encodeEmptyCollection = true;
+    }
+  } else if (encodeEmptyCollection == false &&
+      !_iterableOrMapChecker.isAssignableFromType(element.type)) {
+    // If explicitly set of the field, throw an error if the type is not a
+    // compatible type.
+    throwUnsupported(
+      element,
+      '`encodeEmptyCollection: false` is only valid fields of type '
+          'Iterable, List, Set, or Map.',
+    );
+  }
 
-JsonKey _populateJsonKey(
-  JsonSerializable classAnnotation,
-  FieldElement fieldElement, {
-  Object defaultValue,
-  bool disallowNullValue,
-  bool ignore,
-  bool includeIfNull,
-  String name,
-  bool nullable,
-  bool required,
-}) {
+  if (!encodeEmptyCollection) {
+    if (includeIfNull == true) {
+      throwUnsupported(
+        element,
+        'Cannot set `encodeEmptyCollection: false` if `includeIfNull: true`.',
+      );
+    }
+    includeIfNull = false;
+  }
+
   final jsonKey = JsonKey(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
     ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
-    name: _encodedFieldName(classAnnotation, name, fieldElement),
+    name: _encodedFieldName(classAnnotation, name, element),
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
+    encodeEmptyCollection: encodeEmptyCollection,
   );
 
   return jsonKey;
