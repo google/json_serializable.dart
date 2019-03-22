@@ -107,12 +107,25 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       buffer.writeln('  @override\n  Iterable<String> get keys sync* {');
 
       for (final field in fields) {
-        final nullCheck = !_writeJsonValueNaive(field);
-        if (nullCheck) {
-          buffer.write('    if (_v.${field.name} != null) {\n  ');
+        String check;
+
+        if (!_writeJsonValueNaive(field)) {
+          check = '_v.${field.name} != null';
+
+          if (!jsonKeyFor(field).encodeEmptyCollection) {
+            assert(!jsonKeyFor(field).includeIfNull);
+            if (jsonKeyFor(field).nullable) {
+              check = '_v.${field.name}?.isNotEmpty ?? false';
+            } else {
+              check = '_v.${field.name}.isNotEmpty';
+            }
+          }
+        }
+        if (check != null) {
+          buffer.writeln('    if ($check) {\n  ');
         }
         buffer.writeln('    yield ${safeNameAccess(field)};');
-        if (nullCheck) {
+        if (check != null) {
           buffer.writeln('    }');
         }
       }
@@ -239,7 +252,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
   /// `true` if either:
   ///   `includeIfNull` is `true`
   ///   or
-  ///   `nullable` is `false`.
+  ///   `nullable` is `false` and `encodeEmptyCollection` is true
   bool _writeJsonValueNaive(FieldElement field) =>
-      jsonKeyFor(field).includeIfNull || !jsonKeyFor(field).nullable;
+      jsonKeyFor(field).includeIfNull ||
+      (!jsonKeyFor(field).nullable && jsonKeyFor(field).encodeEmptyCollection);
 }

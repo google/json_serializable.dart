@@ -10,28 +10,28 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_exclude_null__non_nullable.g.dart';
+part 'kitchen_sink.g_no_encode_empty.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
-List<T> _defaultList<T>() => <T>[];
-Set<T> _defaultSet<T>() => Set<T>();
-Map<String, T> _defaultMap<T>() => <String, T>{};
-SimpleObject _defaultSimpleObject() => SimpleObject(42);
-StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
+List<T> _defaultList<T>() => null;
+Set<T> _defaultSet<T>() => null;
+Map<K, V> _defaultMap<K, V>() => null;
+SimpleObject _defaultSimpleObject() => null;
+StrictKeysObject _defaultStrictKeysObject() => null;
 
 const k.KitchenSinkFactory factory = _Factory();
 
 class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
 
-  String get description => 'exclude_null__non_nullable';
+  String get description => 'no_encode_empty';
   bool get anyMap => false;
   bool get checked => false;
-  bool get nullable => false;
-  bool get excludeNull => true;
+  bool get nullable => true;
+  bool get excludeNull => false;
   bool get explicitToJson => false;
-  bool get noEncodeEmpty => false;
+  bool get noEncodeEmpty => true;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
@@ -60,8 +60,7 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  encodeEmptyCollection: false,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
@@ -98,9 +97,9 @@ class KitchenSink implements k.KitchenSink {
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
 
   Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
@@ -155,8 +154,7 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  encodeEmptyCollection: false,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -175,18 +173,17 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   Duration duration;
   List<Duration> durationList;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
   Map<String, BigInt> bigIntMap;
 
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime dateTime;
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  encodeEmptyCollection: false,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {

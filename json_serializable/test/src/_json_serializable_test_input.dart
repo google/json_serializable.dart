@@ -8,14 +8,23 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
+
 part 'core_subclass_type_input.dart';
+
 part 'default_value_input.dart';
+
 part 'field_namer_input.dart';
+
 part 'generic_test_input.dart';
+
 part 'inheritance_test_input.dart';
+
 part 'json_converter_test_input.dart';
+
 part 'setter_test_input.dart';
+
 part 'to_from_json_test_input.dart';
+
 part 'unknown_type_test_input.dart';
 
 @ShouldThrow('Generator cannot target `theAnswer`.',
@@ -44,6 +53,7 @@ class OnlyStaticMembers {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
   static final reason = 42;
+
   static int get understand => 42;
 }
 
@@ -460,4 +470,91 @@ class MyList<T, Q> extends ListBase<T> {
   void operator []=(int index, T value) {
     _data[index] = value;
   }
+}
+
+@ShouldGenerate(
+  r'''
+EncodeEmptyCollectionAsNullOnField _$EncodeEmptyCollectionAsNullOnFieldFromJson(
+    Map<String, dynamic> json) {
+  return EncodeEmptyCollectionAsNullOnField()..field = json['field'] as List;
+}
+
+Map<String, dynamic> _$EncodeEmptyCollectionAsNullOnFieldToJson(
+    EncodeEmptyCollectionAsNullOnField instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('field', _$nullIfEmptyIterable(instance.field));
+  return val;
+}
+
+T _$nullIfEmptyIterable<T extends Iterable>(T source) =>
+    (source == null || source.isEmpty) ? null : source;
+''',
+  configurations: ['default'],
+)
+@JsonSerializable()
+class EncodeEmptyCollectionAsNullOnField {
+  @JsonKey(encodeEmptyCollection: false)
+  List field;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. `encodeEmptyCollection: false` is only '
+      'valid fields of type Iterable, List, Set, or Map.',
+  element: 'field',
+)
+@JsonSerializable()
+class EncodeEmptyCollectionAsNullOnNonCollectionField {
+  @JsonKey(encodeEmptyCollection: false)
+  int field;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on `field`. Cannot set `encodeEmptyCollection: false` '
+      'if `includeIfNull: true`.',
+  element: 'field',
+)
+@JsonSerializable()
+class EmptyCollectionAsNullAndIncludeIfNullField {
+  @JsonKey(encodeEmptyCollection: false, includeIfNull: true)
+  List field;
+}
+
+@ShouldGenerate(
+  r'''
+EmptyCollectionAsNullAndIncludeIfNullClass
+    _$EmptyCollectionAsNullAndIncludeIfNullClassFromJson(
+        Map<String, dynamic> json) {
+  return EmptyCollectionAsNullAndIncludeIfNullClass()
+    ..field = json['field'] as List;
+}
+
+Map<String, dynamic> _$EmptyCollectionAsNullAndIncludeIfNullClassToJson(
+    EmptyCollectionAsNullAndIncludeIfNullClass instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('field', _$nullIfEmptyIterable(instance.field));
+  return val;
+}
+
+T _$nullIfEmptyIterable<T extends Iterable>(T source) =>
+    (source == null || source.isEmpty) ? null : source;
+''',
+  configurations: ['default'],
+)
+@JsonSerializable(encodeEmptyCollection: false, includeIfNull: true)
+class EmptyCollectionAsNullAndIncludeIfNullClass {
+  List field;
 }
