@@ -13,7 +13,6 @@ import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
 import 'shared_config.dart';
-import 'test_utils.dart';
 
 void main() {
   test('fields in JsonSerializable are sorted', () {
@@ -89,11 +88,13 @@ void main() {
   });
 
   test('unsupported configuration', () async {
-    final matcher = const TypeMatcher<UnrecognizedKeysException>().having(
-        (e) => e.unrecognizedKeys, 'unrecognizedKeys', [
-      'unsupported'
-    ]).having((e) => e.allowedKeys, 'allowedKeys',
-        unorderedEquals(generatorConfigDefaultJson.keys));
+    final matcher = const TypeMatcher<StateError>().having(
+      (v) => v.message,
+      'message',
+      'Could not parse the options provided for `json_serializable`.\n'
+          'Unrecognized keys: [unsupported]; '
+          'supported keys: [${_invalidConfig.keys.join(', ')}]',
+    );
 
     expect(
         () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
@@ -109,25 +110,18 @@ void main() {
         final config = Map<String, dynamic>.from(generatorConfigDefaultJson);
         config[entry.key] = entry.value;
 
-        Matcher matcher;
-        switch (entry.key) {
-          case 'field_rename':
-            matcher = isArgumentError.having((e) => e.message, 'message',
-                '`42` is not one of the supported values: none, kebab, snake');
-            break;
-          case 'empty_collection_behavior':
-            matcher = isArgumentError.having(
-              (e) => e.message,
-              'message',
-              '`42` is not one of the supported values: no_change, '
-                  'empty_as_null, null_as_empty',
-            );
-            break;
-          default:
-            matcher = isCastError;
-            break;
-        }
+        final lastLine = entry.key == 'field_rename'
+            ? '`42` is not one of the supported values: none, kebab, snake'
+            : "type 'int' is not a subtype of type 'bool' in type cast";
 
+        final matcher = const TypeMatcher<StateError>().having(
+          ((v) => v.message),
+          'message',
+          '''
+Could not parse the options provided for `json_serializable`.
+There is a problem with "${entry.key}".
+$lastLine''',
+        );
         expect(
             () => jsonSerializable(BuilderOptions(config)), throwsA(matcher));
       });

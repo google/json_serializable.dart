@@ -7,34 +7,54 @@ part of 'json_serializable.dart';
 // **************************************************************************
 
 JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
-  $checkKeys(json, allowedKeys: const [
-    'any_map',
-    'checked',
-    'create_factory',
-    'create_to_json',
-    'disallow_unrecognized_keys',
-    'encode_empty_collection',
-    'explicit_to_json',
-    'field_rename',
-    'generate_to_json_function',
-    'include_if_null',
-    'nullable',
-    'use_wrappers'
-  ]);
-  return JsonSerializable(
-      anyMap: json['any_map'] as bool,
-      checked: json['checked'] as bool,
-      createFactory: json['create_factory'] as bool,
-      createToJson: json['create_to_json'] as bool,
-      disallowUnrecognizedKeys: json['disallow_unrecognized_keys'] as bool,
-      encodeEmptyCollection: json['encode_empty_collection'] as bool,
-      explicitToJson: json['explicit_to_json'] as bool,
-      fieldRename:
-          _$enumDecodeNullable(_$FieldRenameEnumMap, json['field_rename']),
-      generateToJsonFunction: json['generate_to_json_function'] as bool,
-      includeIfNull: json['include_if_null'] as bool,
-      nullable: json['nullable'] as bool,
-      useWrappers: json['use_wrappers'] as bool);
+  return $checkedNew('JsonSerializable', json, () {
+    $checkKeys(json, allowedKeys: const [
+      'any_map',
+      'checked',
+      'create_factory',
+      'create_to_json',
+      'disallow_unrecognized_keys',
+      'encode_empty_collection',
+      'explicit_to_json',
+      'field_rename',
+      'generate_to_json_function',
+      'include_if_null',
+      'nullable',
+      'use_wrappers'
+    ]);
+    final val = JsonSerializable(
+        anyMap: $checkedConvert(json, 'any_map', (v) => v as bool),
+        checked: $checkedConvert(json, 'checked', (v) => v as bool),
+        createFactory:
+            $checkedConvert(json, 'create_factory', (v) => v as bool),
+        createToJson: $checkedConvert(json, 'create_to_json', (v) => v as bool),
+        disallowUnrecognizedKeys: $checkedConvert(
+            json, 'disallow_unrecognized_keys', (v) => v as bool),
+        encodeEmptyCollection:
+            $checkedConvert(json, 'encode_empty_collection', (v) => v as bool),
+        explicitToJson:
+            $checkedConvert(json, 'explicit_to_json', (v) => v as bool),
+        fieldRename: $checkedConvert(json, 'field_rename',
+            (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v)),
+        generateToJsonFunction: $checkedConvert(
+            json, 'generate_to_json_function', (v) => v as bool),
+        includeIfNull:
+            $checkedConvert(json, 'include_if_null', (v) => v as bool),
+        nullable: $checkedConvert(json, 'nullable', (v) => v as bool),
+        useWrappers: $checkedConvert(json, 'use_wrappers', (v) => v as bool));
+    return val;
+  }, fieldKeyMap: const {
+    'anyMap': 'any_map',
+    'createFactory': 'create_factory',
+    'createToJson': 'create_to_json',
+    'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
+    'encodeEmptyCollection': 'encode_empty_collection',
+    'explicitToJson': 'explicit_to_json',
+    'fieldRename': 'field_rename',
+    'generateToJsonFunction': 'generate_to_json_function',
+    'includeIfNull': 'include_if_null',
+    'useWrappers': 'use_wrappers'
+  });
 }
 
 Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>

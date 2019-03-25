@@ -22,8 +22,9 @@ enum FieldRename {
 
 /// An annotation used to specify a class to generate code for.
 @JsonSerializable(
-  fieldRename: FieldRename.snake,
+  checked: true,
   disallowUnrecognizedKeys: true,
+  fieldRename: FieldRename.snake,
 )
 class JsonSerializable {
   /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
