@@ -12,6 +12,6 @@ stages:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings .
-    dart: [2.0.0]
+    dart: [2.1.0]
 
 
