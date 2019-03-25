@@ -30,7 +30,7 @@ targets:
 
 builders:
   _internal:
-    import: 'tool/builder.dart'
+    import: 'tool/test_builder.dart'
     builder_factories: ['internal']
     build_extensions:
       .dart:
