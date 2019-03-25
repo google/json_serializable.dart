@@ -1,5 +1,7 @@
 ## 2.1.0
 
+* Require at least Dart `2.1.0`.
+
 * Added to `encodeEmptyCollection` to `JsonKey` and `JsonSerializable`.
 
 * `JsonSerializable.fromJson` now throws `CheckedFromJsonException` on errors.

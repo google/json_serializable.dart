@@ -1,7 +1,7 @@
 # See https://github.com/dart-lang/mono_repo for details
 dart:
+- 2.1.0
 - dev
-- 2.0.0
 
 stages:
 - analyzer_and_format:
