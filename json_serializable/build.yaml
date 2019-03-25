@@ -55,6 +55,14 @@ builders:
     build_to: source
     runs_before: ["json_serializable"]
 
+  _doc_builder:
+    import: "tool/doc_builder.dart"
+    builder_factories: ["docBuilder"]
+    build_extensions: {"lib/json_serializable.dart": ["doc/doc.md"]}
+    build_to: source
+    auto_apply: root_package
+    runs_before: ["json_serializable"]
+
   json_serializable:
     import: "package:json_serializable/builder.dart"
     builder_factories: ["jsonSerializable"]
