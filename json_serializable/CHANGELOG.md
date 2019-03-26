@@ -1,5 +1,7 @@
 ## 2.1.0
 
+* Require at least Dart `2.1.1`.
+
 * Added support for `encodeEmptyCollection` on `JsonKey` and `JsonSerializable`.
 
 * Added support for `BigInt`.

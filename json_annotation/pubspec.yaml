@@ -6,7 +6,7 @@ description: >-
 homepage: https://github.com/dart-lang/json_serializable
 author: Dart Team <misc@dartlang.org>
 environment:
-  sdk: '>=2.0.0 <3.0.0'
+  sdk: '>=2.1.1 <3.0.0'
 
 # When changing JsonSerializable class.
 # dev_dependencies:

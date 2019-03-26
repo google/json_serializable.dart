@@ -15,14 +15,14 @@ import 'strict_keys_object.dart';
 const _generatedLocalVarName = 'val';
 const _toJsonMapHelperName = 'writeNotNull';
 
-final _isATypeError = const TypeMatcher<TypeError>();
+final _isATypeError = isA<TypeError>();
 
 Matcher _isAUnrecognizedKeysException(expectedMessage) =>
-    const TypeMatcher<UnrecognizedKeysException>()
+    isA<UnrecognizedKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
 
 Matcher _isMissingKeyException(expectedMessage) =>
-    const TypeMatcher<MissingRequiredKeysException>()
+    isA<MissingRequiredKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
 
 void main() {
@@ -291,10 +291,9 @@ void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
   }
 }
 
-Matcher _checkedMatcher(String expectedKey) =>
-    const TypeMatcher<CheckedFromJsonException>()
-        .having((e) => e.className, 'className', 'KitchenSink')
-        .having((e) => e.key, 'key', expectedKey);
+Matcher _checkedMatcher(String expectedKey) => isA<CheckedFromJsonException>()
+    .having((e) => e.className, 'className', 'KitchenSink')
+    .having((e) => e.key, 'key', expectedKey);
 
 Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
   Matcher innerMatcher;

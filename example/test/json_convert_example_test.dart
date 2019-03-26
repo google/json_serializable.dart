@@ -81,7 +81,7 @@ void main() {
   });
 }
 
-final _throwsCastSomething = throwsA(const TypeMatcher<CastError>());
+final _throwsCastSomething = throwsA(isA<CastError>());
 
 String _encode(Object object) =>
     const JsonEncoder.withIndent(' ').convert(object);

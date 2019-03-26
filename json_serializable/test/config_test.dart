@@ -88,7 +88,7 @@ void main() {
   });
 
   test('unsupported configuration', () async {
-    final matcher = const TypeMatcher<StateError>().having(
+    final matcher = isA<StateError>().having(
       (v) => v.message,
       'message',
       'Could not parse the options provided for `json_serializable`.\n'
@@ -114,7 +114,7 @@ void main() {
             ? '`42` is not one of the supported values: none, kebab, snake'
             : "type 'int' is not a subtype of type 'bool' in type cast";
 
-        final matcher = const TypeMatcher<StateError>().having(
+        final matcher = isA<StateError>().having(
           ((v) => v.message),
           'message',
           '''

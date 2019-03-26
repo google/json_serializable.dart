@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:test/test.dart';
 
-final isCastError = const TypeMatcher<CastError>();
 final throwsCastError = throwsA(isCastError);
 
 T roundTripObject<T>(
