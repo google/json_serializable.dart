@@ -1,6 +1,6 @@
 # See https://github.com/dart-lang/mono_repo for details
 dart:
-- 2.1.0
+- 2.1.1
 - dev
 
 stages:
@@ -12,6 +12,6 @@ stages:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings .
-    dart: [2.1.0]
+    dart: [2.1.1]
 
 

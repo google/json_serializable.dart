@@ -2,7 +2,7 @@ name: example
 author: Dart Team <misc@dartlang.org>
 
 environment:
-  sdk: '>=2.1.0 <3.0.0'
+  sdk: '>=2.1.1 <3.0.0'
 
 dependencies:
   json_annotation: ^2.0.0
