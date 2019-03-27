@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
@@ -8,44 +7,73 @@ import 'package:source_gen/source_gen.dart';
 
 Builder docBuilder([_]) => _DocBuilder();
 
+const _jsonKey = 'JsonKey';
+const _jsonSerializable = 'JsonSerializable';
+
 class _DocBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
     final lib = LibraryReader(await buildStep.resolver.libraryFor(
         AssetId.resolve('package:json_annotation/json_annotation.dart')));
 
-    final descriptionMap = <String, List<_FieldInfo>>{};
+    final descriptionMap = <String, _FieldInfo>{};
 
     for (var className in _annotationClasses) {
-      final descriptions = <_FieldInfo>[];
-
       for (var fe
           in lib.findType(className).fields.where((fe) => !fe.isStatic)) {
-        descriptions.add(_FieldInfo(className, fe));
+        descriptionMap[fe.name] =
+            _FieldInfo.update(fe, descriptionMap[fe.name]);
       }
-
-      descriptions.sort();
-
-      descriptionMap[className] = descriptions;
     }
 
     final buffer = StringBuffer();
 
-    for (var entry in descriptionMap.entries) {
-      buffer.writeln('<h2>${entry.key}</h2>');
-      buffer.writeln('<dl>');
+    final rows = <List<String>>[];
 
-      for (var description in entry.value) {
-        final anchor = _anchorUriForName(entry.key, description.field.name);
-        buffer.writeln('''
-  <dt><code><a name="$anchor">${description.parent}.${description.field.name}</a></code></dt>
-  <dd>
+    rows.add(['build key', _jsonSerializable, _jsonKey]);
+    rows.add(['-', '-', '-']);
 
-${description.description}
-  </dd>''');
+    final sortedValues = descriptionMap.values.toList()..sort();
+
+    for (var info in sortedValues) {
+      rows.add([
+        info.buildKey,
+        info.classAnnotationName,
+        info.fieldAnnotationName,
+      ]);
+    }
+
+    final longest = List<int>.generate(rows.first.length, (_) => 0);
+    for (var row in rows) {
+      for (var column = 0; column < longest.length; column++) {
+        if (row[column].length > longest[column]) {
+          longest[column] = row[column].length;
+        }
       }
+    }
 
-      buffer.writeln('</dl>');
+    for (var row in rows) {
+      for (var column = 0; column < longest.length; column++) {
+        var content = row[column];
+        if (content == '-') {
+          content *= longest[column];
+        } else {
+          content = content.padRight(longest[column]);
+        }
+        buffer.write('| $content ');
+      }
+      buffer.writeln('|');
+    }
+
+    buffer.writeln();
+
+    for (var info in sortedValues) {
+      if (info._classField != null) {
+        buffer.writeln(_link('latest', _jsonSerializable, info.name));
+      }
+      if (info._keyField != null) {
+        buffer.writeln(_link('latest', _jsonKey, info.name));
+      }
     }
 
     await buildStep.writeAsString(
@@ -58,71 +86,86 @@ ${description.description}
   };
 }
 
-const _annotationClasses = ['JsonSerializable', 'JsonKey'];
+const _annotationClasses = [_jsonSerializable, _jsonKey];
 
-String _anchorUriForName(String owner, String name) => '$owner-$name';
+String _anchorUriForName(String owner, String name) => '[$owner.$name]';
+
+String _link(String version, String owner, String name) =>
+    '${_anchorUriForName(owner, name)}: '
+    'https://pub.dartlang.org/documentation/json_annotation/$version/'
+    'json_annotation/$owner/$name.html';
 
 class _FieldInfo implements Comparable<_FieldInfo> {
-  static final _ref = RegExp('\\[([^\\]]+)\\]');
-  static final _knownEntities = <String, Set<String>>{};
+  final FieldElement _keyField, _classField;
 
-  final String parent;
-  final FieldElement field;
+  String get name => _keyField?.name ?? _classField.name;
 
-  String get description {
-    var description =
-        LineSplitter.split(field.documentationComment).map((line) {
-      if (line.startsWith('///')) {
-        line = line.substring(3).trimRight();
-      }
-      if (line.startsWith(' ')) {
-        // If the line is not empty, then it starts with a blank space
-        line = line.substring(1);
-      }
-      return line;
-    }).join('\n');
+  String get classAnnotationName {
+    if (_classField == null) {
+      return '';
+    }
+    return _anchorUriForName(_jsonSerializable, name);
+  }
 
-    description = description.replaceAllMapped(_ref, (m) {
-      final ref = m[1];
+  String get fieldAnnotationName {
+    if (_keyField == null) {
+      return '';
+    }
+    return _anchorUriForName(_jsonKey, name);
+  }
 
-      String refParentClass, refName;
-      if (_knownEntities[parent].contains(ref)) {
-        refName = ref;
-        refParentClass = parent;
-      } else if (ref.contains('.')) {
-        final split = ref.split('.');
-        if (split.length == 2 &&
-            _annotationClasses.contains(split[0]) &&
-            _knownEntities[split[0]].contains(split[1])) {
-          refParentClass = split[0];
-          refName = split[1];
-        }
-      }
-
-      if (refParentClass != null) {
-        assert(refName != null);
-        return '[`$refParentClass.$refName`]'
-            '(#${_anchorUriForName(refParentClass, refName)})';
-      }
-
-      return '`$ref`';
-    });
-
-    if (parent == 'JsonSerializable') {
-      final yamlConfigKey = snakeCase(field.name);
-      description = '`build.yaml` config key: `$yamlConfigKey`\n\n$description';
+  String get buildKey {
+    if (_classField == null) {
+      return '';
     }
 
-    return description;
+    return snakeCase(_classField.name);
   }
 
-  _FieldInfo(this.parent, this.field) {
-    _knownEntities.putIfAbsent(parent, () => Set<String>()).add(field.name);
+  _FieldInfo(this._keyField, this._classField);
+
+  static _FieldInfo update(FieldElement field, _FieldInfo existing) {
+    final parent = field.enclosingElement.name;
+
+    FieldElement keyField, classField;
+    switch (parent) {
+      case _jsonSerializable:
+        classField = field;
+        keyField = existing?._keyField;
+        break;
+      case _jsonKey:
+        keyField = field;
+        classField = existing?._classField;
+        break;
+      default:
+        throw FallThroughError();
+    }
+
+    return _FieldInfo(keyField, classField);
   }
 
   @override
-  int compareTo(_FieldInfo other) => field.name.compareTo(other.field.name);
+  int compareTo(_FieldInfo other) {
+    var value = _sortValue.compareTo(other._sortValue);
+
+    if (value == 0) {
+      value = name.compareTo(other.name);
+    }
+    return value;
+  }
+
+  int get _sortValue {
+    if (_classField == null) {
+      return 0;
+    }
+
+    if (_keyField == null) {
+      return -2;
+    }
+
+    return -1;
+  }
 
   @override
-  String toString() => '_FieldThing($field)';
+  String toString() => '_FieldThing($_keyField)';
 }
