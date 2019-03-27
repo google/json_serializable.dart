@@ -52,8 +52,20 @@ class Example {
 If `true` (the default), code for encoding JSON is generated for this
 class.
 
-By default, a private `_$ClassNameMixin` class is created
-in the generated part file which contains a `toJson` method.
+If `json_serializable` is configured with
+`generate_to_json_function: true` (the default), a top-level function is
+created that you can reference from your class.
+
+```dart
+@JsonSerializable()
+class Example {
+  Map<String, dynamic> toJson() => _$ExampleToJson(this);
+}
+```
+
+If `json_serializable` is configured with
+`generate_to_json_function: false`, a private `_$ClassNameMixin` class is
+created in the generated part file which contains a `toJson` method.
 
 Mix in this class to the source class:
 
@@ -63,27 +75,17 @@ class Example extends Object with _$ExampleSerializerMixin {
   // ...
 }
 ```
-
-If `json_serializable` is configured with
-`generate_to_json_function: true`, then a top-level function is created
-that you can reference from your class.
-
-```dart
-@JsonSerializable()
-class Example {
-  Map<String, dynamic> toJson() => _$ExampleToJson(this);
-}
-```
   </dd>
   <dt><code><a name="JsonSerializable-disallowUnrecognizedKeys">JsonSerializable.disallowUnrecognizedKeys</a></code></dt>
   <dd>
 
 `build.yaml` config key: `disallow_unrecognized_keys`
 
-If `false` (the default), then any unrecognized keys passed to the
-generated FromJson factory will be ignored.
+If `false` (the default), then the generated `FromJson` function will
+ignore unrecognized keys in the provided JSON `Map`.
 
-If `true`, any unrecognized keys will be treated as an error.
+If `true`, unrecognized keys will cause an `UnrecognizedKeysException` to
+be thrown.
   </dd>
   <dt><code><a name="JsonSerializable-encodeEmptyCollection">JsonSerializable.encodeEmptyCollection</a></code></dt>
   <dd>
@@ -102,7 +104,7 @@ If `false`, fields with empty collections are omitted from `toJson`.
 Note: setting this property to `false` overrides the [`JsonSerializable.includeIfNull`](#JsonSerializable-includeIfNull)
 value to `false` as well.
 
-This value has no effect on non-collection fields.
+Note: non-collection fields are not affected by this value.
   </dd>
   <dt><code><a name="JsonSerializable-explicitToJson">JsonSerializable.explicitToJson</a></code></dt>
   <dd>
@@ -136,7 +138,7 @@ Map<String, dynamic> toJson() => {'child': child?.toJson()};
 Defines the automatic naming strategy when converting class field names
 into JSON map keys.
 
-With a value `FieldRename.none`, the default, the name of the field is
+With a value `FieldRename.none` (the default), the name of the field is
 used without modification.
 
 See `FieldRename` for details on the other options.
@@ -152,8 +154,7 @@ fields annotated with `JsonKey`.
 Controls how `toJson` functionality is generated for all types processed
 by this generator.
 
-If `true` (the default), then a top-level function is created that you can
-reference from your class.
+If `true` (the default), a top-level function is created.
 
 ```dart
 @JsonSerializable()
@@ -194,9 +195,9 @@ If a field is annotated with `JsonKey` with a non-`null` value for
 
 `build.yaml` config key: `nullable`
 
-When `true` (the default), `null` values are handled gracefully when
-serializing to JSON and when deserializing `null` and nonexistent values
-from a JSON map.
+When `true` (the default), `null` fields are handled gracefully when
+encoding to JSON and when decoding `null` and nonexistent values from
+JSON.
 
 Setting to `false` eliminates `null` verification in the generated code,
 which reduces the code size. Errors may be thrown at runtime if `null`
@@ -256,16 +257,19 @@ and setting this property to `false` will cause an error at build time.
 Note: setting this property to `false` on a non-collection field
 (of types other than `Iterable`, `Set`, `List`, and `Map`)
 will cause an error at build time.
+
+The default value, `null`, indicates that the behavior should be
+acquired from the [`JsonSerializable.encodeEmptyCollection`](#JsonSerializable-encodeEmptyCollection) annotation on
+the enclosing class.
   </dd>
   <dt><code><a name="JsonKey-fromJson">JsonKey.fromJson</a></code></dt>
   <dd>
 
-A top-level `Function` to use when deserializing the associated JSON
-value to the annotated field.
+A `Function` to use when decoding the associated JSON value to the
+annotated field.
 
-The `Function` should take one argument that maps to the expected JSON
-value and return a value that can be assigned to the type of the annotated
-field.
+Must be a top-level or static `Function` that takes one argument mapping
+a JSON literal to a value compatible with the type of the annotated field.
 
 When creating a class that supports both `toJson` and `fromJson`
 (the default), you should also set [`JsonKey.toJson`](#JsonKey-toJson) if you set [`JsonKey.fromJson`](#JsonKey-fromJson).
@@ -309,8 +313,8 @@ If `null`, the field name is used.
   <dt><code><a name="JsonKey-nullable">JsonKey.nullable</a></code></dt>
   <dd>
 
-When `true`, `null` values are handled gracefully when serializing to JSON
-and when deserializing `null` and nonexistent values from a JSON map.
+When `true`, `null` fields are handled gracefully when encoding to JSON
+and when decoding `null` and nonexistent values from JSON.
 
 Setting to `false` eliminates `null` verification in the generated code
 for the annotated field, which reduces the code size. Errors may be thrown
@@ -336,11 +340,10 @@ is considered valid.
   <dt><code><a name="JsonKey-toJson">JsonKey.toJson</a></code></dt>
   <dd>
 
-A top-level `Function` to use when serializing the annotated field to
-JSON.
+A `Function` to use when encoding the annotated field to JSON.
 
-The `Function` should take one argument that is compatible with the field
-being serialized and return a JSON-compatible value.
+Must be a top-level or static `Function` with one parameter compatible
+with the field being serialized that returns a JSON-compatible value.
 
 When creating a class that supports both `toJson` and `fromJson`
 (the default), you should also set [`JsonKey.fromJson`](#JsonKey-fromJson) if you set [`JsonKey.toJson`](#JsonKey-toJson).
