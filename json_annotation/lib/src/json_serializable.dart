@@ -62,8 +62,20 @@ class JsonSerializable {
   /// If `true` (the default), code for encoding JSON is generated for this
   /// class.
   ///
-  /// By default, a private `_$ClassNameMixin` class is created
-  /// in the generated part file which contains a `toJson` method.
+  /// If `json_serializable` is configured with
+  /// `generate_to_json_function: true` (the default), a top-level function is
+  /// created that you can reference from your class.
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  /// }
+  /// ```
+  ///
+  /// If `json_serializable` is configured with
+  /// `generate_to_json_function: false`, a private `_$ClassNameMixin` class is
+  /// created in the generated part file which contains a `toJson` method.
   ///
   /// Mix in this class to the source class:
   ///
@@ -73,23 +85,13 @@ class JsonSerializable {
   ///   // ...
   /// }
   /// ```
-  ///
-  /// If `json_serializable` is configured with
-  /// `generate_to_json_function: true`, then a top-level function is created
-  /// that you can reference from your class.
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example {
-  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
-  /// }
-  /// ```
   final bool createToJson;
 
-  /// If `false` (the default), then any unrecognized keys passed to the
-  /// generated FromJson factory will be ignored.
+  /// If `false` (the default), then the generated `FromJson` function will
+  /// ignore unrecognized keys in the provided JSON [Map].
   ///
-  /// If `true`, any unrecognized keys will be treated as an error.
+  /// If `true`, unrecognized keys will cause an [UnrecognizedKeysException] to
+  /// be thrown.
   final bool disallowUnrecognizedKeys;
 
   /// Whether the generator should include empty collection field values in the
@@ -104,7 +106,7 @@ class JsonSerializable {
   /// Note: setting this property to `false` overrides the [includeIfNull]
   /// value to `false` as well.
   ///
-  /// This value has no effect on non-collection fields.
+  /// Note: non-collection fields are not affected by this value.
   final bool encodeEmptyCollection;
 
   /// If `true`, generated `toJson` methods will explicitly call `toJson` on
@@ -130,7 +132,7 @@ class JsonSerializable {
   /// Defines the automatic naming strategy when converting class field names
   /// into JSON map keys.
   ///
-  /// With a value [FieldRename.none], the default, the name of the field is
+  /// With a value [FieldRename.none] (the default), the name of the field is
   /// used without modification.
   ///
   /// See [FieldRename] for details on the other options.
@@ -142,8 +144,7 @@ class JsonSerializable {
   /// Controls how `toJson` functionality is generated for all types processed
   /// by this generator.
   ///
-  /// If `true` (the default), then a top-level function is created that you can
-  /// reference from your class.
+  /// If `true` (the default), a top-level function is created.
   ///
   /// ```dart
   /// @JsonSerializable()
@@ -176,9 +177,9 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool includeIfNull;
 
-  /// When `true` (the default), `null` values are handled gracefully when
-  /// serializing to JSON and when deserializing `null` and nonexistent values
-  /// from a JSON map.
+  /// When `true` (the default), `null` fields are handled gracefully when
+  /// encoding to JSON and when decoding `null` and nonexistent values from
+  /// JSON.
   ///
   /// Setting to `false` eliminates `null` verification in the generated code,
   /// which reduces the code size. Errors may be thrown at runtime if `null`
