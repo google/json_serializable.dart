@@ -1,9 +1,15 @@
+// Copyright (c) 2019, the Dart project authors. Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:json_serializable/src/utils.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
+
+import 'version_builder.dart';
 
 Builder docBuilder([_]) => _DocBuilder();
 
@@ -13,6 +19,18 @@ const _jsonSerializable = 'JsonSerializable';
 class _DocBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final jsonAnnotationVersionAsset =
+        AssetId(buildStep.inputId.package, jsonAnnotationVersionFile);
+
+    final jsonAnnotationVersionString =
+        await buildStep.readAsString(jsonAnnotationVersionAsset);
+    final jsonAnnotationVersion =
+        Version.parse(jsonAnnotationVersionString.trim());
+
+    final targetVersion = jsonAnnotationVersion.isPreRelease
+        ? 'latest'
+        : jsonAnnotationVersion.toString();
+
     final lib = LibraryReader(await buildStep.resolver.libraryFor(
         AssetId.resolve('package:json_annotation/json_annotation.dart')));
 
@@ -69,10 +87,10 @@ class _DocBuilder extends Builder {
 
     for (var info in sortedValues) {
       if (info._classField != null) {
-        buffer.writeln(_link('latest', _jsonSerializable, info.name));
+        buffer.writeln(_link(targetVersion, _jsonSerializable, info.name));
       }
       if (info._keyField != null) {
-        buffer.writeln(_link('latest', _jsonKey, info.name));
+        buffer.writeln(_link(targetVersion, _jsonKey, info.name));
       }
     }
 
