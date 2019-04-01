@@ -1,4 +1,4 @@
-| build key                  | JsonSerializable                            | JsonKey                         |
+| `build.yaml` key           | JsonSerializable                            | JsonKey                         |
 | -------------------------- | ------------------------------------------- | ------------------------------- |
 | any_map                    | [JsonSerializable.anyMap]                   |                                 |
 | checked                    | [JsonSerializable.checked]                  |                                 |
