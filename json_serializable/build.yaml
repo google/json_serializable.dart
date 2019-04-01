@@ -55,14 +55,6 @@ builders:
     build_to: source
     runs_before: ["json_serializable"]
 
-  _version_builder:
-    import: "tool/version_builder.dart"
-    builder_factories: ["buildVersion"]
-    build_extensions: {"lib/$lib$": ["doc/json_annotation_version.txt"]}
-    build_to: source
-    auto_apply: root_package
-    runs_before: ["_doc_builder"]
-
   _doc_builder:
     import: "tool/doc_builder.dart"
     builder_factories: ["docBuilder"]
