@@ -5,4 +5,7 @@ travis:
     chrome: stable
   branches:
     only:
-      - master
+    - master
+
+merge_stages:
+- analyzer_and_format
