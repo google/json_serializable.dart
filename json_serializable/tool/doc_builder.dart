@@ -8,8 +8,7 @@ import 'package:build/build.dart';
 import 'package:json_serializable/src/utils.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
-
-import 'version_builder.dart';
+import 'package:yaml/yaml.dart';
 
 Builder docBuilder([_]) => _DocBuilder();
 
@@ -19,11 +18,14 @@ const _jsonSerializable = 'JsonSerializable';
 class _DocBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    final jsonAnnotationVersionAsset =
-        AssetId(buildStep.inputId.package, jsonAnnotationVersionFile);
+    final lockFileAssetId = AssetId(buildStep.inputId.package, 'pubspec.lock');
+    final lockFileContent = await buildStep.readAsString(lockFileAssetId);
+    final lockFileYaml =
+        loadYaml(lockFileContent, sourceUrl: lockFileAssetId.uri);
+    final pkgMap = lockFileYaml['packages'] as YamlMap;
+    final jsonAnnotationMap = pkgMap['json_annotation'] as YamlMap;
+    final jsonAnnotationVersionString = jsonAnnotationMap['version'] as String;
 
-    final jsonAnnotationVersionString =
-        await buildStep.readAsString(jsonAnnotationVersionAsset);
     final jsonAnnotationVersion =
         Version.parse(jsonAnnotationVersionString.trim());
 
