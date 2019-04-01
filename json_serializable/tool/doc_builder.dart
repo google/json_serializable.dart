@@ -30,7 +30,7 @@ class _DocBuilder extends Builder {
 
     final rows = <List<String>>[];
 
-    rows.add(['build key', _jsonSerializable, _jsonKey]);
+    rows.add(['`build.yaml` key', _jsonSerializable, _jsonKey]);
     rows.add(['-', '-', '-']);
 
     final sortedValues = descriptionMap.values.toList()..sort();

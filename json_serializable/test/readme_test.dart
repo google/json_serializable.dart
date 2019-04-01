@@ -3,21 +3,31 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-
 import 'dart:io';
 
-import 'package:test/test.dart';
 import 'package:path/path.dart' as p;
+import 'package:test/test.dart';
 
 void main() {
-  test('README example', () {
-    final readmeContent = File('README.md').readAsStringSync();
+  String readmeContent;
 
+  setUpAll(() {
+    readmeContent = File('README.md').readAsStringSync();
+  });
+
+  test('example.dart', () {
     final exampleContent = _getExampleContent('example.dart');
     expect(readmeContent, contains(exampleContent));
+  });
 
+  test('example.g.dart', () {
     final exampleGeneratedContent = _getExampleContent('example.g.dart');
     expect(readmeContent, contains(exampleGeneratedContent));
+  });
+
+  test('doc/doc.md', () {
+    final docContent = File(p.join('doc', 'doc.md')).readAsStringSync();
+    expect(readmeContent, contains(docContent));
   });
 }
 
