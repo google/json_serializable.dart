@@ -1,3 +1,7 @@
+## 2.1.1
+
+* Support `package:analyzer` `>=0.33.3 <0.37.0`
+
 ## 2.1.0
 
 * Require at least Dart `2.1.1`.
