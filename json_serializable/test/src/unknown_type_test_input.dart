@@ -2,7 +2,7 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldThrow(
   'Could not generate `fromJson` code for `number` because the type '
-      'is undefined.',
+  'is undefined.',
   expectedLogItems: [
     '''
 This element has an undefined type. It may causes issues when generated code.
@@ -27,7 +27,7 @@ class UnknownCtorParamType {
 
 @ShouldThrow(
   'Could not generate `fromJson` code for `number` because the type '
-      'is undefined.',
+  'is undefined.',
   expectedLogItems: [
     '''
 This element has an undefined type. It may causes issues when generated code.
@@ -50,7 +50,7 @@ class UnknownFieldType {
 
 @ShouldThrow(
   'Could not generate `toJson` code for `number` because the type '
-      'is undefined.',
+  'is undefined.',
   expectedLogItems: [
     '''
 This element has an undefined type. It may causes issues when generated code.

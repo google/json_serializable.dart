@@ -226,7 +226,7 @@ class SetSupport {
 
 @ShouldThrow(
   'Could not generate `toJson` code for `watch`.\n'
-      'None of the provided `TypeHelper` instances support the defined type.',
+  'None of the provided `TypeHelper` instances support the defined type.',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
@@ -236,7 +236,7 @@ class NoSerializeFieldType {
 
 @ShouldThrow(
   'Could not generate `fromJson` code for `watch`.\n'
-      'None of the provided `TypeHelper` instances support the defined type.',
+  'None of the provided `TypeHelper` instances support the defined type.',
   configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
@@ -246,7 +246,7 @@ class NoDeserializeFieldType {
 
 @ShouldThrow(
   'Could not generate `toJson` code for `intDateTimeMap` because of type `int`.\n'
-      'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
@@ -256,7 +256,7 @@ class NoSerializeBadKey {
 
 @ShouldThrow(
   'Could not generate `fromJson` code for `intDateTimeMap` because of type `int`.\n'
-      'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
   configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
@@ -354,7 +354,7 @@ class IgnoredFieldClass {
 
 @ShouldThrow(
   'Cannot populate the required constructor argument: '
-      'ignoredTrueField. It is assigned to an ignored field.',
+  'ignoredTrueField. It is assigned to an ignored field.',
   element: '',
 )
 @JsonSerializable()
@@ -367,7 +367,7 @@ class IgnoredFieldCtorClass {
 
 @ShouldThrow(
   'Cannot populate the required constructor argument: '
-      '_privateField. It is assigned to a private field.',
+  '_privateField. It is assigned to a private field.',
   element: '',
 )
 @JsonSerializable()
@@ -380,8 +380,8 @@ class PrivateFieldCtorClass {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. '
-      'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
-      'This leads to incompatible `toJson` and `fromJson` behavior.',
+  'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+  'This leads to incompatible `toJson` and `fromJson` behavior.',
   element: 'field',
 )
 @JsonSerializable()
@@ -392,7 +392,7 @@ class IncludeIfNullDisallowNullClass {
 
 @ShouldThrow(
   'The `JsonValue` annotation on `BadEnum.value` does not have a value '
-      'of type String, int, or null.',
+  'of type String, int, or null.',
   element: 'value',
 )
 @JsonSerializable()
@@ -506,7 +506,7 @@ class EncodeEmptyCollectionAsNullOnField {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. `encodeEmptyCollection: false` is only '
-      'valid fields of type Iterable, List, Set, or Map.',
+  'valid fields of type Iterable, List, Set, or Map.',
   element: 'field',
 )
 @JsonSerializable()
@@ -517,7 +517,7 @@ class EncodeEmptyCollectionAsNullOnNonCollectionField {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. Cannot set `encodeEmptyCollection: false` '
-      'if `includeIfNull: true`.',
+  'if `includeIfNull: true`.',
   element: 'field',
 )
 @JsonSerializable()

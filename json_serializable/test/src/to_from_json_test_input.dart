@@ -14,7 +14,7 @@ Object _toObject(Object input) => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
-      'return type `int` is not compatible with field type `String`.',
+  'return type `int` is not compatible with field type `String`.',
   element: 'field',
 )
 @JsonSerializable()
@@ -25,7 +25,7 @@ class BadFromFuncReturnType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-      '`_twoArgFunction` must have one positional paramater.',
+  '`_twoArgFunction` must have one positional paramater.',
   element: 'field',
 )
 @JsonSerializable()
@@ -64,7 +64,7 @@ class ValidToFromFuncClassStatic {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function `_toInt` '
-      'argument type `bool` is not compatible with field type `String`.',
+  'argument type `bool` is not compatible with field type `String`.',
   element: 'field',
 )
 @JsonSerializable()
@@ -75,7 +75,7 @@ class BadToFuncReturnType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function '
-      '`_twoArgFunction` must have one positional paramater.',
+  '`_twoArgFunction` must have one positional paramater.',
   element: 'field',
 )
 @JsonSerializable()
@@ -156,7 +156,7 @@ String _noArgs() => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-      '`_noArgs` must have one positional paramater.',
+  '`_noArgs` must have one positional paramater.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)
@@ -169,7 +169,7 @@ String _twoArgs(a, b) => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-      '`_twoArgs` must have one positional paramater.',
+  '`_twoArgs` must have one positional paramater.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)
@@ -182,7 +182,7 @@ String _oneNamed({a}) => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-      '`_oneNamed` must have one positional paramater.',
+  '`_oneNamed` must have one positional paramater.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)

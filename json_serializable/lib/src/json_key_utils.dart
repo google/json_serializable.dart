@@ -149,7 +149,7 @@ JsonKey _populateJsonKey(
     throwUnsupported(
       element,
       '`encodeEmptyCollection: false` is only valid fields of type '
-          'Iterable, List, Set, or Map.',
+      'Iterable, List, Set, or Map.',
     );
   }
 
