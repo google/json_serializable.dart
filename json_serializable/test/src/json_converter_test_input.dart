@@ -124,7 +124,7 @@ class _GenericConverter<T> implements JsonConverter<T, int> {
 
 @ShouldThrow(
   '`JsonConverter` implementations can have no more than one type argument. '
-      '`_BadConverter` has 2.',
+  '`_BadConverter` has 2.',
   element: '_BadConverter',
 )
 @JsonSerializable()
