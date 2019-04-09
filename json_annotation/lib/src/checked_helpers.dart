@@ -79,16 +79,30 @@ class CheckedFromJsonException implements Exception {
   String get className => _className;
   String _className;
 
+  /// If this was thrown due to an invalid or unsupported key, as opposed to an
+  /// invalid value.
+  final bool badKey;
+
   /// Creates a new instance of [CheckedFromJsonException].
-  CheckedFromJsonException(this.map, this.key, String className, this.message)
-      : _className = className,
+  CheckedFromJsonException(
+    this.map,
+    this.key,
+    String className,
+    this.message, {
+    bool badKey = false,
+  })  : _className = className,
+        badKey = badKey ?? false,
         innerError = null,
         innerStack = null;
 
   CheckedFromJsonException._(
-      this.innerError, this.innerStack, this.map, this.key,
-      {String className})
-      : _className = className,
+    this.innerError,
+    this.innerStack,
+    this.map,
+    this.key, {
+    String className,
+  })  : _className = className,
+        badKey = innerError is BadKeyException,
         message = _getMessage(innerError);
 
   static String _getMessage(Object error) {

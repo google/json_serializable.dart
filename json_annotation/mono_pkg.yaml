@@ -9,5 +9,3 @@ stages:
     - dartfmt
     - dartanalyzer: --fatal-warnings .
     dart: [2.1.1]
-
-

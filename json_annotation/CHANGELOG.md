@@ -1,3 +1,8 @@
+## 2.2.0
+
+* Add an optional (named) `badKey` parameter and field to
+  `CheckedFromJsonException`.
+
 ## 2.1.0
 
 * Require at least Dart `2.1.1`.
