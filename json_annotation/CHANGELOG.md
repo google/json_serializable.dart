@@ -2,6 +2,7 @@
 
 - **BREAKING** Removed `JsonSerializable.useWrappers` and associated
   `$`-prefixed helpers.
+- **BREAKING** Removed `JsonSerializable.generateToJsonFunction`.
 - Require at least Dart `2.2.0`.
 
 ## 2.2.0

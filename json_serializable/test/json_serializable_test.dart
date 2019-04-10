@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen_test/source_gen_test.dart';
@@ -19,10 +18,6 @@ void main() async {
   testAnnotatedElements(
     reader,
     const JsonSerializableGenerator(),
-    additionalGenerators: const {
-      'mixin': JsonSerializableGenerator(
-          config: JsonSerializable(generateToJsonFunction: false)),
-    },
     expectedAnnotatedTests: _expectedAnnotatedTests,
   );
 }
@@ -57,9 +52,7 @@ const _expectedAnnotatedTests = [
   'FinalFieldsNotSetInCtor',
   'FromDynamicCollection',
   'GeneralTestClass1',
-  'GeneralTestClass1',
   'GeneralTestClass2',
-  'GenericClass',
   'GenericClass',
   'IgnoredFieldClass',
   'IgnoredFieldCtorClass',

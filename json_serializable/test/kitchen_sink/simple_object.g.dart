@@ -10,7 +10,5 @@ SimpleObject _$SimpleObjectFromJson(Map json) {
   return SimpleObject(json['value'] as int);
 }
 
-abstract class _$SimpleObjectSerializerMixin {
-  int get value;
-  Map<String, dynamic> toJson() => <String, dynamic>{'value': value};
-}
+Map<String, dynamic> _$SimpleObjectToJson(SimpleObject instance) =>
+    <String, dynamic>{'value': instance.value};

@@ -83,43 +83,6 @@ Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
       'listOfInts': instance.listOfInts
     };
 ''',
-  configurations: ['default'],
-)
-@ShouldGenerate(
-  r'''
-GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
-  return GeneralTestClass1()
-    ..firstName = json['firstName'] as String
-    ..lastName = json['lastName'] as String
-    ..height = json['h'] as int
-    ..dateOfBirth = json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String)
-    ..dynamicType = json['dynamicType']
-    ..varType = json['varType']
-    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
-}
-
-abstract class _$GeneralTestClass1SerializerMixin {
-  String get firstName;
-  String get lastName;
-  int get height;
-  DateTime get dateOfBirth;
-  dynamic get dynamicType;
-  dynamic get varType;
-  List<int> get listOfInts;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'firstName': firstName,
-        'lastName': lastName,
-        'h': height,
-        'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'dynamicType': dynamicType,
-        'varType': varType,
-        'listOfInts': listOfInts
-      };
-}
-''',
-  configurations: ['mixin'],
 )
 @JsonSerializable()
 class GeneralTestClass1 {
@@ -152,7 +115,6 @@ Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
       'dateOfBirth': instance.dateOfBirth?.toIso8601String()
     };
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class GeneralTestClass2 {

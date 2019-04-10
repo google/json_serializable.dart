@@ -73,8 +73,6 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
           reader.read('encodeEmptyCollection').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
-      generateToJsonFunction:
-          reader.read('generateToJsonFunction').literalValue as bool,
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
       nullable: reader.read('nullable').literalValue as bool,
     );
@@ -98,8 +96,6 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
         annotation.encodeEmptyCollection ?? config.encodeEmptyCollection,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
-    generateToJsonFunction:
-        annotation.generateToJsonFunction ?? config.generateToJsonFunction,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,
   );
