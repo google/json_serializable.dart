@@ -31,7 +31,6 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   bool get nullable => false;
   bool get excludeNull => true;
   bool get explicitToJson => false;
-  bool get noEncodeEmpty => false;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,

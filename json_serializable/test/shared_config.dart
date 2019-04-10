@@ -16,7 +16,6 @@ final generatorConfigNonDefaultJson =
   createFactory: false,
   createToJson: false,
   disallowUnrecognizedKeys: true,
-  encodeEmptyCollection: false,
   explicitToJson: true,
   fieldRename: FieldRename.kebab,
   includeIfNull: false,

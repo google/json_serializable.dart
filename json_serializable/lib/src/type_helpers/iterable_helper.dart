@@ -9,12 +9,6 @@ import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
-const _helperFunctionDefinition =
-    '''T $_helperName<T extends Iterable>(T source) =>
-    (source == null || source.isEmpty) ? null : source;''';
-
-const _helperName = r'_$nullIfEmptyIterable';
-
 class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const IterableHelper();
 
@@ -33,14 +27,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var isList = _coreListChecker.isAssignableFromType(targetType);
     final subField = context.serialize(itemType, closureArg);
 
-    final contextNullable = context.nullable || encodeEmptyAsNullRoot(context);
-
-    final optionalQuestion = contextNullable ? '?' : '';
-
-    if (encodeEmptyAsNullRoot(context)) {
-      context.addMember(_helperFunctionDefinition);
-      expression = '$_helperName($expression)';
-    }
+    final optionalQuestion = context.nullable ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subField`
     // will be identical to `substitute` – so no explicit mapping is needed.
