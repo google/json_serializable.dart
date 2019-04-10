@@ -96,7 +96,7 @@ class JsonSerializableGenerator
 
 class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   final JsonSerializableGenerator _generator;
-  final _addedMembers = Set<String>();
+  final _addedMembers = <String>{};
 
   _GeneratorHelper(
       this._generator, ClassElement element, ConstantReader annotation)
@@ -152,7 +152,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
-    accessibleFieldSet.fold(Set<String>(), (Set<String> set, fe) {
+    accessibleFieldSet.fold(<String>{}, (Set<String> set, fe) {
       final jsonKey = nameAccess(fe);
       if (!set.add(jsonKey)) {
         throw InvalidGenerationSourceError(

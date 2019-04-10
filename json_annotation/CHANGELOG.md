@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Require at least Dart `2.2.0`.
+
 ## 2.2.0
 
 * Add an optional (named) `badKey` parameter and field to

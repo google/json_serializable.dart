@@ -1,3 +1,7 @@
+## 2.2.2
+
+- Require at least Dart `2.2.0`.
+
 ## 2.2.1
 
 - Fixed an error when a property/field is defined in a `mixin`.

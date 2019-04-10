@@ -15,7 +15,7 @@ part 'kitchen_sink.g_no_encode_empty__non_nullable.g.dart';
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
 List<T> _defaultList<T>() => <T>[];
-Set<T> _defaultSet<T>() => Set<T>();
+Set<T> _defaultSet<T>() => <T>{};
 Map<String, T> _defaultMap<T>() => <String, T>{};
 SimpleObject _defaultSimpleObject() => SimpleObject(42);
 StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');

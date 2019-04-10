@@ -53,8 +53,7 @@ linter:
     - package_names
     - package_prefixed_library_names
     - prefer_adjacent_string_concatenation
-    # TODO: re-enable when we want to support Dart 2.2+
-    #- prefer_collection_literals
+    - prefer_collection_literals
     - prefer_conditional_assignment
     - prefer_const_constructors
     - prefer_contains

@@ -175,7 +175,7 @@ const _kitchenSinkReplacements = {
     ),
     _Replacement(
       'Set<T> _defaultSet<T>() => null;',
-      'Set<T> _defaultSet<T>() => Set<T>();',
+      'Set<T> _defaultSet<T>() => <T>{};',
     ),
     _Replacement(
       'Map<K, V> _defaultMap<K, V>() => null;',
@@ -227,34 +227,33 @@ List<String> get _fileConfigurations => _fileConfigurationMap.values
 
 const _kitchenSinkBaseName = 'kitchen_sink';
 
-// TODO: use a set of sets, once we're >=2.2.0
-const _fileConfigurationMap = <String, List<List<String>>>{
-  _kitchenSinkBaseName: [
-    ['any_map', 'checked', 'non_nullable'],
-    ['any_map', 'non_nullable', 'use_wrappers'],
-    ['any_map', 'non_nullable'],
-    ['any_map'],
-    ['no_encode_empty'],
-    ['no_encode_empty', 'exclude_null', 'use_wrappers'],
-    ['no_encode_empty', 'non_nullable'],
-    ['no_encode_empty', 'exclude_null'],
-    ['no_encode_empty', 'exclude_null', 'non_nullable', 'use_wrappers'],
-    ['exclude_null', 'non_nullable'],
-    ['exclude_null', 'use_wrappers'],
-    ['exclude_null'],
-    ['explicit_to_json'],
-  ],
-  'default_value': [
-    ['any_map', 'checked'],
-  ],
-  'generic_class': [
-    ['use_wrappers'],
-  ],
-  'json_test_example': [
-    ['non_nullable', 'use_wrappers'],
-    ['non_nullable'],
-    ['use_wrappers'],
-  ]
+const _fileConfigurationMap = <String, Set<Set<String>>>{
+  _kitchenSinkBaseName: {
+    {'any_map', 'checked', 'non_nullable'},
+    {'any_map', 'non_nullable', 'use_wrappers'},
+    {'any_map', 'non_nullable'},
+    {'any_map'},
+    {'no_encode_empty'},
+    {'no_encode_empty', 'exclude_null', 'use_wrappers'},
+    {'no_encode_empty', 'non_nullable'},
+    {'no_encode_empty', 'exclude_null'},
+    {'no_encode_empty', 'exclude_null', 'non_nullable', 'use_wrappers'},
+    {'exclude_null', 'non_nullable'},
+    {'exclude_null', 'use_wrappers'},
+    {'exclude_null'},
+    {'explicit_to_json'},
+  },
+  'default_value': {
+    {'any_map', 'checked'},
+  },
+  'generic_class': {
+    {'use_wrappers'},
+  },
+  'json_test_example': {
+    {'non_nullable', 'use_wrappers'},
+    {'non_nullable'},
+    {'use_wrappers'},
+  }
 };
 
 class _Replacement {
