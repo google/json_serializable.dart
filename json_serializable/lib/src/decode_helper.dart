@@ -238,7 +238,7 @@ _ConstructorData _writeConstructorInvocation(
         element: classElement);
   }
 
-  final usedCtorParamsAndFields = Set<String>();
+  final usedCtorParamsAndFields = <String>{};
   final constructorArguments = <ParameterElement>[];
   final namedConstructorArguments = <ParameterElement>[];
 
