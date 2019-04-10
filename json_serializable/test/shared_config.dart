@@ -22,5 +22,4 @@ final generatorConfigNonDefaultJson =
   generateToJsonFunction: false,
   includeIfNull: false,
   nullable: false,
-  useWrappers: true,
 ).toJson());

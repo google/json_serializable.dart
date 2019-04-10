@@ -29,10 +29,6 @@ void main() async {
   group('without wrappers', () {
     _registerTests(JsonSerializable.defaults);
   });
-  group(
-      'with wrapper',
-      () => _registerTests(
-          const JsonSerializable(useWrappers: true).withDefaults()));
 
   group('configuration', () {
     Future<Null> runWithConfigAndLogger(
@@ -125,37 +121,9 @@ void _registerTests(JsonSerializable generator) {
   group('explicit toJson', () {
     test('nullable', () async {
       final output = await _runForElementNamed(
-          JsonSerializable(useWrappers: generator.useWrappers),
-          'TrivialNestedNullable');
+          const JsonSerializable(), 'TrivialNestedNullable');
 
-      final expected = generator.useWrappers
-          ? r'''
-Map<String, dynamic> _$TrivialNestedNullableToJson(
-        TrivialNestedNullable instance) =>
-    _$TrivialNestedNullableJsonMapWrapper(instance);
-
-class _$TrivialNestedNullableJsonMapWrapper extends $JsonMapWrapper {
-  final TrivialNestedNullable _v;
-  _$TrivialNestedNullableJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys => const ['child', 'otherField'];
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'child':
-          return _v.child?.toJson();
-        case 'otherField':
-          return _v.otherField;
-      }
-    }
-    return null;
-  }
-}
-'''
-          : r'''
+      final expected = r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
         TrivialNestedNullable instance) =>
     <String, dynamic>{
@@ -168,37 +136,9 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
     });
     test('non-nullable', () async {
       final output = await _runForElementNamed(
-          JsonSerializable(useWrappers: generator.useWrappers),
-          'TrivialNestedNonNullable');
+          const JsonSerializable(), 'TrivialNestedNonNullable');
 
-      final expected = generator.useWrappers
-          ? r'''
-Map<String, dynamic> _$TrivialNestedNonNullableToJson(
-        TrivialNestedNonNullable instance) =>
-    _$TrivialNestedNonNullableJsonMapWrapper(instance);
-
-class _$TrivialNestedNonNullableJsonMapWrapper extends $JsonMapWrapper {
-  final TrivialNestedNonNullable _v;
-  _$TrivialNestedNonNullableJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys => const ['child', 'otherField'];
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'child':
-          return _v.child.toJson();
-        case 'otherField':
-          return _v.otherField;
-      }
-    }
-    return null;
-  }
-}
-'''
-          : r'''
+      final expected = r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         TrivialNestedNonNullable instance) =>
     <String, dynamic>{
@@ -230,8 +170,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
 
     test('class with child json-able object - anyMap', () async {
       final output = await _runForElementNamed(
-          JsonSerializable(anyMap: true, useWrappers: generator.useWrappers),
-          'ParentObject');
+          const JsonSerializable(anyMap: true), 'ParentObject');
 
       expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
     });

@@ -1,3 +1,7 @@
+## 3.0.0
+
+- **BREAKING** Removed support for `JsonSerializable.useWrappers`.
+
 ## 2.2.3
 
 - Removed special handling of undefined types due to changes in
