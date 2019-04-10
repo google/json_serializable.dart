@@ -116,8 +116,6 @@ const _configReplacements = {
   'explicit_to_json':
       _Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
-  'no_encode_empty':
-      _Replacement.addJsonSerializableKey('encodeEmptyCollection', false),
 };
 
 const _kitchenSinkReplacements = {
@@ -144,12 +142,6 @@ const _kitchenSinkReplacements = {
       'bool get checked => false;',
       'bool get checked => true;',
     )
-  ],
-  'no_encode_empty': [
-    _Replacement(
-      'bool get noEncodeEmpty => false;',
-      'bool get noEncodeEmpty => true;',
-    ),
   ],
   'exclude_null': [
     _Replacement(
@@ -231,12 +223,9 @@ const _fileConfigurationMap = <String, Set<Set<String>>>{
     {'any_map', 'checked', 'non_nullable'},
     {'any_map', 'non_nullable'},
     {'any_map'},
-    {'no_encode_empty'},
-    {'no_encode_empty', 'exclude_null'},
-    {'no_encode_empty', 'non_nullable'},
-    {'no_encode_empty', 'exclude_null', 'non_nullable'},
-    {'exclude_null', 'non_nullable'},
     {'exclude_null'},
+    {'non_nullable'},
+    {'exclude_null', 'non_nullable'},
     {'explicit_to_json'},
   },
   'default_value': {

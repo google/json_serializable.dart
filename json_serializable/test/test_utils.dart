@@ -8,18 +8,12 @@ import 'package:test/test.dart';
 
 final throwsCastError = throwsA(isCastError);
 
-T roundTripObject<T>(
-  T object,
-  T factory(Map<String, dynamic> json), {
-  bool skipObjectEquals = false,
-}) {
+T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
   final data = loudEncode(object);
 
   final object2 = factory(json.decode(data) as Map<String, dynamic>);
 
-  if (!skipObjectEquals) {
-    expect(object2, equals(object));
-  }
+  expect(object2, equals(object));
 
   final json2 = loudEncode(object2);
 

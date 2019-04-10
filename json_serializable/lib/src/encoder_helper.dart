@@ -130,9 +130,7 @@ abstract class EncodeHelper implements HelperCore {
       return true;
     }
 
-    if (!jsonKey.nullable &&
-        jsonKey.encodeEmptyCollection &&
-        !_fieldHasCustomEncoder(field)) {
+    if (!jsonKey.nullable && !_fieldHasCustomEncoder(field)) {
       return true;
     }
 
