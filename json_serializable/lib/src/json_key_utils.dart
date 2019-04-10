@@ -163,7 +163,7 @@ JsonKey _populateJsonKey(
     includeIfNull = false;
   }
 
-  final jsonKey = JsonKey(
+  return JsonKey(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
     ignore: ignore ?? false,
@@ -174,8 +174,6 @@ JsonKey _populateJsonKey(
     required: required ?? false,
     encodeEmptyCollection: encodeEmptyCollection,
   );
-
-  return jsonKey;
 }
 
 String _encodedFieldName(JsonSerializable classAnnotation,

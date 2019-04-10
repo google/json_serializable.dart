@@ -279,8 +279,6 @@ class _Replacement {
       }
     }
 
-    outputContent = outputContent.replaceAll(',)', ',\n)');
-
-    return outputContent;
+    return outputContent.replaceAll(',)', ',\n)');
   }
 }

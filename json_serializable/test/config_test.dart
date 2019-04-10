@@ -115,7 +115,7 @@ void main() {
             : "type 'int' is not a subtype of type 'bool' in type cast";
 
         final matcher = isA<StateError>().having(
-          ((v) => v.message),
+          (v) => v.message,
           'message',
           '''
 Could not parse the options provided for `json_serializable`.

@@ -37,6 +37,7 @@ linter:
     - implementation_imports
     - invariant_booleans
     - iterable_contains_unrelated_type
+    - join_return_with_assignment
     - library_names
     - library_prefixes
     - list_remove_unrelated_type
@@ -69,6 +70,7 @@ linter:
     - prefer_typing_uninitialized_variables
     - recursive_getters
     - slash_for_doc_comments
+    - sort_pub_dependencies
     - test_types_in_equals
     - throw_in_finally
     - type_init_formals
@@ -79,6 +81,7 @@ linter:
     - unnecessary_lambdas
     - unnecessary_new
     - unnecessary_null_aware_assignments
+    - unnecessary_parenthesis
     - unnecessary_statements
     - unnecessary_this
     - unrelated_type_equality_checks
