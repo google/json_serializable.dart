@@ -1,6 +1,7 @@
 ## 3.0.0
 
 - **BREAKING** Removed support for `JsonSerializable.useWrappers`.
+- **BREAKING** Removed support for `JsonSerializable.generateToJsonFunction`.
 
 ## 2.3.0
 

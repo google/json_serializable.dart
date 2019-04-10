@@ -2,6 +2,7 @@
 
 - **BREAKING** Removed `JsonSerializable.useWrappers` and associated
   `$`-prefixed helpers.
+- **BREAKING** Removed `JsonSerializable.generateToJsonFunction`.
 
 ## 2.3.0
 

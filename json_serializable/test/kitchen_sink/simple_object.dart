@@ -6,12 +6,13 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'simple_object.g.dart';
 
-@JsonSerializable(anyMap: true, generateToJsonFunction: false)
-class SimpleObject extends Object with _$SimpleObjectSerializerMixin {
-  @override
+@JsonSerializable(anyMap: true)
+class SimpleObject {
   final int value;
 
   SimpleObject(this.value);
 
   factory SimpleObject.fromJson(Map json) => _$SimpleObjectFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleObjectToJson(this);
 }

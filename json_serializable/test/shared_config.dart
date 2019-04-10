@@ -19,7 +19,6 @@ final generatorConfigNonDefaultJson =
   encodeEmptyCollection: false,
   explicitToJson: true,
   fieldRename: FieldRename.kebab,
-  generateToJsonFunction: false,
   includeIfNull: false,
   nullable: false,
 ).toJson());
