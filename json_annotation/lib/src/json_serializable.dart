@@ -187,13 +187,6 @@ class JsonSerializable {
   /// `null` runtime validation if it's critical.
   final bool nullable;
 
-  /// If `true`, wrappers are used to minimize the number of
-  /// [Map] and [List] instances created during serialization.
-  ///
-  /// This will increase the code size, but it may improve runtime performance,
-  /// especially for large object graphs.
-  final bool useWrappers;
-
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
     this.anyMap,
@@ -207,7 +200,6 @@ class JsonSerializable {
     this.generateToJsonFunction,
     this.includeIfNull,
     this.nullable,
-    this.useWrappers,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -227,7 +219,6 @@ class JsonSerializable {
     generateToJsonFunction: true,
     includeIfNull: true,
     nullable: true,
-    useWrappers: false,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -249,8 +240,7 @@ class JsonSerializable {
       generateToJsonFunction:
           generateToJsonFunction ?? defaults.generateToJsonFunction,
       includeIfNull: includeIfNull ?? defaults.includeIfNull,
-      nullable: nullable ?? defaults.nullable,
-      useWrappers: useWrappers ?? defaults.useWrappers);
+      nullable: nullable ?? defaults.nullable);
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);
 }

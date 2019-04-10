@@ -1,3 +1,8 @@
+## 3.0.0
+
+- **BREAKING** Removed `JsonSerializable.useWrappers` and associated
+  `$`-prefixed helpers.
+
 ## 2.2.0
 
 * Add an optional (named) `badKey` parameter and field to

@@ -1,3 +1,7 @@
+## 3.0.0
+
+- **BREAKING** Removed support for `JsonSerializable.useWrappers`.
+
 ## 2.2.0
 
 - If a field has a conversion function defined – either `JsonKey.toJson` or a

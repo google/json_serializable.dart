@@ -20,7 +20,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       'generate_to_json_function',
       'include_if_null',
       'nullable',
-      'use_wrappers'
     ]);
     final val = JsonSerializable(
         anyMap: $checkedConvert(json, 'any_map', (v) => v as bool),
@@ -40,8 +39,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
             json, 'generate_to_json_function', (v) => v as bool),
         includeIfNull:
             $checkedConvert(json, 'include_if_null', (v) => v as bool),
-        nullable: $checkedConvert(json, 'nullable', (v) => v as bool),
-        useWrappers: $checkedConvert(json, 'use_wrappers', (v) => v as bool));
+        nullable: $checkedConvert(json, 'nullable', (v) => v as bool));
     return val;
   }, fieldKeyMap: const {
     'anyMap': 'any_map',
@@ -53,7 +51,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'fieldRename': 'field_rename',
     'generateToJsonFunction': 'generate_to_json_function',
     'includeIfNull': 'include_if_null',
-    'useWrappers': 'use_wrappers'
   });
 }
 
@@ -70,7 +67,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'generate_to_json_function': instance.generateToJsonFunction,
       'include_if_null': instance.includeIfNull,
       'nullable': instance.nullable,
-      'use_wrappers': instance.useWrappers
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

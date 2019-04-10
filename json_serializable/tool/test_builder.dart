@@ -231,29 +231,23 @@ const _kitchenSinkBaseName = 'kitchen_sink';
 const _fileConfigurationMap = <String, List<List<String>>>{
   _kitchenSinkBaseName: [
     ['any_map', 'checked', 'non_nullable'],
-    ['any_map', 'non_nullable', 'use_wrappers'],
     ['any_map', 'non_nullable'],
     ['any_map'],
     ['no_encode_empty'],
-    ['no_encode_empty', 'exclude_null', 'use_wrappers'],
-    ['no_encode_empty', 'non_nullable'],
     ['no_encode_empty', 'exclude_null'],
-    ['no_encode_empty', 'exclude_null', 'non_nullable', 'use_wrappers'],
+    ['no_encode_empty', 'non_nullable'],
+    ['no_encode_empty', 'exclude_null', 'non_nullable'],
     ['exclude_null', 'non_nullable'],
-    ['exclude_null', 'use_wrappers'],
+    ['exclude_null'],
     ['exclude_null'],
     ['explicit_to_json'],
   ],
   'default_value': [
     ['any_map', 'checked'],
   ],
-  'generic_class': [
-    ['use_wrappers'],
-  ],
+  'generic_class': [],
   'json_test_example': [
-    ['non_nullable', 'use_wrappers'],
     ['non_nullable'],
-    ['use_wrappers'],
   ]
 };
 

@@ -77,7 +77,6 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
           reader.read('generateToJsonFunction').literalValue as bool,
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
       nullable: reader.read('nullable').literalValue as bool,
-      useWrappers: reader.read('useWrappers').literalValue as bool,
     );
 
 /// Returns a [JsonSerializable] with values from the [JsonSerializable] instance
@@ -103,7 +102,6 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
         annotation.generateToJsonFunction ?? config.generateToJsonFunction,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,
-    useWrappers: annotation.useWrappers ?? config.useWrappers,
   );
 }
 

@@ -8,7 +8,6 @@
 | explicit_to_json           | [JsonSerializable.explicitToJson]           |                                 |
 | field_rename               | [JsonSerializable.fieldRename]              |                                 |
 | generate_to_json_function  | [JsonSerializable.generateToJsonFunction]   |                                 |
-| use_wrappers               | [JsonSerializable.useWrappers]              |                                 |
 | encode_empty_collection    | [JsonSerializable.encodeEmptyCollection]    | [JsonKey.encodeEmptyCollection] |
 | include_if_null            | [JsonSerializable.includeIfNull]            | [JsonKey.includeIfNull]         |
 | nullable                   | [JsonSerializable.nullable]                 | [JsonKey.nullable]              |
@@ -20,25 +19,24 @@
 |                            |                                             | [JsonKey.required]              |
 |                            |                                             | [JsonKey.toJson]                |
 
-[JsonSerializable.anyMap]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/anyMap.html
-[JsonSerializable.checked]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/checked.html
-[JsonSerializable.createFactory]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/createFactory.html
-[JsonSerializable.createToJson]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/createToJson.html
-[JsonSerializable.disallowUnrecognizedKeys]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
-[JsonSerializable.explicitToJson]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/explicitToJson.html
-[JsonSerializable.fieldRename]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/fieldRename.html
-[JsonSerializable.generateToJsonFunction]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/generateToJsonFunction.html
-[JsonSerializable.useWrappers]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/useWrappers.html
-[JsonSerializable.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/encodeEmptyCollection.html
-[JsonKey.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/encodeEmptyCollection.html
-[JsonSerializable.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/includeIfNull.html
-[JsonKey.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/includeIfNull.html
-[JsonSerializable.nullable]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonSerializable/nullable.html
-[JsonKey.nullable]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/nullable.html
-[JsonKey.defaultValue]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/defaultValue.html
-[JsonKey.disallowNullValue]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/disallowNullValue.html
-[JsonKey.fromJson]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/fromJson.html
-[JsonKey.ignore]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/ignore.html
-[JsonKey.name]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/name.html
-[JsonKey.required]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/required.html
-[JsonKey.toJson]: https://pub.dartlang.org/documentation/json_annotation/2.2.0/json_annotation/JsonKey/toJson.html
+[JsonSerializable.anyMap]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/anyMap.html
+[JsonSerializable.checked]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/checked.html
+[JsonSerializable.createFactory]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/createFactory.html
+[JsonSerializable.createToJson]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/createToJson.html
+[JsonSerializable.disallowUnrecognizedKeys]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
+[JsonSerializable.explicitToJson]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/explicitToJson.html
+[JsonSerializable.fieldRename]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/fieldRename.html
+[JsonSerializable.generateToJsonFunction]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/generateToJsonFunction.html
+[JsonSerializable.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/encodeEmptyCollection.html
+[JsonKey.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/encodeEmptyCollection.html
+[JsonSerializable.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/includeIfNull.html
+[JsonKey.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/includeIfNull.html
+[JsonSerializable.nullable]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/nullable.html
+[JsonKey.nullable]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/nullable.html
+[JsonKey.defaultValue]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/defaultValue.html
+[JsonKey.disallowNullValue]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/disallowNullValue.html
+[JsonKey.fromJson]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+[JsonKey.ignore]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/ignore.html
+[JsonKey.name]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/name.html
+[JsonKey.required]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/required.html
+[JsonKey.toJson]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html

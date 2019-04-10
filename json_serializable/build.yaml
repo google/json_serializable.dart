@@ -39,19 +39,14 @@ builders:
       - .g_any_map__checked.dart
       - .g_any_map__checked__non_nullable.dart
       - .g_any_map__non_nullable.dart
-      - .g_any_map__non_nullable__use_wrappers.dart
       - .g_exclude_null.dart
       - .g_exclude_null__no_encode_empty.dart
-      - .g_exclude_null__no_encode_empty__non_nullable__use_wrappers.dart
-      - .g_exclude_null__no_encode_empty__use_wrappers.dart
+      - .g_exclude_null__no_encode_empty__non_nullable.dart
       - .g_exclude_null__non_nullable.dart
-      - .g_exclude_null__use_wrappers.dart
       - .g_explicit_to_json.dart
       - .g_no_encode_empty.dart
       - .g_no_encode_empty__non_nullable.dart
       - .g_non_nullable.dart
-      - .g_non_nullable__use_wrappers.dart
-      - .g_use_wrappers.dart
     build_to: source
     runs_before: ["json_serializable"]
 

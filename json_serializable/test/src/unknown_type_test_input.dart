@@ -81,48 +81,6 @@ UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
 
 Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
         UnknownFieldTypeWithConvert instance) =>
-    _$UnknownFieldTypeWithConvertJsonMapWrapper(instance);
-
-class _$UnknownFieldTypeWithConvertJsonMapWrapper extends $JsonMapWrapper {
-  final UnknownFieldTypeWithConvert _v;
-  _$UnknownFieldTypeWithConvertJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys => const ['number'];
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'number':
-          return _v.number == null ? null : _everythingIs42(_v.number);
-      }
-    }
-    return null;
-  }
-}
-''',
-  configurations: ['wrapped'],
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:146:7
-    ╷
-146 │   Bob number;
-    │       ^^^^^^
-    ╵'''
-  ],
-)
-@ShouldGenerate(
-  r'''
-UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
-    Map<String, dynamic> json) {
-  return UnknownFieldTypeWithConvert()
-    ..number = json['number'] == null ? null : _everythingIs42(json['number']);
-}
-
-Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
-        UnknownFieldTypeWithConvert instance) =>
     <String, dynamic>{
       'number':
           instance.number == null ? null : _everythingIs42(instance.number)
@@ -132,9 +90,9 @@ Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
   expectedLogItems: [
     '''
 This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:146:7
+package:__test__/unknown_type_test_input.dart:104:7
     ╷
-146 │   Bob number;
+104 │   Bob number;
     │       ^^^^^^
     ╵'''
   ],

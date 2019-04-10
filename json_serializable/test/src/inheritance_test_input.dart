@@ -28,52 +28,6 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
 ''',
   configurations: ['default'],
 )
-@ShouldGenerate(
-  r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) {
-  return SubType(
-      json['subTypeViaCtor'] as int, json['super-final-field'] as int)
-    ..superReadWriteField = json['superReadWriteField'] as int
-    ..subTypeReadWrite = json['subTypeReadWrite'] as int;
-}
-
-Map<String, dynamic> _$SubTypeToJson(SubType instance) =>
-    _$SubTypeJsonMapWrapper(instance);
-
-class _$SubTypeJsonMapWrapper extends $JsonMapWrapper {
-  final SubType _v;
-  _$SubTypeJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys sync* {
-    yield 'super-final-field';
-    if (_v.superReadWriteField != null) {
-      yield 'superReadWriteField';
-    }
-    yield 'subTypeViaCtor';
-    yield 'subTypeReadWrite';
-  }
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'super-final-field':
-          return _v.superFinalField;
-        case 'superReadWriteField':
-          return _v.superReadWriteField;
-        case 'subTypeViaCtor':
-          return _v.subTypeViaCtor;
-        case 'subTypeReadWrite':
-          return _v.subTypeReadWrite;
-      }
-    }
-    return null;
-  }
-}
-''',
-  configurations: ['wrapped'],
-)
 @JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
