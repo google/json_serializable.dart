@@ -118,6 +118,105 @@ class TypedConvertMethods {
   String field;
 }
 
+@ShouldGenerate(
+  r'''
+Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
+    ToJsonNullableFalseIncludeIfNullFalse instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('field', _toString(instance.field));
+  return val;
+}
+''',
+  configurations: ['default'],
+)
+@JsonSerializable(createFactory: false)
+class ToJsonNullableFalseIncludeIfNullFalse {
+  @JsonKey(toJson: _toString, includeIfNull: false, nullable: false)
+  String field;
+}
+
+@ShouldGenerate(
+  r'''
+Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseWrappedToJson(
+        ToJsonNullableFalseIncludeIfNullFalseWrapped instance) =>
+    _$ToJsonNullableFalseIncludeIfNullFalseWrappedJsonMapWrapper(instance);
+
+class _$ToJsonNullableFalseIncludeIfNullFalseWrappedJsonMapWrapper
+    extends $JsonMapWrapper {
+  final ToJsonNullableFalseIncludeIfNullFalseWrapped _v;
+  _$ToJsonNullableFalseIncludeIfNullFalseWrappedJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys sync* {
+    if (_toString(_v.field) != null) {
+      yield 'field';
+    }
+  }
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'field':
+          return _toString(_v.field);
+      }
+    }
+    return null;
+  }
+}
+''',
+  configurations: ['wrapped'],
+)
+@JsonSerializable(createFactory: false)
+class ToJsonNullableFalseIncludeIfNullFalseWrapped {
+  @JsonKey(toJson: _toString, includeIfNull: false, nullable: false)
+  String field;
+}
+
+@ShouldGenerate(
+  r'''
+Map<String, dynamic> _$ToJsonIncludeIfNullFalseWrappedToJson(
+        ToJsonIncludeIfNullFalseWrapped instance) =>
+    _$ToJsonIncludeIfNullFalseWrappedJsonMapWrapper(instance);
+
+class _$ToJsonIncludeIfNullFalseWrappedJsonMapWrapper extends $JsonMapWrapper {
+  final ToJsonIncludeIfNullFalseWrapped _v;
+  _$ToJsonIncludeIfNullFalseWrappedJsonMapWrapper(this._v);
+
+  @override
+  Iterable<String> get keys sync* {
+    if ((_v.field == null ? null : _toString(_v.field)) != null) {
+      yield 'field';
+    }
+  }
+
+  @override
+  dynamic operator [](Object key) {
+    if (key is String) {
+      switch (key) {
+        case 'field':
+          return _v.field == null ? null : _toString(_v.field);
+      }
+    }
+    return null;
+  }
+}
+''',
+  configurations: ['wrapped'],
+)
+@JsonSerializable(createFactory: false)
+class ToJsonIncludeIfNullFalseWrapped {
+  @JsonKey(toJson: _toString, includeIfNull: false)
+  String field;
+}
+
 String _fromDynamicMap(Map input) => null;
 
 String _fromDynamicList(List input) => null;

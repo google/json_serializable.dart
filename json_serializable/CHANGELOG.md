@@ -1,3 +1,9 @@
+## 2.2.0
+
+- If a field has a conversion function defined – either `JsonKey.toJson` or a
+  custom `JsonConverter` annotation – handle the case where the function
+  returns `null` and both `nullable` and `includeIfNull` are `false`.
+
 ## 2.1.2
 
 * Support `package:json_annotation` `>=2.1.0 <2.3.0`.
