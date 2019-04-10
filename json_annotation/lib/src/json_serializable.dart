@@ -80,21 +80,6 @@ class JsonSerializable {
   /// be thrown.
   final bool disallowUnrecognizedKeys;
 
-  /// Whether the generator should include empty collection field values in the
-  /// serialized output.
-  ///
-  /// If `true` (the default), empty collection fields
-  /// (of type [Iterable], [Set], [List], and [Map])
-  /// are included in generated `toJson` functions.
-  ///
-  /// If `false`, fields with empty collections are omitted from `toJson`.
-  ///
-  /// Note: setting this property to `false` overrides the [includeIfNull]
-  /// value to `false` as well.
-  ///
-  /// Note: non-collection fields are not affected by this value.
-  final bool encodeEmptyCollection;
-
   /// If `true`, generated `toJson` methods will explicitly call `toJson` on
   /// nested objects.
   ///
@@ -154,7 +139,6 @@ class JsonSerializable {
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
-    this.encodeEmptyCollection,
     this.explicitToJson,
     this.fieldRename,
     this.includeIfNull,
@@ -172,7 +156,6 @@ class JsonSerializable {
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
-    encodeEmptyCollection: true,
     explicitToJson: false,
     fieldRename: FieldRename.none,
     includeIfNull: true,
@@ -191,8 +174,6 @@ class JsonSerializable {
       createToJson: createToJson ?? defaults.createToJson,
       disallowUnrecognizedKeys:
           disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
-      encodeEmptyCollection:
-          encodeEmptyCollection ?? defaults.encodeEmptyCollection,
       explicitToJson: explicitToJson ?? defaults.explicitToJson,
       fieldRename: fieldRename ?? defaults.fieldRename,
       includeIfNull: includeIfNull ?? defaults.includeIfNull,

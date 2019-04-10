@@ -135,7 +135,6 @@ const _invalidConfig = {
   'create_factory': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,
-  'encode_empty_collection': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
   'include_if_null': 42,

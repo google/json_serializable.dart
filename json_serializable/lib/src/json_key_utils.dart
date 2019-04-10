@@ -9,7 +9,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
-import 'shared_checkers.dart';
 import 'utils.dart';
 
 final _jsonKeyExpando = Expando<JsonKey>();
@@ -100,7 +99,6 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     element,
     defaultValue: defaultValueLiteral,
     disallowNullValue: obj.getField('disallowNullValue').toBoolValue(),
-    encodeEmptyCollection: obj.getField('encodeEmptyCollection').toBoolValue(),
     ignore: obj.getField('ignore').toBoolValue(),
     includeIfNull: obj.getField('includeIfNull').toBoolValue(),
     name: obj.getField('name').toStringValue(),
@@ -108,9 +106,6 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     required: obj.getField('required').toBoolValue(),
   );
 }
-
-const _iterableOrMapChecker =
-    TypeChecker.any([coreIterableTypeChecker, coreMapTypeChecker]);
 
 JsonKey _populateJsonKey(
   JsonSerializable classAnnotation,
@@ -122,7 +117,6 @@ JsonKey _populateJsonKey(
   String name,
   bool nullable,
   bool required,
-  bool encodeEmptyCollection,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -131,36 +125,6 @@ JsonKey _populateJsonKey(
           'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
           'This leads to incompatible `toJson` and `fromJson` behavior.');
     }
-  }
-
-  if (encodeEmptyCollection == null) {
-    // If set on the class, but not set on the field – set the key to false
-    // iif the type is compatible.
-    if (_iterableOrMapChecker.isAssignableFromType(element.type) &&
-        !classAnnotation.encodeEmptyCollection) {
-      encodeEmptyCollection = false;
-    } else {
-      encodeEmptyCollection = true;
-    }
-  } else if (encodeEmptyCollection == false &&
-      !_iterableOrMapChecker.isAssignableFromType(element.type)) {
-    // If explicitly set of the field, throw an error if the type is not a
-    // compatible type.
-    throwUnsupported(
-      element,
-      '`encodeEmptyCollection: false` is only valid fields of type '
-      'Iterable, List, Set, or Map.',
-    );
-  }
-
-  if (!encodeEmptyCollection) {
-    if (includeIfNull == true) {
-      throwUnsupported(
-        element,
-        'Cannot set `encodeEmptyCollection: false` if `includeIfNull: true`.',
-      );
-    }
-    includeIfNull = false;
   }
 
   return JsonKey(
@@ -172,7 +136,6 @@ JsonKey _populateJsonKey(
     name: _encodedFieldName(classAnnotation, name, element),
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
-    encodeEmptyCollection: encodeEmptyCollection,
   );
 }
 

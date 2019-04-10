@@ -24,27 +24,6 @@ class JsonKey {
   /// same field, an exception will be thrown during code generation.
   final bool disallowNullValue;
 
-  /// Whether the generator should include the annotated field value in the
-  /// serialized output if it is empty.
-  ///
-  /// If `true` (the default), empty values are included in the generated
-  /// `toJson` function.
-  ///
-  /// If `false`, fields with empty collections are omitted from `toJson`.
-  ///
-  /// Note: setting this property to `false` overrides the [includeIfNull]
-  /// value to `false` as well. Explicitly setting [includeIfNull] to `true`
-  /// and setting this property to `false` will cause an error at build time.
-  ///
-  /// Note: setting this property to `false` on a non-collection field
-  /// (of types other than [Iterable], [Set], [List], and [Map])
-  /// will cause an error at build time.
-  ///
-  /// The default value, `null`, indicates that the behavior should be
-  /// acquired from the [JsonSerializable.encodeEmptyCollection] annotation on
-  /// the enclosing class.
-  final bool encodeEmptyCollection;
-
   /// A [Function] to use when decoding the associated JSON value to the
   /// annotated field.
   ///
@@ -124,7 +103,6 @@ class JsonKey {
   const JsonKey({
     this.defaultValue,
     this.disallowNullValue,
-    this.encodeEmptyCollection,
     this.fromJson,
     this.ignore,
     this.includeIfNull,
