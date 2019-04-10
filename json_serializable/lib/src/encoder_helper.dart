@@ -11,41 +11,16 @@ import 'type_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 
 abstract class EncodeHelper implements HelperCore {
-  String _fieldAccess(FieldElement field) {
-    var fieldAccess = field.name;
-    if (config.generateToJsonFunction) {
-      fieldAccess = '$_toJsonParamName.$fieldAccess';
-    }
-    return fieldAccess;
-  }
-
-  String _mixinClassName(bool withConstraints) =>
-      '${prefix}SerializerMixin${genericClassArgumentsImpl(withConstraints)}';
+  String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
 
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(config.createToJson);
 
     final buffer = StringBuffer();
 
-    if (config.generateToJsonFunction) {
-      final functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
-      buffer.write('Map<String, dynamic> $functionName'
-          '($targetClassReference $_toJsonParamName) ');
-    } else {
-      //
-      // Generate the mixin class
-      //
-      buffer.writeln('abstract class ${_mixinClassName(true)} {');
-
-      // write copies of the fields - this allows the toJson method to access
-      // the fields of the target class
-      for (final field in accessibleFields) {
-        //TODO - handle aliased imports
-        buffer.writeln('  ${field.type} get ${field.name};');
-      }
-
-      buffer.write('  Map<String, dynamic> toJson() ');
-    }
+    final functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
+    buffer.write('Map<String, dynamic> $functionName'
+        '($targetClassReference $_toJsonParamName) ');
 
     final writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
@@ -55,11 +30,6 @@ abstract class EncodeHelper implements HelperCore {
     } else {
       // At least one field should be excluded if null
       _writeToJsonWithNullChecks(buffer, accessibleFields);
-    }
-
-    if (!config.generateToJsonFunction) {
-      // end of the mixin class
-      buffer.writeln('}');
     }
 
     yield buffer.toString();
@@ -82,8 +52,6 @@ abstract class EncodeHelper implements HelperCore {
     buffer.writeln('};');
   }
 
-  /// Name of the parameter used when generating top-level `toJson` functions
-  /// if [JsonSerializable.generateToJsonFunction] is `true`.
   static const _toJsonParamName = 'instance';
 
   void _writeToJsonWithNullChecks(
@@ -106,8 +74,6 @@ abstract class EncodeHelper implements HelperCore {
       // access with `this.`.
       if (safeFieldAccess == generatedLocalVarName ||
           safeFieldAccess == toJsonMapHelperName) {
-        assert(!config.generateToJsonFunction,
-            'This code path should only be hit during the mixin codepath.');
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 

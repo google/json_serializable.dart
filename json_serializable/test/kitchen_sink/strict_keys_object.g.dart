@@ -13,9 +13,8 @@ StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
   return StrictKeysObject(json['value'] as int, json['custom_field'] as String);
 }
 
-abstract class _$StrictKeysObjectSerializerMixin {
-  int get value;
-  String get customField;
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{'value': value, 'custom_field': customField};
-}
+Map<String, dynamic> _$StrictKeysObjectToJson(StrictKeysObject instance) =>
+    <String, dynamic>{
+      'value': instance.value,
+      'custom_field': instance.customField
+    };

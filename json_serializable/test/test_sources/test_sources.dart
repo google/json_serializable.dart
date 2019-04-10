@@ -14,7 +14,6 @@ class ConfigurationImplicitDefaults {
   encodeEmptyCollection: true,
   explicitToJson: false,
   fieldRename: FieldRename.none,
-  generateToJsonFunction: true,
   includeIfNull: true,
   nullable: true,
 )

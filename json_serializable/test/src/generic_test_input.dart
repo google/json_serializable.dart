@@ -34,39 +34,6 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
       'fieldS': instance.fieldS == null ? null : _dataToJson(instance.fieldS)
     };
 ''')
-@ShouldGenerate(
-  r'''
-GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
-  return GenericClass<T, S>()
-    ..fieldObject =
-        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
-    ..fieldDynamic = json['fieldDynamic'] == null
-        ? null
-        : _dataFromJson(json['fieldDynamic'])
-    ..fieldInt =
-        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
-}
-
-abstract class _$GenericClassSerializerMixin<T extends num, S> {
-  Object get fieldObject;
-  dynamic get fieldDynamic;
-  int get fieldInt;
-  T get fieldT;
-  S get fieldS;
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'fieldObject': fieldObject == null ? null : _dataToJson(fieldObject),
-        'fieldDynamic': fieldDynamic == null ? null : _dataToJson(fieldDynamic),
-        'fieldInt': fieldInt == null ? null : _dataToJson(fieldInt),
-        'fieldT': fieldT == null ? null : _dataToJson(fieldT),
-        'fieldS': fieldS == null ? null : _dataToJson(fieldS)
-      };
-}
-''',
-  configurations: ['mixin'],
-)
 @JsonSerializable()
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)

@@ -138,7 +138,6 @@ const _invalidConfig = {
   'encode_empty_collection': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
-  'generate_to_json_function': 42,
   'include_if_null': 42,
   'nullable': 42,
 };

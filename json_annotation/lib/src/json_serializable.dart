@@ -59,30 +59,13 @@ class JsonSerializable {
   /// ```
   final bool createFactory;
 
-  /// If `true` (the default), code for encoding JSON is generated for this
-  /// class.
-  ///
-  /// If `json_serializable` is configured with
-  /// `generate_to_json_function: true` (the default), a top-level function is
-  /// created that you can reference from your class.
+  /// If `true` (the default), A top-level function is created that you can
+  /// reference from your class.
   ///
   /// ```dart
   /// @JsonSerializable()
   /// class Example {
   ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
-  /// }
-  /// ```
-  ///
-  /// If `json_serializable` is configured with
-  /// `generate_to_json_function: false`, a private `_$ClassNameMixin` class is
-  /// created in the generated part file which contains a `toJson` method.
-  ///
-  /// Mix in this class to the source class:
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example extends Object with _$ExampleSerializerMixin {
-  ///   // ...
   /// }
   /// ```
   final bool createToJson;
@@ -141,32 +124,6 @@ class JsonSerializable {
   /// fields annotated with [JsonKey].
   final FieldRename fieldRename;
 
-  /// Controls how `toJson` functionality is generated for all types processed
-  /// by this generator.
-  ///
-  /// If `true` (the default), a top-level function is created.
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example {
-  ///   // ...
-  ///   Map<String, dynamic> toJson() => _$ExampleToJson(this);
-  /// }
-  /// ```
-  ///
-  /// If `false`, a private `_$ClassNameSerializerMixin` class is
-  /// created in the generated part file which contains a `toJson` method.
-  ///
-  /// Mix in this class to the source class:
-  ///
-  /// ```dart
-  /// @JsonSerializable()
-  /// class Example extends Object with _$ExampleSerializerMixin {
-  ///   // ...
-  /// }
-  /// ```
-  final bool generateToJsonFunction;
-
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
   ///
@@ -197,7 +154,6 @@ class JsonSerializable {
     this.encodeEmptyCollection,
     this.explicitToJson,
     this.fieldRename,
-    this.generateToJsonFunction,
     this.includeIfNull,
     this.nullable,
   });
@@ -216,7 +172,6 @@ class JsonSerializable {
     encodeEmptyCollection: true,
     explicitToJson: false,
     fieldRename: FieldRename.none,
-    generateToJsonFunction: true,
     includeIfNull: true,
     nullable: true,
   );
@@ -237,8 +192,6 @@ class JsonSerializable {
           encodeEmptyCollection ?? defaults.encodeEmptyCollection,
       explicitToJson: explicitToJson ?? defaults.explicitToJson,
       fieldRename: fieldRename ?? defaults.fieldRename,
-      generateToJsonFunction:
-          generateToJsonFunction ?? defaults.generateToJsonFunction,
       includeIfNull: includeIfNull ?? defaults.includeIfNull,
       nullable: nullable ?? defaults.nullable);
 

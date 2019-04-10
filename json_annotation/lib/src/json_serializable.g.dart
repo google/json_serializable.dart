@@ -17,7 +17,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       'encode_empty_collection',
       'explicit_to_json',
       'field_rename',
-      'generate_to_json_function',
       'include_if_null',
       'nullable',
     ]);
@@ -35,8 +34,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
             $checkedConvert(json, 'explicit_to_json', (v) => v as bool),
         fieldRename: $checkedConvert(json, 'field_rename',
             (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v)),
-        generateToJsonFunction: $checkedConvert(
-            json, 'generate_to_json_function', (v) => v as bool),
         includeIfNull:
             $checkedConvert(json, 'include_if_null', (v) => v as bool),
         nullable: $checkedConvert(json, 'nullable', (v) => v as bool));
@@ -49,7 +46,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'encodeEmptyCollection': 'encode_empty_collection',
     'explicitToJson': 'explicit_to_json',
     'fieldRename': 'field_rename',
-    'generateToJsonFunction': 'generate_to_json_function',
     'includeIfNull': 'include_if_null',
   });
 }
@@ -64,7 +60,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'encode_empty_collection': instance.encodeEmptyCollection,
       'explicit_to_json': instance.explicitToJson,
       'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
-      'generate_to_json_function': instance.generateToJsonFunction,
       'include_if_null': instance.includeIfNull,
       'nullable': instance.nullable,
     };

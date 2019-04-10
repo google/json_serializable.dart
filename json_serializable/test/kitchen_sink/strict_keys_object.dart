@@ -6,14 +6,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'strict_keys_object.g.dart';
 
-@JsonSerializable(
-    disallowUnrecognizedKeys: true, anyMap: true, generateToJsonFunction: false)
-class StrictKeysObject extends Object with _$StrictKeysObjectSerializerMixin {
-  @override
+@JsonSerializable(disallowUnrecognizedKeys: true, anyMap: true)
+class StrictKeysObject {
   @JsonKey(required: true)
   final int value;
 
-  @override
   @JsonKey(name: 'custom_field', required: true)
   final String customField;
 
@@ -21,4 +18,6 @@ class StrictKeysObject extends Object with _$StrictKeysObjectSerializerMixin {
 
   factory StrictKeysObject.fromJson(Map json) =>
       _$StrictKeysObjectFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StrictKeysObjectToJson(this);
 }
