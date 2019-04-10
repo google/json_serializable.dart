@@ -69,8 +69,6 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       createToJson: reader.read('createToJson').literalValue as bool,
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool,
-      encodeEmptyCollection:
-          reader.read('encodeEmptyCollection').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
@@ -92,8 +90,6 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
-    encodeEmptyCollection:
-        annotation.encodeEmptyCollection ?? config.encodeEmptyCollection,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,

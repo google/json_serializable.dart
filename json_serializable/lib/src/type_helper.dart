@@ -30,17 +30,6 @@ abstract class TypeHelperContext {
   void addMember(String memberContent);
 }
 
-abstract class TypeHelperContextWithEmptyCollectionLogic
-    extends TypeHelperContext {
-  /// Returns `true` if `this` is being used in the first (or "root") invocation
-  /// of a [TypeHelper.serialize] or [TypeHelper.deserialize] call.
-  bool get skipEncodingEmptyCollection;
-
-  static bool isSkipEncodingEmptyCollection(TypeHelperContext context) =>
-      context is TypeHelperContextWithEmptyCollectionLogic &&
-      context.skipEncodingEmptyCollection;
-}
-
 /// Extended context information with includes configuration values
 /// corresponding to `JsonSerializableGenerator` settings.
 abstract class TypeHelperContextWithConfig extends TypeHelperContext {
@@ -121,13 +110,3 @@ Object commonNullPrefix(
     nullable
         ? '$expression == null ? null : $unsafeExpression'
         : unsafeExpression;
-
-/// Returns `true` if [context] represents a field where
-/// `encodeEmptyCollection` is `false` and the caller is running on the
-/// "root" value and not for a nested type.
-///
-/// This ensures we don't add wrapper functions for the nested lists within
-/// `Map<String, List<String>`, for instance.
-bool encodeEmptyAsNullRoot(TypeHelperContext context) =>
-    TypeHelperContextWithEmptyCollectionLogic.isSkipEncodingEmptyCollection(
-        context);

@@ -17,10 +17,7 @@ TypeHelperCtx typeHelperContext(
     TypeHelperCtx._(helperCore, fieldElement, key);
 
 class TypeHelperCtx
-    implements
-        TypeHelperContextWithConfig,
-        TypeHelperContextWithConvert,
-        TypeHelperContextWithEmptyCollectionLogic {
+    implements TypeHelperContextWithConfig, TypeHelperContextWithConvert {
   final HelperCore _helperCore;
   final JsonKey _key;
 
@@ -64,23 +61,10 @@ class TypeHelperCtx
       (TypeHelper th) => th.deserialize(targetType, expression, this));
 
   Object _run(DartType targetType, String expression,
-      Object invoke(TypeHelper instance)) {
-    _depth++;
-
-    try {
-      return _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
+          Object invoke(TypeHelper instance)) =>
+      _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
           orElse: () => throw UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
-    } finally {
-      _depth--;
-    }
-  }
-
-  int _depth = 0;
-
-  @override
-  bool get skipEncodingEmptyCollection =>
-      !_key.encodeEmptyCollection && _depth == 1;
 }
 
 final _notSupportedWithTypeHelpersMsg =

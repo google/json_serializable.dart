@@ -2,6 +2,7 @@
 
 - **BREAKING** Removed support for `JsonSerializable.useWrappers`.
 - **BREAKING** Removed support for `JsonSerializable.generateToJsonFunction`.
+- **BREAKING** Removed support for `encodeEmptyCollection`.
 
 ## 2.2.3
 

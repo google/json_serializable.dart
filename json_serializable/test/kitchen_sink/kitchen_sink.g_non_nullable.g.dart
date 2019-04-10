@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'kitchen_sink.g_no_encode_empty__non_nullable.dart';
+part of 'kitchen_sink.g_non_nullable.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -63,83 +63,50 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
-Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
-  final val = <String, dynamic>{
-    'no-42': instance.ctorValidatedNo42,
-    'dateTime': instance.dateTime.toIso8601String(),
-    'bigInt': instance.bigInt.toString(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('iterable', _$nullIfEmptyIterable(instance.iterable)?.toList());
-  writeNotNull('dynamicIterable',
-      _$nullIfEmptyIterable(instance.dynamicIterable)?.toList());
-  writeNotNull('objectIterable',
-      _$nullIfEmptyIterable(instance.objectIterable)?.toList());
-  writeNotNull(
-      'intIterable', _$nullIfEmptyIterable(instance.intIterable)?.toList());
-  writeNotNull('set', _$nullIfEmptyIterable(instance.set)?.toList());
-  writeNotNull(
-      'dynamicSet', _$nullIfEmptyIterable(instance.dynamicSet)?.toList());
-  writeNotNull(
-      'objectSet', _$nullIfEmptyIterable(instance.objectSet)?.toList());
-  writeNotNull('intSet', _$nullIfEmptyIterable(instance.intSet)?.toList());
-  writeNotNull(
-      'dateTimeSet',
-      _$nullIfEmptyIterable(instance.dateTimeSet)
-          ?.map((e) => e.toIso8601String())
-          ?.toList());
-  writeNotNull(
-      'datetime-iterable',
-      _$nullIfEmptyIterable(instance.dateTimeIterable)
-          ?.map((e) => e.toIso8601String())
-          ?.toList());
-  writeNotNull('list', _$nullIfEmptyIterable(instance.list));
-  writeNotNull('dynamicList', _$nullIfEmptyIterable(instance.dynamicList));
-  writeNotNull('objectList', _$nullIfEmptyIterable(instance.objectList));
-  writeNotNull('intList', _$nullIfEmptyIterable(instance.intList));
-  writeNotNull(
-      'dateTimeList',
-      _$nullIfEmptyIterable(instance.dateTimeList)
-          ?.map((e) => e.toIso8601String())
-          ?.toList());
-  writeNotNull('map', _$nullIfEmptyMap(instance.map));
-  writeNotNull('stringStringMap', _$nullIfEmptyMap(instance.stringStringMap));
-  writeNotNull('dynamicIntMap', _$nullIfEmptyMap(instance.dynamicIntMap));
-  writeNotNull(
-      'objectDateTimeMap',
-      _$nullIfEmptyMap(instance.objectDateTimeMap)
-          ?.map((k, e) => MapEntry(k, e.toIso8601String())));
-  writeNotNull(
-      'crazyComplex',
-      _$nullIfEmptyIterable(instance.crazyComplex)
-          ?.map((e) => e.map((k, e) => MapEntry(
+Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
+    <String, dynamic>{
+      'no-42': instance.ctorValidatedNo42,
+      'dateTime': instance.dateTime.toIso8601String(),
+      'bigInt': instance.bigInt.toString(),
+      'iterable': instance.iterable.toList(),
+      'dynamicIterable': instance.dynamicIterable.toList(),
+      'objectIterable': instance.objectIterable.toList(),
+      'intIterable': instance.intIterable.toList(),
+      'set': instance.set.toList(),
+      'dynamicSet': instance.dynamicSet.toList(),
+      'objectSet': instance.objectSet.toList(),
+      'intSet': instance.intSet.toList(),
+      'dateTimeSet':
+          instance.dateTimeSet.map((e) => e.toIso8601String()).toList(),
+      'datetime-iterable':
+          instance.dateTimeIterable.map((e) => e.toIso8601String()).toList(),
+      'list': instance.list,
+      'dynamicList': instance.dynamicList,
+      'objectList': instance.objectList,
+      'intList': instance.intList,
+      'dateTimeList':
+          instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'map': instance.map,
+      'stringStringMap': instance.stringStringMap,
+      'dynamicIntMap': instance.dynamicIntMap,
+      'objectDateTimeMap': instance.objectDateTimeMap
+          .map((k, e) => MapEntry(k, e.toIso8601String())),
+      'crazyComplex': instance.crazyComplex
+          .map((e) => e.map((k, e) => MapEntry(
               k,
               e.map((k, e) => MapEntry(
                   k,
                   e
                       .map((e) => e.map((e) => e.toIso8601String()).toList())
                       .toList())))))
-          ?.toList());
-  writeNotNull('val', _$nullIfEmptyMap(instance.val));
-  val['writeNotNull'] = instance.writeNotNull;
-  val[r'$string'] = instance.string;
-  val['simpleObject'] = instance.simpleObject;
-  val['strictKeysObject'] = instance.strictKeysObject;
-  val['validatedPropertyNo42'] = instance.validatedPropertyNo42;
-  return val;
-}
-
-T _$nullIfEmptyIterable<T extends Iterable>(T source) =>
-    (source == null || source.isEmpty) ? null : source;
-
-T _$nullIfEmptyMap<T extends Map>(T source) =>
-    (source == null || source.isEmpty) ? null : source;
+          .toList(),
+      'val': instance.val,
+      'writeNotNull': instance.writeNotNull,
+      r'$string': instance.string,
+      'simpleObject': instance.simpleObject,
+      'strictKeysObject': instance.strictKeysObject,
+      'validatedPropertyNo42': instance.validatedPropertyNo42
+    };
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
     Map<String, dynamic> json) {
@@ -163,37 +130,21 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
 }
 
 Map<String, dynamic> _$JsonConverterTestClassToJson(
-    JsonConverterTestClass instance) {
-  final val = <String, dynamic>{
-    'duration': durationConverter.toJson(instance.duration),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'durationList',
-      _$nullIfEmptyIterable(instance.durationList)
-          ?.map(durationConverter.toJson)
-          ?.toList());
-  val['bigInt'] = const BigIntStringConverter().toJson(instance.bigInt);
-  writeNotNull(
-      'bigIntMap',
-      _$nullIfEmptyMap(instance.bigIntMap)?.map(
-          (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))));
-  val['numberSilly'] =
-      TrivialNumberConverter.instance.toJson(instance.numberSilly);
-  writeNotNull(
-      'numberSillySet',
-      _$nullIfEmptyIterable(instance.numberSillySet)
-          ?.map(TrivialNumberConverter.instance.toJson)
-          ?.toList());
-  val['dateTime'] = const EpochDateTimeConverter().toJson(instance.dateTime);
-  return val;
-}
+        JsonConverterTestClass instance) =>
+    <String, dynamic>{
+      'duration': durationConverter.toJson(instance.duration),
+      'durationList':
+          instance.durationList.map(durationConverter.toJson).toList(),
+      'bigInt': const BigIntStringConverter().toJson(instance.bigInt),
+      'bigIntMap': instance.bigIntMap
+          .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
+      'numberSilly':
+          TrivialNumberConverter.instance.toJson(instance.numberSilly),
+      'numberSillySet': instance.numberSillySet
+          .map(TrivialNumberConverter.instance.toJson)
+          .toList(),
+      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime)
+    };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     Map<String, dynamic> json) {
@@ -210,25 +161,10 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
 }
 
 Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
-    JsonConverterGeneric<S, T, U> instance) {
-  final val = <String, dynamic>{
-    'item': GenericConverter<S>().toJson(instance.item),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'itemList',
-      _$nullIfEmptyIterable(instance.itemList)
-          ?.map(GenericConverter<T>().toJson)
-          ?.toList());
-  writeNotNull(
-      'itemMap',
-      _$nullIfEmptyMap(instance.itemMap)
-          ?.map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e))));
-  return val;
-}
+        JsonConverterGeneric<S, T, U> instance) =>
+    <String, dynamic>{
+      'item': GenericConverter<S>().toJson(instance.item),
+      'itemList': instance.itemList.map(GenericConverter<T>().toJson).toList(),
+      'itemMap': instance.itemMap
+          .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
+    };

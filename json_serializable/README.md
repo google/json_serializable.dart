@@ -69,25 +69,24 @@ is generated:
 2. Add a `@JsonKey` annotation to a field and set properties there.
 3. Add configuration to `build.yaml` – [see below](#build-configuration). 
 
-| `build.yaml` key           | JsonSerializable                            | JsonKey                         |
-| -------------------------- | ------------------------------------------- | ------------------------------- |
-| any_map                    | [JsonSerializable.anyMap]                   |                                 |
-| checked                    | [JsonSerializable.checked]                  |                                 |
-| create_factory             | [JsonSerializable.createFactory]            |                                 |
-| create_to_json             | [JsonSerializable.createToJson]             |                                 |
-| disallow_unrecognized_keys | [JsonSerializable.disallowUnrecognizedKeys] |                                 |
-| explicit_to_json           | [JsonSerializable.explicitToJson]           |                                 |
-| field_rename               | [JsonSerializable.fieldRename]              |                                 |
-| encode_empty_collection    | [JsonSerializable.encodeEmptyCollection]    | [JsonKey.encodeEmptyCollection] |
-| include_if_null            | [JsonSerializable.includeIfNull]            | [JsonKey.includeIfNull]         |
-| nullable                   | [JsonSerializable.nullable]                 | [JsonKey.nullable]              |
-|                            |                                             | [JsonKey.defaultValue]          |
-|                            |                                             | [JsonKey.disallowNullValue]     |
-|                            |                                             | [JsonKey.fromJson]              |
-|                            |                                             | [JsonKey.ignore]                |
-|                            |                                             | [JsonKey.name]                  |
-|                            |                                             | [JsonKey.required]              |
-|                            |                                             | [JsonKey.toJson]                |
+| `build.yaml` key           | JsonSerializable                            | JsonKey                     |
+| -------------------------- | ------------------------------------------- | --------------------------- |
+| any_map                    | [JsonSerializable.anyMap]                   |                             |
+| checked                    | [JsonSerializable.checked]                  |                             |
+| create_factory             | [JsonSerializable.createFactory]            |                             |
+| create_to_json             | [JsonSerializable.createToJson]             |                             |
+| disallow_unrecognized_keys | [JsonSerializable.disallowUnrecognizedKeys] |                             |
+| explicit_to_json           | [JsonSerializable.explicitToJson]           |                             |
+| field_rename               | [JsonSerializable.fieldRename]              |                             |
+| include_if_null            | [JsonSerializable.includeIfNull]            | [JsonKey.includeIfNull]     |
+| nullable                   | [JsonSerializable.nullable]                 | [JsonKey.nullable]          |
+|                            |                                             | [JsonKey.defaultValue]      |
+|                            |                                             | [JsonKey.disallowNullValue] |
+|                            |                                             | [JsonKey.fromJson]          |
+|                            |                                             | [JsonKey.ignore]            |
+|                            |                                             | [JsonKey.name]              |
+|                            |                                             | [JsonKey.required]          |
+|                            |                                             | [JsonKey.toJson]            |
 
 [JsonSerializable.anyMap]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/anyMap.html
 [JsonSerializable.checked]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/checked.html
@@ -96,8 +95,6 @@ is generated:
 [JsonSerializable.disallowUnrecognizedKeys]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
 [JsonSerializable.explicitToJson]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/explicitToJson.html
 [JsonSerializable.fieldRename]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/fieldRename.html
-[JsonSerializable.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/encodeEmptyCollection.html
-[JsonKey.encodeEmptyCollection]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/encodeEmptyCollection.html
 [JsonSerializable.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/includeIfNull.html
 [JsonKey.includeIfNull]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonKey/includeIfNull.html
 [JsonSerializable.nullable]: https://pub.dartlang.org/documentation/json_annotation/latest/json_annotation/JsonSerializable/nullable.html
@@ -141,7 +138,6 @@ targets:
           create_factory: true
           create_to_json: true
           disallow_unrecognized_keys: false
-          encode_empty_collection: true
           explicit_to_json: false
           field_rename: none
           include_if_null: true

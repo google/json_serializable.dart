@@ -10,7 +10,7 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_no_encode_empty__non_nullable.g.dart';
+part 'kitchen_sink.g_non_nullable.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
@@ -25,13 +25,12 @@ const k.KitchenSinkFactory factory = _Factory();
 class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
 
-  String get description => 'no_encode_empty__non_nullable';
+  String get description => 'non_nullable';
   bool get anyMap => false;
   bool get checked => false;
   bool get nullable => false;
   bool get excludeNull => false;
   bool get explicitToJson => false;
-  bool get noEncodeEmpty => true;
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
@@ -61,7 +60,6 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 
 @JsonSerializable(
   nullable: false,
-  encodeEmptyCollection: false,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
@@ -156,7 +154,6 @@ class KitchenSink implements k.KitchenSink {
 
 @JsonSerializable(
   nullable: false,
-  encodeEmptyCollection: false,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -186,7 +183,6 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 
 @JsonSerializable(
   nullable: false,
-  encodeEmptyCollection: false,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
