@@ -1,3 +1,8 @@
+## 3.0.0
+
+- **BREAKING** Removed `JsonSerializable.useWrappers` and associated
+  `$`-prefixed helpers.
+
 ## 2.3.0
 
 - Added `pascal` as an additional `fieldRename` option.

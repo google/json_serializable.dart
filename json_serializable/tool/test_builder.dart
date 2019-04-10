@@ -113,7 +113,6 @@ const _configReplacements = {
   'any_map': _Replacement.addJsonSerializableKey('anyMap', true),
   'checked': _Replacement.addJsonSerializableKey('checked', true),
   'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
-  'use_wrappers': _Replacement.addJsonSerializableKey('useWrappers', true),
   'explicit_to_json':
       _Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
@@ -230,29 +229,22 @@ const _kitchenSinkBaseName = 'kitchen_sink';
 const _fileConfigurationMap = <String, Set<Set<String>>>{
   _kitchenSinkBaseName: {
     {'any_map', 'checked', 'non_nullable'},
-    {'any_map', 'non_nullable', 'use_wrappers'},
     {'any_map', 'non_nullable'},
     {'any_map'},
     {'no_encode_empty'},
-    {'no_encode_empty', 'exclude_null', 'use_wrappers'},
-    {'no_encode_empty', 'non_nullable'},
     {'no_encode_empty', 'exclude_null'},
-    {'no_encode_empty', 'exclude_null', 'non_nullable', 'use_wrappers'},
+    {'no_encode_empty', 'non_nullable'},
+    {'no_encode_empty', 'exclude_null', 'non_nullable'},
     {'exclude_null', 'non_nullable'},
-    {'exclude_null', 'use_wrappers'},
     {'exclude_null'},
     {'explicit_to_json'},
   },
   'default_value': {
     {'any_map', 'checked'},
   },
-  'generic_class': {
-    {'use_wrappers'},
-  },
+  'generic_class': <Set<String>>{},
   'json_test_example': {
-    {'non_nullable', 'use_wrappers'},
     {'non_nullable'},
-    {'use_wrappers'},
   }
 };
 

@@ -61,39 +61,6 @@ UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
 
 Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
         UnknownFieldTypeWithConvert instance) =>
-    _$UnknownFieldTypeWithConvertJsonMapWrapper(instance);
-
-class _$UnknownFieldTypeWithConvertJsonMapWrapper extends $JsonMapWrapper {
-  final UnknownFieldTypeWithConvert _v;
-  _$UnknownFieldTypeWithConvertJsonMapWrapper(this._v);
-
-  @override
-  Iterable<String> get keys => const ['number'];
-
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {
-        case 'number':
-          return _v.number == null ? null : _everythingIs42(_v.number);
-      }
-    }
-    return null;
-  }
-}
-''',
-  configurations: ['wrapped'],
-)
-@ShouldGenerate(
-  r'''
-UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
-    Map<String, dynamic> json) {
-  return UnknownFieldTypeWithConvert()
-    ..number = json['number'] == null ? null : _everythingIs42(json['number']);
-}
-
-Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
-        UnknownFieldTypeWithConvert instance) =>
     <String, dynamic>{
       'number':
           instance.number == null ? null : _everythingIs42(instance.number)

@@ -8,7 +8,6 @@ import 'package:json_annotation/json_annotation.dart';
 import 'constants.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
-import 'type_helpers/convert_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 
 abstract class EncodeHelper implements HelperCore {
@@ -22,9 +21,6 @@ abstract class EncodeHelper implements HelperCore {
 
   String _mixinClassName(bool withConstraints) =>
       '${prefix}SerializerMixin${genericClassArgumentsImpl(withConstraints)}';
-
-  String _wrapperClassName([bool withConstraints]) =>
-      '${prefix}JsonMapWrapper${genericClassArgumentsImpl(withConstraints)}';
 
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(config.createToJson);
@@ -53,17 +49,12 @@ abstract class EncodeHelper implements HelperCore {
 
     final writeNaive = accessibleFields.every(_writeJsonValueNaive);
 
-    if (config.useWrappers) {
-      final param = config.generateToJsonFunction ? _toJsonParamName : 'this';
-      buffer.writeln('=> ${_wrapperClassName(false)}($param);');
+    if (writeNaive) {
+      // write simple `toJson` method that includes all keys...
+      _writeToJsonSimple(buffer, accessibleFields);
     } else {
-      if (writeNaive) {
-        // write simple `toJson` method that includes all keys...
-        _writeToJsonSimple(buffer, accessibleFields);
-      } else {
-        // At least one field should be excluded if null
-        _writeToJsonWithNullChecks(buffer, accessibleFields);
-      }
+      // At least one field should be excluded if null
+      _writeToJsonWithNullChecks(buffer, accessibleFields);
     }
 
     if (!config.generateToJsonFunction) {
@@ -72,91 +63,6 @@ abstract class EncodeHelper implements HelperCore {
     }
 
     yield buffer.toString();
-
-    if (config.useWrappers) {
-      yield _createWrapperClass(accessibleFields);
-    }
-  }
-
-  String _createWrapperClass(Iterable<FieldElement> fields) {
-    final buffer = StringBuffer();
-    buffer.writeln();
-    // TODO(kevmoo): write JsonMapWrapper if annotation lib is prefix-imported
-
-    final fieldType = config.generateToJsonFunction
-        ? targetClassReference
-        : _mixinClassName(false);
-
-    buffer.writeln('''
-class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
-  final $fieldType _v;
-  ${_wrapperClassName()}(this._v);
-''');
-
-    if (fields.every(_writeJsonValueNaive)) {
-      // TODO(kevmoo): consider just doing one code path – if it's fast
-      //               enough
-      final jsonKeys = fields.map(safeNameAccess).join(', ');
-
-      // TODO(kevmoo): maybe put this in a static field instead?
-      //               const lists have unfortunate overhead
-      buffer.writeln('''
-  @override
-  Iterable<String> get keys => const [$jsonKeys];
-''');
-    } else {
-      // At least one field should be excluded if null
-      buffer.writeln('  @override\n  Iterable<String> get keys sync* {');
-
-      for (final field in fields) {
-        String check;
-
-        if (!_writeJsonValueNaive(field)) {
-          final expression = _wrapCustomEncoder('_v.${field.name}', field);
-          check = '$expression != null';
-
-          if (!jsonKeyFor(field).encodeEmptyCollection) {
-            assert(!jsonKeyFor(field).includeIfNull);
-            if (jsonKeyFor(field).nullable) {
-              check = '_v.${field.name}?.isNotEmpty ?? false';
-            } else {
-              check = '_v.${field.name}.isNotEmpty';
-            }
-          }
-        }
-        if (check != null) {
-          buffer.writeln('    if ($check) {\n  ');
-        }
-        buffer.writeln('    yield ${safeNameAccess(field)};');
-        if (check != null) {
-          buffer.writeln('    }');
-        }
-      }
-
-      buffer.writeln('  }\n');
-    }
-
-    buffer.writeln('''
-  @override
-  dynamic operator [](Object key) {
-    if (key is String) {
-      switch (key) {''');
-
-    for (final field in fields) {
-      final valueAccess = '_v.${field.name}';
-      buffer.writeln('''
-        case ${safeNameAccess(field)}:
-          return ${_serializeField(field, valueAccess)};''');
-    }
-
-    buffer.writeln('''
-      }
-    }
-    return null;
-  }''');
-
-    buffer.writeln('}');
-    return buffer.toString();
   }
 
   void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields) {
@@ -285,54 +191,5 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
       return true;
     }
     return false;
-  }
-
-  /// If [field] has a user-defined encoder, return [expression] wrapped in
-  /// the corresponding conversion logic so we can do a correct `null` check.
-  ///
-  /// This can be either a `toJson` function in [JsonKey] or a [JsonConverter]
-  /// annotation.
-  ///
-  /// If there is no user-defined encoder, just return [expression] as-is.
-  String _wrapCustomEncoder(String expression, FieldElement field) {
-    final helperContext = getHelperContext(field);
-
-    final convertData = helperContext.serializeConvertData;
-
-    var result = expression;
-    if (convertData != null) {
-      result = toJsonSerializeImpl(
-        getHelperContext(field).serializeConvertData.name,
-        expression,
-        jsonKeyFor(field).nullable,
-      );
-    } else {
-      final output = const JsonConverterHelper()
-          .serialize(field.type, expression, helperContext);
-
-      if (output != null) {
-        result = output.toString();
-      }
-    }
-
-    assert(
-      (result != expression) == _fieldHasCustomEncoder(field),
-      'If the output expression is different, then it should map to a field '
-      'with a custom encoder',
-    );
-
-    if (result == expression) {
-      // No conversion
-      return expression;
-    }
-
-    if (jsonKeyFor(field).nullable) {
-      // If there was a conversion and the field is nullable, wrap the output
-      // in () – there will be null checks that will break the comparison
-      // in the caller
-      result = '($result)';
-    }
-
-    return result;
   }
 }

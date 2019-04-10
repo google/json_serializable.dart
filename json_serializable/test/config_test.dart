@@ -141,5 +141,4 @@ const _invalidConfig = {
   'generate_to_json_function': 42,
   'include_if_null': 42,
   'nullable': 42,
-  'use_wrappers': 42,
 };

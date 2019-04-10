@@ -17,4 +17,3 @@ export 'src/json_key.dart';
 export 'src/json_literal.dart';
 export 'src/json_serializable.dart';
 export 'src/json_value.dart';
-export 'src/wrapper_helpers.dart';

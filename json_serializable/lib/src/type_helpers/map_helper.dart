@@ -47,16 +47,6 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return expression;
     }
 
-    if (context.config.useWrappers) {
-      var method = '\$wrapMap';
-      if (contextNullable) {
-        method = '${method}HandleNull';
-      }
-
-      final lambda = LambdaResult.process(subFieldValue, closureArg);
-      return '$method<$keyType, $valueType>($expression, $lambda)';
-    }
-
     final optionalQuestion = contextNullable ? '?' : '';
 
     return '$expression$optionalQuestion'

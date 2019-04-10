@@ -17,7 +17,6 @@ class ConfigurationImplicitDefaults {
   generateToJsonFunction: true,
   includeIfNull: true,
   nullable: true,
-  useWrappers: false,
 )
 class ConfigurationExplicitDefaults {
   int field;
