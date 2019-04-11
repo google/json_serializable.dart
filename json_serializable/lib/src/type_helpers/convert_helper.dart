@@ -31,8 +31,7 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     if (toJsonData != null) {
       assert(toJsonData.paramType is TypeParameterType ||
           targetType.isAssignableTo(toJsonData.paramType));
-      final result = '${toJsonData.name}($expression)';
-      return commonNullPrefix(context.nullable, expression, result).toString();
+      return toJsonSerializeImpl(toJsonData.name, expression, context.nullable);
     }
     return null;
   }
@@ -48,4 +47,11 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     }
     return null;
   }
+}
+
+/// Exposed to support `EncodeHelper` – not exposed publicly.
+String toJsonSerializeImpl(
+    String toJsonDataName, String expression, bool nullable) {
+  final result = '$toJsonDataName($expression)';
+  return commonNullPrefix(nullable, expression, result).toString();
 }

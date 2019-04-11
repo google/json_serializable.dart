@@ -8,6 +8,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'constants.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
+import 'type_helpers/convert_helper.dart';
+import 'type_helpers/json_converter_helper.dart';
 
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) {
@@ -110,7 +112,8 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
         String check;
 
         if (!_writeJsonValueNaive(field)) {
-          check = '_v.${field.name} != null';
+          final expression = _wrapCustomEncoder('_v.${field.name}', field);
+          check = '$expression != null';
 
           if (!jsonKeyFor(field).encodeEmptyCollection) {
             assert(!jsonKeyFor(field).includeIfNull);
@@ -248,12 +251,88 @@ class ${_wrapperClassName(true)} extends \$JsonMapWrapper {
 
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.
+  bool _writeJsonValueNaive(FieldElement field) {
+    final jsonKey = jsonKeyFor(field);
+
+    if (jsonKey.includeIfNull) {
+      return true;
+    }
+
+    if (!jsonKey.nullable &&
+        jsonKey.encodeEmptyCollection &&
+        !_fieldHasCustomEncoder(field)) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Returns `true` if [field] has a user-defined encoder.
   ///
-  /// `true` if either:
-  ///   `includeIfNull` is `true`
-  ///   or
-  ///   `nullable` is `false` and `encodeEmptyCollection` is true
-  bool _writeJsonValueNaive(FieldElement field) =>
-      jsonKeyFor(field).includeIfNull ||
-      (!jsonKeyFor(field).nullable && jsonKeyFor(field).encodeEmptyCollection);
+  /// This can be either a `toJson` function in [JsonKey] or a [JsonConverter]
+  /// annotation.
+  bool _fieldHasCustomEncoder(FieldElement field) {
+    final helperContext = getHelperContext(field);
+
+    if (helperContext.serializeConvertData != null) {
+      return true;
+    }
+
+    final output = const JsonConverterHelper()
+        .serialize(field.type, 'test', helperContext);
+
+    if (output != null) {
+      return true;
+    }
+    return false;
+  }
+
+  /// If [field] has a user-defined encoder, return [expression] wrapped in
+  /// the corresponding conversion logic so we can do a correct `null` check.
+  ///
+  /// This can be either a `toJson` function in [JsonKey] or a [JsonConverter]
+  /// annotation.
+  ///
+  /// If there is no user-defined encoder, just return [expression] as-is.
+  String _wrapCustomEncoder(String expression, FieldElement field) {
+    final helperContext = getHelperContext(field);
+
+    final convertData = helperContext.serializeConvertData;
+
+    var result = expression;
+    if (convertData != null) {
+      result = toJsonSerializeImpl(
+        getHelperContext(field).serializeConvertData.name,
+        expression,
+        jsonKeyFor(field).nullable,
+      );
+    } else {
+      final output = const JsonConverterHelper()
+          .serialize(field.type, expression, helperContext);
+
+      if (output != null) {
+        result = output.toString();
+      }
+    }
+
+    assert(
+      (result != expression) == _fieldHasCustomEncoder(field),
+      'If the output expression is different, then it should map to a field '
+      'with a custom encoder',
+    );
+
+    if (result == expression) {
+      // No conversion
+      return expression;
+    }
+
+    if (jsonKeyFor(field).nullable) {
+      // If there was a conversion and the field is nullable, wrap the output
+      // in () – there will be null checks that will break the comparison
+      // in the caller
+      result = '($result)';
+    }
+
+    return result;
+  }
 }

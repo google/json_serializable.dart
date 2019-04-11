@@ -268,19 +268,27 @@ class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys sync* {
-    yield 'duration';
+    if (durationConverter.toJson(_v.duration) != null) {
+      yield 'duration';
+    }
     if (_v.durationList.isNotEmpty) {
       yield 'durationList';
     }
-    yield 'bigInt';
+    if (const BigIntStringConverter().toJson(_v.bigInt) != null) {
+      yield 'bigInt';
+    }
     if (_v.bigIntMap.isNotEmpty) {
       yield 'bigIntMap';
     }
-    yield 'numberSilly';
+    if (TrivialNumberConverter.instance.toJson(_v.numberSilly) != null) {
+      yield 'numberSilly';
+    }
     if (_v.numberSillySet.isNotEmpty) {
       yield 'numberSillySet';
     }
-    yield 'dateTime';
+    if (const EpochDateTimeConverter().toJson(_v.dateTime) != null) {
+      yield 'dateTime';
+    }
   }
 
   @override
@@ -336,7 +344,9 @@ class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys sync* {
-    yield 'item';
+    if (GenericConverter<S>().toJson(_v.item) != null) {
+      yield 'item';
+    }
     if (_v.itemList.isNotEmpty) {
       yield 'itemList';
     }

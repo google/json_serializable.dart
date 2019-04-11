@@ -300,25 +300,35 @@ class _$JsonConverterTestClassJsonMapWrapper extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys sync* {
-    if (_v.duration != null) {
+    if ((_v.duration == null ? null : durationConverter.toJson(_v.duration)) !=
+        null) {
       yield 'duration';
     }
     if (_v.durationList != null) {
       yield 'durationList';
     }
-    if (_v.bigInt != null) {
+    if ((_v.bigInt == null
+            ? null
+            : const BigIntStringConverter().toJson(_v.bigInt)) !=
+        null) {
       yield 'bigInt';
     }
     if (_v.bigIntMap != null) {
       yield 'bigIntMap';
     }
-    if (_v.numberSilly != null) {
+    if ((_v.numberSilly == null
+            ? null
+            : TrivialNumberConverter.instance.toJson(_v.numberSilly)) !=
+        null) {
       yield 'numberSilly';
     }
     if (_v.numberSillySet != null) {
       yield 'numberSillySet';
     }
-    if (_v.dateTime != null) {
+    if ((_v.dateTime == null
+            ? null
+            : const EpochDateTimeConverter().toJson(_v.dateTime)) !=
+        null) {
       yield 'dateTime';
     }
   }
@@ -392,7 +402,8 @@ class _$JsonConverterGenericJsonMapWrapper<S, T, U> extends $JsonMapWrapper {
 
   @override
   Iterable<String> get keys sync* {
-    if (_v.item != null) {
+    if ((_v.item == null ? null : GenericConverter<S>().toJson(_v.item)) !=
+        null) {
       yield 'item';
     }
     if (_v.itemList != null) {
