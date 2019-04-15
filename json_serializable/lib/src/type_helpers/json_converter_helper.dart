@@ -8,6 +8,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import '../json_key_utils.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
@@ -25,8 +26,9 @@ class JsonConverterHelper extends TypeHelper {
       return null;
     }
 
-    return commonNullPrefix(context.nullable, expression,
-        LambdaResult(expression, '${converter.accessString}.toJson'));
+    logFieldWithConversionFunction(context.fieldElement);
+
+    return LambdaResult(expression, '${converter.accessString}.toJson');
   }
 
   @override
@@ -39,11 +41,10 @@ class JsonConverterHelper extends TypeHelper {
 
     final asContent = asStatement(converter.jsonType);
 
-    return commonNullPrefix(
-        context.nullable,
-        expression,
-        LambdaResult(
-            '$expression$asContent', '${converter.accessString}.fromJson'));
+    logFieldWithConversionFunction(context.fieldElement);
+
+    return LambdaResult(
+        '$expression$asContent', '${converter.accessString}.fromJson');
   }
 }
 

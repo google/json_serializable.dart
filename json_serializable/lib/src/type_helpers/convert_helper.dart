@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
+import '../json_key_utils.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
@@ -18,6 +19,7 @@ class ConvertData {
 
 abstract class TypeHelperContextWithConvert extends TypeHelperContext {
   ConvertData get serializeConvertData;
+
   ConvertData get deserializeConvertData;
 }
 
@@ -28,30 +30,28 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   String serialize(DartType targetType, String expression,
       TypeHelperContextWithConvert context) {
     final toJsonData = context.serializeConvertData;
-    if (toJsonData != null) {
-      assert(toJsonData.paramType is TypeParameterType ||
-          targetType.isAssignableTo(toJsonData.paramType));
-      return toJsonSerializeImpl(toJsonData.name, expression, context.nullable);
+    if (toJsonData == null) {
+      return null;
     }
-    return null;
+
+    logFieldWithConversionFunction(context.fieldElement);
+
+    assert(toJsonData.paramType is TypeParameterType ||
+        targetType.isAssignableTo(toJsonData.paramType));
+    return '${toJsonData.name}($expression)';
   }
 
   @override
   String deserialize(DartType targetType, String expression,
       TypeHelperContextWithConvert context) {
     final fromJsonData = context.deserializeConvertData;
-    if (fromJsonData != null) {
-      final asContent = asStatement(fromJsonData.paramType);
-      final result = '${fromJsonData.name}($expression$asContent)';
-      return commonNullPrefix(context.nullable, expression, result).toString();
+    if (fromJsonData == null) {
+      return null;
     }
-    return null;
-  }
-}
 
-/// Exposed to support `EncodeHelper` – not exposed publicly.
-String toJsonSerializeImpl(
-    String toJsonDataName, String expression, bool nullable) {
-  final result = '$toJsonDataName($expression)';
-  return commonNullPrefix(nullable, expression, result).toString();
+    logFieldWithConversionFunction(context.fieldElement);
+
+    final asContent = asStatement(fromJsonData.paramType);
+    return '${fromJsonData.name}($expression$asContent)';
+  }
 }

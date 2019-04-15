@@ -56,15 +56,12 @@ class UnknownFieldTypeToJsonOnly {
 UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
     Map<String, dynamic> json) {
   return UnknownFieldTypeWithConvert()
-    ..number = json['number'] == null ? null : _everythingIs42(json['number']);
+    ..number = _everythingIs42(json['number']);
 }
 
 Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
         UnknownFieldTypeWithConvert instance) =>
-    <String, dynamic>{
-      'number':
-          instance.number == null ? null : _everythingIs42(instance.number)
-    };
+    <String, dynamic>{'number': _everythingIs42(instance.number)};
 ''',
   configurations: ['default'],
 )
