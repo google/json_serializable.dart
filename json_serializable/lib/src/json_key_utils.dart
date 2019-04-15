@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -15,6 +16,21 @@ final _jsonKeyExpando = Expando<JsonKey>();
 
 JsonKey jsonKeyForField(FieldElement field, JsonSerializable classAnnotation) =>
     _jsonKeyExpando[field] ??= _from(field, classAnnotation);
+
+/// Will log "info" if [element] has an explicit value for [JsonKey.nullable]
+/// telling the programmer that it will be ignored.
+void logFieldWithConversionFunction(FieldElement element) {
+  final jsonKey = _jsonKeyExpando[element];
+  if (_explicitNullableExpando[jsonKey]) {
+    log.info(
+      'The `JsonKey.nullable` value on '
+      '`${element.enclosingElement.name}.${element.name}` will be ignored '
+      'because a custom conversion function is being used.',
+    );
+
+    _explicitNullableExpando[jsonKey] = null;
+  }
+}
 
 JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
@@ -127,7 +143,7 @@ JsonKey _populateJsonKey(
     }
   }
 
-  return JsonKey(
+  final jsonKey = JsonKey(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
     ignore: ignore ?? false,
@@ -137,7 +153,13 @@ JsonKey _populateJsonKey(
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
   );
+
+  _explicitNullableExpando[jsonKey] = nullable != null;
+
+  return jsonKey;
 }
+
+final _explicitNullableExpando = Expando<bool>('explicit nullable');
 
 String _encodedFieldName(JsonSerializable classAnnotation,
     String jsonKeyNameValue, FieldElement fieldElement) {

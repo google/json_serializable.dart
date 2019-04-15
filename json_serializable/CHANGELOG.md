@@ -3,6 +3,12 @@
 - **BREAKING** Removed support for `JsonSerializable.useWrappers`.
 - **BREAKING** Removed support for `JsonSerializable.generateToJsonFunction`.
 - **BREAKING** Removed support for `encodeEmptyCollection`.
+- **BREAKING** If a field has a conversion function defined – either 
+  `JsonKey.toJson` or a custom `JsonConverter` annotation – don't intercept
+  `null` values, even if `nullable` is explicitly set to `false`. This allows
+  these functions to provide alternative values for `null` – such as an empty
+  collection – which replaces the functionality provided by
+  `encodeEmptyCollection`.
 
 ## 2.2.3
 

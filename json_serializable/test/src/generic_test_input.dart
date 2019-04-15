@@ -4,36 +4,29 @@
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
   return GenericClass<T, S>()
-    ..fieldObject =
-        json['fieldObject'] == null ? null : _dataFromJson(json['fieldObject'])
-    ..fieldDynamic = json['fieldDynamic'] == null
-        ? null
-        : _dataFromJson(json['fieldDynamic'])
-    ..fieldInt =
-        json['fieldInt'] == null ? null : _dataFromJson(json['fieldInt'])
-    ..fieldT = json['fieldT'] == null ? null : _dataFromJson(json['fieldT'])
-    ..fieldS = json['fieldS'] == null ? null : _dataFromJson(json['fieldS']);
+    ..fieldObject = _dataFromJson(json['fieldObject'])
+    ..fieldDynamic = _dataFromJson(json['fieldDynamic'])
+    ..fieldInt = _dataFromJson(json['fieldInt'])
+    ..fieldT = _dataFromJson(json['fieldT'])
+    ..fieldS = _dataFromJson(json['fieldS']);
 }
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
         GenericClass<T, S> instance) =>
     <String, dynamic>{
-      'fieldObject': instance.fieldObject == null
-          ? null
-          : _dataToJson(instance.fieldObject),
-      'fieldDynamic': instance.fieldDynamic == null
-          ? null
-          : _dataToJson(instance.fieldDynamic),
-      'fieldInt':
-          instance.fieldInt == null ? null : _dataToJson(instance.fieldInt),
-      'fieldT': instance.fieldT == null ? null : _dataToJson(instance.fieldT),
-      'fieldS': instance.fieldS == null ? null : _dataToJson(instance.fieldS)
+      'fieldObject': _dataToJson(instance.fieldObject),
+      'fieldDynamic': _dataToJson(instance.fieldDynamic),
+      'fieldInt': _dataToJson(instance.fieldInt),
+      'fieldT': _dataToJson(instance.fieldT),
+      'fieldS': _dataToJson(instance.fieldS)
     };
-''')
+''',
+)
 @JsonSerializable()
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)

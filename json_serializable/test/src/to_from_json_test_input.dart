@@ -39,17 +39,13 @@ class InvalidFromFunc2Args {
 ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
     Map<String, dynamic> json) {
   return ValidToFromFuncClassStatic()
-    ..field = json['field'] == null
-        ? null
-        : ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
+    ..field = ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
 }
 
 Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
         ValidToFromFuncClassStatic instance) =>
     <String, dynamic>{
-      'field': instance.field == null
-          ? null
-          : ValidToFromFuncClassStatic._staticFunc(instance.field)
+      'field': ValidToFromFuncClassStatic._staticFunc(instance.field)
     };
 ''',
   configurations: ['default'],
@@ -134,6 +130,11 @@ Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
   return val;
 }
 ''',
+  expectedLogItems: [
+    'The `JsonKey.nullable` value on '
+        '`ToJsonNullableFalseIncludeIfNullFalse.field` will be ignored because '
+        'a custom conversion function is being used.',
+  ],
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
@@ -153,15 +154,9 @@ String _fromDynamicIterable(Iterable input) => null;
 FromDynamicCollection _$FromDynamicCollectionFromJson(
     Map<String, dynamic> json) {
   return FromDynamicCollection()
-    ..mapField = json['mapField'] == null
-        ? null
-        : _fromDynamicMap(json['mapField'] as Map)
-    ..listField = json['listField'] == null
-        ? null
-        : _fromDynamicList(json['listField'] as List)
-    ..iterableField = json['iterableField'] == null
-        ? null
-        : _fromDynamicIterable(json['iterableField'] as List);
+    ..mapField = _fromDynamicMap(json['mapField'] as Map)
+    ..listField = _fromDynamicList(json['listField'] as List)
+    ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
 }
 ''',
   configurations: ['default'],

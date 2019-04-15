@@ -29,17 +29,17 @@ class TrivialNumberConverter implements JsonConverter<TrivialNumber, int> {
   TrivialNumber fromJson(int json) => TrivialNumber(json);
 
   @override
-  int toJson(TrivialNumber object) => object.value;
+  int toJson(TrivialNumber object) => object?.value;
 }
 
 class BigIntStringConverter implements JsonConverter<BigInt, String> {
   const BigIntStringConverter();
 
   @override
-  BigInt fromJson(String json) => BigInt.parse(json);
+  BigInt fromJson(String json) => json == null ? null : BigInt.parse(json);
 
   @override
-  String toJson(BigInt object) => object.toString();
+  String toJson(BigInt object) => object?.toString();
 }
 
 const durationConverter = DurationMillisecondConverter();
@@ -48,18 +48,20 @@ class DurationMillisecondConverter implements JsonConverter<Duration, int> {
   const DurationMillisecondConverter();
 
   @override
-  Duration fromJson(int json) => Duration(milliseconds: json);
+  Duration fromJson(int json) =>
+      json == null ? null : Duration(milliseconds: json);
 
   @override
-  int toJson(Duration object) => object.inMilliseconds;
+  int toJson(Duration object) => object?.inMilliseconds;
 }
 
 class EpochDateTimeConverter implements JsonConverter<DateTime, int> {
   const EpochDateTimeConverter();
 
   @override
-  DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
+  DateTime fromJson(int json) =>
+      json == null ? null : DateTime.fromMillisecondsSinceEpoch(json);
 
   @override
-  int toJson(DateTime object) => object.millisecondsSinceEpoch;
+  int toJson(DateTime object) => object?.millisecondsSinceEpoch;
 }
