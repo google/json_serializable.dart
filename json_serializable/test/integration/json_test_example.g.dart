@@ -159,11 +159,8 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) {
         (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
     ..nnDoubles =
         (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration = json['duration'] == null
-        ? null
-        : durationFromInt(json['duration'] as int)
-    ..date =
-        json['date'] == null ? null : dateTimeFromEpochUs(json['date'] as int);
+    ..duration = durationFromInt(json['duration'] as int)
+    ..date = dateTimeFromEpochUs(json['date'] as int);
 }
 
 Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
@@ -171,7 +168,6 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
       'nums': instance.nums,
       'doubles': instance.doubles,
       'nnDoubles': instance.nnDoubles,
-      'duration':
-          instance.duration == null ? null : durationToInt(instance.duration),
-      'date': instance.date == null ? null : dateTimeToEpochUs(instance.date)
+      'duration': durationToInt(instance.duration),
+      'date': dateTimeToEpochUs(instance.date)
     };
