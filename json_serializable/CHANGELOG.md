@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Fixed an error when a property/field is defined in a `mixin`.
+
 ## 2.2.0
 
 - If a field has a conversion function defined – either `JsonKey.toJson` or a
