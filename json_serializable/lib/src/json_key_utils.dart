@@ -184,8 +184,7 @@ String _encodedFieldName(JsonSerializable classAnnotation,
 
   switch (classAnnotation.fieldRename) {
     case FieldRename.none:
-      // noop
-      break;
+      return fieldElement.name;
     case FieldRename.snake:
       return snakeCase(fieldElement.name);
     case FieldRename.kebab:
@@ -194,7 +193,12 @@ String _encodedFieldName(JsonSerializable classAnnotation,
       return pascalCase(fieldElement.name);
   }
 
-  return fieldElement.name;
+  throw ArgumentError.value(
+    classAnnotation,
+    'classAnnotation',
+    'The provided `fieldRename` (${classAnnotation.fieldRename}) is not '
+        'supported.',
+  );
 }
 
 bool _includeIfNull(
