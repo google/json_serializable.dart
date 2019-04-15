@@ -147,15 +147,14 @@ String _encodedFieldName(JsonSerializable classAnnotation,
 
   switch (classAnnotation.fieldRename) {
     case FieldRename.none:
-      // noop
-      break;
+      return fieldElement.name;
     case FieldRename.snake:
       return snakeCase(fieldElement.name);
     case FieldRename.kebab:
       return kebabCase(fieldElement.name);
+    default:
+      throw FallThroughError();
   }
-
-  return fieldElement.name;
 }
 
 bool _includeIfNull(
