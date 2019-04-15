@@ -558,3 +558,32 @@ T _$nullIfEmptyIterable<T extends Iterable>(T source) =>
 class EmptyCollectionAsNullAndIncludeIfNullClass {
   List field;
 }
+
+mixin _PropInMixinI448RegressionMixin {
+  @JsonKey(nullable: true)
+  int nullable;
+}
+
+@ShouldGenerate(
+  r'''
+PropInMixinI448Regression _$PropInMixinI448RegressionFromJson(
+    Map<String, dynamic> json) {
+  return PropInMixinI448Regression()
+    ..nullable = json['nullable'] as int
+    ..notNullable = json['notNullable'] as int;
+}
+
+Map<String, dynamic> _$PropInMixinI448RegressionToJson(
+        PropInMixinI448Regression instance) =>
+    <String, dynamic>{
+      'nullable': instance.nullable,
+      'notNullable': instance.notNullable
+    };
+''',
+  configurations: ['default'],
+)
+@JsonSerializable()
+class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
+  @JsonKey(nullable: false)
+  int notNullable;
+}

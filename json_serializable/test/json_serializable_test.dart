@@ -93,6 +93,7 @@ const _expectedAnnotatedTests = [
   'OkayOnlyOptionalPositional',
   'OnlyStaticMembers',
   'PrivateFieldCtorClass',
+  'PropInMixinI448Regression',
   'SetSupport',
   'SubType',
   'SubType',

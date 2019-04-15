@@ -44,13 +44,13 @@ class _FieldSet implements Comparable<_FieldSet> {
       // in this case, you want to prioritize the enclosingElement that is more
       // "super".
 
-      if (checkerA.isSuperOf(b.enclosingElement)) {
+      if (checkerA.isAssignableFrom(b.enclosingElement)) {
         return -1;
       }
 
       final checkerB = TypeChecker.fromStatic(b.enclosingElement.type);
 
-      if (checkerB.isSuperOf(a.enclosingElement)) {
+      if (checkerB.isAssignableFrom(a.enclosingElement)) {
         return 1;
       }
     }
