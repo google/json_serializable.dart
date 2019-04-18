@@ -37,7 +37,12 @@ class ValueHelper extends TypeHelper {
       return expression;
     } else if (const TypeChecker.fromRuntime(double)
         .isExactlyType(targetType)) {
-      return '($expression as num)${context.nullable ? '?' : ''}.toDouble()';
+      return '(num.parse([$expression].toString()))${context.nullable ? '?' : ''}.toDouble()';
+    } else if (const TypeChecker.fromRuntime(int).isExactlyType(targetType)) {
+      return 'int.parse($expression.toString())';
+    } else if (const TypeChecker.fromRuntime(String)
+        .isExactlyType(targetType)) {
+      return '$expression.toString()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       return '$expression as $targetType';
     }

@@ -7,9 +7,9 @@ part of 'json_test_example.g_non_nullable__use_wrappers.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return Person(json['firstName'] as String, json['lastName'] as String,
+  return Person(json['firstName'].toString(), json['lastName'].toString(),
       _$enumDecode(_$CategoryEnumMap, json[r'$house']),
-      middleName: json['middleName'] as String,
+      middleName: json['middleName'].toString(),
       dateOfBirth: DateTime.parse(json['dateOfBirth'] as String))
     ..order = Order.fromJson(json['order'] as Map<String, dynamic>)
     ..customOrders = MyList.fromJson((json['customOrders'] as List)
@@ -19,7 +19,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)),
     )
     ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int),
+      (k, e) =>
+          MapEntry(_$enumDecode(_$CategoryEnumMap, k), int.parse(e.toString())),
     );
 }
 
@@ -101,12 +102,12 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
       _$enumDecode(_$CategoryEnumMap, json['category']),
       (json['items'] as List)
           .map((e) => Item.fromJson(e as Map<String, dynamic>)))
-    ..count = json['count'] as int
+    ..count = int.parse(json['count'].toString())
     ..isRushed = json['isRushed'] as bool
     ..duration = Duration(microseconds: json['duration'] as int)
-    ..platform = Platform.fromJson(json['platform'] as String)
+    ..platform = Platform.fromJson(json['platform'].toString())
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(k, Platform.fromJson(e as String)),
+      (k, e) => MapEntry(k, Platform.fromJson(e.toString())),
     )
     ..homepage = Uri.parse(json['homepage'] as String)
     ..statusCode =
@@ -175,12 +176,13 @@ const _$StatusCodeEnumMap = <StatusCode, dynamic>{
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
-  return Item(json['price'] as int)
-    ..itemNumber = json['item-number'] as int
+  return Item(int.parse(json['price'].toString()))
+    ..itemNumber = int.parse(json['item-number'].toString())
     ..saleDates = (json['saleDates'] as List)
         .map((e) => DateTime.parse(e as String))
         .toList()
-    ..rates = (json['rates'] as List).map((e) => e as int).toList();
+    ..rates =
+        (json['rates'] as List).map((e) => int.parse(e.toString())).toList();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) =>
@@ -214,12 +216,14 @@ class _$ItemJsonMapWrapper extends $JsonMapWrapper {
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) {
   return Numbers()
-    ..ints = (json['ints'] as List).map((e) => e as int).toList()
+    ..ints = (json['ints'] as List).map((e) => int.parse(e.toString())).toList()
     ..nums = (json['nums'] as List).map((e) => e as num).toList()
-    ..doubles =
-        (json['doubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..nnDoubles =
-        (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
+    ..doubles = (json['doubles'] as List)
+        .map((e) => (num.parse([e].toString())).toDouble())
+        .toList()
+    ..nnDoubles = (json['nnDoubles'] as List)
+        .map((e) => (num.parse([e].toString())).toDouble())
+        .toList()
     ..duration = durationFromInt(json['duration'] as int)
     ..date = dateTimeFromEpochUs(json['date'] as int);
 }

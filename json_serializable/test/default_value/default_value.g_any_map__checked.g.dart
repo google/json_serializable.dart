@@ -12,10 +12,14 @@ DefaultValue _$DefaultValueFromJson(Map json) {
     $checkedConvert(
         json, 'fieldBool', (v) => val.fieldBool = v as bool ?? true);
     $checkedConvert(
-        json, 'fieldString', (v) => val.fieldString = v as String ?? 'string');
-    $checkedConvert(json, 'fieldInt', (v) => val.fieldInt = v as int ?? 42);
-    $checkedConvert(json, 'fieldDouble',
-        (v) => val.fieldDouble = (v as num)?.toDouble() ?? 3.14);
+        json, 'fieldString', (v) => val.fieldString = v.toString() ?? 'string');
+    $checkedConvert(
+        json, 'fieldInt', (v) => val.fieldInt = int.parse(v.toString()) ?? 42);
+    $checkedConvert(
+        json,
+        'fieldDouble',
+        (v) =>
+            val.fieldDouble = (num.parse([v].toString()))?.toDouble() ?? 3.14);
     $checkedConvert(
         json, 'fieldListEmpty', (v) => val.fieldListEmpty = v as List ?? []);
     $checkedConvert(
@@ -24,12 +28,13 @@ DefaultValue _$DefaultValueFromJson(Map json) {
         json,
         'fieldListSimple',
         (v) => val.fieldListSimple =
-            (v as List)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
+            (v as List)?.map((e) => int.parse(e.toString()))?.toList() ??
+                [1, 2, 3]);
     $checkedConvert(
         json,
         'fieldMapSimple',
         (v) => val.fieldMapSimple = (v as Map)?.map(
-              (k, e) => MapEntry(k as String, e as int),
+              (k, e) => MapEntry(k as String, int.parse(e.toString())),
             ) ??
             {'answer': 42});
     $checkedConvert(
@@ -37,7 +42,7 @@ DefaultValue _$DefaultValueFromJson(Map json) {
         'fieldMapListString',
         (v) => val.fieldMapListString = (v as Map)?.map(
               (k, e) => MapEntry(
-                  k as String, (e as List)?.map((e) => e as String)?.toList()),
+                  k as String, (e as List)?.map((e) => e.toString())?.toList()),
             ) ??
             {
               'root': ['child']
