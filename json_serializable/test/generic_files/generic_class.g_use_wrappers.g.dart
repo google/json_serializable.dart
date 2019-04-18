@@ -72,7 +72,7 @@ GenericClassWithConverter<T, S>
   return GenericClassWithConverter<T, S>()
     ..fieldObject = json['fieldObject']
     ..fieldDynamic = json['fieldDynamic']
-    ..fieldInt = json['fieldInt'] as int
+    ..fieldInt = int.parse(json['fieldInt'].toString())
     ..fieldT = json['fieldT'] == null
         ? null
         : _SimpleConverter<T>().fromJson(json['fieldT'] as Map<String, dynamic>)
