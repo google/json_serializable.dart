@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -56,22 +55,12 @@ abstract class HelperCore {
 InvalidGenerationSourceError createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
-
-  var todo = 'Make sure all of the types are serializable.';
-
-  if (e.type.isUndefined) {
-    message = '$message because the type is undefined.';
-    todo = "Check your imports. If you're trying to generate code for a "
-        'Platform-provided type, you may have to specify a custom '
-        '`$targetMember` in the associated `@JsonKey` annotation.';
-  } else {
-    if (field.type != e.type) {
-      message = '$message because of type `${e.type}`';
-    }
-
-    message = '$message.\n${e.reason}';
+  if (field.type != e.type) {
+    message = '$message because of type `${e.type}`';
   }
+  message = '$message.\n${e.reason}';
 
+  final todo = 'Make sure all of the types are serializable.';
   return InvalidGenerationSourceError(message, todo: todo, element: field);
 }
 
@@ -105,14 +94,4 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
       .map((t) => withConstraints ? t.toString() : t.name)
       .join(', ');
   return '<$values>';
-}
-
-void warnUndefinedElements(Iterable<VariableElement> elements) {
-  for (final element in elements.where((fe) => fe.type.isUndefined)) {
-    final span = spanForElement(element);
-    log.warning('''
-This element has an undefined type. It may causes issues when generated code.
-${span.start.toolString}
-${span.highlight()}''');
-  }
 }
