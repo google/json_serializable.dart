@@ -1,6 +1,7 @@
 ## 2.2.2
 
 - Require at least Dart `2.2.0`.
+- Allow `build_config` `0.4.x`.
 
 ## 2.2.1
 
