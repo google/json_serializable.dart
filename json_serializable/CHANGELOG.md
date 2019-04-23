@@ -1,3 +1,8 @@
+## 2.2.3
+
+- Removed special handling of undefined types due to changes in
+  `package:analyzer`. These types are now treated as `dynamic`.
+
 ## 2.2.2
 
 - Require at least Dart `2.2.0`.

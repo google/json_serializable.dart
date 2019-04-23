@@ -9,7 +9,6 @@ import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
     show InheritanceManager; // ignore: deprecated_member_use
 import 'package:source_gen/source_gen.dart';
 
-import 'helper_core.dart';
 import 'utils.dart';
 
 class _FieldSet implements Comparable<_FieldSet> {
@@ -108,9 +107,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
   // Sort the fields using the `compare` implementation in _FieldSet
   fields.sort();
 
-  final fieldList = fields.map((fs) => fs.field).toList();
-  warnUndefinedElements(fieldList);
-  return fieldList;
+  return fields.map((fs) => fs.field).toList();
 }
 
 const _dartCoreObjectChecker = TypeChecker.fromRuntime(Object);

@@ -1,20 +1,15 @@
 part of '_json_serializable_test_input.dart';
 
-@ShouldThrow(
-  'Could not generate `fromJson` code for `number` because the type '
-  'is undefined.',
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:25:28
-   ╷
-25 │   UnknownCtorParamType(Bob number) : number = number;
-   │                            ^^^^^^
-   ╵'''
-  ],
-  todo: 'Check your imports. If you\'re trying to generate code for a '
-      'Platform-provided type, you may have to specify a custom `fromJson` '
-      'in the associated `@JsonKey` annotation.',
+@ShouldGenerate(
+  r'''
+UnknownCtorParamType _$UnknownCtorParamTypeFromJson(Map<String, dynamic> json) {
+  return UnknownCtorParamType(json['number']);
+}
+
+Map<String, dynamic> _$UnknownCtorParamTypeToJson(
+        UnknownCtorParamType instance) =>
+    <String, dynamic>{'number': instance.number};
+''',
   configurations: ['default'],
 )
 @JsonSerializable()
@@ -25,21 +20,15 @@ class UnknownCtorParamType {
   UnknownCtorParamType(Bob number) : number = number;
 }
 
-@ShouldThrow(
-  'Could not generate `fromJson` code for `number` because the type '
-  'is undefined.',
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:48:7
-   ╷
-48 │   Bob number;
-   │       ^^^^^^
-   ╵'''
-  ],
-  todo: 'Check your imports. If you\'re trying to generate code for a '
-      'Platform-provided type, you may have to specify a custom `fromJson` '
-      'in the associated `@JsonKey` annotation.',
+@ShouldGenerate(
+  r'''
+UnknownFieldType _$UnknownFieldTypeFromJson(Map<String, dynamic> json) {
+  return UnknownFieldType()..number = json['number'];
+}
+
+Map<String, dynamic> _$UnknownFieldTypeToJson(UnknownFieldType instance) =>
+    <String, dynamic>{'number': instance.number};
+''',
   configurations: ['default'],
 )
 @JsonSerializable()
@@ -48,21 +37,12 @@ class UnknownFieldType {
   Bob number;
 }
 
-@ShouldThrow(
-  'Could not generate `toJson` code for `number` because the type '
-  'is undefined.',
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:71:7
-   ╷
-71 │   Bob number;
-   │       ^^^^^^
-   ╵'''
-  ],
-  todo: 'Check your imports. If you\'re trying to generate code for a '
-      'Platform-provided type, you may have to specify a custom `toJson` '
-      'in the associated `@JsonKey` annotation.',
+@ShouldGenerate(
+  r'''
+Map<String, dynamic> _$UnknownFieldTypeToJsonOnlyToJson(
+        UnknownFieldTypeToJsonOnly instance) =>
+    <String, dynamic>{'number': instance.number};
+''',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
@@ -103,15 +83,6 @@ class _$UnknownFieldTypeWithConvertJsonMapWrapper extends $JsonMapWrapper {
 }
 ''',
   configurations: ['wrapped'],
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:146:7
-    ╷
-146 │   Bob number;
-    │       ^^^^^^
-    ╵'''
-  ],
 )
 @ShouldGenerate(
   r'''
@@ -129,15 +100,6 @@ Map<String, dynamic> _$UnknownFieldTypeWithConvertToJson(
     };
 ''',
   configurations: ['default'],
-  expectedLogItems: [
-    '''
-This element has an undefined type. It may causes issues when generated code.
-package:__test__/unknown_type_test_input.dart:146:7
-    ╷
-146 │   Bob number;
-    │       ^^^^^^
-    ╵'''
-  ],
 )
 @JsonSerializable()
 class UnknownFieldTypeWithConvert {

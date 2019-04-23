@@ -14,9 +14,6 @@ class ValueHelper extends TypeHelper {
   @override
   String serialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    if (targetType.isUndefined) {
-      return null;
-    }
     if (targetType.isDynamic ||
         targetType.isObject ||
         simpleJsonTypeChecker.isAssignableFromType(targetType)) {
@@ -29,9 +26,6 @@ class ValueHelper extends TypeHelper {
   @override
   String deserialize(
       DartType targetType, String expression, TypeHelperContext context) {
-    if (targetType.isUndefined) {
-      return null;
-    }
     if (targetType.isDynamic || targetType.isObject) {
       // just return it as-is. We'll hope it's safe.
       return expression;
