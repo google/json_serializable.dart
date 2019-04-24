@@ -119,7 +119,7 @@ is generated:
   If you find you want all or most of your classes with the same configuration,
   it may be easier to specify values once in the YAML file. Values set
   explicitly on `@JsonSerializable` take precedence over settings in
-  `buildy.yaml`.
+  `build.yaml`.
 
 > Note: There is some overlap between fields on `JsonKey` and
   `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
