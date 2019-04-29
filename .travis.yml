@@ -12,9 +12,9 @@ branches:
 jobs:
   include:
     - stage: analyzer_and_format
-      name: "SDK: dev; PKGS: example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
+      name: "SDK: dev; PKGS: example, json_annotation, json_serializable, yaml_decode, yaml_test; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
       dart: dev
-      env: PKGS="example json_annotation json_serializable"
+      env: PKGS="example json_annotation json_serializable yaml_decode yaml_test"
       script: ./tool/travis.sh dartfmt dartanalyzer_0
     - stage: analyzer_and_format
       name: "SDK: 2.2.0; PKGS: example, json_annotation; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings .`]"
@@ -22,9 +22,14 @@ jobs:
       env: PKGS="example json_annotation"
       script: ./tool/travis.sh dartfmt dartanalyzer_1
     - stage: analyzer_and_format
-      name: "SDK: 2.2.0; PKG: json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
+      name: "SDK: 2.2.0; PKGS: json_serializable, yaml_test; TASKS: `dartanalyzer --fatal-warnings .`"
       dart: "2.2.0"
-      env: PKGS="json_serializable"
+      env: PKGS="json_serializable yaml_test"
+      script: ./tool/travis.sh dartanalyzer_1
+    - stage: analyzer_and_format
+      name: "SDK: 2.1.1; PKG: yaml_decode; TASKS: `dartanalyzer --fatal-warnings .`"
+      dart: "2.1.1"
+      env: PKGS="yaml_decode"
       script: ./tool/travis.sh dartanalyzer_1
     - stage: unit_test
       name: "SDK: 2.2.0; PKG: example; TASKS: `pub run test --run-skipped`"
@@ -66,6 +71,36 @@ jobs:
       dart: dev
       env: PKGS="json_serializable"
       script: ./tool/travis.sh test_2
+    - stage: unit_test
+      name: "SDK: 2.1.1; PKG: yaml_decode; TASKS: `pub run test`"
+      dart: "2.1.1"
+      env: PKGS="yaml_decode"
+      script: ./tool/travis.sh test_1
+    - stage: unit_test
+      name: "SDK: dev; PKG: yaml_decode; TASKS: `pub run test`"
+      dart: dev
+      env: PKGS="yaml_decode"
+      script: ./tool/travis.sh test_1
+    - stage: unit_test
+      name: "SDK: 2.2.0; PKG: yaml_test; TASKS: `pub run test`"
+      dart: "2.2.0"
+      env: PKGS="yaml_test"
+      script: ./tool/travis.sh test_1
+    - stage: unit_test
+      name: "SDK: dev; PKG: yaml_test; TASKS: `pub run test`"
+      dart: dev
+      env: PKGS="yaml_test"
+      script: ./tool/travis.sh test_1
+    - stage: unit_test
+      name: "SDK: 2.2.0; PKG: yaml_test; TASKS: `pub run test --run-skipped test/ensure_build_test.dart`"
+      dart: "2.2.0"
+      env: PKGS="yaml_test"
+      script: ./tool/travis.sh test_2
+    - stage: unit_test
+      name: "SDK: dev; PKG: yaml_test; TASKS: `pub run test --run-skipped test/ensure_build_test.dart`"
+      dart: dev
+      env: PKGS="yaml_test"
+      script: ./tool/travis.sh test_2
 
 stages:
   - analyzer_and_format
@@ -76,3 +111,4 @@ cache:
     - "$HOME/.pub-cache"
     - example/.dart_tool/build
     - json_serializable/.dart_tool/build
+    - yaml_test/.dart_tool
