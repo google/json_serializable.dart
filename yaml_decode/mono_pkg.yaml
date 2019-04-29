@@ -1,8 +1,4 @@
 # See https://github.com/dart-lang/mono_repo for details
-dart:
-- 2.2.0
-- dev
-
 stages:
 - analyzer_and_format:
   - group:
@@ -12,5 +8,3 @@ stages:
   - group:
     - dartanalyzer: --fatal-warnings .
     dart: [2.2.0]
-- unit_test:
-  - test

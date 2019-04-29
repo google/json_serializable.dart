@@ -67,16 +67,6 @@ jobs:
       env: PKGS="json_serializable"
       script: ./tool/travis.sh test_2
     - stage: unit_test
-      name: "SDK: 2.2.0; PKG: yaml_decode; TASKS: `pub run test`"
-      dart: "2.2.0"
-      env: PKGS="yaml_decode"
-      script: ./tool/travis.sh test_1
-    - stage: unit_test
-      name: "SDK: dev; PKG: yaml_decode; TASKS: `pub run test`"
-      dart: dev
-      env: PKGS="yaml_decode"
-      script: ./tool/travis.sh test_1
-    - stage: unit_test
       name: "SDK: 2.2.0; PKG: yaml_test; TASKS: `pub run test`"
       dart: "2.2.0"
       env: PKGS="yaml_test"
