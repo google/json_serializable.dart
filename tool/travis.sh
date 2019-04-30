@@ -39,18 +39,10 @@ for PKG in ${PKGS}; do
       dartfmt -n --set-exit-if-changed . || EXIT_CODE=$?
       ;;
     test_0)
-      echo 'pub run test --run-skipped'
-      pub run test --run-skipped || EXIT_CODE=$?
-      ;;
-    test_1)
       echo 'pub run test'
       pub run test || EXIT_CODE=$?
       ;;
-    test_2)
-      echo 'pub run test --run-skipped test/ensure_build_test.dart'
-      pub run test --run-skipped test/ensure_build_test.dart || EXIT_CODE=$?
-      ;;
-    test_3)
+    test_1)
       echo 'pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart'
       pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart || EXIT_CODE=$?
       ;;

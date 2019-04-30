@@ -15,4 +15,5 @@ stages:
 
 - unit_test:
   - test
+- ensure_build:
   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
