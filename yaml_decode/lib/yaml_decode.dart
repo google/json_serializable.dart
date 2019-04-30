@@ -12,7 +12,6 @@ import 'package:yaml/yaml.dart';
 ParsedYamlException toParsedYamlException(
   CheckedFromJsonException exception, {
   YamlMap exceptionMap,
-  StackTrace stack,
 }) {
   final yamlMap = exceptionMap ?? exception.map as YamlMap;
 
@@ -28,38 +27,36 @@ ParsedYamlException toParsedYamlException(
         : exception.key;
 
     final node = _getYamlKey(key) ?? yamlMap;
-    return ParsedYamlException._(
+    return ParsedYamlException(
       exception.message,
       node,
       innerError: exception,
-      innerStack: stack,
     );
   } else {
     final yamlValue = yamlMap.nodes[exception.key];
 
     if (yamlValue == null) {
-      return ParsedYamlException._(
+      return ParsedYamlException(
         exception.message,
         yamlMap,
         innerError: exception,
-        innerStack: stack,
       );
     } else {
       var message = 'Unsupported value for "${exception.key}".';
       if (exception.message != null) {
         message = '$message ${exception.message}';
       }
-      return ParsedYamlException._(
+      return ParsedYamlException(
         message,
         yamlValue,
         innerError: exception,
-        innerStack: stack,
       );
     }
   }
 }
 
-/// Thrown when parsing a YAML document fails.
+/// An exception thrown when parsing YAML that contains information about the
+/// location in the source where the exception occurred.
 class ParsedYamlException implements Exception {
   /// Describes the nature of the parse failure.
   final String message;
@@ -71,18 +68,10 @@ class ParsedYamlException implements Exception {
   /// contains the source error object.
   final Object innerError;
 
-  /// If this exception was thrown as a result of another error,
-  /// contains the corresponding [StackTrace].
-  final StackTrace innerStack;
-
-  ParsedYamlException(String message, YamlNode yamlNode)
-      : this._(message, yamlNode);
-
-  ParsedYamlException._(
+  ParsedYamlException(
     this.message,
     this.yamlNode, {
     this.innerError,
-    this.innerStack,
   })  : assert(message != null),
         assert(yamlNode != null);
 
@@ -91,5 +80,5 @@ class ParsedYamlException implements Exception {
   String get formattedMessage => yamlNode.span.message(message);
 
   @override
-  String toString() => message;
+  String toString() => 'ParsedYamlException: $message';
 }
