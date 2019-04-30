@@ -11,7 +11,6 @@ targets:
           - test/integration/*
           - test/kitchen_sink/*
           - test/literal/*
-          - test/yaml/*
       build_web_compilers|entrypoint:
         generate_for:
         - test/default_value/**
