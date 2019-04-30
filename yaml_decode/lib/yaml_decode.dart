@@ -6,6 +6,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:yaml/yaml.dart';
 
 /// Returns a [ParsedYamlException] for the provided [exception].
+///
+/// This function assumes `exception.map` is of type `YamlMap` from
+/// `package:yaml`. If not, you may provide an alternative via [exceptionMap].
 ParsedYamlException toParsedYamlException(
   CheckedFromJsonException exception, {
   YamlMap exceptionMap,
