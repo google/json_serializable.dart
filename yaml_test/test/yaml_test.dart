@@ -31,7 +31,7 @@ void main() {
           final config = Config.fromJson(yamlContent);
           expect(config, isNotNull);
         } on CheckedFromJsonException catch (e) {
-          print(parsedYamlExceptionFromCheckedFromJsonException(e)
+          print(toParsedYamlException(e)
               .formattedMessage);
           rethrow;
         }
@@ -55,7 +55,7 @@ void main() {
           fail('parse should fail');
         } on CheckedFromJsonException catch (e) {
           final prettyOutput =
-              parsedYamlExceptionFromCheckedFromJsonException(e)
+              toParsedYamlException(e)
                   .formattedMessage;
           printOnFailure("r'''\n$prettyOutput'''");
           expect(prettyOutput, entry.value);

@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:yaml/yaml.dart';
 
 /// Returns a [ParsedYamlException] for the provided [exception].
-ParsedYamlException parsedYamlExceptionFromCheckedFromJsonException(
+ParsedYamlException toParsedYamlException(
   CheckedFromJsonException exception, {
   YamlMap exceptionMap,
   StackTrace stack,
@@ -61,6 +61,7 @@ class ParsedYamlException implements Exception {
   /// Describes the nature of the parse failure.
   final String message;
 
+  /// The node associated with this exception.
   final YamlNode yamlNode;
 
   /// If this exception was thrown as a result of another error,

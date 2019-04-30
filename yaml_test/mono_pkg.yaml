@@ -14,7 +14,7 @@ stages:
     dart: [2.2.0]
 - unit_test:
   - test
-  - test: --run-skipped test/ensure_build_test.dart
+  - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 
 cache:
   directories:
