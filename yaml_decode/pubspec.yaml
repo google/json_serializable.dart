@@ -16,4 +16,7 @@ dev_dependencies:
   json_serializable: ^2.0.0
   build_runner: ^1.0.0
   build_verify: ^1.1.0
+  path: ^1.0.0
   test: ^1.6.0
+  test_descriptor: ^1.1.1
+  test_process: ^1.0.1

@@ -36,6 +36,7 @@ ParsedYamlException toParsedYamlException(
     final yamlValue = yamlMap.nodes[exception.key];
 
     if (yamlValue == null) {
+      // TODO(kevmoo): test this case!
       return ParsedYamlException(
         exception.message,
         yamlMap,
@@ -80,5 +81,5 @@ class ParsedYamlException implements Exception {
   String get formattedMessage => yamlNode.span.message(message);
 
   @override
-  String toString() => 'ParsedYamlException: $message';
+  String toString() => 'ParsedYamlException: $formattedMessage';
 }
