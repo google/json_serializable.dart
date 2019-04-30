@@ -14,8 +14,9 @@ stages:
     - dartanalyzer: --fatal-warnings .
     dart: [2.2.0]
 - unit_test:
-  # Run the tests -- include the default-skipped presubmit tests
-  - test: --run-skipped
+  - test
+- ensure_build:
+  - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 
 cache:
   directories:
