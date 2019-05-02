@@ -21,6 +21,16 @@ The annotation package which has no dependencies.
 
 Import it into your pubspec `dependencies:` section.
 
+## checked_yaml
+
+* Package: https://pub.dartlang.org/packages/checked_yaml
+* [Source code](checked_yaml)
+
+Generate more helpful exceptions when decoding YAML documents using
+`package:json_serializable` and `package:yaml`.
+
+Import it into your pubspec `dependencies:` section.
+
 ## example
 
 * [Source code](example)
