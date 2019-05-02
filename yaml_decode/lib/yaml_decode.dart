@@ -5,6 +5,39 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:yaml/yaml.dart';
 
+/// Decodes [yamlContent] as YAML and calls [constructor] with the resulting
+/// [Map].
+///
+/// If there are errors thrown while decoding [yamlContent], if it is not a
+/// [Map] or if [CheckedFromJsonException] is thrown when calling [constructor],
+/// a [ParsedYamlException] will be thrown.
+///
+/// If [sourceUrl] is passed, it's used as the URL from which the YAML
+/// originated for error reporting. It can be a [String], a [Uri], or `null`.
+T checkedYamlDecode<T>(
+  String yamlContent,
+  T Function(Map) constructor, {
+  sourceUrl,
+}) {
+  YamlNode yaml;
+
+  try {
+    yaml = loadYamlNode(yamlContent, sourceUrl: sourceUrl);
+  } on YamlException catch (e) {
+    throw ParsedYamlException.fromYamlException(e);
+  }
+
+  if (yaml is YamlMap) {
+    try {
+      return constructor(yaml);
+    } on CheckedFromJsonException catch (e) {
+      throw toParsedYamlException(e);
+    }
+  }
+
+  throw ParsedYamlException('Not a map', yaml);
+}
+
 /// Returns a [ParsedYamlException] for the provided [exception].
 ///
 /// This function assumes `exception.map` is of type `YamlMap` from
@@ -63,6 +96,8 @@ class ParsedYamlException implements Exception {
   final String message;
 
   /// The node associated with this exception.
+  ///
+  /// May be `null` if there was an error decoding.
   final YamlNode yamlNode;
 
   /// If this exception was thrown as a result of another error,
@@ -76,9 +111,31 @@ class ParsedYamlException implements Exception {
   })  : assert(message != null),
         assert(yamlNode != null);
 
+  factory ParsedYamlException.fromYamlException(YamlException exception) =>
+      _WrappedYamlException(exception);
+
   /// Returns [message] formatted with source information provided by
   /// [yamlNode].
   String get formattedMessage => yamlNode.span.message(message);
+
+  @override
+  String toString() => 'ParsedYamlException: $formattedMessage';
+}
+
+class _WrappedYamlException implements ParsedYamlException {
+  _WrappedYamlException(this.innerError);
+
+  @override
+  String get formattedMessage => innerError.span.message(innerError.message);
+
+  @override
+  final YamlException innerError;
+
+  @override
+  String get message => innerError.message;
+
+  @override
+  YamlNode get yamlNode => null;
 
   @override
   String toString() => 'ParsedYamlException: $formattedMessage';

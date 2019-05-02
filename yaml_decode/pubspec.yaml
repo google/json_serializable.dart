@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   json_annotation: ^2.2.0
+  source_span: ^1.0.0
   yaml: ^2.1.13
 
 dev_dependencies:

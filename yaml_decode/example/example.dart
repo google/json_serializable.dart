@@ -5,7 +5,6 @@
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yaml/yaml.dart';
 import 'package:yaml_decode/yaml_decode.dart';
 
 part 'example.g.dart';
@@ -39,13 +38,8 @@ class Configuration {
 void main(List<String> arguments) {
   final fileContents = File(arguments.single).readAsStringSync();
 
-  final yamlMap =
-      loadYaml(fileContents, sourceUrl: arguments.single) as YamlMap;
-
-  try {
-    final config = Configuration.fromJson(yamlMap);
-    print(config);
-  } on CheckedFromJsonException catch (e) {
-    throw toParsedYamlException(e);
-  }
+  final config = checkedYamlDecode(
+      fileContents, (m) => Configuration.fromJson(m),
+      sourceUrl: arguments.single);
+  print(config);
 }
