@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
+[![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dartlang.org/packages/json_serializable)
 
 Provides [Dart Build System] builders for handling JSON.
 
