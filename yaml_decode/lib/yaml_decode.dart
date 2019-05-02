@@ -14,11 +14,17 @@ import 'package:yaml/yaml.dart';
 ///
 /// If [sourceUrl] is passed, it's used as the URL from which the YAML
 /// originated for error reporting. It can be a [String], a [Uri], or `null`.
+///
+/// If [allowNull] is `true`, a `null` value from [yamlContent] will be allowed
+/// and passed to [constructor]. [constructor], therefore, will need to handle
+/// `null` values.
 T checkedYamlDecode<T>(
   String yamlContent,
   T Function(Map) constructor, {
   sourceUrl,
+  bool allowNull = false,
 }) {
+  allowNull ??= false;
   YamlNode yaml;
 
   try {
@@ -27,15 +33,21 @@ T checkedYamlDecode<T>(
     throw ParsedYamlException.fromYamlException(e);
   }
 
+  Map map;
   if (yaml is YamlMap) {
-    try {
-      return constructor(yaml);
-    } on CheckedFromJsonException catch (e) {
-      throw toParsedYamlException(e);
-    }
+    map = yaml;
+  } else if (allowNull && yaml is YamlScalar && yaml.value == null) {
+    // TODO(kevmoo): test this case!
+    map = null;
+  } else {
+    throw ParsedYamlException('Not a map', yaml);
   }
 
-  throw ParsedYamlException('Not a map', yaml);
+  try {
+    return constructor(map);
+  } on CheckedFromJsonException catch (e) {
+    throw toParsedYamlException(e);
+  }
 }
 
 /// Returns a [ParsedYamlException] for the provided [exception].
