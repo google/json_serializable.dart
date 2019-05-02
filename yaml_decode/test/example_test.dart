@@ -42,6 +42,66 @@ ParsedYamlException: line 1, column 1 of $_testYamlPath: Required keys are missi
     await proc.shouldExit(isNot(0));
   });
 
+  test('not a map', () async {
+    final proc = await _run('42');
+
+    await expectLater(
+      proc.stderr,
+      emitsInOrder(
+        LineSplitter.split('''
+Unhandled exception:
+ParsedYamlException: line 1, column 1 of $_testYamlPath: Not a map
+  ╷
+1 │ 42
+  │ ^^
+  ╵
+'''),
+      ),
+    );
+
+    await proc.shouldExit(isNot(0));
+  });
+
+  test('invalid yaml', () async {
+    final proc = await _run('{');
+
+    await expectLater(
+      proc.stderr,
+      emitsInOrder(
+        LineSplitter.split('''
+Unhandled exception:
+ParsedYamlException: line 1, column 2 of $_testYamlPath: Expected node content.
+  ╷
+1 │ {
+  │  ^
+  ╵
+'''),
+      ),
+    );
+
+    await proc.shouldExit(isNot(0));
+  });
+
+  test('duplicate keys', () async {
+    final proc = await _run('{"a":null, "a":null}');
+
+    await expectLater(
+      proc.stderr,
+      emitsInOrder(
+        LineSplitter.split('''
+Unhandled exception:
+ParsedYamlException: line 1, column 12 of $_testYamlPath: Duplicate mapping key.
+  ╷
+1 │ {"a":null, "a":null}
+  │            ^^^
+  ╵
+'''),
+      ),
+    );
+
+    await proc.shouldExit(isNot(0));
+  });
+
   test('unexpected key', () async {
     final proc = await _run('{"bob": 42}');
 
