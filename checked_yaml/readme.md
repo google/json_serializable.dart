@@ -1,1 +1,79 @@
-[![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dartlang.org/packages/checked_yaml)
+[![Pub Package](https://img.shields.io/pub/v/yaml_decode.svg)](https://pub.dartlang.org/packages/yaml_decode)
+
+`package:yaml_decode` provides a `checkedYamlDecode` function that wraps the
+the creation of classes annotated for [`package:json_serializable`] it helps
+provide more helpful exceptions when the provided YAML is not compatible with
+the target type.
+
+[`package:json_serializable`] can generate classes that can parse the
+[`YamlMap`] type provided by [`package:yaml`] when `anyMap: true` is specified
+for the class annotation. 
+
+```dart
+@JsonSerializable(
+  anyMap: true,
+  checked: true,
+  disallowUnrecognizedKeys: true,
+  nullable: false,
+)
+class Configuration {
+  @JsonKey(required: true)
+  final String name;
+  @JsonKey(required: true)
+  final int count;
+
+  Configuration({this.name, this.count}) {
+    if (name.isEmpty) {
+      throw ArgumentError.value(name, 'name', 'Cannot be empty.');
+    }
+  }
+
+  factory Configuration.fromJson(Map json) => _$ConfigurationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ConfigurationToJson(this);
+
+  @override
+  String toString() => 'Configuration: ${toJson()}';
+}
+```
+
+When `checked: true` is set, exceptions thrown when decoding an instance from a
+`Map` are wrapped in a `CheckedFromJsonException`. The
+`checkedYamlDecode` function catches these exceptions and throws a
+`ParsedYamlException` which maps the exception to the location in the input
+YAML with the error.
+
+```dart
+void main(List<String> arguments) {
+  var sourcePathOrYaml = arguments.single;
+  String yamlContent;
+
+  if (FileSystemEntity.isFileSync(sourcePathOrYaml)) {
+    yamlContent = File(sourcePathOrYaml).readAsStringSync();
+  } else {
+    yamlContent = sourcePathOrYaml;
+    sourcePathOrYaml = null;
+  }
+
+  final config = checkedYamlDecode(
+      yamlContent, (m) => Configuration.fromJson(m),
+      sourceUrl: sourcePathOrYaml);
+  print(config);
+}
+```
+
+When parsing an invalid YAML file, an actionable error message is produced.
+
+```console
+$ dart example/example.dart '{"name": "", "count": 1}'
+Unhandled exception:
+ParsedYamlException: line 1, column 10: Unsupported value for "name". Cannot be empty.
+  ╷
+1 │ {"name": "", "count": 1}
+  │          ^^
+  ╵
+```
+
+[`package:json_serializable`]: https://pub.dartlang.org/packages/json_serializable
+[`package:yaml`]: https://pub.dartlang.org/packages/yaml
+[`YamlMap`]: https://pub.dartlang.org/documentation/yaml/latest/yaml/YamlMap-class.html

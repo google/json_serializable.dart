@@ -36,10 +36,18 @@ class Configuration {
 }
 
 void main(List<String> arguments) {
-  final fileContents = File(arguments.single).readAsStringSync();
+  var sourcePathOrYaml = arguments.single;
+  String yamlContent;
+
+  if (FileSystemEntity.isFileSync(sourcePathOrYaml)) {
+    yamlContent = File(sourcePathOrYaml).readAsStringSync();
+  } else {
+    yamlContent = sourcePathOrYaml;
+    sourcePathOrYaml = null;
+  }
 
   final config = checkedYamlDecode(
-      fileContents, (m) => Configuration.fromJson(m),
-      sourceUrl: arguments.single);
+      yamlContent, (m) => Configuration.fromJson(m),
+      sourceUrl: sourcePathOrYaml);
   print(config);
 }
