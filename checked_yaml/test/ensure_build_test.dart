@@ -9,5 +9,5 @@ import 'package:test/test.dart';
 
 void main() {
   test('ensure_build',
-      () => expectBuildClean(packageRelativeDirectory: 'yaml_decode'));
+      () => expectBuildClean(packageRelativeDirectory: 'checked_yaml'));
 }

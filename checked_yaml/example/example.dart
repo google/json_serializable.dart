@@ -4,8 +4,8 @@
 
 import 'dart:io';
 
+import 'package:checked_yaml/checked_yaml.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:yaml_decode/yaml_decode.dart';
 
 part 'example.g.dart';
 

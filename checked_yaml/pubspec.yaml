@@ -1,4 +1,4 @@
-name: yaml_decode
+name: checked_yaml
 version: 1.0.0-dev
 author: Dart Team <misc@dartlang.org>
 description: >-
