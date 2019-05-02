@@ -1,4 +1,4 @@
-name: yaml_test
+name: _test_yaml
 publish_to: none
 
 environment:
@@ -10,14 +10,14 @@ dev_dependencies:
   test: ^1.6.0
 
   # Repo packages
+  checked_yaml: any
   json_annotation: any
   json_serializable: any
-  yaml_decode: any
 
 dependency_overrides:
+  checked_yaml:
+    path: ../checked_yaml
   json_annotation:
     path: ../json_annotation
   json_serializable:
     path: ../json_serializable
-  yaml_decode:
-    path: ../yaml_decode

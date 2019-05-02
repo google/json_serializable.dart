@@ -6,11 +6,11 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:checked_yaml/checked_yaml.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
-import 'package:yaml_decode/yaml_decode.dart';
 
 import 'src/build_config.dart';
 
