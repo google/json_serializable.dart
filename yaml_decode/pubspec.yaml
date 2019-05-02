@@ -1,5 +1,5 @@
 name: yaml_decode
-version: 1.0.0-dev
+version: 1.0.0
 author: Dart Team <misc@dartlang.org>
 description: >-
   Utilities for generating helpful error messages when decoding YAML documents
