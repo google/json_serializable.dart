@@ -1,6 +1,6 @@
-[![Pub Package](https://img.shields.io/pub/v/yaml_decode.svg)](https://pub.dartlang.org/packages/yaml_decode)
+[![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dartlang.org/packages/checked_yaml)
 
-`package:yaml_decode` provides a `checkedYamlDecode` function that wraps the
+`package:checked_yaml` provides a `checkedYamlDecode` function that wraps the
 the creation of classes annotated for [`package:json_serializable`] it helps
 provide more helpful exceptions when the provided YAML is not compatible with
 the target type.
