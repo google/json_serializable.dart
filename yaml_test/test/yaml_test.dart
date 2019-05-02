@@ -14,7 +14,7 @@ import 'package:yaml_decode/yaml_decode.dart';
 
 import 'src/build_config.dart';
 
-List<String> _getTests() => Directory(p.join('test', 'src'))
+List<String> get _tests => Directory(p.join('test', 'src'))
     .listSync()
     .where((fse) => fse is File && p.extension(fse.path) == '.yaml')
     .map((fse) => fse.path)
@@ -22,7 +22,7 @@ List<String> _getTests() => Directory(p.join('test', 'src'))
 
 void main() {
   group('valid configurations', () {
-    for (final filePath in _getTests()) {
+    for (final filePath in _tests) {
       test(p.basenameWithoutExtension(filePath), () {
         final content = File(filePath).readAsStringSync();
         final yamlContent = loadYaml(content, sourceUrl: filePath) as YamlMap;

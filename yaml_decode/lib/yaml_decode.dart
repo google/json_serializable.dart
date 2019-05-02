@@ -15,10 +15,6 @@ ParsedYamlException toParsedYamlException(
 }) {
   final yamlMap = exceptionMap ?? exception.map as YamlMap;
 
-  YamlNode _getYamlKey(String key) =>
-      yamlMap.nodes.keys.singleWhere((k) => (k as YamlScalar).value == key,
-          orElse: () => null) as YamlScalar;
-
   final innerError = exception.innerError;
 
   if (exception.badKey) {
@@ -26,7 +22,9 @@ ParsedYamlException toParsedYamlException(
         ? innerError.unrecognizedKeys.first
         : exception.key;
 
-    final node = _getYamlKey(key) ?? yamlMap;
+    final node = yamlMap.nodes.keys.singleWhere(
+        (k) => (k as YamlScalar).value == key,
+        orElse: () => yamlMap) as YamlScalar;
     return ParsedYamlException(
       exception.message,
       node,
