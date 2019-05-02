@@ -24,7 +24,7 @@ ParsedYamlException toParsedYamlException(
 
     final node = yamlMap.nodes.keys.singleWhere(
         (k) => (k as YamlScalar).value == key,
-        orElse: () => yamlMap) as YamlScalar;
+        orElse: () => yamlMap) as YamlNode;
     return ParsedYamlException(
       exception.message,
       node,
