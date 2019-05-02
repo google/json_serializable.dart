@@ -1,4 +1,4 @@
-name: yaml_test
+name: _test_yaml
 publish_to: none
 
 environment:
@@ -15,9 +15,9 @@ dev_dependencies:
   json_serializable: any
 
 dependency_overrides:
+  checked_yaml:
+    path: ../checked_yaml
   json_annotation:
     path: ../json_annotation
   json_serializable:
     path: ../json_serializable
-  checked_yaml:
-    path: ../checked_yaml
