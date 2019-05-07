@@ -190,6 +190,8 @@ String _encodedFieldName(JsonSerializable classAnnotation,
       return snakeCase(fieldElement.name);
     case FieldRename.kebab:
       return kebabCase(fieldElement.name);
+    case FieldRename.pascal:
+      return pascalCase(fieldElement.name);
   }
 
   return fieldElement.name;

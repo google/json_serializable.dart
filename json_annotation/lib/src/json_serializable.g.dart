@@ -96,5 +96,6 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
 const _$FieldRenameEnumMap = <FieldRename, dynamic>{
   FieldRename.none: 'none',
   FieldRename.kebab: 'kebab',
-  FieldRename.snake: 'snake'
+  FieldRename.snake: 'snake',
+  FieldRename.pascal: 'pascal'
 };

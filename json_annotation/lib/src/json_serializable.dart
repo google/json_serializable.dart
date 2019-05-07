@@ -17,7 +17,10 @@ enum FieldRename {
   kebab,
 
   /// Encodes a field named `snakeCase` with a JSON key `snake_case`.
-  snake
+  snake,
+
+  /// Encodes a field named `pascalCase` with a JSON key `PascalCase`.
+  pascal
 }
 
 /// An annotation used to specify a class to generate code for.

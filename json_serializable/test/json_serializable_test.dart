@@ -54,6 +54,7 @@ const _expectedAnnotatedTests = [
   'EncodeEmptyCollectionAsNullOnNonCollectionField',
   'FieldNamerKebab',
   'FieldNamerNone',
+  'FieldNamerPascal',
   'FieldNamerSnake',
   'FieldWithFromJsonCtorAndTypeParams',
   'FinalFields',
