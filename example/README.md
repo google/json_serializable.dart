@@ -39,5 +39,5 @@ Run `pub run build_runner build` to generate files into your source directory.
 
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart
-[json_annotation]: https://pub.dartlang.org/packages/json_annotation
-[json_serializable]: https://pub.dartlang.org/packages/json_serializable
+[json_annotation]: https://pub.dev/packages/json_annotation
+[json_serializable]: https://pub.dev/packages/json_serializable

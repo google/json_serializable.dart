@@ -5,7 +5,7 @@ deserialization.
 
 ## json_serializable
 
-* Package: https://pub.dartlang.org/packages/json_serializable
+* Package: https://pub.dev/packages/json_serializable
 * [Source code](json_serializable)
 
 The core package providing Generators for JSON-specific tasks.
@@ -14,7 +14,7 @@ Import it into your pubspec `dev_dependencies:` section.
 
 ## json_annotation
 
-* Package: https://pub.dartlang.org/packages/json_annotation
+* Package: https://pub.dev/packages/json_annotation
 * [Source code](json_annotation)
 
 The annotation package which has no dependencies.
@@ -23,7 +23,7 @@ Import it into your pubspec `dependencies:` section.
 
 ## checked_yaml
 
-* Package: https://pub.dartlang.org/packages/checked_yaml
+* Package: https://pub.dev/packages/checked_yaml
 * [Source code](checked_yaml)
 
 Generate more helpful exceptions when decoding YAML documents using
@@ -38,4 +38,4 @@ Import it into your pubspec `dependencies:` section.
 An example showing how to setup and use `json_serializable` and
 `json_annotation`.
 
-[source_gen]: https://pub.dartlang.org/packages/source_gen
+[source_gen]: https://pub.dev/packages/source_gen
