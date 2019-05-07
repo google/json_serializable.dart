@@ -1,4 +1,4 @@
-[![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dartlang.org/packages/checked_yaml)
+[![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dev/packages/checked_yaml)
 
 `package:checked_yaml` provides a `checkedYamlDecode` function that wraps the
 the creation of classes annotated for [`package:json_serializable`] it helps
@@ -74,6 +74,6 @@ ParsedYamlException: line 1, column 10: Unsupported value for "name". Cannot be 
   ╵
 ```
 
-[`package:json_serializable`]: https://pub.dartlang.org/packages/json_serializable
-[`package:yaml`]: https://pub.dartlang.org/packages/yaml
-[`YamlMap`]: https://pub.dartlang.org/documentation/yaml/latest/yaml/YamlMap-class.html
+[`package:json_serializable`]: https://pub.dev/packages/json_serializable
+[`package:yaml`]: https://pub.dev/packages/yaml
+[`YamlMap`]: https://pub.dev/documentation/yaml/latest/yaml/YamlMap-class.html

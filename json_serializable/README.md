@@ -1,4 +1,4 @@
-[![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dartlang.org/packages/json_serializable)
+[![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
 Provides [Dart Build System] builders for handling JSON.
 
@@ -156,4 +156,4 @@ targets:
 
 [example]: https://github.com/dart-lang/json_serializable/blob/master/example
 [Dart Build System]: https://github.com/dart-lang/build
-[package:json_annotation]: https://pub.dartlang.org/packages/json_annotation
+[package:json_annotation]: https://pub.dev/packages/json_annotation

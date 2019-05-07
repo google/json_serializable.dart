@@ -483,7 +483,7 @@
 
 ## 0.1.0
 
-* Split off from [source_gen](https://pub.dartlang.org/packages/source_gen).
+* Split off from [source_gen](https://pub.dev/packages/source_gen).
 
 * Add `/* unsafe */` comments to generated output likely to be unsafe.
 
