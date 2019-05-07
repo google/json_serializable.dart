@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Provides annotation classes to use with
-/// [json_serializable](https://pub.dartlang.org/packages/json_serializable).
+/// [json_serializable](https://pub.dev/packages/json_serializable).
 ///
 /// Also contains helper functions and classes – prefixed with `$` used by
 /// `json_serializable` when the `use_wrappers` or `checked` options are

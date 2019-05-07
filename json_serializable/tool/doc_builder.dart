@@ -112,7 +112,7 @@ String _anchorUriForName(String owner, String name) => '[$owner.$name]';
 
 String _link(String version, String owner, String name) =>
     '${_anchorUriForName(owner, name)}: '
-    'https://pub.dartlang.org/documentation/json_annotation/$version/'
+    'https://pub.dev/documentation/json_annotation/$version/'
     'json_annotation/$owner/$name.html';
 
 class _FieldInfo implements Comparable<_FieldInfo> {
