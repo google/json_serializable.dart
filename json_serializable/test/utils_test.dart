@@ -8,19 +8,19 @@ import 'package:test/test.dart';
 
 import 'package:json_serializable/src/utils.dart';
 
-const _kebab_items = {
+const _kebabItems = {
   'simple': 'simple',
   'twoWords': 'two-words',
   'FirstBig': 'first-big'
 };
 
-const _pascal_items = {
+const _pascalItems = {
   'simple': 'Simple',
   'twoWords': 'TwoWords',
   'FirstBig': 'FirstBig'
 };
 
-const _snake_items = {
+const _snakeItems = {
   'simple': 'simple',
   'twoWords': 'two_words',
   'FirstBig': 'first_big'
@@ -28,7 +28,7 @@ const _snake_items = {
 
 void main() {
   group('kebab', () {
-    for (final entry in _kebab_items.entries) {
+    for (final entry in _kebabItems.entries) {
       test('"${entry.key}"', () {
         expect(kebabCase(entry.key), entry.value);
       });
@@ -36,7 +36,7 @@ void main() {
   });
 
   group('pascal', () {
-    for (final entry in _pascal_items.entries) {
+    for (final entry in _pascalItems.entries) {
       test('"${entry.key}"', () {
         expect(pascalCase(entry.key), entry.value);
       });
@@ -44,7 +44,7 @@ void main() {
   });
 
   group('snake', () {
-    for (final entry in _snake_items.entries) {
+    for (final entry in _snakeItems.entries) {
       test('"${entry.key}"', () {
         expect(snakeCase(entry.key), entry.value);
       });
