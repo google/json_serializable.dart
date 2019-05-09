@@ -1,3 +1,7 @@
+## 2.3.0
+
+- Added `pascal` as an additional `fieldRename` option.
+
 ## 2.2.3
 
 - Removed special handling of undefined types due to changes in
