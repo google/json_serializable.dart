@@ -38,6 +38,24 @@ class FieldNamerKebab {
 
 @ShouldGenerate(
   r'''
+Map<String, dynamic> _$FieldNamerPascalToJson(FieldNamerPascal instance) =>
+    <String, dynamic>{
+      'TheField': instance.theField,
+      'NAME_OVERRIDE': instance.nameOverride
+    };
+''',
+  configurations: ['default'],
+)
+@JsonSerializable(fieldRename: FieldRename.pascal, createFactory: false)
+class FieldNamerPascal {
+  String theField;
+
+  @JsonKey(name: 'NAME_OVERRIDE')
+  String nameOverride;
+}
+
+@ShouldGenerate(
+  r'''
 Map<String, dynamic> _$FieldNamerSnakeToJson(FieldNamerSnake instance) =>
     <String, dynamic>{
       'the_field': instance.theField,

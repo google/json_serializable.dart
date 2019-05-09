@@ -111,7 +111,7 @@ void main() {
         config[entry.key] = entry.value;
 
         final lastLine = entry.key == 'field_rename'
-            ? '`42` is not one of the supported values: none, kebab, snake'
+            ? '`42` is not one of the supported values: none, kebab, snake, pascal'
             : "type 'int' is not a subtype of type 'bool' in type cast";
 
         final matcher = isA<StateError>().having(

@@ -31,3 +31,7 @@ dev_dependencies:
   source_gen_test: ^0.1.0
   test: ^1.6.0
   yaml: ^2.1.13
+
+dependency_overrides:
+  json_annotation:
+    path: ../json_annotation
