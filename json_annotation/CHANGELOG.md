@@ -1,5 +1,6 @@
-## 2.2.1
+## 2.3.0
 
+- Added `pascal` as an additional `fieldRename` option.
 - Require at least Dart `2.2.0`.
 
 ## 2.2.0
