@@ -14,7 +14,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       'create_factory',
       'create_to_json',
       'disallow_unrecognized_keys',
-      'encode_empty_collection',
       'explicit_to_json',
       'field_rename',
       'include_if_null',
@@ -28,8 +27,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
         createToJson: $checkedConvert(json, 'create_to_json', (v) => v as bool),
         disallowUnrecognizedKeys: $checkedConvert(
             json, 'disallow_unrecognized_keys', (v) => v as bool),
-        encodeEmptyCollection:
-            $checkedConvert(json, 'encode_empty_collection', (v) => v as bool),
         explicitToJson:
             $checkedConvert(json, 'explicit_to_json', (v) => v as bool),
         fieldRename: $checkedConvert(json, 'field_rename',
@@ -43,7 +40,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'createFactory': 'create_factory',
     'createToJson': 'create_to_json',
     'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
-    'encodeEmptyCollection': 'encode_empty_collection',
     'explicitToJson': 'explicit_to_json',
     'fieldRename': 'field_rename',
     'includeIfNull': 'include_if_null',
@@ -57,7 +53,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
-      'encode_empty_collection': instance.encodeEmptyCollection,
       'explicit_to_json': instance.explicitToJson,
       'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
       'include_if_null': instance.includeIfNull,
