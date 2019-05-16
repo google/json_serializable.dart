@@ -39,8 +39,10 @@ class _DocBuilder extends Builder {
     final descriptionMap = <String, _FieldInfo>{};
 
     for (var className in _annotationClasses) {
-      for (var fe
-          in lib.findType(className).fields.where((fe) => !fe.isStatic)) {
+      for (var fe in lib
+          .findType(className)
+          .fields
+          .where((fe) => !fe.isStatic && !fe.hasDeprecated)) {
         descriptionMap[fe.name] =
             _FieldInfo.update(fe, descriptionMap[fe.name]);
       }
