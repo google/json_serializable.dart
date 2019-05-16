@@ -58,7 +58,8 @@ void main() async {
             expect(_ConfigLogger.configurations, hasLength(2));
             expect(_ConfigLogger.configurations.first,
                 same(_ConfigLogger.configurations.last));
-            expect(_ConfigLogger.configurations.first.toJson(),
+            expectMapMatchExcludingDeprecated(
+                _ConfigLogger.configurations.first.toJson(),
                 generatorConfigDefaultJson);
           });
         }
@@ -99,12 +100,13 @@ void main() async {
       // The effective configuration should be non-Default configuration, but
       // with all fields set from JsonSerializable as the defaults
 
-      final expected = Map.from(generatorConfigNonDefaultJson);
+      final expected = Map<String, dynamic>.from(generatorConfigNonDefaultJson);
       for (var jsonSerialKey in jsonSerializableFields) {
         expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
       }
 
-      expect(_ConfigLogger.configurations.first.toJson(), expected);
+      expectMapMatchExcludingDeprecated(
+          _ConfigLogger.configurations.first.toJson(), expected);
     });
   });
 }
