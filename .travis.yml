@@ -8,6 +8,7 @@ addons:
 branches:
   only:
     - master
+    - v2_x
 
 jobs:
   include:

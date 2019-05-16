@@ -8,12 +8,14 @@ import 'dart:collection';
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
+@Deprecated('Will be removed in 3.0.0.')
 abstract class $JsonMapWrapper extends UnmodifiableMapBase<String, dynamic> {}
 
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
+@Deprecated('Will be removed in 3.0.0.')
 Map<String, dynamic> $wrapMap<K, V>(
         Map<K, V> source, dynamic converter(V key)) =>
     _MappingMap(source, converter);
@@ -22,6 +24,7 @@ Map<String, dynamic> $wrapMap<K, V>(
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
+@Deprecated('Will be removed in 3.0.0.')
 Map<String, dynamic> $wrapMapHandleNull<K, V>(
         Map<K, V> source, dynamic converter(V key)) =>
     source == null ? null : _MappingMap(source, converter);
@@ -30,6 +33,7 @@ Map<String, dynamic> $wrapMapHandleNull<K, V>(
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
+@Deprecated('Will be removed in 3.0.0.')
 List<dynamic> $wrapList<T>(List<T> source, dynamic converter(T key)) =>
     _MappingList(source, converter);
 
@@ -37,6 +41,7 @@ List<dynamic> $wrapList<T>(List<T> source, dynamic converter(T key)) =>
 /// `JsonSerializableGenerator.useWrappers` is `true`.
 ///
 /// Should not be used directly.
+@Deprecated('Will be removed in 3.0.0.')
 List<dynamic> $wrapListHandleNull<T>(
         List<T> source, dynamic converter(T key)) =>
     source == null ? null : _MappingList(source, converter);

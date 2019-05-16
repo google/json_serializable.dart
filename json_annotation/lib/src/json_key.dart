@@ -43,6 +43,7 @@ class JsonKey {
   /// The default value, `null`, indicates that the behavior should be
   /// acquired from the [JsonSerializable.encodeEmptyCollection] annotation on
   /// the enclosing class.
+  @Deprecated('Will be removed in 3.0.0.')
   final bool encodeEmptyCollection;
 
   /// A [Function] to use when decoding the associated JSON value to the

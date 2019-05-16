@@ -1,5 +1,5 @@
 name: json_annotation
-version: 2.3.0
+version: 2.4.0
 description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
