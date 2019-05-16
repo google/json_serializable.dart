@@ -1,3 +1,11 @@
+## 2.4.0
+
+- Deprecate members that will be removed in `json_annotation` `3.0.0` and that
+  are not supported in `json_serializable` `3.0.0`.
+  - `JsonSerializable.useWrappers` and associated `$`-prefixed helpers
+  - `JsonSerializable.generateToJsonFunction`,
+  - `encodeEmptyCollection` from `JsonSerializable` and `JsonKey`.
+
 ## 2.3.0
 
 - Added `pascal` as an additional `fieldRename` option.

@@ -6,6 +6,7 @@ travis:
   branches:
     only:
     - master
+    - v2_x
 
 merge_stages:
 - analyzer_and_format

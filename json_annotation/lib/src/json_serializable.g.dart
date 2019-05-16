@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use,deprecated_member_use_from_same_package
+
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'json_serializable.dart';

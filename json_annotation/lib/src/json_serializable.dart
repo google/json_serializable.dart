@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// ignore_for_file: deprecated_member_use,deprecated_member_use_from_same_package
+
 import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
 import 'json_key.dart';
@@ -110,6 +112,7 @@ class JsonSerializable {
   /// value to `false` as well.
   ///
   /// Note: non-collection fields are not affected by this value.
+  @Deprecated('Will be removed in 3.0.0.')
   final bool encodeEmptyCollection;
 
   /// If `true`, generated `toJson` methods will explicitly call `toJson` on
@@ -168,6 +171,7 @@ class JsonSerializable {
   ///   // ...
   /// }
   /// ```
+  @Deprecated('Will be removed in 3.0.0.')
   final bool generateToJsonFunction;
 
   /// Whether the generator should include fields with `null` values in the
@@ -195,6 +199,7 @@ class JsonSerializable {
   ///
   /// This will increase the code size, but it may improve runtime performance,
   /// especially for large object graphs.
+  @Deprecated('Will be removed in 3.0.0.')
   final bool useWrappers;
 
   /// Creates a new [JsonSerializable] instance.
