@@ -1,15 +1,22 @@
 ## 3.0.0
 
-- **BREAKING** Removed support for `JsonSerializable.useWrappers`.
-- **BREAKING** Removed support for `JsonSerializable.generateToJsonFunction`.
-- **BREAKING** Removed support for `encodeEmptyCollection`.
-- **BREAKING** If a field has a conversion function defined – either 
+This release is entirely **BREAKING** changes. It removes underused features
+that added disproportionate complexity to this package. This cleanup should ease
+future feature work.
+
+- Removed support for `JsonSerializable.useWrappers`.
+- Removed support for `JsonSerializable.generateToJsonFunction`.
+- Removed support for `encodeEmptyCollection`.
+- If a field has a conversion function defined – either 
   `JsonKey.toJson` or a custom `JsonConverter` annotation – don't intercept
   `null` values, even if `nullable` is explicitly set to `false`. This allows
   these functions to provide alternative values for `null` – such as an empty
   collection – which replaces the functionality provided by
   `encodeEmptyCollection`.
-
+    - **NOTE: this is SILENTLY BREAKING.** There is no corresponding deprecation
+      for this change. If you use converters, please make sure to test your
+      code!
+ 
 ## 2.3.0
 
 - Added `pascal` as an additional `fieldRename` option.

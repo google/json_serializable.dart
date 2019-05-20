@@ -4,19 +4,19 @@ targets:
     builders:
       json_serializable:
         generate_for:
-          include:
-          - example/*
-          - test/default_value/*
-          - test/generic_files/*
-          - test/integration/*
-          - test/kitchen_sink/*
-          - test/literal/*
+        - example/*
+        - test/default_value/*
+        - test/generic_files/*
+        - test/integration/*
+        - test/kitchen_sink/*
+        - test/literal/*
+
       build_web_compilers|entrypoint:
         generate_for:
-        - test/default_value/**
-        - test/generic_files/*_test.dart
-        - test/integration/*_test.dart
-        - test/kitchen_sink/**
+        - test/default_value/**.browser_test.dart
+        - test/generic_files/*.browser_test.dart
+        - test/integration/*.browser_test.dart
+        - test/kitchen_sink/**.browser_test.dart
 
       json_serializable|_internal:
         generate_for:
