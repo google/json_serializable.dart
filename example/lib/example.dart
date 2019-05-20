@@ -54,16 +54,16 @@ class Order {
   Map<String, dynamic> toJson() => _$OrderToJson(this);
 
   static Duration _durationFromMilliseconds(int milliseconds) =>
-      Duration(milliseconds: milliseconds);
+      milliseconds == null ? null : Duration(milliseconds: milliseconds);
 
   static int _durationToMilliseconds(Duration duration) =>
-      duration.inMilliseconds;
+      duration?.inMilliseconds;
 
   static DateTime _dateTimeFromEpochUs(int us) =>
-      DateTime.fromMicrosecondsSinceEpoch(us);
+      us == null ? null : DateTime.fromMicrosecondsSinceEpoch(us);
 
   static int _dateTimeToEpochUs(DateTime dateTime) =>
-      dateTime.microsecondsSinceEpoch;
+      dateTime?.microsecondsSinceEpoch;
 }
 
 @JsonSerializable()
