@@ -8,7 +8,7 @@ import 'package:source_gen/source_gen.dart' show TypeChecker;
 /// A [TypeChecker] for [Iterable].
 const coreIterableTypeChecker = TypeChecker.fromUrl('dart:core#Iterable');
 
-const coreStringTypeChecker = TypeChecker.fromRuntime(String);
+const coreStringTypeChecker = TypeChecker.fromUrl('dart:core#String');
 
 const coreMapTypeChecker = TypeChecker.fromUrl('dart:core#Map');
 
@@ -31,8 +31,8 @@ List<DartType> typeArgumentsOf(DartType type, TypeChecker checker) {
 /// A [TypeChecker] for [String], [bool] and [num].
 const simpleJsonTypeChecker = TypeChecker.any([
   coreStringTypeChecker,
-  TypeChecker.fromRuntime(bool),
-  TypeChecker.fromRuntime(num)
+  TypeChecker.fromUrl('dart:core#bool'),
+  TypeChecker.fromUrl('dart:core#num')
 ]);
 
 String asStatement(DartType type) {

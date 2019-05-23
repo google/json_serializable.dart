@@ -29,7 +29,7 @@ class ValueHelper extends TypeHelper {
     if (targetType.isDynamic || targetType.isObject) {
       // just return it as-is. We'll hope it's safe.
       return expression;
-    } else if (const TypeChecker.fromRuntime(double)
+    } else if (const TypeChecker.fromUrl('dart:core#double')
         .isExactlyType(targetType)) {
       return '($expression as num)${context.nullable ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
