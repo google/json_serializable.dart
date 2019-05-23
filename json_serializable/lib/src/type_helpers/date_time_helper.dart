@@ -3,43 +3,21 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_gen/source_gen.dart' show TypeChecker;
 
 import '../type_helper.dart';
+import 'to_from_string.dart';
 
 class DateTimeHelper extends TypeHelper {
   const DateTimeHelper();
 
   @override
   String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    if (!_matchesType(targetType)) {
-      return null;
-    }
-
-    final buffer = StringBuffer(expression);
-
-    if (context.nullable) {
-      buffer.write('?');
-    }
-
-    buffer.write('.toIso8601String()');
-
-    return buffer.toString();
-  }
+          DartType targetType, String expression, TypeHelperContext context) =>
+      dateTimeString.serialize(targetType, expression, context.nullable);
 
   @override
   String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    if (!_matchesType(targetType)) {
-      return null;
-    }
-
-    return commonNullPrefix(context.nullable, expression,
-            'DateTime.parse($expression as String)')
-        .toString();
-  }
+          DartType targetType, String expression, TypeHelperContext context) =>
+      dateTimeString.deserialize(
+          targetType, expression, context.nullable, false);
 }
-
-bool _matchesType(DartType type) =>
-    const TypeChecker.fromUrl('dart:core#DateTime').isExactlyType(type);
