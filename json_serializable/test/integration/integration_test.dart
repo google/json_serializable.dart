@@ -232,4 +232,17 @@ void main() {
       expect(() => Numbers.fromJson(value), throwsCastError);
     });
   });
+
+  test('MapKeyVariety', () {
+    final instance = MapKeyVariety()
+      ..bigIntMap = {BigInt.from(1): 1}
+      ..dateTimeIntMap = {DateTime.parse('2018-01-01'): 2}
+      ..intIntMap = {3: 3}
+      ..uriIntMap = {Uri.parse('https://example.com'): 4};
+
+    final roundTrip =
+        roundTripObject(instance, (j) => MapKeyVariety.fromJson(j));
+
+    expect(roundTrip, instance);
+  });
 }

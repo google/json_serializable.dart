@@ -139,3 +139,28 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
       'duration': durationToInt(instance.duration),
       'date': dateTimeToEpochUs(instance.date)
     };
+
+MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
+  return MapKeyVariety()
+    ..intIntMap = (json['intIntMap'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(int.parse(k), e as int),
+    )
+    ..uriIntMap = (json['uriIntMap'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(Uri.parse(k), e as int),
+    )
+    ..dateTimeIntMap = (json['dateTimeIntMap'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(DateTime.parse(k), e as int),
+    )
+    ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(BigInt.parse(k), e as int),
+    );
+}
+
+Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
+    <String, dynamic>{
+      'intIntMap': instance.intIntMap.map((k, e) => MapEntry(k.toString(), e)),
+      'uriIntMap': instance.uriIntMap.map((k, e) => MapEntry(k.toString(), e)),
+      'dateTimeIntMap': instance.dateTimeIntMap
+          .map((k, e) => MapEntry(k.toIso8601String(), e)),
+      'bigIntMap': instance.bigIntMap.map((k, e) => MapEntry(k.toString(), e))
+    };

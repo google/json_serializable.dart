@@ -6,6 +6,7 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
+
 import 'json_test_common.dart';
 
 part 'json_test_example.g_non_nullable.g.dart';
@@ -153,4 +154,29 @@ class Numbers {
       deepEquals(nnDoubles, other.nnDoubles) &&
       deepEquals(duration, other.duration) &&
       deepEquals(date, other.date);
+}
+
+@JsonSerializable(
+  nullable: false,
+)
+class MapKeyVariety {
+  Map<int, int> intIntMap;
+  Map<Uri, int> uriIntMap;
+  Map<DateTime, int> dateTimeIntMap;
+  Map<BigInt, int> bigIntMap;
+
+  MapKeyVariety();
+
+  factory MapKeyVariety.fromJson(Map<String, dynamic> json) =>
+      _$MapKeyVarietyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapKeyVarietyToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      other is MapKeyVariety &&
+      deepEquals(other.intIntMap, intIntMap) &&
+      deepEquals(other.uriIntMap, uriIntMap) &&
+      deepEquals(other.dateTimeIntMap, dateTimeIntMap) &&
+      deepEquals(other.bigIntMap, bigIntMap);
 }
