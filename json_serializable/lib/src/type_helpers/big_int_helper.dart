@@ -3,44 +3,20 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_gen/source_gen.dart' show TypeChecker;
+
 import '../type_helper.dart';
+import 'to_from_string.dart';
 
 class BigIntHelper extends TypeHelper {
   const BigIntHelper();
 
   @override
   String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    if (!_matchesType(targetType)) {
-      return null;
-    }
-
-    final buffer = StringBuffer(expression);
-
-    if (context.nullable) {
-      buffer.write('?');
-    }
-
-    buffer.write('.toString()');
-
-    return buffer.toString();
-  }
+          DartType targetType, String expression, TypeHelperContext context) =>
+      bigIntString.serialize(targetType, expression, context.nullable);
 
   @override
   String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
-    if (!_matchesType(targetType)) {
-      return null;
-    }
-
-    return commonNullPrefix(
-      context.nullable,
-      expression,
-      'BigInt.parse($expression as String)',
-    ).toString();
-  }
+          DartType targetType, String expression, TypeHelperContext context) =>
+      bigIntString.deserialize(targetType, expression, context.nullable, false);
 }
-
-bool _matchesType(DartType type) =>
-    const TypeChecker.fromUrl('dart:core#BigInt').isExactlyType(type);
