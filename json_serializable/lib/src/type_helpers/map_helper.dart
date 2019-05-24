@@ -59,7 +59,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     _checkSafeKeyType(expression, keyArg);
 
     final valueArgIsAny = _isObjectOrDynamic(valueArg);
-    final isKeyStringable = _isStringKeyable(keyArg);
+    final isKeyStringable = _isKeyStringable(keyArg);
 
     if (!isKeyStringable) {
       if (valueArgIsAny) {
@@ -114,26 +114,23 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
 final _intString = ToFromStringHelper('int.parse', 'toString()', 'int');
 
-final _instances = {
+/// [ToFromStringHelper] instances representing non-String types that can
+/// be used as [Map] keys.
+final _instances = [
   bigIntString,
   dateTimeString,
   _intString,
   uriString,
-};
-
-Iterable<String> get _allowedTypeNames => const [
-      'Object',
-      'dynamic',
-      'enum',
-      'String'
-    ].followedBy(_instances.map((i) => i.coreTypeName));
+];
 
 ToFromStringHelper _forType(DartType type) =>
     _instances.singleWhere((i) => i.matches(type), orElse: () => null);
 
 bool _isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 
-bool _isStringKeyable(DartType keyType) =>
+/// Returns `true` if [keyType] can be automatically converted to/from String –
+/// and is therefor usable as a key in a [Map].
+bool _isKeyStringable(DartType keyType) =>
     isEnum(keyType) || _instances.any((inst) => inst.matches(keyType));
 
 void _checkSafeKeyType(String expression, DartType keyArg) {
@@ -141,10 +138,21 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
   // So the only safe types for key are dynamic/Object/String/enum
   final safeKey = _isObjectOrDynamic(keyArg) ||
       coreStringTypeChecker.isExactlyType(keyArg) ||
-      _isStringKeyable(keyArg);
+      _isKeyStringable(keyArg);
 
   if (!safeKey) {
     throw UnsupportedTypeError(keyArg, expression,
         'Map keys must be one of: ${_allowedTypeNames.join(', ')}.');
   }
 }
+
+/// The names of types that can be used as [Map] keys.
+///
+/// Used in [_checkSafeKeyType] to provide a helpful error with unsupported
+/// types.
+Iterable<String> get _allowedTypeNames => const [
+      'Object',
+      'dynamic',
+      'enum',
+      'String',
+    ].followedBy(_instances.map((i) => i.coreTypeName));
