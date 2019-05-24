@@ -280,19 +280,16 @@ _ConstructorData _writeConstructorInvocation(
     buffer.writeAll(constructorArguments.map((paramElement) {
       final content =
           deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      $content';
-    }), ',\n');
-    if (namedConstructorArguments.isNotEmpty) {
-      buffer.write(',');
-    }
+      return '      $content,\n';
+    }));
   }
   if (namedConstructorArguments.isNotEmpty) {
     buffer.writeln();
     buffer.writeAll(namedConstructorArguments.map((paramElement) {
       final value =
           deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      ${paramElement.name}: $value';
-    }), ',\n');
+      return '      ${paramElement.name}: $value,\n';
+    }));
   }
 
   buffer.write(')');

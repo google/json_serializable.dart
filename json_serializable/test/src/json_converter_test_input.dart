@@ -4,8 +4,7 @@
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConverterNamedCtor<E>()
@@ -25,10 +24,9 @@ Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
       'genericValue':
           _GenericConverter<E>.named().toJson(instance.genericValue),
       'keyAnnotationFirst':
-          JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst)
+          JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst),
     };
-''',
-  configurations: ['default'],
+'''
 )
 @JsonSerializable()
 @_DurationMillisecondConverter.named()
@@ -47,7 +45,7 @@ class JsonConverterNamedCtor<E> {
 }
 
 @ShouldGenerate(
-  r'''
+    r'''
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConvertOnField<E>()
@@ -70,10 +68,9 @@ Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
           .toJson(instance.annotatedWithNamedCtor),
       'classAnnotatedWithField':
           _durationConverter.toJson(instance.classAnnotatedWithField),
-      'genericValue': _GenericConverter<E>().toJson(instance.genericValue)
+      'genericValue': _GenericConverter<E>().toJson(instance.genericValue),
     };
-''',
-  configurations: ['default'],
+'''
 )
 @JsonSerializable()
 @_durationConverter

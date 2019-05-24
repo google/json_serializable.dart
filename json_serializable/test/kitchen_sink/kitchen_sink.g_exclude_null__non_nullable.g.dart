@@ -8,13 +8,14 @@ part of 'kitchen_sink.g_exclude_null__non_nullable.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
-      ctorValidatedNo42: json['no-42'] as int,
-      iterable: json['iterable'] as List,
-      dynamicIterable: json['dynamicIterable'] as List,
-      objectIterable: json['objectIterable'] as List,
-      intIterable: (json['intIterable'] as List).map((e) => e as int),
-      dateTimeIterable: (json['datetime-iterable'] as List)
-          .map((e) => DateTime.parse(e as String)))
+    ctorValidatedNo42: json['no-42'] as int,
+    iterable: json['iterable'] as List,
+    dynamicIterable: json['dynamicIterable'] as List,
+    objectIterable: json['objectIterable'] as List,
+    intIterable: (json['intIterable'] as List).map((e) => e as int),
+    dateTimeIterable: (json['datetime-iterable'] as List)
+        .map((e) => DateTime.parse(e as String)),
+  )
     ..dateTime = DateTime.parse(json['dateTime'] as String)
     ..bigInt = BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List).toSet()
@@ -105,7 +106,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       r'$string': instance.string,
       'simpleObject': instance.simpleObject,
       'strictKeysObject': instance.strictKeysObject,
-      'validatedPropertyNo42': instance.validatedPropertyNo42
+      'validatedPropertyNo42': instance.validatedPropertyNo42,
     };
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(

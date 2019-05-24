@@ -28,7 +28,7 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
       'fieldDynamic': GenericClass._dataToJson(instance.fieldDynamic),
       'fieldInt': GenericClass._dataToJson(instance.fieldInt),
       'fieldT': GenericClass._dataToJson(instance.fieldT),
-      'fieldS': GenericClass._dataToJson(instance.fieldS)
+      'fieldS': GenericClass._dataToJson(instance.fieldS),
     };
 
 GenericClassWithConverter<T, S>
@@ -59,5 +59,5 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
       'duration':
           const _DurationMillisecondConverter().toJson(instance.duration),
       'listDuration': const _DurationListMillisecondConverter()
-          .toJson(instance.listDuration)
+          .toJson(instance.listDuration),
     };

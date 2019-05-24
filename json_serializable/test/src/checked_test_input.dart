@@ -8,8 +8,10 @@ WithANonCtorGetterChecked _$WithANonCtorGetterCheckedFromJson(
         allowedKeys: const ['items'],
         requiredKeys: const ['items'],
         disallowNullValues: const ['items']);
-    final val = WithANonCtorGetterChecked($checkedConvert(
-        json, 'items', (v) => (v as List)?.map((e) => e as String)?.toList()));
+    final val = WithANonCtorGetterChecked(
+      $checkedConvert(
+          json, 'items', (v) => (v as List)?.map((e) => e as String)?.toList()),
+    );
     return val;
   });
 }
@@ -35,7 +37,8 @@ WithANonCtorGetter _$WithANonCtorGetterFromJson(Map<String, dynamic> json) {
       requiredKeys: const ['items'],
       disallowNullValues: const ['items']);
   return WithANonCtorGetter(
-      (json['items'] as List)?.map((e) => e as String)?.toList());
+    (json['items'] as List)?.map((e) => e as String)?.toList(),
+  );
 }
 ''')
 @JsonSerializable(disallowUnrecognizedKeys: true, createToJson: false)

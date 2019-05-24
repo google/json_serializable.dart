@@ -7,8 +7,12 @@ part of 'simple_object.dart';
 // **************************************************************************
 
 SimpleObject _$SimpleObjectFromJson(Map json) {
-  return SimpleObject(json['value'] as int);
+  return SimpleObject(
+    json['value'] as int,
+  );
 }
 
 Map<String, dynamic> _$SimpleObjectToJson(SimpleObject instance) =>
-    <String, dynamic>{'value': instance.value};
+    <String, dynamic>{
+      'value': instance.value,
+    };

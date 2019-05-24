@@ -45,7 +45,7 @@ ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
 Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
         ValidToFromFuncClassStatic instance) =>
     <String, dynamic>{
-      'field': ValidToFromFuncClassStatic._staticFunc(instance.field)
+      'field': ValidToFromFuncClassStatic._staticFunc(instance.field),
     };
 ''',
   configurations: ['default'],

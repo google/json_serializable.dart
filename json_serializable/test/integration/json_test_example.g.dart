@@ -7,12 +7,15 @@ part of 'json_test_example.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
-  return Person(json['firstName'] as String, json['lastName'] as String,
-      _$enumDecodeNullable(_$CategoryEnumMap, json[r'$house']),
-      middleName: json['middleName'] as String,
-      dateOfBirth: json['dateOfBirth'] == null
-          ? null
-          : DateTime.parse(json['dateOfBirth'] as String))
+  return Person(
+    json['firstName'] as String,
+    json['lastName'] as String,
+    _$enumDecodeNullable(_$CategoryEnumMap, json[r'$house']),
+    middleName: json['middleName'] as String,
+    dateOfBirth: json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String),
+  )
     ..order = json['order'] == null
         ? null
         : Order.fromJson(json['order'] as Map<String, dynamic>)
@@ -41,7 +44,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'houseMap':
           instance.houseMap?.map((k, e) => MapEntry(k, _$CategoryEnumMap[e])),
       'categoryCounts': instance.categoryCounts
-          ?.map((k, e) => MapEntry(_$CategoryEnumMap[k], e))
+          ?.map((k, e) => MapEntry(_$CategoryEnumMap[k], e)),
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
@@ -77,9 +80,10 @@ const _$CategoryEnumMap = <Category, dynamic>{
 Order _$OrderFromJson(Map<String, dynamic> json) {
   $checkKeys(json, disallowNullValues: const ['count']);
   return Order(
-      _$enumDecode(_$CategoryEnumMap, json['category']),
-      (json['items'] as List)?.map(
-          (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>)))
+    _$enumDecode(_$CategoryEnumMap, json['category']),
+    (json['items'] as List)?.map(
+        (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>)),
+  )
     ..count = json['count'] as int
     ..isRushed = json['isRushed'] as bool
     ..duration = json['duration'] == null
@@ -125,7 +129,9 @@ const _$StatusCodeEnumMap = <StatusCode, dynamic>{
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
-  return Item(json['price'] as int)
+  return Item(
+    json['price'] as int,
+  )
     ..itemNumber = json['item-number'] as int
     ..saleDates = (json['saleDates'] as List)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
@@ -169,7 +175,7 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
       'doubles': instance.doubles,
       'nnDoubles': instance.nnDoubles,
       'duration': durationToInt(instance.duration),
-      'date': dateTimeToEpochUs(instance.date)
+      'date': dateTimeToEpochUs(instance.date),
     };
 
 MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
@@ -194,5 +200,5 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
       'uriIntMap': instance.uriIntMap?.map((k, e) => MapEntry(k.toString(), e)),
       'dateTimeIntMap': instance.dateTimeIntMap
           ?.map((k, e) => MapEntry(k.toIso8601String(), e)),
-      'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e))
+      'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
     };

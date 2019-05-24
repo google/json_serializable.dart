@@ -8,13 +8,14 @@ part of 'kitchen_sink.g_exclude_null.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
-      ctorValidatedNo42: json['no-42'] as int,
-      iterable: json['iterable'] as List,
-      dynamicIterable: json['dynamicIterable'] as List,
-      objectIterable: json['objectIterable'] as List,
-      intIterable: (json['intIterable'] as List)?.map((e) => e as int),
-      dateTimeIterable: (json['datetime-iterable'] as List)
-          ?.map((e) => e == null ? null : DateTime.parse(e as String)))
+    ctorValidatedNo42: json['no-42'] as int,
+    iterable: json['iterable'] as List,
+    dynamicIterable: json['dynamicIterable'] as List,
+    objectIterable: json['objectIterable'] as List,
+    intIterable: (json['intIterable'] as List)?.map((e) => e as int),
+    dateTimeIterable: (json['datetime-iterable'] as List)
+        ?.map((e) => e == null ? null : DateTime.parse(e as String)),
+  )
     ..dateTime = json['dateTime'] == null
         ? null
         : DateTime.parse(json['dateTime'] as String)

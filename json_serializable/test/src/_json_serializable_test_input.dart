@@ -59,8 +59,7 @@ class OnlyStaticMembers {
   static int get understand => 42;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
   return GeneralTestClass1()
     ..firstName = json['firstName'] as String
@@ -82,10 +81,9 @@ Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
       'dynamicType': instance.dynamicType,
       'varType': instance.varType,
-      'listOfInts': instance.listOfInts
+      'listOfInts': instance.listOfInts,
     };
-''',
-)
+''')
 @JsonSerializable()
 class GeneralTestClass1 {
   String firstName, lastName;
@@ -99,14 +97,15 @@ class GeneralTestClass1 {
   List<int> listOfInts;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) {
-  return GeneralTestClass2(json['height'] as int, json['firstName'] as String,
-      json['lastName'] as String)
-    ..dateOfBirth = json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String);
+  return GeneralTestClass2(
+    json['height'] as int,
+    json['firstName'] as String,
+    json['lastName'] as String,
+  )..dateOfBirth = json['dateOfBirth'] == null
+      ? null
+      : DateTime.parse(json['dateOfBirth'] as String);
 }
 
 Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
@@ -114,10 +113,9 @@ Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'height': instance.height,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String()
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
     };
-''',
-)
+''')
 @JsonSerializable()
 class GeneralTestClass2 {
   final String firstName, lastName;
@@ -131,15 +129,18 @@ class GeneralTestClass2 {
 }
 
 @ShouldGenerate(
-  r'''
+    r'''
 FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) {
-  return FinalFields(json['a'] as int);
+  return FinalFields(
+    json['a'] as int,
+  );
 }
 
 Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance) =>
-    <String, dynamic>{'a': instance.a};
-''',
-  configurations: ['default'],
+    <String, dynamic>{
+      'a': instance.a,
+    };
+'''
 )
 @JsonSerializable()
 class FinalFields {
@@ -170,17 +171,18 @@ class FinalFieldsNotSetInCtor {
   FinalFieldsNotSetInCtor();
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
-  return SetSupport((json['values'] as List)?.map((e) => e as int)?.toSet());
+  return SetSupport(
+    (json['values'] as List)?.map((e) => e as int)?.toSet(),
+  );
 }
 
 Map<String, dynamic> _$SetSupportToJson(SetSupport instance) =>
-    <String, dynamic>{'values': instance.values?.toList()};
-''',
-  configurations: ['default'],
-)
+    <String, dynamic>{
+      'values': instance.values?.toList(),
+    };
+''')
 @JsonSerializable()
 class SetSupport {
   final Set<int> values;
@@ -297,16 +299,13 @@ class DupeKeys {
   String str;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
     <String, dynamic>{
       'ignoredFalseField': instance.ignoredFalseField,
-      'ignoredNullField': instance.ignoredNullField
+      'ignoredNullField': instance.ignoredNullField,
     };
-''',
-  configurations: ['default'],
-)
+''')
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
   @JsonKey(ignore: true)
@@ -443,8 +442,7 @@ mixin _PropInMixinI448RegressionMixin {
   int nullable;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 PropInMixinI448Regression _$PropInMixinI448RegressionFromJson(
     Map<String, dynamic> json) {
   return PropInMixinI448Regression()
@@ -456,11 +454,9 @@ Map<String, dynamic> _$PropInMixinI448RegressionToJson(
         PropInMixinI448Regression instance) =>
     <String, dynamic>{
       'nullable': instance.nullable,
-      'notNullable': instance.notNullable
+      'notNullable': instance.notNullable,
     };
-''',
-  configurations: ['default'],
-)
+''')
 @JsonSerializable()
 class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
   @JsonKey(nullable: false)
