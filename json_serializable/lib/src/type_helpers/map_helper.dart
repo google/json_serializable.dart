@@ -29,17 +29,17 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     _checkSafeKeyType(expression, keyType);
 
-    final toFromString = _forType(keyType);
-
-    final subKeyValue = toFromString?.serialize(keyType, _keyParam, false) ??
-        context.serialize(keyType, _keyParam);
     final subFieldValue = context.serialize(valueType, closureArg);
+    final subKeyValue =
+        _forType(keyType)?.serialize(keyType, _keyParam, false) ??
+            context.serialize(keyType, _keyParam);
 
     if (closureArg == subFieldValue && _keyParam == subKeyValue) {
       return expression;
     }
 
     final optionalQuestion = context.nullable ? '?' : '';
+
     return '$expression$optionalQuestion'
         '.map(($_keyParam, $closureArg) => MapEntry($subKeyValue, $subFieldValue))';
   }
@@ -93,7 +93,6 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
     String keyUsage;
-
     if (isEnum(keyArg)) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
     } else if (context.config.anyMap && !_isObjectOrDynamic(keyArg)) {

@@ -7,12 +7,23 @@ import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
 
-final bigIntString = ToFromStringHelper('BigInt.parse', 'toString()', 'BigInt');
+final bigIntString = ToFromStringHelper(
+  'BigInt.parse',
+  'toString()',
+  'BigInt',
+);
 
-final dateTimeString =
-    ToFromStringHelper('DateTime.parse', 'toIso8601String()', 'DateTime');
+final dateTimeString = ToFromStringHelper(
+  'DateTime.parse',
+  'toIso8601String()',
+  'DateTime',
+);
 
-final uriString = ToFromStringHelper('Uri.parse', 'toString()', 'Uri');
+final uriString = ToFromStringHelper(
+  'Uri.parse',
+  'toString()',
+  'Uri',
+);
 
 /// Package-internal helper that unifies implementations of [Type]s that convert
 /// trivially to-from [String].
@@ -29,7 +40,6 @@ class ToFromStringHelper {
   ///
   /// Examples: `toString()` for a function or `stringValue` for a property.
   final String _toString;
-
   final String coreTypeName;
   final TypeChecker _checker;
 
