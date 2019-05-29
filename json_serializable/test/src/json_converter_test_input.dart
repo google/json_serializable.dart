@@ -26,8 +26,7 @@ Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
       'keyAnnotationFirst':
           JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst),
     };
-'''
-)
+''')
 @JsonSerializable()
 @_DurationMillisecondConverter.named()
 @_GenericConverter.named()
@@ -44,8 +43,7 @@ class JsonConverterNamedCtor<E> {
   static int _toJson(Duration object) => 42;
 }
 
-@ShouldGenerate(
-    r'''
+@ShouldGenerate(r'''
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
     Map<String, dynamic> json) {
   return JsonConvertOnField<E>()
@@ -70,8 +68,7 @@ Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
           _durationConverter.toJson(instance.classAnnotatedWithField),
       'genericValue': _GenericConverter<E>().toJson(instance.genericValue),
     };
-'''
-)
+''')
 @JsonSerializable()
 @_durationConverter
 class JsonConvertOnField<E> {

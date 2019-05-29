@@ -128,8 +128,7 @@ class GeneralTestClass2 {
         firstName = firstName;
 }
 
-@ShouldGenerate(
-    r'''
+@ShouldGenerate(r'''
 FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) {
   return FinalFields(
     json['a'] as int,
@@ -140,8 +139,7 @@ Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance) =>
     <String, dynamic>{
       'a': instance.a,
     };
-'''
-)
+''')
 @JsonSerializable()
 class FinalFields {
   final int a;

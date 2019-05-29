@@ -1,7 +1,6 @@
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(
-    r'''
+@ShouldGenerate(r'''
 SubType _$SubTypeFromJson(Map<String, dynamic> json) {
   return SubType(
     json['subTypeViaCtor'] as int,
@@ -27,8 +26,7 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
   val['subTypeReadWrite'] = instance.subTypeReadWrite;
   return val;
 }
-'''
-)
+''')
 @JsonSerializable()
 class SubType extends SuperType {
   final int subTypeViaCtor;
