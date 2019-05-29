@@ -1,3 +1,7 @@
+## 3.1.0
+
+- Support `Map` keys of type `int`, `BigInt`, `DateTime`, and `Uri`.
+
 ## 3.0.0
 
 This release is entirely **BREAKING** changes. It removes underused features

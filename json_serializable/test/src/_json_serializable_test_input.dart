@@ -21,6 +21,8 @@ part 'inheritance_test_input.dart';
 
 part 'json_converter_test_input.dart';
 
+part 'map_key_variety_test_input.dart';
+
 part 'setter_test_input.dart';
 
 part 'to_from_json_test_input.dart';
@@ -207,23 +209,25 @@ class NoDeserializeFieldType {
 }
 
 @ShouldThrow(
-  'Could not generate `toJson` code for `intDateTimeMap` because of type `int`.\n'
-  'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  '''
+Could not generate `toJson` code for `durationDateTimeMap` because of type `Duration`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeBadKey {
-  Map<int, DateTime> intDateTimeMap;
+  Map<Duration, DateTime> durationDateTimeMap;
 }
 
 @ShouldThrow(
-  'Could not generate `fromJson` code for `intDateTimeMap` because of type `int`.\n'
-  'Map keys must be of type `String`, enum, `Object` or `dynamic`.',
+  '''
+Could not generate `fromJson` code for `durationDateTimeMap` because of type `Duration`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
   configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
-  Map<int, DateTime> intDateTimeMap;
+  Map<Duration, DateTime> durationDateTimeMap;
 }
 
 @ShouldGenerate(

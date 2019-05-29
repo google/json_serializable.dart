@@ -68,6 +68,7 @@ const _expectedAnnotatedTests = [
   'JustSetterNoFromJson',
   'JustSetterNoToJson',
   'KeyDupesField',
+  'MapKeyVariety',
   'NoCtorClass',
   'NoDeserializeBadKey',
   'NoDeserializeFieldType',

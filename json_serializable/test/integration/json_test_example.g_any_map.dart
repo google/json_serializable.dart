@@ -9,9 +9,11 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'json_test_common.dart';
 
-part 'json_test_example.g.dart';
+part 'json_test_example.g_any_map.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class Person {
   final String firstName, middleName, lastName;
   final DateTime dateOfBirth;
@@ -43,7 +45,9 @@ class Person {
       deepEquals(houseMap, other.houseMap);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
   @JsonKey(disallowNullValue: true)
@@ -94,7 +98,9 @@ class Order {
       deepEquals(altPlatforms, other.altPlatforms);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int itemNumber;
@@ -115,7 +121,9 @@ class Item extends ItemCore {
       deepEquals(saleDates, other.saleDates);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class Numbers {
   List<int> ints;
   List<num> nums;
@@ -148,7 +156,9 @@ class Numbers {
       deepEquals(date, other.date);
 }
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class MapKeyVariety {
   Map<int, int> intIntMap;
   Map<Uri, int> uriIntMap;

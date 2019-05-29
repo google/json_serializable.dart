@@ -7,22 +7,22 @@ import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
 
-const bigIntString = ToFromStringHelper(
+final bigIntString = ToFromStringHelper(
   'BigInt.parse',
   'toString()',
-  TypeChecker.fromUrl('dart:core#BigInt'),
+  'BigInt',
 );
 
-const dateTimeString = ToFromStringHelper(
+final dateTimeString = ToFromStringHelper(
   'DateTime.parse',
   'toIso8601String()',
-  TypeChecker.fromUrl('dart:core#DateTime'),
+  'DateTime',
 );
 
-const uriString = ToFromStringHelper(
+final uriString = ToFromStringHelper(
   'Uri.parse',
   'toString()',
-  TypeChecker.fromUrl('dart:core#Uri'),
+  'Uri',
 );
 
 /// Package-internal helper that unifies implementations of [Type]s that convert
@@ -40,9 +40,11 @@ class ToFromStringHelper {
   ///
   /// Examples: `toString()` for a function or `stringValue` for a property.
   final String _toString;
+  final String coreTypeName;
   final TypeChecker _checker;
 
-  const ToFromStringHelper(this._parse, this._toString, this._checker);
+  ToFromStringHelper(this._parse, this._toString, this.coreTypeName)
+      : _checker = TypeChecker.fromUrl('dart:core#$coreTypeName');
 
   bool matches(DartType type) => _checker.isExactlyType(type);
 

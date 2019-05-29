@@ -233,6 +233,7 @@ const _fileConfigurationMap = <String, Set<Set<String>>>{
   },
   'generic_class': <Set<String>>{},
   'json_test_example': {
+    {'any_map'},
     {'non_nullable'},
   }
 };
