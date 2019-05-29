@@ -10,13 +10,14 @@ Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
     $checkKeys(json, requiredKeys: const ['builders']);
     final val = Config(
-        builders: $checkedConvert(
-            json,
-            'builders',
-            (v) => (v as Map)?.map(
-                  (k, e) => MapEntry(k as String,
-                      e == null ? null : Builder.fromJson(e as Map)),
-                )));
+      builders: $checkedConvert(
+          json,
+          'builders',
+          (v) => (v as Map)?.map(
+                (k, e) => MapEntry(
+                    k as String, e == null ? null : Builder.fromJson(e as Map)),
+              )),
+    );
     $checkedConvert(
         json,
         'weights',
@@ -31,7 +32,7 @@ Config _$ConfigFromJson(Map json) {
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'builders': instance.builders,
       'weights':
-          instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k], e))
+          instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k], e)),
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
@@ -80,30 +81,31 @@ Builder _$BuilderFromJson(Map json) {
       'auto_apply'
     ]);
     final val = Builder(
-        import: $checkedConvert(json, 'import', (v) => v as String),
-        target: $checkedConvert(json, 'target', (v) => v as String),
-        isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
-        autoApply: $checkedConvert(json, 'auto_apply',
-            (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
-        buildTo: $checkedConvert(
-            json, 'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
-        defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
-            (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
-        builderFactories: $checkedConvert(json, 'builder_factories',
-            (v) => (v as List).map((e) => e as String).toList()),
-        appliesBuilders: $checkedConvert(json, 'applies_builders',
-            (v) => (v as List)?.map((e) => e as String)?.toList()),
-        requiredInputs: $checkedConvert(json, 'required_inputs',
-            (v) => (v as List)?.map((e) => e as String)?.toList()),
-        buildExtensions: $checkedConvert(
-            json,
-            'build_extensions',
-            (v) => (v as Map)?.map(
-                  (k, e) => MapEntry(k as String,
-                      (e as List)?.map((e) => e as String)?.toList()),
-                )),
-        configLocation: $checkedConvert(json, 'configLocation',
-            (v) => v == null ? null : Uri.parse(v as String)));
+      import: $checkedConvert(json, 'import', (v) => v as String),
+      target: $checkedConvert(json, 'target', (v) => v as String),
+      isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool),
+      autoApply: $checkedConvert(json, 'auto_apply',
+          (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+      buildTo: $checkedConvert(
+          json, 'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
+      defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
+          (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+      builderFactories: $checkedConvert(json, 'builder_factories',
+          (v) => (v as List).map((e) => e as String).toList()),
+      appliesBuilders: $checkedConvert(json, 'applies_builders',
+          (v) => (v as List)?.map((e) => e as String)?.toList()),
+      requiredInputs: $checkedConvert(json, 'required_inputs',
+          (v) => (v as List)?.map((e) => e as String)?.toList()),
+      buildExtensions: $checkedConvert(
+          json,
+          'build_extensions',
+          (v) => (v as Map)?.map(
+                (k, e) => MapEntry(k as String,
+                    (e as List)?.map((e) => e as String)?.toList()),
+              )),
+      configLocation: $checkedConvert(json, 'configLocation',
+          (v) => v == null ? null : Uri.parse(v as String)),
+    );
     return val;
   }, fieldKeyMap: const {
     'isOptional': 'is_optional',
