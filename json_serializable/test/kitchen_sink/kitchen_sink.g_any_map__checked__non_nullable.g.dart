@@ -9,16 +9,16 @@ part of 'kitchen_sink.g_any_map__checked__non_nullable.dart';
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return $checkedNew('KitchenSink', json, () {
     final val = KitchenSink(
-        ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
-        iterable: $checkedConvert(json, 'iterable', (v) => v as List),
-        dynamicIterable:
-            $checkedConvert(json, 'dynamicIterable', (v) => v as List),
-        objectIterable:
-            $checkedConvert(json, 'objectIterable', (v) => v as List),
-        intIterable: $checkedConvert(
-            json, 'intIterable', (v) => (v as List).map((e) => e as int)),
-        dateTimeIterable: $checkedConvert(json, 'datetime-iterable',
-            (v) => (v as List).map((e) => DateTime.parse(e as String))));
+      ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
+      iterable: $checkedConvert(json, 'iterable', (v) => v as List),
+      dynamicIterable:
+          $checkedConvert(json, 'dynamicIterable', (v) => v as List),
+      objectIterable: $checkedConvert(json, 'objectIterable', (v) => v as List),
+      intIterable: $checkedConvert(
+          json, 'intIterable', (v) => (v as List).map((e) => e as int)),
+      dateTimeIterable: $checkedConvert(json, 'datetime-iterable',
+          (v) => (v as List).map((e) => DateTime.parse(e as String))),
+    );
     $checkedConvert(
         json, 'dateTime', (v) => val.dateTime = DateTime.parse(v as String));
     $checkedConvert(
@@ -134,7 +134,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       r'$string': instance.string,
       'simpleObject': instance.simpleObject,
       'strictKeysObject': instance.strictKeysObject,
-      'validatedPropertyNo42': instance.validatedPropertyNo42
+      'validatedPropertyNo42': instance.validatedPropertyNo42,
     };
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
@@ -194,7 +194,7 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'numberSillySet': instance.numberSillySet
           .map(TrivialNumberConverter.instance.toJson)
           .toList(),
-      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime)
+      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
@@ -230,5 +230,5 @@ Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
       'item': GenericConverter<S>().toJson(instance.item),
       'itemList': instance.itemList.map(GenericConverter<T>().toJson).toList(),
       'itemMap': instance.itemMap
-          .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)))
+          .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e))),
     };

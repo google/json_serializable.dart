@@ -130,7 +130,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
         TrivialNestedNullable instance) =>
     <String, dynamic>{
       'child': instance.child?.toJson(),
-      'otherField': instance.otherField
+      'otherField': instance.otherField,
     };
 ''';
 
@@ -145,7 +145,7 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         TrivialNestedNonNullable instance) =>
     <String, dynamic>{
       'child': instance.child.toJson(),
-      'otherField': instance.otherField
+      'otherField': instance.otherField,
     };
 ''';
 

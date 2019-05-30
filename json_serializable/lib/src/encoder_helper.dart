@@ -42,12 +42,8 @@ abstract class EncodeHelper implements HelperCore {
       final access = _fieldAccess(field);
       final value =
           '${safeNameAccess(field)}: ${_serializeField(field, access)}';
-      return '        $value';
-    }), ',\n');
-
-    if (fields.isNotEmpty) {
-      buffer.write('\n      ');
-    }
+      return '        $value,\n';
+    }));
 
     buffer.writeln('};');
   }

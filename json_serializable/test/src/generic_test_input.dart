@@ -4,8 +4,7 @@
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
   return GenericClass<T, S>()
@@ -23,10 +22,9 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
       'fieldDynamic': _dataToJson(instance.fieldDynamic),
       'fieldInt': _dataToJson(instance.fieldInt),
       'fieldT': _dataToJson(instance.fieldT),
-      'fieldS': _dataToJson(instance.fieldS)
+      'fieldS': _dataToJson(instance.fieldS),
     };
-''',
-)
+''')
 @JsonSerializable()
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
