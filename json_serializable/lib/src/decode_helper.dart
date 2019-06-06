@@ -22,15 +22,24 @@ class CreateFactoryResult {
 abstract class DecodeHelper implements HelperCore {
   final StringBuffer _buffer = StringBuffer();
 
+  static const _toJsonParamName = 'instance';
+
   CreateFactoryResult createFactory(Map<String, FieldElement> accessibleFields,
       Map<String, String> unavailableReasons) {
     assert(config.createFactory);
+    assert(config.createConstructor);
     assert(_buffer.isEmpty);
 
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
-    _buffer.write('$targetClassReference '
-        '${prefix}FromJson${genericClassArgumentsImpl(true)}'
-        '($mapType json) {\n');
+    if (config.createConstructor) {
+      _buffer.write('$targetClassReference '
+          '${prefix}FromJson${genericClassArgumentsImpl(true)}'
+          '($targetClassReference $_toJsonParamName, $mapType json) {\n');
+    } else {
+      _buffer.write('$targetClassReference '
+          '${prefix}FromJson${genericClassArgumentsImpl(true)}'
+          '($mapType json) {\n');
+    }
 
     String deserializeFun(String paramOrFieldName,
             {ParameterElement ctorParam}) =>
@@ -62,8 +71,14 @@ abstract class DecodeHelper implements HelperCore {
           config,
           accessibleFields.values
               .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
-      _buffer.write('''
+
+      if (config.createConstructor) {
+        _buffer.write('''
+    final val = $_toJsonParamName;''');
+      } else {
+        _buffer.write('''
     final val = ${data.content};''');
+      }
 
       for (final field in data.fieldsToSet) {
         _buffer.writeln();
@@ -111,15 +126,24 @@ abstract class DecodeHelper implements HelperCore {
           accessibleFields.values
               .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
 
-      _buffer.write('''
-  return ${data.content}''');
+      if (config.createConstructor) {
+        _buffer.write('$_toJsonParamName');
+      } else {
+        _buffer.write('''
+      return ${data.content}''');
+      }
+
       for (final field in data.fieldsToSet) {
         _buffer.writeln();
         _buffer.write('    ..$field = ');
         _buffer.write(deserializeFun(field));
       }
     }
-    _buffer.writeln(';\n}');
+    if (config.createConstructor) {
+      _buffer.writeln(';\nreturn $_toJsonParamName;\n}');
+    } else {
+      _buffer.writeln(';\n}');
+    }
     _buffer.writeln();
 
     return CreateFactoryResult(

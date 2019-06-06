@@ -15,6 +15,7 @@ final generatorConfigNonDefaultJson =
   anyMap: true,
   checked: true,
   createFactory: false,
+  createConstructor: false,
   createToJson: false,
   disallowUnrecognizedKeys: true,
   explicitToJson: true,

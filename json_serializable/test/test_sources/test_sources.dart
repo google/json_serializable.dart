@@ -9,6 +9,7 @@ class ConfigurationImplicitDefaults {
   anyMap: false,
   checked: false,
   createFactory: true,
+  createConstructor: false,
   createToJson: true,
   disallowUnrecognizedKeys: false,
   explicitToJson: false,

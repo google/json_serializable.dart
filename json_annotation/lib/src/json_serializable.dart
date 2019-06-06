@@ -62,6 +62,8 @@ class JsonSerializable {
   /// ```
   final bool createFactory;
 
+  final bool createConstructor;
+
   /// If `true` (the default), A top-level function is created that you can
   /// reference from your class.
   ///
@@ -137,6 +139,7 @@ class JsonSerializable {
     this.anyMap,
     this.checked,
     this.createFactory,
+    this.createConstructor,
     this.createToJson,
     this.disallowUnrecognizedKeys,
     this.explicitToJson,
@@ -154,6 +157,7 @@ class JsonSerializable {
     anyMap: false,
     checked: false,
     createFactory: true,
+    createConstructor: false,
     createToJson: true,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
@@ -171,6 +175,7 @@ class JsonSerializable {
       anyMap: anyMap ?? defaults.anyMap,
       checked: checked ?? defaults.checked,
       createFactory: createFactory ?? defaults.createFactory,
+      createConstructor: createConstructor ?? defaults.createConstructor,
       createToJson: createToJson ?? defaults.createToJson,
       disallowUnrecognizedKeys:
           disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
