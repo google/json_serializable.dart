@@ -10,6 +10,7 @@ import 'package:source_gen/source_gen.dart';
 import 'json_key_utils.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
+import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 abstract class HelperCore {

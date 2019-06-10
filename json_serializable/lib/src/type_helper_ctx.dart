@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
+import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 TypeHelperCtx typeHelperContext(

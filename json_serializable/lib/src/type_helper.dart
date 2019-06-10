@@ -82,14 +82,6 @@ abstract class TypeHelper<T extends TypeHelperContext> {
   Object deserialize(DartType targetType, String expression, T context);
 }
 
-class UnsupportedTypeError extends Error {
-  final String expression;
-  final DartType type;
-  final String reason;
-
-  UnsupportedTypeError(this.type, this.expression, this.reason);
-}
-
 Object commonNullPrefix(
         bool nullable, String expression, Object unsafeExpression) =>
     nullable
