@@ -7,8 +7,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'constants.dart';
 import 'helper_core.dart';
-import 'type_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
+import 'unsupported_type_error.dart';
 
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';

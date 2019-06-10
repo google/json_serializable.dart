@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/type.dart';
 import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../unsupported_type_error.dart';
 import '../utils.dart';
 import 'to_from_string.dart';
 

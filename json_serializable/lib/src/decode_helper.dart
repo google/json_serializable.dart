@@ -9,7 +9,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
-import 'type_helper.dart';
+import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 class CreateFactoryResult {
