@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../json_key_utils.dart';
+import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
