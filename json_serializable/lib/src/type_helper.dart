@@ -82,21 +82,6 @@ abstract class TypeHelper<T extends TypeHelperContext> {
   Object deserialize(DartType targetType, String expression, T context);
 }
 
-class LambdaResult {
-  final String expression;
-  final String lambda;
-
-  LambdaResult(this.expression, this.lambda);
-
-  @override
-  String toString() => '$lambda($expression)';
-
-  static String process(Object subField, String closureArg) =>
-      (subField is LambdaResult && closureArg == subField.expression)
-          ? subField.lambda
-          : '($closureArg) => $subField';
-}
-
 class UnsupportedTypeError extends Error {
   final String expression;
   final DartType type;
