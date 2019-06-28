@@ -12,7 +12,7 @@ class JsonKey {
   final Object defaultValue;
 
   /// If `true`, generated code will throw a [DisallowedNullValueException] if
-  /// the corresponding key exits, but the value is `null`.
+  /// the corresponding key exists, but the value is `null`.
   ///
   /// Note: this value does not affect the behavior of a JSON map *without* the
   /// associated key.
