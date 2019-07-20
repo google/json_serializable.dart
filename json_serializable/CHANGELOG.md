@@ -3,6 +3,7 @@
 - Support `Map` keys of type `int`, `BigInt`, `DateTime`, and `Uri`.
 - Trailing commas are now added to generated constructor arguments and the
   elements in `Map` literals.
+- Support `package:analyzer` `>=0.33.3 <0.38.0`
 
 ## 3.0.0
 
