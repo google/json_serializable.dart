@@ -122,7 +122,7 @@ void main() {
           'f': Platform.foo,
           'null': null
         }
-        ..homepage = Uri.parse('https://dartlang.org');
+        ..homepage = Uri.parse('https://dart.dev');
 
       roundTripOrder(order);
     });
