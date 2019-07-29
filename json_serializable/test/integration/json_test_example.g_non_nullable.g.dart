@@ -40,17 +40,25 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
           .map((k, e) => MapEntry(_$CategoryEnumMap[k], e)),
     };
 
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
 }
 
 const _$CategoryEnumMap = {
@@ -78,9 +86,10 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, Platform.fromJson(e as String)),
     )
     ..homepage = Uri.parse(json['homepage'] as String)
-    ..statusCode =
-        _$enumDecodeNullable(_$StatusCodeEnumMap, json['status_code']) ??
-            StatusCode.success;
+    ..statusCode = _$enumDecodeNullable(
+            _$StatusCodeEnumMap, json['status_code'],
+            unknownValue: StatusCode.unknown) ??
+        StatusCode.success;
 }
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
@@ -95,17 +104,22 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'status_code': _$StatusCodeEnumMap[instance.statusCode],
     };
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
   StatusCode.notFound: 404,
   StatusCode.weird: '500',
+  StatusCode.unknown: 'unknown',
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {

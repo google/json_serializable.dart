@@ -82,7 +82,11 @@ void main() {
       final order = Order.fromJson({'category': 'not_discovered_yet'});
       expect(order.items, isEmpty);
       expect(order.category, Category.notDiscoveredYet);
-      expect(order.statusCode, StatusCode.success);
+      expect(
+        order.statusCode,
+        StatusCode.success,
+        reason: 'success is the default on an unset value',
+      );
       roundTripOrder(order);
     });
 
@@ -131,6 +135,27 @@ void main() {
       final order = Order.fromJson(
           {'category': 'not_discovered_yet', 'status_code': 404});
       expect(order.statusCode, StatusCode.notFound);
+      roundTripOrder(order);
+    });
+
+    test('statusCode 500 "weird"', () {
+      final order = Order.fromJson(
+          {'category': 'not_discovered_yet', 'status_code': '500'});
+      expect(order.statusCode, StatusCode.weird);
+      roundTripOrder(order);
+    });
+
+    test('statusCode "500" = weird', () {
+      final order = Order.fromJson(
+          {'category': 'not_discovered_yet', 'status_code': '500'});
+      expect(order.statusCode, StatusCode.weird);
+      roundTripOrder(order);
+    });
+
+    test('statusCode 500 = unknown', () {
+      final order = Order.fromJson(
+          {'category': 'not_discovered_yet', 'status_code': 500});
+      expect(order.statusCode, StatusCode.unknown);
       roundTripOrder(order);
     });
 

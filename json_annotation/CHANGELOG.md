@@ -6,6 +6,7 @@
 - **BREAKING** Removed `encodeEmptyCollection` from `JsonSerializable` and
   `JsonKey`.
 - Added `JsonSerializable.ignoreUnannotated`.
+- Added `JsonKey.unknownEnumValue`.
 
 ## 2.4.0
 

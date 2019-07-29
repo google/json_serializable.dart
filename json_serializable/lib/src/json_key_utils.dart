@@ -46,7 +46,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     );
   }
 
-  Object _getLiteral(DartObject dartObject, Iterable<String> things) {
+  Object _getLiteral(DartObject dartObject, Iterable<String> typeInformation) {
     if (dartObject.isNull) {
       return null;
     }
@@ -66,7 +66,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     }
 
     if (badType != null) {
-      badType = things.followedBy([badType]).join(' > ');
+      badType = typeInformation.followedBy([badType]).join(' > ');
       throwUnsupported(
           element, '`defaultValue` is `$badType`, it must be a literal.');
     }
@@ -77,15 +77,15 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       return literal;
     } else if (literal is List<DartObject>) {
       return literal
-          .map((e) => _getLiteral(e, things.followedBy(['List'])))
+          .map((e) => _getLiteral(e, typeInformation.followedBy(['List'])))
           .toList();
     } else if (literal is Map<DartObject, DartObject>) {
-      final mapThings = things.followedBy(['Map']);
+      final mapThings = typeInformation.followedBy(['Map']);
       return literal.map((k, v) =>
           MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
     }
 
-    badType = things.followedBy(['$dartObject']).join(' > ');
+    badType = typeInformation.followedBy(['$dartObject']).join(' > ');
 
     throwUnsupported(
         element,
@@ -94,36 +94,50 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         'Please rerun your build with `--verbose` and file an issue.');
   }
 
-  final defaultValueObject = obj.getField('defaultValue');
+  Object _annotationValue(String fieldName, bool mustBeEnum) {
+    final annotationValue = obj.getField(fieldName);
 
-  Object defaultValueLiteral;
+    final enumFields = iterateEnumFields(annotationValue.type);
+    if (enumFields != null) {
+      if (mustBeEnum && !isEnum(element.type)) {
+        throwUnsupported(
+          element,
+          '`$fieldName` can only be set on fields of type enum.',
+        );
+      }
+      final enumValueNames =
+          enumFields.map((p) => p.name).toList(growable: false);
 
-  final enumFields = iterateEnumFields(defaultValueObject.type);
-  if (enumFields != null) {
-    final enumValueNames =
-        enumFields.map((p) => p.name).toList(growable: false);
+      final enumValueName = enumValueForDartObject<String>(
+          annotationValue, enumValueNames, (n) => n);
 
-    final enumValueName = enumValueForDartObject<String>(
-        defaultValueObject, enumValueNames, (n) => n);
-
-    defaultValueLiteral = '${defaultValueObject.type.name}.$enumValueName';
-  } else {
-    defaultValueLiteral = _getLiteral(defaultValueObject, []);
-    if (defaultValueLiteral != null) {
-      defaultValueLiteral = jsonLiteralAsDart(defaultValueLiteral);
+      return '${annotationValue.type.name}.$enumValueName';
+    } else {
+      final defaultValueLiteral = _getLiteral(annotationValue, []);
+      if (defaultValueLiteral != null) {
+        if (mustBeEnum) {
+          throwUnsupported(
+            element,
+            'The value provided for `$fieldName` must be a matching enum.',
+          );
+        }
+        return jsonLiteralAsDart(defaultValueLiteral);
+      }
+      return null;
     }
   }
 
   return _populateJsonKey(
     classAnnotation,
     element,
-    defaultValue: defaultValueLiteral,
+    defaultValue: _annotationValue('defaultValue', false),
     disallowNullValue: obj.getField('disallowNullValue').toBoolValue(),
     ignore: obj.getField('ignore').toBoolValue(),
     includeIfNull: obj.getField('includeIfNull').toBoolValue(),
     name: obj.getField('name').toStringValue(),
     nullable: obj.getField('nullable').toBoolValue(),
     required: obj.getField('required').toBoolValue(),
+    unknownEnumValue: _annotationValue('unknownEnumValue', true),
   );
 }
 
@@ -137,6 +151,7 @@ JsonKey _populateJsonKey(
   String name,
   bool nullable,
   bool required,
+  Object unknownEnumValue,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -156,6 +171,7 @@ JsonKey _populateJsonKey(
     name: _encodedFieldName(classAnnotation, name, element),
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
+    unknownEnumValue: unknownEnumValue,
   );
 
   _explicitNullableExpando[jsonKey] = nullable != null;
