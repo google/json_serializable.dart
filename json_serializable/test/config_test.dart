@@ -76,13 +76,10 @@ void main() {
 
     final configMap = Map<String, dynamic>.from(yaml);
 
-    expect(
-        configMap.keys,
-        unorderedEquals(generatorConfigDefaultJson.keys
-            .where((k) => !deprecatedKeys.contains(k))),
+    expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
         reason: 'All supported keys are documented.');
 
-    expectMapMatchExcludingDeprecated(
+    expect(
       JsonSerializable.fromJson(configMap).toJson(),
       generatorConfigDefaultJson,
     );
@@ -139,11 +136,9 @@ const _invalidConfig = {
   'create_factory': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,
-  'encode_empty_collection': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
-  'generate_to_json_function': 42,
+  'ignore_unannotated': 42,
   'include_if_null': 42,
   'nullable': 42,
-  'use_wrappers': 42,
 };

@@ -5,6 +5,7 @@
 - **BREAKING** Removed `JsonSerializable.generateToJsonFunction`.
 - **BREAKING** Removed `encodeEmptyCollection` from `JsonSerializable` and
   `JsonKey`.
+- Added `JsonSerializable.ignoreUnannotated`.
 
 ## 2.4.0
 

@@ -112,6 +112,13 @@ class JsonSerializable {
   /// fields annotated with [JsonKey].
   final FieldRename fieldRename;
 
+  /// When `true`, only fields annotated with [JsonKey] will have code
+  /// generated.
+  ///
+  /// It will have the same effect as if those fields had been annotated with
+  /// `@JsonKey(ignore: true)`.
+  final bool ignoreUnannotated;
+
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
   ///
@@ -141,6 +148,7 @@ class JsonSerializable {
     this.disallowUnrecognizedKeys,
     this.explicitToJson,
     this.fieldRename,
+    this.ignoreUnannotated,
     this.includeIfNull,
     this.nullable,
   });
@@ -158,6 +166,7 @@ class JsonSerializable {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
+    ignoreUnannotated: false,
     includeIfNull: true,
     nullable: true,
   );
@@ -168,16 +177,18 @@ class JsonSerializable {
   /// Otherwise, the returned value has the default value as defined in
   /// [defaults].
   JsonSerializable withDefaults() => JsonSerializable(
-      anyMap: anyMap ?? defaults.anyMap,
-      checked: checked ?? defaults.checked,
-      createFactory: createFactory ?? defaults.createFactory,
-      createToJson: createToJson ?? defaults.createToJson,
-      disallowUnrecognizedKeys:
-          disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
-      explicitToJson: explicitToJson ?? defaults.explicitToJson,
-      fieldRename: fieldRename ?? defaults.fieldRename,
-      includeIfNull: includeIfNull ?? defaults.includeIfNull,
-      nullable: nullable ?? defaults.nullable);
+        anyMap: anyMap ?? defaults.anyMap,
+        checked: checked ?? defaults.checked,
+        createFactory: createFactory ?? defaults.createFactory,
+        createToJson: createToJson ?? defaults.createToJson,
+        disallowUnrecognizedKeys:
+            disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
+        explicitToJson: explicitToJson ?? defaults.explicitToJson,
+        fieldRename: fieldRename ?? defaults.fieldRename,
+        ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
+        includeIfNull: includeIfNull ?? defaults.includeIfNull,
+        nullable: nullable ?? defaults.nullable,
+      );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);
 }

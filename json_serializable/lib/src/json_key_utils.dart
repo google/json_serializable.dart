@@ -39,7 +39,11 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   final obj = jsonKeyAnnotation(element);
 
   if (obj == null) {
-    return _populateJsonKey(classAnnotation, element);
+    return _populateJsonKey(
+      classAnnotation,
+      element,
+      ignore: classAnnotation.ignoreUnannotated,
+    );
   }
 
   Object _getLiteral(DartObject dartObject, Iterable<String> things) {

@@ -1,3 +1,8 @@
+## 3.2.0
+
+- Require `package:json_annotation` `^3.0.0`.
+- Added support for `@JsonSerializable(ignoreUnannotated: true)`.
+
 ## 3.1.0
 
 - Support `Map` keys of type `int`, `BigInt`, `DateTime`, and `Uri`.
