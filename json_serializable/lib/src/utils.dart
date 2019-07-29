@@ -79,12 +79,13 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
           reader.read('disallowUnrecognizedKeys').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
+      ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool,
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
       nullable: reader.read('nullable').literalValue as bool,
     );
 
-/// Returns a [JsonSerializable] with values from the [JsonSerializable] instance
-/// represented by [reader].
+/// Returns a [JsonSerializable] with values from the [JsonSerializable]
+/// instance represented by [reader].
 ///
 /// For fields that are not defined in [JsonSerializable] or `null` in [reader],
 /// use the values in [config].
@@ -100,6 +101,7 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
+    ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,
   );

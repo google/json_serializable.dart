@@ -6,6 +6,8 @@
 - **BREAKING** Removed `encodeEmptyCollection` from `JsonSerializable` and
   `JsonKey`.
 
+- Added `JsonSerializable.ignoreUnannotated`.
+
 ## 2.4.0
 
 - Deprecate members that will be removed in `json_annotation` `3.0.0` and that

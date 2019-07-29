@@ -460,3 +460,23 @@ class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
   @JsonKey(nullable: false)
   int notNullable;
 }
+
+@ShouldGenerate(
+  r'''
+IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json) {
+  return IgnoreUnannotated()..annotated = json['annotated'] as int;
+}
+
+Map<String, dynamic> _$IgnoreUnannotatedToJson(IgnoreUnannotated instance) =>
+    <String, dynamic>{
+      'annotated': instance.annotated,
+    };
+''',
+)
+@JsonSerializable(ignoreUnannotated: true)
+class IgnoreUnannotated {
+  @JsonKey()
+  int annotated;
+
+  int unannotated;
+}

@@ -58,8 +58,7 @@ void main() async {
             expect(_ConfigLogger.configurations, hasLength(2));
             expect(_ConfigLogger.configurations.first,
                 same(_ConfigLogger.configurations.last));
-            expectMapMatchExcludingDeprecated(
-                _ConfigLogger.configurations.first.toJson(),
+            expect(_ConfigLogger.configurations.first.toJson(),
                 generatorConfigDefaultJson);
           });
         }
@@ -105,8 +104,7 @@ void main() async {
         expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
       }
 
-      expectMapMatchExcludingDeprecated(
-          _ConfigLogger.configurations.first.toJson(), expected);
+      expect(_ConfigLogger.configurations.first.toJson(), expected);
     });
   });
 }

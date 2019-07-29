@@ -53,6 +53,7 @@ const _expectedAnnotatedTests = [
   'GenericClass',
   'IgnoredFieldClass',
   'IgnoredFieldCtorClass',
+  'IgnoreUnannotated',
   'IncludeIfNullDisallowNullClass',
   'IncludeIfNullOverride',
   'InvalidFromFunc2Args',

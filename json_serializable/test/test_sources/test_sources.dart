@@ -13,6 +13,7 @@ class ConfigurationImplicitDefaults {
   disallowUnrecognizedKeys: false,
   explicitToJson: false,
   fieldRename: FieldRename.none,
+  ignoreUnannotated: false,
   includeIfNull: true,
   nullable: true,
 )
