@@ -76,9 +76,7 @@ void main() {
 
     final configMap = Map<String, dynamic>.from(yaml);
 
-    expect(
-        configMap.keys,
-        unorderedEquals(generatorConfigDefaultJson.keys),
+    expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
         reason: 'All supported keys are documented.');
 
     expect(
