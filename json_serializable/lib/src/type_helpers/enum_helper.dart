@@ -60,12 +60,12 @@ String _enumValueMapFromType(DartType targetType) {
     return null;
   }
 
-  final items =
-      enumMap.entries.map((e) => '  ${targetType.name}.${e.key.name}: '
-          '${jsonLiteralAsDart(e.value)}');
+  final items = enumMap.entries
+      .map((e) =>
+          '  ${targetType.name}.${e.key.name}: ${jsonLiteralAsDart(e.value)},')
+      .join();
 
-  return 'const ${_constMapName(targetType)} = '
-      '<${targetType.name}, dynamic>{\n${items.join(',\n')}\n};';
+  return 'const ${_constMapName(targetType)} = {\n$items\n};';
 }
 
 const _enumDecodeHelper = r'''

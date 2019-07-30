@@ -67,14 +67,14 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   return _$enumDecode<T>(enumValues, source);
 }
 
-const _$CategoryEnumMap = <Category, dynamic>{
+const _$CategoryEnumMap = {
   Category.top: 'top',
   Category.bottom: 'bottom',
   Category.strange: 'strange',
   Category.charmed: 'charmed',
   Category.up: 'up',
   Category.down: 'down',
-  Category.notDiscoveredYet: 'not_discovered_yet'
+  Category.notDiscoveredYet: 'not_discovered_yet',
 };
 
 Order _$OrderFromJson(Map<String, dynamic> json) {
@@ -123,9 +123,10 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   return val;
 }
 
-const _$StatusCodeEnumMap = <StatusCode, dynamic>{
+const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
-  StatusCode.notFound: 404
+  StatusCode.notFound: 404,
+  StatusCode.weird: '500',
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) {

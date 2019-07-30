@@ -368,12 +368,12 @@ enum BadEnum {
   value
 }
 
-@ShouldGenerate(r'''const _$GoodEnumEnumMap = <GoodEnum, dynamic>{
+@ShouldGenerate(r'''const _$GoodEnumEnumMap = {
   GoodEnum.noAnnotation: 'noAnnotation',
   GoodEnum.stringAnnotation: 'string annotation',
   GoodEnum.stringAnnotationWeird: r"string annotation with $ funky 'values'",
   GoodEnum.intValue: 42,
-  GoodEnum.nullValue: null
+  GoodEnum.nullValue: null,
 };
 ''', contains: true)
 @JsonSerializable()
