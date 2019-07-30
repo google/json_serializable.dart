@@ -55,11 +55,11 @@ T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   return _$enumDecode<T>(enumValues, source);
 }
 
-const _$AutoApplyEnumMap = <AutoApply, dynamic>{
+const _$AutoApplyEnumMap = {
   AutoApply.none: 'none',
   AutoApply.dependents: 'dependents',
   AutoApply.allPackages: 'all_packages',
-  AutoApply.rootPackage: 'root_package'
+  AutoApply.rootPackage: 'root_package',
 };
 
 Builder _$BuilderFromJson(Map json) {
@@ -141,7 +141,7 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   return val;
 }
 
-const _$BuildToEnumMap = <BuildTo, dynamic>{
+const _$BuildToEnumMap = {
   BuildTo.cache: 'cache',
-  BuildTo.source: 'source'
+  BuildTo.source: 'source',
 };

@@ -22,7 +22,9 @@ enum StatusCode {
   @JsonValue(200)
   success,
   @JsonValue(404)
-  notFound
+  notFound,
+  @JsonValue('500')
+  weird,
 }
 
 Duration durationFromInt(int ms) =>
