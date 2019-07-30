@@ -24,8 +24,8 @@ enum StatusCode {
   @JsonValue(404)
   notFound,
 
-  /// Intentionally using a non-int value to validate type heterogeneous
-  /// type-inference
+  /// Intentionally using a non-int value to validate heterogeneous
+  /// type-inference.
   @JsonValue('500')
   weird,
 
