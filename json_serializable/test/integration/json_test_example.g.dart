@@ -120,7 +120,6 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   val['altPlatforms'] = instance.altPlatforms;
   val['homepage'] = instance.homepage?.toString();
   val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
-
   return val;
 }
 
