@@ -1,7 +1,8 @@
 ## 3.2.0
 
 - Require `package:json_annotation` `^3.0.0`.
-- Added support for `@JsonSerializable(ignoreUnannotated: true)`.
+- Added support for `JsonSerializable.ignoreUnannotated`.
+- Added support for `JsonKey.unknownEnumValue`.
 - Small change to how `enum` support code is generated.
 
 ## 3.1.0

@@ -65,7 +65,11 @@ class Order {
   Uri homepage;
 
   @JsonKey(
-      name: 'status_code', defaultValue: StatusCode.success, nullable: true)
+    name: 'status_code',
+    defaultValue: StatusCode.success,
+    nullable: true,
+    unknownEnumValue: StatusCode.unknown,
+  )
   StatusCode statusCode;
 
   @JsonKey(ignore: true)

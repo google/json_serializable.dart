@@ -23,8 +23,13 @@ enum StatusCode {
   success,
   @JsonValue(404)
   notFound,
+
+  // Intentionally using a non-int value to validate heterogeneous
+  // type-inference.
   @JsonValue('500')
   weird,
+
+  unknown,
 }
 
 Duration durationFromInt(int ms) =>

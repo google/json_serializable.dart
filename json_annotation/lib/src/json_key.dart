@@ -97,6 +97,12 @@ class JsonKey {
   /// Values returned by [toJson] should "round-trip" through [fromJson].
   final Function toJson;
 
+  /// The value to use for an enum field when the value provided is not in the
+  /// source enum.
+  ///
+  /// Valid only on enum fields with a compatible enum value.
+  final Object unknownEnumValue;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -110,5 +116,6 @@ class JsonKey {
     this.nullable,
     this.required,
     this.toJson,
+    this.unknownEnumValue,
   });
 }

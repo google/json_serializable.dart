@@ -4,18 +4,22 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
+import '../json_key_utils.dart';
 import '../json_literal_generator.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
 final simpleExpression = RegExp('^[a-zA-Z_]+\$');
 
-class EnumHelper extends TypeHelper {
+class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const EnumHelper();
 
   @override
   String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
     final memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {
@@ -29,7 +33,10 @@ class EnumHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
     final memberContent = _enumValueMapFromType(targetType);
 
     if (memberContent == null) {
@@ -46,8 +53,19 @@ class EnumHelper extends TypeHelper {
 
     final functionName =
         context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
-    return '$functionName(${_constMapName(targetType)}, '
-        '$expression)';
+
+    final args = [
+      _constMapName(targetType),
+      expression,
+    ];
+
+    final jsonKey = jsonKeyForField(context.fieldElement, context.config);
+    // TODO(kevmoo): use collection expressions once min-SDK is >= 2.3.0
+    if (jsonKey.unknownEnumValue != null) {
+      args.add('unknownValue: ${jsonKey.unknownEnumValue}');
+    }
+
+    return '$functionName(${args.join(', ')})';
   }
 }
 
@@ -69,23 +87,36 @@ String _enumValueMapFromType(DartType targetType) {
 }
 
 const _enumDecodeHelper = r'''
-T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return enumValues.entries
-      .singleWhere((e) => e.value == source,
-          orElse: () => throw ArgumentError(
-              '`$source` is not one of the supported values: '
-              '${enumValues.values.join(', ')}'))
-      .key;
-}''';
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+''';
 
 const _enumDecodeHelperNullable = r'''
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source);
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }''';

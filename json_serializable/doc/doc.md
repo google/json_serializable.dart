@@ -17,6 +17,7 @@
 |                            |                                             | [JsonKey.name]              |
 |                            |                                             | [JsonKey.required]          |
 |                            |                                             | [JsonKey.toJson]            |
+|                            |                                             | [JsonKey.unknownEnumValue]  |
 
 [JsonSerializable.anyMap]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/anyMap.html
 [JsonSerializable.checked]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/checked.html
@@ -37,3 +38,4 @@
 [JsonKey.name]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/name.html
 [JsonKey.required]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/required.html
 [JsonKey.toJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
+[JsonKey.unknownEnumValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/unknownEnumValue.html
