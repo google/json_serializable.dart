@@ -46,7 +46,13 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     );
   }
 
-  Object _getLiteral(DartObject dartObject, Iterable<String> typeInformation) {
+  /// Returns a literal value for [dartObject] if possible, otherwise throws
+  /// an [InvalidGenerationSourceError] using [typeInformation] to describe
+  /// the unsupported type.
+  Object literalForObject(
+    DartObject dartObject,
+    Iterable<String> typeInformation,
+  ) {
     if (dartObject.isNull) {
       return null;
     }
@@ -77,12 +83,12 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       return literal;
     } else if (literal is List<DartObject>) {
       return literal
-          .map((e) => _getLiteral(e, typeInformation.followedBy(['List'])))
+          .map((e) => literalForObject(e, typeInformation.followedBy(['List'])))
           .toList();
     } else if (literal is Map<DartObject, DartObject>) {
       final mapThings = typeInformation.followedBy(['Map']);
-      return literal.map((k, v) =>
-          MapEntry(_getLiteral(k, mapThings), _getLiteral(v, mapThings)));
+      return literal.map((k, v) => MapEntry(
+          literalForObject(k, mapThings), literalForObject(v, mapThings)));
     }
 
     badType = typeInformation.followedBy(['$dartObject']).join(' > ');
@@ -94,7 +100,12 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         'Please rerun your build with `--verbose` and file an issue.');
   }
 
-  Object _annotationValue(String fieldName, bool mustBeEnum) {
+  /// Returns a literal object representing the value of [fieldName] in [obj].
+  ///
+  /// If [mustBeEnum] is `true`, throws an [InvalidGenerationSourceError] if
+  /// either the annotated field is not an `enum` or if the value in
+  /// [fieldName] is not an `enum` value.
+  Object _annotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.getField(fieldName);
 
     final enumFields = iterateEnumFields(annotationValue.type);
@@ -113,31 +124,31 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
 
       return '${annotationValue.type.name}.$enumValueName';
     } else {
-      final defaultValueLiteral = _getLiteral(annotationValue, []);
-      if (defaultValueLiteral != null) {
-        if (mustBeEnum) {
-          throwUnsupported(
-            element,
-            'The value provided for `$fieldName` must be a matching enum.',
-          );
-        }
-        return jsonLiteralAsDart(defaultValueLiteral);
+      final defaultValueLiteral = literalForObject(annotationValue, []);
+      if (defaultValueLiteral == null) {
+        return null;
       }
-      return null;
+      if (mustBeEnum) {
+        throwUnsupported(
+          element,
+          'The value provided for `$fieldName` must be a matching enum.',
+        );
+      }
+      return jsonLiteralAsDart(defaultValueLiteral);
     }
   }
 
   return _populateJsonKey(
     classAnnotation,
     element,
-    defaultValue: _annotationValue('defaultValue', false),
+    defaultValue: _annotationValue('defaultValue'),
     disallowNullValue: obj.getField('disallowNullValue').toBoolValue(),
     ignore: obj.getField('ignore').toBoolValue(),
     includeIfNull: obj.getField('includeIfNull').toBoolValue(),
     name: obj.getField('name').toStringValue(),
     nullable: obj.getField('nullable').toBoolValue(),
     required: obj.getField('required').toBoolValue(),
-    unknownEnumValue: _annotationValue('unknownEnumValue', true),
+    unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
   );
 }
 
