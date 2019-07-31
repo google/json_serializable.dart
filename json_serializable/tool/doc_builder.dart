@@ -50,20 +50,18 @@ class _DocBuilder extends Builder {
 
     final buffer = StringBuffer();
 
-    final rows = <List<String>>[];
-
-    rows.add(['`build.yaml` key', _jsonSerializable, _jsonKey]);
-    rows.add(['-', '-', '-']);
-
     final sortedValues = descriptionMap.values.toList()..sort();
 
-    for (var info in sortedValues) {
-      rows.add([
-        info.buildKey,
-        info.classAnnotationName,
-        info.fieldAnnotationName,
-      ]);
-    }
+    final rows = <List<String>>[
+      ['`build.yaml` key', _jsonSerializable, _jsonKey],
+      ['-', '-', '-'],
+      for (var info in sortedValues)
+        [
+          info.buildKey,
+          info.classAnnotationName,
+          info.fieldAnnotationName,
+        ],
+    ];
 
     final longest = List<int>.generate(rows.first.length, (_) => 0);
     for (var row in rows) {

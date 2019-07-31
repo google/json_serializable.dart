@@ -54,16 +54,13 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final functionName =
         context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
 
+    final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final args = [
       _constMapName(targetType),
       expression,
+      if (jsonKey.unknownEnumValue != null)
+        'unknownValue: ${jsonKey.unknownEnumValue}',
     ];
-
-    final jsonKey = jsonKeyForField(context.fieldElement, context.config);
-    // TODO(kevmoo): use collection expressions once min-SDK is >= 2.3.0
-    if (jsonKey.unknownEnumValue != null) {
-      args.add('unknownValue: ${jsonKey.unknownEnumValue}');
-    }
 
     return '$functionName(${args.join(', ')})';
   }
