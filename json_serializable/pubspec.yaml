@@ -6,7 +6,7 @@ description: >-
   Dart classes.
 homepage: https://github.com/dart-lang/json_serializable
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
   analyzer: '>=0.33.3 <0.38.0'

@@ -82,13 +82,24 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     if (literal is num || literal is String || literal is bool) {
       return literal;
     } else if (literal is List<DartObject>) {
-      return literal
-          .map((e) => literalForObject(e, typeInformation.followedBy(['List'])))
-          .toList();
+      return [
+        for (var e in literal)
+          literalForObject(e, [
+            ...typeInformation,
+            'List',
+          ])
+      ];
     } else if (literal is Map<DartObject, DartObject>) {
-      final mapThings = typeInformation.followedBy(['Map']);
-      return literal.map((k, v) => MapEntry(
-          literalForObject(k, mapThings), literalForObject(v, mapThings)));
+      final mapTypeInformation = [
+        ...typeInformation,
+        'Map',
+      ];
+      return literal.map(
+        (k, v) => MapEntry(
+          literalForObject(k, mapTypeInformation),
+          literalForObject(v, mapTypeInformation),
+        ),
+      );
     }
 
     badType = typeInformation.followedBy(['$dartObject']).join(' > ');

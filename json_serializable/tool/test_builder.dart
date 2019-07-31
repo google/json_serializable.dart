@@ -93,12 +93,12 @@ class _SmartBuilder implements Builder {
     if (baseName == _kitchenSinkBaseName) {
       final newId = buildStep.inputId.changeExtension('.factories.dart');
 
-      final lines = <String>[]..addAll(
-          factories.entries.map((e) => "import '${e.key}' as ${e.value};"));
-
-      lines.add('const factories = [');
-      lines.addAll(factories.values.map((e) => '$e.factory,'));
-      lines.add('];');
+      final lines = <String>[
+        ...factories.entries.map((e) => "import '${e.key}' as ${e.value};"),
+        'const factories = [',
+        ...factories.values.map((e) => '$e.factory,'),
+        '];',
+      ];
 
       await buildStep.writeAsString(newId, _formatter.format(lines.join('\n')));
     }
