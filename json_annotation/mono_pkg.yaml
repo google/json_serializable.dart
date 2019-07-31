@@ -8,4 +8,4 @@ stages:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings .
-    dart: [2.2.0]
+    dart: [2.3.0]
