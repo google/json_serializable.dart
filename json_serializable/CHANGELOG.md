@@ -4,6 +4,7 @@
 - Added support for `JsonSerializable.ignoreUnannotated`.
 - Added support for `JsonKey.unknownEnumValue`.
 - Small change to how `enum` support code is generated.
+- Require at least Dart `2.3.0`.
 
 ## 3.1.0
 

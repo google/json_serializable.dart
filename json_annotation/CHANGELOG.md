@@ -7,6 +7,7 @@
   `JsonKey`.
 - Added `JsonSerializable.ignoreUnannotated`.
 - Added `JsonKey.unknownEnumValue`.
+- Require at least Dart `2.3.0`.
 
 ## 2.4.0
 
