@@ -7,3 +7,5 @@ final closureArg = 'e';
 
 const generatedLocalVarName = 'val';
 const toJsonMapHelperName = 'writeNotNull';
+const dynamicMap = 'Map<dynamic, dynamic>';
+const stringMap = 'Map<String, dynamic>';

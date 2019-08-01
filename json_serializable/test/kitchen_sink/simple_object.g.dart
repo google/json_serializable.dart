@@ -6,7 +6,7 @@ part of 'simple_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleObject _$SimpleObjectFromJson(Map json) {
+SimpleObject _$SimpleObjectFromJson(Map<dynamic, dynamic> json) {
   return SimpleObject(
     json['value'] as int,
   );

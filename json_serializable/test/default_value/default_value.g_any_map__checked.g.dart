@@ -6,7 +6,7 @@ part of 'default_value.g_any_map__checked.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DefaultValue _$DefaultValueFromJson(Map json) {
+DefaultValue _$DefaultValueFromJson(Map<dynamic, dynamic> json) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue();
     $checkedConvert(
@@ -16,28 +16,28 @@ DefaultValue _$DefaultValueFromJson(Map json) {
     $checkedConvert(json, 'fieldInt', (v) => val.fieldInt = v as int ?? 42);
     $checkedConvert(json, 'fieldDouble',
         (v) => val.fieldDouble = (v as num)?.toDouble() ?? 3.14);
-    $checkedConvert(
-        json, 'fieldListEmpty', (v) => val.fieldListEmpty = v as List ?? []);
-    $checkedConvert(
-        json, 'fieldMapEmpty', (v) => val.fieldMapEmpty = v as Map ?? {});
+    $checkedConvert(json, 'fieldListEmpty',
+        (v) => val.fieldListEmpty = v as List<dynamic> ?? []);
+    $checkedConvert(json, 'fieldMapEmpty',
+        (v) => val.fieldMapEmpty = v as Map<dynamic, dynamic> ?? {});
     $checkedConvert(
         json,
         'fieldListSimple',
         (v) => val.fieldListSimple =
-            (v as List)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
+            (v as List<dynamic>)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
     $checkedConvert(
         json,
         'fieldMapSimple',
-        (v) => val.fieldMapSimple = (v as Map)?.map(
+        (v) => val.fieldMapSimple = (v as Map<dynamic, dynamic>)?.map(
               (k, e) => MapEntry(k as String, e as int),
             ) ??
             {'answer': 42});
     $checkedConvert(
         json,
         'fieldMapListString',
-        (v) => val.fieldMapListString = (v as Map)?.map(
-              (k, e) => MapEntry(
-                  k as String, (e as List)?.map((e) => e as String)?.toList()),
+        (v) => val.fieldMapListString = (v as Map<dynamic, dynamic>)?.map(
+              (k, e) => MapEntry(k as String,
+                  (e as List<dynamic>)?.map((e) => e as String)?.toList()),
             ) ??
             {
               'root': ['child']

@@ -64,7 +64,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    var output = '$expression as List';
+    var output = '$expression as List<dynamic>';
 
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy

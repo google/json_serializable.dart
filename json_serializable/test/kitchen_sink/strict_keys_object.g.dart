@@ -6,7 +6,7 @@ part of 'strict_keys_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
+StrictKeysObject _$StrictKeysObjectFromJson(Map<dynamic, dynamic> json) {
   $checkKeys(json,
       allowedKeys: const ['value', 'custom_field'],
       requiredKeys: const ['value', 'custom_field']);

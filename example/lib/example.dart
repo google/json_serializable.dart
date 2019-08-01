@@ -80,4 +80,4 @@ class Item {
 }
 
 @JsonLiteral('data.json')
-Map get glossaryData => _$glossaryDataJsonLiteral;
+Map<dynamic, dynamic> get glossaryData => _$glossaryDataJsonLiteral;

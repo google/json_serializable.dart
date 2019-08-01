@@ -20,7 +20,7 @@ Map<String, T> _defaultMap<T>() => <String, T>{};
 SimpleObject _defaultSimpleObject() => SimpleObject(42);
 StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
 
-const k.KitchenSinkFactory factory = _Factory();
+const k.KitchenSinkFactory<String, dynamic> factory = _Factory();
 
 class _Factory implements k.KitchenSinkFactory<String, dynamic> {
   const _Factory();
@@ -34,15 +34,13 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 
   k.KitchenSink ctor({
     int ctorValidatedNo42,
-    Iterable iterable,
-    Iterable dynamicIterable,
+    Iterable<dynamic> dynamicIterable,
     Iterable<Object> objectIterable,
     Iterable<int> intIterable,
     Iterable<DateTime> dateTimeIterable,
   }) =>
       KitchenSink(
         ctorValidatedNo42: ctorValidatedNo42,
-        iterable: iterable,
         dynamicIterable: dynamicIterable,
         objectIterable: objectIterable,
         intIterable: intIterable,
@@ -64,7 +62,6 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
   // to make the equality test work trivially.
-  final Iterable _iterable;
   final Iterable<dynamic> _dynamicIterable;
   final Iterable<Object> _objectIterable;
   final Iterable<int> _intIterable;
@@ -75,13 +72,11 @@ class KitchenSink implements k.KitchenSink {
 
   KitchenSink({
     this.ctorValidatedNo42,
-    Iterable iterable,
     Iterable<dynamic> dynamicIterable,
     Iterable<Object> objectIterable,
     Iterable<int> intIterable,
     Iterable<DateTime> dateTimeIterable,
-  })  : _iterable = iterable?.toList() ?? _defaultList(),
-        _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
+  })  : _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
         _objectIterable = objectIterable?.toList() ?? _defaultList(),
         _intIterable = intIterable?.toList() ?? _defaultList(),
         _dateTimeIterable = dateTimeIterable?.toList() ?? _defaultList() {
@@ -100,12 +95,10 @@ class KitchenSink implements k.KitchenSink {
 
   BigInt bigInt = BigInt.parse('10000000000000000000');
 
-  Iterable get iterable => _iterable;
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
   Iterable<Object> get objectIterable => _objectIterable;
   Iterable<int> get intIterable => _intIterable;
 
-  Set set = _defaultSet();
   Set<dynamic> dynamicSet = _defaultSet();
   Set<Object> objectSet = _defaultSet();
   Set<int> intSet = _defaultSet();
@@ -115,13 +108,12 @@ class KitchenSink implements k.KitchenSink {
   @JsonKey(name: 'datetime-iterable')
   Iterable<DateTime> get dateTimeIterable => _dateTimeIterable;
 
-  List list = _defaultList();
   List<dynamic> dynamicList = _defaultList();
   List<Object> objectList = _defaultList();
   List<int> intList = _defaultList();
   List<DateTime> dateTimeList = _defaultList();
 
-  Map map = _defaultMap();
+  Map<dynamic, dynamic> map = _defaultMap();
   Map<String, String> stringStringMap = _defaultMap();
   Map<dynamic, int> dynamicIntMap = _defaultMap();
   Map<Object, DateTime> objectDateTimeMap = _defaultMap();

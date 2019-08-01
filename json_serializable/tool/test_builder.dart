@@ -130,12 +130,16 @@ const _kitchenSinkReplacements = {
     ),
     _Replacement(
       'k.KitchenSink fromJson(Map<String, dynamic> json)',
-      'k.KitchenSink fromJson(Map json)',
+      'k.KitchenSink fromJson(Map<dynamic, dynamic> json)',
     ),
     _Replacement(
       'factory KitchenSink.fromJson(Map<String, dynamic> json)',
-      'factory KitchenSink.fromJson(Map json)',
+      'factory KitchenSink.fromJson(Map<dynamic, dynamic> json)',
     ),
+    _Replacement(
+      'const k.KitchenSinkFactory<String, dynamic> factory = _Factory();',
+      'const k.KitchenSinkFactory<dynamic, dynamic> factory = _Factory();',
+    )
   ],
   'checked': [
     _Replacement(

@@ -11,8 +11,8 @@ abstract class DefaultValue {
   String fieldString;
   int fieldInt;
   double fieldDouble;
-  List fieldListEmpty;
-  Map fieldMapEmpty;
+  List<dynamic> fieldListEmpty;
+  Map<dynamic, dynamic> fieldMapEmpty;
   List<int> fieldListSimple;
   Map<String, int> fieldMapSimple;
   Map<String, List<String>> fieldMapListString;

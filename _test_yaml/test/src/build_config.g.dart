@@ -6,22 +6,25 @@ part of 'build_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Config _$ConfigFromJson(Map json) {
+Config _$ConfigFromJson(Map<dynamic, dynamic> json) {
   return $checkedNew('Config', json, () {
     $checkKeys(json, requiredKeys: const ['builders']);
     final val = Config(
       builders: $checkedConvert(
           json,
           'builders',
-          (v) => (v as Map)?.map(
+          (v) => (v as Map<dynamic, dynamic>)?.map(
                 (k, e) => MapEntry(
-                    k as String, e == null ? null : Builder.fromJson(e as Map)),
+                    k as String,
+                    e == null
+                        ? null
+                        : Builder.fromJson(e as Map<dynamic, dynamic>)),
               )),
     );
     $checkedConvert(
         json,
         'weights',
-        (v) => val.weights = (v as Map)?.map(
+        (v) => val.weights = (v as Map<dynamic, dynamic>)?.map(
               (k, e) => MapEntry(
                   _$enumDecodeNullable(_$AutoApplyEnumMap, k), e as int),
             ));
@@ -74,7 +77,7 @@ const _$AutoApplyEnumMap = {
   AutoApply.rootPackage: 'root_package',
 };
 
-Builder _$BuilderFromJson(Map json) {
+Builder _$BuilderFromJson(Map<dynamic, dynamic> json) {
   return $checkedNew('Builder', json, () {
     $checkKeys(json, allowedKeys: const [
       'target',
@@ -103,17 +106,17 @@ Builder _$BuilderFromJson(Map json) {
       defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
           (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
       builderFactories: $checkedConvert(json, 'builder_factories',
-          (v) => (v as List).map((e) => e as String).toList()),
+          (v) => (v as List<dynamic>).map((e) => e as String).toList()),
       appliesBuilders: $checkedConvert(json, 'applies_builders',
-          (v) => (v as List)?.map((e) => e as String)?.toList()),
+          (v) => (v as List<dynamic>)?.map((e) => e as String)?.toList()),
       requiredInputs: $checkedConvert(json, 'required_inputs',
-          (v) => (v as List)?.map((e) => e as String)?.toList()),
+          (v) => (v as List<dynamic>)?.map((e) => e as String)?.toList()),
       buildExtensions: $checkedConvert(
           json,
           'build_extensions',
-          (v) => (v as Map)?.map(
+          (v) => (v as Map<dynamic, dynamic>)?.map(
                 (k, e) => MapEntry(k as String,
-                    (e as List)?.map((e) => e as String)?.toList()),
+                    (e as List<dynamic>)?.map((e) => e as String)?.toList()),
               )),
       configLocation: $checkedConvert(json, 'configLocation',
           (v) => v == null ? null : Uri.parse(v as String)),

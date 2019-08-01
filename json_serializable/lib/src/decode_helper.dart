@@ -7,6 +7,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'constants.dart';
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
 import 'unsupported_type_error.dart';
@@ -27,7 +28,7 @@ abstract class DecodeHelper implements HelperCore {
     assert(config.createFactory);
     assert(_buffer.isEmpty);
 
-    final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
+    final mapType = config.anyMap ? dynamicMap : stringMap;
     _buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
         '($mapType json) {\n');

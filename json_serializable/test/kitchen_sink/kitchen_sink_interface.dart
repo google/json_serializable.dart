@@ -15,7 +15,6 @@ abstract class KitchenSinkFactory<K, V> {
 
   KitchenSink ctor({
     int ctorValidatedNo42,
-    Iterable iterable,
     Iterable<dynamic> dynamicIterable,
     Iterable<Object> objectIterable,
     Iterable<int> intIterable,
@@ -41,26 +40,23 @@ abstract class KitchenSink {
   DateTime dateTime;
   BigInt bigInt;
 
-  Iterable get iterable;
   Iterable<dynamic> get dynamicIterable;
   Iterable<Object> get objectIterable;
   Iterable<int> get intIterable;
 
   Iterable<DateTime> get dateTimeIterable;
 
-  List list;
   List<dynamic> dynamicList;
   List<Object> objectList;
   List<int> intList;
   List<DateTime> dateTimeList;
 
-  Set set;
   Set<dynamic> dynamicSet;
   Set<Object> objectSet;
   Set<int> intSet;
   Set<DateTime> dateTimeSet;
 
-  Map map;
+  Map<dynamic, dynamic> map;
   Map<String, String> stringStringMap;
   Map<dynamic, int> dynamicIntMap;
   Map<Object, DateTime> objectDateTimeMap;
@@ -83,7 +79,6 @@ bool sinkEquals(KitchenSink a, Object other) =>
     other is KitchenSink &&
     a.ctorValidatedNo42 == other.ctorValidatedNo42 &&
     a.dateTime == other.dateTime &&
-    _deepEquals(a.iterable, other.iterable) &&
     _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
     // objectIterable
     // intIterable

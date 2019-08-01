@@ -17,7 +17,7 @@ class Config {
 
   Config({@required this.builders});
 
-  factory Config.fromJson(Map map) => _$ConfigFromJson(map);
+  factory Config.fromJson(Map<dynamic, dynamic> map) => _$ConfigFromJson(map);
 
   Map<String, dynamic> toJson() => _$ConfigToJson(this);
 }
@@ -77,7 +77,7 @@ class Builder {
     }
   }
 
-  factory Builder.fromJson(Map map) => _$BuilderFromJson(map);
+  factory Builder.fromJson(Map<dynamic, dynamic> map) => _$BuilderFromJson(map);
 
   Map<String, dynamic> toJson() => _$BuilderToJson(this);
 }

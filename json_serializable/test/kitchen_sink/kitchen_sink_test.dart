@@ -73,7 +73,7 @@ const _jsonConverterValidValues = {
   'dateTime': 5
 };
 
-void _nonNullableTests(KitchenSinkFactory factory) {
+void _nonNullableTests(KitchenSinkFactory<dynamic, dynamic> factory) {
   test('with null values fails serialization', () {
     expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
         throwsNoSuchMethodError);
@@ -104,7 +104,7 @@ void _nonNullableTests(KitchenSinkFactory factory) {
   });
 }
 
-void _nullableTests(KitchenSinkFactory factory) {
+void _nullableTests(KitchenSinkFactory<dynamic, dynamic> factory) {
   void roundTripSink(KitchenSink p) {
     roundTripObject(p, factory.fromJson);
   }
@@ -171,7 +171,7 @@ void _nullableTests(KitchenSinkFactory factory) {
   });
 }
 
-void _anyMapTests(KitchenSinkFactory factory) {
+void _anyMapTests(KitchenSinkFactory<dynamic, dynamic> factory) {
   test('valid values round-trip - yaml', () {
     final jsonEncoded = loudEncode(_validValues);
     final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
@@ -188,7 +188,7 @@ void _anyMapTests(KitchenSinkFactory factory) {
   });
 }
 
-void _sharedTests(KitchenSinkFactory factory) {
+void _sharedTests(KitchenSinkFactory<dynamic, dynamic> factory) {
   test('empty', () {
     final item = factory.ctor();
     roundTripObject(item, factory.fromJson);
@@ -225,10 +225,10 @@ void _sharedTests(KitchenSinkFactory factory) {
     final values = Map.fromEntries(_validValues.entries.map((e) {
       var value = e.value;
       if (_iterableMapKeys.contains(e.key)) {
-        if (value is List) {
+        if (value is List<dynamic>) {
           value = [];
         } else {
-          assert(value is Map);
+          assert(value is Map<dynamic, dynamic>);
           value = <String, dynamic>{};
         }
       }
@@ -255,8 +255,12 @@ void _sharedTests(KitchenSinkFactory factory) {
   });
 }
 
-void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
-    bool checkedAssignment) {
+void _testBadValue(
+  String key,
+  Object badValue,
+  KitchenSinkFactory<dynamic, dynamic> factory,
+  bool checkedAssignment,
+) {
   final matcher = _getMatcher(factory.checked, key, checkedAssignment);
 
   for (final isJson in [true, false]) {

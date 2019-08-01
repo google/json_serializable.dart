@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
@@ -59,9 +60,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       output = context.deserialize(asCastType, output).toString();
     } else if (_annotation(context.config, type)?.createFactory == true) {
       if (context.config.anyMap) {
-        output += ' as Map';
+        output += ' as $dynamicMap';
       } else {
-        output += ' as Map<String, dynamic>';
+        output += ' as $stringMap';
       }
     } else {
       return null;

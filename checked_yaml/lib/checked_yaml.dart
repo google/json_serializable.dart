@@ -20,7 +20,7 @@ import 'package:yaml/yaml.dart';
 /// `null` values.
 T checkedYamlDecode<T>(
   String yamlContent,
-  T Function(Map) constructor, {
+  T Function(Map<dynamic, dynamic>) constructor, {
   sourceUrl,
   bool allowNull = false,
 }) {
@@ -33,7 +33,7 @@ T checkedYamlDecode<T>(
     throw ParsedYamlException.fromYamlException(e);
   }
 
-  Map map;
+  Map<dynamic, dynamic> map;
   if (yaml is YamlMap) {
     map = yaml;
   } else if (allowNull && yaml is YamlScalar && yaml.value == null) {

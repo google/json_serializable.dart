@@ -7,10 +7,9 @@ import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
-
-import 'package:json_annotation/json_annotation.dart';
 
 import 'utils.dart';
 
@@ -47,18 +46,18 @@ String jsonLiteralAsDart(dynamic value) {
 
   if (value is bool || value is num) return value.toString();
 
-  if (value is List) {
+  if (value is List<dynamic>) {
     final listItems = value.map(jsonLiteralAsDart).join(', ');
     return '[$listItems]';
   }
 
-  if (value is Map) return jsonMapAsDart(value);
+  if (value is Map<dynamic, dynamic>) return jsonMapAsDart(value);
 
   throw StateError(
       'Should never get here – with ${value.runtimeType} - `$value`.');
 }
 
-String jsonMapAsDart(Map value) {
+String jsonMapAsDart(Map<dynamic, dynamic> value) {
   final buffer = StringBuffer();
   buffer.write('{');
 

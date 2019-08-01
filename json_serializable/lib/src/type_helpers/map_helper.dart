@@ -66,12 +66,12 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
           if (_isObjectOrDynamic(keyArg)) {
-            return '$expression as Map';
+            return '$expression as $dynamicMap';
           }
         } else {
-          // this is the trivial case. Do a runtime cast to the known type of JSON
-          // map values - `Map<String, dynamic>`
-          return '$expression as Map<String, dynamic>';
+          // this is the trivial case. Do a runtime cast to the known type of
+          // JSON map values
+          return '$expression as $stringMap';
         }
       }
 
@@ -79,7 +79,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
-        return 'Map<String, $valueArg>.from($expression as Map)';
+        return 'Map<String, $valueArg>.from($expression as $dynamicMap)';
       }
     }
 
@@ -90,8 +90,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final optionalQuestion = context.nullable ? '?' : '';
 
-    final mapCast =
-        context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    final mapCast = context.config.anyMap ? 'as $dynamicMap' : 'as $stringMap';
 
     String keyUsage;
     if (isEnum(keyArg)) {

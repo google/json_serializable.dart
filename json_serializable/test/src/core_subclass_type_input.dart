@@ -9,7 +9,7 @@ None of the provided `TypeHelper` instances support the defined type.''',
 )
 @JsonSerializable(createToJson: false)
 class UnsupportedMapField {
-  MapView mapView;
+  MapView<dynamic, dynamic> mapView;
 }
 
 @ShouldThrow(
@@ -21,7 +21,7 @@ None of the provided `TypeHelper` instances support the defined type.''',
 )
 @JsonSerializable(createToJson: false)
 class UnsupportedListField {
-  UnmodifiableListView listView;
+  UnmodifiableListView<dynamic> listView;
 }
 
 @ShouldThrow(
@@ -36,7 +36,7 @@ class UnsupportedSetField {
   _CustomSet customSet;
 }
 
-abstract class _CustomSet implements Set {}
+abstract class _CustomSet implements Set<dynamic> {}
 
 @ShouldThrow(
   r'''

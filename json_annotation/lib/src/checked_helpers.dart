@@ -8,8 +8,12 @@ import 'allowed_keys_helpers.dart';
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, T constructor(),
-    {Map<String, String> fieldKeyMap}) {
+T $checkedNew<T>(
+  String className,
+  Map<dynamic, dynamic> map,
+  T constructor(), {
+  Map<String, String> fieldKeyMap,
+}) {
   fieldKeyMap ??= const {};
 
   try {
@@ -37,7 +41,8 @@ T $checkedNew<T>(String className, Map map, T constructor(),
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
+T $checkedConvert<T>(
+    Map<dynamic, dynamic> map, String key, T castFunc(Object value)) {
   try {
     return castFunc(map[key]);
   } on CheckedFromJsonException {
@@ -68,7 +73,7 @@ class CheckedFromJsonException implements Exception {
 
   /// The source [Map] that was used for decoding when the [innerError] was
   /// thrown.
-  final Map map;
+  final Map<dynamic, dynamic> map;
 
   /// A human-readable message corresponding to [innerError].
   ///

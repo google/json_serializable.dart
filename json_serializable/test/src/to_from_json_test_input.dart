@@ -143,11 +143,11 @@ class ToJsonNullableFalseIncludeIfNullFalse {
   String field;
 }
 
-String _fromDynamicMap(Map input) => null;
+String _fromDynamicMap(Map<dynamic, dynamic> input) => null;
 
-String _fromDynamicList(List input) => null;
+String _fromDynamicList(List<dynamic> input) => null;
 
-String _fromDynamicIterable(Iterable input) => null;
+String _fromDynamicIterable(Iterable<dynamic> input) => null;
 
 @ShouldGenerate(
   r'''

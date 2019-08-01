@@ -34,10 +34,10 @@ class DefaultValue implements dvi.DefaultValue {
   double fieldDouble;
 
   @JsonKey(defaultValue: [])
-  List fieldListEmpty;
+  List<dynamic> fieldListEmpty;
 
   @JsonKey(defaultValue: {})
-  Map fieldMapEmpty;
+  Map<dynamic, dynamic> fieldMapEmpty;
 
   @JsonKey(defaultValue: [1, 2, 3])
   List<int> fieldListSimple;

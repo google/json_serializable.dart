@@ -7,10 +7,12 @@
 /// `JsonKey.required` is `true` for any annotated fields.
 ///
 /// Should not be used directly.
-void $checkKeys(Map map,
-    {List<String> allowedKeys,
-    List<String> requiredKeys,
-    List<String> disallowNullValues}) {
+void $checkKeys(
+  Map<dynamic, dynamic> map, {
+  List<String> allowedKeys,
+  List<String> requiredKeys,
+  List<String> disallowNullValues,
+}) {
   if (map != null && allowedKeys != null) {
     final invalidKeys =
         map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
