@@ -15,7 +15,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     lastOrder: json['last-order'] == null
         ? null
         : DateTime.parse(json['last-order'] as String),
-    orders: (json['orders'] as List)
+    orders: (json['orders'] as List<dynamic>)
         .map((e) => Order.fromJson(e as Map<String, dynamic>))
         .toList(),
   );

@@ -47,7 +47,7 @@ abstract class BadKeyException implements Exception {
   BadKeyException._(this.map);
 
   /// The source [Map] that the unrecognized keys were found in.
-  final Map map;
+  final Map<dynamic, dynamic> map;
 
   /// A human-readable message corresponding to the error.
   String get message;
@@ -67,8 +67,11 @@ class UnrecognizedKeysException extends BadKeyException {
       'Unrecognized keys: [${unrecognizedKeys.join(', ')}]; supported keys: '
       '[${allowedKeys.join(', ')}]';
 
-  UnrecognizedKeysException(this.unrecognizedKeys, Map map, this.allowedKeys)
-      : super._(map);
+  UnrecognizedKeysException(
+    this.unrecognizedKeys,
+    Map<dynamic, dynamic> map,
+    this.allowedKeys,
+  ) : super._(map);
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was
@@ -80,7 +83,7 @@ class MissingRequiredKeysException extends BadKeyException {
   @override
   String get message => 'Required keys are missing: ${missingKeys.join(', ')}.';
 
-  MissingRequiredKeysException(this.missingKeys, Map map)
+  MissingRequiredKeysException(this.missingKeys, Map<dynamic, dynamic> map)
       : assert(missingKeys.isNotEmpty),
         super._(map);
 }
@@ -90,7 +93,10 @@ class MissingRequiredKeysException extends BadKeyException {
 class DisallowedNullValueException extends BadKeyException {
   final List<String> keysWithNullValues;
 
-  DisallowedNullValueException(this.keysWithNullValues, Map map) : super._(map);
+  DisallowedNullValueException(
+    this.keysWithNullValues,
+    Map<dynamic, dynamic> map,
+  ) : super._(map);
 
   @override
   String get message => 'These keys had `null` values, '

@@ -6,7 +6,7 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Configuration _$ConfigurationFromJson(Map json) {
+Configuration _$ConfigurationFromJson(Map<dynamic, dynamic> json) {
   return $checkedNew('Configuration', json, () {
     $checkKeys(json,
         allowedKeys: const ['name', 'count'],
