@@ -172,7 +172,11 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
       final output = await _runForElementNamed(
           const JsonSerializable(anyMap: true), 'ParentObject');
 
-      expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
+      expect(
+        output,
+        contains(
+            "ChildObject.fromJson(json['child'] as Map<dynamic, dynamic>)"),
+      );
     });
 
     test('class with child list of json-able objects', () async {
@@ -186,7 +190,10 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
       final output =
           await runForElementNamed('ParentObjectWithDynamicChildren');
 
-      expect(output, contains('children = json[\'children\'] as List;'));
+      expect(
+        output,
+        contains('children = json[\'children\'] as List<dynamic>;'),
+      );
     });
   });
 

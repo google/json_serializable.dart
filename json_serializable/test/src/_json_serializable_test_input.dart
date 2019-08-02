@@ -72,7 +72,8 @@ GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['dateOfBirth'] as String)
     ..dynamicType = json['dynamicType']
     ..varType = json['varType']
-    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+    ..listOfInts =
+        (json['listOfInts'] as List<dynamic>)?.map((e) => e as int)?.toList();
 }
 
 Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
@@ -174,7 +175,7 @@ class FinalFieldsNotSetInCtor {
 @ShouldGenerate(r'''
 SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
   return SetSupport(
-    (json['values'] as List)?.map((e) => e as int)?.toSet(),
+    (json['values'] as List<dynamic>)?.map((e) => e as int)?.toSet(),
   );
 }
 
@@ -401,7 +402,7 @@ FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
   return FieldWithFromJsonCtorAndTypeParams()
     ..customOrders = json['customOrders'] == null
         ? null
-        : MyList.fromJson((json['customOrders'] as List)
+        : MyList.fromJson((json['customOrders'] as List<dynamic>)
             ?.map((e) => e == null
                 ? null
                 : GeneralTestClass2.fromJson(e as Map<String, dynamic>))
