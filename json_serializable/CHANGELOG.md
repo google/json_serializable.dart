@@ -4,6 +4,8 @@
 - Added support for `JsonSerializable.ignoreUnannotated`.
 - Added support for `JsonKey.unknownEnumValue`.
 - Small change to how `enum` support code is generated.
+- Generate code for `dynamic` collections with explicit type arguments to
+  support the upcoming `strict-raw-types` analysis check.
 - Require at least Dart `2.3.0`.
 
 ## 3.1.0
