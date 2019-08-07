@@ -9,7 +9,7 @@ environment:
   sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
-  json_annotation: ^2.2.0
+  json_annotation: '>=2.2.0 <4.0.0'
   source_span: ^1.0.0
   yaml: ^2.1.13
 
