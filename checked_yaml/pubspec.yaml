@@ -1,5 +1,5 @@
 name: checked_yaml
-version: 1.0.2-dev
+version: 1.0.2
 author: Dart Team <misc@dartlang.org>
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
