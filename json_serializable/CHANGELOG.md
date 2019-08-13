@@ -1,3 +1,7 @@
+## 3.2.1
+
+- Fix unexpected breaking change with `package:analyzer` `0.37.1`.
+
 ## 3.2.0
 
 - Require `package:json_annotation` `^3.0.0`.
@@ -22,7 +26,7 @@ future feature work.
 - Removed support for `JsonSerializable.useWrappers`.
 - Removed support for `JsonSerializable.generateToJsonFunction`.
 - Removed support for `encodeEmptyCollection`.
-- If a field has a conversion function defined – either 
+- If a field has a conversion function defined – either
   `JsonKey.toJson` or a custom `JsonConverter` annotation – don't intercept
   `null` values, even if `nullable` is explicitly set to `false`. This allows
   these functions to provide alternative values for `null` – such as an empty
@@ -31,7 +35,7 @@ future feature work.
     - **NOTE: this is SILENTLY BREAKING.** There is no corresponding deprecation
       for this change. If you use converters, please make sure to test your
       code!
- 
+
 ## 2.3.0
 
 - Added `pascal` as an additional `fieldRename` option.
@@ -95,7 +99,7 @@ future feature work.
   * With `toJson`: use `nullable: false` instead of `defaultValue`.
   * With both `disallowNullValue` and `required` set to `true`.
 
-* Avoid no-op call to `map` when decoding a field of type `Set`. 
+* Avoid no-op call to `map` when decoding a field of type `Set`.
 
 * Support `package:analyzer` `>=0.33.3 <0.36.0`
 
