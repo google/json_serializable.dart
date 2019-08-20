@@ -37,6 +37,8 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     logFieldWithConversionFunction(context.fieldElement);
 
     assert(toJsonData.paramType is TypeParameterType ||
+        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
+        // ignore: deprecated_member_use
         targetType.isAssignableTo(toJsonData.paramType));
     return '${toJsonData.name}($expression)';
   }

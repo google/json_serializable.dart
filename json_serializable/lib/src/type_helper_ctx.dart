@@ -127,7 +127,10 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if (!returnType.isAssignableTo(element.type)) {
+    } else if
+        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
+        // ignore: deprecated_member_use
+        (!returnType.isAssignableTo(element.type)) {
       throwUnsupported(
           element,
           'The `$paramName` function `${executableElement.name}` return type '
@@ -138,7 +141,10 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if (!element.type.isAssignableTo(argType)) {
+    } else if
+        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
+        // ignore: deprecated_member_use
+        (!element.type.isAssignableTo(argType)) {
       throwUnsupported(
           element,
           'The `$paramName` function `${executableElement.name}` argument type '
