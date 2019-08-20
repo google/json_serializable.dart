@@ -156,6 +156,8 @@ _ConverterMatch _compatibleMatch(
 
   final fieldType = jsonConverterSuper.typeArguments[0];
 
+  // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
+  // ignore: deprecated_member_use
   if (fieldType.isEquivalentTo(targetType)) {
     return _ConverterMatch(
         annotation, constantValue, jsonConverterSuper.typeArguments[1], null);
