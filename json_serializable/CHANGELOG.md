@@ -1,3 +1,7 @@
+## 3.2.1
+
+* Support `package:analyzer` `>=0.33.3 <0.39.0`
+
 ## 3.2.0
 
 - Require `package:json_annotation` `^3.0.0`.
