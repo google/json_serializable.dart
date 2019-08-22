@@ -164,3 +164,30 @@ class _ConverterWithCtorParams implements JsonConverter<Duration, int> {
   @override
   int toJson(Duration object) => 0;
 }
+
+@ShouldGenerate(r'''
+Map<String, dynamic> _$JsonConverterOnGetterToJson(
+        JsonConverterOnGetter instance) =>
+    <String, dynamic>{
+      'annotatedGetter':
+          const _NeedsConversionConverter().toJson(instance.annotatedGetter),
+    };
+''')
+@JsonSerializable(createFactory: false)
+class JsonConverterOnGetter {
+  @JsonKey()
+  @_NeedsConversionConverter()
+  _NeedsConversion get annotatedGetter => _NeedsConversion();
+}
+
+class _NeedsConversion {}
+
+class _NeedsConversionConverter implements JsonConverter<_NeedsConversion, int> {
+  const _NeedsConversionConverter();
+
+  @override
+  _NeedsConversion fromJson(int json) => _NeedsConversion();
+
+  @override
+  int toJson(_NeedsConversion object) => 0;
+}
