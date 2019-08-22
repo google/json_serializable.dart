@@ -1,3 +1,7 @@
+## 3.2.2
+
+* Support `JsonConverter` annotations on property getters
+
 ## 3.2.1
 
 * Support `package:analyzer` `>=0.33.3 <0.39.0`
