@@ -182,7 +182,8 @@ class JsonConverterOnGetter {
 
 class _NeedsConversion {}
 
-class _NeedsConversionConverter implements JsonConverter<_NeedsConversion, int> {
+class _NeedsConversionConverter
+    implements JsonConverter<_NeedsConversion, int> {
   const _NeedsConversionConverter();
 
   @override
