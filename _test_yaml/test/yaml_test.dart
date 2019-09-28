@@ -120,9 +120,9 @@ builders:
     foo: bar
     baz: zap
 ''': r'''
-line 4, column 5 of file.yaml: Unrecognized keys: [baz, foo]; supported keys: [target, import, is_optional, configLocation, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
+line 3, column 5 of file.yaml: Unrecognized keys: [foo, baz]; supported keys: [target, import, is_optional, configLocation, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
   ╷
-4 │     baz: zap
+3 │     foo: bar
   │     ^^^
   ╵''',
   r'''
