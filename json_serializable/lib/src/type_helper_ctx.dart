@@ -106,9 +106,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
     return null;
   }
 
-  final type = objectValue.type as FunctionType;
-
-  final executableElement = type.element as ExecutableElement;
+  final executableElement = objectValue.toFunctionValue();
 
   if (executableElement.parameters.isEmpty ||
       executableElement.parameters.first.isNamed ||
