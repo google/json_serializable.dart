@@ -1,3 +1,7 @@
+## 3.2.3
+
+* Bug fix for analyzer 0.38.5.
+
 ## 3.2.2
 
 * Support `JsonConverter` annotations on property getters
