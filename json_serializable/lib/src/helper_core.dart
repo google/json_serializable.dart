@@ -110,7 +110,9 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
 /// only [InterfaceType]s, with optional type arguments that are also should
 /// be [InterfaceType]s.
 String typeToCode(DartType type) {
-  if (type is InterfaceType) {
+  if (type.isDynamic) {
+    return 'dynamic';
+  } else if (type is InterfaceType) {
     final typeArguments = type.typeArguments;
     if (typeArguments.isEmpty) {
       return type.element.name;
