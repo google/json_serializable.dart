@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -57,7 +58,7 @@ InvalidGenerationSourceError createInvalidGenerationError(
     String targetMember, FieldElement field, UnsupportedTypeError e) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
   if (field.type != e.type) {
-    message = '$message because of type `${e.type}`';
+    message = '$message because of type `${typeToCode(e.type)}`';
   }
   message = '$message.\n${e.reason}';
 
@@ -91,8 +92,32 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
   if (withConstraints == null || element.typeParameters.isEmpty) {
     return '';
   }
-  final values = element.typeParameters
-      .map((t) => withConstraints ? t.toString() : t.name)
-      .join(', ');
+  final values = element.typeParameters.map((t) {
+    if (withConstraints && t.bound != null) {
+      final boundCode = typeToCode(t.bound);
+      return '${t.name} extends $boundCode';
+    } else {
+      return t.name;
+    }
+  }).join(', ');
   return '<$values>';
+}
+
+/// Return the Dart code presentation for the given [type].
+///
+/// This function is intentionally limited, and does not support all possible
+/// types and locations of these files in code. Specifically, it supports
+/// only [InterfaceType]s, with optional type arguments that are also should
+/// be [InterfaceType]s.
+String typeToCode(DartType type) {
+  if (type is InterfaceType) {
+    final typeArguments = type.typeArguments;
+    if (typeArguments.isEmpty) {
+      return type.element.name;
+    } else {
+      final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
+      return '${type.element.name}<$typeArgumentsCode>';
+    }
+  }
+  throw UnimplementedError('(${type.runtimeType}) $type');
 }

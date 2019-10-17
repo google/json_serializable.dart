@@ -8,6 +8,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import '../helper_core.dart';
 import '../json_key_utils.dart';
 import '../lambda_result.dart';
 import '../shared_checkers.dart';
@@ -94,8 +95,9 @@ _JsonConvertData _typeConverterFrom(
   }
 
   if (matchingAnnotations.length > 1) {
+    final targetTypeCode = typeToCode(targetType);
     throw InvalidGenerationSourceError(
-        'Found more than one matching converter for `$targetType`.',
+        'Found more than one matching converter for `$targetTypeCode`.',
         element: matchingAnnotations[1].elementAnnotation.element);
   }
 

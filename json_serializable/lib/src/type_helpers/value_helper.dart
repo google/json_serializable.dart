@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
+import '../helper_core.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
@@ -33,7 +34,8 @@ class ValueHelper extends TypeHelper {
         .isExactlyType(targetType)) {
       return '($expression as num)${context.nullable ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
-      return '$expression as $targetType';
+      final typeCode = typeToCode(targetType);
+      return '$expression as $typeCode';
     }
 
     return null;

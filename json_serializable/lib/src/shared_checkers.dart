@@ -5,6 +5,8 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
+import 'helper_core.dart';
+
 /// A [TypeChecker] for [Iterable].
 const coreIterableTypeChecker = TypeChecker.fromUrl('dart:core#Iterable');
 
@@ -56,7 +58,8 @@ String asStatement(DartType type) {
     }
   }
 
-  return ' as $type';
+  final typeCode = typeToCode(type);
+  return ' as $typeCode';
 }
 
 /// Returns all of the [DartType] types that [type] implements, mixes-in, and
