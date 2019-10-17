@@ -9,6 +9,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
 import 'package:source_gen/source_gen.dart';
 
+import 'helper_core.dart';
+
 final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
 
 DartObject jsonKeyAnnotation(FieldElement element) =>
@@ -137,8 +139,9 @@ Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
       if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
         fieldValue = valueReader.literalValue;
       } else {
+        final targetTypeCode = typeToCode(targetType);
         throw InvalidGenerationSourceError(
-            'The `JsonValue` annotation on `$targetType.${fe.name}` does '
+            'The `JsonValue` annotation on `$targetTypeCode.${fe.name}` does '
             'not have a value of type String, int, or null.',
             element: fe);
       }
