@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+// ignore: implementation_imports
+import 'package:analyzer/src/generated/type_system.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -79,8 +81,8 @@ class JsonSerializableGenerator
               List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
 
   @override
-  Iterable<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+  Future<Iterable<String>> generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
     if (element is! ClassElement) {
       final name = element.name;
       throw InvalidGenerationSourceError('Generator cannot target `$name`.',
@@ -89,7 +91,8 @@ class JsonSerializableGenerator
     }
 
     final classElement = element as ClassElement;
-    final helper = _GeneratorHelper(this, classElement, annotation);
+    final typeSystem = await element.session.typeSystem;
+    final helper = _GeneratorHelper(this, classElement, annotation, typeSystem);
     return helper._generate();
   }
 }
@@ -98,9 +101,9 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   final JsonSerializableGenerator _generator;
   final _addedMembers = <String>{};
 
-  _GeneratorHelper(
-      this._generator, ClassElement element, ConstantReader annotation)
-      : super(element, mergeConfig(_generator.config, annotation));
+  _GeneratorHelper(this._generator, ClassElement element,
+      ConstantReader annotation, TypeSystem typeSystem)
+      : super(element, mergeConfig(_generator.config, annotation), typeSystem);
 
   @override
   void addMember(String memberContent) {
@@ -112,7 +115,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
-    final sortedFields = createSortedFieldSet(element);
+    final sortedFields = createSortedFieldSet(element, typeSystem);
 
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of

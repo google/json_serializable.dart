@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'helper_core.dart';
@@ -42,7 +43,8 @@ class TypeHelperCtx
   @override
   ConvertData get deserializeConvertData => _pairFromContext?.fromJson;
 
-  _ConvertPair get _pairFromContext => _ConvertPair(fieldElement);
+  _ConvertPair get _pairFromContext =>
+      _ConvertPair(fieldElement, _helperCore.typeSystem);
 
   @override
   void addMember(String memberContent) {
@@ -80,7 +82,7 @@ class _ConvertPair {
 
   _ConvertPair._(this.fromJson, this.toJson);
 
-  factory _ConvertPair(FieldElement element) {
+  factory _ConvertPair(FieldElement element, TypeSystem typeSystem) {
     var pair = _expando[element];
 
     if (pair == null) {
@@ -88,8 +90,8 @@ class _ConvertPair {
       if (obj == null) {
         pair = _ConvertPair._(null, null);
       } else {
-        final toJson = _convertData(obj, element, false);
-        final fromJson = _convertData(obj, element, true);
+        final toJson = _convertData(obj, element, false, typeSystem);
+        final fromJson = _convertData(obj, element, true, typeSystem);
         pair = _ConvertPair._(fromJson, toJson);
       }
       _expando[element] = pair;
@@ -98,7 +100,8 @@ class _ConvertPair {
   }
 }
 
-ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
+ConvertData _convertData(
+    DartObject obj, FieldElement element, bool isFrom, TypeSystem typeSystem) {
   final paramName = isFrom ? 'fromJson' : 'toJson';
   final objectValue = obj.getField(paramName);
 
@@ -125,10 +128,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if
-        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-        // ignore: deprecated_member_use
-        (!returnType.isAssignableTo(element.type)) {
+    } else if (!typeSystem.isAssignableTo(returnType, element.type)) {
       final returnTypeCode = typeToCode(returnType);
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(
@@ -142,10 +142,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if
-        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-        // ignore: deprecated_member_use
-        (!element.type.isAssignableTo(argType)) {
+    } else if (!typeSystem.isAssignableTo(element.type, argType)) {
       final argTypeCode = typeToCode(argType);
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(

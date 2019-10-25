@@ -165,10 +165,11 @@ _ConverterMatch _compatibleMatch(
 
   // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
   // ignore: deprecated_member_use
-  if (fieldType.isEquivalentTo(targetType)) {
-    return _ConverterMatch(
-        annotation, constantValue, jsonConverterSuper.typeArguments[1], null);
-  }
+  // TODO: Is there a replacement? What does this break?
+  //if (fieldType.isEquivalentTo(targetType)) {
+  //  return _ConverterMatch(
+  //      annotation, constantValue, jsonConverterSuper.typeArguments[1], null);
+  //}
 
   if (fieldType is TypeParameterType && targetType is TypeParameterType) {
     assert(annotation.element is! PropertyAccessorElement);

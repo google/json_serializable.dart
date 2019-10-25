@@ -1,5 +1,5 @@
 name: json_serializable
-version: 3.2.3
+version: 3.2.4-dev
 author: Dart Team <misc@dartlang.org>
 description: >-
   Automatically generate code for converting to and from JSON by annotating
@@ -9,7 +9,7 @@ environment:
   sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
-  analyzer: '>=0.37.1 <0.39.0'
+  analyzer: ^0.39.0
   build: '>=0.12.6 <2.0.0'
   build_config: '>=0.2.6 <0.5.0'
 
@@ -33,3 +33,11 @@ dev_dependencies:
   source_gen_test: ^0.1.0
   test: ^1.6.0
   yaml: ^2.1.13
+
+dependency_overrides:
+  analyzer: ^0.39.0
+  build_resolvers:
+    git:
+      url: git@github.com:dart-lang/build.git
+      path: build_resolvers
+      ref: upgrade-analyzer

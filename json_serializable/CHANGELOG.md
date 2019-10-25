@@ -1,3 +1,7 @@
+## 3.2.4-dev
+
+* Support `package:analyzer` version `0.39.x`.
+
 ## 3.2.3
 
 * Bug fix for analyzer 0.38.5.
