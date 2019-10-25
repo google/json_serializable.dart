@@ -121,16 +121,8 @@ abstract class EncodeHelper implements HelperCore {
   /// we can avoid checking for `null`.
   bool _writeJsonValueNaive(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
-
-    if (jsonKey.includeIfNull) {
-      return true;
-    }
-
-    if (!jsonKey.nullable && !_fieldHasCustomEncoder(field)) {
-      return true;
-    }
-
-    return false;
+    return jsonKey.includeIfNull ||
+        (!jsonKey.nullable && !_fieldHasCustomEncoder(field));
   }
 
   /// Returns `true` if [field] has a user-defined encoder.
@@ -139,17 +131,9 @@ abstract class EncodeHelper implements HelperCore {
   /// annotation.
   bool _fieldHasCustomEncoder(FieldElement field) {
     final helperContext = getHelperContext(field);
-
-    if (helperContext.serializeConvertData != null) {
-      return true;
-    }
-
-    final output = const JsonConverterHelper()
-        .serialize(field.type, 'test', helperContext);
-
-    if (output != null) {
-      return true;
-    }
-    return false;
+    return helperContext.serializeConvertData != null ||
+        const JsonConverterHelper()
+                .serialize(field.type, 'test', helperContext) !=
+            null;
   }
 }
