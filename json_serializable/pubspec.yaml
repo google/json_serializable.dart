@@ -1,5 +1,5 @@
 name: json_serializable
-version: 3.2.4-dev
+version: 3.2.5-dev
 author: Dart Team <misc@dartlang.org>
 description: >-
   Automatically generate code for converting to and from JSON by annotating
