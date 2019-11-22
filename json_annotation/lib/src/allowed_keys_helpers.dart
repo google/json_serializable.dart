@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'json_overrides.dart';
+
 /// Helper function used in generated `fromJson` code when
 /// `JsonSerializable.disallowUnrecognizedKeys` is true for an annotated type or
 /// `JsonKey.required` is `true` for any annotated fields.
@@ -10,8 +12,13 @@
 void $checkKeys(Map map,
     {List<String> allowedKeys,
     List<String> requiredKeys,
-    List<String> disallowNullValues}) {
-  if (map != null && allowedKeys != null) {
+    List<String> disallowNullValues,
+    JsonOverrides overrides}) {
+  final resolved = JsonOverrides.resolveOverrides(overrides);
+
+  if (map != null &&
+      allowedKeys != null &&
+      resolved.allowedKeys == JsonOverride.none) {
     final invalidKeys =
         map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
     if (invalidKeys.isNotEmpty) {
@@ -19,7 +26,7 @@ void $checkKeys(Map map,
     }
   }
 
-  if (requiredKeys != null) {
+  if (requiredKeys != null && resolved.requiredKeys == JsonOverride.none) {
     final missingKeys =
         requiredKeys.where((k) => !map.keys.contains(k)).toList();
     if (missingKeys.isNotEmpty) {
@@ -27,7 +34,9 @@ void $checkKeys(Map map,
     }
   }
 
-  if (map != null && disallowNullValues != null) {
+  if (map != null &&
+      disallowNullValues != null &&
+      resolved.disallowNullValues == JsonOverride.none) {
     final nullValuedKeys = map.entries
         .where((entry) =>
             disallowNullValues.contains(entry.key) && entry.value == null)

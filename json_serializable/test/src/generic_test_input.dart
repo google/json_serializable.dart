@@ -6,7 +6,8 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return GenericClass<T, S>()
     ..fieldObject = _dataFromJson(json['fieldObject'])
     ..fieldDynamic = _dataFromJson(json['fieldDynamic'])

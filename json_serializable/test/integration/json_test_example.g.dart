@@ -89,8 +89,8 @@ const _$CategoryEnumMap = {
   Category.notDiscoveredYet: 'not_discovered_yet',
 };
 
-Order _$OrderFromJson(Map<String, dynamic> json) {
-  $checkKeys(json, disallowNullValues: const ['count']);
+Order _$OrderFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
+  $checkKeys(json, disallowNullValues: const ['count'], overrides: overrides);
   return Order(
     _$enumDecode(_$CategoryEnumMap, json['category']),
     (json['items'] as List)?.map(
@@ -126,6 +126,63 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 
   writeNotNull('count', instance.count);
   val['isRushed'] = instance.isRushed;
+  val['duration'] = instance.duration?.inMicroseconds;
+  val['category'] = _$CategoryEnumMap[instance.category];
+  val['items'] = instance.items;
+  val['platform'] = instance.platform;
+  val['altPlatforms'] = instance.altPlatforms;
+  val['homepage'] = instance.homepage?.toString();
+  val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
+  return val;
+}
+
+SecureOrder _$SecureOrderFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
+  $checkKeys(json,
+      disallowNullValues: const ['count'],
+      allowedKeys: const [
+        'duration',
+        'category',
+        'items',
+        'platform',
+        'altPlatforms',
+        'homepage',
+        'status_code'
+      ],
+      overrides: overrides);
+  return SecureOrder(
+    _$enumDecode(_$CategoryEnumMap, json['category']),
+    (json['items'] as List)?.map(
+        (e) => e == null ? null : Item.fromJson(e as Map<String, dynamic>)),
+  )
+    ..count = json['count'] as int
+    ..duration = json['duration'] == null
+        ? null
+        : Duration(microseconds: json['duration'] as int)
+    ..platform = json['platform'] == null
+        ? null
+        : Platform.fromJson(json['platform'] as String)
+    ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(k, e == null ? null : Platform.fromJson(e as String)),
+    )
+    ..homepage =
+        json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
+    ..statusCode = _$enumDecodeNullable(
+            _$StatusCodeEnumMap, json['status_code'],
+            unknownValue: StatusCode.unknown) ??
+        StatusCode.success;
+}
+
+Map<String, dynamic> _$SecureOrderToJson(SecureOrder instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('count', instance.count);
   val['duration'] = instance.duration?.inMicroseconds;
   val['category'] = _$CategoryEnumMap[instance.category];
   val['items'] = instance.items;

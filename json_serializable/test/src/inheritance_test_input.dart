@@ -1,7 +1,8 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
-SubType _$SubTypeFromJson(Map<String, dynamic> json) {
+SubType _$SubTypeFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return SubType(
     json['subTypeViaCtor'] as int,
     json['super-final-field'] as int,

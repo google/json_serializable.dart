@@ -123,6 +123,98 @@ is generated:
   `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
   it will take precedence over any value set on `JsonSerializable`.  
 
+# Runtime overrides
+There are times when you want to override a serialization setting at runtime.
+
+The `JsonOverrides` class allows you to suppress a range of setting on specific 
+classes or globally.
+
+A common use case is to run with a tight set of rules during development
+but relax those rules for production.
+
+You can check if you are running in production mode via:
+```dart
+const bool.fromEnvironment("dart.vm.product");
+ ```
+
+You may also have specific classes that need to run with a more relaxed set of rules in some specific circumstances. If your class should ALWAYs run with a relaxed rules, then look to set a property on  `@JsonSerializable`.
+
+`JsonOverrides` supports the following properties:
+
+```dart
+  JsonOverride allowedKeys;
+  JsonOverride requiredKeys;
+  JsonOverride disallowNullValues;
+```  
+
+with the following options for each property:
+
+```dart
+JsonOverride.none - there is no override, use the generated rule.
+JsonOverride.off - suppress the generated rule.
+```
+
+## Setting an override
+You have two ways of setting overrides.
+ > globally
+
+ > per class
+
+ ### Global override
+ To set a global override, call:
+ 
+ ```dart
+ import 'package:json_annotation/json_annotation.dart';
+
+ JsonOverrides global = JsonOverrides(allowedKeys: JsonOverride.off);
+
+ JsonOverrides.global(global);
+ ```
+Of course, you would normally make this call before doing any serialization,
+but you can set it at any time.
+
+To remove any global overrides call:
+
+```dart
+import 'package:json_annotation/json_annotation.dart';
+
+JsonOverrides global = JsonOverrides(
+    allowedKeys: JsonOverride.off,
+    requiredKeys: JsonOverride.off,
+    disallowNullValues: JsonOverride.off
+    );
+
+ JsonOverrides.global = global;
+```
+
+### Per class overrides
+To override settings for a specific class, you need to modify your classes fromJson method.
+
+if you have any class `User` with an existing fromJson
+
+```dart
+factory User.fromJson(Map<String, dynamic> json
+    ) => _$UserFromJson(json);
+```    
+
+you can override one or more options by passing an override:
+
+```dart
+import 'package:json_annotation/json_annotation.dart';
+
+JsonOverrides override = JsonOverrides(
+    allowedKeys: JsonOverride.off,
+    requiredKeys: JsonOverride.off,
+    disallowNullValues: JsonOverride.off
+    );
+
+factory User.fromJson(Map<String, dynamic> json
+    , overrides: override
+    ) => _$UserFromJson(json);
+
+```
+
+
 # Build configuration
 
 Besides setting arguments on the associated annotation classes, you can also

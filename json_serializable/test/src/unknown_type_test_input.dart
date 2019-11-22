@@ -1,7 +1,8 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
-UnknownCtorParamType _$UnknownCtorParamTypeFromJson(Map<String, dynamic> json) {
+UnknownCtorParamType _$UnknownCtorParamTypeFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return UnknownCtorParamType(
     json['number'],
   );
@@ -22,7 +23,8 @@ class UnknownCtorParamType {
 }
 
 @ShouldGenerate(r'''
-UnknownFieldType _$UnknownFieldTypeFromJson(Map<String, dynamic> json) {
+UnknownFieldType _$UnknownFieldTypeFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return UnknownFieldType()..number = json['number'];
 }
 
@@ -52,7 +54,8 @@ class UnknownFieldTypeToJsonOnly {
 
 @ShouldGenerate(r'''
 UnknownFieldTypeWithConvert _$UnknownFieldTypeWithConvertFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return UnknownFieldTypeWithConvert()
     ..number = _everythingIs42(json['number']);
 }

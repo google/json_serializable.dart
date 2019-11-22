@@ -3,3 +3,4 @@
 .pub
 packages
 pubspec.lock
+.vscode/launch.json

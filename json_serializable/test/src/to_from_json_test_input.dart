@@ -37,7 +37,8 @@ class InvalidFromFunc2Args {
 @ShouldGenerate(
   r'''
 ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return ValidToFromFuncClassStatic()
     ..field = ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
 }
@@ -151,8 +152,8 @@ String _fromDynamicIterable(Iterable input) => null;
 
 @ShouldGenerate(
   r'''
-FromDynamicCollection _$FromDynamicCollectionFromJson(
-    Map<String, dynamic> json) {
+FromDynamicCollection _$FromDynamicCollectionFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return FromDynamicCollection()
     ..mapField = _fromDynamicMap(json['mapField'] as Map)
     ..listField = _fromDynamicList(json['listField'] as List)

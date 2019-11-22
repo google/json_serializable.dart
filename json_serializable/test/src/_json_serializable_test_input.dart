@@ -43,7 +43,8 @@ void annotatedMethod() => null;
 
 @ShouldGenerate(
   r'''
-OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) {
+OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return OnlyStaticMembers();
 }
 
@@ -62,7 +63,8 @@ class OnlyStaticMembers {
 }
 
 @ShouldGenerate(r'''
-GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
+GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return GeneralTestClass1()
     ..firstName = json['firstName'] as String
     ..lastName = json['lastName'] as String
@@ -100,7 +102,8 @@ class GeneralTestClass1 {
 }
 
 @ShouldGenerate(r'''
-GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) {
+GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return GeneralTestClass2(
     json['height'] as int,
     json['firstName'] as String,
@@ -131,7 +134,8 @@ class GeneralTestClass2 {
 }
 
 @ShouldGenerate(r'''
-FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) {
+FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return FinalFields(
     json['a'] as int,
   );
@@ -154,7 +158,8 @@ class FinalFields {
 @ShouldGenerate(
   r'''
 FinalFieldsNotSetInCtor _$FinalFieldsNotSetInCtorFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return FinalFieldsNotSetInCtor();
 }
 
@@ -172,7 +177,8 @@ class FinalFieldsNotSetInCtor {
 }
 
 @ShouldGenerate(r'''
-SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
+SetSupport _$SetSupportFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return SetSupport(
     (json['values'] as List)?.map((e) => e as int)?.toSet(),
   );
@@ -397,7 +403,8 @@ enum GoodEnum {
 
 @ShouldGenerate(r'''
 FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return FieldWithFromJsonCtorAndTypeParams()
     ..customOrders = json['customOrders'] == null
         ? null
@@ -444,7 +451,8 @@ mixin _PropInMixinI448RegressionMixin {
 
 @ShouldGenerate(r'''
 PropInMixinI448Regression _$PropInMixinI448RegressionFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return PropInMixinI448Regression()
     ..nullable = json['nullable'] as int
     ..notNullable = json['notNullable'] as int;
@@ -465,7 +473,8 @@ class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
 
 @ShouldGenerate(
   r'''
-IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json) {
+IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return IgnoreUnannotated()..annotated = json['annotated'] as int;
 }
 

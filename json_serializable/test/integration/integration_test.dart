@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
@@ -186,6 +187,60 @@ void main() {
             microseconds: 12,
           )));
       roundTripOrder(order);
+    });
+  });
+
+  group('SecureOrder', () {
+    void roundTripSecureOrder(SecureOrder p, JsonOverrides overrides) {
+      roundTripObject(p, (json) => SecureOrder.fromJson(json, overrides));
+    }
+
+    void orderToSecureOrder(Order order, JsonOverrides overrides) {
+      final extraKeys = <String, dynamic>{};
+      extraKeys['isRushed'] = null;
+      roundTripDisparateObjects(
+          order, (json) => SecureOrder.fromJson(json, overrides), extraKeys);
+    }
+
+    test('Check SecureOrder working', () {
+      roundTripSecureOrder(
+          SecureOrder(Category.charmed)..statusCode = StatusCode.success, null);
+    });
+
+    test('Succeed with mismatched keys', () {
+      final overrides = JsonOverrides(allowedKeys: JsonOverride.off);
+      orderToSecureOrder(
+          Order(Category.charmed)..statusCode = StatusCode.success, overrides);
+    });
+
+    test('Fail with mismatched keys', () {
+      final overrides = JsonOverrides(allowedKeys: JsonOverride.none);
+      expect(
+          () => orderToSecureOrder(
+              Order(Category.charmed)..statusCode = StatusCode.success,
+              overrides),
+          throwsA(const TypeMatcher<UnrecognizedKeysException>()));
+    });
+
+    test('Local Ingore invalid key', () {
+      final overrides = JsonOverrides(allowedKeys: JsonOverride.off);
+      orderToSecureOrder(
+          Order(Category.charmed)..statusCode = StatusCode.success, overrides);
+    });
+
+    test('Global Ingore invalid key', () {
+      JsonOverrides.global = JsonOverrides(allowedKeys: JsonOverride.off);
+
+      orderToSecureOrder(
+          Order(Category.charmed)..statusCode = StatusCode.success, null);
+
+      // now fail with global set to none
+      JsonOverrides.global = JsonOverrides(allowedKeys: JsonOverride.none);
+
+      expect(
+          () => orderToSecureOrder(
+              Order(Category.charmed)..statusCode = StatusCode.success, null),
+          throwsA(const TypeMatcher<UnrecognizedKeysException>()));
     });
   });
 

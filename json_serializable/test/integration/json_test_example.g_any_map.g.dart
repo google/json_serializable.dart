@@ -95,8 +95,8 @@ const _$CategoryEnumMap = {
   Category.notDiscoveredYet: 'not_discovered_yet',
 };
 
-Order _$OrderFromJson(Map json) {
-  $checkKeys(json, disallowNullValues: const ['count']);
+Order _$OrderFromJson(Map json, {JsonOverrides overrides}) {
+  $checkKeys(json, disallowNullValues: const ['count'], overrides: overrides);
   return Order(
     _$enumDecode(_$CategoryEnumMap, json['category']),
     (json['items'] as List)?.map((e) => e == null

@@ -2,12 +2,14 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 WithANonCtorGetterChecked _$WithANonCtorGetterCheckedFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return $checkedNew('WithANonCtorGetterChecked', json, () {
     $checkKeys(json,
         allowedKeys: const ['items'],
         requiredKeys: const ['items'],
-        disallowNullValues: const ['items']);
+        disallowNullValues: const ['items'],
+        overrides: overrides);
     final val = WithANonCtorGetterChecked(
       $checkedConvert(
           json, 'items', (v) => (v as List)?.map((e) => e as String)?.toList()),
@@ -31,11 +33,13 @@ class WithANonCtorGetterChecked {
 }
 
 @ShouldGenerate(r'''
-WithANonCtorGetter _$WithANonCtorGetterFromJson(Map<String, dynamic> json) {
+WithANonCtorGetter _$WithANonCtorGetterFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   $checkKeys(json,
       allowedKeys: const ['items'],
       requiredKeys: const ['items'],
-      disallowNullValues: const ['items']);
+      disallowNullValues: const ['items'],
+      overrides: overrides);
   return WithANonCtorGetter(
     (json['items'] as List)?.map((e) => e as String)?.toList(),
   );

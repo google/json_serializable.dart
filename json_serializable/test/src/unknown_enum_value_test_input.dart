@@ -2,7 +2,8 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
   r'''
-UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
+UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return UnknownEnumValue()
     ..value = _$enumDecodeNullable(
             _$UnknownEnumValueItemsEnumMap, json['value'],

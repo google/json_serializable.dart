@@ -6,7 +6,8 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JsonConverterNamedCtor<E>()
     ..value = const _DurationMillisecondConverter.named()
         .fromJson(json['value'] as int)
@@ -44,8 +45,8 @@ class JsonConverterNamedCtor<E> {
 }
 
 @ShouldGenerate(r'''
-JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
-    Map<String, dynamic> json) {
+JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JsonConvertOnField<E>()
     ..annotatedField = const _DurationMillisecondConverter()
         .fromJson(json['annotatedField'] as int)

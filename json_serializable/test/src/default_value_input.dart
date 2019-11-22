@@ -102,7 +102,8 @@ class DefaultWithNonNullableClass {
 @ShouldGenerate(
   r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return DefaultWithToJsonClass()
     ..fieldDefaultValueToJson = DefaultWithToJsonClass._fromJson(
             json['fieldDefaultValueToJson'] as String) ??
@@ -127,9 +128,12 @@ class DefaultWithToJsonClass {
 
 @ShouldGenerate(r'''
 DefaultWithDisallowNullRequiredClass
-    _$DefaultWithDisallowNullRequiredClassFromJson(Map<String, dynamic> json) {
+    _$DefaultWithDisallowNullRequiredClassFromJson(Map<String, dynamic> json,
+        {JsonOverrides overrides}) {
   $checkKeys(json,
-      requiredKeys: const ['theField'], disallowNullValues: const ['theField']);
+      requiredKeys: const ['theField'],
+      disallowNullValues: const ['theField'],
+      overrides: overrides);
   return DefaultWithDisallowNullRequiredClass()
     ..theField = json['theField'] as int ?? 7;
 }

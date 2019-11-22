@@ -30,7 +30,7 @@ abstract class DecodeHelper implements HelperCore {
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
     _buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
-        '($mapType json) {\n');
+        '($mapType json, {JsonOverrides overrides}) {\n');
 
     String deserializeFun(String paramOrFieldName,
             {ParameterElement ctorParam}) =>
@@ -157,6 +157,8 @@ abstract class DecodeHelper implements HelperCore {
     }
 
     if (args.isNotEmpty) {
+      // custom_configuration_test
+      args.add('overrides: overrides');
       _buffer.writeln('${' ' * indent}\$checkKeys(json, ${args.join(', ')});');
     }
   }

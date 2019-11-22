@@ -21,6 +21,25 @@ T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
   return object2;
 }
 
+R roundTripDisparateObjects<R, T>(T input, R factory(Map<String, dynamic> json),
+    Map<String, dynamic> missingKeys) {
+  final data = loudEncode(input);
+
+  final inputMap = json.decode(data) as Map<String, dynamic>;
+
+  final result = factory(inputMap);
+
+  final output = loudEncode(result);
+
+  // now check the inputMap with the missing keys added back in
+  // match the output map.
+  final outputMap = json.decode(output) as Map<String, dynamic>;
+  outputMap.addAll(missingKeys);
+  expect(inputMap, equals(outputMap));
+
+  return result;
+}
+
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
 String loudEncode(Object object) {
   try {

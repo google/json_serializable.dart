@@ -2,7 +2,8 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
   r'''
-JustSetter _$JustSetterFromJson(Map<String, dynamic> json) {
+JustSetter _$JustSetterFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JustSetter();
 }
 
@@ -19,7 +20,8 @@ class JustSetter {
 
 @ShouldGenerate(
   r'''
-JustSetterNoToJson _$JustSetterNoToJsonFromJson(Map<String, dynamic> json) {
+JustSetterNoToJson _$JustSetterNoToJsonFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JustSetterNoToJson();
 }
 ''',
