@@ -9,12 +9,12 @@ environment:
   sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
-  json_annotation: '>=2.2.0 <4.0.0'
+  json_annotation: '>=3.0.1 <4.0.0'
   source_span: ^1.0.0
   yaml: ^2.1.13
 
 dev_dependencies:
-  json_serializable: ^3.0.0
+  json_serializable: ^3.2.5
   build_runner: ^1.0.0
   build_verify: ^1.1.0
   path: ^1.0.0
