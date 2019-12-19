@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -98,8 +99,9 @@ bool _canSerialize(JsonSerializable config, DartType type) {
 InterfaceType _instantiate(
     InterfaceType ctorParamType, InterfaceType classType) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
-    final typeParamIndex =
-        classType.typeParameters.indexWhere((e) => e.type == arg);
+    final typeParamIndex = classType.element.typeParameters.indexWhere(
+        // TODO(kevmoo): not 100% sure `nullabilitySuffix` is right
+        (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg);
     if (typeParamIndex >= 0) {
       return classType.typeArguments[typeParamIndex];
     } else {
@@ -113,7 +115,12 @@ InterfaceType _instantiate(
     return null;
   }
 
-  return ctorParamType.instantiate(argTypes);
+  // ignore: deprecated_member_use
+  return ctorParamType.element.instantiate(
+    typeArguments: argTypes,
+    // TODO(kevmoo): not 100% sure nullabilitySuffix is right... Works for now
+    nullabilitySuffix: NullabilitySuffix.none,
+  );
 }
 
 JsonSerializable _annotation(JsonSerializable config, InterfaceType source) {

@@ -1,12 +1,7 @@
 analyzer:
   strong-mode:
     implicit-casts: false
-  errors:
-    dead_code: error
-    override_on_non_overriding_method: error
-    unused_element: error
-    unused_import: error
-    unused_local_variable: error
+
 linter:
   rules:
     - always_declare_return_types
