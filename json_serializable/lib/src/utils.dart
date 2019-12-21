@@ -249,3 +249,10 @@ String _getHexLiteral(String input) {
   final value = rune.toRadixString(16).toUpperCase().padLeft(2, '0');
   return '\\x$value';
 }
+
+extension DartTypeExtension on DartType {
+  bool isAssignableTo(DartType other) =>
+      // If the library is `null`, treat it like dynamic => `true`
+      element.library == null ||
+      element.library.typeSystem.isAssignableTo(this, other);
+}
