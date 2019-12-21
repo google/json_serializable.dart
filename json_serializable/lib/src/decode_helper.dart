@@ -226,8 +226,8 @@ _ConstructorData _writeConstructorInvocation(
     Iterable<String> availableConstructorParameters,
     Iterable<String> writableFields,
     Map<String, String> unavailableReasons,
-    String deserializeForField(String paramOrFieldName,
-        {ParameterElement ctorParam})) {
+    String Function(String paramOrFieldName, {ParameterElement ctorParam})
+        deserializeForField) {
   final className = classElement.name;
 
   final ctor = classElement.unnamedConstructor;

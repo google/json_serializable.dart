@@ -44,7 +44,7 @@ void main() {
   group('non-nullable', () => _test(checked.fromJson));
 }
 
-void _test(DefaultValue fromJson(Map<String, dynamic> json)) {
+void _test(DefaultValue Function(Map<String, dynamic> json) fromJson) {
   test('empty map yields all default values', () {
     final object = fromJson({});
     expect(loudEncode(object), loudEncode(_defaultInstance));

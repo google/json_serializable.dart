@@ -81,6 +81,6 @@ linter:
     - unnecessary_statements
     - unnecessary_this
     - unrelated_type_equality_checks
-    #- use_function_type_syntax_for_parameters
+    - use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
     - valid_regexps
