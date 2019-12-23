@@ -1,3 +1,7 @@
+## 3.2.6
+
+- Updated dependency to latest version of json_annotate 3.0.2 which contains the new JsonOverrides
+
 ## 3.2.5
 
 - Fix lint affecting `pub.dev` score.

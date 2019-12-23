@@ -1,3 +1,9 @@
+## 3.0.2
+
+- Added ability to override checks at runtime.
+- Added JsonOverrides
+- Solve the issue with local builds by adding the correct dependency_overrides clauses.
+
 ## 3.0.1
 
 - Require at least Dart `2.6.0`.
