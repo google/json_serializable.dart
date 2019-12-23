@@ -157,7 +157,7 @@ final throwsCastError = throwsA(isCastError);
 
 T roundTripObject<T>(
   T object,
-  T factory(Map<String, dynamic> json), {
+  T Function(Map<String, dynamic> json) factory, {
   bool skipObjectEquals = false,
 }) {
   final data = loudEncode(object);

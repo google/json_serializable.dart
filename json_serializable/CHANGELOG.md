@@ -1,3 +1,7 @@
+## 3.2.5
+
+- Fix lint affecting `pub.dev` score.
+
 ## 3.2.4
 
 * Require `package:analyzer` `^0.39.0`.

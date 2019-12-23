@@ -62,7 +62,7 @@ class TypeHelperCtx
       (TypeHelper th) => th.deserialize(targetType, expression, this));
 
   Object _run(DartType targetType, String expression,
-          Object invoke(TypeHelper instance)) =>
+          Object Function(TypeHelper) invoke) =>
       _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
           orElse: () => throw UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));

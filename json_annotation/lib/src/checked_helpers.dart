@@ -8,7 +8,7 @@ import 'allowed_keys_helpers.dart';
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, T constructor(),
+T $checkedNew<T>(String className, Map map, T Function() constructor,
     {Map<String, String> fieldKeyMap}) {
   fieldKeyMap ??= const {};
 
@@ -37,7 +37,7 @@ T $checkedNew<T>(String className, Map map, T constructor(),
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedConvert<T>(Map map, String key, T castFunc(Object value)) {
+T $checkedConvert<T>(Map map, String key, T Function(Object) castFunc) {
   try {
     return castFunc(map[key]);
   } on CheckedFromJsonException {
