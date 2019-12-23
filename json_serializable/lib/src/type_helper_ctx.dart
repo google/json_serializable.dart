@@ -62,7 +62,7 @@ class TypeHelperCtx
       (TypeHelper th) => th.deserialize(targetType, expression, this));
 
   Object _run(DartType targetType, String expression,
-          Object invoke(TypeHelper instance)) =>
+          Object Function(TypeHelper) invoke) =>
       _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
           orElse: () => throw UnsupportedTypeError(
               targetType, expression, _notSupportedWithTypeHelpersMsg));
@@ -125,10 +125,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if
-        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-        // ignore: deprecated_member_use
-        (!returnType.isAssignableTo(element.type)) {
+    } else if (!returnType.isAssignableTo(element.type)) {
       final returnTypeCode = typeToCode(returnType);
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(
@@ -142,10 +139,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if
-        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-        // ignore: deprecated_member_use
-        (!element.type.isAssignableTo(argType)) {
+    } else if (!element.type.isAssignableTo(argType)) {
       final argTypeCode = typeToCode(argType);
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(

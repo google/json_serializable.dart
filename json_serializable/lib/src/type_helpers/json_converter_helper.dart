@@ -158,14 +158,12 @@ _ConverterMatch _compatibleMatch(
     return null;
   }
 
-  assert(jsonConverterSuper.typeParameters.length == 2);
+  assert(jsonConverterSuper.element.typeParameters.length == 2);
   assert(jsonConverterSuper.typeArguments.length == 2);
 
   final fieldType = jsonConverterSuper.typeArguments[0];
 
-  // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-  // ignore: deprecated_member_use
-  if (fieldType.isEquivalentTo(targetType)) {
+  if (fieldType == targetType) {
     return _ConverterMatch(
         annotation, constantValue, jsonConverterSuper.typeArguments[1], null);
   }

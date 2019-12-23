@@ -1,3 +1,8 @@
+## 3.0.1
+
+- Require at least Dart `2.6.0`.
+- Fix lint that was affecting `pub.dev` score.
+
 ## 3.0.0
 
 - **BREAKING** Removed `JsonSerializable.useWrappers` and associated

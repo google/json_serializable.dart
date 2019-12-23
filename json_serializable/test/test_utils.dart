@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 final throwsCastError = throwsA(isCastError);
 
-T roundTripObject<T>(T object, T factory(Map<String, dynamic> json)) {
+T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
   final data = loudEncode(object);
 
   final object2 = factory(json.decode(data) as Map<String, dynamic>);

@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/type.dart';
 import '../json_key_utils.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 /// Information used by [ConvertHelper] when handling `JsonKey`-annotated
 /// fields with `toJson` or `fromJson` values set.
@@ -37,8 +38,6 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     logFieldWithConversionFunction(context.fieldElement);
 
     assert(toJsonData.paramType is TypeParameterType ||
-        // TODO: dart-lang/json_serializable#531 - fix deprecated API usage
-        // ignore: deprecated_member_use
         targetType.isAssignableTo(toJsonData.paramType));
     return '${toJsonData.name}($expression)';
   }

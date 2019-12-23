@@ -5,8 +5,8 @@
 import 'package:analyzer/dart/element/element.dart';
 
 // ignore: implementation_imports
-import 'package:analyzer/src/dart/resolver/inheritance_manager.dart'
-    show InheritanceManager; // ignore: deprecated_member_use
+import 'package:analyzer/src/dart/element/inheritance_manager3.dart'
+    show InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
 
 import 'utils.dart';
@@ -40,7 +40,7 @@ class _FieldSet implements Comparable<_FieldSet> {
     final checkerA = TypeChecker.fromStatic(
         // TODO: remove `ignore` when min pkg:analyzer >= 0.38.0
         // ignore: unnecessary_cast
-        (a.enclosingElement as ClassElement).type);
+        (a.enclosingElement as ClassElement).thisType);
 
     if (!checkerA.isExactly(b.enclosingElement)) {
       // in this case, you want to prioritize the enclosingElement that is more
@@ -53,7 +53,7 @@ class _FieldSet implements Comparable<_FieldSet> {
       final checkerB = TypeChecker.fromStatic(
           // TODO: remove `ignore` when min pkg:analyzer >= 0.38.0
           // ignore: unnecessary_cast
-          (b.enclosingElement as ClassElement).type);
+          (b.enclosingElement as ClassElement).thisType);
 
       if (checkerB.isAssignableFrom(a.enclosingElement)) {
         return 1;
@@ -84,11 +84,9 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
       element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)));
 
   final inheritedFields = <String, FieldElement>{};
-  // ignore: deprecated_member_use
-  final manager = InheritanceManager(element.library);
+  final manager = InheritanceManager3();
 
-  // ignore: deprecated_member_use
-  for (final v in manager.getMembersInheritedFromClasses(element).values) {
+  for (final v in manager.getInheritedConcreteMap(element.thisType).values) {
     assert(v is! FieldElement);
     if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
       continue;
