@@ -1,3 +1,8 @@
+## 1.0.3
+
+- Require at least Dart `2.6.0`.
+- Support the latest `package:json_annotation`.
+
 ## 1.0.2
 
 - Require at least Dart `2.3.0`.

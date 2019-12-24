@@ -24,8 +24,8 @@ jobs:
       env: PKGS="_test_yaml json_serializable"
       script: ./tool/travis.sh dartanalyzer_1
     - stage: analyzer_and_format
-      name: "SDK: 2.3.0; PKG: checked_yaml; TASKS: `dartanalyzer --fatal-warnings .`"
-      dart: "2.3.0"
+      name: "SDK: 2.6.0; PKG: checked_yaml; TASKS: `dartanalyzer --fatal-warnings .`"
+      dart: "2.6.0"
       os: linux
       env: PKGS="checked_yaml"
       script: ./tool/travis.sh dartanalyzer_1
@@ -48,8 +48,8 @@ jobs:
       env: PKGS="_test_yaml example json_serializable"
       script: ./tool/travis.sh test_0
     - stage: unit_test
-      name: "SDK: 2.3.0; PKG: checked_yaml; TASKS: `pub run test`"
-      dart: "2.3.0"
+      name: "SDK: 2.6.0; PKG: checked_yaml; TASKS: `pub run test`"
+      dart: "2.6.0"
       os: linux
       env: PKGS="checked_yaml"
       script: ./tool/travis.sh test_0
@@ -78,8 +78,8 @@ jobs:
       env: PKGS="_test_yaml example json_serializable"
       script: ./tool/travis.sh test_1
     - stage: ensure_build
-      name: "SDK: 2.3.0; PKG: checked_yaml; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
-      dart: "2.3.0"
+      name: "SDK: 2.6.0; PKG: checked_yaml; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+      dart: "2.6.0"
       os: linux
       env: PKGS="checked_yaml"
       script: ./tool/travis.sh test_1
