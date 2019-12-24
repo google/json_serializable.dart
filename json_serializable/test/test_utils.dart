@@ -21,7 +21,9 @@ T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
   return object2;
 }
 
-R roundTripDisparateObjects<R, T>(T input, R factory(Map<String, dynamic> json),
+R roundTripDisparateObjects<R, T>(
+    T input,
+    R Function(Map<String, dynamic> json) factory,
     Map<String, dynamic> missingKeys) {
   final data = loudEncode(input);
 
