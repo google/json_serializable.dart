@@ -6,9 +6,9 @@ part of 'build_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Config _$ConfigFromJson(Map json) {
+Config _$ConfigFromJson(Map json, {JsonOverrides overrides}) {
   return $checkedNew('Config', json, () {
-    $checkKeys(json, requiredKeys: const ['builders']);
+    $checkKeys(json, requiredKeys: const ['builders'], overrides: overrides);
     final val = Config(
       builders: $checkedConvert(
           json,
@@ -74,24 +74,24 @@ const _$AutoApplyEnumMap = {
   AutoApply.rootPackage: 'root_package',
 };
 
-Builder _$BuilderFromJson(Map json) {
+Builder _$BuilderFromJson(Map json, {JsonOverrides overrides}) {
   return $checkedNew('Builder', json, () {
-    $checkKeys(json, allowedKeys: const [
-      'target',
-      'import',
-      'is_optional',
-      'configLocation',
-      'auto_apply',
-      'build_to',
-      'defaultEnumTest',
-      'builder_factories',
-      'applies_builders',
-      'required_inputs',
-      'build_extensions'
-    ], disallowNullValues: const [
-      'configLocation',
-      'auto_apply'
-    ]);
+    $checkKeys(json,
+        allowedKeys: const [
+          'target',
+          'import',
+          'is_optional',
+          'configLocation',
+          'auto_apply',
+          'build_to',
+          'defaultEnumTest',
+          'builder_factories',
+          'applies_builders',
+          'required_inputs',
+          'build_extensions'
+        ],
+        disallowNullValues: const ['configLocation', 'auto_apply'],
+        overrides: overrides);
     final val = Builder(
       import: $checkedConvert(json, 'import', (v) => v as String),
       target: $checkedConvert(json, 'target', (v) => v as String),
