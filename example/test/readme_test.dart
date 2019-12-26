@@ -15,7 +15,7 @@ void _expect(String fileName) {
   test(fileName, () {
     final file = File(fileName);
     expect(file.readAsStringSync(), contains(_pubspecContent));
-  }, skip: true);
+  });
 }
 
 final _pubspecContent = r'''
