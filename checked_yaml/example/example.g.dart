@@ -6,11 +6,12 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Configuration _$ConfigurationFromJson(Map json) {
+Configuration _$ConfigurationFromJson(Map json, {JsonOverrides overrides}) {
   return $checkedNew('Configuration', json, () {
     $checkKeys(json,
         allowedKeys: const ['name', 'count'],
-        requiredKeys: const ['name', 'count']);
+        requiredKeys: const ['name', 'count'],
+        overrides: overrides);
     final val = Configuration(
       name: $checkedConvert(json, 'name', (v) => v as String),
       count: $checkedConvert(json, 'count', (v) => v as int),
