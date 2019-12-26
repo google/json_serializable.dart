@@ -6,7 +6,7 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) {
+Person _$PersonFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Person(
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,

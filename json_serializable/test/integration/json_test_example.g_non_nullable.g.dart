@@ -6,7 +6,7 @@ part of 'json_test_example.g_non_nullable.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) {
+Person _$PersonFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Person(
     json['firstName'] as String,
     json['lastName'] as String,
@@ -122,7 +122,7 @@ const _$StatusCodeEnumMap = {
   StatusCode.unknown: 'unknown',
 };
 
-Item _$ItemFromJson(Map<String, dynamic> json) {
+Item _$ItemFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Item(
     json['price'] as int,
   )
@@ -140,7 +140,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'rates': instance.rates,
     };
 
-Numbers _$NumbersFromJson(Map<String, dynamic> json) {
+Numbers _$NumbersFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return Numbers()
     ..ints = (json['ints'] as List).map((e) => e as int).toList()
     ..nums = (json['nums'] as List).map((e) => e as num).toList()
@@ -161,7 +162,8 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
       'date': dateTimeToEpochUs(instance.date),
     };
 
-MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
+MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return MapKeyVariety()
     ..intIntMap = (json['intIntMap'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(int.parse(k), e as int),
@@ -184,4 +186,49 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
       'dateTimeIntMap': instance.dateTimeIntMap
           .map((k, e) => MapEntry(k.toIso8601String(), e)),
       'bigIntMap': instance.bigIntMap.map((k, e) => MapEntry(k.toString(), e)),
+    };
+
+SecureOrder _$SecureOrderFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
+  $checkKeys(json,
+      allowedKeys: const [
+        'count',
+        'duration',
+        'category',
+        'items',
+        'platform',
+        'altPlatforms',
+        'homepage',
+        'status_code'
+      ],
+      disallowNullValues: const ['count'],
+      overrides: overrides);
+  return SecureOrder(
+    _$enumDecode(_$CategoryEnumMap, json['category']),
+    (json['items'] as List)
+        .map((e) => Item.fromJson(e as Map<String, dynamic>)),
+  )
+    ..count = json['count'] as int
+    ..duration = Duration(microseconds: json['duration'] as int)
+    ..platform = Platform.fromJson(json['platform'] as String)
+    ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, Platform.fromJson(e as String)),
+    )
+    ..homepage = Uri.parse(json['homepage'] as String)
+    ..statusCode = _$enumDecodeNullable(
+            _$StatusCodeEnumMap, json['status_code'],
+            unknownValue: StatusCode.unknown) ??
+        StatusCode.success;
+}
+
+Map<String, dynamic> _$SecureOrderToJson(SecureOrder instance) =>
+    <String, dynamic>{
+      'count': instance.count,
+      'duration': instance.duration.inMicroseconds,
+      'category': _$CategoryEnumMap[instance.category],
+      'items': instance.items,
+      'platform': instance.platform,
+      'altPlatforms': instance.altPlatforms,
+      'homepage': instance.homepage.toString(),
+      'status_code': _$StatusCodeEnumMap[instance.statusCode],
     };

@@ -6,7 +6,7 @@ part of 'default_value.g_any_map__checked.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DefaultValue _$DefaultValueFromJson(Map json) {
+DefaultValue _$DefaultValueFromJson(Map json, {JsonOverrides overrides}) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue();
     $checkedConvert(

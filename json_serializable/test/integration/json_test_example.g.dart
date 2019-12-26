@@ -6,7 +6,7 @@ part of 'json_test_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) {
+Person _$PersonFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Person(
     json['firstName'] as String,
     json['lastName'] as String,
@@ -136,11 +136,95 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   return val;
 }
 
+const _$StatusCodeEnumMap = {
+  StatusCode.success: 200,
+  StatusCode.notFound: 404,
+  StatusCode.weird: '500',
+  StatusCode.unknown: 'unknown',
+};
+
+Item _$ItemFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
+  return Item(
+    json['price'] as int,
+  )
+    ..itemNumber = json['item-number'] as int
+    ..saleDates = (json['saleDates'] as List)
+        ?.map((e) => e == null ? null : DateTime.parse(e as String))
+        ?.toList()
+    ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
+}
+
+Map<String, dynamic> _$ItemToJson(Item instance) {
+  final val = <String, dynamic>{
+    'price': instance.price,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('item-number', instance.itemNumber);
+  val['saleDates'] =
+      instance.saleDates?.map((e) => e?.toIso8601String())?.toList();
+  val['rates'] = instance.rates;
+  return val;
+}
+
+Numbers _$NumbersFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
+  return Numbers()
+    ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
+    ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
+    ..doubles =
+        (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
+    ..nnDoubles =
+        (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
+    ..duration = durationFromInt(json['duration'] as int)
+    ..date = dateTimeFromEpochUs(json['date'] as int);
+}
+
+Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
+      'ints': instance.ints,
+      'nums': instance.nums,
+      'doubles': instance.doubles,
+      'nnDoubles': instance.nnDoubles,
+      'duration': durationToInt(instance.duration),
+      'date': dateTimeToEpochUs(instance.date),
+    };
+
+MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
+  return MapKeyVariety()
+    ..intIntMap = (json['intIntMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(int.parse(k), e as int),
+    )
+    ..uriIntMap = (json['uriIntMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(Uri.parse(k), e as int),
+    )
+    ..dateTimeIntMap = (json['dateTimeIntMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(DateTime.parse(k), e as int),
+    )
+    ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>)?.map(
+      (k, e) => MapEntry(BigInt.parse(k), e as int),
+    );
+}
+
+Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
+    <String, dynamic>{
+      'intIntMap': instance.intIntMap?.map((k, e) => MapEntry(k.toString(), e)),
+      'uriIntMap': instance.uriIntMap?.map((k, e) => MapEntry(k.toString(), e)),
+      'dateTimeIntMap': instance.dateTimeIntMap
+          ?.map((k, e) => MapEntry(k.toIso8601String(), e)),
+      'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
+    };
+
 SecureOrder _$SecureOrderFromJson(Map<String, dynamic> json,
     {JsonOverrides overrides}) {
   $checkKeys(json,
-      disallowNullValues: const ['count'],
       allowedKeys: const [
+        'count',
         'duration',
         'category',
         'items',
@@ -149,6 +233,7 @@ SecureOrder _$SecureOrderFromJson(Map<String, dynamic> json,
         'homepage',
         'status_code'
       ],
+      disallowNullValues: const ['count'],
       overrides: overrides);
   return SecureOrder(
     _$enumDecode(_$CategoryEnumMap, json['category']),
@@ -192,85 +277,3 @@ Map<String, dynamic> _$SecureOrderToJson(SecureOrder instance) {
   val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
   return val;
 }
-
-const _$StatusCodeEnumMap = {
-  StatusCode.success: 200,
-  StatusCode.notFound: 404,
-  StatusCode.weird: '500',
-  StatusCode.unknown: 'unknown',
-};
-
-Item _$ItemFromJson(Map<String, dynamic> json) {
-  return Item(
-    json['price'] as int,
-  )
-    ..itemNumber = json['item-number'] as int
-    ..saleDates = (json['saleDates'] as List)
-        ?.map((e) => e == null ? null : DateTime.parse(e as String))
-        ?.toList()
-    ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
-}
-
-Map<String, dynamic> _$ItemToJson(Item instance) {
-  final val = <String, dynamic>{
-    'price': instance.price,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('item-number', instance.itemNumber);
-  val['saleDates'] =
-      instance.saleDates?.map((e) => e?.toIso8601String())?.toList();
-  val['rates'] = instance.rates;
-  return val;
-}
-
-Numbers _$NumbersFromJson(Map<String, dynamic> json) {
-  return Numbers()
-    ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
-    ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
-    ..doubles =
-        (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
-    ..nnDoubles =
-        (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration = durationFromInt(json['duration'] as int)
-    ..date = dateTimeFromEpochUs(json['date'] as int);
-}
-
-Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
-      'ints': instance.ints,
-      'nums': instance.nums,
-      'doubles': instance.doubles,
-      'nnDoubles': instance.nnDoubles,
-      'duration': durationToInt(instance.duration),
-      'date': dateTimeToEpochUs(instance.date),
-    };
-
-MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
-  return MapKeyVariety()
-    ..intIntMap = (json['intIntMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(int.parse(k), e as int),
-    )
-    ..uriIntMap = (json['uriIntMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(Uri.parse(k), e as int),
-    )
-    ..dateTimeIntMap = (json['dateTimeIntMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(DateTime.parse(k), e as int),
-    )
-    ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>)?.map(
-      (k, e) => MapEntry(BigInt.parse(k), e as int),
-    );
-}
-
-Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
-    <String, dynamic>{
-      'intIntMap': instance.intIntMap?.map((k, e) => MapEntry(k.toString(), e)),
-      'uriIntMap': instance.uriIntMap?.map((k, e) => MapEntry(k.toString(), e)),
-      'dateTimeIntMap': instance.dateTimeIntMap
-          ?.map((k, e) => MapEntry(k.toIso8601String(), e)),
-      'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
-    };

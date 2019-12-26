@@ -7,7 +7,8 @@ part of 'generic_class.dart';
 // **************************************************************************
 
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return GenericClass<T, S>()
     ..fieldObject =
         GenericClass._dataFromJson(json['fieldObject'] as Map<String, dynamic>)
@@ -33,7 +34,8 @@ Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
 
 GenericClassWithConverter<T, S>
     _$GenericClassWithConverterFromJson<T extends num, S>(
-        Map<String, dynamic> json) {
+        Map<String, dynamic> json,
+        {JsonOverrides overrides}) {
   return GenericClassWithConverter<T, S>()
     ..fieldObject = json['fieldObject']
     ..fieldDynamic = json['fieldDynamic']

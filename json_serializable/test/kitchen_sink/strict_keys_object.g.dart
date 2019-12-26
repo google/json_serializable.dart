@@ -6,10 +6,12 @@ part of 'strict_keys_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
+StrictKeysObject _$StrictKeysObjectFromJson(Map json,
+    {JsonOverrides overrides}) {
   $checkKeys(json,
       allowedKeys: const ['value', 'custom_field'],
-      requiredKeys: const ['value', 'custom_field']);
+      requiredKeys: const ['value', 'custom_field'],
+      overrides: overrides);
   return StrictKeysObject(
     json['value'] as int,
     json['custom_field'] as String,

@@ -6,7 +6,8 @@ part of 'default_value.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
+DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return DefaultValue()
     ..fieldBool = json['fieldBool'] as bool ?? true
     ..fieldString = json['fieldString'] as String ?? 'string'

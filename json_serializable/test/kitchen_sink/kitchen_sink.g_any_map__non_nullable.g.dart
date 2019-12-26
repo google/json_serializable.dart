@@ -6,7 +6,7 @@ part of 'kitchen_sink.g_any_map__non_nullable.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) {
+KitchenSink _$KitchenSinkFromJson(Map json, {JsonOverrides overrides}) {
   return KitchenSink(
     ctorValidatedNo42: json['no-42'] as int,
     iterable: json['iterable'] as List,
@@ -107,7 +107,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'validatedPropertyNo42': instance.validatedPropertyNo42,
     };
 
-JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json,
+    {JsonOverrides overrides}) {
   return JsonConverterTestClass()
     ..duration = durationConverter.fromJson(json['duration'] as int)
     ..durationList = (json['durationList'] as List)
@@ -144,8 +145,8 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
     };
 
-JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
-    Map json) {
+JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(Map json,
+    {JsonOverrides overrides}) {
   return JsonConverterGeneric<S, T, U>()
     ..item =
         GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)

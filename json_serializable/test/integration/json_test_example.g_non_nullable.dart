@@ -184,3 +184,65 @@ class MapKeyVariety {
       deepEquals(other.dateTimeIntMap, dateTimeIntMap) &&
       deepEquals(other.bigIntMap, bigIntMap);
 }
+
+/// Used to test that `disallowUnrecognizedKeys: true` can be turned off via JsonOverrides
+@JsonSerializable(nullable: false, disallowUnrecognizedKeys: true)
+class SecureOrder {
+  @JsonKey(disallowNullValue: true)
+  int count;
+
+  // we remove the isRushed field which [Order]
+  // contains so we should get an error if we try
+  // to pass an [Order] as a [SecureOrder] unless
+  // the override is on.
+  // bool isRushed;
+
+  Duration duration;
+
+  @JsonKey(nullable: false)
+  final Category category;
+  final UnmodifiableListView<Item> items;
+  Platform platform;
+  Map<String, Platform> altPlatforms;
+
+  Uri homepage;
+
+  @JsonKey(
+    name: 'status_code',
+    defaultValue: StatusCode.success,
+    nullable: true,
+    unknownEnumValue: StatusCode.unknown,
+  )
+  StatusCode statusCode;
+
+  @JsonKey(ignore: true)
+  String get platformValue => platform?.description;
+
+  set platformValue(String value) {
+    throw UnimplementedError('not impld');
+  }
+
+  // Ignored getter without value set in ctor
+  int get price => items.fold(0, (total, item) => item.price + total);
+
+  @JsonKey(ignore: true)
+  bool shouldBeCached;
+
+  SecureOrder(this.category, [Iterable<Item> items])
+      : items = UnmodifiableListView<Item>(
+            List<Item>.unmodifiable(items ?? const <Item>[]));
+
+  factory SecureOrder.fromJson(
+          Map<String, dynamic> json, JsonOverrides overrides) =>
+      _$SecureOrderFromJson(json, overrides: overrides);
+
+  Map<String, dynamic> toJson() => _$SecureOrderToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      other is SecureOrder &&
+      count == other.count &&
+      // isRushed == other.isRushed &&
+      deepEquals(items, other.items) &&
+      deepEquals(altPlatforms, other.altPlatforms);
+}

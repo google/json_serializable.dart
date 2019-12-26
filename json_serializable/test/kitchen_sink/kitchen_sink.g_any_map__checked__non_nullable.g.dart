@@ -6,7 +6,7 @@ part of 'kitchen_sink.g_any_map__checked__non_nullable.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map json) {
+KitchenSink _$KitchenSinkFromJson(Map json, {JsonOverrides overrides}) {
   return $checkedNew('KitchenSink', json, () {
     final val = KitchenSink(
       ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
@@ -137,7 +137,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'validatedPropertyNo42': instance.validatedPropertyNo42,
     };
 
-JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
+JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json,
+    {JsonOverrides overrides}) {
   return $checkedNew('JsonConverterTestClass', json, () {
     final val = JsonConverterTestClass();
     $checkedConvert(json, 'duration',
@@ -197,8 +198,8 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
     };
 
-JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
-    Map json) {
+JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(Map json,
+    {JsonOverrides overrides}) {
   return $checkedNew('JsonConverterGeneric', json, () {
     final val = JsonConverterGeneric<S, T, U>();
     $checkedConvert(

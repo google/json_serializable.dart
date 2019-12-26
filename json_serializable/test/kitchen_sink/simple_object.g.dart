@@ -6,7 +6,7 @@ part of 'simple_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleObject _$SimpleObjectFromJson(Map json) {
+SimpleObject _$SimpleObjectFromJson(Map json, {JsonOverrides overrides}) {
   return SimpleObject(
     json['value'] as int,
   );

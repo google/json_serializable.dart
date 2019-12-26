@@ -6,7 +6,8 @@ part of 'kitchen_sink.g_non_nullable.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
+KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return KitchenSink(
     ctorValidatedNo42: json['no-42'] as int,
     iterable: json['iterable'] as List,
@@ -110,7 +111,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
     };
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JsonConverterTestClass()
     ..duration = durationConverter.fromJson(json['duration'] as int)
     ..durationList = (json['durationList'] as List)
@@ -148,7 +150,8 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
-    Map<String, dynamic> json) {
+    Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return JsonConverterGeneric<S, T, U>()
     ..item =
         GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
