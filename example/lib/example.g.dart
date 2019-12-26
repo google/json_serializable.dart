@@ -6,7 +6,7 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Person _$PersonFromJson(Map<String, dynamic> json) {
+Person _$PersonFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Person(
     json['firstName'] as String,
     json['lastName'] as String,
@@ -40,7 +40,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
   return val;
 }
 
-Order _$OrderFromJson(Map<String, dynamic> json) {
+Order _$OrderFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Order(
     Order._dateTimeFromEpochUs(json['date'] as int),
   )
@@ -71,7 +71,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   return val;
 }
 
-Item _$ItemFromJson(Map<String, dynamic> json) {
+Item _$ItemFromJson(Map<String, dynamic> json, {JsonOverrides overrides}) {
   return Item()
     ..count = json['count'] as int
     ..itemNumber = json['itemNumber'] as int

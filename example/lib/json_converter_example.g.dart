@@ -6,7 +6,8 @@ part of 'json_converter_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GenericCollection<T> _$GenericCollectionFromJson<T>(Map<String, dynamic> json) {
+GenericCollection<T> _$GenericCollectionFromJson<T>(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return GenericCollection<T>(
     page: json['page'] as int,
     totalResults: json['total_results'] as int,
@@ -24,7 +25,8 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
       'results': instance.results?.map(_Converter<T>().toJson)?.toList(),
     };
 
-CustomResult _$CustomResultFromJson(Map<String, dynamic> json) {
+CustomResult _$CustomResultFromJson(Map<String, dynamic> json,
+    {JsonOverrides overrides}) {
   return CustomResult(
     json['name'] as String,
     json['size'] as int,
