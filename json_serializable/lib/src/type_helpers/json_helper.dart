@@ -70,7 +70,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
-    output = '${targetType.getDisplayString()}.fromJson($output)';
+    output = '${targetType.element.name}.fromJson($output)';
 
     return commonNullPrefix(context.nullable, expression, output).toString();
   }
