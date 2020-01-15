@@ -126,12 +126,15 @@ _JsonConvertData _typeConverterFrom(
   }
 
   if (match.genericTypeArg != null) {
-    return _JsonConvertData.genericClass(match.annotation.type.name,
-        match.genericTypeArg, reviver.accessor, match.jsonType);
+    return _JsonConvertData.genericClass(
+        match.annotation.type.getDisplayString(),
+        match.genericTypeArg,
+        reviver.accessor,
+        match.jsonType);
   }
 
-  return _JsonConvertData.className(
-      match.annotation.type.name, reviver.accessor, match.jsonType);
+  return _JsonConvertData.className(match.annotation.type.getDisplayString(),
+      reviver.accessor, match.jsonType);
 }
 
 class _ConverterMatch {
@@ -180,7 +183,7 @@ _ConverterMatch _compatibleMatch(
     }
 
     return _ConverterMatch(annotation, constantValue,
-        jsonConverterSuper.typeArguments[1], targetType.name);
+        jsonConverterSuper.typeArguments[1], targetType.getDisplayString());
   }
 
   return null;

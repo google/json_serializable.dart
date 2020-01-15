@@ -68,7 +68,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       // TODO(kevmoo): Support calling function for the default value?
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type.name;
+      badType = dartObject.type.getDisplayString();
     }
 
     if (badType != null) {
@@ -133,7 +133,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue, enumValueNames, (n) => n);
 
-      return '${annotationValue.type.name}.$enumValueName';
+      return '${annotationValue.type..getDisplayString()}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(annotationValue, []);
       if (defaultValueLiteral == null) {
