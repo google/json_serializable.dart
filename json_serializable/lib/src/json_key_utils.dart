@@ -133,7 +133,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue, enumValueNames, (n) => n);
 
-      return '${annotationValue.type..getDisplayString()}.$enumValueName';
+      return '${annotationValue.type.element.name}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(annotationValue, []);
       if (defaultValueLiteral == null) {
