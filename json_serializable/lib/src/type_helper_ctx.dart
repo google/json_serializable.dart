@@ -74,8 +74,6 @@ final _notSupportedWithTypeHelpersMsg =
 class _ConvertPair {
   static final _expando = Expando<_ConvertPair>();
 
-  static _ConvertPair fromJsonKey(JsonKey key) => _expando[key];
-
   final ConvertData fromJson, toJson;
 
   _ConvertPair._(this.fromJson, this.toJson);

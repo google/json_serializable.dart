@@ -66,7 +66,8 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 }
 
-String _constMapName(DartType targetType) => '_\$${targetType.name}EnumMap';
+String _constMapName(DartType targetType) =>
+    '_\$${targetType.element.name}EnumMap';
 
 String _enumValueMapFromType(DartType targetType) {
   final enumMap = enumFieldsMap(targetType);
@@ -77,7 +78,7 @@ String _enumValueMapFromType(DartType targetType) {
 
   final items = enumMap.entries
       .map((e) =>
-          '  ${targetType.name}.${e.key.name}: ${jsonLiteralAsDart(e.value)},')
+          '  ${targetType.element.name}.${e.key.name}: ${jsonLiteralAsDart(e.value)},')
       .join();
 
   return 'const ${_constMapName(targetType)} = {\n$items\n};';

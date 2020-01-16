@@ -126,12 +126,19 @@ _JsonConvertData _typeConverterFrom(
   }
 
   if (match.genericTypeArg != null) {
-    return _JsonConvertData.genericClass(match.annotation.type.name,
-        match.genericTypeArg, reviver.accessor, match.jsonType);
+    return _JsonConvertData.genericClass(
+      match.annotation.type.element.name,
+      match.genericTypeArg,
+      reviver.accessor,
+      match.jsonType,
+    );
   }
 
   return _JsonConvertData.className(
-      match.annotation.type.name, reviver.accessor, match.jsonType);
+    match.annotation.type.element.name,
+    reviver.accessor,
+    match.jsonType,
+  );
 }
 
 class _ConverterMatch {
@@ -179,8 +186,12 @@ _ConverterMatch _compatibleMatch(
           element: converterClassElement);
     }
 
-    return _ConverterMatch(annotation, constantValue,
-        jsonConverterSuper.typeArguments[1], targetType.name);
+    return _ConverterMatch(
+      annotation,
+      constantValue,
+      jsonConverterSuper.typeArguments[1],
+      targetType.element.name,
+    );
   }
 
   return null;
