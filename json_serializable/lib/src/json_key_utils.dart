@@ -68,7 +68,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
       // TODO(kevmoo): Support calling function for the default value?
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type.getDisplayString();
+      badType = dartObject.type.element.name;
     }
 
     if (badType != null) {
