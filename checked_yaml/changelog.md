@@ -1,3 +1,7 @@
+## 1.0.3-dev
+
+- Require at least Dart `2.6.0`.
+
 ## 1.0.2
 
 - Require at least Dart `2.3.0`.
