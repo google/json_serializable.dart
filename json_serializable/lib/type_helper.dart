@@ -7,6 +7,7 @@ export 'src/type_helper.dart' show TypeHelperContext, TypeHelper;
 export 'src/type_helpers/big_int_helper.dart';
 export 'src/type_helpers/convert_helper.dart';
 export 'src/type_helpers/date_time_helper.dart';
+export 'src/type_helpers/duration_helper.dart';
 export 'src/type_helpers/enum_helper.dart';
 export 'src/type_helpers/iterable_helper.dart';
 export 'src/type_helpers/json_converter_helper.dart';
