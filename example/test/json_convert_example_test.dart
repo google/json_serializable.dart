@@ -64,8 +64,8 @@ void main() {
             jsonDecode(encoded) as Map<String, dynamic>),
         _throwsCastSomething);
 
-    final collection2 =
-        GenericCollection.fromJson(jsonDecode(encoded) as Map<String, dynamic>);
+    final collection2 = GenericCollection<dynamic>.fromJson(
+        jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [
       1,
