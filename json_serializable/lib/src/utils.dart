@@ -256,3 +256,7 @@ extension DartTypeExtension on DartType {
       element.library == null ||
       element.library.typeSystem.isAssignableTo(this, other);
 }
+
+/// Comment to disable analysis errors not currently supported in generated
+/// output. Added to the top of all generated files.
+const ignoredWarningsComment = '// ignore_for_file: implicit_dynamic_parameter';

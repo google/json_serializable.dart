@@ -6,6 +6,8 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: implicit_dynamic_parameter
+
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
     json['firstName'] as String,
