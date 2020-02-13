@@ -126,6 +126,8 @@ class DefaultWithToJsonClass {
 }
 
 @ShouldGenerate(r'''
+// ignore_for_file: implicit_dynamic_parameter
+
 DefaultWithDisallowNullRequiredClass
     _$DefaultWithDisallowNullRequiredClassFromJson(Map<String, dynamic> json) {
   $checkKeys(json,
