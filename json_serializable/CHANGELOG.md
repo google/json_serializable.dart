@@ -1,3 +1,10 @@
+## unreleased
+
+- Export the following `TypeHelper` implementations and interfaces in
+  `package:json_serializable/type_helper.dart`:
+  - `DurationHelper`
+  - `TypeHelperContextWithConfig`
+
 ## 3.2.5
 
 - Fix lint affecting `pub.dev` score.
