@@ -98,6 +98,11 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   final JsonSerializableGenerator _generator;
   final _addedMembers = <String>{};
 
+  // Comment to disable analysis errors not currently supported in generated
+  // output. Added to the top of all generated files.
+  static const _ignoredWarningsComment =
+      '// ignore_for_file: implicit_dynamic_parameter';
+
   _GeneratorHelper(
       this._generator, ClassElement element, ConstantReader annotation)
       : super(element, mergeConfig(_generator.config, annotation));
@@ -113,7 +118,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
 
-    yield ignoredWarningsComment;
+    yield _ignoredWarningsComment;
 
     final sortedFields = createSortedFieldSet(element);
 
