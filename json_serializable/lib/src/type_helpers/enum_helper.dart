@@ -77,8 +77,8 @@ String _enumValueMapFromType(DartType targetType) {
   }
 
   final items = enumMap.entries
-      .map((e) =>
-          '  ${targetType.element.name}.${e.key.name}: ${jsonLiteralAsDart(e.value)},')
+      .map((e) => '  ${targetType.element.name}.${e.key.name}: '
+          '${jsonLiteralAsDart(e.value)},')
       .join();
 
   return 'const ${_constMapName(targetType)} = {\n$items\n};';

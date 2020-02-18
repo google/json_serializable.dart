@@ -6,6 +6,8 @@ part of 'json_literal.dart';
 // JsonLiteralGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 final _$dataJsonLiteral = [
   {
     'backspace': '\b',

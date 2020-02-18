@@ -1,7 +1,17 @@
-## unreleased
+## 3.3.0-dev
 
-- Export the following `TypeHelper` implementations and interfaces in
-  `package:json_serializable/type_helper.dart`:
+- Added the `ignore_for_file` `build.yaml` option. It allows a developer to
+  specify static analysis errors, warnings, and hints that should be ignored for
+  a generated file. If provided, the value must be specified as a Yaml list.
+
+- `json_serializable.dart`
+  - The return type of `JsonLiteralGenerator.generateForAnnotatedElement` is
+    now `Stream<String>` instead of `Future<String>`.
+    - While strictly a breaking change, we do not consider direct usage of this
+      API a supported use case of this package.
+
+- `type_helper.dart`: Export the following `TypeHelper` implementations and
+  interfaces:
   - `DurationHelper`
   - `TypeHelperContextWithConfig`
 

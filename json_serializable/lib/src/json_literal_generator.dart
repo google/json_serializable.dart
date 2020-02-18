@@ -14,14 +14,25 @@ import 'package:source_gen/source_gen.dart';
 import 'utils.dart';
 
 class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
-  const JsonLiteralGenerator();
+  final Set<String> _ignoreForFile;
+
+  const JsonLiteralGenerator({
+    Set<String> ignoreForFile,
+  }) : _ignoreForFile = ignoreForFile ?? const <String>{};
 
   @override
-  Future<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) async {
+  Stream<String> generateForAnnotatedElement(
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async* {
     if (p.isAbsolute(annotation.read('path').stringValue)) {
       throw ArgumentError(
           '`annotation.path` must be relative path to the source file.');
+    }
+
+    if (_ignoreForFile.isNotEmpty) {
+      yield '// ignore_for_file: ${_ignoreForFile.join(', ')}';
     }
 
     final sourcePathDir = p.dirname(buildStep.inputId.path);
@@ -34,7 +45,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     final thing = jsonLiteralAsDart(content).toString();
     final marked = asConst ? 'const' : 'final';
 
-    return '$marked _\$${element.name}JsonLiteral = $thing;';
+    yield '$marked _\$${element.name}JsonLiteral = $thing;';
   }
 }
 

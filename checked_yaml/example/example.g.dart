@@ -6,6 +6,8 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 Configuration _$ConfigurationFromJson(Map json) {
   return $checkedNew('Configuration', json, () {
     $checkKeys(json,

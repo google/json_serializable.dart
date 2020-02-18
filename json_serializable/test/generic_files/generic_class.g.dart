@@ -6,6 +6,8 @@ part of 'generic_class.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
   return GenericClass<T, S>()

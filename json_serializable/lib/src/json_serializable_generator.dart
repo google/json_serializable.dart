@@ -27,31 +27,9 @@ import 'utils.dart';
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
-  static const _coreHelpers = <TypeHelper>[
-    IterableHelper(),
-    MapHelper(),
-    EnumHelper(),
-    ValueHelper(),
-  ];
-
-  static const _defaultHelpers = <TypeHelper>[
-    BigIntHelper(),
-    DateTimeHelper(),
-    DurationHelper(),
-    JsonHelper(),
-    UriHelper(),
-  ];
-
   final List<TypeHelper> _typeHelpers;
-
-  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
-        ConvertHelper(),
-        JsonConverterHelper()
-      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
-
   final JsonSerializable _config;
-
-  JsonSerializable get config => _config.withDefaults();
+  final Set<String> _ignoreForFile;
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -61,8 +39,10 @@ class JsonSerializableGenerator
   const JsonSerializableGenerator({
     JsonSerializable config,
     List<TypeHelper> typeHelpers,
+    Set<String> ignoreForFile,
   })  : _config = config ?? JsonSerializable.defaults,
-        _typeHelpers = typeHelpers ?? _defaultHelpers;
+        _typeHelpers = typeHelpers ?? _defaultHelpers,
+        _ignoreForFile = ignoreForFile ?? const <String>{};
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -71,12 +51,22 @@ class JsonSerializableGenerator
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
-          Iterable<TypeHelper> typeHelpers,
-          {JsonSerializable config}) =>
+    Iterable<TypeHelper> typeHelpers, {
+    JsonSerializable config,
+    Set<String> ignoreForFile,
+  }) =>
       JsonSerializableGenerator(
         config: config,
         typeHelpers: List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)),
+        ignoreForFile: ignoreForFile,
       );
+
+  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
+        ConvertHelper(),
+        JsonConverterHelper()
+      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
+
+  JsonSerializable get config => _config.withDefaults();
 
   @override
   Iterable<String> generateForAnnotatedElement(
@@ -116,6 +106,10 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   Iterable<TypeHelper> get allTypeHelpers => _generator._allHelpers;
 
   Iterable<String> _generate() sync* {
+    if (_generator._ignoreForFile.isNotEmpty) {
+      yield '// ignore_for_file: ${_generator._ignoreForFile.join(', ')}';
+    }
+
     assert(_addedMembers.isEmpty);
     final sortedFields = createSortedFieldSet(element);
 
@@ -181,3 +175,18 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     yield* _addedMembers;
   }
 }
+
+const _coreHelpers = <TypeHelper>[
+  IterableHelper(),
+  MapHelper(),
+  EnumHelper(),
+  ValueHelper(),
+];
+
+const _defaultHelpers = <TypeHelper>[
+  BigIntHelper(),
+  DateTimeHelper(),
+  DurationHelper(),
+  JsonHelper(),
+  UriHelper(),
+];

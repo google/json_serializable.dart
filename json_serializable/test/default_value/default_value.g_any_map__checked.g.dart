@@ -6,6 +6,8 @@ part of 'default_value.g_any_map__checked.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 DefaultValue _$DefaultValueFromJson(Map json) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue();

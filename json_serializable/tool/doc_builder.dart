@@ -55,6 +55,7 @@ class _DocBuilder extends Builder {
     final rows = <List<String>>[
       ['`build.yaml` key', _jsonSerializable, _jsonKey],
       ['-', '-', '-'],
+      ['ignore_for_file', '', ''],
       for (var info in sortedValues)
         [
           info.buildKey,

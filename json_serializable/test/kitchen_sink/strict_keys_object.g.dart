@@ -6,6 +6,8 @@ part of 'strict_keys_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
   $checkKeys(json,
       allowedKeys: const ['value', 'custom_field'],

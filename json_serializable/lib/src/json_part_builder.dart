@@ -17,9 +17,20 @@ import 'json_serializable_generator.dart';
 Builder jsonPartBuilder({
   String Function(String code) formatOutput,
   JsonSerializable config,
-}) =>
-    SharedPartBuilder(
-      [JsonSerializableGenerator(config: config), const JsonLiteralGenerator()],
-      'json_serializable',
-      formatOutput: formatOutput,
-    );
+  Set<String> ignoreForFile,
+}) {
+  ignoreForFile ??= const <String>{};
+  return SharedPartBuilder(
+    [
+      JsonSerializableGenerator(
+        config: config,
+        ignoreForFile: ignoreForFile,
+      ),
+      JsonLiteralGenerator(
+        ignoreForFile: ignoreForFile,
+      ),
+    ],
+    'json_serializable',
+    formatOutput: formatOutput,
+  );
+}

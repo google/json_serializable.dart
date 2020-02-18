@@ -6,6 +6,8 @@ part of 'build_config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 Config _$ConfigFromJson(Map json) {
   return $checkedNew('Config', json, () {
     $checkKeys(json, requiredKeys: const ['builders']);

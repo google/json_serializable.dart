@@ -6,6 +6,8 @@ part of 'kitchen_sink.g_any_map.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return KitchenSink(
     ctorValidatedNo42: json['no-42'] as int,

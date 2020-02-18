@@ -6,6 +6,8 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
     json['firstName'] as String,
@@ -87,6 +89,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
 // **************************************************************************
 // JsonLiteralGenerator
 // **************************************************************************
+
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
 
 final _$glossaryDataJsonLiteral = {
   'glossary': {

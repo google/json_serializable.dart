@@ -6,6 +6,8 @@ part of 'json_converter_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 GenericCollection<T> _$GenericCollectionFromJson<T>(Map<String, dynamic> json) {
   return GenericCollection<T>(
     page: json['page'] as int,

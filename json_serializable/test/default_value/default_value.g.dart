@@ -6,6 +6,8 @@ part of 'default_value.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+// ignore_for_file: lines_longer_than_80_chars, prefer_expression_function_bodies
+
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
   return DefaultValue()
     ..fieldBool = json['fieldBool'] as bool ?? true
