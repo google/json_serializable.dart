@@ -3,10 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-
-// ignore: implementation_imports
-import 'package:analyzer/src/dart/element/inheritance_manager3.dart'
-    show InheritanceManager3;
+import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
+    show
+        InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
 
 import 'utils.dart';
@@ -106,10 +105,8 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
 
   final fields = allFields
       .map((e) => _FieldSet(elementInstanceFields[e], inheritedFields[e]))
-      .toList();
-
-  // Sort the fields using the `compare` implementation in _FieldSet
-  fields.sort();
+      .toList()
+        ..sort();
 
   return fields.map((fs) => fs.field).toList();
 }

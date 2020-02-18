@@ -14,7 +14,7 @@ import 'package:yaml/yaml.dart';
 final _formatter = DartFormatter();
 
 Builder internal([_]) {
-  final builder = const _SmartBuilder();
+  const builder = _SmartBuilder();
   _validateBuilder(builder);
   return builder;
 }

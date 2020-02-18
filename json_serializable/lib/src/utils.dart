@@ -11,7 +11,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
 
-final _jsonKeyChecker = const TypeChecker.fromRuntime(JsonKey);
+const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
 DartObject jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOfExact(element) ??

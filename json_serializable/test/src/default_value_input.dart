@@ -125,7 +125,8 @@ class DefaultWithToJsonClass {
   static int _fromJson(String input) => 41;
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 DefaultWithDisallowNullRequiredClass
     _$DefaultWithDisallowNullRequiredClassFromJson(Map<String, dynamic> json) {
   $checkKeys(json,
@@ -133,9 +134,12 @@ DefaultWithDisallowNullRequiredClass
   return DefaultWithDisallowNullRequiredClass()
     ..theField = json['theField'] as int ?? 7;
 }
-''', expectedLogItems: [
-  'The `defaultValue` on field `theField` will have no effect because both `disallowNullValue` and `required` are set to `true`.'
-])
+''',
+  expectedLogItems: [
+    'The `defaultValue` on field `theField` will have no effect because both '
+        '`disallowNullValue` and `required` are set to `true`.',
+  ],
+)
 @JsonSerializable(createToJson: false)
 class DefaultWithDisallowNullRequiredClass {
   @JsonKey(defaultValue: 7, disallowNullValue: true, required: true)

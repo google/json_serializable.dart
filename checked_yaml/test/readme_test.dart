@@ -43,8 +43,8 @@ void main() {
   });
 
   test('ran example', () async {
-    final inputContent = '{"name": "", "count": 1}';
-    final errorContent = r'''
+    const inputContent = '{"name": "", "count": 1}';
+    const errorContent = r'''
 Unhandled exception:
 ParsedYamlException: line 1, column 10: Unsupported value for "name". Cannot be empty.
   ╷

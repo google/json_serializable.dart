@@ -19,7 +19,7 @@ import 'shared_config.dart';
 
 LibraryReader _libraryReader;
 
-void main() async {
+Future<void> main() async {
   initializeBuildLogTracking();
   _libraryReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'test_sources'),
@@ -31,7 +31,7 @@ void main() async {
   });
 
   group('configuration', () {
-    Future<Null> runWithConfigAndLogger(
+    Future<void> runWithConfigAndLogger(
         JsonSerializable config, String className) async {
       await generateForElement(
           JsonSerializableGenerator(
@@ -86,26 +86,28 @@ void main() async {
     });
 
     test(
-        'explicit values in annotation override corresponding settings in config',
-        () async {
-      await runWithConfigAndLogger(
-          JsonSerializable.fromJson(generatorConfigNonDefaultJson),
-          'ConfigurationExplicitDefaults');
+      'explicit values in annotation override corresponding settings in config',
+      () async {
+        await runWithConfigAndLogger(
+            JsonSerializable.fromJson(generatorConfigNonDefaultJson),
+            'ConfigurationExplicitDefaults');
 
-      expect(_ConfigLogger.configurations, hasLength(2));
-      expect(_ConfigLogger.configurations.first,
-          same(_ConfigLogger.configurations.last));
+        expect(_ConfigLogger.configurations, hasLength(2));
+        expect(_ConfigLogger.configurations.first,
+            same(_ConfigLogger.configurations.last));
 
-      // The effective configuration should be non-Default configuration, but
-      // with all fields set from JsonSerializable as the defaults
+        // The effective configuration should be non-Default configuration, but
+        // with all fields set from JsonSerializable as the defaults
 
-      final expected = Map<String, dynamic>.from(generatorConfigNonDefaultJson);
-      for (var jsonSerialKey in jsonSerializableFields) {
-        expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
-      }
+        final expected =
+            Map<String, dynamic>.from(generatorConfigNonDefaultJson);
+        for (var jsonSerialKey in jsonSerializableFields) {
+          expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
+        }
 
-      expect(_ConfigLogger.configurations.first.toJson(), expected);
-    });
+        expect(_ConfigLogger.configurations.first.toJson(), expected);
+      },
+    );
   });
 }
 
@@ -123,7 +125,7 @@ void _registerTests(JsonSerializable generator) {
       final output = await _runForElementNamed(
           const JsonSerializable(), 'TrivialNestedNullable');
 
-      final expected = r'''
+      const expected = r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
         TrivialNestedNullable instance) =>
     <String, dynamic>{
@@ -138,7 +140,7 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
       final output = await _runForElementNamed(
           const JsonSerializable(), 'TrivialNestedNonNullable');
 
-      final expected = r'''
+      const expected = r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
         TrivialNestedNonNullable instance) =>
     <String, dynamic>{

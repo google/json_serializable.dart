@@ -62,7 +62,7 @@ void main() {
   });
 }
 
-final _badConfigs = const {
+const _badConfigs = {
   r'''
 builders:
 - a
@@ -178,7 +178,8 @@ T roundTripObject<T>(
 String loudEncode(Object object) {
   try {
     return const JsonEncoder.withIndent(' ').convert(object);
-  } on JsonUnsupportedObjectError catch (e) {
+  } on JsonUnsupportedObjectError catch (e) // ignore: avoid_catching_errors
+  {
     var error = e;
     do {
       final cause = error.cause;

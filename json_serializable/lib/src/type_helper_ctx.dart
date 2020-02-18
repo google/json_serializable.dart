@@ -68,7 +68,7 @@ class TypeHelperCtx
               targetType, expression, _notSupportedWithTypeHelpersMsg));
 }
 
-final _notSupportedWithTypeHelpersMsg =
+const _notSupportedWithTypeHelpersMsg =
     'None of the provided `TypeHelper` instances support the defined type.';
 
 class _ConvertPair {

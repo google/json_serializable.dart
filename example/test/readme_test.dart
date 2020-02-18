@@ -18,7 +18,7 @@ void _expect(String fileName) {
   });
 }
 
-final _pubspecContent = r'''
+const _pubspecContent = r'''
 dependencies:
   json_annotation: ^3.0.0
 

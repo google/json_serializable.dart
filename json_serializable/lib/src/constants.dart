@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 /// Name used for closure argument when generating calls to `map`.
-final closureArg = 'e';
+const closureArg = 'e';
 
 const generatedLocalVarName = 'val';
 const toJsonMapHelperName = 'writeNotNull';

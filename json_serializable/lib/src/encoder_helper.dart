@@ -36,25 +36,24 @@ abstract class EncodeHelper implements HelperCore {
   }
 
   void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields) {
-    buffer.writeln('=> <String, dynamic>{');
-
-    buffer.writeAll(fields.map((field) {
-      final access = _fieldAccess(field);
-      final value =
-          '${safeNameAccess(field)}: ${_serializeField(field, access)}';
-      return '        $value,\n';
-    }));
-
-    buffer.writeln('};');
+    buffer
+      ..writeln('=> <String, dynamic>{')
+      ..writeAll(fields.map((field) {
+        final access = _fieldAccess(field);
+        final value =
+            '${safeNameAccess(field)}: ${_serializeField(field, access)}';
+        return '        $value,\n';
+      }))
+      ..writeln('};');
   }
 
   static const _toJsonParamName = 'instance';
 
   void _writeToJsonWithNullChecks(
       StringBuffer buffer, Iterable<FieldElement> fields) {
-    buffer.writeln('{');
-
-    buffer.writeln('    final $generatedLocalVarName = <String, dynamic>{');
+    buffer
+      ..writeln('{')
+      ..writeln('    final $generatedLocalVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them
@@ -84,12 +83,13 @@ abstract class EncodeHelper implements HelperCore {
       } else {
         if (directWrite) {
           // close the still-open map literal
-          buffer.writeln('    };');
-          buffer.writeln();
+          buffer
+            ..writeln('    };')
+            ..writeln()
 
-          // write the helper to be used by all following null-excluding
-          // fields
-          buffer.writeln('''
+            // write the helper to be used by all following null-excluding
+            // fields
+            ..writeln('''
     void $toJsonMapHelperName(String key, dynamic value) {
       if (value != null) {
         $generatedLocalVarName[key] = value;
@@ -103,8 +103,7 @@ abstract class EncodeHelper implements HelperCore {
       }
     }
 
-    buffer.writeln('    return $generatedLocalVarName;');
-    buffer.writeln('  }');
+    buffer..writeln('    return $generatedLocalVarName;')..writeln('  }');
   }
 
   String _serializeField(FieldElement field, String accessExpression) {
@@ -112,7 +111,8 @@ abstract class EncodeHelper implements HelperCore {
       return getHelperContext(field)
           .serialize(field.type, accessExpression)
           .toString();
-    } on UnsupportedTypeError catch (e) {
+    } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
+    {
       throw createInvalidGenerationError('toJson', field, e);
     }
   }

@@ -92,5 +92,5 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 }
 
-final _coreListChecker = const TypeChecker.fromUrl('dart:core#List');
-final _coreSetChecker = const TypeChecker.fromUrl('dart:core#Set');
+const _coreListChecker = TypeChecker.fromUrl('dart:core#List');
+const _coreSetChecker = TypeChecker.fromUrl('dart:core#Set');

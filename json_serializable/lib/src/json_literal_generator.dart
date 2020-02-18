@@ -7,10 +7,9 @@ import 'dart:convert';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
-
-import 'package:json_annotation/json_annotation.dart';
 
 import 'utils.dart';
 
@@ -59,8 +58,7 @@ String jsonLiteralAsDart(dynamic value) {
 }
 
 String jsonMapAsDart(Map value) {
-  final buffer = StringBuffer();
-  buffer.write('{');
+  final buffer = StringBuffer()..write('{');
 
   var first = true;
   value.forEach((k, v) {
@@ -69,9 +67,10 @@ String jsonMapAsDart(Map value) {
     } else {
       buffer.writeln(',');
     }
-    buffer.write(escapeDartString(k as String));
-    buffer.write(': ');
-    buffer.write(jsonLiteralAsDart(v));
+    buffer
+      ..write(escapeDartString(k as String))
+      ..write(': ')
+      ..write(jsonLiteralAsDart(v));
   });
 
   buffer.write('}');
