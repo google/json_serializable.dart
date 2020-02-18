@@ -51,21 +51,28 @@ class TypeHelperCtx
 
   @override
   Object serialize(DartType targetType, String expression) => _run(
-      targetType,
-      expression,
-      (TypeHelper th) => th.serialize(targetType, expression, this));
+        targetType,
+        expression,
+        (TypeHelper th) => th.serialize(targetType, expression, this),
+      );
 
   @override
   Object deserialize(DartType targetType, String expression) => _run(
-      targetType,
-      expression,
-      (TypeHelper th) => th.deserialize(targetType, expression, this));
+        targetType,
+        expression,
+        (TypeHelper th) => th.deserialize(targetType, expression, this),
+      );
 
-  Object _run(DartType targetType, String expression,
-          Object Function(TypeHelper) invoke) =>
-      _helperCore.allTypeHelpers.map(invoke).firstWhere((r) => r != null,
-          orElse: () => throw UnsupportedTypeError(
-              targetType, expression, _notSupportedWithTypeHelpersMsg));
+  Object _run(
+    DartType targetType,
+    String expression,
+    Object Function(TypeHelper) invoke,
+  ) =>
+      _helperCore.allTypeHelpers.map(invoke).firstWhere(
+            (r) => r != null,
+            orElse: () => throw UnsupportedTypeError(
+                targetType, expression, _notSupportedWithTypeHelpersMsg),
+          );
 }
 
 const _notSupportedWithTypeHelpersMsg =
