@@ -68,12 +68,13 @@ abstract class DecodeHelper implements HelperCore {
       for (final field in data.fieldsToSet) {
         _buffer.writeln();
         final safeName = safeNameAccess(accessibleFields[field]);
-        _buffer.write('''
-    \$checkedConvert(json, $safeName, (v) => ''');
-        _buffer.write('val.$field = ');
-        _buffer.write(_deserializeForField(accessibleFields[field],
-            checkedProperty: true));
-        _buffer.write(');');
+        _buffer
+          ..write('''
+    \$checkedConvert(json, $safeName, (v) => ''')
+          ..write('val.$field = ')
+          ..write(_deserializeForField(accessibleFields[field],
+              checkedProperty: true))
+          ..write(');');
       }
 
       _buffer.write('''\n    return val;
@@ -91,9 +92,7 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
-      _buffer.write(fieldKeyMapArg);
-
-      _buffer.write(')');
+      _buffer..write(fieldKeyMapArg)..write(')');
     } else {
       data = _writeConstructorInvocation(
           element,
@@ -114,13 +113,13 @@ abstract class DecodeHelper implements HelperCore {
       _buffer.write('''
   return ${data.content}''');
       for (final field in data.fieldsToSet) {
-        _buffer.writeln();
-        _buffer.write('    ..$field = ');
-        _buffer.write(deserializeFun(field));
+        _buffer
+          ..writeln()
+          ..write('    ..$field = ')
+          ..write(deserializeFun(field));
       }
     }
-    _buffer.writeln(';\n}');
-    _buffer.writeln();
+    _buffer..writeln(';\n}')..writeln();
 
     return CreateFactoryResult(
         _buffer.toString(), data.usedCtorParamsAndFields);
@@ -183,7 +182,8 @@ abstract class DecodeHelper implements HelperCore {
             .deserialize(targetType, 'json[$jsonKeyName]')
             .toString();
       }
-    } on UnsupportedTypeError catch (e) {
+    } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
+    {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
@@ -273,23 +273,25 @@ _ConstructorData _writeConstructorInvocation(
   final remainingFieldsForInvocationBody =
       writableFields.toSet().difference(usedCtorParamsAndFields);
 
-  final buffer = StringBuffer();
-  buffer.write('$className${genericClassArguments(classElement, false)}(');
+  final buffer = StringBuffer()
+    ..write('$className${genericClassArguments(classElement, false)}(');
   if (constructorArguments.isNotEmpty) {
-    buffer.writeln();
-    buffer.writeAll(constructorArguments.map((paramElement) {
-      final content =
-          deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      $content,\n';
-    }));
+    buffer
+      ..writeln()
+      ..writeAll(constructorArguments.map((paramElement) {
+        final content =
+            deserializeForField(paramElement.name, ctorParam: paramElement);
+        return '      $content,\n';
+      }));
   }
   if (namedConstructorArguments.isNotEmpty) {
-    buffer.writeln();
-    buffer.writeAll(namedConstructorArguments.map((paramElement) {
-      final value =
-          deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      ${paramElement.name}: $value,\n';
-    }));
+    buffer
+      ..writeln()
+      ..writeAll(namedConstructorArguments.map((paramElement) {
+        final value =
+            deserializeForField(paramElement.name, ctorParam: paramElement);
+        return '      ${paramElement.name}: $value,\n';
+      }));
   }
 
   buffer.write(')');

@@ -39,7 +39,7 @@ const theAnswer = 42;
 @ShouldThrow('Generator cannot target `annotatedMethod`.',
     todo: 'Remove the JsonSerializable annotation from `annotatedMethod`.')
 @JsonSerializable()
-void annotatedMethod() => null;
+Object annotatedMethod() => null;
 
 @ShouldGenerate(
   r'''
@@ -56,7 +56,7 @@ Map<String, dynamic> _$OnlyStaticMembersToJson(OnlyStaticMembers instance) =>
 class OnlyStaticMembers {
   // To ensure static members are not considered for serialization.
   static const answer = 42;
-  static final reason = 42;
+  static final reason = DateTime.now();
 
   static int get understand => 42;
 }

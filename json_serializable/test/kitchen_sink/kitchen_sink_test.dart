@@ -290,10 +290,13 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
     innerMatcher = anyOf(
-        isCastError,
-        _isATypeError,
-        _isAUnrecognizedKeysException(
-            'Unrecognized keys: [invalid_key]; supported keys: [value, custom_field]'));
+      isCastError,
+      _isATypeError,
+      _isAUnrecognizedKeysException(
+        'Unrecognized keys: [invalid_key]; supported keys: '
+        '[value, custom_field]',
+      ),
+    );
 
     if (checkedAssignment) {
       switch (expectedKey) {

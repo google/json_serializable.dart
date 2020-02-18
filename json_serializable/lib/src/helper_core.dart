@@ -62,8 +62,11 @@ InvalidGenerationSourceError createInvalidGenerationError(
   }
   message = '$message.\n${e.reason}';
 
-  final todo = 'Make sure all of the types are serializable.';
-  return InvalidGenerationSourceError(message, todo: todo, element: field);
+  return InvalidGenerationSourceError(
+    message,
+    todo: 'Make sure all of the types are serializable.',
+    element: field,
+  );
 }
 
 /// Returns a [String] representing the type arguments that exist on
