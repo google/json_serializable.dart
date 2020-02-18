@@ -9,7 +9,7 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^1.0.0
-  json_serializable: ^3.2.0
+  json_serializable: ^3.3.0
 ```
 
 Annotate your code with classes defined in
