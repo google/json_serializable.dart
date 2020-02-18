@@ -12,6 +12,7 @@ import 'package:json_serializable/src/json_serializable_generator.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
 
+import '../tool/build_only_options.dart';
 import 'shared_config.dart';
 
 void main() {
@@ -48,7 +49,8 @@ void main() {
 
   test('config is null-protected when passed to JsonSerializableGenerator', () {
     final nullValueMap = Map.fromEntries(
-        generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)));
+      generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)),
+    );
     final config = JsonSerializable.fromJson(nullValueMap);
     final generator = JsonSerializableGenerator(config: config);
     expect(generator.config.toJson(), generatorConfigDefaultJson);
@@ -69,18 +71,27 @@ void main() {
       r'$default',
       'builders',
       'json_serializable',
-      'options'
+      'options',
     ]) {
       yaml = yaml[key] as YamlMap;
     }
 
     final configMap = Map<String, dynamic>.from(yaml);
 
-    expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
-        reason: 'All supported keys are documented.');
+    expect(
+      configMap.keys,
+      unorderedEquals([
+        ...generatorConfigDefaultJson.keys,
+        ...buildOnlyOptions,
+      ]),
+      reason: 'All supported keys are documented.',
+    );
+
+    final configMapWithoutBuildOnlyOptions = Map.of(configMap)
+      ..removeWhere((key, value) => buildOnlyOptions.contains(key));
 
     expect(
-      JsonSerializable.fromJson(configMap).toJson(),
+      JsonSerializable.fromJson(configMapWithoutBuildOnlyOptions).toJson(),
       generatorConfigDefaultJson,
     );
 
@@ -98,8 +109,9 @@ void main() {
     );
 
     expect(
-        () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
-        throwsA(matcher));
+      () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
+      throwsA(matcher),
+    );
   });
 
   group('invalid config', () {
@@ -125,7 +137,9 @@ There is a problem with "${entry.key}".
 $lastLine''',
         );
         expect(
-            () => jsonSerializable(BuilderOptions(config)), throwsA(matcher));
+          () => jsonSerializable(BuilderOptions(config)),
+          throwsA(matcher),
+        );
       });
     }
   });
