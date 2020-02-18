@@ -14,9 +14,12 @@ import 'json_serializable_generator.dart';
 ///
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
-Builder jsonPartBuilder(
-        {String Function(String code) formatOutput, JsonSerializable config}) =>
-    SharedPartBuilder([
-      JsonSerializableGenerator(config: config),
-      const JsonLiteralGenerator()
-    ], 'json_serializable', formatOutput: formatOutput);
+Builder jsonPartBuilder({
+  String Function(String code) formatOutput,
+  JsonSerializable config,
+}) =>
+    SharedPartBuilder(
+      [JsonSerializableGenerator(config: config), const JsonLiteralGenerator()],
+      'json_serializable',
+      formatOutput: formatOutput,
+    );

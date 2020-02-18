@@ -74,13 +74,16 @@ class JsonSerializableGenerator
           Iterable<TypeHelper> typeHelpers,
           {JsonSerializable config}) =>
       JsonSerializableGenerator(
-          config: config,
-          typeHelpers:
-              List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)));
+        config: config,
+        typeHelpers: List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)),
+      );
 
   @override
   Iterable<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) {
     if (element is! ClassElement) {
       final name = element.name;
       throw InvalidGenerationSourceError('Generator cannot target `$name`.',
@@ -99,8 +102,10 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   final _addedMembers = <String>{};
 
   _GeneratorHelper(
-      this._generator, ClassElement element, ConstantReader annotation)
-      : super(element, mergeConfig(_generator.config, annotation));
+    this._generator,
+    ClassElement element,
+    ConstantReader annotation,
+  ) : super(element, mergeConfig(_generator.config, annotation));
 
   @override
   void addMember(String memberContent) {
@@ -120,23 +125,26 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     final unavailableReasons = <String, String>{};
 
     final accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
-        <String, FieldElement>{}, (map, field) {
-      if (!field.isPublic) {
-        unavailableReasons[field.name] = 'It is assigned to a private field.';
-      } else if (field.getter == null) {
-        assert(field.setter != null);
-        unavailableReasons[field.name] =
-            'Setter-only properties are not supported.';
-        log.warning('Setters are ignored: ${element.name}.${field.name}');
-      } else if (jsonKeyFor(field).ignore) {
-        unavailableReasons[field.name] = 'It is assigned to an ignored field.';
-      } else {
-        assert(!map.containsKey(field.name));
-        map[field.name] = field;
-      }
+      <String, FieldElement>{},
+      (map, field) {
+        if (!field.isPublic) {
+          unavailableReasons[field.name] = 'It is assigned to a private field.';
+        } else if (field.getter == null) {
+          assert(field.setter != null);
+          unavailableReasons[field.name] =
+              'Setter-only properties are not supported.';
+          log.warning('Setters are ignored: ${element.name}.${field.name}');
+        } else if (jsonKeyFor(field).ignore) {
+          unavailableReasons[field.name] =
+              'It is assigned to an ignored field.';
+        } else {
+          assert(!map.containsKey(field.name));
+          map[field.name] = field;
+        }
 
-      return map;
-    });
+        return map;
+      },
+    );
 
     var accessibleFieldSet = accessibleFields.values.toSet();
     if (config.createFactory) {
@@ -152,16 +160,19 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     // Check for duplicate JSON keys due to colliding annotations.
     // We do this now, since we have a final field list after any pruning done
     // by `_writeCtor`.
-    accessibleFieldSet.fold(<String>{}, (Set<String> set, fe) {
-      final jsonKey = nameAccess(fe);
-      if (!set.add(jsonKey)) {
-        throw InvalidGenerationSourceError(
-            'More than one field has the JSON key `$jsonKey`.',
-            todo: 'Check the `JsonKey` annotations on fields.',
-            element: fe);
-      }
-      return set;
-    });
+    accessibleFieldSet.fold(
+      <String>{},
+      (Set<String> set, fe) {
+        final jsonKey = nameAccess(fe);
+        if (!set.add(jsonKey)) {
+          throw InvalidGenerationSourceError(
+              'More than one field has the JSON key `$jsonKey`.',
+              todo: 'Check the `JsonKey` annotations on fields.',
+              element: fe);
+        }
+        return set;
+      },
+    );
 
     if (config.createToJson) {
       yield* createToJson(accessibleFieldSet);
