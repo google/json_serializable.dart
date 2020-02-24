@@ -46,6 +46,7 @@ linter:
     - library_prefixes
     - list_remove_unrelated_type
     - literal_only_boolean_expressions
+    - missing_whitespace_between_adjacent_strings
     - no_duplicate_case_values
     - no_runtimeType_toString
     - non_constant_identifier_names
@@ -83,6 +84,7 @@ linter:
     - prefer_spread_collections
     - prefer_typing_uninitialized_variables
     - prefer_void_to_null
+    - provide_deprecation_message
     - recursive_getters
     - slash_for_doc_comments
     - sort_pub_dependencies
@@ -105,5 +107,6 @@ linter:
     - unrelated_type_equality_checks
     - use_function_type_syntax_for_parameters
     - use_rethrow_when_possible
+    - use_string_buffers
     - valid_regexps
     - void_checks
