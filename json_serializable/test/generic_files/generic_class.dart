@@ -101,7 +101,6 @@ class _DurationListMillisecondConverter
   List<Duration> fromJson(int json) => [Duration(milliseconds: json)];
 
   @override
-  int toJson(List<Duration> object) => object?.fold<int>(0, (sum, obj) {
-        return sum + obj.inMilliseconds;
-      });
+  int toJson(List<Duration> object) =>
+      object?.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
 }

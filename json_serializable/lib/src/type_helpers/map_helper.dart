@@ -42,7 +42,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final optionalQuestion = context.nullable ? '?' : '';
 
     return '$expression$optionalQuestion'
-        '.map(($_keyParam, $closureArg) => MapEntry($subKeyValue, $subFieldValue))';
+        '.map(($_keyParam, $closureArg) => '
+        'MapEntry($subKeyValue, $subFieldValue))';
   }
 
   @override
@@ -69,8 +70,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
             return '$expression as Map';
           }
         } else {
-          // this is the trivial case. Do a runtime cast to the known type of JSON
-          // map values - `Map<String, dynamic>`
+          // this is the trivial case. Do a runtime cast to the known type of
+          // JSON map values - `Map<String, dynamic>`
           return '$expression as Map<String, dynamic>';
         }
       }
@@ -107,7 +108,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       keyUsage = toFromString.deserialize(keyArg, keyUsage, false, true);
     }
 
-    return '($expression $mapCast)$optionalQuestion.map('
+    return '($expression $mapCast)$optionalQuestion.map( '
         '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
   }
 }
