@@ -81,7 +81,8 @@ String _enumValueMapFromType(DartType targetType) {
           '${jsonLiteralAsDart(e.value)},')
       .join();
 
-  return 'const ${_constMapName(targetType)} = {\n$items\n};';
+  return 'const ${_constMapName(targetType)} = '
+      '<${targetType.element.name}, dynamic>{\n$items\n};';
 }
 
 const _enumDecodeHelper = r'''
