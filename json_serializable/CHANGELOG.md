@@ -1,5 +1,6 @@
-## unreleased
+## 3.3.0
 
+- Add support for fields annotated subclasses of `JsonKey`.
 - Export the following `TypeHelper` implementations and interfaces in
   `package:json_serializable/type_helper.dart`:
   - `DurationHelper`

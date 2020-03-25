@@ -482,3 +482,25 @@ class IgnoreUnannotated {
 
   int unannotated;
 }
+
+@ShouldGenerate(
+  r'''
+SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) {
+  return SubclassedJsonKey()..annotatedWithSubclass = json['bob'] as int;
+}
+
+Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
+    <String, dynamic>{
+      'bob': instance.annotatedWithSubclass,
+    };
+''',
+)
+@JsonSerializable(ignoreUnannotated: true)
+class SubclassedJsonKey {
+  @MyJsonKey()
+  int annotatedWithSubclass;
+}
+
+class MyJsonKey extends JsonKey {
+  const MyJsonKey() : super(name: 'bob');
+}

@@ -90,11 +90,11 @@ class _ConvertPair {
 
     if (pair == null) {
       final obj = jsonKeyAnnotation(element);
-      if (obj == null) {
+      if (obj.isNull) {
         pair = _ConvertPair._(null, null);
       } else {
-        final toJson = _convertData(obj, element, false);
-        final fromJson = _convertData(obj, element, true);
+        final toJson = _convertData(obj.objectValue, element, false);
+        final fromJson = _convertData(obj.objectValue, element, true);
         pair = _ConvertPair._(fromJson, toJson);
       }
       _expando[element] = pair;
@@ -107,7 +107,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
   final paramName = isFrom ? 'fromJson' : 'toJson';
   final objectValue = obj.getField(paramName);
 
-  if (objectValue.isNull) {
+  if (objectValue == null || objectValue.isNull) {
     return null;
   }
 
