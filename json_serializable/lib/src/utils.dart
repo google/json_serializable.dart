@@ -129,7 +129,7 @@ final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
   MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
     final annotation =
-        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOf(fe);
+        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
 
     dynamic fieldValue;
     if (annotation == null) {
