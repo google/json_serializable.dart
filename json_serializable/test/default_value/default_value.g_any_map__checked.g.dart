@@ -106,7 +106,7 @@ T _$enumDecodeNullable<T>(
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$GreekEnumMap = {
+const _$GreekEnumMap = <Greek, dynamic>{
   Greek.alpha: 'alpha',
   Greek.beta: 'beta',
   Greek.gamma: 'gamma',

@@ -61,7 +61,7 @@ T _$enumDecode<T>(
   return value ?? unknownValue;
 }
 
-const _$CategoryEnumMap = {
+const _$CategoryEnumMap = <Category, dynamic>{
   Category.top: 'top',
   Category.bottom: 'bottom',
   Category.strange: 'strange',
@@ -115,7 +115,7 @@ T _$enumDecodeNullable<T>(
   return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
-const _$StatusCodeEnumMap = {
+const _$StatusCodeEnumMap = <StatusCode, dynamic>{
   StatusCode.success: 200,
   StatusCode.notFound: 404,
   StatusCode.weird: '500',
