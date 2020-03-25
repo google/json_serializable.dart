@@ -38,7 +38,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
   final obj = jsonKeyAnnotation(element);
 
-  if (obj == null) {
+  if (obj.isNull) {
     return _populateJsonKey(
       classAnnotation,
       element,
@@ -117,9 +117,11 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   /// either the annotated field is not an `enum` or if the value in
   /// [fieldName] is not an `enum` value.
   Object _annotationValue(String fieldName, {bool mustBeEnum = false}) {
-    final annotationValue = obj.getField(fieldName);
+    final annotationValue = obj.read(fieldName);
 
-    final enumFields = iterateEnumFields(annotationValue.type);
+    final enumFields = annotationValue.isNull
+        ? null
+        : iterateEnumFields(annotationValue.objectValue.type);
     if (enumFields != null) {
       if (mustBeEnum && !isEnum(element.type)) {
         throwUnsupported(
@@ -131,11 +133,13 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
           enumFields.map((p) => p.name).toList(growable: false);
 
       final enumValueName = enumValueForDartObject<String>(
-          annotationValue, enumValueNames, (n) => n);
+          annotationValue.objectValue, enumValueNames, (n) => n);
 
-      return '${annotationValue.type.element.name}.$enumValueName';
+      return '${annotationValue.objectValue.type.element.name}.$enumValueName';
     } else {
-      final defaultValueLiteral = literalForObject(annotationValue, []);
+      final defaultValueLiteral = annotationValue.isNull
+          ? null
+          : literalForObject(annotationValue.objectValue, []);
       if (defaultValueLiteral == null) {
         return null;
       }
@@ -153,12 +157,12 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     classAnnotation,
     element,
     defaultValue: _annotationValue('defaultValue'),
-    disallowNullValue: obj.getField('disallowNullValue').toBoolValue(),
-    ignore: obj.getField('ignore').toBoolValue(),
-    includeIfNull: obj.getField('includeIfNull').toBoolValue(),
-    name: obj.getField('name').toStringValue(),
-    nullable: obj.getField('nullable').toBoolValue(),
-    required: obj.getField('required').toBoolValue(),
+    disallowNullValue: obj.read('disallowNullValue').literalValue as bool,
+    ignore: obj.read('ignore').literalValue as bool,
+    includeIfNull: obj.read('includeIfNull').literalValue as bool,
+    name: obj.read('name').literalValue as String,
+    nullable: obj.read('nullable').literalValue as bool,
+    required: obj.read('required').literalValue as bool,
     unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
   );
 }

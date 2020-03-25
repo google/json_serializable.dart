@@ -13,15 +13,18 @@ import 'helper_core.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
-DartObject jsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyChecker.firstAnnotationOfExact(element) ??
+DartObject _jsonKeyAnnotation(FieldElement element) =>
+    _jsonKeyChecker.firstAnnotationOf(element) ??
     (element.getter == null
         ? null
-        : _jsonKeyChecker.firstAnnotationOfExact(element.getter));
+        : _jsonKeyChecker.firstAnnotationOf(element.getter));
+
+ConstantReader jsonKeyAnnotation(FieldElement element) =>
+    ConstantReader(_jsonKeyAnnotation(element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
 bool hasJsonKeyAnnotation(FieldElement element) =>
-    jsonKeyAnnotation(element) != null;
+    _jsonKeyAnnotation(element) != null;
 
 final _upperCase = RegExp('[A-Z]');
 

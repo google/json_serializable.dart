@@ -84,6 +84,7 @@ const _expectedAnnotatedTests = [
   'PrivateFieldCtorClass',
   'PropInMixinI448Regression',
   'SetSupport',
+  'SubclassedJsonKey',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
   'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
