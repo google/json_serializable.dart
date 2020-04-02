@@ -54,15 +54,15 @@ void main() {
     expect(
         () => GenericCollection<CustomResult>.fromJson(
             jsonDecode(encoded) as Map<String, dynamic>),
-        _throwsCastSomething);
+        _throwsCastError);
     expect(
         () => GenericCollection<int>.fromJson(
             jsonDecode(encoded) as Map<String, dynamic>),
-        _throwsCastSomething);
+        _throwsCastError);
     expect(
         () => GenericCollection<String>.fromJson(
             jsonDecode(encoded) as Map<String, dynamic>),
-        _throwsCastSomething);
+        _throwsCastError);
 
     final collection2 =
         GenericCollection.fromJson(jsonDecode(encoded) as Map<String, dynamic>);
@@ -81,7 +81,8 @@ void main() {
   });
 }
 
-final _throwsCastSomething = throwsA(isA<CastError>());
+// ignore: deprecated_member_use
+final _throwsCastError = throwsA(isA<CastError>());
 
 String _encode(Object object) =>
     const JsonEncoder.withIndent(' ').convert(object);
