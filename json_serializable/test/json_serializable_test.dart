@@ -29,6 +29,7 @@ const _expectedAnnotatedTests = [
   'BadOneNamed',
   'BadToFuncReturnType',
   'BadTwoRequiredPositional',
+  'DefaultDoubleConstants',
   'DefaultWithConstObject',
   'DefaultWithDisallowNullRequiredClass',
   'DefaultWithFunction',

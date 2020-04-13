@@ -1,3 +1,7 @@
+## 3.4.0-dev
+
+- Added support for `double` constants as default values.
+
 ## 3.3.0
 
 - Add support for fields annotated subclasses of `JsonKey`.
