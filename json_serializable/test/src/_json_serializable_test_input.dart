@@ -29,8 +29,6 @@ part 'to_from_json_test_input.dart';
 
 part 'unknown_enum_value_test_input.dart';
 
-part 'unknown_type_test_input.dart';
-
 @ShouldThrow('Generator cannot target `theAnswer`.',
     todo: 'Remove the JsonSerializable annotation from `theAnswer`.')
 @JsonSerializable()
