@@ -1,5 +1,4 @@
 name: example
-author: Dart Team <misc@dartlang.org>
 
 environment:
   sdk: '>=2.6.0 <3.0.0'

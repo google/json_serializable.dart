@@ -1,6 +1,5 @@
 name: checked_yaml
 version: 1.0.3-dev
-author: Dart Team <misc@dartlang.org>
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
   package:json_serializable and package:yaml.
