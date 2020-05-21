@@ -12,6 +12,8 @@ dynamic _toDynamic(dynamic input) => null;
 
 Object _toObject(Object input) => null;
 
+String _toStringFromObject(Object input) => null;
+
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
   'return type `int` is not compatible with field type `String`.',
@@ -81,12 +83,12 @@ class InvalidToFunc2Args {
 }
 
 @ShouldGenerate(
-  "_toObject(json['field'])",
+  "_toStringFromObject(json['field'])",
   contains: true,
 )
 @JsonSerializable()
 class ObjectConvertMethods {
-  @JsonKey(fromJson: _toObject, toJson: _toObject)
+  @JsonKey(fromJson: _toStringFromObject, toJson: _toObject)
   String field;
 }
 
