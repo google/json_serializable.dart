@@ -38,13 +38,13 @@ const simpleJsonTypeChecker = TypeChecker.any([
 ]);
 
 String asStatement(DartType type) {
-  if (type.isDynamic || type.isObject) {
+  if (isObjectOrDynamic(type)) {
     return '';
   }
 
   if (coreIterableTypeChecker.isAssignableFromType(type)) {
     final itemType = coreIterableGenericType(type);
-    if (itemType.isDynamic || itemType.isObject) {
+    if (isObjectOrDynamic(itemType)) {
       return ' as List';
     }
   }
@@ -53,7 +53,7 @@ String asStatement(DartType type) {
     final args = typeArgumentsOf(type, coreMapTypeChecker);
     assert(args.length == 2);
 
-    if (args.every((dt) => dt.isDynamic || dt.isObject)) {
+    if (args.every(isObjectOrDynamic)) {
       return ' as Map';
     }
   }
@@ -61,6 +61,9 @@ String asStatement(DartType type) {
   final typeCode = typeToCode(type);
   return ' as $typeCode';
 }
+
+// ignore: deprecated_member_use
+bool isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
 
 /// Returns all of the [DartType] types that [type] implements, mixes-in, and
 /// extends, starting with [type] itself.
