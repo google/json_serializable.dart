@@ -62,6 +62,19 @@ class JsonSerializable {
   /// ```
   final bool createFactory;
 
+  /// If `true` (the default), a named extension `ExampleExt` is created
+  /// in the generated part file.
+  ///
+  /// ```dart
+  /// extension ExampleExt on Example {
+  ///   Example static fromJson(Map<String, dynamic> json) =>
+  ///     _$ExampleFromJson(json);
+  ///
+  ///    Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  /// }
+  /// ```
+  final bool createExtension;
+
   /// If `true` (the default), A top-level function is created that you can
   /// reference from your class.
   ///
@@ -143,6 +156,7 @@ class JsonSerializable {
   const JsonSerializable({
     this.anyMap,
     this.checked,
+    this.createExtension,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
@@ -161,6 +175,7 @@ class JsonSerializable {
   static const defaults = JsonSerializable(
     anyMap: false,
     checked: false,
+    createExtension: true,
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
@@ -179,6 +194,7 @@ class JsonSerializable {
   JsonSerializable withDefaults() => JsonSerializable(
         anyMap: anyMap ?? defaults.anyMap,
         checked: checked ?? defaults.checked,
+        createExtension: createExtension ?? defaults.createExtension,
         createFactory: createFactory ?? defaults.createFactory,
         createToJson: createToJson ?? defaults.createToJson,
         disallowUnrecognizedKeys:

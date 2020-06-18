@@ -1,3 +1,7 @@
+## 3.0.2
+
+- Added extension to class to remove boilerplace code
+
 ## 3.0.1
 
 - Require at least Dart `2.6.0`.
