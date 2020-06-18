@@ -78,7 +78,8 @@ T enumValueForDartObject<T>(
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       anyMap: reader.read('anyMap').literalValue as bool,
       checked: reader.read('checked').literalValue as bool,
-      createFactory: reader.read('createFactory').literalValue as bool,
+  createExtension: reader.read('createExtension').literalValue as bool,
+  createFactory: reader.read('createFactory').literalValue as bool,
       createToJson: reader.read('createToJson').literalValue as bool,
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool,
@@ -100,6 +101,7 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
   return JsonSerializable(
     anyMap: annotation.anyMap ?? config.anyMap,
     checked: annotation.checked ?? config.checked,
+    createExtension: annotation.createExtension ?? config.createExtension,
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:

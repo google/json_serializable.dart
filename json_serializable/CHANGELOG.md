@@ -1,3 +1,7 @@
+## 3.4.1-dev
+
+- Generated extension code to remove boilerplate code
+
 ## 3.4.0-dev
 
 - Added support for `double` constants as default values.

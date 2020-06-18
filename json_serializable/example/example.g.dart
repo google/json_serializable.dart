@@ -6,6 +6,11 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+extension PersonExt on Person {
+  static Person fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
+}
+
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
     firstName: json['firstName'] as String,

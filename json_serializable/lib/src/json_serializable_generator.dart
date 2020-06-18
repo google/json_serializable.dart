@@ -9,6 +9,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'decode_helper.dart';
 import 'encoder_helper.dart';
+import 'extension_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
@@ -38,7 +39,7 @@ class JsonSerializableGenerator
     BigIntHelper(),
     DateTimeHelper(),
     DurationHelper(),
-    JsonHelper(),
+    JsonHelper(extensionNameSuffix: ExtensionHelper.extSuffix),
     UriHelper(),
   ];
 
@@ -97,7 +98,8 @@ class JsonSerializableGenerator
   }
 }
 
-class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
+class _GeneratorHelper extends HelperCore
+    with EncodeHelper, DecodeHelper, ExtensionHelper {
   final JsonSerializableGenerator _generator;
   final _addedMembers = <String>{};
 
@@ -145,6 +147,10 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         return map;
       },
     );
+
+    if(config.createExtension) {
+      yield* createExtension();
+    }
 
     var accessibleFieldSet = accessibleFields.values.toSet();
     if (config.createFactory) {
