@@ -6,6 +6,11 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+extension PersonExt on Person {
+  static Person fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  Map<String, dynamic> toJson() => _$PersonToJson(this);
+}
+
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
     json['firstName'] as String,
@@ -16,7 +21,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['last-order'] as String),
     orders: (json['orders'] as List)
-        .map((e) => Order.fromJson(e as Map<String, dynamic>))
+        .map((e) => OrderExt.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
@@ -40,6 +45,11 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
   return val;
 }
 
+extension OrderExt on Order {
+  static Order fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
+  Map<String, dynamic> toJson() => _$OrderToJson(this);
+}
+
 Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(
     Order._dateTimeFromEpochUs(json['date'] as int),
@@ -49,7 +59,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..isRushed = json['isRushed'] as bool
     ..item = json['item'] == null
         ? null
-        : Item.fromJson(json['item'] as Map<String, dynamic>)
+        : ItemExt.fromJson(json['item'] as Map<String, dynamic>)
     ..prepTime = Order._durationFromMilliseconds(json['prep-time'] as int);
 }
 
@@ -69,6 +79,11 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('prep-time', Order._durationToMilliseconds(instance.prepTime));
   writeNotNull('date', Order._dateTimeToEpochUs(instance.date));
   return val;
+}
+
+extension ItemExt on Item {
+  static Item fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
+  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) {

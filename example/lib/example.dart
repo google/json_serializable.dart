@@ -25,10 +25,6 @@ class Person {
   Person(this.firstName, this.lastName, this.dateOfBirth,
       {this.middleName, this.lastOrder, List<Order> orders})
       : orders = orders ?? <Order>[];
-
-  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -48,10 +44,6 @@ class Order {
   final DateTime date;
 
   Order(this.date);
-
-  factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
-
-  Map<String, dynamic> toJson() => _$OrderToJson(this);
 
   static Duration _durationFromMilliseconds(int milliseconds) =>
       milliseconds == null ? null : Duration(milliseconds: milliseconds);
@@ -73,10 +65,6 @@ class Item {
   bool isRushed;
 
   Item();
-
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
 }
 
 @JsonLiteral('data.json')

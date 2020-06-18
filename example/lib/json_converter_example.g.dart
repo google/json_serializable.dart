@@ -6,6 +6,12 @@ part of 'json_converter_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+extension GenericCollectionExt on GenericCollection {
+  static GenericCollection fromJson(Map<String, dynamic> json) =>
+      _$GenericCollectionFromJson(json);
+  Map<String, dynamic> toJson() => _$GenericCollectionToJson(this);
+}
+
 GenericCollection<T> _$GenericCollectionFromJson<T>(Map<String, dynamic> json) {
   return GenericCollection<T>(
     page: json['page'] as int,
@@ -23,6 +29,12 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
       'total_pages': instance.totalPages,
       'results': instance.results?.map(_Converter<T>().toJson)?.toList(),
     };
+
+extension CustomResultExt on CustomResult {
+  static CustomResult fromJson(Map<String, dynamic> json) =>
+      _$CustomResultFromJson(json);
+  Map<String, dynamic> toJson() => _$CustomResultToJson(this);
+}
 
 CustomResult _$CustomResultFromJson(Map<String, dynamic> json) {
   return CustomResult(
