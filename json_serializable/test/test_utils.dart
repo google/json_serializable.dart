@@ -6,7 +6,8 @@ import 'dart:convert';
 
 import 'package:test/test.dart';
 
-final throwsCastError = throwsA(isCastError);
+// ignore: deprecated_member_use
+final throwsCastError = throwsA(isA<CastError>());
 
 T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
   final data = loudEncode(object);
