@@ -13,9 +13,8 @@ import '../type_helper.dart';
 import '../utils.dart';
 
 class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
-  final String extensionNameSuffix;
 
-  const JsonHelper({this.extensionNameSuffix = ''});
+  const JsonHelper();
 
   /// Simply returns the [expression] provided.
   ///
@@ -73,7 +72,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // TODO: the type could be imported from a library with a prefix!
     // github.com/dart-lang/json_serializable/issues/19
 
-    final suffix = context.config.createExtension ? extensionNameSuffix : '';
+    final suffix = context.config.createExtension ? context.config.extensionSuffix : '';
     output = '${targetType.element.name}$suffix.fromJson($output)';
 
     return commonNullPrefix(context.nullable, expression, output).toString();

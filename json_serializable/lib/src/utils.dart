@@ -79,6 +79,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       anyMap: reader.read('anyMap').literalValue as bool,
       checked: reader.read('checked').literalValue as bool,
       createExtension: reader.read('createExtension').literalValue as bool,
+      extensionSuffix: reader.read('extensionSuffix').literalValue as String,
       createFactory: reader.read('createFactory').literalValue as bool,
       createToJson: reader.read('createToJson').literalValue as bool,
       disallowUnrecognizedKeys:
@@ -102,6 +103,7 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
     anyMap: annotation.anyMap ?? config.anyMap,
     checked: annotation.checked ?? config.checked,
     createExtension: annotation.createExtension ?? config.createExtension,
+    extensionSuffix: annotation.extensionSuffix ?? config.extensionSuffix,
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:

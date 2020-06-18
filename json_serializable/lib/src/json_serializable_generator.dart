@@ -39,7 +39,7 @@ class JsonSerializableGenerator
     BigIntHelper(),
     DateTimeHelper(),
     DurationHelper(),
-    JsonHelper(extensionNameSuffix: ExtensionHelper.extSuffix),
+    JsonHelper(),
     UriHelper(),
   ];
 

@@ -1,8 +1,6 @@
 import './helper_core.dart';
 
 abstract class ExtensionHelper implements HelperCore {
-  static const extSuffix = 'Ext';
-
   Iterable<String> createExtension() sync* {
     assert(config.createExtension);
     final buffer = StringBuffer()
@@ -16,5 +14,5 @@ abstract class ExtensionHelper implements HelperCore {
 
   String get className => element.name;
 
-  String get extensionName => '$className$extSuffix';
+  String get extensionName => '$className${config.extensionSuffix}';
 }

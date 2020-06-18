@@ -47,6 +47,28 @@ class JsonSerializable {
   /// [CheckedFromJsonException] is thrown.
   final bool checked;
 
+  /// If `Ext` (the default), a named extension `ExampleExt` is created
+  /// in the generated part file.
+  ///
+  /// ```dart
+  /// extension ExampleExt on Example {
+  /// }
+  /// ```
+  final String extensionSuffix;
+
+  /// If `true` (the default), a named extension `ExampleExt` is created
+  /// in the generated part file.
+  ///
+  /// ```dart
+  /// extension ExampleExt on Example {
+  ///   Example static fromJson(Map<String, dynamic> json) =>
+  ///     _$ExampleFromJson(json);
+  ///
+  ///    Map<String, dynamic> toJson() => _$ExampleToJson(this);
+  /// }
+  /// ```
+  final bool createExtension;
+
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
   ///
@@ -61,19 +83,6 @@ class JsonSerializable {
   /// }
   /// ```
   final bool createFactory;
-
-  /// If `true` (the default), a named extension `ExampleExt` is created
-  /// in the generated part file.
-  ///
-  /// ```dart
-  /// extension ExampleExt on Example {
-  ///   Example static fromJson(Map<String, dynamic> json) =>
-  ///     _$ExampleFromJson(json);
-  ///
-  ///    Map<String, dynamic> toJson() => _$ExampleToJson(this);
-  /// }
-  /// ```
-  final bool createExtension;
 
   /// If `true` (the default), A top-level function is created that you can
   /// reference from your class.
@@ -157,6 +166,7 @@ class JsonSerializable {
     this.anyMap,
     this.checked,
     this.createExtension,
+    this.extensionSuffix,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
@@ -176,6 +186,7 @@ class JsonSerializable {
     anyMap: false,
     checked: false,
     createExtension: true,
+    extensionSuffix: 'Ext',
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
@@ -195,6 +206,7 @@ class JsonSerializable {
         anyMap: anyMap ?? defaults.anyMap,
         checked: checked ?? defaults.checked,
         createExtension: createExtension ?? defaults.createExtension,
+        extensionSuffix: extensionSuffix ?? defaults.extensionSuffix,
         createFactory: createFactory ?? defaults.createFactory,
         createToJson: createToJson ?? defaults.createToJson,
         disallowUnrecognizedKeys:
