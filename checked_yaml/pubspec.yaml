@@ -3,7 +3,7 @@ version: 1.0.3-dev
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
   package:json_serializable and package:yaml.
-homepage: https://github.com/dart-lang/json_serializable
+homepage: https://github.com/google/json_serializable.dart
 environment:
   sdk: '>=2.6.0 <3.0.0'
 

@@ -3,7 +3,7 @@ version: 3.0.1
 description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
-homepage: https://github.com/dart-lang/json_serializable
+homepage: https://github.com/google/json_serializable.dart
 environment:
   sdk: '>=2.6.0 <3.0.0'
 
