@@ -150,6 +150,6 @@ targets:
           nullable: true
 ```
 
-[example]: https://github.com/dart-lang/json_serializable/blob/master/example
+[example]: https://github.com/google/json_serializable.dart/tree/master/example
 [Dart Build System]: https://github.com/dart-lang/build
 [package:json_annotation]: https://pub.dev/packages/json_annotation

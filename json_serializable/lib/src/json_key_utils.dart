@@ -35,7 +35,7 @@ void logFieldWithConversionFunction(FieldElement element) {
 JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
-  // TODO(kevmoo) setters: github.com/dart-lang/json_serializable/issues/24
+  // TODO(kevmoo) setters: github.com/google/json_serializable.dart/issues/24
   final obj = jsonKeyAnnotation(element);
 
   if (obj.isNull) {
