@@ -1,4 +1,4 @@
-# [![Build Status](https://travis-ci.org/dart-lang/json_serializable.svg?branch=master)](https://travis-ci.org/dart-lang/json_serializable)
+[![Build Status](https://travis-ci.org/google/json_serializable.dart.svg?branch=master)](https://travis-ci.org/google/json_serializable.dart)
 
 Provides [source_gen] `Generator`s to create code for JSON serialization and
 deserialization.

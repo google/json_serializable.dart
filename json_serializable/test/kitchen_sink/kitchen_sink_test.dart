@@ -17,6 +17,9 @@ const _toJsonMapHelperName = 'writeNotNull';
 
 final _isATypeError = isA<TypeError>();
 
+// ignore: deprecated_member_use
+final _isACastError = isA<CastError>();
+
 Matcher _isAUnrecognizedKeysException(expectedMessage) =>
     isA<UnrecognizedKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
@@ -290,7 +293,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
     innerMatcher = _checkedMatcher(expectedKey);
   } else {
     innerMatcher = anyOf(
-      isCastError,
+      _isACastError,
       _isATypeError,
       _isAUnrecognizedKeysException(
         'Unrecognized keys: [invalid_key]; supported keys: '
@@ -311,7 +314,7 @@ Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
           break;
         case 'intIterable':
         case 'datetime-iterable':
-          innerMatcher = isCastError;
+          innerMatcher = _isACastError;
           break;
         default:
           throw StateError('Not expected! - $expectedKey');

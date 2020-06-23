@@ -9,6 +9,6 @@ See the [example] to understand how to configure your package.
 
 Please file feature requests and bugs at the [issue tracker][tracker].
 
-[example]: https://github.com/dart-lang/json_serializable/blob/master/example
-[tracker]: https://github.com/dart-lang/json_serializable/issues
+[example]: https://github.com/google/json_serializable.dart/tree/master/example
+[tracker]: https://github.com/google/json_serializable.dart/issues
 [json_serializable]: https://pub.dev/packages/json_serializable
