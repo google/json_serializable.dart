@@ -103,9 +103,12 @@ class JsonKey {
   /// Valid only on enum fields with a compatible enum value.
   final Object unknownEnumValue;
 
+  /// If `true`, will ignore [name], use the root json.
+  final bool parseWithRootJson;
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
+  ///
   const JsonKey({
     this.defaultValue,
     this.disallowNullValue,
@@ -117,5 +120,6 @@ class JsonKey {
     this.required,
     this.toJson,
     this.unknownEnumValue,
+    this.parseWithRootJson
   });
 }

@@ -159,9 +159,15 @@ abstract class DecodeHelper implements HelperCore {
         assert(!checkedProperty,
             'should only be true if `_generator.checked` is true.');
 
-        value = contextHelper
-            .deserialize(targetType, 'json[$jsonKeyName]')
-            .toString();
+        if (jsonKeyFor(field).parseWithRootJson) {
+          value = contextHelper
+              .deserialize(targetType, 'json')
+              .toString();
+        } else {
+          value = contextHelper
+              .deserialize(targetType, 'json[$jsonKeyName]')
+              .toString();
+        }
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {

@@ -164,6 +164,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     nullable: obj.read('nullable').literalValue as bool,
     required: obj.read('required').literalValue as bool,
     unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
+    parseWithRootJson: obj.getField('parseWithRootJson').toBoolValue(),
   );
 }
 
@@ -178,6 +179,7 @@ JsonKey _populateJsonKey(
   bool nullable,
   bool required,
   Object unknownEnumValue,
+  bool parseWithRootJson,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -198,6 +200,7 @@ JsonKey _populateJsonKey(
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
+    parseWithRootJson: parseWithRootJson ?? false
   );
 
   _explicitNullableExpando[jsonKey] = nullable != null;
