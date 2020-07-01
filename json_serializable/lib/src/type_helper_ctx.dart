@@ -50,7 +50,8 @@ class TypeHelperCtx
   }
 
   @override
-  bool get nullSafeLibrary => _helperCore.element.library.isNonNullableByDefault;
+  bool get nullSafeLibrary =>
+      _helperCore.element.library.isNonNullableByDefault;
 
   @override
   Object serialize(DartType targetType, String expression) => _run(
@@ -76,7 +77,6 @@ class TypeHelperCtx
             orElse: () => throw UnsupportedTypeError(
                 targetType, expression, _notSupportedWithTypeHelpersMsg),
           );
-
 }
 
 const _notSupportedWithTypeHelpersMsg =
