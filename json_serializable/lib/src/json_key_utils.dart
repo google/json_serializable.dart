@@ -202,8 +202,20 @@ JsonKey _populateJsonKey(
     }
   }
 
-  if (element.type.nullabilitySuffix == NullabilitySuffix.question) {
-    nullable = true;
+  switch (element.type.nullabilitySuffix) {
+    case NullabilitySuffix.question:
+      nullable = true;
+      break;
+    case NullabilitySuffix.none:
+      if (nullable == true) {
+        // todo(kevmoo): Should probably be an invalid generation error!
+        log.warning(
+            'This field $element is flagged as nullable - but the type says no!');
+      }
+      break;
+    case NullabilitySuffix.star:
+      // noop – this is a unmigrated type!
+      break;
   }
 
   final jsonKey = JsonKey(
