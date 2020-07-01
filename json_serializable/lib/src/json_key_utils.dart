@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -199,6 +200,10 @@ JsonKey _populateJsonKey(
           'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
           'This leads to incompatible `toJson` and `fromJson` behavior.');
     }
+  }
+
+  if (element.type.nullabilitySuffix == NullabilitySuffix.question) {
+    nullable = true;
   }
 
   final jsonKey = JsonKey(
