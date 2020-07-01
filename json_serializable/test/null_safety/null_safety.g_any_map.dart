@@ -6,9 +6,11 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'null_safety.g.dart';
+part 'null_safety.g_any_map.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(
+  anyMap: true,
+)
 class Person {
   final String firstName;
   final String lastName;

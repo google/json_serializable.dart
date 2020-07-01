@@ -205,5 +205,8 @@ const _fileConfigurationMap = <String, Set<Set<String>>>{
     {'any_map'},
     {'non_nullable'},
   },
-  'null_safety': <Set<String>>{},
+  'null_safety': <Set<String>>{
+    {'any_map'},
+    {'non_nullable'},
+  },
 };

@@ -28,6 +28,7 @@ targets:
         - test/integration/json_test_example.dart
         - test/integration/json_test_example.non_nullable.dart
         - test/kitchen_sink/kitchen_sink.dart
+        - test/null_safety/null_safety.dart
 
       json_serializable|_type_builder:
         generate_for:
