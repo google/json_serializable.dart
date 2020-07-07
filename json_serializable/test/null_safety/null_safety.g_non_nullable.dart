@@ -16,6 +16,8 @@ class Person {
   final String lastName;
   final DateTime? dateOfBirth;
 
+  List<int?>? nullableListOfNullableInt;
+
   Person({
     required this.firstName,
     required this.lastName,
