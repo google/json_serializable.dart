@@ -1,7 +1,7 @@
 name: example
 
 environment:
-  sdk: '>=2.6.0 <3.0.0'
+  sdk: '>=2.7.0 <3.0.0'
 
 dependencies:
   json_annotation: ^3.0.0
