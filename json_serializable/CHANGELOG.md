@@ -1,6 +1,7 @@
 ## 3.4.0-dev
 
 - Added support for `double` constants as default values.
+- Require at least Dart `2.7.0`.
 
 ## 3.3.0
 
