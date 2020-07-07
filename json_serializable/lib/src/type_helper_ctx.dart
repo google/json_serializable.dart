@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -26,7 +27,20 @@ class TypeHelperCtx
   final FieldElement fieldElement;
 
   @override
-  bool get nullable => _key.nullable;
+  bool get nullable {
+    if (fieldElement.library.isNonNullableByDefault) {
+      throw UnsupportedError('Cannot rock this ');
+    }
+    return _key.nullable;
+  }
+
+  @override
+  bool nullableForType(DartType type) {
+    if (fieldElement.library.isNonNullableByDefault) {
+      return type.nullabilitySuffix == NullabilitySuffix.question;
+    }
+    return _key.nullable;
+  }
 
   @override
   ClassElement get classElement => _helperCore.element;

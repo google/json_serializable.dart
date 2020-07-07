@@ -16,7 +16,11 @@ class DateTimeHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) =>
-      dateTimeString.serialize(targetType, expression, context.nullable);
+      dateTimeString.serialize(
+        targetType,
+        expression,
+        context.nullableForType(targetType),
+      );
 
   @override
   String deserialize(
@@ -25,5 +29,9 @@ class DateTimeHelper extends TypeHelper {
     TypeHelperContext context,
   ) =>
       dateTimeString.deserialize(
-          targetType, expression, context.nullable, false);
+        targetType,
+        expression,
+        context.nullableForType(targetType),
+        false,
+      );
 }

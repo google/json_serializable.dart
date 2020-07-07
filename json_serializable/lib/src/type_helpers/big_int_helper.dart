@@ -16,7 +16,11 @@ class BigIntHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) =>
-      bigIntString.serialize(targetType, expression, context.nullable);
+      bigIntString.serialize(
+        targetType,
+        expression,
+        context.nullableForType(targetType),
+      );
 
   @override
   String deserialize(
@@ -24,5 +28,10 @@ class BigIntHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) =>
-      bigIntString.deserialize(targetType, expression, context.nullable, false);
+      bigIntString.deserialize(
+        targetType,
+        expression,
+        context.nullableForType(targetType),
+        false,
+      );
 }
