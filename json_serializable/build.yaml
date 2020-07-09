@@ -21,11 +21,11 @@ targets:
       json_serializable|_internal:
         generate_for:
         - test/default_value/default_value.dart
-        - test/kitchen_sink/kitchen_sink.dart
-        - test/integration/json_test_example.dart
         - test/generic_files/generic_class.dart
         - test/integration/json_test_example.dart
+        - test/integration/json_test_example.dart
         - test/integration/json_test_example.non_nullable.dart
+        - test/kitchen_sink/kitchen_sink.dart
 
 builders:
   _internal:
