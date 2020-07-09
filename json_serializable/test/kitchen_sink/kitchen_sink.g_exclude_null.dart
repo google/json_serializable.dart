@@ -153,7 +153,7 @@ class KitchenSink implements k.KitchenSink {
 
   StrictKeysObject strictKeysObject = _defaultStrictKeysObject();
 
-  int _validatedPropertyNo42;
+  late int _validatedPropertyNo42;
 
   int get validatedPropertyNo42 => _validatedPropertyNo42;
 
@@ -177,7 +177,15 @@ class KitchenSink implements k.KitchenSink {
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
 class JsonConverterTestClass implements k.JsonConverterTestClass {
-  JsonConverterTestClass();
+  JsonConverterTestClass(
+    this.duration,
+    this.durationList,
+    this.bigInt,
+    this.bigIntMap,
+    this.numberSilly,
+    this.numberSillySet,
+    this.dateTime,
+  );
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterTestClassFromJson(json);
@@ -205,7 +213,11 @@ class JsonConverterGeneric<S, T, U> {
   List<T> itemList;
   Map<String, U> itemMap;
 
-  JsonConverterGeneric();
+  JsonConverterGeneric(
+    this.item,
+    this.itemList,
+    this.itemMap,
+  );
 
   factory JsonConverterGeneric.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterGenericFromJson(json);

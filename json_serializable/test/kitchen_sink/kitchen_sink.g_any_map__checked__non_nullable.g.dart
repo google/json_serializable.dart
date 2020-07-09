@@ -141,43 +141,35 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
   return $checkedNew('JsonConverterTestClass', json, () {
-    final val = JsonConverterTestClass();
-    $checkedConvert(json, 'duration',
-        (v) => val.duration = durationConverter.fromJson(v as int));
-    $checkedConvert(
-        json,
-        'durationList',
-        (v) => val.durationList = ((v as List?))
-            .map((e) => durationConverter.fromJson(e as int))
-            .toList());
-    $checkedConvert(
-        json,
-        'bigInt',
-        (v) =>
-            val.bigInt = const BigIntStringConverter().fromJson(v as String));
-    $checkedConvert(
-        json,
-        'bigIntMap',
-        (v) => val.bigIntMap = (v as Map).map(
-              (k, e) => MapEntry(k as String,
-                  const BigIntStringConverter().fromJson(e as String)),
-            ));
-    $checkedConvert(
-        json,
-        'numberSilly',
-        (v) => val.numberSilly =
-            TrivialNumberConverter.instance.fromJson(v as int));
-    $checkedConvert(
-        json,
-        'numberSillySet',
-        (v) => val.numberSillySet = ((v as List?))
-            .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
-            .toSet());
-    $checkedConvert(
-        json,
-        'dateTime',
-        (v) =>
-            val.dateTime = const EpochDateTimeConverter().fromJson(v as int));
+    final val = JsonConverterTestClass(
+      $checkedConvert(
+          json, 'duration', (v) => durationConverter.fromJson(v as int)),
+      $checkedConvert(
+          json,
+          'durationList',
+          (v) => ((v as List?))
+              .map((e) => durationConverter.fromJson(e as int))
+              .toList()),
+      $checkedConvert(json, 'bigInt',
+          (v) => const BigIntStringConverter().fromJson(v as String)),
+      $checkedConvert(
+          json,
+          'bigIntMap',
+          (v) => (v as Map).map(
+                (k, e) => MapEntry(k as String,
+                    const BigIntStringConverter().fromJson(e as String)),
+              )),
+      $checkedConvert(json, 'numberSilly',
+          (v) => TrivialNumberConverter.instance.fromJson(v as int)),
+      $checkedConvert(
+          json,
+          'numberSillySet',
+          (v) => ((v as List?))
+              .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+              .toSet()),
+      $checkedConvert(json, 'dateTime',
+          (v) => const EpochDateTimeConverter().fromJson(v as int)),
+    );
     return val;
   });
 }
@@ -202,26 +194,24 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     Map json) {
   return $checkedNew('JsonConverterGeneric', json, () {
-    final val = JsonConverterGeneric<S, T, U>();
-    $checkedConvert(
-        json,
-        'item',
-        (v) => val.item =
-            GenericConverter<S>().fromJson(v as Map<String, dynamic>));
-    $checkedConvert(
-        json,
-        'itemList',
-        (v) => val.itemList = ((v as List?))
-            .map((e) =>
-                GenericConverter<T>().fromJson(e as Map<String, dynamic>))
-            .toList());
-    $checkedConvert(
-        json,
-        'itemMap',
-        (v) => val.itemMap = (v as Map).map(
-              (k, e) => MapEntry(k as String,
-                  GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
-            ));
+    final val = JsonConverterGeneric<S, T, U>(
+      $checkedConvert(json, 'item',
+          (v) => GenericConverter<S>().fromJson(v as Map<String, dynamic>)),
+      $checkedConvert(
+          json,
+          'itemList',
+          (v) => ((v as List?))
+              .map((e) =>
+                  GenericConverter<T>().fromJson(e as Map<String, dynamic>))
+              .toList()),
+      $checkedConvert(
+          json,
+          'itemMap',
+          (v) => (v as Map).map(
+                (k, e) => MapEntry(k as String,
+                    GenericConverter<U>().fromJson(e as Map<String, dynamic>)),
+              )),
+    );
     return val;
   });
 }

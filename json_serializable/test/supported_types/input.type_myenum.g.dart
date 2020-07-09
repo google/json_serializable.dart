@@ -23,9 +23,9 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     };
 
 T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+  Map<T, Object> enumValues,
+  Object? source, {
+  T? unknownValue,
 }) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
