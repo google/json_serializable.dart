@@ -20,8 +20,11 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
   /// provided objects.
   @override
-  String serialize(DartType targetType, String expression,
-      TypeHelperContextWithConfig context) {
+  String serialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
     if (!_canSerialize(context.config, targetType)) {
       return null;
     }
@@ -33,8 +36,11 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  String deserialize(DartType targetType, String expression,
-      TypeHelperContextWithConfig context) {
+  String deserialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
     if (targetType is! InterfaceType) {
       return null;
     }
@@ -97,7 +103,9 @@ bool _canSerialize(JsonSerializable config, DartType type) {
 /// Returns an instantiation of [ctorParamType] by providing argument types
 /// derived by matching corresponding type parameters from [classType].
 InterfaceType _instantiate(
-    InterfaceType ctorParamType, InterfaceType classType) {
+  InterfaceType ctorParamType,
+  InterfaceType classType,
+) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
     final typeParamIndex = classType.element.typeParameters.indexWhere(
         // TODO(kevmoo): not 100% sure `nullabilitySuffix` is right

@@ -50,7 +50,9 @@ abstract class EncodeHelper implements HelperCore {
   static const _toJsonParamName = 'instance';
 
   void _writeToJsonWithNullChecks(
-      StringBuffer buffer, Iterable<FieldElement> fields) {
+    StringBuffer buffer,
+    Iterable<FieldElement> fields,
+  ) {
     buffer
       ..writeln('{')
       ..writeln('    final $generatedLocalVarName = <String, dynamic>{');

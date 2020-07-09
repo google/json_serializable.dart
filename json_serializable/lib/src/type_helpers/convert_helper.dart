@@ -28,8 +28,11 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   const ConvertHelper();
 
   @override
-  String serialize(DartType targetType, String expression,
-      TypeHelperContextWithConvert context) {
+  String serialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConvert context,
+  ) {
     final toJsonData = context.serializeConvertData;
     if (toJsonData == null) {
       return null;
@@ -43,8 +46,11 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   }
 
   @override
-  String deserialize(DartType targetType, String expression,
-      TypeHelperContextWithConvert context) {
+  String deserialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConvert context,
+  ) {
     final fromJsonData = context.deserializeConvertData;
     if (fromJsonData == null) {
       return null;

@@ -21,7 +21,10 @@ class JsonConverterHelper extends TypeHelper {
 
   @override
   Object serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) {
     final converter = _typeConverter(targetType, context);
 
     if (converter == null) {
@@ -35,7 +38,10 @@ class JsonConverterHelper extends TypeHelper {
 
   @override
   Object deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) {
     final converter = _typeConverter(targetType, context);
     if (converter == null) {
       return null;
@@ -54,13 +60,18 @@ class _JsonConvertData {
   final String accessString;
   final DartType jsonType;
 
-  _JsonConvertData.className(String className, String accessor, this.jsonType)
-      : accessString = 'const $className${_withAccessor(accessor)}()';
+  _JsonConvertData.className(
+    String className,
+    String accessor,
+    this.jsonType,
+  ) : accessString = 'const $className${_withAccessor(accessor)}()';
 
   _JsonConvertData.genericClass(
-      String className, String genericTypeArg, String accessor, this.jsonType)
-      : accessString =
-            '$className<$genericTypeArg>${_withAccessor(accessor)}()';
+    String className,
+    String genericTypeArg,
+    String accessor,
+    this.jsonType,
+  ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()';
 
   _JsonConvertData.propertyAccess(this.accessString, this.jsonType);
 
@@ -89,7 +100,9 @@ _JsonConvertData _typeConverter(DartType targetType, TypeHelperContext ctx) {
 }
 
 _JsonConvertData _typeConverterFrom(
-    List<_ConverterMatch> matchingAnnotations, DartType targetType) {
+  List<_ConverterMatch> matchingAnnotations,
+  DartType targetType,
+) {
   if (matchingAnnotations.isEmpty) {
     return null;
   }
@@ -147,12 +160,18 @@ class _ConverterMatch {
   final ElementAnnotation elementAnnotation;
   final String genericTypeArg;
 
-  _ConverterMatch(this.elementAnnotation, this.annotation, this.jsonType,
-      this.genericTypeArg);
+  _ConverterMatch(
+    this.elementAnnotation,
+    this.annotation,
+    this.jsonType,
+    this.genericTypeArg,
+  );
 }
 
 _ConverterMatch _compatibleMatch(
-    DartType targetType, ElementAnnotation annotation) {
+  DartType targetType,
+  ElementAnnotation annotation,
+) {
   final constantValue = annotation.computeConstantValue();
 
   final converterClassElement = constantValue.type.element as ClassElement;

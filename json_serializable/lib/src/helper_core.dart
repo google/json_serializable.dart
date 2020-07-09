@@ -55,7 +55,10 @@ abstract class HelperCore {
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(
-    String targetMember, FieldElement field, UnsupportedTypeError e) {
+  String targetMember,
+  FieldElement field,
+  UnsupportedTypeError e,
+) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
   if (field.type != e.type) {
     message = '$message because of type `${typeToCode(e.type)}`';

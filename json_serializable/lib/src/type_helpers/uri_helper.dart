@@ -12,11 +12,17 @@ class UriHelper extends TypeHelper {
 
   @override
   String serialize(
-          DartType targetType, String expression, TypeHelperContext context) =>
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) =>
       uriString.serialize(targetType, expression, context.nullable);
 
   @override
   String deserialize(
-          DartType targetType, String expression, TypeHelperContext context) =>
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) =>
       uriString.deserialize(targetType, expression, context.nullable, false);
 }

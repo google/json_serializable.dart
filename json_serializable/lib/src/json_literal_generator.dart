@@ -18,7 +18,10 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 
   @override
   Future<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    Element element,
+    ConstantReader annotation,
+    BuildStep buildStep,
+  ) async {
     if (p.isAbsolute(annotation.read('path').stringValue)) {
       throw ArgumentError(
           '`annotation.path` must be relative path to the source file.');

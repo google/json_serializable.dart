@@ -105,10 +105,11 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     badType = typeInformation.followedBy(['$dartObject']).join(' > ');
 
     throwUnsupported(
-        element,
-        'The provided value is not supported: $badType. '
-        'This may be an error in package:json_serializable. '
-        'Please rerun your build with `--verbose` and file an issue.');
+      element,
+      'The provided value is not supported: $badType. '
+      'This may be an error in package:json_serializable. '
+      'Please rerun your build with `--verbose` and file an issue.',
+    );
   }
 
   /// Returns a literal object representing the value of [fieldName] in [obj].
@@ -233,7 +234,10 @@ String _encodedFieldName(JsonSerializable classAnnotation,
 }
 
 bool _includeIfNull(
-    bool keyIncludeIfNull, bool keyDisallowNullValue, bool classIncludeIfNull) {
+  bool keyIncludeIfNull,
+  bool keyDisallowNullValue,
+  bool classIncludeIfNull,
+) {
   if (keyDisallowNullValue == true) {
     assert(keyIncludeIfNull != true);
     return false;

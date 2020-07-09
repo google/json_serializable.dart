@@ -12,11 +12,17 @@ class BigIntHelper extends TypeHelper {
 
   @override
   String serialize(
-          DartType targetType, String expression, TypeHelperContext context) =>
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) =>
       bigIntString.serialize(targetType, expression, context.nullable);
 
   @override
   String deserialize(
-          DartType targetType, String expression, TypeHelperContext context) =>
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) =>
       bigIntString.deserialize(targetType, expression, context.nullable, false);
 }

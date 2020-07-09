@@ -203,12 +203,13 @@ abstract class DecodeHelper implements HelperCore {
 /// [writableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
 _ConstructorData _writeConstructorInvocation(
-    ClassElement classElement,
-    Iterable<String> availableConstructorParameters,
-    Iterable<String> writableFields,
-    Map<String, String> unavailableReasons,
-    String Function(String paramOrFieldName, {ParameterElement ctorParam})
-        deserializeForField) {
+  ClassElement classElement,
+  Iterable<String> availableConstructorParameters,
+  Iterable<String> writableFields,
+  Map<String, String> unavailableReasons,
+  String Function(String paramOrFieldName, {ParameterElement ctorParam})
+      deserializeForField,
+) {
   final className = classElement.name;
 
   final ctor = classElement.unnamedConstructor;
@@ -289,5 +290,8 @@ class _ConstructorData {
   final Set<String> usedCtorParamsAndFields;
 
   _ConstructorData(
-      this.content, this.fieldsToSet, this.usedCtorParamsAndFields);
+    this.content,
+    this.fieldsToSet,
+    this.usedCtorParamsAndFields,
+  );
 }

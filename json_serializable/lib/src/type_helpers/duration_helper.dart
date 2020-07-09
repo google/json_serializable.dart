@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+
 import '../type_helper.dart';
 
 class DurationHelper extends TypeHelper {
@@ -11,7 +12,10 @@ class DurationHelper extends TypeHelper {
 
   @override
   String serialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) {
     if (!_matchesType(targetType)) {
       return null;
     }
@@ -29,7 +33,10 @@ class DurationHelper extends TypeHelper {
 
   @override
   String deserialize(
-      DartType targetType, String expression, TypeHelperContext context) {
+    DartType targetType,
+    String expression,
+    TypeHelperContext context,
+  ) {
     if (!_matchesType(targetType)) {
       return null;
     }

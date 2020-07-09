@@ -66,7 +66,10 @@ FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
       );
 
 T enumValueForDartObject<T>(
-        DartObject source, List<T> items, String Function(T) name) =>
+  DartObject source,
+  List<T> items,
+  String Function(T) name,
+) =>
     items.singleWhere(
       (v) => source.getField(name(v)) != null,
       // TODO: remove once pkg:analyzer < 0.35.0 is no longer supported

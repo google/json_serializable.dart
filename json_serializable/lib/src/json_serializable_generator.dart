@@ -46,7 +46,7 @@ class JsonSerializableGenerator
 
   Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
         ConvertHelper(),
-        JsonConverterHelper()
+        JsonConverterHelper(),
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   final JsonSerializable _config;
@@ -71,8 +71,9 @@ class JsonSerializableGenerator
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
   factory JsonSerializableGenerator.withDefaultHelpers(
-          Iterable<TypeHelper> typeHelpers,
-          {JsonSerializable config}) =>
+    Iterable<TypeHelper> typeHelpers, {
+    JsonSerializable config,
+  }) =>
       JsonSerializableGenerator(
         config: config,
         typeHelpers: List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)),
