@@ -30,7 +30,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (context.config.explicitToJson) {
-      return '$expression${context.nullable ? '?' : ''}.toJson()';
+      return '$expression${context.nullableForType(targetType) ? '?' : ''}.toJson()';
     }
     return expression;
   }
@@ -78,7 +78,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // https://github.com/google/json_serializable.dart/issues/19
     output = '${targetType.element.name}.fromJson($output)';
 
-    return commonNullPrefix(context.nullable, expression, output).toString();
+    return commonNullPrefix(
+            context.nullableForType(targetType), expression, output)
+        .toString();
   }
 }
 

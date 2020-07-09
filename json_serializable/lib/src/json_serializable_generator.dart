@@ -85,6 +85,14 @@ class JsonSerializableGenerator
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
+    if (!element.library.isNonNullableByDefault) {
+      throw InvalidGenerationSourceError(
+        'Generator cannot target libraries that have not been migrated to '
+        'null-safety.',
+        element: element,
+      );
+    }
+
     if (element is! ClassElement) {
       final name = element.name;
       throw InvalidGenerationSourceError('Generator cannot target `$name`.',

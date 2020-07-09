@@ -45,14 +45,15 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(_enumDecodeHelper);
 
-    if (context.nullable) {
+    if (context.nullableForType(targetType)) {
       context.addMember(_enumDecodeHelperNullable);
     }
 
     context.addMember(memberContent);
 
-    final functionName =
-        context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
+    final functionName = context.nullableForType(targetType)
+        ? r'_$enumDecodeNullable'
+        : r'_$enumDecode';
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final args = [

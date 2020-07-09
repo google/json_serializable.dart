@@ -201,14 +201,6 @@ JsonKey _populateJsonKey(
     }
   }
 
-  if (nullable != null && element.library.isNonNullableByDefault) {
-    // TODO(kevmoo): create a test for this!
-    throwUnsupported(
-      element,
-      'Cannot set `nullable: true` on a field in a null-safe library.',
-    );
-  }
-
   final jsonKey = JsonKey(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,

@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.9
 
 part of 'default_value.dart';
 
@@ -11,30 +12,27 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     ..fieldBool = json['fieldBool'] as bool ?? true
     ..fieldString = json['fieldString'] as String ?? 'string'
     ..fieldInt = json['fieldInt'] as int ?? 42
-    ..fieldDouble = (json['fieldDouble'] as num)?.toDouble() ?? 3.14
-    ..fieldListEmpty = json['fieldListEmpty'] as List ?? []
-    ..fieldSetEmpty = (json['fieldSetEmpty'] as List)?.toSet() ?? {}
+    ..fieldDouble = (json['fieldDouble'] as num).toDouble() ?? 3.14
+    ..fieldListEmpty = (json['fieldListEmpty'] as List?) ?? []
+    ..fieldSetEmpty = ((json['fieldSetEmpty'] as List?)).toSet() ?? {}
     ..fieldMapEmpty = json['fieldMapEmpty'] as Map<String, dynamic> ?? {}
     ..fieldListSimple =
-        (json['fieldListSimple'] as List)?.map((e) => e as int)?.toList() ??
+        ((json['fieldListSimple'] as List?)).map((e) => e as int).toList() ??
             [1, 2, 3]
     ..fieldSetSimple =
-        (json['fieldSetSimple'] as List)?.map((e) => e as String)?.toSet() ??
+        ((json['fieldSetSimple'] as List?)).map((e) => e as String).toSet() ??
             {'entry1', 'entry2'}
-    ..fieldMapSimple = (json['fieldMapSimple'] as Map<String, dynamic>)?.map(
-          (k, e) => MapEntry(k, e as int),
-        ) ??
-        {'answer': 42}
+    ..fieldMapSimple =
+        Map<String, int>.from(json['fieldMapSimple'] as Map) ?? {'answer': 42}
     ..fieldMapListString =
-        (json['fieldMapListString'] as Map<String, dynamic>)?.map(
+        (json['fieldMapListString'] as Map<String, dynamic>).map(
               (k, e) =>
-                  MapEntry(k, (e as List)?.map((e) => e as String)?.toList()),
+                  MapEntry(k, ((e as List?)).map((e) => e as String).toList()),
             ) ??
             {
               'root': ['child']
             }
-    ..fieldEnum =
-        _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta;
+    ..fieldEnum = _$enumDecode(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta;
 }
 
 Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
@@ -52,10 +50,10 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
   val['fieldInt'] = instance.fieldInt;
   val['fieldDouble'] = instance.fieldDouble;
   val['fieldListEmpty'] = instance.fieldListEmpty;
-  val['fieldSetEmpty'] = instance.fieldSetEmpty?.toList();
+  val['fieldSetEmpty'] = instance.fieldSetEmpty.toList();
   val['fieldMapEmpty'] = instance.fieldMapEmpty;
   val['fieldListSimple'] = instance.fieldListSimple;
-  val['fieldSetSimple'] = instance.fieldSetSimple?.toList();
+  val['fieldSetSimple'] = instance.fieldSetSimple.toList();
   val['fieldMapSimple'] = instance.fieldMapSimple;
   val['fieldMapListString'] = instance.fieldMapListString;
   val['fieldEnum'] = _$GreekEnumMap[instance.fieldEnum];
@@ -81,17 +79,6 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
   return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$GreekEnumMap = {

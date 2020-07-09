@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.9
 
 part of 'input.type_myenum.dart';
 
@@ -8,10 +9,10 @@ part of 'input.type_myenum.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    _$enumDecodeNullable(_$MyEnumEnumMap, json['value']),
+    _$enumDecode(_$MyEnumEnumMap, json['value']),
     _$enumDecode(_$MyEnumEnumMap, json['nullable']),
-  )..withDefault = _$enumDecodeNullable(_$MyEnumEnumMap, json['withDefault']) ??
-      MyEnum.alpha;
+  )..withDefault =
+      _$enumDecode(_$MyEnumEnumMap, json['withDefault']) ?? MyEnum.alpha;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
@@ -40,17 +41,6 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
   return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$MyEnumEnumMap = {

@@ -171,10 +171,6 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
     if (defaultValue != null) {
-      if (!contextHelper.nullable) {
-        throwUnsupported(field,
-            'Cannot use `defaultValue` on a field with `nullable` false.');
-      }
       if (jsonKey.disallowNullValue && jsonKey.required) {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '

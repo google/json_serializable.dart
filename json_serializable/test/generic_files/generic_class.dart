@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'generic_class.g.dart';
@@ -80,17 +82,17 @@ class _SimpleConverter<T> implements JsonConverter<T, Map<String, dynamic>> {
   Map<String, dynamic> toJson(T object) => {'value': object};
 }
 
-class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
+class _DurationMillisecondConverter implements JsonConverter<Duration?, int?> {
   const _DurationMillisecondConverter();
 
   const _DurationMillisecondConverter.named();
 
   @override
-  Duration fromJson(int json) =>
+  Duration? fromJson(int? json) =>
       json == null ? null : Duration(milliseconds: json);
 
   @override
-  int toJson(Duration object) => object?.inMilliseconds;
+  int? toJson(Duration? object) => object?.inMilliseconds;
 }
 
 class _DurationListMillisecondConverter
@@ -102,5 +104,5 @@ class _DurationListMillisecondConverter
 
   @override
   int toJson(List<Duration> object) =>
-      object?.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
+      object.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
 }

@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.9
 
 part of 'kitchen_sink.g_non_nullable.dart';
 
@@ -9,27 +10,27 @@ part of 'kitchen_sink.g_non_nullable.dart';
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
     ctorValidatedNo42: json['no-42'] as int,
-    iterable: json['iterable'] as List,
-    dynamicIterable: json['dynamicIterable'] as List,
-    objectIterable: json['objectIterable'] as List,
-    intIterable: (json['intIterable'] as List).map((e) => e as int),
-    dateTimeIterable: (json['datetime-iterable'] as List)
-        .map((e) => DateTime.parse(e as String)),
+    iterable: (json['iterable'] as List?),
+    dynamicIterable: (json['dynamicIterable'] as List?),
+    objectIterable: (json['objectIterable'] as List?),
+    intIterable: ((json['intIterable'] as List?))?.map((e) => e as int),
+    dateTimeIterable: ((json['datetime-iterable'] as List?))
+        ?.map((e) => DateTime.parse(e as String)),
   )
     ..dateTime = DateTime.parse(json['dateTime'] as String)
     ..bigInt = BigInt.parse(json['bigInt'] as String)
-    ..set = (json['set'] as List).toSet()
-    ..dynamicSet = (json['dynamicSet'] as List).toSet()
-    ..objectSet = (json['objectSet'] as List).toSet()
-    ..intSet = (json['intSet'] as List).map((e) => e as int).toSet()
-    ..dateTimeSet = (json['dateTimeSet'] as List)
+    ..set = ((json['set'] as List?)).toSet()
+    ..dynamicSet = ((json['dynamicSet'] as List?)).toSet()
+    ..objectSet = ((json['objectSet'] as List?)).toSet()
+    ..intSet = ((json['intSet'] as List?)).map((e) => e as int).toSet()
+    ..dateTimeSet = ((json['dateTimeSet'] as List?))
         .map((e) => DateTime.parse(e as String))
         .toSet()
-    ..list = json['list'] as List
-    ..dynamicList = json['dynamicList'] as List
-    ..objectList = json['objectList'] as List
-    ..intList = (json['intList'] as List).map((e) => e as int).toList()
-    ..dateTimeList = (json['dateTimeList'] as List)
+    ..list = (json['list'] as List?)
+    ..dynamicList = (json['dynamicList'] as List?)
+    ..objectList = (json['objectList'] as List?)
+    ..intList = ((json['intList'] as List?)).map((e) => e as int).toList()
+    ..dateTimeList = ((json['dateTimeList'] as List?))
         .map((e) => DateTime.parse(e as String))
         .toList()
     ..map = json['map'] as Map<String, dynamic>
@@ -39,15 +40,15 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
         (json['objectDateTimeMap'] as Map<String, dynamic>).map(
       (k, e) => MapEntry(k, DateTime.parse(e as String)),
     )
-    ..crazyComplex = (json['crazyComplex'] as List)
+    ..crazyComplex = ((json['crazyComplex'] as List?))
         .map((e) => (e as Map<String, dynamic>).map(
               (k, e) => MapEntry(
                   k,
                   (e as Map<String, dynamic>).map(
                     (k, e) => MapEntry(
                         k,
-                        (e as List)
-                            .map((e) => (e as List)
+                        ((e as List?))
+                            .map((e) => ((e as List?))
                                 .map((e) => DateTime.parse(e as String))
                                 .toList())
                             .toList()),
@@ -69,7 +70,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'no-42': instance.ctorValidatedNo42,
       'dateTime': instance.dateTime.toIso8601String(),
       'bigInt': instance.bigInt.toString(),
-      'iterable': instance.iterable.toList(),
+      'iterable': instance.iterable?.toList(),
       'dynamicIterable': instance.dynamicIterable.toList(),
       'objectIterable': instance.objectIterable.toList(),
       'intIterable': instance.intIterable.toList(),
@@ -113,7 +114,7 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
     Map<String, dynamic> json) {
   return JsonConverterTestClass()
     ..duration = durationConverter.fromJson(json['duration'] as int)
-    ..durationList = (json['durationList'] as List)
+    ..durationList = ((json['durationList'] as List?))
         .map((e) => durationConverter.fromJson(e as int))
         .toList()
     ..bigInt = const BigIntStringConverter().fromJson(json['bigInt'] as String)
@@ -123,7 +124,7 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
     )
     ..numberSilly =
         TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int)
-    ..numberSillySet = (json['numberSillySet'] as List)
+    ..numberSillySet = ((json['numberSillySet'] as List?))
         .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
         .toSet()
     ..dateTime =
@@ -152,7 +153,7 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
   return JsonConverterGeneric<S, T, U>()
     ..item =
         GenericConverter<S>().fromJson(json['item'] as Map<String, dynamic>)
-    ..itemList = (json['itemList'] as List)
+    ..itemList = ((json['itemList'] as List?))
         .map((e) => GenericConverter<T>().fromJson(e as Map<String, dynamic>))
         .toList()
     ..itemMap = (json['itemMap'] as Map<String, dynamic>).map(

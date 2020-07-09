@@ -42,7 +42,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return expression;
     }
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
 
     return '$expression$optionalQuestion'
         '.map(($_keyParam, $closureArg) => '
@@ -82,7 +82,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         }
       }
 
-      if (!context.nullable &&
+      if (!context.nullableForType(targetType) &&
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
@@ -95,7 +95,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
 
     final mapCast =
         context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';

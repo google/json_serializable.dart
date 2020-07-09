@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.9
 
 part of 'input.type_double.dart';
 
@@ -8,9 +9,9 @@ part of 'input.type_double.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    (json['value'] as num)?.toDouble(),
+    (json['value'] as num).toDouble(),
     (json['nullable'] as num).toDouble(),
-  )..withDefault = (json['withDefault'] as num)?.toDouble() ?? 3.14;
+  )..withDefault = (json['withDefault'] as num).toDouble() ?? 3.14;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>

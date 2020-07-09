@@ -16,7 +16,11 @@ class UriHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) =>
-      uriString.serialize(targetType, expression, context.nullable);
+      uriString.serialize(
+        targetType,
+        expression,
+        context.nullableForType(targetType),
+      );
 
   @override
   String deserialize(

@@ -37,7 +37,7 @@ class ValueHelper extends TypeHelper {
       return expression;
     } else if (const TypeChecker.fromUrl('dart:core#double')
         .isExactlyType(targetType)) {
-      return '($expression as num)${context.nullable ? '?' : ''}.toDouble()';
+      return '($expression as num)${context.nullableForType(targetType) ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       final typeCode = typeToCode(targetType);
       return '$expression as $typeCode';

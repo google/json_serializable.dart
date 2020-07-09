@@ -76,6 +76,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       output += '?';
     }
 
+    // Waiting on https://github.com/dart-lang/sdk/commit/01ac35b84460165b38b6b768c3a63048860497e3 to get through to pkg:analyzer, dart_style, etc
+    output = '($output)';
+
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy
     if (closureArg == itemSubVal &&
