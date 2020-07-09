@@ -8,31 +8,28 @@ part of 'default_value.dart';
 // **************************************************************************
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
-  return DefaultValue()
-    ..fieldBool = json['fieldBool'] as bool ?? true
-    ..fieldString = json['fieldString'] as String ?? 'string'
-    ..fieldInt = json['fieldInt'] as int ?? 42
-    ..fieldDouble = (json['fieldDouble'] as num).toDouble() ?? 3.14
-    ..fieldListEmpty = (json['fieldListEmpty'] as List?) ?? []
-    ..fieldSetEmpty = ((json['fieldSetEmpty'] as List?)).toSet() ?? {}
-    ..fieldMapEmpty = json['fieldMapEmpty'] as Map<String, dynamic> ?? {}
-    ..fieldListSimple =
-        ((json['fieldListSimple'] as List?)).map((e) => e as int).toList() ??
-            [1, 2, 3]
-    ..fieldSetSimple =
-        ((json['fieldSetSimple'] as List?)).map((e) => e as String).toSet() ??
-            {'entry1', 'entry2'}
-    ..fieldMapSimple =
-        Map<String, int>.from(json['fieldMapSimple'] as Map) ?? {'answer': 42}
-    ..fieldMapListString =
-        (json['fieldMapListString'] as Map<String, dynamic>).map(
-              (k, e) =>
-                  MapEntry(k, ((e as List?)).map((e) => e as String).toList()),
-            ) ??
-            {
-              'root': ['child']
-            }
-    ..fieldEnum = _$enumDecode(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta;
+  return DefaultValue(
+    json['fieldBool'] as bool ?? true,
+    json['fieldString'] as String ?? 'string',
+    json['fieldInt'] as int ?? 42,
+    (json['fieldDouble'] as num).toDouble() ?? 3.14,
+    (json['fieldListEmpty'] as List?) ?? [],
+    ((json['fieldSetEmpty'] as List?)).toSet() ?? {},
+    json['fieldMapEmpty'] as Map<String, dynamic> ?? {},
+    ((json['fieldListSimple'] as List?)).map((e) => e as int).toList() ??
+        [1, 2, 3],
+    ((json['fieldSetSimple'] as List?)).map((e) => e as String).toSet() ??
+        {'entry1', 'entry2'},
+    Map<String, int>.from(json['fieldMapSimple'] as Map) ?? {'answer': 42},
+    (json['fieldMapListString'] as Map<String, dynamic>).map(
+          (k, e) =>
+              MapEntry(k, ((e as List?)).map((e) => e as String).toList()),
+        ) ??
+        {
+          'root': ['child']
+        },
+    _$enumDecode(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+  );
 }
 
 Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {

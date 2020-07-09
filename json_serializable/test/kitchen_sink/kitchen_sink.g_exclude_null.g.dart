@@ -9,7 +9,7 @@ part of 'kitchen_sink.g_exclude_null.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
-    ctorValidatedNo42: json['no-42'] as int,
+    ctorValidatedNo42: json['no-42'] as int?,
     iterable: (json['iterable'] as List?),
     dynamicIterable: (json['dynamicIterable'] as List?),
     objectIterable: (json['objectIterable'] as List?),

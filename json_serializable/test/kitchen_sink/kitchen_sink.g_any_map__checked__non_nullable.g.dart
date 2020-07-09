@@ -10,7 +10,7 @@ part of 'kitchen_sink.g_any_map__checked__non_nullable.dart';
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return $checkedNew('KitchenSink', json, () {
     final val = KitchenSink(
-      ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int),
+      ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int?),
       iterable: $checkedConvert(json, 'iterable', (v) => (v as List?)),
       dynamicIterable:
           $checkedConvert(json, 'dynamicIterable', (v) => (v as List?)),

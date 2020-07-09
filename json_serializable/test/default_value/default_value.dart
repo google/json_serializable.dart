@@ -58,7 +58,20 @@ class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: Greek.beta)
   Greek fieldEnum;
 
-  DefaultValue();
+  DefaultValue(
+    this.fieldBool,
+    this.fieldString,
+    this.fieldInt,
+    this.fieldDouble,
+    this.fieldListEmpty,
+    this.fieldSetEmpty,
+    this.fieldMapEmpty,
+    this.fieldListSimple,
+    this.fieldSetSimple,
+    this.fieldMapSimple,
+    this.fieldMapListString,
+    this.fieldEnum,
+  );
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueFromJson(json);
