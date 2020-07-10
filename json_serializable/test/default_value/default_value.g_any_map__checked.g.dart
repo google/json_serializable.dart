@@ -18,6 +18,8 @@ DefaultValue _$DefaultValueFromJson(Map json) {
         (v) => val.fieldDouble = (v as num)?.toDouble() ?? 3.14);
     $checkedConvert(
         json, 'fieldListEmpty', (v) => val.fieldListEmpty = v as List ?? []);
+    $checkedConvert(json, 'fieldSetEmpty',
+        (v) => val.fieldSetEmpty = (v as List)?.toSet() ?? {});
     $checkedConvert(
         json, 'fieldMapEmpty', (v) => val.fieldMapEmpty = v as Map ?? {});
     $checkedConvert(
@@ -25,6 +27,12 @@ DefaultValue _$DefaultValueFromJson(Map json) {
         'fieldListSimple',
         (v) => val.fieldListSimple =
             (v as List)?.map((e) => e as int)?.toList() ?? [1, 2, 3]);
+    $checkedConvert(
+        json,
+        'fieldSetSimple',
+        (v) => val.fieldSetSimple =
+            (v as List)?.map((e) => e as String)?.toSet() ??
+                {'entry1', 'entry2'});
     $checkedConvert(
         json,
         'fieldMapSimple',
@@ -66,8 +74,10 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
   val['fieldInt'] = instance.fieldInt;
   val['fieldDouble'] = instance.fieldDouble;
   val['fieldListEmpty'] = instance.fieldListEmpty;
+  val['fieldSetEmpty'] = instance.fieldSetEmpty?.toList();
   val['fieldMapEmpty'] = instance.fieldMapEmpty;
   val['fieldListSimple'] = instance.fieldListSimple;
+  val['fieldSetSimple'] = instance.fieldSetSimple?.toList();
   val['fieldMapSimple'] = instance.fieldMapSimple;
   val['fieldMapListString'] = instance.fieldMapListString;
   val['fieldEnum'] = _$GreekEnumMap[instance.fieldEnum];
