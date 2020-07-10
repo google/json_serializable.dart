@@ -77,24 +77,36 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
           element, '`defaultValue` is `$badType`, it must be a literal.');
     }
 
-    final literal = reader.literalValue;
+    if (reader.isDouble || reader.isInt || reader.isString || reader.isBool) {
+      return reader.literalValue;
+    }
 
-    if (literal is num || literal is String || literal is bool) {
-      return literal;
-    } else if (literal is List<DartObject>) {
+    if (reader.isList) {
       return [
-        for (var e in literal)
+        for (var e in reader.listValue)
           literalForObject(e, [
             ...typeInformation,
             'List',
           ])
       ];
-    } else if (literal is Map<DartObject, DartObject>) {
+    }
+
+    if (reader.isSet) {
+      return {
+        for (var e in reader.setValue)
+          literalForObject(e, [
+            ...typeInformation,
+            'Set',
+          ])
+      };
+    }
+
+    if (reader.isMap) {
       final mapTypeInformation = [
         ...typeInformation,
         'Map',
       ];
-      return literal.map(
+      return reader.mapValue.map(
         (k, v) => MapEntry(
           literalForObject(k, mapTypeInformation),
           literalForObject(v, mapTypeInformation),

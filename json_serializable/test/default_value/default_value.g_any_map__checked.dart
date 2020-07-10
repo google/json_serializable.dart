@@ -36,11 +36,17 @@ class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: [])
   List fieldListEmpty;
 
+  @JsonKey(defaultValue: <int>{})
+  Set fieldSetEmpty;
+
   @JsonKey(defaultValue: {})
   Map fieldMapEmpty;
 
   @JsonKey(defaultValue: [1, 2, 3])
   List<int> fieldListSimple;
+
+  @JsonKey(defaultValue: {'entry1', 'entry2'})
+  Set<String> fieldSetSimple;
 
   @JsonKey(defaultValue: {'answer': 42})
   Map<String, int> fieldMapSimple;

@@ -67,6 +67,11 @@ String jsonLiteralAsDart(dynamic value) {
     return '[$listItems]';
   }
 
+  if (value is Set) {
+    final listItems = value.map(jsonLiteralAsDart).join(', ');
+    return '{$listItems}';
+  }
+
   if (value is Map) return jsonMapAsDart(value);
 
   throw StateError(

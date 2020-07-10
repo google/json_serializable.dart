@@ -13,7 +13,9 @@ abstract class DefaultValue {
   double fieldDouble;
   List fieldListEmpty;
   Map fieldMapEmpty;
+  Set fieldSetEmpty;
   List<int> fieldListSimple;
+  Set<String> fieldSetSimple;
   Map<String, int> fieldMapSimple;
   Map<String, List<String>> fieldMapListString;
   Greek fieldEnum;

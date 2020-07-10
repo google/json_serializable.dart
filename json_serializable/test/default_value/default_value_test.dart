@@ -15,8 +15,10 @@ const _defaultInstance = {
   'fieldInt': 42,
   'fieldDouble': 3.14,
   'fieldListEmpty': [],
+  'fieldSetEmpty': [],
   'fieldMapEmpty': <String, dynamic>{},
   'fieldListSimple': [1, 2, 3],
+  'fieldSetSimple': ['entry1', 'entry2'],
   'fieldMapSimple': <String, dynamic>{'answer': 42},
   'fieldMapListString': {
     'root': ['child']
@@ -30,8 +32,10 @@ const _otherValues = {
   'fieldInt': 43,
   'fieldDouble': 2.718,
   'fieldListEmpty': [42],
+  'fieldSetEmpty': [42],
   'fieldMapEmpty': {'question': false},
   'fieldListSimple': [4, 5, 6],
+  'fieldSetSimple': ['entry3'],
   'fieldMapSimple': <String, dynamic>{},
   'fieldMapListString': {
     'root2': ['alpha']

@@ -13,10 +13,14 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     ..fieldInt = json['fieldInt'] as int ?? 42
     ..fieldDouble = (json['fieldDouble'] as num)?.toDouble() ?? 3.14
     ..fieldListEmpty = json['fieldListEmpty'] as List ?? []
+    ..fieldSetEmpty = (json['fieldSetEmpty'] as List)?.toSet() ?? {}
     ..fieldMapEmpty = json['fieldMapEmpty'] as Map<String, dynamic> ?? {}
     ..fieldListSimple =
         (json['fieldListSimple'] as List)?.map((e) => e as int)?.toList() ??
             [1, 2, 3]
+    ..fieldSetSimple =
+        (json['fieldSetSimple'] as List)?.map((e) => e as String)?.toSet() ??
+            {'entry1', 'entry2'}
     ..fieldMapSimple = (json['fieldMapSimple'] as Map<String, dynamic>)?.map(
           (k, e) => MapEntry(k, e as int),
         ) ??
@@ -48,8 +52,10 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
   val['fieldInt'] = instance.fieldInt;
   val['fieldDouble'] = instance.fieldDouble;
   val['fieldListEmpty'] = instance.fieldListEmpty;
+  val['fieldSetEmpty'] = instance.fieldSetEmpty?.toList();
   val['fieldMapEmpty'] = instance.fieldMapEmpty;
   val['fieldListSimple'] = instance.fieldListSimple;
+  val['fieldSetSimple'] = instance.fieldSetSimple?.toList();
   val['fieldMapSimple'] = instance.fieldMapSimple;
   val['fieldMapListString'] = instance.fieldMapListString;
   val['fieldEnum'] = _$GreekEnumMap[instance.fieldEnum];
