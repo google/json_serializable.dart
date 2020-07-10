@@ -4,50 +4,19 @@
 
 import 'dart:async';
 import 'dart:collection';
-import 'dart:io';
 
 import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as p;
-import 'package:yaml/yaml.dart';
+
+import 'shared.dart';
 
 final _formatter = DartFormatter();
 
-Builder internal([_]) {
-  const builder = _SmartBuilder();
-  _validateBuilder(builder);
-  return builder;
-}
+Builder testBuilder([_]) => validate('_test_builder', const _TestBuilder());
 
-// Until we have verification in pkg:build and friends
-// https://github.com/dart-lang/build/issues/590
-void _validateBuilder(_SmartBuilder builder) {
-  var buildYaml = loadYaml(
-    File('build.yaml').readAsStringSync(),
-    sourceUrl: 'build.yaml',
-  ) as YamlMap;
-
-  for (var key in ['builders', '_internal', 'build_extensions']) {
-    buildYaml = buildYaml[key] as YamlMap;
-  }
-
-  final extensions = Set<String>.from(buildYaml['.dart'] as YamlList);
-
-  final codedExtensions = builder.buildExtensions['.dart'].toSet();
-
-  final tooMany = extensions.difference(codedExtensions);
-  if (tooMany.isNotEmpty) {
-    log.warning('Too many extensions in build.yaml:\n${tooMany.join('\n')}');
-  }
-
-  final missing = codedExtensions.difference(extensions);
-  if (missing.isNotEmpty) {
-    log.warning('Missing extensions in build.yaml:\n${missing.join('\n')}');
-  }
-}
-
-class _SmartBuilder implements Builder {
-  const _SmartBuilder();
+class _TestBuilder implements Builder {
+  const _TestBuilder();
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
@@ -64,8 +33,8 @@ class _SmartBuilder implements Builder {
 
       final partName = extension.substring(0, extension.length - 5);
 
-      final replacements = <_Replacement>[
-        _Replacement(
+      final replacements = <Replacement>[
+        Replacement(
           "part '$baseName.g.dart';",
           "part '$baseName$partName.g.dart';",
         )
@@ -73,7 +42,7 @@ class _SmartBuilder implements Builder {
 
       if (baseName == _kitchenSinkBaseName) {
         final description = _configToName(config.toSet());
-        replacements.add(_Replacement(
+        replacements.add(Replacement(
           "String get description => '--defaults--';",
           "String get description => '$description';",
         ));
@@ -85,7 +54,7 @@ class _SmartBuilder implements Builder {
         replacements.addAll(_optionReplacement(baseName, entry));
       }
 
-      final content = _Replacement.generate(sourceContent, replacements);
+      final content = Replacement.generate(sourceContent, replacements);
 
       await buildStep.writeAsString(newId, _formatter.format(content));
     }
@@ -110,89 +79,89 @@ class _SmartBuilder implements Builder {
 }
 
 const _configReplacements = {
-  'any_map': _Replacement.addJsonSerializableKey('anyMap', true),
-  'checked': _Replacement.addJsonSerializableKey('checked', true),
-  'non_nullable': _Replacement.addJsonSerializableKey('nullable', false),
+  'any_map': Replacement.addJsonSerializableKey('anyMap', true),
+  'checked': Replacement.addJsonSerializableKey('checked', true),
+  'non_nullable': Replacement.addJsonSerializableKey('nullable', false),
   'explicit_to_json':
-      _Replacement.addJsonSerializableKey('explicitToJson', true),
-  'exclude_null': _Replacement.addJsonSerializableKey('includeIfNull', false),
+      Replacement.addJsonSerializableKey('explicitToJson', true),
+  'exclude_null': Replacement.addJsonSerializableKey('includeIfNull', false),
 };
 
 const _kitchenSinkReplacements = {
   'any_map': [
-    _Replacement(
+    Replacement(
       'bool get anyMap => false;',
       'bool get anyMap => true;',
     ),
-    _Replacement(
+    Replacement(
       'class _Factory implements k.KitchenSinkFactory<String, dynamic>',
       'class _Factory implements k.KitchenSinkFactory<dynamic, dynamic>',
     ),
-    _Replacement(
+    Replacement(
       'k.KitchenSink fromJson(Map<String, dynamic> json)',
       'k.KitchenSink fromJson(Map json)',
     ),
-    _Replacement(
+    Replacement(
       'factory KitchenSink.fromJson(Map<String, dynamic> json)',
       'factory KitchenSink.fromJson(Map json)',
     ),
   ],
   'checked': [
-    _Replacement(
+    Replacement(
       'bool get checked => false;',
       'bool get checked => true;',
     )
   ],
   'exclude_null': [
-    _Replacement(
+    Replacement(
       'bool get excludeNull => false;',
       'bool get excludeNull => true;',
     ),
   ],
   'explicit_to_json': [
-    _Replacement(
+    Replacement(
       'bool get explicitToJson => false;',
       'bool get explicitToJson => true;',
     ),
   ],
   'non_nullable': [
-    _Replacement(
+    Replacement(
       'bool get nullable => true;',
       'bool get nullable => false;',
     ),
-    _Replacement(
+    Replacement(
       'List<T> _defaultList<T>() => null;',
       'List<T> _defaultList<T>() => <T>[];',
     ),
-    _Replacement(
+    Replacement(
       'Set<T> _defaultSet<T>() => null;',
       'Set<T> _defaultSet<T>() => <T>{};',
     ),
-    _Replacement(
+    Replacement(
       'Map<K, V> _defaultMap<K, V>() => null;',
       'Map<String, T> _defaultMap<T>() => <String, T>{};',
     ),
-    _Replacement(
+    Replacement(
       'SimpleObject _defaultSimpleObject() => null;',
       'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
     ),
-    _Replacement(
+    Replacement(
       'StrictKeysObject _defaultStrictKeysObject() => null;',
       'StrictKeysObject _defaultStrictKeysObject() => '
           "StrictKeysObject(10, 'cool');",
     ),
-    _Replacement(
+    Replacement(
       'DateTime dateTime;',
       'DateTime dateTime = DateTime(1981, 6, 5);',
     ),
-    _Replacement(
+    Replacement(
       'BigInt bigInt;',
       "BigInt bigInt = BigInt.parse('10000000000000000000');",
     ),
   ],
 };
 
-Iterable<_Replacement> _optionReplacement(
+Iterable<Replacement> _optionReplacement(
     String baseName, String optionKey) sync* {
   yield _configReplacements[optionKey];
 
@@ -237,29 +206,3 @@ const _fileConfigurationMap = <String, Set<Set<String>>>{
     {'non_nullable'},
   }
 };
-
-class _Replacement {
-  final Pattern existing;
-  final String replacement;
-
-  const _Replacement(this.existing, this.replacement);
-
-  const _Replacement.addJsonSerializableKey(String key, bool value)
-      : existing = '@JsonSerializable(',
-        replacement = '@JsonSerializable(\n  $key: $value,';
-
-  static String generate(
-      String inputContent, Iterable<_Replacement> replacements) {
-    var outputContent = inputContent;
-
-    for (final r in replacements) {
-      if (!outputContent.contains(r.existing)) {
-        print('Input string did not contain `${r.existing}` as expected.');
-      } else {
-        outputContent = outputContent.replaceAll(r.existing, r.replacement);
-      }
-    }
-
-    return outputContent.replaceAll(',)', ',\n)');
-  }
-}
