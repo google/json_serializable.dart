@@ -9,9 +9,9 @@ part of 'input.type_bool.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    json['value'] as bool,
-    json['nullable'] as bool,
-  )..withDefault = json['withDefault'] as bool ?? true;
+    (json['value'] as bool),
+    (json['nullable'] as bool),
+  )..withDefault = (json['withDefault'] as int?) ?? 42;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>

@@ -107,9 +107,9 @@ class KitchenSink implements k.KitchenSink {
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime? dateTime;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt? bigInt;
 
   Iterable? get iterable => _iterable;
 
@@ -145,9 +145,9 @@ class KitchenSink implements k.KitchenSink {
 
   // Handle fields with names that collide with helper names
   Map<String, bool> val = _defaultMap();
-  bool writeNotNull;
+  bool? writeNotNull;
   @JsonKey(name: r'$string')
-  String string;
+  String? string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
 

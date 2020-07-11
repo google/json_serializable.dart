@@ -15,8 +15,8 @@ class SimpleClass {
   @JsonKey(nullable: false)
   final Map nullable;
 
-  @JsonKey(defaultValue: {'a': 1})
-  Map withDefault;
+  @JsonKey(defaultValue: 42)
+  int? withDefault;
 
   SimpleClass(
     this.value,

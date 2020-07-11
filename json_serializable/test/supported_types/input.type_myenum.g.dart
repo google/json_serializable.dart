@@ -11,15 +11,14 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     _$enumDecode(_$MyEnumEnumMap, json['value']),
     _$enumDecode(_$MyEnumEnumMap, json['nullable']),
-  )..withDefault =
-      _$enumDecode(_$MyEnumEnumMap, json['withDefault']) ?? MyEnum.alpha;
+  )..withDefault = (json['withDefault'] as int?) ?? 42;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': _$MyEnumEnumMap[instance.value],
       'nullable': _$MyEnumEnumMap[instance.nullable],
-      'withDefault': _$MyEnumEnumMap[instance.withDefault],
+      'withDefault': instance.withDefault,
     };
 
 T _$enumDecode<T>(

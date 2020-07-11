@@ -9,9 +9,9 @@ part of 'input.type_string.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    json['value'] as String,
-    json['nullable'] as String,
-  )..withDefault = json['withDefault'] as String ?? 'a string';
+    (json['value'] as String),
+    (json['nullable'] as String),
+  )..withDefault = (json['withDefault'] as int?) ?? 42;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
