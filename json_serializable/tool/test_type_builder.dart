@@ -120,7 +120,7 @@ class _TypeBuilder implements Builder {
 }
 
 Builder typeTestBuilder([_]) =>
-    validate('_type_builder', const _TypeTestBuilder());
+    validate('_type_test_builder', const _TypeTestBuilder());
 
 class _TypeTestBuilder implements Builder {
   const _TypeTestBuilder();

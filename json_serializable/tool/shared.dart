@@ -25,12 +25,18 @@ Builder validate(String builderName, Builder builder) {
 
   final tooMany = extensions.difference(codedExtensions);
   if (tooMany.isNotEmpty) {
-    log.warning('Too many extensions in build.yaml:\n${tooMany.join('\n')}');
+    log.warning(
+      '$builderName: Too many extensions in build.yaml:\n'
+      '${tooMany.join('\n')}',
+    );
   }
 
   final missing = codedExtensions.difference(extensions);
   if (missing.isNotEmpty) {
-    log.warning('Missing extensions in build.yaml:\n${missing.join('\n')}');
+    log.warning(
+      '$builderName: Missing extensions in build.yaml:\n'
+      '${missing.join('\n')}',
+    );
   }
 
   return builder;
