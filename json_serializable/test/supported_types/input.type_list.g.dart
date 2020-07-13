@@ -9,8 +9,8 @@ part of 'input.type_list.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    (json['value'] as List?),
-    (json['nullable'] as List?),
+    (json['value'] as List),
+    (json['nullable'] as List),
   )..withDefault = (json['withDefault'] as int?) ?? 42;
 }
 

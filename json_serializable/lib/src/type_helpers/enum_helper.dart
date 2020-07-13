@@ -97,22 +97,23 @@ T _$enumDecode<T>(
   }
 
   final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
+      .cast<MapEntry<T, Object>?>()
+      .singleWhere((e) => e!.value == source, orElse: () => null)
       ?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return value ?? unknownValue;
+  return value ?? unknownValue!;
 }
 ''';
 
 const _enumDecodeHelperNullable = r'''
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+T? _$enumDecodeNullable<T>(
+  Map<T, Object> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     return null;

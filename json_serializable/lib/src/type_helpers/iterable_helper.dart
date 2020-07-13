@@ -31,7 +31,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var isList = _coreListChecker.isAssignableFromType(targetType);
     final subField = context.serialize(itemType, closureArg);
 
-    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    var optionalQuestion = context.nullableForType(targetType) ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subField`
     // will be identical to `substitute` – so no explicit mapping is needed.
@@ -44,6 +44,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       // expression now represents an Iterable (even if it started as a List
       // ...resetting `isList` to `false`.
       isList = false;
+
+      // No need to include the optional question below – it was used here!
+      optionalQuestion = '';
     }
 
     if (!isList) {
@@ -72,7 +75,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var output = '$expression as List';
 
-    if (context.nullSafeLibrary) {
+    if (context.nullableForType(targetType)) {
       output += '?';
     }
 
@@ -88,11 +91,13 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     output = '($output)';
 
-    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    var optionalQuestion = context.nullableForType(targetType) ? '?' : '';
 
     if (closureArg != itemSubVal) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);
       output += '$optionalQuestion.map($lambda)';
+      // No need to include the optional question below – it was used here!
+      optionalQuestion = '';
     }
 
     if (_coreListChecker.isExactlyType(targetType)) {

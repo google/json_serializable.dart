@@ -31,10 +31,6 @@ abstract class TypeHelperContext {
 
   /// Adds [memberContent] to the set of generated, top-level members.
   void addMember(String memberContent);
-
-  /// Returns `true` if the targeted library supports the null safety language
-  /// feature.
-  bool get nullSafeLibrary;
 }
 
 /// Extended context information with includes configuration values

@@ -97,8 +97,11 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
 
-    final mapCast =
-        context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+
+    if (context.nullableForType(targetType)) {
+      mapCast += '?';
+    }
 
     String keyUsage;
     if (isEnum(keyArg)) {

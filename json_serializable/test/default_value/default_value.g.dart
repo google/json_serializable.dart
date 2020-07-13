@@ -13,17 +13,17 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     (json['fieldString'] as String) ?? 'string',
     (json['fieldInt'] as int) ?? 42,
     (json['fieldDouble'] as num).toDouble() ?? 3.14,
-    (json['fieldListEmpty'] as List?) ?? [],
-    ((json['fieldSetEmpty'] as List?)).toSet() ?? {},
+    (json['fieldListEmpty'] as List) ?? [],
+    ((json['fieldSetEmpty'] as List)).toSet() ?? {},
     json['fieldMapEmpty'] as Map<String, dynamic> ?? {},
-    ((json['fieldListSimple'] as List?)).map((e) => (e as int)).toList() ??
+    ((json['fieldListSimple'] as List)).map((e) => (e as int)).toList() ??
         [1, 2, 3],
-    ((json['fieldSetSimple'] as List?)).map((e) => (e as String)).toSet() ??
+    ((json['fieldSetSimple'] as List)).map((e) => (e as String)).toSet() ??
         {'entry1', 'entry2'},
     Map<String, int>.from(json['fieldMapSimple'] as Map) ?? {'answer': 42},
     (json['fieldMapListString'] as Map<String, dynamic>).map(
           (k, e) =>
-              MapEntry(k, ((e as List?)).map((e) => (e as String)).toList()),
+              MapEntry(k, ((e as List)).map((e) => (e as String)).toList()),
         ) ??
         {
           'root': ['child']
@@ -68,14 +68,15 @@ T _$enumDecode<T>(
   }
 
   final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
+      .cast<MapEntry<T, Object>?>()
+      .singleWhere((e) => e!.value == source, orElse: () => null)
       ?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return value ?? unknownValue;
+  return value ?? unknownValue!;
 }
 
 const _$GreekEnumMap = {

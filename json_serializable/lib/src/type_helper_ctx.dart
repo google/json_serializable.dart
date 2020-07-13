@@ -39,7 +39,7 @@ class TypeHelperCtx
     if (fieldElement.library.isNonNullableByDefault) {
       return type.nullabilitySuffix == NullabilitySuffix.question;
     }
-    return _key.nullable;
+    throw UnsupportedError('should never get here!');
   }
 
   @override
@@ -62,10 +62,6 @@ class TypeHelperCtx
   void addMember(String memberContent) {
     _helperCore.addMember(memberContent);
   }
-
-  @override
-  bool get nullSafeLibrary =>
-      _helperCore.element.library.isNonNullableByDefault;
 
   @override
   Object serialize(DartType targetType, String expression) => _run(

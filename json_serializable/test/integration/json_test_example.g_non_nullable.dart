@@ -83,7 +83,7 @@ class Order {
   }
 
   // Ignored getter without value set in ctor
-  int get price => items!.fold(0, (total, item) => item.price + total);
+  int get price => items!.fold(0, (total, item) => item.price! + total);
 
   @JsonKey(ignore: true)
   bool? shouldBeCached;
