@@ -237,7 +237,7 @@ final _altValue = $altJsonExpression;
 
   static const _defaultSource = r'''
   @JsonKey(defaultValue: 42)
-  int withDefault;
+  int? withDefault;
 
 ''';
 }

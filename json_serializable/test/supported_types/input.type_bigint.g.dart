@@ -11,12 +11,11 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     BigInt.parse(json['value'] as String),
     BigInt.parse(json['nullable'] as String),
-  )..withDefault = (json['withDefault'] as int?) ?? 42;
+  );
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': instance.value.toString(),
       'nullable': instance.nullable.toString(),
-      'withDefault': instance.withDefault,
     };

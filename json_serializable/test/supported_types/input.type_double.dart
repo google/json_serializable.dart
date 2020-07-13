@@ -15,8 +15,8 @@ class SimpleClass {
   @JsonKey(nullable: false)
   final double nullable;
 
-  @JsonKey(defaultValue: 42)
-  int? withDefault;
+  @JsonKey(defaultValue: 3.14)
+  double? withDefault;
 
   SimpleClass(
     this.value,

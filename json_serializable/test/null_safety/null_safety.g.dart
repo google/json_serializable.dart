@@ -14,9 +14,10 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     dateOfBirth: json['dateOfBirth'] == null
         ? null
         : DateTime.parse(json['dateOfBirth'] as String),
-  )..nullableListOfNullableInt = ((json['nullableListOfNullableInt'] as List?))
-      ?.map((e) => (e as int?))
-      .toList();
+  )..nullableListOfNullableInt =
+      ((json['nullableListOfNullableInt'] as List<Object?>?))
+          ?.map((e) => (e as int?))
+          .toList();
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{

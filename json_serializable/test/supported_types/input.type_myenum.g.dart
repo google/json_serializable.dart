@@ -11,14 +11,15 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     _$enumDecode(_$MyEnumEnumMap, json['value']),
     _$enumDecode(_$MyEnumEnumMap, json['nullable']),
-  )..withDefault = (json['withDefault'] as int?) ?? 42;
+  )..withDefault = _$enumDecodeNullable(_$MyEnumEnumMap, json['withDefault']) ??
+      MyEnum.alpha;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': _$MyEnumEnumMap[instance.value],
       'nullable': _$MyEnumEnumMap[instance.nullable],
-      'withDefault': instance.withDefault,
+      'withDefault': _$MyEnumEnumMap[instance.withDefault],
     };
 
 T _$enumDecode<T>(
@@ -49,3 +50,14 @@ const _$MyEnumEnumMap = {
   MyEnum.gamma: 'gamma',
   MyEnum.delta: 'delta',
 };
+
+T? _$enumDecodeNullable<T>(
+  Map<T, Object> enumValues,
+  dynamic source, {
+  T? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}

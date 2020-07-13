@@ -17,8 +17,8 @@ class SimpleClass {
   @JsonKey(nullable: false)
   final MyEnum nullable;
 
-  @JsonKey(defaultValue: 42)
-  int? withDefault;
+  @JsonKey(defaultValue: MyEnum.alpha)
+  MyEnum? withDefault;
 
   SimpleClass(
     this.value,

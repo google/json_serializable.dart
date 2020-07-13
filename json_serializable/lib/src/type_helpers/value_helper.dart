@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_gen/source_gen.dart' show TypeChecker;
 
 import '../helper_core.dart';
 import '../shared_checkers.dart';
@@ -35,8 +34,7 @@ class ValueHelper extends TypeHelper {
     if (isObjectOrDynamic(targetType)) {
       // just return it as-is. We'll hope it's safe.
       return expression;
-    } else if (const TypeChecker.fromUrl('dart:core#double')
-        .isExactlyType(targetType)) {
+    } else if (targetType.isDartCoreDouble) {
       return '($expression as num)${context.nullableForType(targetType) ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       final typeCode = typeToCode(targetType);
