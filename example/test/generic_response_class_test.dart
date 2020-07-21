@@ -76,6 +76,7 @@ void main() {
       _testArticleList,
     );
 
+    // without generic
     _testResponse(BaseResponse.fromJson(_jsonArticleList), _testArticleList);
   });
 }
