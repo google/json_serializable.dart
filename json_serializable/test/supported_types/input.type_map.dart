@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
+import 'enum_type.dart';
 
 part 'input.type_map.g.dart';
 
@@ -79,6 +80,24 @@ class SimpleClassDynamicToBigInt {
       _$SimpleClassDynamicToBigIntFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToBigIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToBigInt {
+  final Map<EnumType, BigInt> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, BigInt> nullable;
+
+  SimpleClassEnumTypeToBigInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToBigInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToBigIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToBigIntToJson(this);
 }
 
 @JsonSerializable()
@@ -208,6 +227,24 @@ class SimpleClassDynamicToBool {
 }
 
 @JsonSerializable()
+class SimpleClassEnumTypeToBool {
+  final Map<EnumType, bool> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, bool> nullable;
+
+  SimpleClassEnumTypeToBool(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToBool.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToBoolFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToBoolToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassIntToBool {
   final Map<int, bool> value;
 
@@ -331,6 +368,24 @@ class SimpleClassDynamicToDateTime {
       _$SimpleClassDynamicToDateTimeFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToDateTimeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToDateTime {
+  final Map<EnumType, DateTime> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, DateTime> nullable;
+
+  SimpleClassEnumTypeToDateTime(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToDateTime.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToDateTimeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToDateTimeToJson(this);
 }
 
 @JsonSerializable()
@@ -460,6 +515,24 @@ class SimpleClassDynamicToDouble {
 }
 
 @JsonSerializable()
+class SimpleClassEnumTypeToDouble {
+  final Map<EnumType, double> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, double> nullable;
+
+  SimpleClassEnumTypeToDouble(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToDouble.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToDoubleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToDoubleToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassIntToDouble {
   final Map<int, double> value;
 
@@ -583,6 +656,24 @@ class SimpleClassDynamicToDuration {
       _$SimpleClassDynamicToDurationFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToDurationToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToDuration {
+  final Map<EnumType, Duration> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, Duration> nullable;
+
+  SimpleClassEnumTypeToDuration(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToDuration.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToDurationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToDurationToJson(this);
 }
 
 @JsonSerializable()
@@ -712,6 +803,24 @@ class SimpleClassDynamicToDynamic {
 }
 
 @JsonSerializable()
+class SimpleClassEnumTypeToDynamic {
+  final Map<EnumType, dynamic> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, dynamic> nullable;
+
+  SimpleClassEnumTypeToDynamic(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToDynamic.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToDynamicFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToDynamicToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassIntToDynamic {
   final Map<int, dynamic> value;
 
@@ -784,6 +893,150 @@ class SimpleClassUriToDynamic {
 }
 
 @JsonSerializable()
+class SimpleClassBigIntToEnumType {
+  final Map<BigInt, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<BigInt, EnumType> nullable;
+
+  SimpleClassBigIntToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassBigIntToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassBigIntToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassBigIntToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassDateTimeToEnumType {
+  final Map<DateTime, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<DateTime, EnumType> nullable;
+
+  SimpleClassDateTimeToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassDateTimeToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassDateTimeToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassDateTimeToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassDynamicToEnumType {
+  final Map<dynamic, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<dynamic, EnumType> nullable;
+
+  SimpleClassDynamicToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassDynamicToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassDynamicToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassDynamicToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToEnumType {
+  final Map<EnumType, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, EnumType> nullable;
+
+  SimpleClassEnumTypeToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassIntToEnumType {
+  final Map<int, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<int, EnumType> nullable;
+
+  SimpleClassIntToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassIntToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassIntToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassIntToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassObjectToEnumType {
+  final Map<Object, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<Object, EnumType> nullable;
+
+  SimpleClassObjectToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassObjectToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassObjectToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassObjectToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassStringToEnumType {
+  final Map<String, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<String, EnumType> nullable;
+
+  SimpleClassStringToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassStringToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassStringToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassStringToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassUriToEnumType {
+  final Map<Uri, EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Map<Uri, EnumType> nullable;
+
+  SimpleClassUriToEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassUriToEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassUriToEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassUriToEnumTypeToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassBigIntToNum {
   final Map<BigInt, num> value;
 
@@ -835,6 +1088,24 @@ class SimpleClassDynamicToNum {
       _$SimpleClassDynamicToNumFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToNumToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToNum {
+  final Map<EnumType, num> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, num> nullable;
+
+  SimpleClassEnumTypeToNum(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToNum.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToNumFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToNumToJson(this);
 }
 
 @JsonSerializable()
@@ -964,6 +1235,24 @@ class SimpleClassDynamicToObject {
 }
 
 @JsonSerializable()
+class SimpleClassEnumTypeToObject {
+  final Map<EnumType, Object> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, Object> nullable;
+
+  SimpleClassEnumTypeToObject(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToObject.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToObjectFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToObjectToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassIntToObject {
   final Map<int, Object> value;
 
@@ -1090,6 +1379,24 @@ class SimpleClassDynamicToString {
 }
 
 @JsonSerializable()
+class SimpleClassEnumTypeToString {
+  final Map<EnumType, String> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, String> nullable;
+
+  SimpleClassEnumTypeToString(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToString.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToStringFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToStringToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassIntToString {
   final Map<int, String> value;
 
@@ -1213,6 +1520,24 @@ class SimpleClassDynamicToUri {
       _$SimpleClassDynamicToUriFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToUriToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToUri {
+  final Map<EnumType, Uri> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, Uri> nullable;
+
+  SimpleClassEnumTypeToUri(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToUri.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToUriFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToUriToJson(this);
 }
 
 @JsonSerializable()
