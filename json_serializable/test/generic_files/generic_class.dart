@@ -40,7 +40,7 @@ class GenericClass<T extends num, S> {
 }
 
 @JsonSerializable()
-@_DurationMillisecondConverter()
+@_DurationMillisecondConverter.named()
 @_DurationListMillisecondConverter()
 class GenericClassWithConverter<T extends num, S> {
   @_SimpleConverter()
@@ -81,8 +81,6 @@ class _SimpleConverter<T> implements JsonConverter<T, Map<String, dynamic>> {
 }
 
 class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
-  const _DurationMillisecondConverter();
-
   const _DurationMillisecondConverter.named();
 
   @override
