@@ -36,6 +36,11 @@ const _trivialTypesToTest = {
   'dynamic': TestTypeData(
     altJsonExpression: "'dynamic'",
   ),
+  customEnumType: TestTypeData(
+    defaultExpression: '$customEnumType.alpha',
+    jsonExpression: "'alpha'",
+    altJsonExpression: "'beta'",
+  ),
   'num': TestTypeData(
     defaultExpression: '88.6',
     altJsonExpression: '29',
@@ -55,20 +60,6 @@ const _trivialTypesToTest = {
 
 final _typesToTest = {
   ..._trivialTypesToTest,
-  'MyEnum': const TestTypeData(
-    defaultExpression: 'MyEnum.alpha',
-    jsonExpression: "'alpha'",
-    altJsonExpression: "'beta'",
-    replacements: [
-      Replacement(
-        '@JsonSerializable()',
-        '''
-enum MyEnum { alpha, beta, gamma, delta }
-
-@JsonSerializable()''',
-      )
-    ],
-  ),
   //
   // Collection types
   //
@@ -101,7 +92,7 @@ const _mapKeyTypes = {
   'BigInt',
   'DateTime',
   'dynamic',
-  // need enum!
+  'EnumType',
   'int',
   'Object',
   'String',

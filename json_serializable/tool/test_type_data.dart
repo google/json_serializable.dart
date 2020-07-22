@@ -2,21 +2,23 @@ import 'package:meta/meta.dart';
 
 import 'shared.dart';
 
+const customEnumType = 'EnumType';
+
+const _annotationImport =
+    "import 'package:json_annotation/json_annotation.dart';";
+
 class TestTypeData {
-  final List<Replacement> _replacements;
   final String defaultExpression;
   final String jsonExpression;
   final String altJsonExpression;
   final Set<String> genericArgs;
 
   const TestTypeData({
-    List<Replacement> replacements,
     this.defaultExpression,
     String jsonExpression,
     @required String altJsonExpression,
     this.genericArgs = const {},
-  })  : _replacements = replacements ?? const [],
-        jsonExpression = jsonExpression ?? defaultExpression,
+  })  : jsonExpression = jsonExpression ?? defaultExpression,
         altJsonExpression =
             altJsonExpression ?? jsonExpression ?? defaultExpression;
 
@@ -29,12 +31,22 @@ class TestTypeData {
 
     final newPart = toTypeExtension(type, includeDotDart: false);
 
-    final buffer = StringBuffer(Replacement.generate(split[0], [
+    final headerReplacements = [
+      if (type == customEnumType ||
+          genericArgs.any((element) => element.contains(customEnumType)))
+        const Replacement(
+          _annotationImport,
+          '$_annotationImport'
+          "import 'enum_type.dart';",
+        ),
       Replacement(
         "part 'input.g.dart';",
         "part 'input$newPart.g.dart';",
       )
-    ]));
+    ];
+
+    final buffer =
+        StringBuffer(Replacement.generate(split[0], headerReplacements));
 
     final simpleClassContent = '$classAnnotationSplit${split[1]}';
 
@@ -69,8 +81,6 @@ class TestTypeData {
       'final int nullable;',
       'final $type nullable;',
     );
-
-    yield* _replacements;
 
     final defaultReplacement = (defaultExpression == null // no default provided
             ||

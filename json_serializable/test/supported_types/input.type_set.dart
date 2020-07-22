@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
+import 'enum_type.dart';
 
 part 'input.type_set.g.dart';
 
@@ -133,6 +134,24 @@ class SimpleClassDynamic {
       _$SimpleClassDynamicFromJson(json);
 
   Map<String, dynamic> toJson() => _$SimpleClassDynamicToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumType {
+  final Set<EnumType> value;
+
+  @JsonKey(nullable: false)
+  final Set<EnumType> nullable;
+
+  SimpleClassEnumType(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumType.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToJson(this);
 }
 
 @JsonSerializable()

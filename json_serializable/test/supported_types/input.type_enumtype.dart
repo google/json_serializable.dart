@@ -3,20 +3,19 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
+import 'enum_type.dart';
 
-part 'input.type_myenum.g.dart';
-
-enum MyEnum { alpha, beta, gamma, delta }
+part 'input.type_enumtype.g.dart';
 
 @JsonSerializable()
 class SimpleClass {
-  final MyEnum value;
+  final EnumType value;
 
   @JsonKey(nullable: false)
-  final MyEnum nullable;
+  final EnumType nullable;
 
-  @JsonKey(defaultValue: MyEnum.alpha)
-  MyEnum withDefault;
+  @JsonKey(defaultValue: EnumType.alpha)
+  EnumType withDefault;
 
   SimpleClass(
     this.value,

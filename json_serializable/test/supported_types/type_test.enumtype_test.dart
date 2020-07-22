@@ -8,7 +8,7 @@
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
-import 'input.type_myenum.dart';
+import 'input.type_enumtype.dart';
 
 void main() {
   test('round trip', () {
