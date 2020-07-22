@@ -103,6 +103,60 @@ Map<String, dynamic> _$SimpleClassDynamicToJson(SimpleClassDynamic instance) =>
       'nullable': instance.nullable.toList(),
     };
 
+SimpleClassEnumType _$SimpleClassEnumTypeFromJson(Map<String, dynamic> json) {
+  return SimpleClassEnumType(
+    (json['value'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+    (json['nullable'] as List).map((e) => _$enumDecode(_$EnumTypeEnumMap, e)),
+  );
+}
+
+Map<String, dynamic> _$SimpleClassEnumTypeToJson(
+        SimpleClassEnumType instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((e) => _$EnumTypeEnumMap[e])?.toList(),
+      'nullable': instance.nullable.map((e) => _$EnumTypeEnumMap[e]).toList(),
+    };
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$EnumTypeEnumMap = {
+  EnumType.alpha: 'alpha',
+  EnumType.beta: 'beta',
+  EnumType.gamma: 'gamma',
+  EnumType.delta: 'delta',
+};
+
 SimpleClassNum _$SimpleClassNumFromJson(Map<String, dynamic> json) {
   return SimpleClassNum(
     (json['value'] as List)?.map((e) => e as num),
