@@ -11,16 +11,24 @@ class TestTypeData {
   final String defaultExpression;
   final String jsonExpression;
   final String altJsonExpression;
-  final Set<String> genericArgs;
+  final Map<String, String> genericTypes;
 
-  const TestTypeData({
+  TestTypeData({
     this.defaultExpression,
     String jsonExpression,
     @required String altJsonExpression,
-    this.genericArgs = const {},
+    Set<String> genericArgs,
   })  : jsonExpression = jsonExpression ?? defaultExpression,
         altJsonExpression =
-            altJsonExpression ?? jsonExpression ?? defaultExpression;
+            altJsonExpression ?? jsonExpression ?? defaultExpression,
+        genericTypes = Map<String, String>.fromEntries(
+          (genericArgs ?? const {}).map(
+            (e) => MapEntry<String, String>(
+              e,
+              'SimpleClass${_genericClassPart(e)}',
+            ),
+          ),
+        );
 
   String libContent(String source, String type) {
     const classAnnotationSplit = '@JsonSerializable()';
@@ -33,7 +41,7 @@ class TestTypeData {
 
     final headerReplacements = [
       if (type == customEnumType ||
-          genericArgs.any((element) => element.contains(customEnumType)))
+          genericTypes.keys.any((element) => element.contains(customEnumType)))
         const Replacement(
           _annotationImport,
           '$_annotationImport'
@@ -55,15 +63,13 @@ class TestTypeData {
       _libReplacements(type),
     ));
 
-    for (var genericArg in genericArgs) {
-      final genericArgClassPart = _genericClassPart(genericArg);
-
-      final genericType = '$type<$genericArg>';
+    for (var entry in genericTypes.entries) {
+      final genericType = '$type<${entry.key}>';
 
       buffer.write(Replacement.generate(
         simpleClassContent.replaceAll(
           'SimpleClass',
-          'SimpleClass$genericArgClassPart',
+          entry.value,
         ),
         _libReplacements(genericType),
       ));
@@ -97,10 +103,26 @@ class TestTypeData {
     );
   }
 
-  String testContent(String sourceContent, String type) => Replacement.generate(
-        sourceContent,
-        _testReplacements(type),
-      );
+  String testContent(String sourceContent, String type) {
+    sourceContent = Replacement.generate(
+      sourceContent,
+      _testReplacements(type),
+    );
+
+    if (genericTypes.isNotEmpty) {
+      final buffer = StringBuffer();
+
+      for (var entry in genericTypes.entries) {
+        buffer.writeln("group('<${entry.key}>', () {});");
+      }
+
+      assert(sourceContent.contains(_testGenericPlaceHolder));
+      sourceContent = sourceContent.replaceFirst(
+          _testGenericPlaceHolder, buffer.toString());
+    }
+
+    return sourceContent;
+  }
 
   Iterable<Replacement> _testReplacements(String type) sync* {
     yield Replacement(
@@ -110,12 +132,12 @@ class TestTypeData {
 
     yield Replacement(
       '''
-final _defaultValue = 42;
-final _altValue = 43;
+    final _defaultValue = 42;
+    final _altValue = 43;
 ''',
       '''
-final _defaultValue = $jsonExpression;
-final _altValue = $altJsonExpression;
+    final _defaultValue = $jsonExpression;
+    final _altValue = $altJsonExpression;
 ''',
     );
 
@@ -137,6 +159,8 @@ final _altValue = $altJsonExpression;
 
 ''';
 }
+
+const _testGenericPlaceHolder = '// Place-holder for generic tests, if any.';
 
 String _genericClassPart(String genericArg) => genericArg
     .split(',')

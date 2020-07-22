@@ -12,7 +12,7 @@ import 'test_type_data.dart';
 
 final _formatter = DartFormatter();
 
-const _trivialTypesToTest = {
+final _trivialTypesToTest = {
   'BigInt': TestTypeData(
     jsonExpression: "'12345'",
     altJsonExpression: "'67890'",
@@ -66,8 +66,8 @@ final _typesToTest = {
   'Map': TestTypeData(
     defaultExpression: "{'a': 1}",
     altJsonExpression: "{'b': 2}",
-    genericArgs: _iterableGenericArgs
-        .expand((v) => _mapKeyTypes.map((k) => '$k,$v'))
+    genericArgs: _mapKeyTypes
+        .expand((k) => _iterableGenericArgs.map((v) => '$k,$v'))
         .toSet(),
   ),
   'List': TestTypeData(
@@ -151,7 +151,7 @@ class _TypeTestBuilder implements Builder {
 
       await buildStep.writeAsString(
         newId,
-        entry.value.testContent(sourceContent, type),
+        _formatter.format(entry.value.testContent(sourceContent, type)),
       );
     }
   }
