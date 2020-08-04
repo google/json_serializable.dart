@@ -13,21 +13,21 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     (json['fieldString'] as String) ?? 'string',
     (json['fieldInt'] as int) ?? 42,
     (json['fieldDouble'] as num).toDouble() ?? 3.14,
-    json['fieldListEmpty'] as List<Object?> ?? [],
-    (json['fieldSetEmpty'] as List<Object?>).toSet() ?? {},
+    json['fieldListEmpty'] as List<dynamic> ?? [],
+    (json['fieldSetEmpty'] as List<dynamic>).toSet() ?? {},
     json['fieldMapEmpty'] as Map<String, dynamic> ?? {},
-    (json['fieldListSimple'] as List<Object?>)
+    (json['fieldListSimple'] as List<dynamic>)
             .map((e) => (e as int))
             .toList() ??
         [1, 2, 3],
-    (json['fieldSetSimple'] as List<Object?>)
+    (json['fieldSetSimple'] as List<dynamic>)
             .map((e) => (e as String))
             .toSet() ??
         {'entry1', 'entry2'},
     Map<String, int>.from(json['fieldMapSimple'] as Map) ?? {'answer': 42},
     (json['fieldMapListString'] as Map<String, dynamic>).map(
           (k, e) => MapEntry(
-              k, (e as List<Object?>).map((e) => (e as String)).toList()),
+              k, (e as List<dynamic>).map((e) => (e as String)).toList()),
         ) ??
         {
           'root': ['child']

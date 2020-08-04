@@ -22,7 +22,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         : Order.fromJson(json['order'] as Map<String, dynamic>)
     ..customOrders = json['customOrders'] == null
         ? null
-        : MyList.fromJson((json['customOrders'] as List<Object?>)
+        : MyList.fromJson((json['customOrders'] as List<dynamic>)
             .map((e) => Order.fromJson(e as Map<String, dynamic>))
             .toList())
     ..houseMap = (json['houseMap'] as Map<String, dynamic>?)?.map(
@@ -83,7 +83,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
   $checkKeys(json, disallowNullValues: const ['count']);
   return Order(
     _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
-    (json['items'] as List<Object?>?)
+    (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>)),
   )
     ..count = (json['count'] as int?)
@@ -140,11 +140,11 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     (json['price'] as int?),
   )
     ..itemNumber = (json['item-number'] as int?)
-    ..saleDates = (json['saleDates'] as List<Object?>?)
+    ..saleDates = (json['saleDates'] as List<dynamic>?)
         ?.map((e) => DateTime.parse(e as String))
         .toList()
     ..rates =
-        (json['rates'] as List<Object?>?)?.map((e) => (e as int)).toList();
+        (json['rates'] as List<dynamic>?)?.map((e) => (e as int)).toList();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
@@ -156,12 +156,12 @@ Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) {
   return Numbers()
-    ..ints = (json['ints'] as List<Object?>?)?.map((e) => (e as int)).toList()
-    ..nums = (json['nums'] as List<Object?>?)?.map((e) => (e as num)).toList()
-    ..doubles = (json['doubles'] as List<Object?>?)
+    ..ints = (json['ints'] as List<dynamic>?)?.map((e) => (e as int)).toList()
+    ..nums = (json['nums'] as List<dynamic>?)?.map((e) => (e as num)).toList()
+    ..doubles = (json['doubles'] as List<dynamic>?)
         ?.map((e) => (e as num).toDouble())
         .toList()
-    ..nnDoubles = (json['nnDoubles'] as List<Object?>?)
+    ..nnDoubles = (json['nnDoubles'] as List<dynamic>?)
         ?.map((e) => (e as num).toDouble())
         .toList()
     ..duration = durationFromInt(json['duration'] as int?)

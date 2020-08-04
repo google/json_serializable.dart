@@ -15,16 +15,16 @@ DefaultValue _$DefaultValueFromJson(Map json) {
       $checkedConvert(json, 'fieldInt', (v) => (v as int)) ?? 42,
       $checkedConvert(json, 'fieldDouble', (v) => (v as num).toDouble()) ??
           3.14,
-      $checkedConvert(json, 'fieldListEmpty', (v) => v as List<Object?>) ?? [],
+      $checkedConvert(json, 'fieldListEmpty', (v) => v as List<dynamic>) ?? [],
       $checkedConvert(
-              json, 'fieldSetEmpty', (v) => (v as List<Object?>).toSet()) ??
+              json, 'fieldSetEmpty', (v) => (v as List<dynamic>).toSet()) ??
           {},
       $checkedConvert(json, 'fieldMapEmpty', (v) => v as Map) ?? {},
       $checkedConvert(json, 'fieldListSimple',
-              (v) => (v as List<Object?>).map((e) => (e as int)).toList()) ??
+              (v) => (v as List<dynamic>).map((e) => (e as int)).toList()) ??
           [1, 2, 3],
       $checkedConvert(json, 'fieldSetSimple',
-              (v) => (v as List<Object?>).map((e) => (e as String)).toSet()) ??
+              (v) => (v as List<dynamic>).map((e) => (e as String)).toSet()) ??
           {'entry1', 'entry2'},
       $checkedConvert(
               json, 'fieldMapSimple', (v) => Map<String, int>.from(v as Map)) ??
@@ -35,7 +35,7 @@ DefaultValue _$DefaultValueFromJson(Map json) {
               (v) => (v as Map).map(
                     (k, e) => MapEntry(
                         k as String,
-                        (e as List<Object?>)
+                        (e as List<dynamic>)
                             .map((e) => (e as String))
                             .toList()),
                   )) ??

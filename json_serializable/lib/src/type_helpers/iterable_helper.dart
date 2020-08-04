@@ -73,7 +73,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    var output = '$expression as List<Object?>';
+    var output = '$expression as List<dynamic>';
 
     if (context.nullableForType(targetType)) {
       output += '?';
