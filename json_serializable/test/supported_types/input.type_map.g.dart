@@ -219,10 +219,10 @@ SimpleClassBigIntToBool _$SimpleClassBigIntToBoolFromJson(
     Map<String, dynamic> json) {
   return SimpleClassBigIntToBool(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as bool)),
+      (k, e) => MapEntry(BigInt.parse(k), e as bool),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as bool)),
+      (k, e) => MapEntry(BigInt.parse(k), e as bool),
     ),
   );
 }
@@ -238,10 +238,10 @@ SimpleClassDateTimeToBool _$SimpleClassDateTimeToBoolFromJson(
     Map<String, dynamic> json) {
   return SimpleClassDateTimeToBool(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as bool)),
+      (k, e) => MapEntry(DateTime.parse(k), e as bool),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as bool)),
+      (k, e) => MapEntry(DateTime.parse(k), e as bool),
     ),
   );
 }
@@ -273,10 +273,10 @@ SimpleClassEnumTypeToBool _$SimpleClassEnumTypeToBoolFromJson(
     Map<String, dynamic> json) {
   return SimpleClassEnumTypeToBool(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as bool)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as bool)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool),
     ),
   );
 }
@@ -292,10 +292,10 @@ Map<String, dynamic> _$SimpleClassEnumTypeToBoolToJson(
 SimpleClassIntToBool _$SimpleClassIntToBoolFromJson(Map<String, dynamic> json) {
   return SimpleClassIntToBool(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as bool)),
+      (k, e) => MapEntry(int.parse(k), e as bool),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as bool)),
+      (k, e) => MapEntry(int.parse(k), e as bool),
     ),
   );
 }
@@ -340,10 +340,10 @@ Map<String, dynamic> _$SimpleClassStringToBoolToJson(
 SimpleClassUriToBool _$SimpleClassUriToBoolFromJson(Map<String, dynamic> json) {
   return SimpleClassUriToBool(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as bool)),
+      (k, e) => MapEntry(Uri.parse(k), e as bool),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as bool)),
+      (k, e) => MapEntry(Uri.parse(k), e as bool),
     ),
   );
 }
@@ -1146,10 +1146,10 @@ SimpleClassBigIntToNum _$SimpleClassBigIntToNumFromJson(
     Map<String, dynamic> json) {
   return SimpleClassBigIntToNum(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as num)),
+      (k, e) => MapEntry(BigInt.parse(k), e as num),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as num)),
+      (k, e) => MapEntry(BigInt.parse(k), e as num),
     ),
   );
 }
@@ -1165,10 +1165,10 @@ SimpleClassDateTimeToNum _$SimpleClassDateTimeToNumFromJson(
     Map<String, dynamic> json) {
   return SimpleClassDateTimeToNum(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as num)),
+      (k, e) => MapEntry(DateTime.parse(k), e as num),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as num)),
+      (k, e) => MapEntry(DateTime.parse(k), e as num),
     ),
   );
 }
@@ -1200,10 +1200,10 @@ SimpleClassEnumTypeToNum _$SimpleClassEnumTypeToNumFromJson(
     Map<String, dynamic> json) {
   return SimpleClassEnumTypeToNum(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as num)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as num)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num),
     ),
   );
 }
@@ -1219,10 +1219,10 @@ Map<String, dynamic> _$SimpleClassEnumTypeToNumToJson(
 SimpleClassIntToNum _$SimpleClassIntToNumFromJson(Map<String, dynamic> json) {
   return SimpleClassIntToNum(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as num)),
+      (k, e) => MapEntry(int.parse(k), e as num),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as num)),
+      (k, e) => MapEntry(int.parse(k), e as num),
     ),
   );
 }
@@ -1267,10 +1267,10 @@ Map<String, dynamic> _$SimpleClassStringToNumToJson(
 SimpleClassUriToNum _$SimpleClassUriToNumFromJson(Map<String, dynamic> json) {
   return SimpleClassUriToNum(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as num)),
+      (k, e) => MapEntry(Uri.parse(k), e as num),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as num)),
+      (k, e) => MapEntry(Uri.parse(k), e as num),
     ),
   );
 }
@@ -1428,10 +1428,10 @@ SimpleClassBigIntToString _$SimpleClassBigIntToStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassBigIntToString(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as String)),
+      (k, e) => MapEntry(BigInt.parse(k), e as String),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as String)),
+      (k, e) => MapEntry(BigInt.parse(k), e as String),
     ),
   );
 }
@@ -1447,10 +1447,10 @@ SimpleClassDateTimeToString _$SimpleClassDateTimeToStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassDateTimeToString(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as String)),
+      (k, e) => MapEntry(DateTime.parse(k), e as String),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as String)),
+      (k, e) => MapEntry(DateTime.parse(k), e as String),
     ),
   );
 }
@@ -1482,10 +1482,10 @@ SimpleClassEnumTypeToString _$SimpleClassEnumTypeToStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassEnumTypeToString(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as String)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as String)),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String),
     ),
   );
 }
@@ -1502,10 +1502,10 @@ SimpleClassIntToString _$SimpleClassIntToStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassIntToString(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as String)),
+      (k, e) => MapEntry(int.parse(k), e as String),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), (e as String)),
+      (k, e) => MapEntry(int.parse(k), e as String),
     ),
   );
 }
@@ -1551,10 +1551,10 @@ SimpleClassUriToString _$SimpleClassUriToStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassUriToString(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as String)),
+      (k, e) => MapEntry(Uri.parse(k), e as String),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), (e as String)),
+      (k, e) => MapEntry(Uri.parse(k), e as String),
     ),
   );
 }

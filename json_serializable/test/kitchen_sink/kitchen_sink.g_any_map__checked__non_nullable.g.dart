@@ -10,14 +10,14 @@ part of 'kitchen_sink.g_any_map__checked__non_nullable.dart';
 KitchenSink _$KitchenSinkFromJson(Map json) {
   return $checkedNew('KitchenSink', json, () {
     final val = KitchenSink(
-      ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => (v as int?)),
+      ctorValidatedNo42: $checkedConvert(json, 'no-42', (v) => v as int?),
       iterable: $checkedConvert(json, 'iterable', (v) => v as List<dynamic>?),
       dynamicIterable:
           $checkedConvert(json, 'dynamicIterable', (v) => v as List<dynamic>?),
       objectIterable:
           $checkedConvert(json, 'objectIterable', (v) => v as List<dynamic>?),
       intIterable: $checkedConvert(json, 'intIterable',
-          (v) => (v as List<dynamic>?)?.map((e) => (e as int))),
+          (v) => (v as List<dynamic>?)?.map((e) => e as int)),
       dateTimeIterable: $checkedConvert(
           json,
           'datetime-iterable',
@@ -33,11 +33,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         (v) => val.dynamicSet = (v as List<dynamic>).toSet());
     $checkedConvert(
         json, 'objectSet', (v) => val.objectSet = (v as List<dynamic>).toSet());
-    $checkedConvert(
-        json,
-        'intSet',
-        (v) =>
-            val.intSet = (v as List<dynamic>).map((e) => (e as int)).toSet());
+    $checkedConvert(json, 'intSet',
+        (v) => val.intSet = (v as List<dynamic>).map((e) => e as int).toSet());
     $checkedConvert(
         json,
         'dateTimeSet',
@@ -53,7 +50,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         json,
         'intList',
         (v) =>
-            val.intList = (v as List<dynamic>).map((e) => (e as int)).toList());
+            val.intList = (v as List<dynamic>).map((e) => e as int).toList());
     $checkedConvert(
         json,
         'dateTimeList',
@@ -91,15 +88,14 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
             .toList());
     $checkedConvert(
         json, 'val', (v) => val.val = Map<String, bool>.from(v as Map));
-    $checkedConvert(
-        json, 'writeNotNull', (v) => val.writeNotNull = (v as bool?));
-    $checkedConvert(json, r'$string', (v) => val.string = (v as String?));
+    $checkedConvert(json, 'writeNotNull', (v) => val.writeNotNull = v as bool?);
+    $checkedConvert(json, r'$string', (v) => val.string = v as String?);
     $checkedConvert(json, 'simpleObject',
         (v) => val.simpleObject = SimpleObject.fromJson(v as Map));
     $checkedConvert(json, 'strictKeysObject',
         (v) => val.strictKeysObject = StrictKeysObject.fromJson(v as Map));
     $checkedConvert(json, 'validatedPropertyNo42',
-        (v) => val.validatedPropertyNo42 = (v as int));
+        (v) => val.validatedPropertyNo42 = v as int);
     return val;
   }, fieldKeyMap: const {
     'ctorValidatedNo42': 'no-42',

@@ -38,7 +38,7 @@ class ValueHelper extends TypeHelper {
       return '($expression as num)${context.nullableForType(targetType) ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       final typeCode = typeToCode(targetType);
-      return '($expression as $typeCode)';
+      return '$expression as $typeCode';
     }
 
     return null;

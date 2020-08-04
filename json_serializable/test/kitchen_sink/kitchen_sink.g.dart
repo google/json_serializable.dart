@@ -9,12 +9,11 @@ part of 'kitchen_sink.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
   return KitchenSink(
-    ctorValidatedNo42: (json['no-42'] as int?),
+    ctorValidatedNo42: json['no-42'] as int?,
     iterable: json['iterable'] as List<dynamic>?,
     dynamicIterable: json['dynamicIterable'] as List<dynamic>?,
     objectIterable: json['objectIterable'] as List<dynamic>?,
-    intIterable:
-        (json['intIterable'] as List<dynamic>?)?.map((e) => (e as int)),
+    intIterable: (json['intIterable'] as List<dynamic>?)?.map((e) => e as int),
     dateTimeIterable: (json['datetime-iterable'] as List<dynamic>?)
         ?.map((e) => DateTime.parse(e as String)),
   )
@@ -26,15 +25,14 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
     ..set = (json['set'] as List<dynamic>).toSet()
     ..dynamicSet = (json['dynamicSet'] as List<dynamic>).toSet()
     ..objectSet = (json['objectSet'] as List<dynamic>).toSet()
-    ..intSet = (json['intSet'] as List<dynamic>).map((e) => (e as int)).toSet()
+    ..intSet = (json['intSet'] as List<dynamic>).map((e) => e as int).toSet()
     ..dateTimeSet = (json['dateTimeSet'] as List<dynamic>)
         .map((e) => DateTime.parse(e as String))
         .toSet()
     ..list = json['list'] as List<dynamic>
     ..dynamicList = json['dynamicList'] as List<dynamic>
     ..objectList = json['objectList'] as List<dynamic>
-    ..intList =
-        (json['intList'] as List<dynamic>).map((e) => (e as int)).toList()
+    ..intList = (json['intList'] as List<dynamic>).map((e) => e as int).toList()
     ..dateTimeList = (json['dateTimeList'] as List<dynamic>)
         .map((e) => DateTime.parse(e as String))
         .toList()
@@ -61,13 +59,13 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
             ))
         .toList()
     ..val = Map<String, bool>.from(json['val'] as Map)
-    ..writeNotNull = (json['writeNotNull'] as bool?)
-    ..string = (json[r'$string'] as String?)
+    ..writeNotNull = json['writeNotNull'] as bool?
+    ..string = json[r'$string'] as String?
     ..simpleObject =
         SimpleObject.fromJson(json['simpleObject'] as Map<String, dynamic>)
     ..strictKeysObject = StrictKeysObject.fromJson(
         json['strictKeysObject'] as Map<String, dynamic>)
-    ..validatedPropertyNo42 = (json['validatedPropertyNo42'] as int);
+    ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
 }
 
 Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>

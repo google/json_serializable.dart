@@ -37,8 +37,8 @@ Map<String, dynamic> _$SimpleClassBigIntToJson(SimpleClassBigInt instance) =>
 
 SimpleClassBool _$SimpleClassBoolFromJson(Map<String, dynamic> json) {
   return SimpleClassBool(
-    (json['value'] as List<dynamic>).map((e) => (e as bool)),
-    (json['nullable'] as List<dynamic>).map((e) => (e as bool)),
+    (json['value'] as List<dynamic>).map((e) => e as bool),
+    (json['nullable'] as List<dynamic>).map((e) => e as bool),
   );
 }
 
@@ -151,8 +151,8 @@ const _$EnumTypeEnumMap = {
 
 SimpleClassNum _$SimpleClassNumFromJson(Map<String, dynamic> json) {
   return SimpleClassNum(
-    (json['value'] as List<dynamic>).map((e) => (e as num)),
-    (json['nullable'] as List<dynamic>).map((e) => (e as num)),
+    (json['value'] as List<dynamic>).map((e) => e as num),
+    (json['nullable'] as List<dynamic>).map((e) => e as num),
   );
 }
 
@@ -177,8 +177,8 @@ Map<String, dynamic> _$SimpleClassObjectToJson(SimpleClassObject instance) =>
 
 SimpleClassString _$SimpleClassStringFromJson(Map<String, dynamic> json) {
   return SimpleClassString(
-    (json['value'] as List<dynamic>).map((e) => (e as String)),
-    (json['nullable'] as List<dynamic>).map((e) => (e as String)),
+    (json['value'] as List<dynamic>).map((e) => e as String),
+    (json['nullable'] as List<dynamic>).map((e) => e as String),
   );
 }
 

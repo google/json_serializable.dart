@@ -9,10 +9,10 @@ part of 'json_test_example.dart';
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
-    (json['firstName'] as String),
-    (json['lastName'] as String),
+    json['firstName'] as String,
+    json['lastName'] as String,
     _$enumDecode(_$CategoryEnumMap, json[r'$house']),
-    middleName: (json['middleName'] as String?),
+    middleName: json['middleName'] as String?,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
         : DateTime.parse(json['dateOfBirth'] as String),
@@ -29,7 +29,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, _$enumDecode(_$CategoryEnumMap, e)),
     )
     ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), (e as int)),
+      (k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int),
     );
 }
 
@@ -86,16 +86,16 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>)),
   )
-    ..count = (json['count'] as int?)
-    ..isRushed = (json['isRushed'] as bool?)
+    ..count = json['count'] as int?
+    ..isRushed = json['isRushed'] as bool?
     ..duration = json['duration'] == null
         ? null
         : Duration(microseconds: json['duration'] as int)
     ..platform = json['platform'] == null
         ? null
-        : Platform.fromJson((json['platform'] as String))
+        : Platform.fromJson(json['platform'] as String)
     ..altPlatforms = (json['altPlatforms'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(k, Platform.fromJson((e as String))),
+      (k, e) => MapEntry(k, Platform.fromJson(e as String)),
     )
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
@@ -146,14 +146,13 @@ const _$StatusCodeEnumMap = {
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item(
-    (json['price'] as int?),
+    json['price'] as int?,
   )
-    ..itemNumber = (json['item-number'] as int?)
+    ..itemNumber = json['item-number'] as int?
     ..saleDates = (json['saleDates'] as List<dynamic>?)
         ?.map((e) => DateTime.parse(e as String))
         .toList()
-    ..rates =
-        (json['rates'] as List<dynamic>?)?.map((e) => (e as int)).toList();
+    ..rates = (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) {
@@ -176,8 +175,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) {
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) {
   return Numbers()
-    ..ints = (json['ints'] as List<dynamic>?)?.map((e) => (e as int)).toList()
-    ..nums = (json['nums'] as List<dynamic>?)?.map((e) => (e as num)).toList()
+    ..ints = (json['ints'] as List<dynamic>?)?.map((e) => e as int).toList()
+    ..nums = (json['nums'] as List<dynamic>?)?.map((e) => e as num).toList()
     ..doubles = (json['doubles'] as List<dynamic>?)
         ?.map((e) => (e as num).toDouble())
         .toList()
@@ -200,16 +199,16 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
 MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
   return MapKeyVariety()
     ..intIntMap = (json['intIntMap'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(int.parse(k), (e as int)),
+      (k, e) => MapEntry(int.parse(k), e as int),
     )
     ..uriIntMap = (json['uriIntMap'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(Uri.parse(k), (e as int)),
+      (k, e) => MapEntry(Uri.parse(k), e as int),
     )
     ..dateTimeIntMap = (json['dateTimeIntMap'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(DateTime.parse(k), (e as int)),
+      (k, e) => MapEntry(DateTime.parse(k), e as int),
     )
     ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>?)?.map(
-      (k, e) => MapEntry(BigInt.parse(k), (e as int)),
+      (k, e) => MapEntry(BigInt.parse(k), e as int),
     );
 }
 
