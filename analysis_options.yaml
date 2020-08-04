@@ -102,8 +102,7 @@ linter:
     - unnecessary_null_aware_assignments
     - unnecessary_null_in_if_null_operators
     - unnecessary_overrides
-    # Waiting on https://github.com/dart-lang/sdk/commit/01ac35b84460165b38b6b768c3a63048860497e3 to get through to pkg:analyzer, dart_style, etc
-    #- unnecessary_parenthesis
+    - unnecessary_parenthesis
     - unnecessary_statements
     - unnecessary_string_interpolations
     - unnecessary_this

@@ -15,7 +15,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
         ? null
         : DateTime.parse(json['dateOfBirth'] as String),
   )..nullableListOfNullableInt =
-      ((json['nullableListOfNullableInt'] as List<Object?>?))
+      (json['nullableListOfNullableInt'] as List<Object?>?)
           ?.map((e) => (e as int?))
           .toList();
 }
