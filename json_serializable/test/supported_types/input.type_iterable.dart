@@ -17,11 +17,12 @@ class SimpleClass {
   final Iterable nullable;
 
   @JsonKey(defaultValue: [42, true, false, null])
-  Iterable? withDefault;
+  Iterable withDefault;
 
   SimpleClass(
     this.value,
     this.nullable,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>

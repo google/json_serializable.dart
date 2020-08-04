@@ -82,10 +82,12 @@ class TestTypeData {
       'final $type nullable;',
     );
 
-    final defaultReplacement = (defaultExpression == null // no default provided
+    final defaultNotSupported = defaultExpression == null // no default provided
             ||
             type.contains('<') // no support for default values and generic args
-        )
+        ;
+
+    final defaultReplacement = defaultNotSupported
         ? ''
         : _defaultSource
             .replaceFirst('42', defaultExpression)
@@ -95,6 +97,13 @@ class TestTypeData {
       _defaultSource,
       defaultReplacement,
     );
+
+    if (defaultNotSupported) {
+      yield const Replacement(
+        '    this.withDefault,',
+        '',
+      );
+    }
   }
 
   String testContent(String sourceContent, String type) => Replacement.generate(
@@ -133,7 +142,7 @@ final _altValue = $altJsonExpression;
 
   static const _defaultSource = r'''
   @JsonKey(defaultValue: 42)
-  int? withDefault;
+  int withDefault;
 
 ''';
 }

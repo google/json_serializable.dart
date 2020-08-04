@@ -11,7 +11,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     (json['value'] as num).toDouble(),
     (json['nullable'] as num).toDouble(),
-  )..withDefault = (json['withDefault'] as num)?.toDouble() ?? 3.14;
+    (json['withDefault'] as num).toDouble() ?? 3.14,
+  );
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>

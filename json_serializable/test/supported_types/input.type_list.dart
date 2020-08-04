@@ -17,11 +17,12 @@ class SimpleClass {
   final List nullable;
 
   @JsonKey(defaultValue: [42, true, false, null])
-  List? withDefault;
+  List withDefault;
 
   SimpleClass(
     this.value,
     this.nullable,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>

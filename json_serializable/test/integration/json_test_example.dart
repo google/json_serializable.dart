@@ -15,7 +15,7 @@ part 'json_test_example.g.dart';
 
 @JsonSerializable()
 class Person {
-  final String firstName,  lastName;
+  final String firstName, lastName;
   final String? middleName;
   final DateTime? dateOfBirth;
   @JsonKey(name: '\$house')

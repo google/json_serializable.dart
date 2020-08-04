@@ -77,7 +77,7 @@ abstract class ItemCore {
 class MyList<T> extends ListBase<T> {
   final List<T> _data;
 
-  MyList(Iterable<T> source) : _data = source.toList() ?? [];
+  MyList(Iterable<T> source) : _data = source.toList();
 
   factory MyList.fromJson(List<T> items) => MyList(items);
 

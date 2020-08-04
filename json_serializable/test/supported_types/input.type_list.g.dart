@@ -11,8 +11,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as List<dynamic>,
     json['nullable'] as List<dynamic>,
-  )..withDefault =
-      json['withDefault'] as List<dynamic>? ?? [42, true, false, null];
+    json['withDefault'] as List<dynamic> ?? [42, true, false, null],
+  );
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>

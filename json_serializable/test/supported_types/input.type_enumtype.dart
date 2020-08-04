@@ -17,11 +17,12 @@ class SimpleClass {
   final EnumType nullable;
 
   @JsonKey(defaultValue: EnumType.alpha)
-  EnumType? withDefault;
+  EnumType withDefault;
 
   SimpleClass(
     this.value,
     this.nullable,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>
