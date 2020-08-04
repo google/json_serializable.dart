@@ -62,7 +62,15 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 
   k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
 
-  k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
+  k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass(
+        const Duration(),
+        [],
+        BigInt.zero,
+        {},
+        TrivialNumber(0),
+        {},
+        DateTime.fromMillisecondsSinceEpoch(0),
+      );
 
   k.JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json) =>
       JsonConverterTestClass.fromJson(json);

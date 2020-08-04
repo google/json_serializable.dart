@@ -5,84 +5,101 @@
 import 'dart:async';
 
 import 'package:build/build.dart';
-import 'package:meta/meta.dart';
+import 'package:dart_style/dart_style.dart';
 
 import 'shared.dart';
+import 'test_type_data.dart';
 
-const _typesToTest = {
-  'BigInt': _TestType(
+final _formatter = DartFormatter();
+
+const _trivialTypesToTest = {
+  'BigInt': TestTypeData(
     jsonExpression: "'12345'",
     altJsonExpression: "'67890'",
   ),
-  'bool': _TestType(
+  'bool': TestTypeData(
     defaultExpression: 'true',
     altJsonExpression: 'false',
   ),
-  'DateTime': _TestType(
+  'DateTime': TestTypeData(
     jsonExpression: "'2020-01-01T00:00:00.000'",
     altJsonExpression: "'2018-01-01T00:00:00.000'",
   ),
-  'double': _TestType(
+  'double': TestTypeData(
     defaultExpression: '3.14',
     altJsonExpression: '6.28',
   ),
-  'Duration': _TestType(
+  'Duration': TestTypeData(
     jsonExpression: '1234',
     altJsonExpression: '2345',
   ),
-  'dynamic': _TestType(
+  'dynamic': TestTypeData(
     altJsonExpression: "'dynamic'",
   ),
-  'num': _TestType(
+  customEnumType: TestTypeData(
+    defaultExpression: '$customEnumType.alpha',
+    jsonExpression: "'alpha'",
+    altJsonExpression: "'beta'",
+  ),
+  'num': TestTypeData(
     defaultExpression: '88.6',
     altJsonExpression: '29',
   ),
-  'Object': _TestType(
+  'Object': TestTypeData(
     altJsonExpression: "'Object'",
   ),
-  'String': _TestType(
+  'String': TestTypeData(
     defaultExpression: "'a string'",
     altJsonExpression: "'another string'",
   ),
-  'Uri': _TestType(
+  'Uri': TestTypeData(
     jsonExpression: "'https://example.com'",
     altJsonExpression: "'https://dart.dev'",
   ),
-  'MyEnum': _TestType(
-    defaultExpression: 'MyEnum.alpha',
-    jsonExpression: "'alpha'",
-    altJsonExpression: "'beta'",
-    replacements: [
-      Replacement(
-        '@JsonSerializable()',
-        '''
-enum MyEnum { alpha, beta, gamma, delta }
+};
 
-@JsonSerializable()''',
-      )
-    ],
-  ),
+final _typesToTest = {
+  ..._trivialTypesToTest,
   //
   // Collection types
   //
-  'Map': _TestType(
+  'Map': TestTypeData(
     defaultExpression: "{'a': 1}",
     altJsonExpression: "{'b': 2}",
+    genericArgs: _iterableGenericArgs
+        .expand((v) => _mapKeyTypes.map((k) => '$k,$v'))
+        .toSet(),
   ),
-  'List': _TestType(
+  'List': TestTypeData(
     defaultExpression: '[$_defaultCollectionExpressions]',
     altJsonExpression: '[$_altCollectionExpressions]',
+    genericArgs: _iterableGenericArgs,
   ),
-  'Set': _TestType(
+  'Set': TestTypeData(
     defaultExpression: '{$_defaultCollectionExpressions}',
     jsonExpression: '[$_defaultCollectionExpressions]',
     altJsonExpression: '[$_altCollectionExpressions]',
+    genericArgs: _iterableGenericArgs,
   ),
-  'Iterable': _TestType(
+  'Iterable': TestTypeData(
     defaultExpression: '[$_defaultCollectionExpressions]',
     altJsonExpression: '[$_altCollectionExpressions]',
+    genericArgs: _iterableGenericArgs,
   ),
 };
+
+const _mapKeyTypes = {
+  'BigInt',
+  'DateTime',
+  'dynamic',
+  'EnumType',
+  'int',
+  'Object',
+  'String',
+  'Uri',
+};
+
+final _iterableGenericArgs = _trivialTypesToTest.keys.toSet();
 
 const _defaultCollectionExpressions = '42, true, false, null';
 const _altCollectionExpressions = '43, false';
@@ -100,22 +117,18 @@ class _TypeBuilder implements Builder {
 
     for (var entry in _typesToTest.entries) {
       final type = entry.key;
-      final newId = buildStep.inputId.changeExtension(_toTypeExtension(type));
+      final newId = buildStep.inputId.changeExtension(toTypeExtension(type));
 
       await buildStep.writeAsString(
         newId,
-        Replacement.generate(
-          sourceContent,
-          entry.value.replacements(type),
-        ),
+        _formatter.format(entry.value.libContent(sourceContent, type)),
       );
     }
   }
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.dart': _typesToTest.keys.map(_toTypeExtension).toSet().toList()
-          ..sort()
+        '.dart': _typesToTest.keys.map(toTypeExtension).toSet().toList()..sort()
       };
 }
 
@@ -138,10 +151,7 @@ class _TypeTestBuilder implements Builder {
 
       await buildStep.writeAsString(
         newId,
-        Replacement.generate(
-          sourceContent,
-          entry.value.testReplacements(type),
-        ),
+        entry.value.testContent(sourceContent, type),
       );
     }
   }
@@ -153,91 +163,4 @@ class _TypeTestBuilder implements Builder {
       };
 }
 
-String _typeToPathPart(String type) => type.toLowerCase();
-
-String _toTypeExtension(String e, {bool includeDotDart = true}) =>
-    '.type_${_typeToPathPart(e)}${includeDotDart ? '.dart' : ''}';
-
-String _toTypeTestExtension(String e) => '.${_typeToPathPart(e)}_test.dart';
-
-class _TestType {
-  final List<Replacement> _replacements;
-  final String defaultExpression;
-  final String jsonExpression;
-  final String altJsonExpression;
-
-  const _TestType({
-    List<Replacement> replacements,
-    this.defaultExpression,
-    String jsonExpression,
-    @required String altJsonExpression,
-  })  : _replacements = replacements ?? const [],
-        jsonExpression = jsonExpression ?? defaultExpression,
-        altJsonExpression =
-            altJsonExpression ?? jsonExpression ?? defaultExpression;
-
-  Iterable<Replacement> replacements(String type) sync* {
-    final newPart = _toTypeExtension(type, includeDotDart: false);
-
-    yield Replacement(
-      "part 'input.g.dart';",
-      "part 'input$newPart.g.dart';",
-    );
-    yield Replacement(
-      'final int value;',
-      'final $type value;',
-    );
-    yield Replacement(
-      'final int nullable;',
-      'final $type nullable;',
-    );
-
-    yield* _replacements;
-
-    final defaultReplacement = defaultExpression == null
-        ? ''
-        : _defaultSource
-            .replaceFirst('42', defaultExpression)
-            .replaceFirst('int', type);
-
-    yield Replacement(
-      _defaultSource,
-      defaultReplacement,
-    );
-  }
-
-  Iterable<Replacement> testReplacements(String type) sync* {
-    yield Replacement(
-      "import 'input.dart';",
-      "import 'input.type_${_typeToPathPart(type)}.dart';",
-    );
-
-    yield Replacement(
-      '''
-final _defaultValue = 42;
-final _altValue = 43;
-''',
-      '''
-final _defaultValue = $jsonExpression;
-final _altValue = $altJsonExpression;
-''',
-    );
-
-    if (defaultExpression == null) {
-      yield const Replacement(
-        "  'withDefault': _defaultValue,\n",
-        '',
-      );
-      yield const Replacement(
-        "  'withDefault': _altValue,\n",
-        '',
-      );
-    }
-  }
-
-  static const _defaultSource = r'''
-  @JsonKey(defaultValue: 42)
-  int? withDefault;
-
-''';
-}
+String _toTypeTestExtension(String e) => '.${typeToPathPart(e)}_test.dart';

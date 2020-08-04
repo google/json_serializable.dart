@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // @dart=2.10
 
-part of 'input.type_myenum.dart';
+part of 'input.type_enumtype.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -9,17 +9,18 @@ part of 'input.type_myenum.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    _$enumDecode(_$MyEnumEnumMap, json['value']),
-    _$enumDecode(_$MyEnumEnumMap, json['nullable']),
-  )..withDefault = _$enumDecodeNullable(_$MyEnumEnumMap, json['withDefault']) ??
-      MyEnum.alpha;
+    _$enumDecode(_$EnumTypeEnumMap, json['value']),
+    _$enumDecode(_$EnumTypeEnumMap, json['nullable']),
+  )..withDefault =
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+          EnumType.alpha;
 }
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
-      'value': _$MyEnumEnumMap[instance.value],
-      'nullable': _$MyEnumEnumMap[instance.nullable],
-      'withDefault': _$MyEnumEnumMap[instance.withDefault],
+      'value': _$EnumTypeEnumMap[instance.value],
+      'nullable': _$EnumTypeEnumMap[instance.nullable],
+      'withDefault': _$EnumTypeEnumMap[instance.withDefault],
     };
 
 T _$enumDecode<T>(
@@ -44,11 +45,11 @@ T _$enumDecode<T>(
   return value ?? unknownValue!;
 }
 
-const _$MyEnumEnumMap = {
-  MyEnum.alpha: 'alpha',
-  MyEnum.beta: 'beta',
-  MyEnum.gamma: 'gamma',
-  MyEnum.delta: 'delta',
+const _$EnumTypeEnumMap = {
+  EnumType.alpha: 'alpha',
+  EnumType.beta: 'beta',
+  EnumType.gamma: 'gamma',
+  EnumType.delta: 'delta',
 };
 
 T? _$enumDecodeNullable<T>(

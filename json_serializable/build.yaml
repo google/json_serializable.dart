@@ -67,10 +67,10 @@ builders:
       - .type_double.dart
       - .type_duration.dart
       - .type_dynamic.dart
+      - .type_enumtype.dart
       - .type_iterable.dart
       - .type_list.dart
       - .type_map.dart
-      - .type_myenum.dart
       - .type_num.dart
       - .type_object.dart
       - .type_set.dart
@@ -90,10 +90,10 @@ builders:
       - .double_test.dart
       - .duration_test.dart
       - .dynamic_test.dart
+      - .enumtype_test.dart
       - .iterable_test.dart
       - .list_test.dart
       - .map_test.dart
-      - .myenum_test.dart
       - .num_test.dart
       - .object_test.dart
       - .set_test.dart
