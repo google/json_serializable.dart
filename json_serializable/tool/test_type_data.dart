@@ -74,11 +74,11 @@ class TestTypeData {
 
   Iterable<Replacement> _libReplacements(String type) sync* {
     yield Replacement(
-      'final int value;',
+      'final dynamic value;',
       'final $type value;',
     );
     yield Replacement(
-      'final int nullable;',
+      'final dynamic nullable;',
       'final $type nullable;',
     );
 
@@ -91,7 +91,7 @@ class TestTypeData {
         ? ''
         : _defaultSource
             .replaceFirst('42', defaultExpression)
-            .replaceFirst('int', type);
+            .replaceFirst('dynamic', type);
 
     yield Replacement(
       _defaultSource,
@@ -142,7 +142,7 @@ final _altValue = $altJsonExpression;
 
   static const _defaultSource = r'''
   @JsonKey(defaultValue: 42)
-  int withDefault;
+  dynamic withDefault;
 
 ''';
 }

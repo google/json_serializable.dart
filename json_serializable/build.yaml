@@ -66,8 +66,8 @@ builders:
       - .type_datetime.dart
       - .type_double.dart
       - .type_duration.dart
-      - .type_dynamic.dart
       - .type_enumtype.dart
+      - .type_int.dart
       - .type_iterable.dart
       - .type_list.dart
       - .type_map.dart
@@ -89,8 +89,8 @@ builders:
       - .datetime_test.dart
       - .double_test.dart
       - .duration_test.dart
-      - .dynamic_test.dart
       - .enumtype_test.dart
+      - .int_test.dart
       - .iterable_test.dart
       - .list_test.dart
       - .map_test.dart

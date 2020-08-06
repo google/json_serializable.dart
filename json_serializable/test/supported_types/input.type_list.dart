@@ -158,6 +158,24 @@ class SimpleClassEnumType {
 }
 
 @JsonSerializable()
+class SimpleClassInt {
+  final List<int> value;
+
+  @JsonKey(nullable: false)
+  final List<int> nullable;
+
+  SimpleClassInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassIntToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassNum {
   final List<num> value;
 
