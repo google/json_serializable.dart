@@ -103,6 +103,7 @@ const _mapKeyTypes = {
 
 final _iterableGenericArgs = ([
   ..._trivialTypesToTest.keys,
+  ..._trivialTypesToTest.keys.map((e) => '$e?'),
   'dynamic',
 ]..sort(compareAsciiLowerCase))
     .toSet();

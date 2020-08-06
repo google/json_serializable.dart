@@ -172,6 +172,7 @@ final _altValue = $altJsonExpression;
 }
 
 String _genericClassPart(String genericArg) => genericArg
+    .replaceAll('?', 'Nullable')
     .split(',')
     .map((e) => [
           e.substring(0, 1).toUpperCase(),
