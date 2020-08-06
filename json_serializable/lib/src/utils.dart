@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart' show alwaysThrows;
@@ -261,4 +262,9 @@ extension DartTypeExtension on DartType {
       // If the library is `null`, treat it like dynamic => `true`
       element.library == null ||
       element.library.typeSystem.isAssignableTo(this, other);
+}
+
+extension TypeExtension on DartType {
+  bool get isNullableType =>
+      isDynamic || nullabilitySuffix == NullabilitySuffix.question;
 }

@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/type.dart';
 import '../helper_core.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 class ValueHelper extends TypeHelper {
   const ValueHelper();
@@ -31,13 +32,13 @@ class ValueHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) {
-    if (targetType.isDartCoreObject && !targetType.nullableSuffixQuestion) {
+    if (targetType.isDartCoreObject && !targetType.isNullableType) {
       return '$expression as Object';
     } else if (isObjectOrDynamic(targetType)) {
       // just return it as-is. We'll hope it's safe.
       return expression;
     } else if (targetType.isDartCoreDouble) {
-      return '($expression as num)${context.nullableForType(targetType) ? '?' : ''}.toDouble()';
+      return '($expression as num)${targetType.isNullableType ? '?' : ''}.toDouble()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       final typeCode = typeToCode(targetType);
       return '$expression as $typeCode';

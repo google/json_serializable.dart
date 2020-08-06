@@ -5,7 +5,6 @@
 import 'package:analyzer/dart/element/type.dart';
 
 import '../constants.dart';
-import '../helper_core.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
@@ -43,7 +42,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return expression;
     }
 
-    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    final optionalQuestion = targetType.isNullableType ? '?' : '';
 
     return '$expression$optionalQuestion'
         '.map(($_keyParam, $closureArg) => '
@@ -68,7 +67,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     _checkSafeKeyType(expression, keyArg);
 
     final valueArgIsAny = valueArg.isDynamic ||
-        (valueArg.isDartCoreObject && valueArg.nullableSuffixQuestion);
+        (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
 
     if (!isKeyStringable) {
@@ -84,7 +83,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         }
       }
 
-      if (!context.nullableForType(targetType) &&
+      if (!targetType.isNullableType &&
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
@@ -97,11 +96,11 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    final optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    final optionalQuestion = targetType.isNullableType ? '?' : '';
 
     var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
-    if (context.nullableForType(targetType)) {
+    if (targetType.isNullableType) {
       mapCast += '?';
     }
 
@@ -112,7 +111,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       keyUsage = '$_keyParam as String';
     } else if (context.config.anyMap &&
         keyArg.isDartCoreObject &&
-        !keyArg.nullableSuffixQuestion) {
+        !keyArg.isNullableType) {
       keyUsage = '$_keyParam as Object';
     } else {
       keyUsage = _keyParam;

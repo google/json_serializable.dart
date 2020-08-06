@@ -30,7 +30,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (context.config.explicitToJson) {
-      return '$expression${context.nullableForType(targetType) ? '?' : ''}.toJson()';
+      return '$expression${targetType.isNullableType ? '?' : ''}.toJson()';
     }
     return expression;
   }
@@ -79,7 +79,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     output = '${targetType.element.name}.fromJson($output)';
 
     return commonNullPrefix(
-            context.nullableForType(targetType), expression, output)
+            targetType.isNullableType, expression, output)
         .toString();
   }
 }

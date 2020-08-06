@@ -19,8 +19,6 @@ abstract class TypeHelperContext {
   @Deprecated('Use nullableForType instead')
   bool get nullable;
 
-  bool nullableForType(DartType type);
-
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
   Object serialize(DartType fieldType, String expression);

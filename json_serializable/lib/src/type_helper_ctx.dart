@@ -34,14 +34,6 @@ class TypeHelperCtx
   }
 
   @override
-  bool nullableForType(DartType type) {
-    if (fieldElement.library.isNonNullableByDefault) {
-      return type.nullableSuffixQuestion;
-    }
-    throw UnsupportedError('should never get here!');
-  }
-
-  @override
   ClassElement get classElement => _helperCore.element;
 
   @override

@@ -9,6 +9,7 @@ import '../constants.dart';
 import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const IterableHelper();
@@ -31,7 +32,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var isList = _coreListChecker.isAssignableFromType(targetType);
     final subField = context.serialize(itemType, closureArg);
 
-    var optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    var optionalQuestion = targetType.isNullableType ? '?' : '';
 
     // In the case of trivial JSON types (int, String, etc), `subField`
     // will be identical to `substitute` – so no explicit mapping is needed.
@@ -75,7 +76,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var output = '$expression as List<dynamic>';
 
-    if (context.nullableForType(targetType)) {
+    if (targetType.isNullableType) {
       output += '?';
     }
 
@@ -88,7 +89,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     output = '($output)';
 
-    var optionalQuestion = context.nullableForType(targetType) ? '?' : '';
+    var optionalQuestion = targetType.isNullableType ? '?' : '';
 
     if (closureArg != itemSubVal) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);

@@ -13,6 +13,7 @@ import '../json_key_utils.dart';
 import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 /// A [TypeHelper] that supports classes annotated with implementations of
 /// [JsonConverter].
@@ -209,7 +210,7 @@ _ConverterMatch _compatibleMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      '${targetType.element.name}${targetType.nullableSuffixQuestion ? '?' : ''}',
+      '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
     );
   }
 

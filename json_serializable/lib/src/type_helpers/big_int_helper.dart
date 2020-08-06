@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 
 import '../type_helper.dart';
+import '../utils.dart';
 import 'to_from_string.dart';
 
 class BigIntHelper extends TypeHelper {
@@ -19,7 +20,7 @@ class BigIntHelper extends TypeHelper {
       bigIntString.serialize(
         targetType,
         expression,
-        context.nullableForType(targetType),
+        targetType.isNullableType,
       );
 
   @override
@@ -31,7 +32,7 @@ class BigIntHelper extends TypeHelper {
       bigIntString.deserialize(
         targetType,
         expression,
-        context.nullableForType(targetType),
+        targetType.isNullableType,
         false,
       );
 }

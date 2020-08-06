@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
@@ -122,7 +121,7 @@ String typeToCode(DartType type) {
   } else if (type is InterfaceType) {
     final typeArguments = type.typeArguments;
     if (typeArguments.isEmpty) {
-      final nullablePostfix = type.nullableSuffixQuestion ? '?' : '';
+      final nullablePostfix = type.isNullableType ? '?' : '';
       return '${type.element.name}$nullablePostfix';
     } else {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
@@ -130,9 +129,4 @@ String typeToCode(DartType type) {
     }
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
-}
-
-extension TypeExtension on DartType {
-  bool get nullableSuffixQuestion =>
-      nullabilitySuffix == NullabilitySuffix.question;
 }
