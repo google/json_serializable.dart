@@ -34,5 +34,7 @@ dev_dependencies:
   yaml: ^2.1.13
 
 dependency_overrides:
+  json_annotation:
+    path: ../json_annotation
   source_gen:
     path: /Users/kevmoo/github/source_gen/source_gen

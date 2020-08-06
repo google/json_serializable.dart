@@ -209,7 +209,7 @@ _ConverterMatch _compatibleMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      targetType.element.name,
+      '${targetType.element.name}${targetType.nullableSuffixQuestion ? '?' : ''}',
     );
   }
 
