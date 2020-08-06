@@ -46,7 +46,7 @@ GenericClassWithConverter<T, S>
     ..duration = const _DurationMillisecondConverter.named()
         .fromJson(json['duration'] as int?)
     ..listDuration = const _DurationListMillisecondConverter()
-        .fromJson(json['listDuration'] as int);
+        .fromJson(json['listDuration'] as int?);
 }
 
 Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(

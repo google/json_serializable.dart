@@ -94,13 +94,14 @@ class _DurationMillisecondConverter implements JsonConverter<Duration?, int?> {
 }
 
 class _DurationListMillisecondConverter
-    implements JsonConverter<List<Duration>, int> {
+    implements JsonConverter<List<Duration>?, int?> {
   const _DurationListMillisecondConverter();
 
   @override
-  List<Duration> fromJson(int json) => [Duration(milliseconds: json)];
+  List<Duration>? fromJson(int? json) =>
+      json == null ? null : [Duration(milliseconds: json)];
 
   @override
-  int toJson(List<Duration> object) =>
-      object.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
+  int? toJson(List<Duration>? object) =>
+      object?.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
 }
