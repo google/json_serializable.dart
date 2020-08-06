@@ -122,8 +122,7 @@ String typeToCode(DartType type) {
   } else if (type is InterfaceType) {
     final typeArguments = type.typeArguments;
     if (typeArguments.isEmpty) {
-      final nullablePostfix =
-          type.nullabilitySuffix == NullabilitySuffix.question ? '?' : '';
+      final nullablePostfix = type.nullableSuffixQuestion ? '?' : '';
       return '${type.element.name}$nullablePostfix';
     } else {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
@@ -131,4 +130,9 @@ String typeToCode(DartType type) {
     }
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
+}
+
+extension TypeExtension on DartType {
+  bool get nullableSuffixQuestion =>
+      nullabilitySuffix == NullabilitySuffix.question;
 }
