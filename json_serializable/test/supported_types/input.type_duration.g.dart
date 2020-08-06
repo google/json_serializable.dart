@@ -19,3 +19,19 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'value': instance.value.inMicroseconds,
       'nullable': instance.nullable.inMicroseconds,
     };
+
+SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
+  return SimpleClassNullable(
+    json['value'] == null ? null : Duration(microseconds: json['value'] as int),
+    json['nullable'] == null
+        ? null
+        : Duration(microseconds: json['nullable'] as int),
+  );
+}
+
+Map<String, dynamic> _$SimpleClassNullableToJson(
+        SimpleClassNullable instance) =>
+    <String, dynamic>{
+      'value': instance.value?.inMicroseconds,
+      'nullable': instance.nullable?.inMicroseconds,
+    };

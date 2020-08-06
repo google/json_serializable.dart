@@ -29,3 +29,25 @@ class SimpleClass {
 
   Map<String, dynamic> toJson() => _$SimpleClassToJson(this);
 }
+
+@JsonSerializable()
+class SimpleClassNullable {
+  final double? value;
+
+  @JsonKey(nullable: false)
+  final double? nullable;
+
+  @JsonKey(defaultValue: 3.14)
+  double? withDefault;
+
+  SimpleClassNullable(
+    this.value,
+    this.nullable,
+    this.withDefault,
+  );
+
+  factory SimpleClassNullable.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassNullableFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassNullableToJson(this);
+}

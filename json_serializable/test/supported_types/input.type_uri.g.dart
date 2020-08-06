@@ -19,3 +19,17 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'value': instance.value.toString(),
       'nullable': instance.nullable.toString(),
     };
+
+SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
+  return SimpleClassNullable(
+    json['value'] == null ? null : Uri.parse(json['value'] as String),
+    json['nullable'] == null ? null : Uri.parse(json['nullable'] as String),
+  );
+}
+
+Map<String, dynamic> _$SimpleClassNullableToJson(
+        SimpleClassNullable instance) =>
+    <String, dynamic>{
+      'value': instance.value?.toString(),
+      'nullable': instance.nullable?.toString(),
+    };

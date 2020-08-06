@@ -22,6 +22,22 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'withDefault': instance.withDefault,
     };
 
+SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
+  return SimpleClassNullable(
+    json['value'] as Map<String, dynamic>?,
+    json['nullable'] as Map<String, dynamic>?,
+    json['withDefault'] as Map<String, dynamic>? ?? {'a': 1},
+  );
+}
+
+Map<String, dynamic> _$SimpleClassNullableToJson(
+        SimpleClassNullable instance) =>
+    <String, dynamic>{
+      'value': instance.value,
+      'nullable': instance.nullable,
+      'withDefault': instance.withDefault,
+    };
+
 SimpleClassBigIntToBigInt _$SimpleClassBigIntToBigIntFromJson(
     Map<String, dynamic> json) {
   return SimpleClassBigIntToBigInt(

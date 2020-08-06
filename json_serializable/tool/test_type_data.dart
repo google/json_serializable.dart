@@ -50,10 +50,22 @@ class TestTypeData {
 
     final simpleClassContent = '$classAnnotationSplit${split[1]}';
 
-    buffer.write(Replacement.generate(
-      simpleClassContent,
-      _libReplacements(type),
-    ));
+    buffer
+      ..write(
+        Replacement.generate(
+          simpleClassContent,
+          _libReplacements(type),
+        ),
+      )
+      ..write(
+        Replacement.generate(
+          simpleClassContent.replaceAll(
+            'SimpleClass',
+            'SimpleClassNullable',
+          ),
+          _libReplacements('$type?'),
+        ),
+      );
 
     for (var genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);

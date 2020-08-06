@@ -32,6 +32,28 @@ class SimpleClass {
 }
 
 @JsonSerializable()
+class SimpleClassNullable {
+  final Set? value;
+
+  @JsonKey(nullable: false)
+  final Set? nullable;
+
+  @JsonKey(defaultValue: {42, true, false, null})
+  Set? withDefault;
+
+  SimpleClassNullable(
+    this.value,
+    this.nullable,
+    this.withDefault,
+  );
+
+  factory SimpleClassNullable.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassNullableFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassNullableToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassBigInt {
   final Set<BigInt> value;
 
