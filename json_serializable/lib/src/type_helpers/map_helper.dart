@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 
 import '../constants.dart';
+import '../helper_core.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
@@ -66,7 +67,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     _checkSafeKeyType(expression, keyArg);
 
-    final valueArgIsAny = isObjectOrDynamic(valueArg);
+    final valueArgIsAny = valueArg.isDynamic ||
+        (valueArg.isDartCoreObject && valueArg.nullableSuffixQuestion);
     final isKeyStringable = _isKeyStringable(keyArg);
 
     if (!isKeyStringable) {

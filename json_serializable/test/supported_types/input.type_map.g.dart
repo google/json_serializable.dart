@@ -1324,8 +1324,12 @@ Map<String, dynamic> _$SimpleClassDateTimeToObjectToJson(
 SimpleClassDynamicToObject _$SimpleClassDynamicToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassDynamicToObject(
-    json['value'] as Map<String, dynamic>,
-    json['nullable'] as Map<String, dynamic>,
+    (json['value'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
+    (json['nullable'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
   );
 }
 
@@ -1378,8 +1382,12 @@ Map<String, dynamic> _$SimpleClassIntToObjectToJson(
 SimpleClassObjectToObject _$SimpleClassObjectToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassObjectToObject(
-    json['value'] as Map<String, dynamic>,
-    json['nullable'] as Map<String, dynamic>,
+    (json['value'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
+    (json['nullable'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
   );
 }
 
@@ -1393,8 +1401,12 @@ Map<String, dynamic> _$SimpleClassObjectToObjectToJson(
 SimpleClassStringToObject _$SimpleClassStringToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassStringToObject(
-    json['value'] as Map<String, dynamic>,
-    json['nullable'] as Map<String, dynamic>,
+    (json['value'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
+    (json['nullable'] as Map<String, dynamic>).map(
+      (k, e) => MapEntry(k, e as Object),
+    ),
   );
 }
 
