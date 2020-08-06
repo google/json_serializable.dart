@@ -1286,10 +1286,10 @@ SimpleClassBigIntToObject _$SimpleClassBigIntToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassBigIntToObject(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), e),
+      (k, e) => MapEntry(BigInt.parse(k), e as Object),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(BigInt.parse(k), e),
+      (k, e) => MapEntry(BigInt.parse(k), e as Object),
     ),
   );
 }
@@ -1305,10 +1305,10 @@ SimpleClassDateTimeToObject _$SimpleClassDateTimeToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassDateTimeToObject(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), e),
+      (k, e) => MapEntry(DateTime.parse(k), e as Object),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(DateTime.parse(k), e),
+      (k, e) => MapEntry(DateTime.parse(k), e as Object),
     ),
   );
 }
@@ -1340,10 +1340,10 @@ SimpleClassEnumTypeToObject _$SimpleClassEnumTypeToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassEnumTypeToObject(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as Object),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+      (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as Object),
     ),
   );
 }
@@ -1360,10 +1360,10 @@ SimpleClassIntToObject _$SimpleClassIntToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassIntToObject(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), e),
+      (k, e) => MapEntry(int.parse(k), e as Object),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), e),
+      (k, e) => MapEntry(int.parse(k), e as Object),
     ),
   );
 }
@@ -1409,10 +1409,10 @@ SimpleClassUriToObject _$SimpleClassUriToObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassUriToObject(
     (json['value'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), e),
+      (k, e) => MapEntry(Uri.parse(k), e as Object),
     ),
     (json['nullable'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(Uri.parse(k), e),
+      (k, e) => MapEntry(Uri.parse(k), e as Object),
     ),
   );
 }

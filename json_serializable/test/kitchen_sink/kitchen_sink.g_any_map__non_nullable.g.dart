@@ -12,7 +12,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ctorValidatedNo42: json['no-42'] as int?,
     iterable: json['iterable'] as List<dynamic>?,
     dynamicIterable: json['dynamicIterable'] as List<dynamic>?,
-    objectIterable: json['objectIterable'] as List<dynamic>?,
+    objectIterable:
+        (json['objectIterable'] as List<dynamic>?)?.map((e) => e as Object),
     intIterable: (json['intIterable'] as List<dynamic>?)?.map((e) => e as int),
     dateTimeIterable: (json['datetime-iterable'] as List<dynamic>?)
         ?.map((e) => DateTime.parse(e as String)),
@@ -24,14 +25,16 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         json['bigInt'] == null ? null : BigInt.parse(json['bigInt'] as String)
     ..set = (json['set'] as List<dynamic>).toSet()
     ..dynamicSet = (json['dynamicSet'] as List<dynamic>).toSet()
-    ..objectSet = (json['objectSet'] as List<dynamic>).toSet()
+    ..objectSet =
+        (json['objectSet'] as List<dynamic>).map((e) => e as Object).toSet()
     ..intSet = (json['intSet'] as List<dynamic>).map((e) => e as int).toSet()
     ..dateTimeSet = (json['dateTimeSet'] as List<dynamic>)
         .map((e) => DateTime.parse(e as String))
         .toSet()
     ..list = json['list'] as List<dynamic>
     ..dynamicList = json['dynamicList'] as List<dynamic>
-    ..objectList = json['objectList'] as List<dynamic>
+    ..objectList =
+        (json['objectList'] as List<dynamic>).map((e) => e as Object).toList()
     ..intList = (json['intList'] as List<dynamic>).map((e) => e as int).toList()
     ..dateTimeList = (json['dateTimeList'] as List<dynamic>)
         .map((e) => DateTime.parse(e as String))

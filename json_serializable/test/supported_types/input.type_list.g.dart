@@ -178,8 +178,8 @@ Map<String, dynamic> _$SimpleClassNumToJson(SimpleClassNum instance) =>
 
 SimpleClassObject _$SimpleClassObjectFromJson(Map<String, dynamic> json) {
   return SimpleClassObject(
-    json['value'] as List<dynamic>,
-    json['nullable'] as List<dynamic>,
+    (json['value'] as List<dynamic>).map((e) => e as Object).toList(),
+    (json['nullable'] as List<dynamic>).map((e) => e as Object).toList(),
   );
 }
 

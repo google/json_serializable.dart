@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 import '../helper_core.dart';
@@ -31,7 +32,10 @@ class ValueHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) {
-    if (isObjectOrDynamic(targetType)) {
+    if (targetType.isDartCoreObject &&
+        targetType.nullabilitySuffix != NullabilitySuffix.question) {
+      return '$expression as Object';
+    } else if (isObjectOrDynamic(targetType)) {
       // just return it as-is. We'll hope it's safe.
       return expression;
     } else if (targetType.isDartCoreDouble) {

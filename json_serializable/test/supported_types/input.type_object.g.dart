@@ -9,8 +9,8 @@ part of 'input.type_object.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
-    json['value'],
-    json['nullable'],
+    json['value'] as Object,
+    json['nullable'] as Object,
   );
 }
 

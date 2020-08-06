@@ -14,8 +14,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
       iterable: $checkedConvert(json, 'iterable', (v) => v as List<dynamic>?),
       dynamicIterable:
           $checkedConvert(json, 'dynamicIterable', (v) => v as List<dynamic>?),
-      objectIterable:
-          $checkedConvert(json, 'objectIterable', (v) => v as List<dynamic>?),
+      objectIterable: $checkedConvert(json, 'objectIterable',
+          (v) => (v as List<dynamic>?)?.map((e) => e as Object)),
       intIterable: $checkedConvert(json, 'intIterable',
           (v) => (v as List<dynamic>?)?.map((e) => e as int)),
       dateTimeIterable: $checkedConvert(
@@ -32,7 +32,10 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(json, 'dynamicSet',
         (v) => val.dynamicSet = (v as List<dynamic>).toSet());
     $checkedConvert(
-        json, 'objectSet', (v) => val.objectSet = (v as List<dynamic>).toSet());
+        json,
+        'objectSet',
+        (v) => val.objectSet =
+            (v as List<dynamic>).map((e) => e as Object).toSet());
     $checkedConvert(json, 'intSet',
         (v) => val.intSet = (v as List<dynamic>).map((e) => e as int).toSet());
     $checkedConvert(
@@ -45,7 +48,10 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(
         json, 'dynamicList', (v) => val.dynamicList = v as List<dynamic>);
     $checkedConvert(
-        json, 'objectList', (v) => val.objectList = v as List<dynamic>);
+        json,
+        'objectList',
+        (v) => val.objectList =
+            (v as List<dynamic>).map((e) => e as Object).toList());
     $checkedConvert(
         json,
         'intList',
