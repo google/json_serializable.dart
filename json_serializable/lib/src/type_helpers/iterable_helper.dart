@@ -63,6 +63,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+    bool defaultProvided,
   ) {
     if (!(coreIterableTypeChecker.isExactlyType(targetType) ||
         _coreListChecker.isExactlyType(targetType) ||

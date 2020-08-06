@@ -28,6 +28,7 @@ class BigIntHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+    bool defaultProvided,
   ) =>
       bigIntString.deserialize(
         targetType,

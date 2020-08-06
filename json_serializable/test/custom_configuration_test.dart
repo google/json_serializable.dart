@@ -214,8 +214,12 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   const _ConfigLogger();
 
   @override
-  Object deserialize(DartType targetType, String expression,
-      TypeHelperContextWithConfig context) {
+  Object deserialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+    bool defaultProvided,
+  ) {
     configurations.add(context.config);
     return null;
   }

@@ -36,6 +36,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+      bool defaultProvided,
   ) {
     final memberContent = _enumValueMapFromType(targetType);
 

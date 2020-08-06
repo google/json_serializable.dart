@@ -42,6 +42,7 @@ class JsonConverterHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+    bool defaultProvided,
   ) {
     final converter = _typeConverter(targetType, context);
     if (converter == null) {

@@ -28,6 +28,7 @@ class DateTimeHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+      bool defaultProvided,
   ) =>
       dateTimeString.deserialize(
         targetType,

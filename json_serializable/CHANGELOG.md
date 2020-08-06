@@ -1,3 +1,7 @@
+## 4.0.0-dev
+
+- **breaking** `bool defaultProvided` arg added to `TypeHelper.deserialize`.
+
 ## 3.4.0-dev
 
 - Added support for `double` constants as default values.

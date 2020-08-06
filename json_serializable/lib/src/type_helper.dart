@@ -80,7 +80,12 @@ abstract class TypeHelper<T extends TypeHelperContext> {
   /// String deserialize(DartType targetType, String expression) =>
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
-  Object deserialize(DartType targetType, String expression, T context);
+  Object deserialize(
+    DartType targetType,
+    String expression,
+    T context,
+    bool defaultProvided,
+  );
 }
 
 Object commonNullPrefix(

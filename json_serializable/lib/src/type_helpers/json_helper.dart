@@ -40,6 +40,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+      bool defaultProvided,
   ) {
     if (targetType is! InterfaceType) {
       return null;

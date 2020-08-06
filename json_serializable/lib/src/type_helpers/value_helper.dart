@@ -31,6 +31,7 @@ class ValueHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+    bool defaultProvided,
   ) {
     if (targetType.isDartCoreObject && !targetType.isNullableType) {
       return '$expression as Object';

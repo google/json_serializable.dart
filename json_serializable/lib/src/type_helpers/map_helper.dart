@@ -54,6 +54,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+    bool defaultProvided,
   ) {
     if (!coreMapTypeChecker.isExactlyType(targetType)) {
       return null;

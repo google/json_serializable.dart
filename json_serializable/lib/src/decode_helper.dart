@@ -147,11 +147,18 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKeyName = safeNameAccess(field);
     final targetType = ctorParam?.type ?? field.type;
     final contextHelper = getHelperContext(field);
+    final defaultProvided = jsonKeyFor(field).defaultValue != null;
 
     String value;
     try {
       if (config.checked) {
-        value = contextHelper.deserialize(targetType, 'v').toString();
+        value = contextHelper
+            .deserialize(
+              targetType,
+              'v',
+              defaultProvided: defaultProvided,
+            )
+            .toString();
         if (!checkedProperty) {
           value = '\$checkedConvert(json, $jsonKeyName, (v) => $value)';
         }
@@ -160,7 +167,11 @@ abstract class DecodeHelper implements HelperCore {
             'should only be true if `_generator.checked` is true.');
 
         value = contextHelper
-            .deserialize(targetType, 'json[$jsonKeyName]')
+            .deserialize(
+              targetType,
+              'json[$jsonKeyName]',
+              defaultProvided: defaultProvided,
+            )
             .toString();
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors

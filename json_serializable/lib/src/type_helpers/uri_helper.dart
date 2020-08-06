@@ -28,6 +28,7 @@ class UriHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
+    bool defaultProvided,
   ) =>
       uriString.deserialize(
           targetType, expression, targetType.isNullableType, false);
