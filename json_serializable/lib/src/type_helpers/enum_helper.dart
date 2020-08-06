@@ -36,7 +36,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
-      bool defaultProvided,
+    bool defaultProvided,
   ) {
     final memberContent = _enumValueMapFromType(targetType);
 
@@ -52,9 +52,8 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(memberContent);
 
-    final functionName = targetType.isNullableType
-        ? r'_$enumDecodeNullable'
-        : r'_$enumDecode';
+    final functionName =
+        targetType.isNullableType ? r'_$enumDecodeNullable' : r'_$enumDecode';
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final args = [

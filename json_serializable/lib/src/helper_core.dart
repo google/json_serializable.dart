@@ -115,13 +115,16 @@ String genericClassArguments(ClassElement element, bool withConstraints) {
 /// types and locations of these files in code. Specifically, it supports
 /// only [InterfaceType]s, with optional type arguments that are also should
 /// be [InterfaceType]s.
-String typeToCode(DartType type) {
+String typeToCode(
+  DartType type, {
+  bool forceNullable = false,
+}) {
   if (type.isDynamic) {
     return 'dynamic';
   } else if (type is InterfaceType) {
     final typeArguments = type.typeArguments;
     if (typeArguments.isEmpty) {
-      final nullablePostfix = type.isNullableType ? '?' : '';
+      final nullablePostfix = (type.isNullableType || forceNullable) ? '?' : '';
       return '${type.element.name}$nullablePostfix';
     } else {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');

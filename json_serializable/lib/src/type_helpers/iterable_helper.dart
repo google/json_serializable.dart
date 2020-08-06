@@ -77,7 +77,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var output = '$expression as List<dynamic>';
 
-    if (targetType.isNullableType) {
+    final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
+
+    if (targetTypeIsNullable) {
       output += '?';
     }
 
@@ -90,7 +92,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     output = '($output)';
 
-    var optionalQuestion = targetType.isNullableType ? '?' : '';
+    var optionalQuestion = targetTypeIsNullable ? '?' : '';
 
     if (closureArg != itemSubVal) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);

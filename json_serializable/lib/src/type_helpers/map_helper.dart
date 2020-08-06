@@ -71,20 +71,23 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
 
+    final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
+    final optionalQuestion = targetTypeIsNullable ? '?' : '';
+
     if (!isKeyStringable) {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
           if (isObjectOrDynamic(keyArg)) {
-            return '$expression as Map';
+            return '$expression as Map$optionalQuestion';
           }
         } else {
           // this is the trivial case. Do a runtime cast to the known type of
           // JSON map values - `Map<String, dynamic>`
-          return '$expression as Map<String, dynamic>';
+          return '$expression as Map<String, dynamic>$optionalQuestion';
         }
       }
 
-      if (!targetType.isNullableType &&
+      if (!targetTypeIsNullable &&
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
@@ -97,11 +100,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    final optionalQuestion = targetType.isNullableType ? '?' : '';
-
     var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
-    if (targetType.isNullableType) {
+    if (targetTypeIsNullable) {
       mapCast += '?';
     }
 

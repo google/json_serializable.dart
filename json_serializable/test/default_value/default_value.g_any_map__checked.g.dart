@@ -10,29 +10,33 @@ part of 'default_value.g_any_map__checked.dart';
 DefaultValue _$DefaultValueFromJson(Map json) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue(
-      $checkedConvert(json, 'fieldBool', (v) => v as bool) ?? true,
-      $checkedConvert(json, 'fieldString', (v) => v as String) ?? 'string',
-      $checkedConvert(json, 'fieldInt', (v) => v as int) ?? 42,
-      $checkedConvert(json, 'fieldDouble', (v) => (v as num).toDouble()) ??
+      $checkedConvert(json, 'fieldBool', (v) => v as bool?) ?? true,
+      $checkedConvert(json, 'fieldString', (v) => v as String?) ?? 'string',
+      $checkedConvert(json, 'fieldInt', (v) => v as int?) ?? 42,
+      $checkedConvert(json, 'fieldDouble', (v) => (v as num?)?.toDouble()) ??
           3.14,
-      $checkedConvert(json, 'fieldListEmpty', (v) => v as List<dynamic>) ?? [],
+      $checkedConvert(json, 'fieldListEmpty', (v) => v as List<dynamic>?) ?? [],
       $checkedConvert(
-              json, 'fieldSetEmpty', (v) => (v as List<dynamic>).toSet()) ??
+              json, 'fieldSetEmpty', (v) => (v as List<dynamic>?)?.toSet()) ??
           {},
-      $checkedConvert(json, 'fieldMapEmpty', (v) => v as Map) ?? {},
+      $checkedConvert(json, 'fieldMapEmpty', (v) => v as Map?) ?? {},
       $checkedConvert(json, 'fieldListSimple',
-              (v) => (v as List<dynamic>).map((e) => e as int).toList()) ??
+              (v) => (v as List<dynamic>?)?.map((e) => e as int).toList()) ??
           [1, 2, 3],
       $checkedConvert(json, 'fieldSetSimple',
-              (v) => (v as List<dynamic>).map((e) => e as String).toSet()) ??
+              (v) => (v as List<dynamic>?)?.map((e) => e as String).toSet()) ??
           {'entry1', 'entry2'},
       $checkedConvert(
-              json, 'fieldMapSimple', (v) => Map<String, int>.from(v as Map)) ??
+              json,
+              'fieldMapSimple',
+              (v) => (v as Map?)?.map(
+                    (k, e) => MapEntry(k as String, e as int),
+                  )) ??
           {'answer': 42},
       $checkedConvert(
               json,
               'fieldMapListString',
-              (v) => (v as Map).map(
+              (v) => (v as Map?)?.map(
                     (k, e) => MapEntry(k as String,
                         (e as List<dynamic>).map((e) => e as String).toList()),
                   )) ??

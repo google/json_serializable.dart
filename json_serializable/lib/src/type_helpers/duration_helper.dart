@@ -37,7 +37,7 @@ class DurationHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
-      bool defaultProvided,
+    bool defaultProvided,
   ) {
     if (!_matchesType(targetType)) {
       return null;

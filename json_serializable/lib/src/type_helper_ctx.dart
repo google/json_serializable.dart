@@ -75,7 +75,7 @@ class TypeHelperCtx
           targetType,
           expression,
           this,
-          defaultProvided,
+          defaultProvided ?? false,
         ),
       );
 

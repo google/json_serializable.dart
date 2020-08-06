@@ -50,7 +50,7 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConvert context,
-      bool defaultProvided,
+    bool defaultProvided,
   ) {
     final fromJsonData = context.deserializeConvertData;
     if (fromJsonData == null) {

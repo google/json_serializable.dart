@@ -40,7 +40,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
-      bool defaultProvided,
+    bool defaultProvided,
   ) {
     if (targetType is! InterfaceType) {
       return null;
@@ -79,8 +79,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // https://github.com/google/json_serializable.dart/issues/19
     output = '${targetType.element.name}.fromJson($output)';
 
-    return commonNullPrefix(
-            targetType.isNullableType, expression, output)
+    return commonNullPrefix(targetType.isNullableType, expression, output)
         .toString();
   }
 }

@@ -11,7 +11,7 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as bool,
     json['nullable'] as bool,
-    json['withDefault'] as bool ?? true,
+    json['withDefault'] as bool? ?? true,
   );
 }
 

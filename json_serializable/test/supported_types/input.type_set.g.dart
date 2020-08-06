@@ -11,7 +11,7 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     (json['value'] as List<dynamic>).toSet(),
     (json['nullable'] as List<dynamic>).toSet(),
-    (json['withDefault'] as List<dynamic>).toSet() ?? {42, true, false, null},
+    (json['withDefault'] as List<dynamic>?)?.toSet() ?? {42, true, false, null},
   );
 }
 
