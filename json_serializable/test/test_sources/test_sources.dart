@@ -1,8 +1,10 @@
+// @dart=2.10
+
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class ConfigurationImplicitDefaults {
-  int field;
+  int? field;
 }
 
 @JsonSerializable(
@@ -18,14 +20,14 @@ class ConfigurationImplicitDefaults {
   nullable: true,
 )
 class ConfigurationExplicitDefaults {
-  int field;
+  int? field;
 }
 
 @JsonSerializable(createFactory: false)
 class IncludeIfNullAll {
   @JsonKey(includeIfNull: true)
-  int number;
-  String str;
+  int? number;
+  String? str;
 }
 
 @JsonSerializable(createToJson: false)
@@ -42,39 +44,39 @@ class ChildWithFromJson {
 
 @JsonSerializable()
 class ParentObject {
-  int number;
-  String str;
-  ChildObject child;
+  int? number;
+  String? str;
+  ChildObject? child;
 }
 
 @JsonSerializable()
 class ChildObject {
-  int number;
-  String str;
+  int? number;
+  String? str;
 }
 
 @JsonSerializable()
 class ParentObjectWithChildren {
-  int number;
-  String str;
-  List<ChildObject> children;
+  int? number;
+  String? str;
+  List<ChildObject>? children;
 }
 
 @JsonSerializable()
 class ParentObjectWithDynamicChildren {
-  int number;
-  String str;
-  List<dynamic> children;
+  int? number;
+  String? str;
+  late List<dynamic> children;
 }
 
 @JsonSerializable(createFactory: false, explicitToJson: true)
 class TrivialNestedNullable {
-  TrivialNestedNullable child;
-  int otherField;
+  TrivialNestedNullable? child;
+  int? otherField;
 }
 
 @JsonSerializable(createFactory: false, nullable: false, explicitToJson: true)
 class TrivialNestedNonNullable {
-  TrivialNestedNonNullable child;
-  int otherField;
+  late TrivialNestedNonNullable child;
+  int? otherField;
 }
