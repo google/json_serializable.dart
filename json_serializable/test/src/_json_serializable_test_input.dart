@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.10
+
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -37,7 +39,7 @@ const theAnswer = 42;
 @ShouldThrow('Generator cannot target `annotatedMethod`.',
     todo: 'Remove the JsonSerializable annotation from `annotatedMethod`.')
 @JsonSerializable()
-Object annotatedMethod() => null;
+Object annotatedMethod() => throw UnimplementedError();
 
 @ShouldGenerate(
   r'''
@@ -65,12 +67,11 @@ GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
     ..firstName = json['firstName'] as String
     ..lastName = json['lastName'] as String
     ..height = json['h'] as int
-    ..dateOfBirth = json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String)
+    ..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String)
     ..dynamicType = json['dynamicType']
     ..varType = json['varType']
-    ..listOfInts = (json['listOfInts'] as List)?.map((e) => e as int)?.toList();
+    ..listOfInts =
+        (json['listOfInts'] as List<dynamic>).map((e) => e as int).toList();
 }
 
 Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
@@ -78,7 +79,7 @@ Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'h': instance.height,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
       'dynamicType': instance.dynamicType,
       'varType': instance.varType,
       'listOfInts': instance.listOfInts,
@@ -86,15 +87,15 @@ Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
 ''')
 @JsonSerializable()
 class GeneralTestClass1 {
-  String firstName, lastName;
+  late String firstName, lastName;
   @JsonKey(name: 'h')
-  int height;
-  DateTime dateOfBirth;
+  late int height;
+  late DateTime dateOfBirth;
   dynamic dynamicType;
 
   //ignore: prefer_typing_uninitialized_variables
   var varType;
-  List<int> listOfInts;
+  late List<int> listOfInts;
 }
 
 @ShouldGenerate(r'''
@@ -102,10 +103,8 @@ GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) {
   return GeneralTestClass2(
     json['height'] as int,
     json['firstName'] as String,
-    json['lastName'] as String,
-  )..dateOfBirth = json['dateOfBirth'] == null
-      ? null
-      : DateTime.parse(json['dateOfBirth'] as String);
+    json['lastName'] as String?,
+  )..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String);
 }
 
 Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
@@ -113,18 +112,19 @@ Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'height': instance.height,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
     };
 ''')
 @JsonSerializable()
 class GeneralTestClass2 {
-  final String firstName, lastName;
-  int height;
-  DateTime dateOfBirth;
+  final String firstName;
+  final String? lastName;
+  late int height;
+  late DateTime dateOfBirth;
 
   GeneralTestClass2(this.height, String firstName, [this.lastName])
       :
-        // ignore: prefer_initializing_formals
+  // ignore: prefer_initializing_formals
         firstName = firstName;
 }
 
@@ -172,13 +172,13 @@ class FinalFieldsNotSetInCtor {
 @ShouldGenerate(r'''
 SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
   return SetSupport(
-    (json['values'] as List)?.map((e) => e as int)?.toSet(),
+    (json['values'] as List<dynamic>).map((e) => e as int).toSet(),
   );
 }
 
 Map<String, dynamic> _$SetSupportToJson(SetSupport instance) =>
     <String, dynamic>{
-      'values': instance.values?.toList(),
+      'values': instance.values.toList(),
     };
 ''')
 @JsonSerializable()
@@ -190,22 +190,22 @@ class SetSupport {
 
 @ShouldThrow(
   'Could not generate `toJson` code for `watch`.\n'
-  'None of the provided `TypeHelper` instances support the defined type.',
+      'None of the provided `TypeHelper` instances support the defined type.',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
-  Stopwatch watch;
+  Stopwatch? watch;
 }
 
 @ShouldThrow(
   'Could not generate `fromJson` code for `watch`.\n'
-  'None of the provided `TypeHelper` instances support the defined type.',
+      'None of the provided `TypeHelper` instances support the defined type.',
   configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeFieldType {
-  Stopwatch watch;
+  Stopwatch? watch;
 }
 
 @ShouldThrow(
@@ -216,7 +216,7 @@ Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, U
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeBadKey {
-  Map<Duration, DateTime> durationDateTimeMap;
+  late Map<Duration, DateTime> durationDateTimeMap;
 }
 
 @ShouldThrow(
@@ -227,7 +227,7 @@ Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, U
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
-  Map<Duration, DateTime> durationDateTimeMap;
+  late Map<Duration, DateTime> durationDateTimeMap;
 }
 
 @ShouldGenerate(
@@ -253,8 +253,8 @@ Map<String, dynamic> _$IncludeIfNullOverrideToJson(
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {
   @JsonKey(includeIfNull: true)
-  int number;
-  String str;
+  late int number;
+  late String str;
 }
 
 // https://github.com/google/json_serializable.dart/issues/7 regression
@@ -264,10 +264,11 @@ class IncludeIfNullOverride {
 )
 @JsonSerializable()
 class NoCtorClass {
-  final int member;
+  late final int member;
 
   //ignore: avoid_unused_constructor_parameters
-  factory NoCtorClass.fromJson(Map<String, dynamic> json) => null;
+  factory NoCtorClass.fromJson(Map<String, dynamic> json) =>
+      throw UnimplementedError();
 }
 
 @ShouldThrow(
@@ -278,9 +279,9 @@ class NoCtorClass {
 @JsonSerializable(createFactory: false)
 class KeyDupesField {
   @JsonKey(name: 'str')
-  int number;
+  late int number;
 
-  String str;
+  late String str;
 }
 
 @ShouldThrow(
@@ -291,10 +292,10 @@ class KeyDupesField {
 @JsonSerializable(createFactory: false)
 class DupeKeys {
   @JsonKey(name: 'a')
-  int number;
+  late int number;
 
   @JsonKey(name: 'a')
-  String str;
+  late String str;
 }
 
 @ShouldGenerate(r'''
@@ -307,17 +308,17 @@ Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
   @JsonKey(ignore: true)
-  int ignoredTrueField;
+  late int ignoredTrueField;
 
   @JsonKey(ignore: false)
-  int ignoredFalseField;
+  late int ignoredFalseField;
 
-  int ignoredNullField;
+  late int ignoredNullField;
 }
 
 @ShouldThrow(
   'Cannot populate the required constructor argument: '
-  'ignoredTrueField. It is assigned to an ignored field.',
+      'ignoredTrueField. It is assigned to an ignored field.',
   element: '',
 )
 @JsonSerializable()
@@ -330,7 +331,7 @@ class IgnoredFieldCtorClass {
 
 @ShouldThrow(
   'Cannot populate the required constructor argument: '
-  '_privateField. It is assigned to a private field.',
+      '_privateField. It is assigned to a private field.',
   element: '',
 )
 @JsonSerializable()
@@ -343,30 +344,29 @@ class PrivateFieldCtorClass {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. '
-  'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
-  'This leads to incompatible `toJson` and `fromJson` behavior.',
+      'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+      'This leads to incompatible `toJson` and `fromJson` behavior.',
   element: 'field',
 )
 @JsonSerializable()
 class IncludeIfNullDisallowNullClass {
   @JsonKey(includeIfNull: true, disallowNullValue: true)
-  int field;
+  late int field;
 }
 
 @ShouldThrow(
   'The `JsonValue` annotation on `BadEnum.value` does not have a value '
-  'of type String, int, or null.',
+      'of type String, int, or null.',
   element: 'value',
 )
 @JsonSerializable()
 class JsonValueWithBool {
-  BadEnum field;
+  late BadEnum field;
 }
 
 enum BadEnum {
-  @JsonValue(true)
-  value
-}
+@JsonValue(true)
+value}
 
 @ShouldGenerate(r'''const _$GoodEnumEnumMap = {
   GoodEnum.noAnnotation: 'noAnnotation',
@@ -378,20 +378,16 @@ enum BadEnum {
 ''', contains: true)
 @JsonSerializable()
 class JsonValueValid {
-  GoodEnum field;
+  late GoodEnum field;
 }
 
 enum GoodEnum {
   noAnnotation,
-  @JsonValue('string annotation')
-  stringAnnotation,
-  @JsonValue("string annotation with \$ funky 'values'")
-  stringAnnotationWeird,
-  @JsonValue(42)
-  intValue,
-  @JsonValue(null)
-  nullValue
-}
+@JsonValue('string annotation')
+stringAnnotation,@JsonValue("string annotation with \$ funky 'values'")
+stringAnnotationWeird,@JsonValue(42)
+intValue,@JsonValue(null)
+nullValue}
 
 @ShouldGenerate(r'''
 FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
@@ -399,16 +395,14 @@ FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
   return FieldWithFromJsonCtorAndTypeParams()
     ..customOrders = json['customOrders'] == null
         ? null
-        : MyList.fromJson((json['customOrders'] as List)
-            ?.map((e) => e == null
-                ? null
-                : GeneralTestClass2.fromJson(e as Map<String, dynamic>))
-            ?.toList());
+        : MyList.fromJson((json['customOrders'] as List<dynamic>)
+            .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
+            .toList());
 }
 ''')
 @JsonSerializable(createToJson: false)
 class FieldWithFromJsonCtorAndTypeParams {
-  MyList<GeneralTestClass2, int> customOrders;
+  MyList<GeneralTestClass2, int>? customOrders;
 }
 
 class MyList<T, Q> extends ListBase<T> {
@@ -437,7 +431,7 @@ class MyList<T, Q> extends ListBase<T> {
 
 mixin _PropInMixinI448RegressionMixin {
   @JsonKey(nullable: true)
-  int nullable;
+  late int nullable;
 }
 
 @ShouldGenerate(r'''
@@ -456,9 +450,10 @@ Map<String, dynamic> _$PropInMixinI448RegressionToJson(
     };
 ''')
 @JsonSerializable()
-class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
+class PropInMixinI448Regression
+    with _PropInMixinI448RegressionMixin {
   @JsonKey(nullable: false)
-  int notNullable;
+  late int notNullable;
 }
 
 @ShouldGenerate(
@@ -476,9 +471,9 @@ Map<String, dynamic> _$IgnoreUnannotatedToJson(IgnoreUnannotated instance) =>
 @JsonSerializable(ignoreUnannotated: true)
 class IgnoreUnannotated {
   @JsonKey()
-  int annotated;
+  late int annotated;
 
-  int unannotated;
+  late int unannotated;
 }
 
 @ShouldGenerate(
@@ -496,7 +491,7 @@ Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
 @JsonSerializable(ignoreUnannotated: true)
 class SubclassedJsonKey {
   @MyJsonKey()
-  int annotatedWithSubclass;
+  late int annotatedWithSubclass;
 }
 
 class MyJsonKey extends JsonKey {

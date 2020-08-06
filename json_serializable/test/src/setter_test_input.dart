@@ -1,3 +1,5 @@
+// @dart=2.10
+
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
