@@ -72,7 +72,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
         json,
         'objectDateTimeMap',
         (v) => val.objectDateTimeMap = (v as Map).map(
-              (k, e) => MapEntry(k, DateTime.parse(e as String)),
+              (k, e) => MapEntry(k as Object, DateTime.parse(e as String)),
             ));
     $checkedConvert(
         json,

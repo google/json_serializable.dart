@@ -110,6 +110,10 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
     } else if (context.config.anyMap && !isObjectOrDynamic(keyArg)) {
       keyUsage = '$_keyParam as String';
+    } else if (context.config.anyMap &&
+        keyArg.isDartCoreObject &&
+        !keyArg.nullableSuffixQuestion) {
+      keyUsage = '$_keyParam as Object';
     } else {
       keyUsage = _keyParam;
     }
