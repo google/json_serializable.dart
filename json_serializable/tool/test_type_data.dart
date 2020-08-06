@@ -72,13 +72,25 @@ class TestTypeData {
 
       final genericType = '$type<$genericArg>';
 
-      buffer.write(Replacement.generate(
-        simpleClassContent.replaceAll(
-          'SimpleClass',
-          'SimpleClass$genericArgClassPart',
-        ),
-        _libReplacements(genericType),
-      ));
+      buffer
+        ..write(
+          Replacement.generate(
+            simpleClassContent.replaceAll(
+              'SimpleClass',
+              'SimpleClassOf$genericArgClassPart',
+            ),
+            _libReplacements(genericType),
+          ),
+        )
+        ..write(
+          Replacement.generate(
+            simpleClassContent.replaceAll(
+              'SimpleClass',
+              'SimpleClassNullableOf$genericArgClassPart',
+            ),
+            _libReplacements('$genericType?'),
+          ),
+        );
     }
 
     return buffer.toString();
