@@ -108,7 +108,7 @@ DefaultWithDisallowNullRequiredClass
   $checkKeys(json,
       requiredKeys: const ['theField'], disallowNullValues: const ['theField']);
   return DefaultWithDisallowNullRequiredClass()
-    ..theField = json['theField'] as int ?? 7;
+    ..theField = json['theField'] as int? ?? 7;
 }
 ''',
   expectedLogItems: [
@@ -119,7 +119,7 @@ DefaultWithDisallowNullRequiredClass
 @JsonSerializable(createToJson: false)
 class DefaultWithDisallowNullRequiredClass {
   @JsonKey(defaultValue: 7, disallowNullValue: true, required: true)
-  late int theField;
+  int? theField;
 
   DefaultWithDisallowNullRequiredClass();
 }
@@ -128,16 +128,16 @@ class DefaultWithDisallowNullRequiredClass {
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
     Map<String, dynamic> json) {
   return DefaultDoubleConstants()
-    ..defaultNan = (json['defaultNan'] as num).toDouble() ?? double.nan
+    ..defaultNan = (json['defaultNan'] as num?)?.toDouble() ?? double.nan
     ..defaultNegativeInfinity =
-        (json['defaultNegativeInfinity'] as num).toDouble() ??
+        (json['defaultNegativeInfinity'] as num?)?.toDouble() ??
             double.negativeInfinity
     ..defaultInfinity =
-        (json['defaultInfinity'] as num).toDouble() ?? double.infinity
+        (json['defaultInfinity'] as num?)?.toDouble() ?? double.infinity
     ..defaultMinPositive =
-        (json['defaultMinPositive'] as num).toDouble() ?? 5e-324
-    ..defaultMaxFinite =
-        (json['defaultMaxFinite'] as num).toDouble() ?? 1.7976931348623157e+308;
+        (json['defaultMinPositive'] as num?)?.toDouble() ?? 5e-324
+    ..defaultMaxFinite = (json['defaultMaxFinite'] as num?)?.toDouble() ??
+        1.7976931348623157e+308;
 }
 ''')
 @JsonSerializable(createToJson: false)
