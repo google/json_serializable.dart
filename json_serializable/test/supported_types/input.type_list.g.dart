@@ -165,6 +165,19 @@ const _$EnumTypeEnumMap = {
   EnumType.delta: 'delta',
 };
 
+SimpleClassInt _$SimpleClassIntFromJson(Map<String, dynamic> json) {
+  return SimpleClassInt(
+    (json['value'] as List)?.map((e) => e as int)?.toList(),
+    (json['nullable'] as List).map((e) => e as int).toList(),
+  );
+}
+
+Map<String, dynamic> _$SimpleClassIntToJson(SimpleClassInt instance) =>
+    <String, dynamic>{
+      'value': instance.value,
+      'nullable': instance.nullable,
+    };
+
 SimpleClassNum _$SimpleClassNumFromJson(Map<String, dynamic> json) {
   return SimpleClassNum(
     (json['value'] as List)?.map((e) => e as num)?.toList(),

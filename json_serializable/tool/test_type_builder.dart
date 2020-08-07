@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:dart_style/dart_style.dart';
 
 import 'shared.dart';
@@ -33,8 +34,9 @@ const _trivialTypesToTest = {
     jsonExpression: '1234',
     altJsonExpression: '2345',
   ),
-  'dynamic': TestTypeData(
-    altJsonExpression: "'dynamic'",
+  'int': TestTypeData(
+    defaultExpression: '42',
+    altJsonExpression: '43',
   ),
   customEnumType: TestTypeData(
     defaultExpression: '$customEnumType.alpha',
@@ -99,7 +101,11 @@ const _mapKeyTypes = {
   'Uri',
 };
 
-final _iterableGenericArgs = _trivialTypesToTest.keys.toSet();
+final _iterableGenericArgs = ([
+  ..._trivialTypesToTest.keys,
+  'dynamic',
+]..sort(compareAsciiLowerCase))
+    .toSet();
 
 const _defaultCollectionExpressions = '42, true, false, null';
 const _altCollectionExpressions = '43, false';

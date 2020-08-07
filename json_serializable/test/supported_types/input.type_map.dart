@@ -1037,6 +1037,150 @@ class SimpleClassUriToEnumType {
 }
 
 @JsonSerializable()
+class SimpleClassBigIntToInt {
+  final Map<BigInt, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<BigInt, int> nullable;
+
+  SimpleClassBigIntToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassBigIntToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassBigIntToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassBigIntToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassDateTimeToInt {
+  final Map<DateTime, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<DateTime, int> nullable;
+
+  SimpleClassDateTimeToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassDateTimeToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassDateTimeToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassDateTimeToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassDynamicToInt {
+  final Map<dynamic, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<dynamic, int> nullable;
+
+  SimpleClassDynamicToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassDynamicToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassDynamicToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassDynamicToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassEnumTypeToInt {
+  final Map<EnumType, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<EnumType, int> nullable;
+
+  SimpleClassEnumTypeToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassEnumTypeToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassEnumTypeToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassEnumTypeToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassIntToInt {
+  final Map<int, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<int, int> nullable;
+
+  SimpleClassIntToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassIntToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassIntToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassIntToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassObjectToInt {
+  final Map<Object, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<Object, int> nullable;
+
+  SimpleClassObjectToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassObjectToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassObjectToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassObjectToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassStringToInt {
+  final Map<String, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<String, int> nullable;
+
+  SimpleClassStringToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassStringToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassStringToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassStringToIntToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassUriToInt {
+  final Map<Uri, int> value;
+
+  @JsonKey(nullable: false)
+  final Map<Uri, int> nullable;
+
+  SimpleClassUriToInt(
+    this.value,
+    this.nullable,
+  );
+
+  factory SimpleClassUriToInt.fromJson(Map<String, dynamic> json) =>
+      _$SimpleClassUriToIntFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SimpleClassUriToIntToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassBigIntToNum {
   final Map<BigInt, num> value;
 

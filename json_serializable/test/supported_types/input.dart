@@ -8,13 +8,13 @@ part 'input.g.dart';
 
 @JsonSerializable()
 class SimpleClass {
-  final int value;
+  final dynamic value;
 
   @JsonKey(nullable: false)
-  final int nullable;
+  final dynamic nullable;
 
   @JsonKey(defaultValue: 42)
-  int withDefault;
+  dynamic withDefault;
 
   SimpleClass(
     this.value,

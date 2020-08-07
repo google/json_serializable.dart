@@ -4,14 +4,17 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'input.type_dynamic.g.dart';
+part 'input.type_int.g.dart';
 
 @JsonSerializable()
 class SimpleClass {
-  final dynamic value;
+  final int value;
 
   @JsonKey(nullable: false)
-  final dynamic nullable;
+  final int nullable;
+
+  @JsonKey(defaultValue: 42)
+  int withDefault;
 
   SimpleClass(
     this.value,
