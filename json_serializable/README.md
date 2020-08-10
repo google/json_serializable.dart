@@ -32,8 +32,8 @@ part 'example.g.dart';
 class Person {
   final String firstName;
   final String lastName;
-  final DateTime dateOfBirth;
-  Person({this.firstName, this.lastName, this.dateOfBirth});
+  final DateTime? dateOfBirth;
+  Person({required this.firstName, required this.lastName, this.dateOfBirth});
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
   Map<String, dynamic> toJson() => _$PersonToJson(this);
 }
@@ -48,14 +48,16 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
     firstName: json['firstName'] as String,
     lastName: json['lastName'] as String,
-    dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
+    dateOfBirth: json['dateOfBirth'] == null
+        ? null
+        : DateTime.parse(json['dateOfBirth'] as String),
   );
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
-      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
     };
 ```
 
@@ -91,26 +93,26 @@ is generated:
 |                            |                                             | [JsonKey.toJson]            |
 |                            |                                             | [JsonKey.unknownEnumValue]  |
 
-[JsonSerializable.anyMap]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/anyMap.html
-[JsonSerializable.checked]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/checked.html
-[JsonSerializable.createFactory]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/createFactory.html
-[JsonSerializable.createToJson]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/createToJson.html
-[JsonSerializable.disallowUnrecognizedKeys]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
-[JsonSerializable.explicitToJson]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/explicitToJson.html
-[JsonSerializable.fieldRename]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/fieldRename.html
-[JsonSerializable.ignoreUnannotated]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/ignoreUnannotated.html
-[JsonSerializable.includeIfNull]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/includeIfNull.html
-[JsonKey.includeIfNull]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/includeIfNull.html
-[JsonSerializable.nullable]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonSerializable/nullable.html
-[JsonKey.nullable]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/nullable.html
-[JsonKey.defaultValue]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/defaultValue.html
-[JsonKey.disallowNullValue]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/disallowNullValue.html
-[JsonKey.fromJson]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/fromJson.html
-[JsonKey.ignore]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/ignore.html
-[JsonKey.name]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/name.html
-[JsonKey.required]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/required.html
-[JsonKey.toJson]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/toJson.html
-[JsonKey.unknownEnumValue]: https://pub.dev/documentation/json_annotation/3.0.1/json_annotation/JsonKey/unknownEnumValue.html
+[JsonSerializable.anyMap]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/anyMap.html
+[JsonSerializable.checked]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/checked.html
+[JsonSerializable.createFactory]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/createFactory.html
+[JsonSerializable.createToJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/createToJson.html
+[JsonSerializable.disallowUnrecognizedKeys]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
+[JsonSerializable.explicitToJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/explicitToJson.html
+[JsonSerializable.fieldRename]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/fieldRename.html
+[JsonSerializable.ignoreUnannotated]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/ignoreUnannotated.html
+[JsonSerializable.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/includeIfNull.html
+[JsonKey.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/includeIfNull.html
+[JsonSerializable.nullable]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/nullable.html
+[JsonKey.nullable]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/nullable.html
+[JsonKey.defaultValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/defaultValue.html
+[JsonKey.disallowNullValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/disallowNullValue.html
+[JsonKey.fromJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+[JsonKey.ignore]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/ignore.html
+[JsonKey.name]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/name.html
+[JsonKey.required]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/required.html
+[JsonKey.toJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
+[JsonKey.unknownEnumValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/unknownEnumValue.html
 
 > Note: every `JsonSerializable` field is configurable via `build.yaml` –
   see the table for the corresponding key.
