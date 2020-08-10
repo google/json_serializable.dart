@@ -76,7 +76,7 @@ T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
       .key;
 }
 
-T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+T? _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
   if (source == null) {
     return null;
   }

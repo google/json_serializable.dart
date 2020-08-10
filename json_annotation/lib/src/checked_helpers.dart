@@ -9,7 +9,7 @@ import 'allowed_keys_helpers.dart';
 ///
 /// Should not be used directly.
 T $checkedNew<T>(String className, Map map, T Function() constructor,
-    {Map<String, String> fieldKeyMap}) {
+    {Map<String, String>? fieldKeyMap}) {
   fieldKeyMap ??= const {};
 
   try {
@@ -20,7 +20,7 @@ T $checkedNew<T>(String className, Map map, T Function() constructor,
     }
     rethrow;
   } catch (error, stack) {
-    String key;
+    String? key;
     if (error is ArgumentError) {
       key = fieldKeyMap[error.name] ?? error.name;
     } else if (error is MissingRequiredKeysException) {
@@ -53,18 +53,18 @@ class CheckedFromJsonException implements Exception {
   /// The [Error] or [Exception] that triggered this exception.
   ///
   /// If this instance was created by user code, this field will be `null`.
-  final Object innerError;
+  final Object? innerError;
 
   /// The [StackTrace] for the [Error] or [Exception] that triggered this
   /// exception.
   ///
   /// If this instance was created by user code, this field will be `null`.
-  final StackTrace innerStack;
+  final StackTrace? innerStack;
 
   /// The key from [map] that corresponds to the thrown [innerError].
   ///
   /// May be `null`.
-  final String key;
+  final String? key;
 
   /// The source [Map] that was used for decoding when the [innerError] was
   /// thrown.
@@ -73,11 +73,11 @@ class CheckedFromJsonException implements Exception {
   /// A human-readable message corresponding to [innerError].
   ///
   /// May be `null`.
-  final String message;
+  final String? message;
 
   /// The name of the class being created when [innerError] was thrown.
-  String get className => _className;
-  String _className;
+  String? get className => _className;
+  String? _className;
 
   /// If this was thrown due to an invalid or unsupported key, as opposed to an
   /// invalid value.
@@ -89,9 +89,8 @@ class CheckedFromJsonException implements Exception {
     this.key,
     String className,
     this.message, {
-    bool badKey = false,
+    this.badKey = false,
   })  : _className = className,
-        badKey = badKey ?? false,
         innerError = null,
         innerStack = null;
 
@@ -100,12 +99,12 @@ class CheckedFromJsonException implements Exception {
     this.innerStack,
     this.map,
     this.key, {
-    String className,
+    String? className,
   })  : _className = className,
         badKey = innerError is BadKeyException,
         message = _getMessage(innerError);
 
-  static String _getMessage(Object error) {
+  static String? _getMessage(Object? error) {
     if (error is ArgumentError) {
       return error.message?.toString();
     } else if (error is BadKeyException) {
@@ -125,7 +124,7 @@ class CheckedFromJsonException implements Exception {
         'CheckedFromJsonException',
         if (_className != null) 'Could not create `$_className`.',
         if (key != null) 'There is a problem with "$key".',
-        if (message != null) message,
+        if (message != null) message!,
         if (message == null && innerError != null) innerError.toString(),
       ].join('\n');
 }

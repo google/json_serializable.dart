@@ -1,4 +1,4 @@
-## 3.0.2-dev
+## 3.1.0-nullsafety
 
 - Updated `$checkedConvert` helper to support null-safety.
 - Require at least Dart `2.7.0`.
