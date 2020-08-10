@@ -1,7 +1,9 @@
-## 3.4.0-dev
+## 3.4.0
 
-- Added support for `double` constants as default values.
-- Support `Set` literals in `JsonKey.defaultValue`.
+- `JsonKey.defaultValue`
+  - Added support for `double.infinity`, `double.negativeInfinity`, and
+  `double.nan`.
+  - Added support for `Set` literals.
 - Require at least Dart `2.7.0`.
 
 ## 3.3.0
