@@ -36,5 +36,48 @@ dev_dependencies:
 dependency_overrides:
   json_annotation:
     path: ../json_annotation
-  source_gen:
-    path: /Users/kevmoo/github/source_gen/source_gen
+
+  async:
+    git: git://github.com/dart-lang/async.git
+  boolean_selector:
+    git: git://github.com/dart-lang/boolean_selector.git
+  charcode:
+    git: git://github.com/dart-lang/charcode.git
+  collection:
+    git: git://github.com/dart-lang/collection.git
+  js: ^0.6.3-nullsafety
+  matcher:
+    git: git://github.com/dart-lang/matcher.git
+  meta: ^1.3.0-nullsafety.2
+  pedantic:
+    git: git://github.com/dart-lang/pedantic.git
+  pool:
+    git: git://github.com/dart-lang/pool.git
+  source_maps:
+    git: git://github.com/dart-lang/source_maps.git
+  source_map_stack_trace:
+    git: git://github.com/dart-lang/source_map_stack_trace.git
+  source_span:
+    git: git://github.com/dart-lang/source_span.git
+  stack_trace:
+    git: git://github.com/dart-lang/stack_trace.git
+  stream_channel:
+    git: git://github.com/dart-lang/stream_channel.git
+  string_scanner:
+    git: git://github.com/dart-lang/string_scanner.git
+  term_glyph:
+    git: git://github.com/dart-lang/term_glyph.git
+  test_api:
+    git:
+      url: git://github.com/dart-lang/test.git
+      path: pkgs/test_api
+  test_core:
+    git:
+      url: git://github.com/dart-lang/test.git
+      path: pkgs/test_core
+  test:
+    git:
+      url: git://github.com/dart-lang/test.git
+      path: pkgs/test
+  typed_data:
+    git: git://github.com/dart-lang/typed_data.git
