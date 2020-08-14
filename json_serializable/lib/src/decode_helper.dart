@@ -37,14 +37,15 @@ abstract class DecodeHelper implements HelperCore {
             ctorParam: ctorParam);
 
     final data = _writeConstructorInvocation(
-        element,
-        accessibleFields.keys,
-        accessibleFields.values
-            .where((fe) => !fe.isFinal)
-            .map((fe) => fe.name)
-            .toList(),
-        unavailableReasons,
-        deserializeFun);
+      element,
+      accessibleFields.keys,
+      accessibleFields.values
+          .where((fe) => !fe.isFinal)
+          .map((fe) => fe.name)
+          .toList(),
+      unavailableReasons,
+      deserializeFun,
+    );
 
     final checks = _checkKeys(accessibleFields.values
         .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
@@ -280,8 +281,11 @@ _ConstructorData _writeConstructorInvocation(
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
 
-  return _ConstructorData(buffer.toString(), remainingFieldsForInvocationBody,
-      usedCtorParamsAndFields);
+  return _ConstructorData(
+    buffer.toString(),
+    remainingFieldsForInvocationBody,
+    usedCtorParamsAndFields,
+  );
 }
 
 class _ConstructorData {
