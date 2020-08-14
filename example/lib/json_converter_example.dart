@@ -6,6 +6,31 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'json_converter_example.g.dart';
 
+/// An example of using [JsonConverter] to change the encode/decode of a default
+/// type.
+@JsonSerializable(nullable: false)
+@_DateTimeEpochConverter()
+class DateTimeExample {
+  final DateTime when;
+
+  DateTimeExample(this.when);
+
+  factory DateTimeExample.fromJson(Map<String, dynamic> json) =>
+      _$DateTimeExampleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DateTimeExampleToJson(this);
+}
+
+class _DateTimeEpochConverter implements JsonConverter<DateTime, int> {
+  const _DateTimeEpochConverter();
+
+  @override
+  DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
+
+  @override
+  int toJson(DateTime object) => object.millisecondsSinceEpoch;
+}
+
 @JsonSerializable()
 class GenericCollection<T> {
   @JsonKey(name: 'page')
