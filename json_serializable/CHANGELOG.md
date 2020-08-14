@@ -1,3 +1,8 @@
+## 3.4.1-dev
+
+- Support properties where the getter is defined in a class with a corresponding
+  setter in a super type.
+
 ## 3.4.0
 
 - `JsonKey.defaultValue`
