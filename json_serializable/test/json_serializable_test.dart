@@ -82,6 +82,7 @@ const _expectedAnnotatedTests = [
   'OkayOneNormalOptionalPositional',
   'OkayOnlyOptionalPositional',
   'OnlyStaticMembers',
+  'OverrideGetterExampleI613',
   'PrivateFieldCtorClass',
   'PropInMixinI448Regression',
   'SetSupport',

@@ -502,3 +502,29 @@ class SubclassedJsonKey {
 class MyJsonKey extends JsonKey {
   const MyJsonKey() : super(name: 'bob');
 }
+
+@ShouldGenerate(
+  r'''
+OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
+    Map<String, dynamic> json) {
+  return OverrideGetterExampleI613()..id = json['id'] as String;
+}
+
+Map<String, dynamic> _$OverrideGetterExampleI613ToJson(
+        OverrideGetterExampleI613 instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+    };
+''',
+)
+@JsonSerializable(nullable: false)
+class OverrideGetterExampleI613 extends OverrideGetterExampleI613Super {
+  @override
+  String get id => throw UnimplementedError();
+}
+
+class OverrideGetterExampleI613Super {
+  set id(String value) => throw UnimplementedError();
+
+  String get id => throw UnimplementedError();
+}
