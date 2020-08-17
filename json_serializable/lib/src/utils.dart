@@ -118,6 +118,8 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
 bool isEnum(DartType targetType) =>
     targetType is InterfaceType && targetType.element.isEnum;
 
+bool isList(DartType targetType) => targetType.isDartCoreList;
+
 final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 
 /// If [targetType] is an enum, returns a [Map] of the [FieldElement] instances
