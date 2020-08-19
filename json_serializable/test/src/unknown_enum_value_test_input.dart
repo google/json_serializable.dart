@@ -76,7 +76,7 @@ class UnknownEnumValueNotEnumValue {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `value`. `unknownEnumValue` can only be set on '
-  'fields of type enum.',
+  'fields of type enum or on lists.',
 )
 @JsonSerializable()
 class UnknownEnumValueNotEnumField {
