@@ -95,6 +95,7 @@ const _expectedAnnotatedTests = [
   'ToJsonNullableFalseIncludeIfNullFalse',
   'TypedConvertMethods',
   'UnknownEnumValue',
+  'UnknownEnumValueList',
   'UnknownEnumValueNotEnumValue',
   'UnknownEnumValueNotEnumField',
   'UnsupportedDateTimeField',
