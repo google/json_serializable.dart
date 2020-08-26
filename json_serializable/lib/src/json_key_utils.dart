@@ -136,7 +136,8 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         ? null
         : iterateEnumFields(annotationValue.objectValue.type);
     if (enumFields != null) {
-      if (mustBeEnum && !(isEnum(element.type) || isList(element.type))) {
+      if (mustBeEnum &&
+          !(isEnum(element.type) || element.type.isDartCoreList)) {
         throwUnsupported(
           element,
           '`$fieldName` can only be set on fields of type enum or on lists.',
