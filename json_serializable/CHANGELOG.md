@@ -1,4 +1,4 @@
-## 3.4.1-dev
+## 3.4.2-dev
 
 - `JsonKey.unknownEnumValue`
   - Added support for `unknownEnumValue` on `List` of enums
