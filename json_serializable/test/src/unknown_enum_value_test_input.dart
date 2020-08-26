@@ -63,7 +63,7 @@ class UnknownEnumValue {
 }
 
 @ShouldGenerate(
-r'''
+  r'''
 UnknownEnumValueList _$UnknownEnumValueListFromJson(Map<String, dynamic> json) {
   return UnknownEnumValueList()
     ..value = (json['value'] as List)
