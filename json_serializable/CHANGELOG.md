@@ -1,9 +1,12 @@
+## 3.4.1-dev
+
+- `JsonKey.unknownEnumValue`
+  - Added support for `unknownEnumValue` on `List` of enums
+
 ## 3.4.1
 
 - Support properties where the getter is defined in a class with a corresponding
   setter in a super type.
-- `JsonKey.unknownEnumValue`
-  - Added support for `unknownEnumValue` on `List` of enums
 
 ## 3.4.0
 
