@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
+import 'shared_checkers.dart';
 import 'utils.dart';
 
 final _jsonKeyExpando = Expando<JsonKey>();
@@ -136,13 +137,30 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         ? null
         : iterateEnumFields(annotationValue.objectValue.type);
     if (enumFields != null) {
-      if (mustBeEnum &&
-          !(isEnum(element.type) || element.type.isDartCoreList)) {
-        throwUnsupported(
-          element,
-          '`$fieldName` can only be set on fields of type enum or on lists.',
-        );
+      if (mustBeEnum) {
+        DartType targetEnumType;
+        if (isEnum(element.type)) {
+          targetEnumType = element.type;
+        } else if (coreIterableTypeChecker.isAssignableFromType(element.type)) {
+          targetEnumType = coreIterableGenericType(element.type);
+        } else {
+          throwUnsupported(
+            element,
+            '`$fieldName` can only be set on fields of type enum or on '
+            'Iterable, List, or Set instances of an enum type.',
+          );
+        }
+        assert(targetEnumType != null);
+        final annotatedEnumType = annotationValue.objectValue.type;
+        if (annotatedEnumType != targetEnumType) {
+          throwUnsupported(
+            element,
+            '`$fieldName` has type `$targetEnumType`, but the '
+            'provided unknownEnumValue is of type `$annotatedEnumType`.',
+          );
+        }
       }
+
       final enumValueNames =
           enumFields.map((p) => p.name).toList(growable: false);
 

@@ -266,4 +266,18 @@ void main() {
 
     expect(roundTrip, instance);
   });
+
+  test('UnknownEnumValue', () {
+    final instance = UnknownEnumValue.fromJson({
+      'enumValue': 'nope',
+      'enumIterable': ['nope'],
+      'enumList': ['nope'],
+      'enumSet': ['nope'],
+    });
+
+    expect(instance.enumValue, Category.notDiscoveredYet);
+    expect(instance.enumIterable, [Category.notDiscoveredYet]);
+    expect(instance.enumList, [Category.notDiscoveredYet]);
+    expect(instance.enumSet, [Category.notDiscoveredYet]);
+  });
 }
