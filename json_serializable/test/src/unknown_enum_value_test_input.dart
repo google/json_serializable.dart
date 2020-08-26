@@ -62,6 +62,69 @@ class UnknownEnumValue {
   UnknownEnumValueItems value;
 }
 
+@ShouldGenerate(
+  r'''
+UnknownEnumValueList _$UnknownEnumValueListFromJson(Map<String, dynamic> json) {
+  return UnknownEnumValueList()
+    ..value = (json['value'] as List)
+            ?.map((e) => _$enumDecodeNullable(_$UnknownEnumValueItemsEnumMap, e,
+                unknownValue: UnknownEnumValueItems.vUnknown))
+            ?.toList() ??
+        [];
+}
+
+T _$enumDecode<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+
+  final value = enumValues.entries
+      .singleWhere((e) => e.value == source, orElse: () => null)
+      ?.key;
+
+  if (value == null && unknownValue == null) {
+    throw ArgumentError('`$source` is not one of the supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return value ?? unknownValue;
+}
+
+T _$enumDecodeNullable<T>(
+  Map<T, dynamic> enumValues,
+  dynamic source, {
+  T unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$UnknownEnumValueItemsEnumMap = {
+  UnknownEnumValueItems.v0: 'v0',
+  UnknownEnumValueItems.v1: 'v1',
+  UnknownEnumValueItems.v2: 'v2',
+  UnknownEnumValueItems.vUnknown: 'vUnknown',
+  UnknownEnumValueItems.vNull: 'vNull',
+};
+''',
+)
+@JsonSerializable(
+  createToJson: false,
+)
+class UnknownEnumValueList {
+  @JsonKey(
+    defaultValue: [],
+    unknownEnumValue: UnknownEnumValueItems.vUnknown,
+  )
+  List<UnknownEnumValueItems> value;
+}
+
 enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
 
 @ShouldThrow(
@@ -76,7 +139,7 @@ class UnknownEnumValueNotEnumValue {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `value`. `unknownEnumValue` can only be set on '
-  'fields of type enum.',
+  'fields of type enum or on lists.',
 )
 @JsonSerializable()
 class UnknownEnumValueNotEnumField {

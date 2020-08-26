@@ -127,7 +127,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   /// Returns a literal object representing the value of [fieldName] in [obj].
   ///
   /// If [mustBeEnum] is `true`, throws an [InvalidGenerationSourceError] if
-  /// either the annotated field is not an `enum` or if the value in
+  /// either the annotated field is not an `enum` or `List` or if the value in
   /// [fieldName] is not an `enum` value.
   Object _annotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
@@ -136,10 +136,11 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         ? null
         : iterateEnumFields(annotationValue.objectValue.type);
     if (enumFields != null) {
-      if (mustBeEnum && !isEnum(element.type)) {
+      if (mustBeEnum &&
+          !(isEnum(element.type) || element.type.isDartCoreList)) {
         throwUnsupported(
           element,
-          '`$fieldName` can only be set on fields of type enum.',
+          '`$fieldName` can only be set on fields of type enum or on lists.',
         );
       }
       final enumValueNames =
