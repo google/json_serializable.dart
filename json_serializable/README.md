@@ -15,6 +15,8 @@ in [package:json_annotation].
 - To generate a Dart field with the contents of a file containing JSON, use the
   `JsonLiteral` annotation.
 
+## Setup
+
 To configure your project for the latest released version of,
 `json_serializable` see the [example].
 

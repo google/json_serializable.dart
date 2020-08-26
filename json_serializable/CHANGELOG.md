@@ -1,4 +1,4 @@
-## 3.4.1-dev
+## 3.4.1
 
 - Support properties where the getter is defined in a class with a corresponding
   setter in a super type.
