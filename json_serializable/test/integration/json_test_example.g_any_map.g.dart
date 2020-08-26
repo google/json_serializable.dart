@@ -227,3 +227,20 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
           ?.map((k, e) => MapEntry(k.toIso8601String(), e)),
       'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
     };
+
+UnknownEnumValue _$UnknownEnumValueFromJson(Map json) {
+  return UnknownEnumValue()
+    ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'],
+        unknownValue: Category.notDiscoveredYet)
+    ..enumIterable = (json['enumIterable'] as List)?.map((e) =>
+        _$enumDecodeNullable(_$CategoryEnumMap, e,
+            unknownValue: Category.notDiscoveredYet))
+    ..enumList = (json['enumList'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+            unknownValue: Category.notDiscoveredYet))
+        ?.toList()
+    ..enumSet = (json['enumSet'] as List)
+        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+            unknownValue: Category.notDiscoveredYet))
+        ?.toSet();
+}

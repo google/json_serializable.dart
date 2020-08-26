@@ -184,3 +184,23 @@ class MapKeyVariety {
       deepEquals(other.dateTimeIntMap, dateTimeIntMap) &&
       deepEquals(other.bigIntMap, bigIntMap);
 }
+
+@JsonSerializable(nullable: false, createToJson: false)
+class UnknownEnumValue {
+  @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
+  Category enumValue;
+
+  @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
+  Iterable<Category> enumIterable;
+
+  @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
+  List<Category> enumList;
+
+  @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
+  Set<Category> enumSet;
+
+  UnknownEnumValue();
+
+  factory UnknownEnumValue.fromJson(Map<String, dynamic> json) =>
+      _$UnknownEnumValueFromJson(json);
+}

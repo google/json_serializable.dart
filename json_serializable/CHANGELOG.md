@@ -1,7 +1,6 @@
 ## 3.4.2-dev
 
-- `JsonKey.unknownEnumValue`
-  - Added support for `unknownEnumValue` on `List` of enums
+- `JsonKey.unknownEnumValue`: Added support `Iterable`, `List`, and `Set`.
 
 ## 3.4.1
 
