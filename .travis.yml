@@ -9,23 +9,17 @@ branches:
 jobs:
   include:
     - stage: analyzer_and_format
+      name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
+      dart: "2.7.0"
+      os: linux
+      env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
+      script: ./tool/travis.sh dartanalyzer_1
+    - stage: analyzer_and_format
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
       script: ./tool/travis.sh dartfmt dartanalyzer_0
-    - stage: analyzer_and_format
-      name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
-      dart: "2.7.0"
-      os: linux
-      env: PKGS="_test_yaml checked_yaml json_serializable"
-      script: ./tool/travis.sh dartanalyzer_1
-    - stage: analyzer_and_format
-      name: "SDK: 2.7.0; PKGS: example, json_annotation; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings .`]"
-      dart: "2.7.0"
-      os: linux
-      env: PKGS="example json_annotation"
-      script: ./tool/travis.sh dartfmt dartanalyzer_1
     - stage: unit_test
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
       dart: "2.7.0"
