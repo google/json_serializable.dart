@@ -71,7 +71,10 @@ class TypeHelperCtx
       _helperCore.allTypeHelpers.map(invoke).firstWhere(
             (r) => r != null,
             orElse: () => throw UnsupportedTypeError(
-                targetType, expression, _notSupportedWithTypeHelpersMsg),
+              targetType,
+              expression,
+              _notSupportedWithTypeHelpersMsg,
+            ),
           );
 }
 
