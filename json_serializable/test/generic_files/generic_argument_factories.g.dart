@@ -28,3 +28,32 @@ Map<String, dynamic> _$GenericClassWithHelpersToJson<T, S>(
       'list': instance.list?.map(toJsonT)?.toList(),
       'someSet': instance.someSet?.map(toJsonS)?.toList(),
     };
+
+ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) {
+  return ConcreteClass(
+    json['value'] == null
+        ? null
+        : GenericClassWithHelpers.fromJson(
+            json['value'] as Map<String, dynamic>,
+            (value) => value as int,
+            (value) => value as String),
+    json['value2'] == null
+        ? null
+        : GenericClassWithHelpers.fromJson(
+            json['value2'] as Map<String, dynamic>,
+            (value) => (value as num)?.toDouble(),
+            (value) => value == null ? null : BigInt.parse(value as String)),
+  );
+}
+
+Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
+    <String, dynamic>{
+      'value': instance.value?.toJson(
+        (value) => value,
+        (value) => value,
+      ),
+      'value2': instance.value2?.toJson(
+        (value) => value,
+        (value) => value?.toString(),
+      ),
+    };
