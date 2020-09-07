@@ -108,7 +108,7 @@ InterfaceType _instantiate(
 ) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
     final typeParamIndex = classType.element.typeParameters.indexWhere(
-        // TODO(kevmoo): not 100% sure `nullabilitySuffix` is right
+        // TODO: not 100% sure `nullabilitySuffix` is right
         (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg);
     if (typeParamIndex >= 0) {
       return classType.typeArguments[typeParamIndex];
@@ -123,10 +123,9 @@ InterfaceType _instantiate(
     return null;
   }
 
-  // ignore: deprecated_member_use
   return ctorParamType.element.instantiate(
     typeArguments: argTypes,
-    // TODO(kevmoo): not 100% sure nullabilitySuffix is right... Works for now
+    // TODO: not 100% sure nullabilitySuffix is right... Works for now
     nullabilitySuffix: NullabilitySuffix.none,
   );
 }
