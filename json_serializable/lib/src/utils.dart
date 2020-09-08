@@ -6,7 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart' show alwaysThrows;
+import 'package:meta/meta.dart' show alwaysThrows, required;
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
@@ -83,6 +83,8 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
           reader.read('disallowUnrecognizedKeys').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
+      genericArgumentFactories:
+          reader.read('genericArgumentFactories').literalValue as bool,
       ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool,
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
       nullable: reader.read('nullable').literalValue as bool,
@@ -93,7 +95,15 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
 ///
 /// For fields that are not defined in [JsonSerializable] or `null` in [reader],
 /// use the values in [config].
-JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
+///
+/// Note: if [JsonSerializable.genericArgumentFactories] is `false` for [reader]
+/// and `true` for [config], the corresponding field in the return value will
+/// only be `true` if [classElement] has type parameters.
+JsonSerializable mergeConfig(
+  JsonSerializable config,
+  ConstantReader reader, {
+  @required ClassElement classElement,
+}) {
   final annotation = _valueForAnnotation(reader);
 
   return JsonSerializable(
@@ -105,6 +115,9 @@ JsonSerializable mergeConfig(JsonSerializable config, ConstantReader reader) {
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
+    genericArgumentFactories: annotation.genericArgumentFactories ??
+        (classElement.typeParameters.isNotEmpty &&
+            config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,

@@ -1,5 +1,6 @@
-## 3.0.2-dev
+## 3.1.0-dev
 
+- Added `JsonSerializable.genericArgumentFactories` field. 
 - Require at least Dart `2.7.0`.
 
 ## 3.0.1

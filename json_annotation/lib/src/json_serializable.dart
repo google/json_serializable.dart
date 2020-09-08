@@ -112,6 +112,50 @@ class JsonSerializable {
   /// fields annotated with [JsonKey].
   final FieldRename fieldRename;
 
+  /// When `true` on classes with type parameters (generic types), extra
+  /// "helper" parameters will be generated for `fromJson` and/or `toJson` to
+  /// support serializing values of those types.
+  ///
+  /// For example, the generated code for
+  ///
+  /// ```dart
+  /// @JsonSerializable(genericArgumentFactories: true)
+  /// class Response<T> {
+  ///   int status;
+  ///   T value;
+  /// }
+  /// ```
+  ///
+  /// Looks like
+  ///
+  /// ```dart
+  /// Response<T> _$ResponseFromJson<T>(
+  ///   Map<String, dynamic> json,
+  ///   T Function(Object json) helperForT,
+  /// ) {
+  ///   return Response<T>()
+  ///     ..status = json['status'] as int
+  ///     ..value = helperForT(json['value']);
+  /// }
+  ///
+  /// Map<String, dynamic> _$ResponseToJson<T>(
+  ///   Response<T> instance,
+  ///   Object Function(T value) helperForT,
+  /// ) =>
+  ///     <String, dynamic>{
+  ///       'status': instance.status,
+  ///       'value': helperForT(instance.value),
+  ///     };
+  /// ```
+  ///
+  /// Note: this option has no effect on classes class without type parameters.
+  /// A warning is printed in such cases.
+  ///
+  /// Note: if this option is set for all classes in a package via `build.yaml`
+  /// it is only applied to classes with type parameters – so no warning is
+  /// printed.
+  final bool genericArgumentFactories;
+
   /// When `true`, only fields annotated with [JsonKey] will have code
   /// generated.
   ///
@@ -151,6 +195,7 @@ class JsonSerializable {
     this.ignoreUnannotated,
     this.includeIfNull,
     this.nullable,
+    this.genericArgumentFactories,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -169,6 +214,7 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     nullable: true,
+    genericArgumentFactories: false,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -188,6 +234,8 @@ class JsonSerializable {
         ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
         nullable: nullable ?? defaults.nullable,
+        genericArgumentFactories:
+            genericArgumentFactories ?? defaults.genericArgumentFactories,
       );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

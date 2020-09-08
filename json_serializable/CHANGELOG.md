@@ -1,6 +1,7 @@
-## 3.4.2-dev
+## 3.5.0-dev
 
-- `JsonKey.unknownEnumValue`: Added support `Iterable`, `List`, and `Set`.
+- Added support for `JsonSerializable.genericArgumentFactories`.
+- `JsonKey.unknownEnumValue`: Added support for `Iterable`, `List`, and `Set`.
 
 ## 3.4.1
 

@@ -51,6 +51,7 @@ const _expectedAnnotatedTests = [
   'FromDynamicCollection',
   'GeneralTestClass1',
   'GeneralTestClass2',
+  'GenericArgumentFactoriesFlagWithoutGenericType',
   'GenericClass',
   'IgnoredFieldClass',
   'IgnoredFieldCtorClass',
