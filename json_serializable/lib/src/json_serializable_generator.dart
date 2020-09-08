@@ -17,6 +17,7 @@ import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/duration_helper.dart';
 import 'type_helpers/enum_helper.dart';
+import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/iterable_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'type_helpers/json_helper.dart';
@@ -47,6 +48,7 @@ class JsonSerializableGenerator
   Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
         ConvertHelper(),
         JsonConverterHelper(),
+        GenericFactoryHelper(),
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   final JsonSerializable _config;
@@ -106,7 +108,13 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     this._generator,
     ClassElement element,
     ConstantReader annotation,
-  ) : super(element, mergeConfig(_generator.config, annotation));
+  ) : super(
+            element,
+            mergeConfig(
+              _generator.config,
+              annotation,
+              classElement: element,
+            ));
 
   @override
   void addMember(String memberContent) {
@@ -118,6 +126,17 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
+
+    if (config.genericArgumentFactories && element.typeParameters.isEmpty) {
+      log.warning(
+        'The class `${element.displayName}` is annotated '
+        'with `JsonSerializable` field `genericArgumentFactories: true`. '
+        '`genericArgumentFactories: true` only affects classes with type '
+        'parameters. For classes without type parameters, the option is '
+        'ignored.',
+      );
+    }
+
     final sortedFields = createSortedFieldSet(element);
 
     // Used to keep track of why a field is ignored. Useful for providing

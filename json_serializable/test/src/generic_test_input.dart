@@ -48,3 +48,26 @@ class GenericClass<T extends num, S> {
 T _dataFromJson<T extends num>(Object input) => null;
 
 Object _dataToJson<T extends num>(T input) => null;
+
+@ShouldGenerate(
+  r'''
+GenericArgumentFactoriesFlagWithoutGenericType
+    _$GenericArgumentFactoriesFlagWithoutGenericTypeFromJson(
+        Map<String, dynamic> json) {
+  return GenericArgumentFactoriesFlagWithoutGenericType();
+}
+
+Map<String, dynamic> _$GenericArgumentFactoriesFlagWithoutGenericTypeToJson(
+        GenericArgumentFactoriesFlagWithoutGenericType instance) =>
+    <String, dynamic>{};
+''',
+  expectedLogItems: [
+    'The class `GenericArgumentFactoriesFlagWithoutGenericType` is annotated '
+        'with `JsonSerializable` field `genericArgumentFactories: true`. '
+        '`genericArgumentFactories: true` only affects classes with type '
+        'parameters. For classes without type parameters, the option is '
+        'ignored.',
+  ],
+)
+@JsonSerializable(genericArgumentFactories: true)
+class GenericArgumentFactoriesFlagWithoutGenericType {}

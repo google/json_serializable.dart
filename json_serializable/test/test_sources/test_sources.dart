@@ -16,6 +16,7 @@ class ConfigurationImplicitDefaults {
   ignoreUnannotated: false,
   includeIfNull: true,
   nullable: true,
+  genericArgumentFactories: false,
 )
 class ConfigurationExplicitDefaults {
   int field;

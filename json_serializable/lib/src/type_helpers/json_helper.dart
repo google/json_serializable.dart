@@ -139,7 +139,11 @@ JsonSerializable _annotation(JsonSerializable config, InterfaceType source) {
     return null;
   }
 
-  return mergeConfig(config, ConstantReader(annotations.single));
+  return mergeConfig(
+    config,
+    ConstantReader(annotations.single),
+    classElement: source.element,
+  );
 }
 
 MethodElement _toJsonMethod(DartType type) => typeImplementations(type)

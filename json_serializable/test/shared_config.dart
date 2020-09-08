@@ -21,4 +21,5 @@ final generatorConfigNonDefaultJson =
   ignoreUnannotated: true,
   includeIfNull: false,
   nullable: false,
+  genericArgumentFactories: true,
 ).toJson());
