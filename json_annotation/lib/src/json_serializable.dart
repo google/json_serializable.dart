@@ -131,20 +131,20 @@ class JsonSerializable {
   /// ```dart
   /// Response<T> _$ResponseFromJson<T>(
   ///   Map<String, dynamic> json,
-  ///   T Function(Object json) helperForT,
+  ///   T Function(Object json) fromJsonT,
   /// ) {
   ///   return Response<T>()
   ///     ..status = json['status'] as int
-  ///     ..value = helperForT(json['value']);
+  ///     ..value = fromJsonT(json['value']);
   /// }
   ///
   /// Map<String, dynamic> _$ResponseToJson<T>(
   ///   Response<T> instance,
-  ///   Object Function(T value) helperForT,
+  ///   Object Function(T value) toJsonT,
   /// ) =>
   ///     <String, dynamic>{
   ///       'status': instance.status,
-  ///       'value': helperForT(instance.value),
+  ///       'value': toJsonT(instance.value),
   ///     };
   /// ```
   ///

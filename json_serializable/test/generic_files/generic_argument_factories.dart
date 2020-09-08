@@ -22,14 +22,14 @@ class GenericClassWithHelpers<T, S> {
 
   factory GenericClassWithHelpers.fromJson(
     Map<String, dynamic> json,
-    T Function(Object json) helperForT,
-    S Function(Object json) helperForS,
+    T Function(Object json) fromJsonT,
+    S Function(Object json) fromJsonS,
   ) =>
-      _$GenericClassWithHelpersFromJson(json, helperForT, helperForS);
+      _$GenericClassWithHelpersFromJson(json, fromJsonT, fromJsonS);
 
   Map<String, dynamic> toJson(
-    Object Function(T value) helperForT,
-    Object Function(S value) helperForS,
+    Object Function(T value) toJsonT,
+    Object Function(S value) toJsonS,
   ) =>
-      _$GenericClassWithHelpersToJson(this, helperForT, helperForS);
+      _$GenericClassWithHelpersToJson(this, toJsonT, toJsonS);
 }

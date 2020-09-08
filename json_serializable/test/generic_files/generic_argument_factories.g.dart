@@ -8,23 +8,23 @@ part of 'generic_argument_factories.dart';
 
 GenericClassWithHelpers<T, S> _$GenericClassWithHelpersFromJson<T, S>(
   Map<String, dynamic> json,
-  T Function(Object json) helperForT,
-  S Function(Object json) helperForS,
+  T Function(Object json) fromJsonT,
+  S Function(Object json) fromJsonS,
 ) {
   return GenericClassWithHelpers<T, S>(
-    helperForT(json['value']),
-    (json['list'] as List)?.map(helperForT)?.toList(),
-    (json['someSet'] as List)?.map(helperForS)?.toSet(),
+    fromJsonT(json['value']),
+    (json['list'] as List)?.map(fromJsonT)?.toList(),
+    (json['someSet'] as List)?.map(fromJsonS)?.toSet(),
   );
 }
 
 Map<String, dynamic> _$GenericClassWithHelpersToJson<T, S>(
   GenericClassWithHelpers<T, S> instance,
-  Object Function(T value) helperForT,
-  Object Function(S value) helperForS,
+  Object Function(T value) toJsonT,
+  Object Function(S value) toJsonS,
 ) =>
     <String, dynamic>{
-      'value': helperForT(instance.value),
-      'list': instance.list?.map(helperForT)?.toList(),
-      'someSet': instance.someSet?.map(helperForS)?.toList(),
+      'value': toJsonT(instance.value),
+      'list': instance.list?.map(toJsonT)?.toList(),
+      'someSet': instance.someSet?.map(toJsonS)?.toList(),
     };
