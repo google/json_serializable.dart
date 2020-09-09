@@ -1,46 +1,40 @@
-// Copyright (c) 2018, the Dart project authors. Please see the AUTHORS file
+// Copyright (c) 2020, the Dart project authors. Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'generic_argument_factories.g.dart';
+part 'tuple_example.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
-class GenericClassWithHelpers<T, S> {
-  final T value;
+class Tuple<T, S> {
+  final T value1;
 
-  final List<T> list;
+  final S value2;
 
-  final Set<S> someSet;
+  Tuple(this.value1, this.value2);
 
-  GenericClassWithHelpers(
-    this.value,
-    this.list,
-    this.someSet,
-  );
-
-  factory GenericClassWithHelpers.fromJson(
+  factory Tuple.fromJson(
     Map<String, dynamic> json,
     T Function(Object json) fromJsonT,
     S Function(Object json) fromJsonS,
   ) =>
-      _$GenericClassWithHelpersFromJson(json, fromJsonT, fromJsonS);
+      _$TupleFromJson(json, fromJsonT, fromJsonS);
 
   Map<String, dynamic> toJson(
     Object Function(T value) toJsonT,
     Object Function(S value) toJsonS,
   ) =>
-      _$GenericClassWithHelpersToJson(this, toJsonT, toJsonS);
+      _$TupleToJson(this, toJsonT, toJsonS);
 }
 
-@JsonSerializable()
+@JsonSerializable(nullable: false)
 class ConcreteClass {
-  final GenericClassWithHelpers<int, String> value;
+  final Tuple<int, DateTime> tuple1;
 
-  final GenericClassWithHelpers<double, BigInt> value2;
+  final Tuple<Duration, BigInt> tuple2;
 
-  ConcreteClass(this.value, this.value2);
+  ConcreteClass(this.tuple1, this.tuple2);
 
   factory ConcreteClass.fromJson(Map<String, dynamic> json) =>
       _$ConcreteClassFromJson(json);

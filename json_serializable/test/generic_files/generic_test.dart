@@ -83,4 +83,36 @@ void main() {
       expect(encodedJson2, encodedJson);
     });
   });
+
+  group('argument factories', () {
+    test('round trip decode/decode', () {
+      const inputJson = r'''
+{
+ "value": {
+  "value": 5,
+  "list": [
+   5
+  ],
+  "someSet": [
+   "string"
+  ]
+ },
+ "value2": {
+  "value": 3.14,
+  "list": [
+   3.14
+  ],
+  "someSet": [
+   "2"
+  ]
+ }
+}''';
+
+      final instance = ConcreteClass.fromJson(
+        jsonDecode(inputJson) as Map<String, dynamic>,
+      );
+
+      expect(loudEncode(instance), inputJson);
+    });
+  });
 }

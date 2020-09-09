@@ -1,6 +1,43 @@
 ## 3.5.0-dev
 
+- Added support for populating generic helper functions for fields with generic
+  type parameters.
 - Added support for `JsonSerializable.genericArgumentFactories`.
+  This adds extra parameters to generated `fromJson` and/or `toJson` functions
+  to support encoding and decoding generic types.
+
+  For example, the generated code for
+  
+  ```dart
+  @JsonSerializable(genericArgumentFactories: true)
+  class Response<T> {
+    int status;
+    T value;
+  }
+  ```
+  
+  Looks like
+  
+  ```dart
+  Response<T> _$ResponseFromJson<T>(
+    Map<String, dynamic> json,
+    T Function(Object json) fromJsonT,
+  ) {
+    return Response<T>()
+      ..status = json['status'] as int
+      ..value = fromJsonT(json['value']);
+  }
+  
+  Map<String, dynamic> _$ResponseToJson<T>(
+    Response<T> instance,
+    Object Function(T value) toJsonT,
+  ) =>
+      <String, dynamic>{
+        'status': instance.status,
+        'value': toJsonT(instance.value),
+      };
+  ```
+
 - `JsonKey.unknownEnumValue`: Added support for `Iterable`, `List`, and `Set`.
 
 ## 3.4.1
