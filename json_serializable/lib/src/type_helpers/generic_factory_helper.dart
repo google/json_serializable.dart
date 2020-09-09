@@ -15,8 +15,14 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
-  ) =>
-      deserialize(targetType, expression, context);
+  ) {
+    if (context.config.genericArgumentFactories &&
+        targetType is TypeParameterType) {
+      return LambdaResult(expression, toJsonForType(targetType));
+    }
+
+    return null;
+  }
 
   @override
   Object deserialize(
@@ -24,17 +30,21 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    if (targetType is TypeParameterType) {
-      if (context.config.genericArgumentFactories) {
-        return LambdaResult(expression, helperForType(targetType));
-      }
+    if (context.config.genericArgumentFactories &&
+        targetType is TypeParameterType) {
+      return LambdaResult(expression, fromJsonForType(targetType));
     }
 
     return null;
   }
 }
 
-String helperForType(TypeParameterType type) =>
-    helperForName(type.getDisplayString());
+String toJsonForType(TypeParameterType type) =>
+    toJsonForName(type.getDisplayString());
 
-String helperForName(String genericType) => 'helperFor$genericType';
+String toJsonForName(String genericType) => 'toJson$genericType';
+
+String fromJsonForType(TypeParameterType type) =>
+    fromJsonForName(type.getDisplayString());
+
+String fromJsonForName(String genericType) => 'fromJson$genericType';

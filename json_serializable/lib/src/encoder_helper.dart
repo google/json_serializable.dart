@@ -26,7 +26,7 @@ abstract class EncodeHelper implements HelperCore {
 
     if (config.genericArgumentFactories) {
       for (var arg in element.typeParameters) {
-        final helperName = helperForType(
+        final helperName = toJsonForType(
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
         );
         buffer.write(',Object Function(${arg.name} value) $helperName');
