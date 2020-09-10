@@ -4,7 +4,6 @@ part of '_json_serializable_test_input.dart';
   r'''
 Could not generate `fromJson` code for `mapView`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'mapView',
 )
 @JsonSerializable(createToJson: false)
@@ -16,7 +15,6 @@ class UnsupportedMapField {
   r'''
 Could not generate `fromJson` code for `listView`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'listView',
 )
 @JsonSerializable(createToJson: false)
@@ -28,7 +26,6 @@ class UnsupportedListField {
   r'''
 Could not generate `fromJson` code for `customSet`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'customSet',
 )
 @JsonSerializable(createToJson: false)
@@ -42,7 +39,6 @@ abstract class _CustomSet implements Set {}
   r'''
 Could not generate `fromJson` code for `customDuration`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'customDuration',
 )
 @JsonSerializable(createToJson: false)
@@ -56,7 +52,6 @@ abstract class _CustomDuration implements Duration {}
   r'''
 Could not generate `fromJson` code for `customUri`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'customUri',
 )
 @JsonSerializable(createToJson: false)
@@ -70,7 +65,6 @@ abstract class _CustomUri implements Uri {}
   r'''
 Could not generate `fromJson` code for `customDateTime`.
 None of the provided `TypeHelper` instances support the defined type.''',
-  todo: 'Make sure all of the types are serializable.',
   element: 'customDateTime',
 )
 @JsonSerializable(createToJson: false)
