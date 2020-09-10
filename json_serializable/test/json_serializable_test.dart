@@ -63,6 +63,7 @@ const _expectedAnnotatedTests = [
   'InvalidChildClassFromJson3',
   'InvalidFromFunc2Args',
   'InvalidToFunc2Args',
+  'Issue713',
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
   'JsonConverterNamedCtor',

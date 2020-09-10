@@ -4,6 +4,16 @@
 
 part of '_json_serializable_test_input.dart';
 
+@ShouldThrow(
+  'Could not generate `fromJson` code for `result` because of type '
+  '`TResult (type parameter)`.\n'
+  'None of the provided `TypeHelper` instances support the defined type.',
+)
+@JsonSerializable()
+class Issue713<TResult> {
+  List<TResult> result;
+}
+
 @ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {

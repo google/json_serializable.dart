@@ -126,6 +126,8 @@ String typeToCode(DartType type) {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
       return '${type.element.name}<$typeArgumentsCode>';
     }
+  } else if (type is TypeParameterType) {
+    return '${type.getDisplayString()} (type parameter)';
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
 }
