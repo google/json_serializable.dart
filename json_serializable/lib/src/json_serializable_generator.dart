@@ -88,10 +88,10 @@ class JsonSerializableGenerator
     BuildStep buildStep,
   ) {
     if (element is! ClassElement) {
-      final name = element.name;
-      throw InvalidGenerationSourceError('Generator cannot target `$name`.',
-          todo: 'Remove the JsonSerializable annotation from `$name`.',
-          element: element);
+      throw InvalidGenerationSourceError(
+        '`@JsonSerializable` can only be used on classes.',
+        element: element,
+      );
     }
 
     final classElement = element as ClassElement;
@@ -186,9 +186,9 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         final jsonKey = nameAccess(fe);
         if (!set.add(jsonKey)) {
           throw InvalidGenerationSourceError(
-              'More than one field has the JSON key `$jsonKey`.',
-              todo: 'Check the `JsonKey` annotations on fields.',
-              element: fe);
+            'More than one field has the JSON key for name "$jsonKey".',
+            element: fe,
+          );
         }
         return set;
       },

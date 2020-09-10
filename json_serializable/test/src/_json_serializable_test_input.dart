@@ -29,13 +29,11 @@ part 'to_from_json_test_input.dart';
 
 part 'unknown_enum_value_test_input.dart';
 
-@ShouldThrow('Generator cannot target `theAnswer`.',
-    todo: 'Remove the JsonSerializable annotation from `theAnswer`.')
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable()
 const theAnswer = 42;
 
-@ShouldThrow('Generator cannot target `annotatedMethod`.',
-    todo: 'Remove the JsonSerializable annotation from `annotatedMethod`.')
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable()
 Object annotatedMethod() => null;
 
@@ -271,8 +269,7 @@ class NoCtorClass {
 }
 
 @ShouldThrow(
-  'More than one field has the JSON key `str`.',
-  todo: 'Check the `JsonKey` annotations on fields.',
+  'More than one field has the JSON key for name "str".',
   element: 'str',
 )
 @JsonSerializable(createFactory: false)
@@ -284,8 +281,7 @@ class KeyDupesField {
 }
 
 @ShouldThrow(
-  'More than one field has the JSON key `a`.',
-  todo: 'Check the `JsonKey` annotations on fields.',
+  'More than one field has the JSON key for name "a".',
   element: 'str',
 )
 @JsonSerializable(createFactory: false)

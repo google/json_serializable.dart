@@ -60,14 +60,33 @@ InvalidGenerationSourceError createInvalidGenerationError(
   UnsupportedTypeError e,
 ) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
-  if (field.type != e.type) {
+  String todo;
+
+  if (e.type is TypeParameterType) {
+    message = '$message because of type `${e.type.getDisplayString()}` '
+        '(type parameter)';
+
+    todo = r'''
+To support type paramaters (generic types) you can:
+1) Use `JsonConverter`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
+2) Use `JsonKey` fields `fromJson` and `toJson`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
+3) Set `JsonSerializable.genericArgumentFactories` to `true`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''';
+  } else if (field.type != e.type) {
     message = '$message because of type `${typeToCode(e.type)}`';
   }
-  message = '$message.\n${e.reason}';
+
+  final messageItems = [
+    '$message.',
+    e.reason,
+    if (todo != null) todo,
+  ];
 
   return InvalidGenerationSourceError(
-    message,
-    todo: 'Make sure all of the types are serializable.',
+    messageItems.join('\n'),
     element: field,
   );
 }
@@ -126,8 +145,6 @@ String typeToCode(DartType type) {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
       return '${type.element.name}<$typeArgumentsCode>';
     }
-  } else if (type is TypeParameterType) {
-    return '${type.getDisplayString()} (type parameter)';
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
 }
