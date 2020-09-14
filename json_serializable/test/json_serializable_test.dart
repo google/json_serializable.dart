@@ -17,7 +17,7 @@ Future<void> main() async {
 
   testAnnotatedElements(
     reader,
-    const JsonSerializableGenerator(),
+    JsonSerializableGenerator(),
     expectedAnnotatedTests: _expectedAnnotatedTests,
   );
 }
