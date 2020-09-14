@@ -11,60 +11,36 @@ import 'decode_helper.dart';
 import 'encoder_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
+import 'settings.dart';
 import 'type_helper.dart';
 import 'type_helpers/big_int_helper.dart';
-import 'type_helpers/convert_helper.dart';
 import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/duration_helper.dart';
-import 'type_helpers/enum_helper.dart';
-import 'type_helpers/generic_factory_helper.dart';
-import 'type_helpers/iterable_helper.dart';
-import 'type_helpers/json_converter_helper.dart';
 import 'type_helpers/json_helper.dart';
-import 'type_helpers/map_helper.dart';
 import 'type_helpers/uri_helper.dart';
-import 'type_helpers/value_helper.dart';
 import 'utils.dart';
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
-  static const _coreHelpers = <TypeHelper>[
-    IterableHelper(),
-    MapHelper(),
-    EnumHelper(),
-    ValueHelper(),
-  ];
+  final Settings _settings;
 
-  static const _defaultHelpers = <TypeHelper>[
-    BigIntHelper(),
-    DateTimeHelper(),
-    DurationHelper(),
-    JsonHelper(),
-    UriHelper(),
-  ];
+  JsonSerializable get config => _settings.config;
 
-  final List<TypeHelper> _typeHelpers;
-
-  Iterable<TypeHelper> get _allHelpers => const <TypeHelper>[
-        ConvertHelper(),
-        JsonConverterHelper(),
-        GenericFactoryHelper(),
-      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
-
-  final JsonSerializable _config;
-
-  JsonSerializable get config => _config.withDefaults();
+  JsonSerializableGenerator.fromSettings(this._settings);
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
   /// If [typeHelpers] is not provided, the built-in helpers are used:
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
-  const JsonSerializableGenerator({
+  factory JsonSerializableGenerator({
     JsonSerializable config,
     List<TypeHelper> typeHelpers,
-  })  : _config = config ?? JsonSerializable.defaults,
-        _typeHelpers = typeHelpers ?? _defaultHelpers;
+  }) =>
+      JsonSerializableGenerator.fromSettings(Settings(
+        config: config,
+        typeHelpers: typeHelpers,
+      ));
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -78,7 +54,9 @@ class JsonSerializableGenerator
   }) =>
       JsonSerializableGenerator(
         config: config,
-        typeHelpers: List.unmodifiable(typeHelpers.followedBy(_defaultHelpers)),
+        typeHelpers: List.unmodifiable(
+          typeHelpers.followedBy(Settings.defaultHelpers),
+        ),
       );
 
   @override
@@ -95,13 +73,13 @@ class JsonSerializableGenerator
     }
 
     final classElement = element as ClassElement;
-    final helper = _GeneratorHelper(this, classElement, annotation);
+    final helper = _GeneratorHelper(_settings, classElement, annotation);
     return helper._generate();
   }
 }
 
 class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
-  final JsonSerializableGenerator _generator;
+  final Settings _generator;
   final _addedMembers = <String>{};
 
   _GeneratorHelper(
@@ -122,7 +100,7 @@ class _GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   }
 
   @override
-  Iterable<TypeHelper> get allTypeHelpers => _generator._allHelpers;
+  Iterable<TypeHelper> get allTypeHelpers => _generator.allHelpers;
 
   Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
