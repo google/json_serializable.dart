@@ -62,8 +62,8 @@ String asStatement(DartType type) {
   return ' as $typeCode';
 }
 
-// ignore: deprecated_member_use
-bool isObjectOrDynamic(DartType type) => type.isObject || type.isDynamic;
+bool isObjectOrDynamic(DartType type) =>
+    type.isDartCoreObject || type.isDynamic;
 
 /// Returns all of the [DartType] types that [type] implements, mixes-in, and
 /// extends, starting with [type] itself.

@@ -40,11 +40,11 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
 }
 
 String toJsonForType(TypeParameterType type) =>
-    toJsonForName(type.getDisplayString());
+    toJsonForName(type.getDisplayString(withNullability: false));
 
 String toJsonForName(String genericType) => 'toJson$genericType';
 
 String fromJsonForType(TypeParameterType type) =>
-    fromJsonForName(type.getDisplayString());
+    fromJsonForName(type.getDisplayString(withNullability: false));
 
 String fromJsonForName(String genericType) => 'fromJson$genericType';

@@ -155,8 +155,10 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
         if (annotatedEnumType != targetEnumType) {
           throwUnsupported(
             element,
-            '`$fieldName` has type `$targetEnumType`, but the '
-            'provided unknownEnumValue is of type `$annotatedEnumType`.',
+            '`$fieldName` has type '
+            '`${targetEnumType.getDisplayString(withNullability: false)}`, but '
+            'the provided unknownEnumValue is of type '
+            '`${annotatedEnumType.getDisplayString(withNullability: false)}`.',
           );
         }
       }

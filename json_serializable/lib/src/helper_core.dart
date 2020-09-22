@@ -63,8 +63,8 @@ InvalidGenerationSourceError createInvalidGenerationError(
   String todo;
 
   if (e.type is TypeParameterType) {
-    message = '$message because of type `${e.type.getDisplayString()}` '
-        '(type parameter)';
+    message = '$message because of type '
+        '`${e.type.getDisplayString(withNullability: false)}` (type parameter)';
 
     todo = r'''
 To support type paramaters (generic types) you can:
