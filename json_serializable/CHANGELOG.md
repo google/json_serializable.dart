@@ -1,4 +1,4 @@
-## 3.5.0-dev
+## 3.5.0
 
 - Added support for populating generic helper functions for fields with generic
   type parameters.
@@ -39,6 +39,7 @@
   ```
 
 - `JsonKey.unknownEnumValue`: Added support for `Iterable`, `List`, and `Set`.
+- Require `package:analyzer` `>=0.39.0 <0.41.0`.
 
 ## 3.4.1
 
