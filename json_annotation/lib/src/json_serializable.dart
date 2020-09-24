@@ -148,12 +148,13 @@ class JsonSerializable {
   ///     };
   /// ```
   ///
-  /// Note: this option has no effect on classes class without type parameters.
-  /// A warning is printed in such cases.
+  /// Notes:
   ///
-  /// Note: if this option is set for all classes in a package via `build.yaml`
-  /// it is only applied to classes with type parameters – so no warning is
-  /// printed.
+  /// 1. This option has no effect on classes without type parameters.
+  ///    If used on such a class, a warning is echoed in the build log.
+  /// 1. If this option is set for all classes in a package via `build.yaml`
+  ///    it is only applied to classes with type parameters – so no warning is
+  ///    echoed.
   final bool genericArgumentFactories;
 
   /// When `true`, only fields annotated with [JsonKey] will have code
