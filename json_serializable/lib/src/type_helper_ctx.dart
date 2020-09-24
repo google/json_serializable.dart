@@ -124,7 +124,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
     throwUnsupported(
         element,
         'The `$paramName` function `${executableElement.name}` must have one '
-        'positional paramater.');
+        'positional parameter.');
   }
 
   final argType = executableElement.parameters.first.type;

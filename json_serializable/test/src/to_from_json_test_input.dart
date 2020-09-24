@@ -27,7 +27,7 @@ class BadFromFuncReturnType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-  '`_twoArgFunction` must have one positional paramater.',
+  '`_twoArgFunction` must have one positional parameter.',
   element: 'field',
 )
 @JsonSerializable()
@@ -73,7 +73,7 @@ class BadToFuncReturnType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function '
-  '`_twoArgFunction` must have one positional paramater.',
+  '`_twoArgFunction` must have one positional parameter.',
   element: 'field',
 )
 @JsonSerializable()
@@ -177,7 +177,7 @@ String _noArgs() => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-  '`_noArgs` must have one positional paramater.',
+  '`_noArgs` must have one positional parameter.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)
@@ -190,7 +190,7 @@ String _twoArgs(a, b) => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-  '`_twoArgs` must have one positional paramater.',
+  '`_twoArgs` must have one positional parameter.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)
@@ -203,7 +203,7 @@ String _oneNamed({a}) => null;
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function '
-  '`_oneNamed` must have one positional paramater.',
+  '`_oneNamed` must have one positional parameter.',
   element: 'field',
 )
 @JsonSerializable(createToJson: false)

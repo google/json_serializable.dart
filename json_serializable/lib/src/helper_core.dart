@@ -67,7 +67,7 @@ InvalidGenerationSourceError createInvalidGenerationError(
         '`${e.type.getDisplayString(withNullability: false)}` (type parameter)';
 
     todo = r'''
-To support type paramaters (generic types) you can:
+To support type parameters (generic types) you can:
 1) Use `JsonConverter`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
 2) Use `JsonKey` fields `fromJson` and `toJson`
