@@ -5,10 +5,9 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `result` because of type `TResult` (type parameter).
-None of the provided `TypeHelper` instances support the defined type.
-To support type paramaters (generic types) you can:
+$notSupportedWithTypeHelpersMsg
 1) Use `JsonConverter`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
 2) Use `JsonKey` fields `fromJson` and `toJson`
