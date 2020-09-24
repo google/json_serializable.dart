@@ -1,3 +1,7 @@
+## 3.1.1-dev
+
+- Fixed doc comments for `JsonSerializable.genericArgumentFactories`.
+
 ## 3.1.0
 
 - Added `JsonSerializable.genericArgumentFactories` field. 
