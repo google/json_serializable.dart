@@ -9,12 +9,8 @@ part of '_json_serializable_test_input.dart';
 Could not generate `fromJson` code for `result` because of type `TResult` (type parameter).
 $notSupportedWithTypeHelpersMsg
 To support type parameters (generic types) you can:
-1) Use `JsonConverter`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
-2) Use `JsonKey` fields `fromJson` and `toJson`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
-3) Set `JsonSerializable.genericArgumentFactories` to `true`
+$converterOrKeyInstructions
+* Set `JsonSerializable.genericArgumentFactories` to `true`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''',
   element: 'result',
 )

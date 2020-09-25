@@ -66,14 +66,10 @@ InvalidGenerationSourceError createInvalidGenerationError(
     message = '$message because of type '
         '`${e.type.getDisplayString(withNullability: false)}` (type parameter)';
 
-    todo = r'''
+    todo = '''
 To support type parameters (generic types) you can:
-1) Use `JsonConverter`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
-2) Use `JsonKey` fields `fromJson` and `toJson`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
-3) Set `JsonSerializable.genericArgumentFactories` to `true`
+$converterOrKeyInstructions
+* Set `JsonSerializable.genericArgumentFactories` to `true`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''';
   } else if (field.type != e.type) {
     message = '$message because of type `${typeToCode(e.type)}`';
@@ -90,6 +86,14 @@ To support type parameters (generic types) you can:
     element: field,
   );
 }
+
+@visibleForTesting
+const converterOrKeyInstructions = r'''
+* Use `JsonConverter`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
+* Use `JsonKey` fields `fromJson` and `toJson`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
 
 /// Returns a [String] representing the type arguments that exist on
 /// [element].

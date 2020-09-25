@@ -5,6 +5,7 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/src/helper_core.dart';
 import 'package:json_serializable/src/type_helper_ctx.dart';
 import 'package:source_gen_test/annotations.dart';
 
