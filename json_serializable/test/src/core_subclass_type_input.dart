@@ -3,7 +3,8 @@ part of '_json_serializable_test_input.dart';
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `mapView`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `MapView` you can:
+$converterOrKeyInstructions''',
   element: 'mapView',
 )
 @JsonSerializable(createToJson: false)
@@ -14,7 +15,8 @@ class UnsupportedMapField {
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `listView`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `UnmodifiableListView` you can:
+$converterOrKeyInstructions''',
   element: 'listView',
 )
 @JsonSerializable(createToJson: false)
@@ -25,7 +27,8 @@ class UnsupportedListField {
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `customSet`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `_CustomSet` you can:
+$converterOrKeyInstructions''',
   element: 'customSet',
 )
 @JsonSerializable(createToJson: false)
@@ -38,7 +41,8 @@ abstract class _CustomSet implements Set {}
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `customDuration`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `_CustomDuration` you can:
+$converterOrKeyInstructions''',
   element: 'customDuration',
 )
 @JsonSerializable(createToJson: false)
@@ -51,7 +55,8 @@ abstract class _CustomDuration implements Duration {}
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `customUri`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `_CustomUri` you can:
+$converterOrKeyInstructions''',
   element: 'customUri',
 )
 @JsonSerializable(createToJson: false)
@@ -64,7 +69,8 @@ abstract class _CustomUri implements Uri {}
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `customDateTime`.
-$notSupportedWithTypeHelpersMsg''',
+To support the type `_CustomDateTime` you can:
+$converterOrKeyInstructions''',
   element: 'customDateTime',
 )
 @JsonSerializable(createToJson: false)

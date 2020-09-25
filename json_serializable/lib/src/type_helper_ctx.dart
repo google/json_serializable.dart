@@ -6,7 +6,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
 
 import 'helper_core.dart';
 import 'type_helper.dart';
@@ -71,17 +70,9 @@ class TypeHelperCtx
   ) =>
       _helperCore.allTypeHelpers.map(invoke).firstWhere(
             (r) => r != null,
-            orElse: () => throw UnsupportedTypeError(
-              targetType,
-              expression,
-              notSupportedWithTypeHelpersMsg,
-            ),
+            orElse: () => throw UnsupportedTypeError(targetType, expression),
           );
 }
-
-@visibleForTesting
-const notSupportedWithTypeHelpersMsg =
-    'None of the provided `TypeHelper` instances support the defined type.';
 
 class _ConvertPair {
   static final _expando = Expando<_ConvertPair>();

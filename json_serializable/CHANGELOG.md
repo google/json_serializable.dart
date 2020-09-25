@@ -1,3 +1,9 @@
+## 3.5.1-dev
+
+- Improved error messages for unsupported types.
+- `package:json_serializable/type_helper.dart`
+  - Made the third parameter to `UnsupportedTypeError` positional (optional).
+
 ## 3.5.0
 
 - Added support for populating generic helper functions for fields with generic
