@@ -7,7 +7,6 @@ part of '_json_serializable_test_input.dart';
 @ShouldThrow(
   '''
 Could not generate `fromJson` code for `result` because of type `TResult` (type parameter).
-$notSupportedWithTypeHelpersMsg
 To support type parameters (generic types) you can:
 $converterOrKeyInstructions
 * Set `JsonSerializable.genericArgumentFactories` to `true`

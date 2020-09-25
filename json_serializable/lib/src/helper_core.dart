@@ -57,32 +57,34 @@ abstract class HelperCore {
 InvalidGenerationSourceError createInvalidGenerationError(
   String targetMember,
   FieldElement field,
-  UnsupportedTypeError e,
+  UnsupportedTypeError error,
 ) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
-  String todo;
 
-  if (e.type is TypeParameterType) {
+  String todo;
+  if (error.type is TypeParameterType) {
     message = '$message because of type '
-        '`${e.type.getDisplayString(withNullability: false)}` (type parameter)';
+        '`${error.type.getDisplayString(withNullability: false)}` (type parameter)';
 
     todo = '''
 To support type parameters (generic types) you can:
 $converterOrKeyInstructions
 * Set `JsonSerializable.genericArgumentFactories` to `true`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''';
-  } else if (field.type != e.type) {
-    message = '$message because of type `${typeToCode(e.type)}`';
+  } else if (field.type != error.type) {
+    message = '$message because of type `${typeToCode(error.type)}`';
+  } else {
+    todo = '''
+To support the type `${error.type.element.name}` you can:
+$converterOrKeyInstructions''';
   }
 
-  final messageItems = [
-    '$message.',
-    e.reason,
-    if (todo != null) todo,
-  ];
-
   return InvalidGenerationSourceError(
-    messageItems.join('\n'),
+    [
+      '$message.',
+      if (error.reason != null) error.reason,
+      if (todo != null) todo,
+    ].join('\n'),
     element: field,
   );
 }
