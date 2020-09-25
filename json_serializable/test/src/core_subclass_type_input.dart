@@ -1,9 +1,9 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `mapView`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'mapView',
 )
 @JsonSerializable(createToJson: false)
@@ -12,9 +12,9 @@ class UnsupportedMapField {
 }
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `listView`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'listView',
 )
 @JsonSerializable(createToJson: false)
@@ -23,9 +23,9 @@ class UnsupportedListField {
 }
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `customSet`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'customSet',
 )
 @JsonSerializable(createToJson: false)
@@ -36,9 +36,9 @@ class UnsupportedSetField {
 abstract class _CustomSet implements Set {}
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `customDuration`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'customDuration',
 )
 @JsonSerializable(createToJson: false)
@@ -49,9 +49,9 @@ class UnsupportedDurationField {
 abstract class _CustomDuration implements Duration {}
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `customUri`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'customUri',
 )
 @JsonSerializable(createToJson: false)
@@ -62,9 +62,9 @@ class UnsupportedUriField {
 abstract class _CustomUri implements Uri {}
 
 @ShouldThrow(
-  r'''
+  '''
 Could not generate `fromJson` code for `customDateTime`.
-None of the provided `TypeHelper` instances support the defined type.''',
+$notSupportedWithTypeHelpersMsg''',
   element: 'customDateTime',
 )
 @JsonSerializable(createToJson: false)
