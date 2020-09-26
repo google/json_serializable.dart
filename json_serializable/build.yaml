@@ -14,10 +14,7 @@ targets:
 
       build_web_compilers|entrypoint:
         generate_for:
-        - test/default_value/**.browser_test.dart
-        - test/generic_files/*.browser_test.dart
-        - test/integration/*.browser_test.dart
-        - test/kitchen_sink/**.browser_test.dart
+        - test/**/**.browser_test.dart
 
       json_serializable|_test_builder:
         generate_for:
