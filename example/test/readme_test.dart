@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:test/test.dart';
@@ -14,7 +15,11 @@ void main() {
 void _expect(String fileName) {
   test(fileName, () {
     final file = File(fileName);
-    expect(file.readAsStringSync(), contains(_pubspecContent));
+
+    expect(
+      file.readAsStringSync(),
+      stringContainsInOrder(LineSplitter.split(_pubspecContent).toList()),
+    );
   });
 }
 

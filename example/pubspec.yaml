@@ -8,11 +8,15 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^1.0.0
-  json_serializable: ^3.2.0
 
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^1.0.0
+
+  json_serializable: ^3.2.0
+
+  # Used by tests. Not required to use `json_serializable`.
   path: ^1.5.1
+  # Used by tests. Not required to use `json_serializable`.
   test: ^1.6.0
 
 dependency_overrides:
