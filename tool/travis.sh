@@ -1,27 +1,27 @@
 #!/bin/bash
-# Created with package:mono_repo v2.3.0
+# Created with package:mono_repo v2.5.0
 
 # Support built in commands on windows out of the box.
 function pub {
-       if [[ $TRAVIS_OS_NAME == "windows" ]]; then
-        command pub.bat "$@"
-    else
-        command pub "$@"
-    fi
+  if [[ $TRAVIS_OS_NAME == "windows" ]]; then
+    command pub.bat "$@"
+  else
+    command pub "$@"
+  fi
 }
 function dartfmt {
-       if [[ $TRAVIS_OS_NAME == "windows" ]]; then
-        command dartfmt.bat "$@"
-    else
-        command dartfmt "$@"
-    fi
+  if [[ $TRAVIS_OS_NAME == "windows" ]]; then
+    command dartfmt.bat "$@"
+  else
+    command dartfmt "$@"
+  fi
 }
 function dartanalyzer {
-       if [[ $TRAVIS_OS_NAME == "windows" ]]; then
-        command dartanalyzer.bat "$@"
-    else
-        command dartanalyzer "$@"
-    fi
+  if [[ $TRAVIS_OS_NAME == "windows" ]]; then
+    command dartanalyzer.bat "$@"
+  else
+    command dartanalyzer "$@"
+  fi
 }
 
 if [[ -z ${PKGS} ]]; then
