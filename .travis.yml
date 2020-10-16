@@ -1,4 +1,4 @@
-# Created with package:mono_repo v2.3.0
+# Created with package:mono_repo v2.5.0
 language: dart
 
 # Custom configuration
@@ -8,56 +8,61 @@ branches:
 
 jobs:
   include:
+    - stage: mono_repo_self_validate
+      name: mono_repo self validate
+      os: linux
+      script: tool/mono_repo_self_validate.sh
     - stage: analyzer_and_format
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
-      script: ./tool/travis.sh dartanalyzer_1
+      script: tool/travis.sh dartanalyzer_1
     - stage: analyzer_and_format
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
-      script: ./tool/travis.sh dartfmt dartanalyzer_0
+      script: tool/travis.sh dartfmt dartanalyzer_0
     - stage: unit_test
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: ./tool/travis.sh test_0
+      script: tool/travis.sh test_0
     - stage: unit_test
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: ./tool/travis.sh test_0
+      script: tool/travis.sh test_0
     - stage: unit_test
       name: "SDK: 2.7.0; PKG: json_serializable; TASKS: `pub run build_runner test --delete-conflicting-outputs -- -p chrome`"
       dart: "2.7.0"
       os: linux
       env: PKGS="json_serializable"
-      script: ./tool/travis.sh command
+      script: tool/travis.sh command
     - stage: unit_test
       name: "SDK: dev; PKG: json_serializable; TASKS: `pub run build_runner test --delete-conflicting-outputs -- -p chrome`"
       dart: dev
       os: linux
       env: PKGS="json_serializable"
-      script: ./tool/travis.sh command
+      script: tool/travis.sh command
     - stage: ensure_build
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: ./tool/travis.sh test_1
+      script: tool/travis.sh test_1
     - stage: ensure_build
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: ./tool/travis.sh test_1
+      script: tool/travis.sh test_1
 
 stages:
+  - mono_repo_self_validate
   - analyzer_and_format
   - unit_test
   - ensure_build
