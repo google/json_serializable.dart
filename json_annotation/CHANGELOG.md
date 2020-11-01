@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 ## 3.1.0-nullsafety
 
 - Updated `$checkedConvert` helper to support null-safety.
+=======
+## 3.1.1-dev
+
+- Fixed doc comments for `JsonSerializable.genericArgumentFactories`.
+
+## 3.1.0
+
+- Added `JsonSerializable.genericArgumentFactories` field. 
+>>>>>>> master
 - Require at least Dart `2.7.0`.
 
 ## 3.0.1

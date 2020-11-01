@@ -86,13 +86,9 @@ class TypeHelperCtx
   ) =>
       _helperCore.allTypeHelpers.map(invoke).firstWhere(
             (r) => r != null,
-            orElse: () => throw UnsupportedTypeError(
-                targetType, expression, _notSupportedWithTypeHelpersMsg),
+            orElse: () => throw UnsupportedTypeError(targetType, expression),
           );
 }
-
-const _notSupportedWithTypeHelpersMsg =
-    'None of the provided `TypeHelper` instances support the defined type.';
 
 class _ConvertPair {
   static final _expando = Expando<_ConvertPair>();
@@ -135,7 +131,7 @@ ConvertData _convertData(DartObject obj, FieldElement element, bool isFrom) {
     throwUnsupported(
         element,
         'The `$paramName` function `${executableElement.name}` must have one '
-        'positional paramater.');
+        'positional parameter.');
   }
 
   final argType = executableElement.parameters.first.type;

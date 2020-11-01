@@ -139,6 +139,7 @@ const _invalidConfig = {
   'disallow_unrecognized_keys': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
+  'generic_argument_factories': 42,
   'ignore_unannotated': 42,
   'include_if_null': 42,
   'nullable': 42,

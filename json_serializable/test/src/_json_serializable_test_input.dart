@@ -7,6 +7,7 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/src/helper_core.dart';
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
@@ -31,13 +32,11 @@ part 'to_from_json_test_input.dart';
 
 part 'unknown_enum_value_test_input.dart';
 
-@ShouldThrow('Generator cannot target `theAnswer`.',
-    todo: 'Remove the JsonSerializable annotation from `theAnswer`.')
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable()
 const theAnswer = 42;
 
-@ShouldThrow('Generator cannot target `annotatedMethod`.',
-    todo: 'Remove the JsonSerializable annotation from `annotatedMethod`.')
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable()
 Object annotatedMethod() => throw UnimplementedError();
 
@@ -189,8 +188,10 @@ class SetSupport {
 }
 
 @ShouldThrow(
-  'Could not generate `toJson` code for `watch`.\n'
-  'None of the provided `TypeHelper` instances support the defined type.',
+  '''
+Could not generate `toJson` code for `watch`.
+To support the type `Stopwatch` you can:
+$converterOrKeyInstructions''',
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
@@ -199,8 +200,10 @@ class NoSerializeFieldType {
 }
 
 @ShouldThrow(
-  'Could not generate `fromJson` code for `watch`.\n'
-  'None of the provided `TypeHelper` instances support the defined type.',
+  '''
+Could not generate `fromJson` code for `watch`.
+To support the type `Stopwatch` you can:
+$converterOrKeyInstructions''',
   configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
@@ -272,8 +275,7 @@ class NoCtorClass {
 }
 
 @ShouldThrow(
-  'More than one field has the JSON key `str`.',
-  todo: 'Check the `JsonKey` annotations on fields.',
+  'More than one field has the JSON key for name "str".',
   element: 'str',
 )
 @JsonSerializable(createFactory: false)
@@ -285,8 +287,7 @@ class KeyDupesField {
 }
 
 @ShouldThrow(
-  'More than one field has the JSON key `a`.',
-  todo: 'Check the `JsonKey` annotations on fields.',
+  'More than one field has the JSON key for name "a".',
   element: 'str',
 )
 @JsonSerializable(createFactory: false)
@@ -500,4 +501,82 @@ class SubclassedJsonKey {
 
 class MyJsonKey extends JsonKey {
   const MyJsonKey() : super(name: 'bob');
+}
+
+@ShouldGenerate(
+  r'''
+OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
+    Map<String, dynamic> json) {
+  return OverrideGetterExampleI613()..id = json['id'] as String;
+}
+
+Map<String, dynamic> _$OverrideGetterExampleI613ToJson(
+        OverrideGetterExampleI613 instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+    };
+''',
+)
+@JsonSerializable(nullable: false)
+class OverrideGetterExampleI613 extends OverrideGetterExampleI613Super {
+  @override
+  String get id => throw UnimplementedError();
+}
+
+class OverrideGetterExampleI613Super {
+  set id(String value) => throw UnimplementedError();
+
+  String get id => throw UnimplementedError();
+}
+
+@ShouldThrow(
+  'Expecting a `fromJson` constructor with exactly one positional parameter. '
+  'Found a constructor with 0 parameters.',
+  element: 'fromJson',
+)
+@JsonSerializable()
+class InvalidChildClassFromJson {
+  NoParamFromJsonCtor field;
+}
+
+class NoParamFromJsonCtor {
+  NoParamFromJsonCtor.fromJson();
+}
+
+@ShouldThrow(
+  'Expecting a `fromJson` constructor with exactly one positional parameter. '
+  'The only extra parameters allowed are functions of the form '
+  '`T Function(Object) fromJsonT` '
+  'where `T` is a type parameter of the target type.',
+  element: 'fromJson',
+)
+@JsonSerializable()
+class InvalidChildClassFromJson2 {
+  ExtraParamFromJsonCtor field;
+}
+
+class ExtraParamFromJsonCtor {
+  // ignore: avoid_unused_constructor_parameters
+  ExtraParamFromJsonCtor.fromJson(Map<String, dynamic> json, int oops);
+
+  Map<String, dynamic> toJson() => null;
+}
+
+@ShouldThrow(
+  'Expecting a `toJson` function with no required parameters. '
+  'The only extra parameters allowed are functions of the form '
+  '`Object Function(T) toJsonT` where `T` is a type parameter of the target '
+  ' type.',
+  element: 'toJson',
+)
+@JsonSerializable()
+class InvalidChildClassFromJson3 {
+  ExtraParamToJson field;
+}
+
+class ExtraParamToJson {
+  // ignore: avoid_unused_constructor_parameters
+  ExtraParamToJson.fromJson(Map<String, dynamic> json);
+
+  Map<String, dynamic> toJson(int bob) => null;
 }

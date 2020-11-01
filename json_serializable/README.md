@@ -15,6 +15,8 @@ in [package:json_annotation].
 - To generate a Dart field with the contents of a file containing JSON, use the
   `JsonLiteral` annotation.
 
+## Setup
+
 To configure your project for the latest released version of,
 `json_serializable` see the [example].
 
@@ -81,6 +83,7 @@ is generated:
 | disallow_unrecognized_keys | [JsonSerializable.disallowUnrecognizedKeys] |                             |
 | explicit_to_json           | [JsonSerializable.explicitToJson]           |                             |
 | field_rename               | [JsonSerializable.fieldRename]              |                             |
+| generic_argument_factories | [JsonSerializable.genericArgumentFactories] |                             |
 | ignore_unannotated         | [JsonSerializable.ignoreUnannotated]        |                             |
 | include_if_null            | [JsonSerializable.includeIfNull]            | [JsonKey.includeIfNull]     |
 | nullable                   | [JsonSerializable.nullable]                 | [JsonKey.nullable]          |
@@ -147,6 +150,7 @@ targets:
           disallow_unrecognized_keys: false
           explicit_to_json: false
           field_rename: none
+          generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
           nullable: true

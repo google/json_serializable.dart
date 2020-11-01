@@ -78,7 +78,7 @@ abstract class KitchenSink {
   Map<String, dynamic> toJson();
 }
 
-//TODO(kevmoo) - finish this...
+// TODO: finish this...
 bool sinkEquals(KitchenSink a, Object other) =>
     other is KitchenSink &&
     a.ctorValidatedNo42 == other.ctorValidatedNo42 &&

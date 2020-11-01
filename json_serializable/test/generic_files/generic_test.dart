@@ -3,9 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:convert';
+
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'generic_argument_factories.dart';
 import 'generic_class.dart';
 
 void main() {
@@ -47,6 +49,70 @@ void main() {
           () =>
               GenericClass<double, String>()..fieldS = (5 as dynamic) as String,
           throwsCastError);
+    });
+  });
+
+  group('genericArgumentFactories', () {
+    test('basic round-trip', () {
+      final instance = GenericClassWithHelpers<DateTime, Duration>(
+        DateTime.fromMillisecondsSinceEpoch(0).toUtc(),
+        [
+          DateTime.fromMillisecondsSinceEpoch(1).toUtc(),
+          DateTime.fromMillisecondsSinceEpoch(2).toUtc(),
+        ],
+        {const Duration(milliseconds: 3), const Duration(milliseconds: 4)},
+      );
+
+      String encodeDateTime(DateTime value) => value?.toIso8601String();
+      int encodeDuration(Duration value) => value.inMilliseconds;
+
+      final encodedJson = loudEncode(
+        instance.toJson(encodeDateTime, encodeDuration),
+      );
+
+      final decoded = GenericClassWithHelpers<DateTime, Duration>.fromJson(
+        jsonDecode(encodedJson) as Map<String, dynamic>,
+        (value) => DateTime.parse(value as String),
+        (value) => Duration(milliseconds: value as int),
+      );
+
+      final encodedJson2 = loudEncode(
+        decoded.toJson(encodeDateTime, encodeDuration),
+      );
+
+      expect(encodedJson2, encodedJson);
+    });
+  });
+
+  group('argument factories', () {
+    test('round trip decode/decode', () {
+      const inputJson = r'''
+{
+ "value": {
+  "value": 5,
+  "list": [
+   5
+  ],
+  "someSet": [
+   "string"
+  ]
+ },
+ "value2": {
+  "value": 3.14,
+  "list": [
+   3.14
+  ],
+  "someSet": [
+   "2"
+  ]
+ }
+}''';
+
+      final instance = ConcreteClass.fromJson(
+        jsonDecode(inputJson) as Map<String, dynamic>,
+      );
+
+      expect(loudEncode(instance), inputJson);
     });
   });
 }

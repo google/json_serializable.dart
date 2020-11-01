@@ -3,11 +3,13 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
+import 'type_helpers/generic_factory_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
 
@@ -29,7 +31,22 @@ abstract class DecodeHelper implements HelperCore {
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
     buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
-        '($mapType json) {\n');
+        '($mapType json');
+
+    if (config.genericArgumentFactories) {
+      for (var arg in element.typeParameters) {
+        final helperName = fromJsonForType(
+          arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+        );
+
+        buffer.write(', ${arg.name} Function(Object json) $helperName');
+      }
+      if (element.typeParameters.isNotEmpty) {
+        buffer.write(',');
+      }
+    }
+
+    buffer.write(') {\n');
 
     String deserializeFun(String paramOrFieldName,
             {ParameterElement ctorParam}) =>
@@ -37,14 +54,20 @@ abstract class DecodeHelper implements HelperCore {
             ctorParam: ctorParam);
 
     final data = _writeConstructorInvocation(
-        element,
-        accessibleFields.keys,
-        accessibleFields.values
-            .where((fe) => !fe.isFinal)
-            .map((fe) => fe.name)
-            .toList(),
-        unavailableReasons,
-        deserializeFun);
+      element,
+      accessibleFields.keys,
+      accessibleFields.values
+          .where((fe) =>
+              !fe.isFinal ||
+              // Handle the case where `fe` defines a getter in `element`
+              // and there is a setter in a super class
+              // See google/json_serializable.dart#613
+              element.lookUpSetter(fe.name, element.library) != null)
+          .map((fe) => fe.name)
+          .toList(),
+      unavailableReasons,
+      deserializeFun,
+    );
 
     final checks = _checkKeys(accessibleFields.values
         .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
@@ -287,8 +310,11 @@ _ConstructorData _writeConstructorInvocation(
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
 
-  return _ConstructorData(buffer.toString(), remainingFieldsForInvocationBody,
-      usedCtorParamsAndFields);
+  return _ConstructorData(
+    buffer.toString(),
+    remainingFieldsForInvocationBody,
+    usedCtorParamsAndFields,
+  );
 }
 
 class _ConstructorData {

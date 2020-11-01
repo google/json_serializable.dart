@@ -91,7 +91,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
-        return 'Map<String, $valueArg>.from($expression as Map)';
+        final valueString = valueArg.getDisplayString(withNullability: false);
+        return 'Map<String, $valueString>.from($expression as Map)';
       }
     }
 
@@ -151,14 +152,17 @@ bool _isKeyStringable(DartType keyType) =>
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
-  final safeKey = isObjectOrDynamic(keyArg) ||
+  if (isObjectOrDynamic(keyArg) ||
       coreStringTypeChecker.isExactlyType(keyArg) ||
-      _isKeyStringable(keyArg);
-
-  if (!safeKey) {
-    throw UnsupportedTypeError(keyArg, expression,
-        'Map keys must be one of: ${_allowedTypeNames.join(', ')}.');
+      _isKeyStringable(keyArg)) {
+    return;
   }
+
+  throw UnsupportedTypeError(
+    keyArg,
+    expression,
+    'Map keys must be one of: ${_allowedTypeNames.join(', ')}.',
+  );
 }
 
 /// The names of types that can be used as [Map] keys.

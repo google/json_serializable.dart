@@ -68,6 +68,41 @@ class UnknownEnumValue {
 enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
 
 @ShouldThrow(
+  'Error with `@JsonKey` on `value`. `unknownEnumValue` has type '
+  '`int`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueListWrongType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  List<int> value;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on `value`. `unknownEnumValue` has type '
+  '`UnknownEnumValueItems`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueListWrongEnumType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  List<UnknownEnumValueItems> value;
+}
+
+enum WrongEnumType { otherValue }
+
+@ShouldThrow(
+  'Error with `@JsonKey` on `value`. `unknownEnumValue` has type '
+  '`UnknownEnumValueItems`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueWrongEnumType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  UnknownEnumValueItems value;
+}
+
+@ShouldThrow(
   'Error with `@JsonKey` on `value`. The value provided '
   'for `unknownEnumValue` must be a matching enum.',
 )
@@ -79,7 +114,7 @@ class UnknownEnumValueNotEnumValue {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `value`. `unknownEnumValue` can only be set on '
-  'fields of type enum.',
+  'fields of type enum or on Iterable, List, or Set instances of an enum type.',
 )
 @JsonSerializable()
 class UnknownEnumValueNotEnumField {

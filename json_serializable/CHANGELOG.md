@@ -1,6 +1,62 @@
+<<<<<<< HEAD
 ## 4.0.0-dev
 
 - **breaking** `bool defaultProvided` arg added to `TypeHelper.deserialize`.
+=======
+## 3.5.1-dev
+
+- Improved error messages for unsupported types.
+- `package:json_serializable/type_helper.dart`
+  - Made the third parameter to `UnsupportedTypeError` positional (optional).
+
+## 3.5.0
+
+- Added support for populating generic helper functions for fields with generic
+  type parameters.
+- Added support for `JsonSerializable.genericArgumentFactories`.
+  This adds extra parameters to generated `fromJson` and/or `toJson` functions
+  to support encoding and decoding generic types.
+
+  For example, the generated code for
+  
+  ```dart
+  @JsonSerializable(genericArgumentFactories: true)
+  class Response<T> {
+    int status;
+    T value;
+  }
+  ```
+  
+  Looks like
+  
+  ```dart
+  Response<T> _$ResponseFromJson<T>(
+    Map<String, dynamic> json,
+    T Function(Object json) fromJsonT,
+  ) {
+    return Response<T>()
+      ..status = json['status'] as int
+      ..value = fromJsonT(json['value']);
+  }
+  
+  Map<String, dynamic> _$ResponseToJson<T>(
+    Response<T> instance,
+    Object Function(T value) toJsonT,
+  ) =>
+      <String, dynamic>{
+        'status': instance.status,
+        'value': toJsonT(instance.value),
+      };
+  ```
+
+- `JsonKey.unknownEnumValue`: Added support for `Iterable`, `List`, and `Set`.
+- Require `package:analyzer` `>=0.39.0 <0.41.0`.
+
+## 3.4.1
+
+- Support properties where the getter is defined in a class with a corresponding
+  setter in a super type.
+>>>>>>> master
 
 ## 3.4.0
 

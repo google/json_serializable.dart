@@ -3,10 +3,12 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'constants.dart';
 import 'helper_core.dart';
+import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
 
@@ -20,7 +22,20 @@ abstract class EncodeHelper implements HelperCore {
 
     final functionName = '${prefix}ToJson${genericClassArgumentsImpl(true)}';
     buffer.write('Map<String, dynamic> '
-        '$functionName($targetClassReference $_toJsonParamName) ');
+        '$functionName($targetClassReference $_toJsonParamName');
+
+    if (config.genericArgumentFactories) {
+      for (var arg in element.typeParameters) {
+        final helperName = toJsonForType(
+          arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+        );
+        buffer.write(',Object Function(${arg.name} value) $helperName');
+      }
+      if (element.typeParameters.isNotEmpty) {
+        buffer.write(',');
+      }
+    }
+    buffer.write(') ');
 
     final writeNaive = accessibleFields.every(_writeJsonValueNaive);
 

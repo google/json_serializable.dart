@@ -10,7 +10,6 @@ stages:
     - dartanalyzer: --fatal-warnings --fatal-infos .
     dart: [dev]
   - group:
-    - dartfmt
     - dartanalyzer: --fatal-warnings .
     dart: [2.7.0]
 - unit_test:

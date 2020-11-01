@@ -6,6 +6,20 @@
 
 part of '_json_serializable_test_input.dart';
 
+@ShouldThrow(
+  '''
+Could not generate `fromJson` code for `result` because of type `TResult` (type parameter).
+To support type parameters (generic types) you can:
+$converterOrKeyInstructions
+* Set `JsonSerializable.genericArgumentFactories` to `true`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''',
+  element: 'result',
+)
+@JsonSerializable()
+class Issue713<TResult> {
+  List<TResult> result;
+}
+
 @ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
     Map<String, dynamic> json) {
@@ -50,3 +64,26 @@ class GenericClass<T extends num, S> {
 T _dataFromJson<T extends num>(Object input) => throw UnimplementedError();
 
 Object _dataToJson<T extends num>(T input) => throw UnimplementedError();
+
+@ShouldGenerate(
+  r'''
+GenericArgumentFactoriesFlagWithoutGenericType
+    _$GenericArgumentFactoriesFlagWithoutGenericTypeFromJson(
+        Map<String, dynamic> json) {
+  return GenericArgumentFactoriesFlagWithoutGenericType();
+}
+
+Map<String, dynamic> _$GenericArgumentFactoriesFlagWithoutGenericTypeToJson(
+        GenericArgumentFactoriesFlagWithoutGenericType instance) =>
+    <String, dynamic>{};
+''',
+  expectedLogItems: [
+    'The class `GenericArgumentFactoriesFlagWithoutGenericType` is annotated '
+        'with `JsonSerializable` field `genericArgumentFactories: true`. '
+        '`genericArgumentFactories: true` only affects classes with type '
+        'parameters. For classes without type parameters, the option is '
+        'ignored.',
+  ],
+)
+@JsonSerializable(genericArgumentFactories: true)
+class GenericArgumentFactoriesFlagWithoutGenericType {}

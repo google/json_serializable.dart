@@ -57,20 +57,45 @@ abstract class HelperCore {
 InvalidGenerationSourceError createInvalidGenerationError(
   String targetMember,
   FieldElement field,
-  UnsupportedTypeError e,
+  UnsupportedTypeError error,
 ) {
   var message = 'Could not generate `$targetMember` code for `${field.name}`';
-  if (field.type != e.type) {
-    message = '$message because of type `${typeToCode(e.type)}`';
+
+  String todo;
+  if (error.type is TypeParameterType) {
+    message = '$message because of type '
+        '`${error.type.getDisplayString(withNullability: false)}` (type parameter)';
+
+    todo = '''
+To support type parameters (generic types) you can:
+$converterOrKeyInstructions
+* Set `JsonSerializable.genericArgumentFactories` to `true`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''';
+  } else if (field.type != error.type) {
+    message = '$message because of type `${typeToCode(error.type)}`';
+  } else {
+    todo = '''
+To support the type `${error.type.element.name}` you can:
+$converterOrKeyInstructions''';
   }
-  message = '$message.\n${e.reason}';
 
   return InvalidGenerationSourceError(
-    message,
-    todo: 'Make sure all of the types are serializable.',
+    [
+      '$message.',
+      if (error.reason != null) error.reason,
+      if (todo != null) todo,
+    ].join('\n'),
     element: field,
   );
 }
+
+@visibleForTesting
+const converterOrKeyInstructions = r'''
+* Use `JsonConverter`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
+* Use `JsonKey` fields `fromJson` and `toJson`
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
 
 /// Returns a [String] representing the type arguments that exist on
 /// [element].

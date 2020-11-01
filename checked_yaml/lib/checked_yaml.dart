@@ -37,7 +37,7 @@ T checkedYamlDecode<T>(
   if (yaml is YamlMap) {
     map = yaml;
   } else if (allowNull && yaml is YamlScalar && yaml.value == null) {
-    // TODO(kevmoo): test this case!
+    // TODO: test this case!
     map = null;
   } else {
     throw ParsedYamlException('Not a map', yaml);
@@ -79,7 +79,7 @@ ParsedYamlException toParsedYamlException(
     final yamlValue = yamlMap.nodes[exception.key];
 
     if (yamlValue == null) {
-      // TODO(kevmoo): test this case!
+      // TODO: test this case!
       return ParsedYamlException(
         exception.message,
         yamlMap,
