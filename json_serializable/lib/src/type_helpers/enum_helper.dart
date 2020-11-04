@@ -93,8 +93,10 @@ T _$enumDecode<T>(
   T? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
   final value = enumValues.entries
@@ -103,8 +105,10 @@ T _$enumDecode<T>(
       ?.key;
 
   if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
   return value ?? unknownValue!;
 }
