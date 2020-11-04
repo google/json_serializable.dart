@@ -94,9 +94,11 @@ abstract class KitchenSink {
 
   set objectDateTimeMap(Map<Object, DateTime> value);
 
-  List<Map<String, Map<String, List<List<DateTime>>>>> get crazyComplex;
+  List<Map<String, Map<String, List<List<DateTime>?>?>?>?> get crazyComplex;
 
-  set crazyComplex(List<Map<String, Map<String, List<List<DateTime>>>>> value);
+  set crazyComplex(
+    List<Map<String, Map<String, List<List<DateTime>?>?>?>?> value,
+  );
 
   Map<String, bool> get val;
 

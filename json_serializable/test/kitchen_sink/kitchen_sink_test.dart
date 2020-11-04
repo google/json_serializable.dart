@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
@@ -77,11 +79,6 @@ const _jsonConverterValidValues = {
 };
 
 void _nonNullableTests(KitchenSinkFactory factory) {
-  test('with null values fails serialization', () {
-    expect(() => (factory.ctor()..objectDateTimeMap = null).toJson(),
-        throwsNoSuchMethodError);
-  });
-
   test('with empty json fails deserialization', () {
     Matcher matcher;
     if (factory.checked) {
@@ -93,11 +90,7 @@ void _nonNullableTests(KitchenSinkFactory factory) {
   });
 
   test('nullable values are not allowed in non-nullable version', () {
-    var instance = factory.jsonConverterCtor();
-    expect(() => instance.toJson(), throwsNoSuchMethodError,
-        reason: 'Trying to call `map` on a null list');
-
-    instance = factory.jsonConverterFromJson(_jsonConverterValidValues);
+    final instance = factory.jsonConverterFromJson(_jsonConverterValidValues);
     final json = instance.toJson();
     expect(json, _jsonConverterValidValues);
     expect(json.values, everyElement(isNotNull));
@@ -144,9 +137,10 @@ void _nullableTests(KitchenSinkFactory factory) {
 
   test('list and map of DateTime', () {
     final now = DateTime.now();
+    final later = now.add(const Duration(days: 1));
     final item = factory.ctor(dateTimeIterable: <DateTime>[now])
-      ..dateTimeList = <DateTime>[now, null]
-      ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': null};
+      ..dateTimeList = <DateTime>[now, later]
+      ..objectDateTimeMap = <Object, DateTime>{'value': now, 'null': later};
 
     roundTripSink(item);
   });
@@ -246,7 +240,30 @@ void _sharedTests(KitchenSinkFactory factory) {
   test('JSON keys should be defined in field/property order', () {
     final json = factory.ctor().toJson();
     if (factory.excludeNull && factory.nullable) {
-      expect(json.keys, isEmpty);
+      expect(json.keys, const [
+        'dynamicIterable',
+        'objectIterable',
+        'intIterable',
+        'set',
+        'dynamicSet',
+        'objectSet',
+        'intSet',
+        'dateTimeSet',
+        'datetime-iterable',
+        'list',
+        'dynamicList',
+        'objectList',
+        'intList',
+        'dateTimeList',
+        'map',
+        'stringStringMap',
+        'dynamicIntMap',
+        'objectDateTimeMap',
+        'crazyComplex',
+        'val',
+        'simpleObject',
+        'strictKeysObject'
+      ]);
     } else {
       expect(json.keys, orderedEquals(_validValues.keys));
     }
@@ -277,11 +294,11 @@ void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
   }
 }
 
-Matcher _checkedMatcher(String expectedKey) => isA<CheckedFromJsonException>()
+Matcher _checkedMatcher(String? expectedKey) => isA<CheckedFromJsonException>()
     .having((e) => e.className, 'className', 'KitchenSink')
     .having((e) => e.key, 'key', expectedKey);
 
-Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
+Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
   Matcher innerMatcher;
 
   if (checked) {

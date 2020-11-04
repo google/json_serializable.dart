@@ -149,7 +149,7 @@ class KitchenSink implements k.KitchenSink {
   Map<dynamic, int> dynamicIntMap = _defaultMap();
   Map<Object, DateTime> objectDateTimeMap = _defaultMap();
 
-  List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex =
+  List<Map<String, Map<String, List<List<DateTime>?>?>?>?> crazyComplex =
       _defaultList();
 
   // Handle fields with names that collide with helper names

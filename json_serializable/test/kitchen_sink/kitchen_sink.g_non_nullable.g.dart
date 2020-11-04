@@ -47,15 +47,15 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
       (k, e) => MapEntry(k, DateTime.parse(e as String)),
     )
     ..crazyComplex = (json['crazyComplex'] as List<dynamic>)
-        .map((e) => (e as Map<String, dynamic>).map(
+        .map((e) => (e as Map<String, dynamic>?)?.map(
               (k, e) => MapEntry(
                   k,
-                  (e as Map<String, dynamic>).map(
+                  (e as Map<String, dynamic>?)?.map(
                     (k, e) => MapEntry(
                         k,
-                        (e as List<dynamic>)
-                            .map((e) => (e as List<dynamic>)
-                                .map((e) => DateTime.parse(e as String))
+                        (e as List<dynamic>?)
+                            ?.map((e) => (e as List<dynamic>?)
+                                ?.map((e) => DateTime.parse(e as String))
                                 .toList())
                             .toList()),
                   )),
@@ -100,12 +100,12 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'objectDateTimeMap': instance.objectDateTimeMap
           .map((k, e) => MapEntry(k, e.toIso8601String())),
       'crazyComplex': instance.crazyComplex
-          .map((e) => e.map((k, e) => MapEntry(
+          .map((e) => e?.map((k, e) => MapEntry(
               k,
-              e.map((k, e) => MapEntry(
+              e?.map((k, e) => MapEntry(
                   k,
                   e
-                      .map((e) => e.map((e) => e.toIso8601String()).toList())
+                      ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
                       .toList())))))
           .toList(),
       'val': instance.val,
