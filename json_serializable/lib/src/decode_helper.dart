@@ -39,7 +39,7 @@ abstract class DecodeHelper implements HelperCore {
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
         );
 
-        buffer.write(', ${arg.name} Function(Object json) $helperName');
+        buffer.write(', ${arg.name} Function(Object? json) $helperName');
       }
       if (element.typeParameters.isNotEmpty) {
         buffer.write(',');

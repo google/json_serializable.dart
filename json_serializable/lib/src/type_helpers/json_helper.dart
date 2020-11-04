@@ -55,7 +55,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (context.config.explicitToJson || toJsonArgs.isNotEmpty) {
-      return '$expression${context.nullable ? '?' : ''}'
+      return '$expression${interfaceType.isNullableType ? '?' : ''}'
           '.toJson(${toJsonArgs.map((a) => '$a, ').join()} )';
     }
     return expression;
@@ -175,7 +175,8 @@ TypeParameterType _decodeHelper(
     if (param.name == fromJsonForName(funcReturnType.element.name)) {
       final funcParamType = type.normalParameterTypes.single;
 
-      if (funcParamType.isDartCoreObject || funcParamType.isDynamic) {
+      if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
+          funcParamType.isDynamic) {
         return funcReturnType as TypeParameterType;
       }
     }
@@ -185,7 +186,7 @@ TypeParameterType _decodeHelper(
     'Expecting a `fromJson` constructor with exactly one positional '
     'parameter. '
     'The only extra parameters allowed are functions of the form '
-    '`T Function(Object) ${fromJsonForName('T')}` where `T` is a type '
+    '`T Function(Object?) ${fromJsonForName('T')}` where `T` is a type '
     'parameter of the target type.',
     element: targetElement,
   );

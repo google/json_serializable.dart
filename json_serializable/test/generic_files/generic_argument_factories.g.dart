@@ -9,8 +9,8 @@ part of 'generic_argument_factories.dart';
 
 GenericClassWithHelpers<T, S> _$GenericClassWithHelpersFromJson<T, S>(
   Map<String, dynamic> json,
-  T Function(Object json) fromJsonT,
-  S Function(Object json) fromJsonS,
+  T Function(Object? json) fromJsonT,
+  S Function(Object? json) fromJsonS,
 ) {
   return GenericClassWithHelpers<T, S>(
     fromJsonT(json['value']),
@@ -43,11 +43,11 @@ ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
     <String, dynamic>{
-      'value': instance.value?.toJson(
+      'value': instance.value.toJson(
         (value) => value,
         (value) => value,
       ),
-      'value2': instance.value2?.toJson(
+      'value2': instance.value2.toJson(
         (value) => value,
         (value) => value.toString(),
       ),

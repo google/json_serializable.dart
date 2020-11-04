@@ -111,8 +111,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'val': instance.val,
       'writeNotNull': instance.writeNotNull,
       r'$string': instance.string,
-      'simpleObject': instance.simpleObject?.toJson(),
-      'strictKeysObject': instance.strictKeysObject?.toJson(),
+      'simpleObject': instance.simpleObject.toJson(),
+      'strictKeysObject': instance.strictKeysObject.toJson(),
       'validatedPropertyNo42': instance.validatedPropertyNo42,
     };
 
