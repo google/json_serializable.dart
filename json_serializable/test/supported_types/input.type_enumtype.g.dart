@@ -10,7 +10,6 @@ part of 'input.type_enumtype.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     _$enumDecode(_$EnumTypeEnumMap, json['value']),
-    _$enumDecode(_$EnumTypeEnumMap, json['nullable']),
     _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
         EnumType.alpha,
   );
@@ -19,7 +18,6 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': _$EnumTypeEnumMap[instance.value],
-      'nullable': _$EnumTypeEnumMap[instance.nullable],
       'withDefault': _$EnumTypeEnumMap[instance.withDefault],
     };
 
@@ -66,7 +64,6 @@ T? _$enumDecodeNullable<T>(
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['nullable']),
     _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
         EnumType.alpha,
   );
@@ -76,6 +73,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>
     <String, dynamic>{
       'value': _$EnumTypeEnumMap[instance.value],
-      'nullable': _$EnumTypeEnumMap[instance.nullable],
       'withDefault': _$EnumTypeEnumMap[instance.withDefault],
     };

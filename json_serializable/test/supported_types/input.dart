@@ -12,15 +12,11 @@ part 'input.g.dart';
 class SimpleClass {
   final dynamic value;
 
-  @JsonKey(nullable: false)
-  final dynamic nullable;
-
   @JsonKey(defaultValue: 42)
   dynamic withDefault;
 
   SimpleClass(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 

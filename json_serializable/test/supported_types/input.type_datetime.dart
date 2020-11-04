@@ -12,12 +12,8 @@ part 'input.type_datetime.g.dart';
 class SimpleClass {
   final DateTime value;
 
-  @JsonKey(nullable: false)
-  final DateTime nullable;
-
   SimpleClass(
     this.value,
-    this.nullable,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>
@@ -30,12 +26,8 @@ class SimpleClass {
 class SimpleClassNullable {
   final DateTime? value;
 
-  @JsonKey(nullable: false)
-  final DateTime? nullable;
-
   SimpleClassNullable(
     this.value,
-    this.nullable,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, dynamic> json) =>

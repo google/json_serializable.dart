@@ -10,7 +10,6 @@ part of 'input.type_string.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as String,
-    json['nullable'] as String,
     json['withDefault'] as String? ?? 'a string',
   );
 }
@@ -18,14 +17,12 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': instance.value,
-      'nullable': instance.nullable,
       'withDefault': instance.withDefault,
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     json['value'] as String?,
-    json['nullable'] as String?,
     json['withDefault'] as String? ?? 'a string',
   );
 }
@@ -34,6 +31,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>
     <String, dynamic>{
       'value': instance.value,
-      'nullable': instance.nullable,
       'withDefault': instance.withDefault,
     };

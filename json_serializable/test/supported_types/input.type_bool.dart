@@ -12,15 +12,11 @@ part 'input.type_bool.g.dart';
 class SimpleClass {
   final bool value;
 
-  @JsonKey(nullable: false)
-  final bool nullable;
-
   @JsonKey(defaultValue: true)
   bool withDefault;
 
   SimpleClass(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 
@@ -34,15 +30,11 @@ class SimpleClass {
 class SimpleClassNullable {
   final bool? value;
 
-  @JsonKey(nullable: false)
-  final bool? nullable;
-
   @JsonKey(defaultValue: true)
   bool? withDefault;
 
   SimpleClassNullable(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 

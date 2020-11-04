@@ -12,15 +12,11 @@ part 'input.type_string.g.dart';
 class SimpleClass {
   final String value;
 
-  @JsonKey(nullable: false)
-  final String nullable;
-
   @JsonKey(defaultValue: 'a string')
   String withDefault;
 
   SimpleClass(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 
@@ -34,15 +30,11 @@ class SimpleClass {
 class SimpleClassNullable {
   final String? value;
 
-  @JsonKey(nullable: false)
-  final String? nullable;
-
   @JsonKey(defaultValue: 'a string')
   String? withDefault;
 
   SimpleClassNullable(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 

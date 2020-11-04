@@ -12,15 +12,11 @@ part 'input.type_int.g.dart';
 class SimpleClass {
   final int value;
 
-  @JsonKey(nullable: false)
-  final int nullable;
-
   @JsonKey(defaultValue: 42)
   int withDefault;
 
   SimpleClass(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 
@@ -34,15 +30,11 @@ class SimpleClass {
 class SimpleClassNullable {
   final int? value;
 
-  @JsonKey(nullable: false)
-  final int? nullable;
-
   @JsonKey(defaultValue: 42)
   int? withDefault;
 
   SimpleClassNullable(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 

@@ -101,10 +101,6 @@ class TestTypeData {
       'final dynamic value;',
       'final $type value;',
     );
-    yield Replacement(
-      'final dynamic nullable;',
-      'final $type nullable;',
-    );
 
     final defaultNotSupported = defaultExpression == null // no default provided
             ||

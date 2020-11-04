@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 // ignore_for_file: prefer_const_declarations
 
 @TestOn('vm')
@@ -27,17 +29,15 @@ final _defaultValue = 3.14;
 final _altValue = 6.28;
 
 final _emptyInput = <String, dynamic>{
-  'nullable': _defaultValue,
+  'value': _defaultValue,
 };
 
 final _defaultOutput = {
-  'value': null,
-  'nullable': _defaultValue,
+  'value': _defaultValue,
   'withDefault': _defaultValue,
 };
 
 final _nonDefaultJson = {
-  'value': null,
-  'nullable': _altValue,
+  'value': _altValue,
   'withDefault': _altValue,
 };

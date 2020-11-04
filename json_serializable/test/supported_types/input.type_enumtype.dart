@@ -13,15 +13,11 @@ part 'input.type_enumtype.g.dart';
 class SimpleClass {
   final EnumType value;
 
-  @JsonKey(nullable: false)
-  final EnumType nullable;
-
   @JsonKey(defaultValue: EnumType.alpha)
   EnumType withDefault;
 
   SimpleClass(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 
@@ -35,15 +31,11 @@ class SimpleClass {
 class SimpleClassNullable {
   final EnumType? value;
 
-  @JsonKey(nullable: false)
-  final EnumType? nullable;
-
   @JsonKey(defaultValue: EnumType.alpha)
   EnumType? withDefault;
 
   SimpleClassNullable(
     this.value,
-    this.nullable,
     this.withDefault,
   );
 

@@ -12,12 +12,8 @@ part 'input.type_bigint.g.dart';
 class SimpleClass {
   final BigInt value;
 
-  @JsonKey(nullable: false)
-  final BigInt nullable;
-
   SimpleClass(
     this.value,
-    this.nullable,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>
@@ -30,12 +26,8 @@ class SimpleClass {
 class SimpleClassNullable {
   final BigInt? value;
 
-  @JsonKey(nullable: false)
-  final BigInt? nullable;
-
   SimpleClassNullable(
     this.value,
-    this.nullable,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, dynamic> json) =>
