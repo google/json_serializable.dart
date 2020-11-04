@@ -103,6 +103,7 @@ is generated:
 [JsonSerializable.disallowUnrecognizedKeys]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
 [JsonSerializable.explicitToJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/explicitToJson.html
 [JsonSerializable.fieldRename]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/fieldRename.html
+[JsonSerializable.genericArgumentFactories]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html
 [JsonSerializable.ignoreUnannotated]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/ignoreUnannotated.html
 [JsonSerializable.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/includeIfNull.html
 [JsonKey.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/includeIfNull.html
