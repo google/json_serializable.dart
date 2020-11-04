@@ -63,6 +63,10 @@ class _TestBuilder implements Builder {
       final newId = buildStep.inputId.changeExtension('.factories.dart');
 
       final lines = <String>[
+        r'''
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.12
+''',
         ...factories.entries.map((e) => "import '${e.key}' as ${e.value};"),
         'const factories = [',
         ...factories.values.map((e) => '$e.factory,'),

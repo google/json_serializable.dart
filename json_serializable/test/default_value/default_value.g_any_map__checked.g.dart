@@ -51,30 +51,21 @@ DefaultValue _$DefaultValueFromJson(Map json) {
   });
 }
 
-Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) {
-  final val = <String, dynamic>{
-    'fieldBool': instance.fieldBool,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('fieldString', instance.fieldString);
-  val['fieldInt'] = instance.fieldInt;
-  val['fieldDouble'] = instance.fieldDouble;
-  val['fieldListEmpty'] = instance.fieldListEmpty;
-  val['fieldSetEmpty'] = instance.fieldSetEmpty.toList();
-  val['fieldMapEmpty'] = instance.fieldMapEmpty;
-  val['fieldListSimple'] = instance.fieldListSimple;
-  val['fieldSetSimple'] = instance.fieldSetSimple.toList();
-  val['fieldMapSimple'] = instance.fieldMapSimple;
-  val['fieldMapListString'] = instance.fieldMapListString;
-  val['fieldEnum'] = _$GreekEnumMap[instance.fieldEnum];
-  return val;
-}
+Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
+    <String, dynamic>{
+      'fieldBool': instance.fieldBool,
+      'fieldString': instance.fieldString,
+      'fieldInt': instance.fieldInt,
+      'fieldDouble': instance.fieldDouble,
+      'fieldListEmpty': instance.fieldListEmpty,
+      'fieldSetEmpty': instance.fieldSetEmpty.toList(),
+      'fieldMapEmpty': instance.fieldMapEmpty,
+      'fieldListSimple': instance.fieldListSimple,
+      'fieldSetSimple': instance.fieldSetSimple.toList(),
+      'fieldMapSimple': instance.fieldMapSimple,
+      'fieldMapListString': instance.fieldMapListString,
+      'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
+    };
 
 T _$enumDecode<T>(
   Map<T, Object> enumValues,

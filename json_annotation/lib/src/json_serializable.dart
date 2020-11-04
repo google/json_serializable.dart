@@ -174,18 +174,10 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
-  /// When `true` (the default), `null` fields are handled gracefully when
-  /// encoding to JSON and when decoding `null` and nonexistent values from
-  /// JSON.
-  ///
-  /// Setting to `false` eliminates `null` verification in the generated code,
-  /// which reduces the code size. Errors may be thrown at runtime if `null`
-  /// values are encountered, but the original class should also implement
-  /// `null` runtime validation if it's critical.
-  final bool? nullable;
-
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
+    @Deprecated('Has no effect')
+    bool? nullable,
     this.anyMap,
     this.checked,
     this.createFactory,
@@ -195,7 +187,6 @@ class JsonSerializable {
     this.fieldRename,
     this.ignoreUnannotated,
     this.includeIfNull,
-    this.nullable,
     this.genericArgumentFactories,
   });
 
@@ -214,7 +205,6 @@ class JsonSerializable {
     fieldRename: FieldRename.none,
     ignoreUnannotated: false,
     includeIfNull: true,
-    nullable: true,
     genericArgumentFactories: false,
   );
 
@@ -234,7 +224,6 @@ class JsonSerializable {
         fieldRename: fieldRename ?? defaults.fieldRename,
         ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
-        nullable: nullable ?? defaults.nullable,
         genericArgumentFactories:
             genericArgumentFactories ?? defaults.genericArgumentFactories,
       );

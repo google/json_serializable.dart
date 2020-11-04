@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class Person {
   final String firstName;
   final String lastName;

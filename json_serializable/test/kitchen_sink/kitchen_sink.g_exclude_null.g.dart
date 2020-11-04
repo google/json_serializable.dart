@@ -84,46 +84,42 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   writeNotNull('dateTime', instance.dateTime?.toIso8601String());
   writeNotNull('bigInt', instance.bigInt?.toString());
   writeNotNull('iterable', instance.iterable?.toList());
-  writeNotNull('dynamicIterable', instance.dynamicIterable.toList());
-  writeNotNull('objectIterable', instance.objectIterable.toList());
-  writeNotNull('intIterable', instance.intIterable.toList());
-  writeNotNull('set', instance.set.toList());
-  writeNotNull('dynamicSet', instance.dynamicSet.toList());
-  writeNotNull('objectSet', instance.objectSet.toList());
-  writeNotNull('intSet', instance.intSet.toList());
-  writeNotNull('dateTimeSet',
-      instance.dateTimeSet.map((e) => e.toIso8601String()).toList());
-  writeNotNull('datetime-iterable',
-      instance.dateTimeIterable.map((e) => e.toIso8601String()).toList());
-  writeNotNull('list', instance.list);
-  writeNotNull('dynamicList', instance.dynamicList);
-  writeNotNull('objectList', instance.objectList);
-  writeNotNull('intList', instance.intList);
-  writeNotNull('dateTimeList',
-      instance.dateTimeList.map((e) => e.toIso8601String()).toList());
-  writeNotNull('map', instance.map);
-  writeNotNull('stringStringMap', instance.stringStringMap);
-  writeNotNull('dynamicIntMap', instance.dynamicIntMap);
-  writeNotNull(
-      'objectDateTimeMap',
-      instance.objectDateTimeMap
-          .map((k, e) => MapEntry(k, e.toIso8601String())));
-  writeNotNull(
-      'crazyComplex',
-      instance.crazyComplex
-          .map((e) => e?.map((k, e) => MapEntry(
+  val['dynamicIterable'] = instance.dynamicIterable.toList();
+  val['objectIterable'] = instance.objectIterable.toList();
+  val['intIterable'] = instance.intIterable.toList();
+  val['set'] = instance.set.toList();
+  val['dynamicSet'] = instance.dynamicSet.toList();
+  val['objectSet'] = instance.objectSet.toList();
+  val['intSet'] = instance.intSet.toList();
+  val['dateTimeSet'] =
+      instance.dateTimeSet.map((e) => e.toIso8601String()).toList();
+  val['datetime-iterable'] =
+      instance.dateTimeIterable.map((e) => e.toIso8601String()).toList();
+  val['list'] = instance.list;
+  val['dynamicList'] = instance.dynamicList;
+  val['objectList'] = instance.objectList;
+  val['intList'] = instance.intList;
+  val['dateTimeList'] =
+      instance.dateTimeList.map((e) => e.toIso8601String()).toList();
+  val['map'] = instance.map;
+  val['stringStringMap'] = instance.stringStringMap;
+  val['dynamicIntMap'] = instance.dynamicIntMap;
+  val['objectDateTimeMap'] = instance.objectDateTimeMap
+      .map((k, e) => MapEntry(k, e.toIso8601String()));
+  val['crazyComplex'] = instance.crazyComplex
+      .map((e) => e?.map((k, e) => MapEntry(
+          k,
+          e?.map((k, e) => MapEntry(
               k,
-              e?.map((k, e) => MapEntry(
-                  k,
-                  e
-                      ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
-                      .toList())))))
-          .toList());
-  writeNotNull('val', instance.val);
+              e
+                  ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
+                  .toList())))))
+      .toList();
+  val['val'] = instance.val;
   writeNotNull('writeNotNull', instance.writeNotNull);
   writeNotNull(r'$string', instance.string);
-  writeNotNull('simpleObject', instance.simpleObject);
-  writeNotNull('strictKeysObject', instance.strictKeysObject);
+  val['simpleObject'] = instance.simpleObject;
+  val['strictKeysObject'] = instance.strictKeysObject;
   writeNotNull('validatedPropertyNo42', instance.validatedPropertyNo42);
   return val;
 }
@@ -159,20 +155,16 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
   }
 
   writeNotNull('duration', durationConverter.toJson(instance.duration));
-  writeNotNull('durationList',
-      instance.durationList.map(durationConverter.toJson).toList());
+  val['durationList'] =
+      instance.durationList.map(durationConverter.toJson).toList();
   writeNotNull('bigInt', const BigIntStringConverter().toJson(instance.bigInt));
-  writeNotNull(
-      'bigIntMap',
-      instance.bigIntMap
-          .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))));
+  val['bigIntMap'] = instance.bigIntMap
+      .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)));
   writeNotNull('numberSilly',
       TrivialNumberConverter.instance.toJson(instance.numberSilly));
-  writeNotNull(
-      'numberSillySet',
-      instance.numberSillySet
-          .map(TrivialNumberConverter.instance.toJson)
-          .toList());
+  val['numberSillySet'] = instance.numberSillySet
+      .map(TrivialNumberConverter.instance.toJson)
+      .toList();
   writeNotNull(
       'dateTime', const EpochDateTimeConverter().toJson(instance.dateTime));
   return val;
@@ -203,11 +195,9 @@ Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
   }
 
   writeNotNull('item', GenericConverter<S>().toJson(instance.item));
-  writeNotNull(
-      'itemList', instance.itemList.map(GenericConverter<T>().toJson).toList());
-  writeNotNull(
-      'itemMap',
-      instance.itemMap
-          .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e))));
+  val['itemList'] =
+      instance.itemList.map(GenericConverter<T>().toJson).toList();
+  val['itemMap'] = instance.itemMap
+      .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)));
   return val;
 }

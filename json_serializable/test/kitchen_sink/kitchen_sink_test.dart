@@ -215,7 +215,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('JSON keys should be defined in field/property order', () {
     final json = factory.ctor().toJson();
-    if (factory.excludeNull && factory.nullable) {
+    if (factory.excludeNull) {
       expect(json.keys, _nonNullableFields);
     } else {
       expect(json.keys, orderedEquals(validValues.keys));

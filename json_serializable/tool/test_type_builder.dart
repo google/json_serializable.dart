@@ -48,7 +48,8 @@ const _trivialTypesToTest = {
     altJsonExpression: '29',
   ),
   'Object': TestTypeData(
-    altJsonExpression: "'Object'",
+    defaultExpression: "'o1'",
+    altJsonExpression: "'o2'",
   ),
   'String': TestTypeData(
     defaultExpression: "'a string'",

@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/type.dart';
 
-import '../json_key_utils.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
@@ -38,8 +37,6 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
       return null;
     }
 
-    logFieldWithConversionFunction(context.fieldElement);
-
     assert(toJsonData.paramType is TypeParameterType ||
         targetType.isAssignableTo(toJsonData.paramType));
     return '${toJsonData.name}($expression)';
@@ -56,8 +53,6 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     if (fromJsonData == null) {
       return null;
     }
-
-    logFieldWithConversionFunction(context.fieldElement);
 
     final asContent = asStatement(fromJsonData.paramType);
     return '${fromJsonData.name}($expression$asContent)';

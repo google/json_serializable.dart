@@ -256,8 +256,8 @@ Map<String, dynamic> _$IncludeIfNullOverrideToJson(
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {
   @JsonKey(includeIfNull: true)
-  late int number;
-  late String str;
+  int? number;
+  String? str;
 }
 
 // https://github.com/google/json_serializable.dart/issues/7 regression

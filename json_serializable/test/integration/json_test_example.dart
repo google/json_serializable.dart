@@ -55,7 +55,6 @@ class Order {
 
   Duration? duration;
 
-  @JsonKey(nullable: false)
   final Category? category;
   final UnmodifiableListView<Item>? items;
   Platform? platform;
@@ -66,7 +65,6 @@ class Order {
   @JsonKey(
     name: 'status_code',
     defaultValue: StatusCode.success,
-    nullable: true,
     unknownEnumValue: StatusCode.unknown,
   )
   StatusCode? statusCode;
@@ -128,7 +126,6 @@ class Numbers {
   List<num>? nums;
   List<double>? doubles;
 
-  @JsonKey(nullable: false)
   List<double>? nnDoubles;
 
   @JsonKey(fromJson: durationFromInt, toJson: durationToInt)

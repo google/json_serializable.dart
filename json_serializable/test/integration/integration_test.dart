@@ -30,7 +30,11 @@ void main() {
     });
 
     test('empty json', () {
-      final person = Person.fromJson({'\$house': 'top'});
+      final person = Person.fromJson({
+        'firstName': 'a',
+        'lastName': 'b',
+        '\$house': 'top',
+      });
       expect(person.dateOfBirth, isNull);
       roundTripPerson(person);
     });
@@ -85,7 +89,10 @@ void main() {
 
     test('required, but missing enum value fails', () {
       expect(
-          () => Person.fromJson({}),
+          () => Person.fromJson({
+                'firstName': 'a',
+                'lastName': 'b',
+              }),
           _throwsArgumentError('A value must be provided. Supported values: '
               'top, bottom, strange, charmed, up, down, not_discovered_yet'));
     });

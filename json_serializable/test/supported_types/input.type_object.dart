@@ -12,8 +12,12 @@ part 'input.type_object.g.dart';
 class SimpleClass {
   final Object value;
 
+  @JsonKey(defaultValue: 'o1')
+  Object withDefault;
+
   SimpleClass(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, dynamic> json) =>
@@ -26,8 +30,12 @@ class SimpleClass {
 class SimpleClassNullable {
   final Object? value;
 
+  @JsonKey(defaultValue: 'o1')
+  Object? withDefault;
+
   SimpleClassNullable(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, dynamic> json) =>

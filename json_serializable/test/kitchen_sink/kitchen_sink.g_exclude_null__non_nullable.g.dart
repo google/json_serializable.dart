@@ -71,50 +71,58 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) {
     ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int?;
 }
 
-Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
-    <String, dynamic>{
-      'no-42': instance.ctorValidatedNo42,
-      'dateTime': instance.dateTime?.toIso8601String(),
-      'bigInt': instance.bigInt?.toString(),
-      'iterable': instance.iterable?.toList(),
-      'dynamicIterable': instance.dynamicIterable.toList(),
-      'objectIterable': instance.objectIterable.toList(),
-      'intIterable': instance.intIterable.toList(),
-      'set': instance.set.toList(),
-      'dynamicSet': instance.dynamicSet.toList(),
-      'objectSet': instance.objectSet.toList(),
-      'intSet': instance.intSet.toList(),
-      'dateTimeSet':
-          instance.dateTimeSet.map((e) => e.toIso8601String()).toList(),
-      'datetime-iterable':
-          instance.dateTimeIterable.map((e) => e.toIso8601String()).toList(),
-      'list': instance.list,
-      'dynamicList': instance.dynamicList,
-      'objectList': instance.objectList,
-      'intList': instance.intList,
-      'dateTimeList':
-          instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
-      'map': instance.map,
-      'stringStringMap': instance.stringStringMap,
-      'dynamicIntMap': instance.dynamicIntMap,
-      'objectDateTimeMap': instance.objectDateTimeMap
-          .map((k, e) => MapEntry(k, e.toIso8601String())),
-      'crazyComplex': instance.crazyComplex
-          .map((e) => e?.map((k, e) => MapEntry(
+Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('no-42', instance.ctorValidatedNo42);
+  writeNotNull('dateTime', instance.dateTime?.toIso8601String());
+  writeNotNull('bigInt', instance.bigInt?.toString());
+  writeNotNull('iterable', instance.iterable?.toList());
+  val['dynamicIterable'] = instance.dynamicIterable.toList();
+  val['objectIterable'] = instance.objectIterable.toList();
+  val['intIterable'] = instance.intIterable.toList();
+  val['set'] = instance.set.toList();
+  val['dynamicSet'] = instance.dynamicSet.toList();
+  val['objectSet'] = instance.objectSet.toList();
+  val['intSet'] = instance.intSet.toList();
+  val['dateTimeSet'] =
+      instance.dateTimeSet.map((e) => e.toIso8601String()).toList();
+  val['datetime-iterable'] =
+      instance.dateTimeIterable.map((e) => e.toIso8601String()).toList();
+  val['list'] = instance.list;
+  val['dynamicList'] = instance.dynamicList;
+  val['objectList'] = instance.objectList;
+  val['intList'] = instance.intList;
+  val['dateTimeList'] =
+      instance.dateTimeList.map((e) => e.toIso8601String()).toList();
+  val['map'] = instance.map;
+  val['stringStringMap'] = instance.stringStringMap;
+  val['dynamicIntMap'] = instance.dynamicIntMap;
+  val['objectDateTimeMap'] = instance.objectDateTimeMap
+      .map((k, e) => MapEntry(k, e.toIso8601String()));
+  val['crazyComplex'] = instance.crazyComplex
+      .map((e) => e?.map((k, e) => MapEntry(
+          k,
+          e?.map((k, e) => MapEntry(
               k,
-              e?.map((k, e) => MapEntry(
-                  k,
-                  e
-                      ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
-                      .toList())))))
-          .toList(),
-      'val': instance.val,
-      'writeNotNull': instance.writeNotNull,
-      r'$string': instance.string,
-      'simpleObject': instance.simpleObject,
-      'strictKeysObject': instance.strictKeysObject,
-      'validatedPropertyNo42': instance.validatedPropertyNo42,
-    };
+              e
+                  ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
+                  .toList())))))
+      .toList();
+  val['val'] = instance.val;
+  writeNotNull('writeNotNull', instance.writeNotNull);
+  writeNotNull(r'$string', instance.string);
+  val['simpleObject'] = instance.simpleObject;
+  val['strictKeysObject'] = instance.strictKeysObject;
+  writeNotNull('validatedPropertyNo42', instance.validatedPropertyNo42);
+  return val;
+}
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
     Map<String, dynamic> json) {

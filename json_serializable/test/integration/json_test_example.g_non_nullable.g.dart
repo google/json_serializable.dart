@@ -105,17 +105,26 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         StatusCode.success;
 }
 
-Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
-      'count': instance.count,
-      'isRushed': instance.isRushed,
-      'duration': instance.duration?.inMicroseconds,
-      'category': _$CategoryEnumMap[instance.category],
-      'items': instance.items,
-      'platform': instance.platform,
-      'altPlatforms': instance.altPlatforms,
-      'homepage': instance.homepage?.toString(),
-      'status_code': _$StatusCodeEnumMap[instance.statusCode],
-    };
+Map<String, dynamic> _$OrderToJson(Order instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('count', instance.count);
+  val['isRushed'] = instance.isRushed;
+  val['duration'] = instance.duration?.inMicroseconds;
+  val['category'] = _$CategoryEnumMap[instance.category];
+  val['items'] = instance.items;
+  val['platform'] = instance.platform;
+  val['altPlatforms'] = instance.altPlatforms;
+  val['homepage'] = instance.homepage?.toString();
+  val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
+  return val;
+}
 
 T? _$enumDecodeNullable<T>(
   Map<T, Object> enumValues,
@@ -146,12 +155,23 @@ Item _$ItemFromJson(Map<String, dynamic> json) {
     ..rates = (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList();
 }
 
-Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
-      'price': instance.price,
-      'item-number': instance.itemNumber,
-      'saleDates': instance.saleDates?.map((e) => e.toIso8601String()).toList(),
-      'rates': instance.rates,
-    };
+Map<String, dynamic> _$ItemToJson(Item instance) {
+  final val = <String, dynamic>{
+    'price': instance.price,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('item-number', instance.itemNumber);
+  val['saleDates'] =
+      instance.saleDates?.map((e) => e.toIso8601String()).toList();
+  val['rates'] = instance.rates;
+  return val;
+}
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) {
   return Numbers()

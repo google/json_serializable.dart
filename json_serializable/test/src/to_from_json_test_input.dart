@@ -134,11 +134,6 @@ Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
   return val;
 }
 ''',
-  expectedLogItems: [
-    'The `JsonKey.nullable` value on '
-        '`ToJsonNullableFalseIncludeIfNullFalse.field` will be ignored because '
-        'a custom conversion function is being used.',
-  ],
   configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)

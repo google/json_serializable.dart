@@ -1,3 +1,4 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // @dart=2.12
 
 import 'kitchen_sink.dart' as normal;

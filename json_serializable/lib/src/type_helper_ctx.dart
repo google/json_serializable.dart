@@ -27,11 +27,6 @@ class TypeHelperCtx
   final FieldElement fieldElement;
 
   @override
-  bool get nullable {
-    return _key.nullable;
-  }
-
-  @override
   ClassElement get classElement => _helperCore.element;
 
   @override

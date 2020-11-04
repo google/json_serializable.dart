@@ -25,8 +25,8 @@ void main() {
   });
 }
 
-final _defaultValue = null;
-final _altValue = 'Object';
+final _defaultValue = 'o1';
+final _altValue = 'o2';
 
 final _emptyInput = <String, dynamic>{
   'value': _defaultValue,
@@ -34,8 +34,10 @@ final _emptyInput = <String, dynamic>{
 
 final _defaultOutput = {
   'value': _defaultValue,
+  'withDefault': _defaultValue,
 };
 
 final _nonDefaultJson = {
   'value': _altValue,
+  'withDefault': _altValue,
 };

@@ -8,7 +8,7 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) {
     json['subTypeViaCtor'] as int,
     json['super-final-field'] as int,
   )
-    ..superReadWriteField = json['superReadWriteField'] as int
+    ..superReadWriteField = json['superReadWriteField'] as int?
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
 }
 
@@ -44,7 +44,7 @@ class SuperType {
   final int? superFinalField;
 
   @JsonKey(includeIfNull: false)
-  late int superReadWriteField;
+  int? superReadWriteField;
 
   SuperType(this.superFinalField);
 
@@ -98,10 +98,10 @@ class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
   /// The annotation applied here overrides the annotation in [SuperType].
   @JsonKey(includeIfNull: true)
   @override
-  int get superReadWriteField => super.superReadWriteField;
+  int? get superReadWriteField => super.superReadWriteField;
 
   @override
-  set superReadWriteField(int value) {
+  set superReadWriteField(int? value) {
     super.superReadWriteField = value;
   }
 
@@ -123,7 +123,7 @@ Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideImplementsToJson(
 class SubTypeWithAnnotatedFieldOverrideImplements implements SuperType {
   // Note the order of fields in the output is determined by this class
   @override
-  late int superReadWriteField;
+  int? superReadWriteField;
 
   @JsonKey(ignore: true)
   @override

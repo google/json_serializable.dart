@@ -30,7 +30,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class Person {
   final String firstName;
   final String lastName;
@@ -86,7 +86,6 @@ is generated:
 | generic_argument_factories | [JsonSerializable.genericArgumentFactories] |                             |
 | ignore_unannotated         | [JsonSerializable.ignoreUnannotated]        |                             |
 | include_if_null            | [JsonSerializable.includeIfNull]            | [JsonKey.includeIfNull]     |
-| nullable                   | [JsonSerializable.nullable]                 | [JsonKey.nullable]          |
 |                            |                                             | [JsonKey.defaultValue]      |
 |                            |                                             | [JsonKey.disallowNullValue] |
 |                            |                                             | [JsonKey.fromJson]          |
@@ -107,8 +106,6 @@ is generated:
 [JsonSerializable.ignoreUnannotated]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/ignoreUnannotated.html
 [JsonSerializable.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/includeIfNull.html
 [JsonKey.includeIfNull]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/includeIfNull.html
-[JsonSerializable.nullable]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/nullable.html
-[JsonKey.nullable]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/nullable.html
 [JsonKey.defaultValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/defaultValue.html
 [JsonKey.disallowNullValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/disallowNullValue.html
 [JsonKey.fromJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
@@ -154,7 +151,6 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
-          nullable: true
 ```
 
 [example]: https://github.com/google/json_serializable.dart/tree/master/example
