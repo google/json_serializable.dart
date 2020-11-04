@@ -15,13 +15,12 @@ import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 TypeHelperCtx typeHelperContext(
-        HelperCore helperCore, FieldElement fieldElement, JsonKey key) =>
-    TypeHelperCtx._(helperCore, fieldElement, key);
+        HelperCore helperCore, FieldElement fieldElement) =>
+    TypeHelperCtx._(helperCore, fieldElement);
 
 class TypeHelperCtx
     implements TypeHelperContextWithConfig, TypeHelperContextWithConvert {
   final HelperCore _helperCore;
-  final JsonKey _key;
 
   @override
   final FieldElement fieldElement;
@@ -32,7 +31,7 @@ class TypeHelperCtx
   @override
   JsonSerializable get config => _helperCore.config;
 
-  TypeHelperCtx._(this._helperCore, this.fieldElement, this._key);
+  TypeHelperCtx._(this._helperCore, this.fieldElement);
 
   @override
   ConvertData get serializeConvertData => _pairFromContext?.toJson;

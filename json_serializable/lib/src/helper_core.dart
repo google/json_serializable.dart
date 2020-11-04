@@ -51,7 +51,7 @@ abstract class HelperCore {
 
   @protected
   TypeHelperCtx getHelperContext(FieldElement field) =>
-      typeHelperContext(this, field, jsonKeyFor(field));
+      typeHelperContext(this, field);
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(
