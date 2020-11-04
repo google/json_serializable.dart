@@ -82,7 +82,7 @@ void _nonNullableTests(KitchenSinkFactory factory) {
   test('with empty json fails deserialization', () {
     Matcher matcher;
     if (factory.checked) {
-      matcher = _checkedMatcher('intIterable');
+      matcher = _checkedMatcher('set');
     } else {
       matcher = isNoSuchMethodError;
     }
@@ -109,15 +109,20 @@ void _nullableTests(KitchenSinkFactory factory) {
     final instance = factory.jsonConverterCtor();
     final json = instance.toJson();
 
-    if (factory.excludeNull) {
-      expect(json, isEmpty);
-    } else {
-      expect(json.values, everyElement(isNull));
-      expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
+    expect(json, const {
+      'duration': 0,
+      'durationList': [],
+      'bigInt': '0',
+      'bigIntMap': {},
+      'numberSilly': 0,
+      'numberSillySet': [],
+      'dateTime': 0
+    });
 
-      final instance2 = factory.jsonConverterFromJson(json);
-      expect(instance2.toJson(), json);
-    }
+    expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
+
+    final instance2 = factory.jsonConverterFromJson(json);
+    expect(instance2.toJson(), json);
   });
 
   test('Fields with `!includeIfNull` should not be included when null', () {
@@ -125,12 +130,16 @@ void _nullableTests(KitchenSinkFactory factory) {
     final encoded = item.toJson();
 
     if (factory.excludeNull) {
-      expect(encoded, isEmpty);
+      expect(encoded.keys, orderedEquals(_nonNullableFields));
     } else {
       expect(encoded.keys, orderedEquals(_validValues.keys));
 
       for (final key in _validValues.keys) {
-        expect(encoded, containsPair(key, isNull));
+        expect(
+          encoded,
+          containsPair(
+              key, _nonNullableFields.contains(key) ? isNotNull : isNull),
+        );
       }
     }
   });
@@ -240,30 +249,7 @@ void _sharedTests(KitchenSinkFactory factory) {
   test('JSON keys should be defined in field/property order', () {
     final json = factory.ctor().toJson();
     if (factory.excludeNull && factory.nullable) {
-      expect(json.keys, const [
-        'dynamicIterable',
-        'objectIterable',
-        'intIterable',
-        'set',
-        'dynamicSet',
-        'objectSet',
-        'intSet',
-        'dateTimeSet',
-        'datetime-iterable',
-        'list',
-        'dynamicList',
-        'objectList',
-        'intList',
-        'dateTimeList',
-        'map',
-        'stringStringMap',
-        'dynamicIntMap',
-        'objectDateTimeMap',
-        'crazyComplex',
-        'val',
-        'simpleObject',
-        'strictKeysObject'
-      ]);
+      expect(json.keys, _nonNullableFields);
     } else {
       expect(json.keys, orderedEquals(_validValues.keys));
     }
@@ -274,6 +260,31 @@ void _sharedTests(KitchenSinkFactory factory) {
     roundTripObject(validInstance, factory.fromJson);
   });
 }
+
+const _nonNullableFields = [
+  'dynamicIterable',
+  'objectIterable',
+  'intIterable',
+  'set',
+  'dynamicSet',
+  'objectSet',
+  'intSet',
+  'dateTimeSet',
+  'datetime-iterable',
+  'list',
+  'dynamicList',
+  'objectList',
+  'intList',
+  'dateTimeList',
+  'map',
+  'stringStringMap',
+  'dynamicIntMap',
+  'objectDateTimeMap',
+  'crazyComplex',
+  'val',
+  'simpleObject',
+  'strictKeysObject'
+];
 
 void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
     bool checkedAssignment) {
