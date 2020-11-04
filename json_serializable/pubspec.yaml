@@ -30,6 +30,7 @@ dev_dependencies:
   logging: ^0.11.3+1
   pub_semver: ^1.4.0
   source_gen_test: ^0.1.0
+  stack_trace: ^1.10.0-nullsafety.5
   test: ^1.16.0-nullsafety.7
   yaml: ^2.1.13
 

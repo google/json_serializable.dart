@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 
 // ignore: deprecated_member_use
@@ -26,14 +27,28 @@ T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
 String loudEncode(Object object) {
   try {
     return const JsonEncoder.withIndent(' ').convert(object);
-  } on JsonUnsupportedObjectError catch (e) // ignore: avoid_catching_errors
-  {
-    var error = e;
-    do {
-      final cause = error.cause;
-      print(cause);
-      error = (cause is JsonUnsupportedObjectError) ? cause : null;
-    } while (error != null);
+  } catch (e) {
+    if (e is JsonUnsupportedObjectError) {
+      Object error = e;
+
+      var count = 1;
+
+      while (error is JsonUnsupportedObjectError) {
+        final juoe = error as JsonUnsupportedObjectError;
+        print(
+          '(${count++}) $error ${juoe.unsupportedObject} (${juoe.unsupportedObject.runtimeType}) !!!',
+        );
+        print(Trace.from(juoe.stackTrace).terse);
+        error = juoe.cause;
+      }
+
+      if (error != null) {
+        print('(${count++}) $error ???');
+        if (error is Error) {
+          print(Trace.from(error.stackTrace).terse);
+        }
+      }
+    }
     rethrow;
   }
 }
