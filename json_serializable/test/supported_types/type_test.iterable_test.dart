@@ -86,6 +86,29 @@ void main() {
       expect(loudEncode(object2), encoded);
     });
   }); // end nullable group
+  // BigInt
+  // BigInt?
+  // bool
+  // bool?
+  // DateTime
+  // DateTime?
+  // double
+  // double?
+  // Duration
+  // Duration?
+  // dynamic
+  // EnumType
+  // EnumType?
+  // int
+  // int?
+  // num
+  // num?
+  // Object
+  // Object?
+  // String
+  // String?
+  // Uri
+  // Uri?
 }
 
 final _defaultValue = [42, true, false, null];

@@ -162,6 +162,10 @@ class TestTypeData {
       sourceContent.substring(0, startIndex),
       newGroupContent,
       nullableGroupContent,
+      for (var genericArg in genericArgs)
+        '''
+  // $genericArg
+''',
       sourceContent.substring(endIndex),
     ].join();
 
