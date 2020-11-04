@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'dart:convert';
 
 import 'package:test/test.dart';
@@ -63,7 +65,7 @@ void main() {
         {const Duration(milliseconds: 3), const Duration(milliseconds: 4)},
       );
 
-      String encodeDateTime(DateTime value) => value?.toIso8601String();
+      String encodeDateTime(DateTime value) => value.toIso8601String();
       int encodeDuration(Duration value) => value.inMilliseconds;
 
       final encodedJson = loudEncode(
