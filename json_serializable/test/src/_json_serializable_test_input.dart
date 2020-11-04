@@ -546,7 +546,7 @@ class NoParamFromJsonCtor {
 @ShouldThrow(
   'Expecting a `fromJson` constructor with exactly one positional parameter. '
   'The only extra parameters allowed are functions of the form '
-  '`T Function(Object) fromJsonT` '
+  '`T Function(Object?) fromJsonT` '
   'where `T` is a type parameter of the target type.',
   element: 'fromJson',
 )
