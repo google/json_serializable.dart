@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=2.10
+// @dart=2.12
 
 // ignore_for_file: hash_and_equals
 import 'dart:collection';
@@ -181,16 +181,16 @@ class MapKeyVariety {
 @JsonSerializable(createToJson: false)
 class UnknownEnumValue {
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
-  Category enumValue;
+  late Category enumValue;
 
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
-  Iterable<Category> enumIterable;
+  late Iterable<Category> enumIterable;
 
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
-  List<Category> enumList;
+  late List<Category> enumList;
 
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
-  Set<Category> enumSet;
+  late Set<Category> enumSet;
 
   UnknownEnumValue();
 

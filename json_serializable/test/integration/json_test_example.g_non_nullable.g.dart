@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// @dart=2.10
+// @dart=2.12
 
 part of 'json_test_example.g_non_nullable.dart';
 
@@ -205,13 +205,14 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
   return UnknownEnumValue()
     ..enumValue = _$enumDecode(_$CategoryEnumMap, json['enumValue'],
         unknownValue: Category.notDiscoveredYet)
-    ..enumIterable = (json['enumIterable'] as List).map((e) => _$enumDecode(
-        _$CategoryEnumMap, e, unknownValue: Category.notDiscoveredYet))
-    ..enumList = (json['enumList'] as List)
+    ..enumIterable = (json['enumIterable'] as List<dynamic>).map((e) =>
+        _$enumDecode(_$CategoryEnumMap, e,
+            unknownValue: Category.notDiscoveredYet))
+    ..enumList = (json['enumList'] as List<dynamic>)
         .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
         .toList()
-    ..enumSet = (json['enumSet'] as List)
+    ..enumSet = (json['enumSet'] as List<dynamic>)
         .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
         .toSet();

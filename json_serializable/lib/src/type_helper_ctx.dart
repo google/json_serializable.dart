@@ -28,9 +28,6 @@ class TypeHelperCtx
 
   @override
   bool get nullable {
-    if (fieldElement.library.isNonNullableByDefault) {
-      throw UnsupportedError('Cannot rock this ');
-    }
     return _key.nullable;
   }
 

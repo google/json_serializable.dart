@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// @dart=2.10
+// @dart=2.12
 
 part of 'json_test_example.g_any_map.dart';
 
@@ -223,17 +223,17 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
 
 UnknownEnumValue _$UnknownEnumValueFromJson(Map json) {
   return UnknownEnumValue()
-    ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'],
+    ..enumValue = _$enumDecode(_$CategoryEnumMap, json['enumValue'],
         unknownValue: Category.notDiscoveredYet)
-    ..enumIterable = (json['enumIterable'] as List)?.map((e) =>
-        _$enumDecodeNullable(_$CategoryEnumMap, e,
+    ..enumIterable = (json['enumIterable'] as List<dynamic>).map((e) =>
+        _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-    ..enumList = (json['enumList'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+    ..enumList = (json['enumList'] as List<dynamic>)
+        .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-        ?.toList()
-    ..enumSet = (json['enumSet'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+        .toList()
+    ..enumSet = (json['enumSet'] as List<dynamic>)
+        .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-        ?.toSet();
+        .toSet();
 }

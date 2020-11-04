@@ -17,8 +17,8 @@ dependencies:
   # For v3 only – allow a wide range since the only change was to REMOVE things
   # from json_annotation
   json_annotation: '>=3.1.0 <3.2.0'
-  meta: ^1.1.0
-  path: ^1.3.2
+  meta: ^1.3.0-nullsafety.5
+  path: ^1.8.0-nullsafety.2
   source_gen: ^0.9.6
 
 dev_dependencies:
@@ -30,54 +30,9 @@ dev_dependencies:
   logging: ^0.11.3+1
   pub_semver: ^1.4.0
   source_gen_test: ^0.1.0
-  test: ^1.6.0
+  test: ^1.16.0-nullsafety.7
   yaml: ^2.1.13
 
 dependency_overrides:
   json_annotation:
     path: ../json_annotation
-
-  async:
-    git: git://github.com/dart-lang/async.git
-  boolean_selector:
-    git: git://github.com/dart-lang/boolean_selector.git
-  charcode:
-    git: git://github.com/dart-lang/charcode.git
-  collection:
-    git: git://github.com/dart-lang/collection.git
-  js: ^0.6.3-nullsafety
-  matcher:
-    git: git://github.com/dart-lang/matcher.git
-  meta: ^1.3.0-nullsafety.2
-  pedantic:
-    git: git://github.com/dart-lang/pedantic.git
-  pool:
-    git: git://github.com/dart-lang/pool.git
-  source_maps:
-    git: git://github.com/dart-lang/source_maps.git
-  source_map_stack_trace:
-    git: git://github.com/dart-lang/source_map_stack_trace.git
-  source_span:
-    git: git://github.com/dart-lang/source_span.git
-  stack_trace:
-    git: git://github.com/dart-lang/stack_trace.git
-  stream_channel:
-    git: git://github.com/dart-lang/stream_channel.git
-  string_scanner:
-    git: git://github.com/dart-lang/string_scanner.git
-  term_glyph:
-    git: git://github.com/dart-lang/term_glyph.git
-  test_api:
-    git:
-      url: git://github.com/dart-lang/test.git
-      path: pkgs/test_api
-  test_core:
-    git:
-      url: git://github.com/dart-lang/test.git
-      path: pkgs/test_core
-  test:
-    git:
-      url: git://github.com/dart-lang/test.git
-      path: pkgs/test
-  typed_data:
-    git: git://github.com/dart-lang/typed_data.git

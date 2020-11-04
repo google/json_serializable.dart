@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// @dart=2.10
+// @dart=2.12
 
 part of 'kitchen_sink.g_any_map__checked__non_nullable.dart';
 

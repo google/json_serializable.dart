@@ -1,5 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// @dart=2.10
+// @dart=2.12
 
 part of 'null_safety.g_any_map.dart';
 

@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=2.10
+// @dart=2.12
 
 import 'dart:collection';
 
@@ -536,7 +536,7 @@ class OverrideGetterExampleI613Super {
 )
 @JsonSerializable()
 class InvalidChildClassFromJson {
-  NoParamFromJsonCtor field;
+  late NoParamFromJsonCtor field;
 }
 
 class NoParamFromJsonCtor {
@@ -552,14 +552,14 @@ class NoParamFromJsonCtor {
 )
 @JsonSerializable()
 class InvalidChildClassFromJson2 {
-  ExtraParamFromJsonCtor field;
+  late ExtraParamFromJsonCtor field;
 }
 
 class ExtraParamFromJsonCtor {
   // ignore: avoid_unused_constructor_parameters
   ExtraParamFromJsonCtor.fromJson(Map<String, dynamic> json, int oops);
 
-  Map<String, dynamic> toJson() => null;
+  Map<String, dynamic> toJson() => throw UnimplementedError();
 }
 
 @ShouldThrow(
@@ -571,12 +571,12 @@ class ExtraParamFromJsonCtor {
 )
 @JsonSerializable()
 class InvalidChildClassFromJson3 {
-  ExtraParamToJson field;
+  late ExtraParamToJson field;
 }
 
 class ExtraParamToJson {
   // ignore: avoid_unused_constructor_parameters
   ExtraParamToJson.fromJson(Map<String, dynamic> json);
 
-  Map<String, dynamic> toJson(int bob) => null;
+  Map<String, dynamic> toJson(int bob) => throw UnimplementedError();
 }

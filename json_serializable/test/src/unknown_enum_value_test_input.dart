@@ -1,4 +1,4 @@
-// @dart=2.10
+// @dart=2.12
 
 part of '_json_serializable_test_input.dart';
 
@@ -75,7 +75,7 @@ enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
 @JsonSerializable()
 class UnknownEnumValueListWrongType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  List<int> value;
+  late List<int> value;
 }
 
 @ShouldThrow(
@@ -86,7 +86,7 @@ class UnknownEnumValueListWrongType {
 @JsonSerializable()
 class UnknownEnumValueListWrongEnumType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  List<UnknownEnumValueItems> value;
+  late List<UnknownEnumValueItems> value;
 }
 
 enum WrongEnumType { otherValue }
@@ -99,7 +99,7 @@ enum WrongEnumType { otherValue }
 @JsonSerializable()
 class UnknownEnumValueWrongEnumType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  UnknownEnumValueItems value;
+  late UnknownEnumValueItems value;
 }
 
 @ShouldThrow(
