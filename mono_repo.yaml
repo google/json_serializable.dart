@@ -4,6 +4,7 @@ travis:
   branches:
     only:
     - master
+    - null_safety
 
 merge_stages:
 - analyzer_and_format

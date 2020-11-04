@@ -5,6 +5,7 @@ language: dart
 branches:
   only:
     - master
+    - null_safety
 
 jobs:
   include:
