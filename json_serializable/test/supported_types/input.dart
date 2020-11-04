@@ -20,8 +20,8 @@ class SimpleClass {
     this.withDefault,
   );
 
-  factory SimpleClass.fromJson(Map<String, dynamic> json) =>
+  factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SimpleClassToJson(this);
+  Map<String, Object?> toJson() => _$SimpleClassToJson(this);
 }

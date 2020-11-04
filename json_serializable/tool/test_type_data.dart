@@ -126,10 +126,50 @@ class TestTypeData {
     }
   }
 
-  String testContent(String sourceContent, String type) => Replacement.generate(
-        sourceContent,
-        _testReplacements(type),
+  String testContent(String sourceContent, String type) {
+    const groupStart = "\n  group('non-nullable', () {";
+    const groupEnd = '}); // end non-nullable group\n';
+
+    final startIndex = sourceContent.indexOf(groupStart);
+    final endIndex = sourceContent.indexOf(groupEnd) + groupEnd.length;
+
+    final groupContent = sourceContent.substring(startIndex, endIndex);
+
+    final nullableGroupContent = groupContent
+        .replaceAll('non-nullable', 'nullable')
+        .replaceAll('SimpleClass', 'SimpleClassNullable');
+
+    final thrownError = type == customEnumType ? 'ArgumentError' : 'TypeError';
+
+    final newGroupContent = groupContent.replaceAll(
+      r'''
+      final object = SimpleClass.fromJson({});
+      final encoded = loudEncode(object);
+
+      expect(encoded, loudEncode(_nullableDefaultOutput));
+      final object2 = SimpleClass.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
       );
+      expect(loudEncode(object2), encoded);''',
+      '''
+      expect(
+        () => loudEncode(SimpleClass.fromJson({})),
+        throwsA(isA<$thrownError>()),
+      );''',
+    );
+
+    final updatedSourceContent = [
+      sourceContent.substring(0, startIndex),
+      newGroupContent,
+      nullableGroupContent,
+      sourceContent.substring(endIndex),
+    ].join();
+
+    return Replacement.generate(
+      updatedSourceContent,
+      _testReplacements(type),
+    );
+  }
 
   Iterable<Replacement> _testReplacements(String type) sync* {
     yield Replacement(
