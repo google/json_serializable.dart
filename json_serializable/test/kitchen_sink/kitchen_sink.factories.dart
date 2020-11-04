@@ -1,3 +1,5 @@
+// @dart=2.12
+
 import 'kitchen_sink.dart' as normal;
 import 'kitchen_sink.g_any_map.dart' as any_map;
 import 'kitchen_sink.g_any_map__checked__non_nullable.dart'
