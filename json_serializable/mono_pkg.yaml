@@ -10,8 +10,7 @@ stages:
     dart: [dev]
 - unit_test:
   - test:
-    dart: dev
-  - command: pub run build_runner test --delete-conflicting-outputs -- -p chrome
+  - test: -p chrome
 - ensure_build:
   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 

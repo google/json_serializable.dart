@@ -13,10 +13,6 @@ targets:
         - test/supported_types/*
         - test/null_safety/*
 
-      #build_web_compilers|entrypoint:
-      #  generate_for:
-      #  - test/**/**.browser_test.dart
-
       json_serializable|_test_builder:
         generate_for:
         - test/default_value/default_value.dart
