@@ -26,10 +26,10 @@ jobs:
       env: PKGS="checked_yaml"
       script: tool/travis.sh dartanalyzer_1
     - stage: unit_test
-      name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
+      name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example; TASKS: `pub run test`"
       dart: dev
       os: linux
-      env: PKGS="_test_yaml checked_yaml example json_serializable"
+      env: PKGS="_test_yaml checked_yaml example"
       script: tool/travis.sh test_0
     - stage: unit_test
       name: "SDK: 2.7.0; PKG: checked_yaml; TASKS: `pub run test`"
@@ -38,22 +38,34 @@ jobs:
       env: PKGS="checked_yaml"
       script: tool/travis.sh test_0
     - stage: unit_test
-      name: "SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
-      dart: dev
+      name: "SDK: be/raw/latest; PKG: json_serializable; TASKS: `pub run test`"
+      dart: be/raw/latest
+      os: linux
+      env: PKGS="json_serializable"
+      script: tool/travis.sh test_0
+    - stage: unit_test
+      name: "SDK: be/raw/latest; PKG: json_serializable; TASKS: `pub run test -p chrome`"
+      dart: be/raw/latest
       os: linux
       env: PKGS="json_serializable"
       script: tool/travis.sh test_2
     - stage: ensure_build
-      name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+      name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: dev
       os: linux
-      env: PKGS="_test_yaml checked_yaml example json_serializable"
+      env: PKGS="_test_yaml checked_yaml example"
       script: tool/travis.sh test_1
     - stage: ensure_build
       name: "SDK: 2.7.0; PKG: checked_yaml; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: "2.7.0"
       os: linux
       env: PKGS="checked_yaml"
+      script: tool/travis.sh test_1
+    - stage: ensure_build
+      name: "SDK: be/raw/latest; PKG: json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+      dart: be/raw/latest
+      os: linux
+      env: PKGS="json_serializable"
       script: tool/travis.sh test_1
 
 stages:
