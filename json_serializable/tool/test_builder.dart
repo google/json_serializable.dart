@@ -134,31 +134,6 @@ const _kitchenSinkReplacements = {
       'bool get nullable => false;',
     ),
     Replacement(
-      'List<T> _defaultList<T>() => null;',
-      'List<T> _defaultList<T>() => <T>[];',
-    ),
-    Replacement(
-      'Set<T> _defaultSet<T>() => null;',
-      'Set<T> _defaultSet<T>() => <T>{};',
-    ),
-    Replacement(
-      'Map<K, V> _defaultMap<K, V>() => null;',
-      'Map<String, T> _defaultMap<T>() => <String, T>{};',
-    ),
-    Replacement(
-      'SimpleObject _defaultSimpleObject() => null;',
-      'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
-    ),
-    Replacement(
-      'StrictKeysObject _defaultStrictKeysObject() => null;',
-      'StrictKeysObject _defaultStrictKeysObject() => '
-          "StrictKeysObject(10, 'cool');",
-    ),
-    Replacement(
-      'DateTime dateTime;',
-      'DateTime dateTime = DateTime(1981, 6, 5);',
-    ),
-    Replacement(
       'BigInt bigInt;',
       "BigInt bigInt = BigInt.parse('10000000000000000000');",
     ),
