@@ -43,8 +43,8 @@ DefaultValue _$DefaultValueFromJson(Map json) {
           {
             'root': ['child']
           },
-      $checkedConvert(
-              json, 'fieldEnum', (v) => _$enumDecode(_$GreekEnumMap, v)) ??
+      $checkedConvert(json, 'fieldEnum',
+              (v) => _$enumDecodeNullable(_$GreekEnumMap, v)) ??
           Greek.beta,
     );
     return val;
@@ -96,6 +96,17 @@ T _$enumDecode<T>(
         '${enumValues.values.join(', ')}');
   }
   return value ?? unknownValue!;
+}
+
+T? _$enumDecodeNullable<T>(
+  Map<T, Object> enumValues,
+  dynamic source, {
+  T? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$GreekEnumMap = {

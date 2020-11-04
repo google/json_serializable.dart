@@ -11,7 +11,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     _$enumDecode(_$EnumTypeEnumMap, json['value']),
     _$enumDecode(_$EnumTypeEnumMap, json['nullable']),
-    _$enumDecode(_$EnumTypeEnumMap, json['withDefault']) ?? EnumType.alpha,
+    _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+        EnumType.alpha,
   );
 }
 
@@ -51,6 +52,17 @@ const _$EnumTypeEnumMap = {
   EnumType.delta: 'delta',
 };
 
+T? _$enumDecodeNullable<T>(
+  Map<T, Object> enumValues,
+  dynamic source, {
+  T? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+}
+
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
@@ -67,14 +79,3 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
       'nullable': _$EnumTypeEnumMap[instance.nullable],
       'withDefault': _$EnumTypeEnumMap[instance.withDefault],
     };
-
-T? _$enumDecodeNullable<T>(
-  Map<T, Object> enumValues,
-  dynamic source, {
-  T? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
-}
