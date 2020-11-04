@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:meta/meta.dart';
 
 part 'build_config.g.dart';
 
@@ -13,9 +12,9 @@ class Config {
   final Map<String, Builder> builders;
 
   // Verifying enum keys in map
-  Map<AutoApply, int> weights;
+  Map<AutoApply, int>? weights;
 
-  Config({@required this.builders});
+  Config({required this.builders});
 
   factory Config.fromJson(Map map) => _$ConfigFromJson(map);
 
@@ -28,49 +27,49 @@ class Config {
     checked: true,
     anyMap: true)
 class Builder {
-  @JsonKey(nullable: true)
-  final String target;
+  final String? target;
 
   final String import;
 
   @JsonKey(name: 'is_optional')
-  final bool isOptional;
+  final bool? isOptional;
 
   @JsonKey(disallowNullValue: true)
-  final Uri configLocation;
+  final Uri? configLocation;
 
   @JsonKey(name: 'auto_apply', disallowNullValue: true)
-  final AutoApply autoApply;
+  final AutoApply? autoApply;
 
   @JsonKey(name: 'build_to')
-  final BuildTo buildTo;
+  final BuildTo? buildTo;
 
-  final AutoApply defaultEnumTest;
+  final AutoApply? defaultEnumTest;
 
-  @JsonKey(name: 'builder_factories', nullable: false)
+  @JsonKey(name: 'builder_factories')
   final List<String> builderFactories;
 
   @JsonKey(name: 'applies_builders')
-  final List<String> appliesBuilders;
+  final List<String>? appliesBuilders;
 
   @JsonKey(name: 'required_inputs')
-  final List<String> requiredInputs;
+  final List<String>? requiredInputs;
 
   @JsonKey(name: 'build_extensions')
-  final Map<String, List<String>> buildExtensions;
+  final Map<String, List<String>>? buildExtensions;
 
-  Builder(
-      {@required this.import,
-      this.target,
-      this.isOptional,
-      this.autoApply,
-      this.buildTo,
-      this.defaultEnumTest,
-      this.builderFactories,
-      this.appliesBuilders,
-      this.requiredInputs,
-      this.buildExtensions,
-      this.configLocation}) {
+  Builder({
+    required this.import,
+    this.target,
+    this.isOptional,
+    this.autoApply,
+    this.buildTo,
+    this.defaultEnumTest,
+    required this.builderFactories,
+    this.appliesBuilders,
+    this.requiredInputs,
+    this.buildExtensions,
+    this.configLocation,
+  }) {
     if (builderFactories.isEmpty) {
       throw ArgumentError.value(builderFactories, 'builderFactories',
           'Must have at least one value.');

@@ -6,7 +6,7 @@ stages:
 - analyzer_and_format:
   - group:
     - dartfmt
-    - dartanalyzer: --fatal-warnings .
+    - dartanalyzer: --fatal-warnings --fatal-infos .
     dart: [dev]
 - unit_test:
   - test

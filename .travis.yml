@@ -14,23 +14,23 @@ jobs:
       os: linux
       script: "pub global activate mono_repo 3.0.0 && pub global run mono_repo travis --validate"
     - stage: analyzer_and_format
-      name: "SDK: dev; PKGS: _test_yaml, example; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings .`]"
+      name: "SDK: dev; PKGS: _test_yaml, checked_yaml, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
       dart: dev
       os: linux
-      env: PKGS="_test_yaml example"
+      env: PKGS="_test_yaml checked_yaml json_annotation json_serializable"
       script: tool/travis.sh dartfmt dartanalyzer_0
-    - stage: analyzer_and_format
-      name: "SDK: dev; PKGS: checked_yaml, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
-      dart: dev
-      os: linux
-      env: PKGS="checked_yaml json_annotation json_serializable"
-      script: tool/travis.sh dartfmt dartanalyzer_1
     - stage: analyzer_and_format
       name: "SDK: 2.7.0; PKG: checked_yaml; TASKS: `dartanalyzer --fatal-warnings .`"
       dart: "2.7.0"
       os: linux
       env: PKGS="checked_yaml"
-      script: tool/travis.sh dartanalyzer_0
+      script: tool/travis.sh dartanalyzer_1
+    - stage: analyzer_and_format
+      name: "SDK: dev; PKG: example; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings .`]"
+      dart: dev
+      os: linux
+      env: PKGS="example"
+      script: tool/travis.sh dartfmt dartanalyzer_1
     - stage: unit_test
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example; TASKS: `pub run test`"
       dart: dev
