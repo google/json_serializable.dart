@@ -1,4 +1,4 @@
-// @dart=2.10
+// @dart=2.12
 
 import 'package:json_annotation/json_annotation.dart';
 
