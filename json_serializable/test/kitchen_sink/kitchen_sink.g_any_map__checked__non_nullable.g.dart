@@ -101,7 +101,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     $checkedConvert(json, 'strictKeysObject',
         (v) => val.strictKeysObject = StrictKeysObject.fromJson(v as Map));
     $checkedConvert(json, 'validatedPropertyNo42',
-        (v) => val.validatedPropertyNo42 = v as int);
+        (v) => val.validatedPropertyNo42 = v as int?);
     return val;
   }, fieldKeyMap: const {
     'ctorValidatedNo42': 'no-42',

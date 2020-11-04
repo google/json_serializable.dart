@@ -66,7 +66,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
     ..simpleObject = SimpleObject.fromJson(json['simpleObject'] as Map)
     ..strictKeysObject =
         StrictKeysObject.fromJson(json['strictKeysObject'] as Map)
-    ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int;
+    ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int?;
 }
 
 Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>

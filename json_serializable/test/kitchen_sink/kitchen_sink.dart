@@ -159,11 +159,11 @@ class KitchenSink implements k.KitchenSink {
 
   StrictKeysObject strictKeysObject = _defaultStrictKeysObject();
 
-  late int _validatedPropertyNo42;
+  int? _validatedPropertyNo42;
 
-  int get validatedPropertyNo42 => _validatedPropertyNo42;
+  int? get validatedPropertyNo42 => _validatedPropertyNo42;
 
-  set validatedPropertyNo42(int value) {
+  set validatedPropertyNo42(int? value) {
     if (value == 42) {
       throw StateError('Cannot be 42!');
     }
