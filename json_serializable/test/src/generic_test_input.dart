@@ -61,7 +61,7 @@ class GenericClass<T extends num, S> {
   GenericClass();
 }
 
-T _dataFromJson<T extends num>(Object input) => throw UnimplementedError();
+T _dataFromJson<T extends num>(Object? input) => throw UnimplementedError();
 
 Object _dataToJson<T extends num>(T input) => throw UnimplementedError();
 

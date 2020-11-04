@@ -14,7 +14,7 @@ dynamic _toDynamic(dynamic input) => null;
 
 Object _toObject(Object input) => throw UnimplementedError();
 
-String _toStringFromObject(Object input) => throw UnimplementedError();
+String _toStringFromObject(Object? input) => throw UnimplementedError();
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '

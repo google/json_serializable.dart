@@ -199,7 +199,7 @@ TypeParameterType _encodeHelper(
   final type = param.type;
 
   if (type is FunctionType &&
-      isObjectOrDynamic(type.returnType) &&
+      (type.returnType.isDartCoreObject || type.returnType.isDynamic) &&
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 
