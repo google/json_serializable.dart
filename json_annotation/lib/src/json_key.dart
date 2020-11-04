@@ -94,8 +94,7 @@ class JsonKey {
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey({
-    @Deprecated('Has no effect')
-    bool? nullable,
+    @Deprecated('Has no effect') bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,

@@ -176,8 +176,7 @@ class JsonSerializable {
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
-    @Deprecated('Has no effect')
-    bool? nullable,
+    @Deprecated('Has no effect') bool? nullable,
     this.anyMap,
     this.checked,
     this.createFactory,
