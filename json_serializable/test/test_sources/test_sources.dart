@@ -17,7 +17,6 @@ class ConfigurationImplicitDefaults {
   fieldRename: FieldRename.none,
   ignoreUnannotated: false,
   includeIfNull: true,
-  nullable: true,
   genericArgumentFactories: false,
 )
 class ConfigurationExplicitDefaults {
@@ -76,7 +75,7 @@ class TrivialNestedNullable {
   int? otherField;
 }
 
-@JsonSerializable(createFactory: false, nullable: false, explicitToJson: true)
+@JsonSerializable(createFactory: false, explicitToJson: true)
 class TrivialNestedNonNullable {
   late TrivialNestedNonNullable child;
   int? otherField;

@@ -85,7 +85,6 @@ class _TestBuilder implements Builder {
 const _configReplacements = {
   'any_map': Replacement.addJsonSerializableKey('anyMap', true),
   'checked': Replacement.addJsonSerializableKey('checked', true),
-  'non_nullable': Replacement.addJsonSerializableKey('nullable', false),
   'explicit_to_json':
       Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': Replacement.addJsonSerializableKey('includeIfNull', false),
@@ -142,7 +141,12 @@ const _kitchenSinkReplacements = {
 
 Iterable<Replacement> _optionReplacement(
     String baseName, String optionKey) sync* {
-  yield _configReplacements[optionKey];
+  final value = _configReplacements[optionKey];
+  if (value == null) {
+    log.warning('no replacement thingy for `$optionKey`.');
+  } else {
+    yield value;
+  }
 
   if (baseName == _kitchenSinkBaseName &&
       _kitchenSinkReplacements.containsKey(optionKey)) {

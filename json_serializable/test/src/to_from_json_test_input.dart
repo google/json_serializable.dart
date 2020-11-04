@@ -138,7 +138,7 @@ Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
 )
 @JsonSerializable(createFactory: false)
 class ToJsonNullableFalseIncludeIfNullFalse {
-  @JsonKey(toJson: _toString, includeIfNull: false, nullable: false)
+  @JsonKey(toJson: _toString, includeIfNull: false)
   late String field;
 }
 

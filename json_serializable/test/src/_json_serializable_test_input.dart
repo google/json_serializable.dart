@@ -436,7 +436,6 @@ class MyList<T, Q> extends ListBase<T> {
 }
 
 mixin _PropInMixinI448RegressionMixin {
-  @JsonKey(nullable: true)
   late int nullable;
 }
 
@@ -457,7 +456,7 @@ Map<String, dynamic> _$PropInMixinI448RegressionToJson(
 ''')
 @JsonSerializable()
 class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
-  @JsonKey(nullable: false)
+  @JsonKey()
   late int notNullable;
 }
 
@@ -517,7 +516,7 @@ Map<String, dynamic> _$OverrideGetterExampleI613ToJson(
     };
 ''',
 )
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class OverrideGetterExampleI613 extends OverrideGetterExampleI613Super {
   @override
   String get id => throw UnimplementedError();

@@ -78,7 +78,6 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 }
 
 @JsonSerializable(
-  nullable: false,
   includeIfNull: false,
 )
 class KitchenSink implements k.KitchenSink {
@@ -177,7 +176,6 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  nullable: false,
   includeIfNull: false,
 )
 // referencing a top-level field should work
@@ -215,7 +213,6 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 }
 
 @JsonSerializable(
-  nullable: false,
   includeIfNull: false,
 )
 @GenericConverter()

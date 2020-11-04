@@ -13,9 +13,7 @@ import 'json_test_common.dart';
 
 part 'json_test_example.g_non_nullable.g.dart';
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class Person {
   final String firstName, lastName;
   final String? middleName;
@@ -48,9 +46,7 @@ class Person {
       deepEquals(houseMap, other.houseMap);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
   @JsonKey(disallowNullValue: true)
@@ -103,9 +99,7 @@ class Order {
       deepEquals(altPlatforms, other.altPlatforms);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int? itemNumber;
@@ -126,9 +120,7 @@ class Item extends ItemCore {
       deepEquals(saleDates, other.saleDates);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class Numbers {
   List<int>? ints;
   List<num>? nums;
@@ -160,9 +152,7 @@ class Numbers {
       deepEquals(date, other.date);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class MapKeyVariety {
   Map<int, int>? intIntMap;
   Map<Uri, int>? uriIntMap;
@@ -185,7 +175,7 @@ class MapKeyVariety {
       deepEquals(other.bigIntMap, bigIntMap);
 }
 
-@JsonSerializable(nullable: false, createToJson: false)
+@JsonSerializable(createToJson: false)
 class UnknownEnumValue {
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)
   late Category enumValue;

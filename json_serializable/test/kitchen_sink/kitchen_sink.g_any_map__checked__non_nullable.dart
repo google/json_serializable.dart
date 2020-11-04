@@ -77,7 +77,6 @@ class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
 }
 
 @JsonSerializable(
-  nullable: false,
   checked: true,
   anyMap: true,
 )
@@ -176,7 +175,6 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  nullable: false,
   checked: true,
   anyMap: true,
 )
@@ -215,7 +213,6 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 }
 
 @JsonSerializable(
-  nullable: false,
   checked: true,
   anyMap: true,
 )

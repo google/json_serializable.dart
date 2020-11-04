@@ -77,9 +77,7 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
       JsonConverterTestClass.fromJson(json);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
   // to make the equality test work trivially.
@@ -175,9 +173,7 @@ class KitchenSink implements k.KitchenSink {
   bool operator ==(Object other) => k.sinkEquals(this, other);
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 // referencing a top-level field should work
 @durationConverter
 // referencing via a const constructor should work
@@ -212,9 +208,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   DateTime? dateTime;
 }
 
-@JsonSerializable(
-  nullable: false,
-)
+@JsonSerializable()
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
   S item;

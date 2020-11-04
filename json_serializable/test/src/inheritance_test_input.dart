@@ -40,7 +40,7 @@ class SubType extends SuperType {
 // NOTE: `SuperType` is intentionally after `SubType` in the source file to
 // validate field ordering semantics.
 class SuperType {
-  @JsonKey(name: 'super-final-field', nullable: false)
+  @JsonKey(name: 'super-final-field')
   final int? superFinalField;
 
   @JsonKey(includeIfNull: false)
