@@ -159,12 +159,12 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
   return $checkedNew('JsonConverterTestClass', json, () {
     final val = JsonConverterTestClass(
       $checkedConvert(
-          json, 'duration', (v) => durationConverter.fromJson(v as int)),
+          json, 'duration', (v) => durationConverter.fromJson(v as int?)),
       $checkedConvert(
           json,
           'durationList',
           (v) => (v as List<dynamic>)
-              .map((e) => durationConverter.fromJson(e as int))
+              .map((e) => durationConverter.fromJson(e as int?))
               .toList()),
       $checkedConvert(json, 'bigInt',
           (v) => const BigIntStringConverter().fromJson(v as String)),
@@ -176,15 +176,15 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) {
                     const BigIntStringConverter().fromJson(e as String)),
               )),
       $checkedConvert(json, 'numberSilly',
-          (v) => TrivialNumberConverter.instance.fromJson(v as int)),
+          (v) => TrivialNumberConverter.instance.fromJson(v as int?)),
       $checkedConvert(
           json,
           'numberSillySet',
           (v) => (v as List<dynamic>)
-              .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+              .map((e) => TrivialNumberConverter.instance.fromJson(e as int?))
               .toSet()),
       $checkedConvert(json, 'dateTime',
-          (v) => const EpochDateTimeConverter().fromJson(v as int)),
+          (v) => const EpochDateTimeConverter().fromJson(v as int?)),
     );
     return val;
   });

@@ -131,20 +131,20 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
     Map<String, dynamic> json) {
   return JsonConverterTestClass(
-    durationConverter.fromJson(json['duration'] as int),
+    durationConverter.fromJson(json['duration'] as int?),
     (json['durationList'] as List<dynamic>)
-        .map((e) => durationConverter.fromJson(e as int))
+        .map((e) => durationConverter.fromJson(e as int?))
         .toList(),
     const BigIntStringConverter().fromJson(json['bigInt'] as String),
     (json['bigIntMap'] as Map<String, dynamic>).map(
       (k, e) =>
           MapEntry(k, const BigIntStringConverter().fromJson(e as String)),
     ),
-    TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int),
+    TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int?),
     (json['numberSillySet'] as List<dynamic>)
-        .map((e) => TrivialNumberConverter.instance.fromJson(e as int))
+        .map((e) => TrivialNumberConverter.instance.fromJson(e as int?))
         .toSet(),
-    const EpochDateTimeConverter().fromJson(json['dateTime'] as int),
+    const EpochDateTimeConverter().fromJson(json['dateTime'] as int?),
   );
 }
 

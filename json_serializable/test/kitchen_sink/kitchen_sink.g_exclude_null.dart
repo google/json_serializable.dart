@@ -200,8 +200,8 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 
   Map<String, dynamic> toJson() => _$JsonConverterTestClassToJson(this);
 
-  Duration duration;
-  List<Duration> durationList;
+  Duration? duration;
+  List<Duration?> durationList;
 
   BigInt bigInt;
   Map<String, BigInt> bigIntMap;
@@ -209,7 +209,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime;
+  DateTime? dateTime;
 }
 
 @JsonSerializable(

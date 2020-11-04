@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'dart:convert';
 
 import 'package:stack_trace/stack_trace.dart';
@@ -24,28 +26,27 @@ T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
 }
 
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
-String loudEncode(Object object) {
+String loudEncode(Object? object) {
   try {
     return const JsonEncoder.withIndent(' ').convert(object);
   } catch (e) {
     if (e is JsonUnsupportedObjectError) {
-      Object error = e;
+      Object? error = e;
 
       var count = 1;
 
       while (error is JsonUnsupportedObjectError) {
-        final juoe = error as JsonUnsupportedObjectError;
         print(
-          '(${count++}) $error ${juoe.unsupportedObject} (${juoe.unsupportedObject.runtimeType}) !!!',
+          '(${count++}) $error ${error.unsupportedObject} (${error.unsupportedObject.runtimeType}) !!!',
         );
-        print(Trace.from(juoe.stackTrace).terse);
-        error = juoe.cause;
+        print(Trace.from(error.stackTrace!).terse);
+        error = error.cause;
       }
 
       if (error != null) {
         print('(${count++}) $error ???');
         if (error is Error) {
-          print(Trace.from(error.stackTrace).terse);
+          print(Trace.from(error.stackTrace!).terse);
         }
       }
     }
