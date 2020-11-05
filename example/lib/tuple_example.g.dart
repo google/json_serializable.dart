@@ -8,8 +8,8 @@ part of 'tuple_example.dart';
 
 Tuple<T, S> _$TupleFromJson<T, S>(
   Map<String, dynamic> json,
-  T Function(Object json) fromJsonT,
-  S Function(Object json) fromJsonS,
+  T Function(Object? json) fromJsonT,
+  S Function(Object? json) fromJsonS,
 ) {
   return Tuple<T, S>(
     fromJsonT(json['value1']),

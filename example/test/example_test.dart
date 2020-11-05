@@ -21,7 +21,7 @@ void main() {
     expect(person.lastName, person2.lastName);
     expect(person.dateOfBirth, person2.dateOfBirth);
     expect(person.orders.single.date, person2.orders.single.date);
-    expect(person.orders.single.item.count, 42);
+    expect(person.orders.single.item!.count, 42);
 
     expect(_encode(person2), equals(personJson));
   });

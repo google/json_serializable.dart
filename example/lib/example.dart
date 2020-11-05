@@ -10,21 +10,25 @@ part 'example.g.dart';
 class Person {
   final String firstName;
   @JsonKey(includeIfNull: false)
-  final String middleName;
+  final String? middleName;
   final String lastName;
 
-  @JsonKey(name: 'date-of-birth', nullable: false)
+  @JsonKey(name: 'date-of-birth')
   final DateTime dateOfBirth;
 
   @JsonKey(name: 'last-order')
-  final DateTime lastOrder;
+  final DateTime? lastOrder;
 
-  @JsonKey(nullable: false)
   List<Order> orders;
 
-  Person(this.firstName, this.lastName, this.dateOfBirth,
-      {this.middleName, this.lastOrder, List<Order> orders})
-      : orders = orders ?? <Order>[];
+  Person(
+    this.firstName,
+    this.lastName,
+    this.dateOfBirth, {
+    this.middleName,
+    this.lastOrder,
+    List<Order>? orders,
+  }) : orders = orders ?? <Order>[];
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
@@ -33,16 +37,16 @@ class Person {
 
 @JsonSerializable(includeIfNull: false)
 class Order {
-  int count;
-  int itemNumber;
-  bool isRushed;
-  Item item;
+  int? count;
+  int? itemNumber;
+  bool? isRushed;
+  Item? item;
 
   @JsonKey(
       name: 'prep-time',
       fromJson: _durationFromMilliseconds,
       toJson: _durationToMilliseconds)
-  Duration prepTime;
+  Duration? prepTime;
 
   @JsonKey(fromJson: _dateTimeFromEpochUs, toJson: _dateTimeToEpochUs)
   final DateTime date;
@@ -53,24 +57,24 @@ class Order {
 
   Map<String, dynamic> toJson() => _$OrderToJson(this);
 
-  static Duration _durationFromMilliseconds(int milliseconds) =>
+  static Duration? _durationFromMilliseconds(int? milliseconds) =>
       milliseconds == null ? null : Duration(milliseconds: milliseconds);
 
-  static int _durationToMilliseconds(Duration duration) =>
+  static int? _durationToMilliseconds(Duration? duration) =>
       duration?.inMilliseconds;
 
   static DateTime _dateTimeFromEpochUs(int us) =>
-      us == null ? null : DateTime.fromMicrosecondsSinceEpoch(us);
+      DateTime.fromMicrosecondsSinceEpoch(us);
 
-  static int _dateTimeToEpochUs(DateTime dateTime) =>
+  static int? _dateTimeToEpochUs(DateTime? dateTime) =>
       dateTime?.microsecondsSinceEpoch;
 }
 
 @JsonSerializable()
 class Item {
-  int count;
-  int itemNumber;
-  bool isRushed;
+  int? count;
+  int? itemNumber;
+  bool? isRushed;
 
   Item();
 

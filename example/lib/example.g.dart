@@ -11,12 +11,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
     json['firstName'] as String,
     json['lastName'] as String,
     DateTime.parse(json['date-of-birth'] as String),
-    middleName: json['middleName'] as String,
+    middleName: json['middleName'] as String?,
     lastOrder: json['last-order'] == null
         ? null
         : DateTime.parse(json['last-order'] as String),
-    orders: (json['orders'] as List)
-        .map((e) => Order.fromJson(e as Map<String, dynamic>))
+    orders: (json['orders'] as List<dynamic>?)
+        ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
@@ -44,13 +44,13 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
   return Order(
     Order._dateTimeFromEpochUs(json['date'] as int),
   )
-    ..count = json['count'] as int
-    ..itemNumber = json['itemNumber'] as int
-    ..isRushed = json['isRushed'] as bool
+    ..count = json['count'] as int?
+    ..itemNumber = json['itemNumber'] as int?
+    ..isRushed = json['isRushed'] as bool?
     ..item = json['item'] == null
         ? null
         : Item.fromJson(json['item'] as Map<String, dynamic>)
-    ..prepTime = Order._durationFromMilliseconds(json['prep-time'] as int);
+    ..prepTime = Order._durationFromMilliseconds(json['prep-time'] as int?);
 }
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
@@ -73,9 +73,9 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 
 Item _$ItemFromJson(Map<String, dynamic> json) {
   return Item()
-    ..count = json['count'] as int
-    ..itemNumber = json['itemNumber'] as int
-    ..isRushed = json['isRushed'] as bool;
+    ..count = json['count'] as int?
+    ..itemNumber = json['itemNumber'] as int?
+    ..isRushed = json['isRushed'] as bool?;
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{

@@ -16,8 +16,8 @@ class Tuple<T, S> {
 
   factory Tuple.fromJson(
     Map<String, dynamic> json,
-    T Function(Object json) fromJsonT,
-    S Function(Object json) fromJsonS,
+    T Function(Object? json) fromJsonT,
+    S Function(Object? json) fromJsonS,
   ) =>
       _$TupleFromJson(json, fromJsonT, fromJsonS);
 
@@ -28,7 +28,7 @@ class Tuple<T, S> {
       _$TupleToJson(this, toJsonT, toJsonS);
 }
 
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 class ConcreteClass {
   final Tuple<int, DateTime> tuple1;
 

@@ -8,7 +8,7 @@ part 'json_converter_example.g.dart';
 
 /// An example of using [JsonConverter] to change the encode/decode of a default
 /// type.
-@JsonSerializable(nullable: false)
+@JsonSerializable()
 @_DateTimeEpochConverter()
 class DateTimeExample {
   final DateTime when;
@@ -34,20 +34,24 @@ class _DateTimeEpochConverter implements JsonConverter<DateTime, int> {
 @JsonSerializable()
 class GenericCollection<T> {
   @JsonKey(name: 'page')
-  final int page;
+  final int? page;
 
   @JsonKey(name: 'total_results')
-  final int totalResults;
+  final int? totalResults;
 
   @JsonKey(name: 'total_pages')
-  final int totalPages;
+  final int? totalPages;
 
   @JsonKey(name: 'results')
   @_Converter()
-  final List<T> results;
+  final List<T>? results;
 
-  GenericCollection(
-      {this.page, this.totalResults, this.totalPages, this.results});
+  GenericCollection({
+    this.page,
+    this.totalResults,
+    this.totalPages,
+    this.results,
+  });
 
   factory GenericCollection.fromJson(Map<String, dynamic> json) =>
       _$GenericCollectionFromJson<T>(json);
@@ -55,11 +59,11 @@ class GenericCollection<T> {
   Map<String, dynamic> toJson() => _$GenericCollectionToJson(this);
 }
 
-class _Converter<T> implements JsonConverter<T, Object> {
+class _Converter<T> implements JsonConverter<T, Object?> {
   const _Converter();
 
   @override
-  T fromJson(Object json) {
+  T fromJson(Object? json) {
     if (json is Map<String, dynamic> &&
         json.containsKey('name') &&
         json.containsKey('size')) {
@@ -72,7 +76,7 @@ class _Converter<T> implements JsonConverter<T, Object> {
   }
 
   @override
-  Object toJson(T object) {
+  Object? toJson(T object) {
     // This will only work if `object` is a native JSON type:
     //   num, String, bool, null, etc
     // Or if it has a `toJson()` function`.
