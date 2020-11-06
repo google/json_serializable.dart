@@ -8,8 +8,12 @@ import 'allowed_keys_helpers.dart';
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, T Function() constructor,
-    {Map<String, String>? fieldKeyMap}) {
+T $checkedNew<T>(
+  String className,
+  Map map,
+  T Function() constructor, {
+  Map<String, String>? fieldKeyMap,
+}) {
   fieldKeyMap ??= const {};
 
   try {
@@ -28,8 +32,13 @@ T $checkedNew<T>(String className, Map map, T Function() constructor,
     } else if (error is DisallowedNullValueException) {
       key = error.keysWithNullValues.first;
     }
-    throw CheckedFromJsonException._(error, stack, map, key,
-        className: className);
+    throw CheckedFromJsonException._(
+      error,
+      stack,
+      map,
+      key,
+      className: className,
+    );
   }
 }
 
@@ -107,9 +116,11 @@ class CheckedFromJsonException implements Exception {
   static String? _getMessage(Object? error) {
     if (error is ArgumentError) {
       return error.message?.toString();
-    } else if (error is BadKeyException) {
+    }
+    if (error is BadKeyException) {
       return error.message;
-    } else if (error is FormatException) {
+    }
+    if (error is FormatException) {
       var message = error.message;
       if (error.offset != null) {
         message = '$message at offset ${error.offset}.';
@@ -124,7 +135,9 @@ class CheckedFromJsonException implements Exception {
         'CheckedFromJsonException',
         if (_className != null) 'Could not create `$_className`.',
         if (key != null) 'There is a problem with "$key".',
-        if (message != null) message!,
-        if (message == null && innerError != null) innerError.toString(),
+        if (message != null)
+          message!
+        else if (innerError != null)
+          innerError.toString(),
       ].join('\n');
 }
