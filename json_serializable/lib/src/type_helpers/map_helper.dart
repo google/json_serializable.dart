@@ -153,10 +153,11 @@ bool _isKeyStringable(DartType keyType) =>
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
-  if (keyArg.isDartCoreObject ||
-      keyArg.isDynamic ||
-      coreStringTypeChecker.isExactlyType(keyArg) ||
-      _isKeyStringable(keyArg)) {
+  if (keyArg.isDynamic ||
+      (!keyArg.isNullableType &&
+          (keyArg.isDartCoreObject ||
+              coreStringTypeChecker.isExactlyType(keyArg) ||
+              _isKeyStringable(keyArg)))) {
     return;
   }
 
