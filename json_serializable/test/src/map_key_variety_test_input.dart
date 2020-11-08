@@ -19,3 +19,31 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
 class MapKeyVariety {
   late Map<int, int> intIntMap;
 }
+
+@ShouldThrow(
+  r'''
+Could not generate `fromJson` code for `value` because of type `Object?`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
+)
+@JsonSerializable()
+class MapKeyNoNullableObject {
+  late Map<Object?, int> value;
+}
+
+@ShouldThrow(
+  r'''
+Could not generate `fromJson` code for `value` because of type `String?`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
+)
+@JsonSerializable()
+class MapKeyNoNullableString {
+  late Map<String?, int> value;
+}
+
+@ShouldThrow(r'''
+Could not generate `fromJson` code for `value` because of type `int?`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''')
+@JsonSerializable()
+class MapKeyNoNullableInt {
+  late Map<int?, int> value;
+}

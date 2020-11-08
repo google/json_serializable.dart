@@ -26,7 +26,7 @@ Future<void> main() async {
   );
 }
 
-const _expectedAnnotatedTests = [
+const _expectedAnnotatedTests = {
   'annotatedMethod',
   'BadFromFuncReturnType',
   'BadNoArgs',
@@ -78,6 +78,9 @@ const _expectedAnnotatedTests = [
   'JustSetterNoFromJson',
   'JustSetterNoToJson',
   'KeyDupesField',
+  'MapKeyNoNullableInt',
+  'MapKeyNoNullableObject',
+  'MapKeyNoNullableString',
   'MapKeyVariety',
   'NoCtorClass',
   'NoDeserializeBadKey',
@@ -116,4 +119,4 @@ const _expectedAnnotatedTests = [
   'ValidToFromFuncClassStatic',
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
-];
+};
