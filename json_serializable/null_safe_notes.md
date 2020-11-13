@@ -27,5 +27,3 @@ class Experiment {
   Experiment(this.bob);
 }
 ```
-
-
