@@ -1,4 +1,4 @@
-# Created with package:mono_repo v3.0.0
+# Created with package:mono_repo v3.1.0-beta.1
 language: dart
 
 # Custom configuration
@@ -11,55 +11,55 @@ jobs:
     - stage: analyzer_and_format
       name: mono_repo self validate
       os: linux
-      script: "pub global activate mono_repo 3.0.0 && pub global run mono_repo travis --validate"
+      script: "pub global activate mono_repo 3.1.0-beta.1 && pub global run mono_repo generate --validate"
     - stage: analyzer_and_format
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
-      script: tool/travis.sh dartanalyzer_1
+      script: tool/ci.sh dartanalyzer_1
     - stage: analyzer_and_format
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_annotation json_serializable"
-      script: tool/travis.sh dartfmt dartanalyzer_0
+      script: tool/ci.sh dartfmt dartanalyzer_0
     - stage: unit_test
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: tool/travis.sh test_0
+      script: tool/ci.sh test_0
     - stage: unit_test
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: tool/travis.sh test_0
+      script: tool/ci.sh test_0
     - stage: unit_test
       name: "SDK: 2.7.0; PKG: json_serializable; TASKS: `pub run test -p chrome`"
       dart: "2.7.0"
       os: linux
       env: PKGS="json_serializable"
-      script: tool/travis.sh test_2
+      script: tool/ci.sh test_2
     - stage: unit_test
       name: "SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
       dart: dev
       os: linux
       env: PKGS="json_serializable"
-      script: tool/travis.sh test_2
+      script: tool/ci.sh test_2
     - stage: ensure_build
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: "2.7.0"
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: tool/travis.sh test_1
+      script: tool/ci.sh test_1
     - stage: ensure_build
       name: "SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
       dart: dev
       os: linux
       env: PKGS="_test_yaml checked_yaml example json_serializable"
-      script: tool/travis.sh test_1
+      script: tool/ci.sh test_1
 
 stages:
   - analyzer_and_format
