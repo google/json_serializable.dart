@@ -11,7 +11,7 @@ jobs:
     - stage: analyzer_and_format
       name: mono_repo self validate
       os: linux
-      script: "pub global activate mono_repo 3.1.0-beta && pub global run mono_repo travis --validate"
+      script: "pub global activate mono_repo 3.1.0-beta && pub global run mono_repo generate --validate"
     - stage: analyzer_and_format
       name: "SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
       dart: "2.7.0"
