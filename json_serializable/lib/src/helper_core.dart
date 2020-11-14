@@ -8,6 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'constants.dart';
 import 'json_key_utils.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
@@ -88,14 +89,6 @@ $converterOrKeyInstructions''';
     element: field,
   );
 }
-
-@visibleForTesting
-const converterOrKeyInstructions = r'''
-* Use `JsonConverter`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
-* Use `JsonKey` fields `fromJson` and `toJson`
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
-  https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
 
 /// Returns a [String] representing the type arguments that exist on
 /// [element].
