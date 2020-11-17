@@ -18,7 +18,7 @@ void main() {
 void _anyMapTests(KitchenSinkFactory factory) {
   test('valid values round-trip - yaml', () {
     final jsonEncoded = loudEncode(validValues);
-    final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
+    final yaml = loadYaml(jsonEncoded);
     expect(jsonEncoded, loudEncode(factory.fromJson(yaml as YamlMap)));
   });
 
