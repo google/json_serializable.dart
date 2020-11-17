@@ -1,3 +1,5 @@
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
@@ -51,7 +53,7 @@ void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
   }
 }
 
-Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
+Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
   Matcher innerMatcher;
 
   if (checked) {
