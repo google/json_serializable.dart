@@ -14,7 +14,6 @@ for the class annotation.
   anyMap: true,
   checked: true,
   disallowUnrecognizedKeys: true,
-  nullable: false,
 )
 class Configuration {
   @JsonKey(required: true)
@@ -22,7 +21,7 @@ class Configuration {
   @JsonKey(required: true)
   final int count;
 
-  Configuration({this.name, this.count}) {
+  Configuration({required this.name, required this.count}) {
     if (name.isEmpty) {
       throw ArgumentError.value(name, 'name', 'Cannot be empty.');
     }
@@ -45,19 +44,22 @@ YAML with the error.
 
 ```dart
 void main(List<String> arguments) {
-  var sourcePathOrYaml = arguments.single;
+  final sourcePathOrYaml = arguments.single;
   String yamlContent;
+  Uri? sourceUri;
 
   if (FileSystemEntity.isFileSync(sourcePathOrYaml)) {
     yamlContent = File(sourcePathOrYaml).readAsStringSync();
+    sourceUri = Uri.parse(sourcePathOrYaml);
   } else {
     yamlContent = sourcePathOrYaml;
-    sourcePathOrYaml = null;
   }
 
   final config = checkedYamlDecode(
-      yamlContent, (m) => Configuration.fromJson(m),
-      sourceUrl: sourcePathOrYaml);
+    yamlContent,
+    (m) => Configuration.fromJson(m!),
+    sourceUrl: sourceUri,
+  );
   print(config);
 }
 ```

@@ -20,11 +20,10 @@ import 'package:yaml/yaml.dart';
 /// `null` values.
 T checkedYamlDecode<T>(
   String yamlContent,
-  T Function(Map) constructor, {
-  sourceUrl,
+  T Function(Map?) constructor, {
+  Uri? sourceUrl,
   bool allowNull = false,
 }) {
-  allowNull ??= false;
   YamlNode yaml;
 
   try {
@@ -33,7 +32,7 @@ T checkedYamlDecode<T>(
     throw ParsedYamlException.fromYamlException(e);
   }
 
-  Map map;
+  Map? map;
   if (yaml is YamlMap) {
     map = yaml;
   } else if (allowNull && yaml is YamlScalar && yaml.value == null) {
@@ -56,7 +55,7 @@ T checkedYamlDecode<T>(
 /// `package:yaml`. If not, you may provide an alternative via [exceptionMap].
 ParsedYamlException toParsedYamlException(
   CheckedFromJsonException exception, {
-  YamlMap exceptionMap,
+  YamlMap? exceptionMap,
 }) {
   final yamlMap = exceptionMap ?? exception.map as YamlMap;
 
@@ -71,7 +70,7 @@ ParsedYamlException toParsedYamlException(
         (k) => (k as YamlScalar).value == key,
         orElse: () => yamlMap) as YamlNode;
     return ParsedYamlException(
-      exception.message,
+      exception.message!,
       node,
       innerError: exception,
     );
@@ -81,7 +80,7 @@ ParsedYamlException toParsedYamlException(
     if (yamlValue == null) {
       // TODO: test this case!
       return ParsedYamlException(
-        exception.message,
+        exception.message!,
         yamlMap,
         innerError: exception,
       );
@@ -108,25 +107,26 @@ class ParsedYamlException implements Exception {
   /// The node associated with this exception.
   ///
   /// May be `null` if there was an error decoding.
-  final YamlNode yamlNode;
+  final YamlNode? yamlNode;
 
   /// If this exception was thrown as a result of another error,
   /// contains the source error object.
-  final Object innerError;
+  final Object? innerError;
 
   ParsedYamlException(
     this.message,
-    this.yamlNode, {
+    YamlNode yamlNode, {
     this.innerError,
-  })  : assert(message != null),
-        assert(yamlNode != null);
+  }) :
+        // ignore: prefer_initializing_formals
+        yamlNode = yamlNode;
 
   factory ParsedYamlException.fromYamlException(YamlException exception) =>
       _WrappedYamlException(exception);
 
   /// Returns [message] formatted with source information provided by
   /// [yamlNode].
-  String get formattedMessage => yamlNode.span.message(message);
+  String? get formattedMessage => yamlNode?.span.message(message);
 
   @override
   String toString() => 'ParsedYamlException: $formattedMessage';
@@ -136,7 +136,7 @@ class _WrappedYamlException implements ParsedYamlException {
   _WrappedYamlException(this.innerError);
 
   @override
-  String get formattedMessage => innerError.span.message(innerError.message);
+  String? get formattedMessage => innerError.span?.message(innerError.message);
 
   @override
   final YamlException innerError;
@@ -145,7 +145,7 @@ class _WrappedYamlException implements ParsedYamlException {
   String get message => innerError.message;
 
   @override
-  YamlNode get yamlNode => null;
+  YamlNode? get yamlNode => null;
 
   @override
   String toString() => 'ParsedYamlException: $formattedMessage';

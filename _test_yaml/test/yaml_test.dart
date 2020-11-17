@@ -27,7 +27,10 @@ void main() {
     for (final filePath in _tests) {
       test(p.basenameWithoutExtension(filePath), () {
         final content = File(filePath).readAsStringSync();
-        final yamlContent = loadYaml(content, sourceUrl: filePath) as YamlMap;
+        final yamlContent = loadYaml(
+          content,
+          sourceUrl: Uri.file(filePath),
+        ) as YamlMap;
 
         try {
           final config = Config.fromJson(yamlContent);
@@ -47,7 +50,7 @@ void main() {
     for (final entry in _badConfigs.entries) {
       test('${index++}', () {
         final yamlContent =
-            loadYaml(entry.key, sourceUrl: 'file.yaml') as YamlMap;
+            loadYaml(entry.key, sourceUrl: Uri.file('file.yaml')) as YamlMap;
 
         expect(yamlContent, isNotNull);
         printOnFailure(entry.key);
