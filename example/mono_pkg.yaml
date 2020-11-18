@@ -1,13 +1,12 @@
 # See https://github.com/google/mono_repo.dart for details on this file
 dart:
-- be/raw/latest
+- dev
 
 stages:
 - analyzer_and_format:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings .
-    dart: [dev]
 - unit_test:
   - test
 - ensure_build:
