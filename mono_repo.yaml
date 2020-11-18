@@ -1,14 +1,8 @@
 # See https://github.com/google/mono_repo.dart for details on this file
-self_validate: analyzer_and_format
+self_validate: true
 
-ci:
-- github
-- travis
-
-travis:
-  branches:
-    only:
-    - master
+github:
+  cron: '0 0 * * 0' # “At 00:00 (UTC) on Sunday.”
 
 merge_stages:
 - analyzer_and_format

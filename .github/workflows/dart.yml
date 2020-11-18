@@ -1,29 +1,45 @@
-# Created with package:mono_repo v3.1.0-beta.1
+# Created with package:mono_repo v3.1.0-beta.2
 name: Dart CI
-
 on:
   push:
-    branches: [ master ]
+    branches:
+      - $default-branch
   pull_request:
-
+  schedule:
+    - cron: "0 0 * * 0"
 defaults:
   run:
     shell: bash
+env:
+  PUB_ENVIRONMENT: bot.github
 
 jobs:
   job_001:
+    name: mono_repo self validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cedx/setup-dart@v2
+        with:
+          release-channel: stable
+          version: latest
+      - run: dart --version
+      - uses: actions/checkout@v2
+      - run: pub global activate mono_repo 3.1.0-beta.2
+      - run: pub global run mono_repo generate --validate
+  job_002:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
     runs-on: ubuntu-latest
     steps:
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: _test_yaml checked_yaml example json_annotation json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh dartfmt dartanalyzer_0
-  job_002:
+  job_003:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
     runs-on: ubuntu-latest
     steps:
@@ -31,12 +47,13 @@ jobs:
         with:
           release-channel: stable
           version: "2.7.0"
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: _test_yaml checked_yaml example json_annotation json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh dartanalyzer_1
-  job_003:
+  job_004:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
     steps:
@@ -44,24 +61,26 @@ jobs:
         with:
           release-channel: stable
           version: "2.7.0"
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: _test_yaml checked_yaml example json_serializable
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_0
-  job_004:
-    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: dev
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: _test_yaml checked_yaml example json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_0
   job_005:
+    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cedx/setup-dart@v2
+        with:
+          release-channel: dev
+      - run: dart --version
+      - uses: actions/checkout@v2
+      - env:
+          PKGS: _test_yaml checked_yaml example json_serializable
+          TRAVIS_OS_NAME: linux
+        run: tool/ci.sh test_0
+  job_006:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -69,24 +88,26 @@ jobs:
         with:
           release-channel: stable
           version: "2.7.0"
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: _test_yaml checked_yaml example json_serializable
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_1
-  job_006:
-    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: dev
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: _test_yaml checked_yaml example json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_1
   job_007:
+    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cedx/setup-dart@v2
+        with:
+          release-channel: dev
+      - run: dart --version
+      - uses: actions/checkout@v2
+      - env:
+          PKGS: _test_yaml checked_yaml example json_serializable
+          TRAVIS_OS_NAME: linux
+        run: tool/ci.sh test_1
+  job_008:
     name: "OS: linux; SDK: 2.7.0; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -94,18 +115,20 @@ jobs:
         with:
           release-channel: stable
           version: "2.7.0"
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_2
-  job_008:
+  job_009:
     name: "OS: linux; SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
+      - run: dart --version
       - uses: actions/checkout@v2
       - env:
           PKGS: json_serializable
