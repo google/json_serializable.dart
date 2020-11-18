@@ -1,9 +1,10 @@
-# Created with package:mono_repo v3.1.0-beta.2
+# Created with package:mono_repo v3.1.0-beta.3
 name: Dart CI
 on:
   push:
     branches:
-      - $default-branch
+      - main
+      - master
   pull_request:
   schedule:
     - cron: "0 0 * * 0"
@@ -24,7 +25,7 @@ jobs:
           version: latest
       - run: dart --version
       - uses: actions/checkout@v2
-      - run: pub global activate mono_repo 3.1.0-beta.2
+      - run: pub global activate mono_repo 3.1.0-beta.3
       - run: pub global run mono_repo generate --validate
   job_002:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
