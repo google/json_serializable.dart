@@ -1,5 +1,6 @@
 ## 3.1.1-dev
 
+- Added a helpful `UnrecognizedKeysException.toString()`.
 - Fixed doc comments for `JsonSerializable.genericArgumentFactories`.
 
 ## 3.1.0

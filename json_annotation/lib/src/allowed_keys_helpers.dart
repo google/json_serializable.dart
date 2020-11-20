@@ -67,6 +67,9 @@ class UnrecognizedKeysException extends BadKeyException {
 
   UnrecognizedKeysException(this.unrecognizedKeys, Map map, this.allowedKeys)
       : super._(map);
+
+  @override
+  String toString() => message;
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was
