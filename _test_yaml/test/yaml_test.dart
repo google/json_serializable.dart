@@ -68,7 +68,7 @@ builders:
 - a
 - b
 ''': r'''
-line 2, column 1 of file.yaml: Unsupported value for "builders".
+line 2, column 1 of file.yaml: Unsupported value for "builders". type 'YamlList' is not a subtype of type 'Map<dynamic, dynamic>' in type cast
   ╷
 2 │ ┌ - a
 3 │ └ - b
@@ -88,7 +88,7 @@ builders:
   a:
     target: 42
   ''': r'''
-line 3, column 13 of file.yaml: Unsupported value for "target".
+line 3, column 13 of file.yaml: Unsupported value for "target". type 'int' is not a subtype of type 'String' in type cast
   ╷
 3 │     target: 42
   │             ^^
