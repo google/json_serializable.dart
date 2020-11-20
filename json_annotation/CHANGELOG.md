@@ -1,4 +1,4 @@
-## 3.1.1-dev
+## 3.1.1
 
 - Avoid `null` values for `CheckedFromJsonException.message` by using 
   `toString()` with unrecognized error types.
