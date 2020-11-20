@@ -117,7 +117,7 @@ class CheckedFromJsonException implements Exception {
       }
       return message;
     }
-    return null;
+    return error.toString();
   }
 
   @override
