@@ -81,7 +81,7 @@ line 1, column 2: Unrecognized keys: [bob]; supported keys: [name, count]
     _expectThrows(
       '{"name": 42, "count": 42}',
       r'''
-line 1, column 10: Unsupported value for "name".
+line 1, column 10: Unsupported value for "name". type 'int' is not a subtype of type 'String' in type cast
   ╷
 1 │ {"name": 42, "count": 42}
   │          ^^
