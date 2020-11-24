@@ -1,4 +1,4 @@
-# Created with package:mono_repo v3.1.0-beta.3
+# Created with package:mono_repo v3.1.0
 name: Dart CI
 on:
   push:
@@ -19,18 +19,36 @@ jobs:
     name: mono_repo self validate
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:stable"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: stable
           version: latest
       - run: dart --version
       - uses: actions/checkout@v2
-      - run: pub global activate mono_repo 3.1.0-beta.3
+      - run: pub global activate mono_repo 3.1.0
       - run: pub global run mono_repo generate --validate
   job_002:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer_0"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
@@ -44,6 +62,16 @@ jobs:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartanalyzer_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: stable
@@ -58,6 +86,16 @@ jobs:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: stable
@@ -72,6 +110,16 @@ jobs:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
@@ -85,6 +133,16 @@ jobs:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: stable
@@ -99,6 +157,16 @@ jobs:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
@@ -112,6 +180,16 @@ jobs:
     name: "OS: linux; SDK: 2.7.0; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: stable
@@ -126,6 +204,16 @@ jobs:
     name: "OS: linux; SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
       - uses: cedx/setup-dart@v2
         with:
           release-channel: dev
