@@ -10,11 +10,14 @@ import 'package:test/test.dart';
 void main() {
   group('test nested json fields', () {
     test('JsonSerializable', () {
-      final nestedFields = NestedFields('Rebaz', 'Raouf', 26, 'Raouf', 'Mhedin', 4, locationName: 'Iraq');
+      final nestedFields = NestedFields(
+          'Rebaz', 'Raouf', 26, 'Raouf', 'Mhedin', 4,
+          locationName: 'Iraq');
 
       final nestedJson = _encode(nestedFields);
 
-      final decodedExample = NestedFields.fromJson(json.decode(nestedJson) as Map<String, dynamic>);
+      final decodedExample = NestedFields.fromJson(
+          json.decode(nestedJson) as Map<String, dynamic>);
 
       expect(nestedFields.firstName, decodedExample.firstName);
       expect(nestedFields.lastName, decodedExample.lastName);
@@ -33,8 +36,8 @@ void main() {
 
       final nestedJson = _encode(nestedInfo);
 
-      final decodedExample =
-          NestedInfoWithChecked<String>.fromJson(json.decode(nestedJson) as Map<String, dynamic>);
+      final decodedExample = NestedInfoWithChecked<String>.fromJson(
+          json.decode(nestedJson) as Map<String, dynamic>);
 
       expect(nestedInfo.firstName, decodedExample.firstName);
       expect(nestedInfo.lastName, decodedExample.lastName);
@@ -48,4 +51,5 @@ void main() {
   });
 }
 
-String _encode(Object object) => const JsonEncoder.withIndent(' ').convert(object);
+String _encode(Object object) =>
+    const JsonEncoder.withIndent(' ').convert(object);

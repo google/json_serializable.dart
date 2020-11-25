@@ -40,7 +40,8 @@ class NestedFields {
     this.travelTime = const Duration(days: 1),
   });
 
-  factory NestedFields.fromJson(Map<String, dynamic> json) => _$NestedFieldsFromJson(json);
+  factory NestedFields.fromJson(Map<String, dynamic> json) =>
+      _$NestedFieldsFromJson(json);
 
   Map<String, dynamic> toJson() => _$NestedFieldsToJson(this);
 }
@@ -56,7 +57,8 @@ class GeneralTestClass3 {
   @JsonKey(name: 'age')
   int age;
 
-  static GeneralTestClass3 fromJson(Map<String, dynamic> json) => _$GeneralTestClass3FromJson(json);
+  static GeneralTestClass3 fromJson(Map<String, dynamic> json) =>
+      _$GeneralTestClass3FromJson(json);
 
   Map<String, dynamic> toJson() => _$GeneralTestClass3ToJson(this);
 }

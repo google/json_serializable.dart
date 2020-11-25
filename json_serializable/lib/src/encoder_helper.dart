@@ -91,12 +91,7 @@ abstract class EncodeHelper implements HelperCore {
     try {
       _toStringVisiting.add(m);
       result.write('{');
-      var first = true;
       m.forEach((Object k, Object v) {
-        if (!first) {
-          //result.write(', ');
-        }
-        first = false;
         result..write(k)..write(': ');
         if (v is Map) {
           result.write(mapToString(v));

@@ -8,7 +8,8 @@ import 'allowed_keys_helpers.dart';
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, T Function() constructor, {Map<String, String> fieldKeyMap}) {
+T $checkedNew<T>(String className, Map map, T Function() constructor,
+    {Map<String, String> fieldKeyMap}) {
   fieldKeyMap ??= const {};
 
   try {
@@ -27,7 +28,8 @@ T $checkedNew<T>(String className, Map map, T Function() constructor, {Map<Strin
     } else if (error is DisallowedNullValueException) {
       key = error.keysWithNullValues.first;
     }
-    throw CheckedFromJsonException._(error, stack, map, key, className: className);
+    throw CheckedFromJsonException._(error, stack, map, key,
+        className: className);
   }
 }
 
@@ -41,7 +43,8 @@ T $checkedConvert<T>(Map map, String key, T Function(Object) castFunc) {
     if (keys.length == 1) {
       return castFunc(map[key]);
     } else {
-      return _$checkedConvert<T>(map[keys.first] as Map, keys.sublist(1), castFunc);
+      return _$checkedConvert<T>(
+          map[keys.first] as Map, keys.sublist(1), castFunc);
     }
   } on CheckedFromJsonException {
     rethrow;
@@ -54,7 +57,8 @@ T _$checkedConvert<T>(Map map, List<String> keys, T Function(Object) castFunc) {
   if (keys.length == 1) {
     return castFunc(map[keys.first]);
   } else {
-    return _$checkedConvert<T>(map[keys.first] as Map, keys.sublist(1), castFunc);
+    return _$checkedConvert<T>(
+        map[keys.first] as Map, keys.sublist(1), castFunc);
   }
 }
 
