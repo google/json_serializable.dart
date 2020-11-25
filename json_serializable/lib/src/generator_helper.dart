@@ -65,10 +65,12 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
           unavailableReasons[field.name] = 'It is assigned to a private field.';
         } else if (field.getter == null) {
           assert(field.setter != null);
-          unavailableReasons[field.name] = 'Setter-only properties are not supported.';
+          unavailableReasons[field.name] =
+              'Setter-only properties are not supported.';
           log.warning('Setters are ignored: ${element.name}.${field.name}');
         } else if (jsonKeyFor(field).ignore) {
-          unavailableReasons[field.name] = 'It is assigned to an ignored field.';
+          unavailableReasons[field.name] =
+              'It is assigned to an ignored field.';
         } else {
           assert(!map.containsKey(field.name));
           map[field.name] = field;

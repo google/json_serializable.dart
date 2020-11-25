@@ -4,4 +4,4 @@
 build/
 pubspec.lock
 .idea/
-/.idea/
+.idea/modules.xml

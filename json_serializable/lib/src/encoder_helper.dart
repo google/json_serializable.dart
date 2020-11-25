@@ -12,7 +12,6 @@ import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
 
-
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
 
@@ -119,7 +118,9 @@ abstract class EncodeHelper implements HelperCore {
     StringBuffer buffer,
     Iterable<FieldElement> fields,
   ) {
-    buffer..writeln('{')..writeln('    final $generatedLocalVarName = <String, dynamic>{');
+    buffer
+      ..writeln('{')
+      ..writeln('    final $generatedLocalVarName = <String, dynamic>{');
 
     // Note that the map literal is left open above. As long as target fields
     // don't need to be intercepted by the `only if null` logic, write them
@@ -133,7 +134,8 @@ abstract class EncodeHelper implements HelperCore {
 
       // If `fieldName` collides with one of the local helpers, prefix
       // access with `this.`.
-      if (safeFieldAccess == generatedLocalVarName || safeFieldAccess == toJsonMapHelperName) {
+      if (safeFieldAccess == generatedLocalVarName ||
+          safeFieldAccess == toJsonMapHelperName) {
         safeFieldAccess = 'this.$safeFieldAccess';
       }
 
@@ -142,7 +144,8 @@ abstract class EncodeHelper implements HelperCore {
         if (directWrite) {
           buffer.writeln('      $safeJsonKeyString: $expression,');
         } else {
-          buffer.writeln('    $generatedLocalVarName[$safeJsonKeyString] = $expression;');
+          buffer.writeln(
+              '    $generatedLocalVarName[$safeJsonKeyString] = $expression;');
         }
       } else {
         if (directWrite) {
@@ -162,7 +165,8 @@ abstract class EncodeHelper implements HelperCore {
 ''');
           directWrite = false;
         }
-        buffer.writeln('    $toJsonMapHelperName($safeJsonKeyString, $expression);');
+        buffer.writeln(
+            '    $toJsonMapHelperName($safeJsonKeyString, $expression);');
       }
     }
 
@@ -171,7 +175,9 @@ abstract class EncodeHelper implements HelperCore {
 
   String _serializeField(FieldElement field, String accessExpression) {
     try {
-      return getHelperContext(field).serialize(field.type, accessExpression).toString();
+      return getHelperContext(field)
+          .serialize(field.type, accessExpression)
+          .toString();
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);
@@ -182,7 +188,8 @@ abstract class EncodeHelper implements HelperCore {
   /// we can avoid checking for `null`.
   bool _writeJsonValueNaive(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
-    return jsonKey.includeIfNull || (!jsonKey.nullable && !_fieldHasCustomEncoder(field));
+    return jsonKey.includeIfNull ||
+        (!jsonKey.nullable && !_fieldHasCustomEncoder(field));
   }
 
   /// Returns `true` if [field] has a user-defined encoder.
@@ -192,7 +199,9 @@ abstract class EncodeHelper implements HelperCore {
   bool _fieldHasCustomEncoder(FieldElement field) {
     final helperContext = getHelperContext(field);
     return helperContext.serializeConvertData != null ||
-        const JsonConverterHelper().serialize(field.type, 'test', helperContext) != null;
+        const JsonConverterHelper()
+                .serialize(field.type, 'test', helperContext) !=
+            null;
   }
 }
 
@@ -200,7 +209,8 @@ List<String> getNestedJsonKeyNames(String jsonKey) {
   return jsonKey.replaceAll("'", '').split('.').map((e) => "'$e'").toList();
 }
 
-void makeNestedMap(Map<String, dynamic> nested, List<String> keys, String value) {
+void makeNestedMap(
+    Map<String, dynamic> nested, List<String> keys, String value) {
   final last = keys.last;
   keys.fold(nested, (obj, key) {
     if (last == key) {
