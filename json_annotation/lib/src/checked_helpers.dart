@@ -39,11 +39,24 @@ T $checkedNew<T>(String className, Map map, T Function() constructor,
 /// Should not be used directly.
 T $checkedConvert<T>(Map map, String key, T Function(Object) castFunc) {
   try {
-    return castFunc(map[key]);
+    final keys = key.split('.');
+    if (keys.length == 1) {
+      return castFunc(map[key]);
+    } else {
+      return _$checkedConvert<T>(map[keys.first], keys.sublist(1), castFunc);
+    }
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {
     throw CheckedFromJsonException._(error, stack, map, key);
+  }
+}
+
+T _$checkedConvert<T>(Map map, List<String> keys, T Function(Object) castFunc) {
+  if (keys.length == 1) {
+    return castFunc(map[keys.first]);
+  } else {
+    return _$checkedConvert<T>(map[keys.first], keys.sublist(1), castFunc);
   }
 }
 
@@ -84,24 +97,24 @@ class CheckedFromJsonException implements Exception {
   final bool badKey;
 
   /// Creates a new instance of [CheckedFromJsonException].
-  CheckedFromJsonException(
-    this.map,
-    this.key,
-    String className,
-    this.message, {
-    bool badKey = false,
-  })  : _className = className,
+  CheckedFromJsonException(this.map,
+      this.key,
+      String className,
+      this.message, {
+        bool badKey = false,
+      })
+      : _className = className,
         badKey = badKey ?? false,
         innerError = null,
         innerStack = null;
 
-  CheckedFromJsonException._(
-    this.innerError,
-    this.innerStack,
-    this.map,
-    this.key, {
-    String className,
-  })  : _className = className,
+  CheckedFromJsonException._(this.innerError,
+      this.innerStack,
+      this.map,
+      this.key, {
+        String className,
+      })
+      : _className = className,
         badKey = innerError is BadKeyException,
         message = _getMessage(innerError);
 
@@ -121,7 +134,8 @@ class CheckedFromJsonException implements Exception {
   }
 
   @override
-  String toString() => <String>[
+  String toString() =>
+      <String>[
         'CheckedFromJsonException',
         if (_className != null) 'Could not create `$_className`.',
         if (key != null) 'There is a problem with "$key".',

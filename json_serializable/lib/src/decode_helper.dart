@@ -9,6 +9,7 @@ import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
+import 'nested_field_utils.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
@@ -182,8 +183,10 @@ abstract class DecodeHelper implements HelperCore {
         assert(!checkedProperty,
             'should only be true if `_generator.checked` is true.');
 
+        final nestedNames = NestedUtils.getNestedJsonKey(jsonKeyName);
+
         value = contextHelper
-            .deserialize(targetType, 'json[$jsonKeyName]')
+            .deserialize(targetType, 'json$nestedNames')
             .toString();
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors

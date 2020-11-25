@@ -114,4 +114,7 @@ const _expectedAnnotatedTests = [
   'ValidToFromFuncClassStatic',
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
+  'NestedFields',
+  'GeneralTestClass3',
+  'NestedFieldsWithChecked'
 ];

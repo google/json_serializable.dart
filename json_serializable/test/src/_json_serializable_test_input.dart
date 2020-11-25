@@ -7,6 +7,7 @@ import 'dart:collection';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/helper_core.dart';
 import 'package:source_gen_test/annotations.dart';
+import 'package:meta/meta.dart';
 
 part 'checked_test_input.dart';
 
@@ -29,6 +30,8 @@ part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';
 
 part 'unknown_enum_value_test_input.dart';
+
+part 'nested_fields_test.dart';
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable()
