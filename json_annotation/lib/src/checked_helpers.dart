@@ -8,8 +8,7 @@ import 'allowed_keys_helpers.dart';
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedNew<T>(String className, Map map, T Function() constructor,
-    {Map<String, String> fieldKeyMap}) {
+T $checkedNew<T>(String className, Map map, T Function() constructor, {Map<String, String> fieldKeyMap}) {
   fieldKeyMap ??= const {};
 
   try {
@@ -28,8 +27,7 @@ T $checkedNew<T>(String className, Map map, T Function() constructor,
     } else if (error is DisallowedNullValueException) {
       key = error.keysWithNullValues.first;
     }
-    throw CheckedFromJsonException._(error, stack, map, key,
-        className: className);
+    throw CheckedFromJsonException._(error, stack, map, key, className: className);
   }
 }
 
@@ -97,24 +95,24 @@ class CheckedFromJsonException implements Exception {
   final bool badKey;
 
   /// Creates a new instance of [CheckedFromJsonException].
-  CheckedFromJsonException(this.map,
-      this.key,
-      String className,
-      this.message, {
-        bool badKey = false,
-      })
-      : _className = className,
+  CheckedFromJsonException(
+    this.map,
+    this.key,
+    String className,
+    this.message, {
+    bool badKey = false,
+  })  : _className = className,
         badKey = badKey ?? false,
         innerError = null,
         innerStack = null;
 
-  CheckedFromJsonException._(this.innerError,
-      this.innerStack,
-      this.map,
-      this.key, {
-        String className,
-      })
-      : _className = className,
+  CheckedFromJsonException._(
+    this.innerError,
+    this.innerStack,
+    this.map,
+    this.key, {
+    String className,
+  })  : _className = className,
         badKey = innerError is BadKeyException,
         message = _getMessage(innerError);
 
@@ -134,8 +132,7 @@ class CheckedFromJsonException implements Exception {
   }
 
   @override
-  String toString() =>
-      <String>[
+  String toString() => <String>[
         'CheckedFromJsonException',
         if (_className != null) 'Could not create `$_className`.',
         if (key != null) 'There is a problem with "$key".',

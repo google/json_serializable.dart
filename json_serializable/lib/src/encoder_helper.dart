@@ -8,10 +8,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'constants.dart';
 import 'helper_core.dart';
-import 'nested_field_utils.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
+
 
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
@@ -56,12 +56,12 @@ abstract class EncodeHelper implements HelperCore {
     for (final field in fields) {
       final access = _fieldAccess(field);
       final jsonKey = safeNameAccess(field);
-      final nestedKeys = NestedUtils.getNestedJsonKeyNames(jsonKey);
+      final nestedKeys = getNestedJsonKeyNames(jsonKey);
       final value = _serializeField(field, access);
 
       // if we have nested key create map for each of key
       if (jsonKey.contains('.')) {
-        NestedUtils.makeNestedMap(nestedMapFields, nestedKeys, value);
+        makeNestedMap(nestedMapFields, nestedKeys, value);
       } else {
         nestedMapFields[jsonKey] = value;
       }
@@ -112,7 +112,6 @@ abstract class EncodeHelper implements HelperCore {
     }
     return result.toString();
   }
-
 
   static const _toJsonParamName = 'instance';
 
@@ -195,4 +194,21 @@ abstract class EncodeHelper implements HelperCore {
     return helperContext.serializeConvertData != null ||
         const JsonConverterHelper().serialize(field.type, 'test', helperContext) != null;
   }
+}
+
+List<String> getNestedJsonKeyNames(String jsonKey) {
+  return jsonKey.replaceAll("'", '').split('.').map((e) => "'$e'").toList();
+}
+
+void makeNestedMap(Map<String, dynamic> nested, List<String> keys, String value) {
+  final last = keys.last;
+  keys.fold(nested, (obj, key) {
+    if (last == key) {
+      obj[key] = value;
+      return obj;
+    } else {
+      obj[key] ??= <String, dynamic>{};
+      return obj[key];
+    }
+  });
 }

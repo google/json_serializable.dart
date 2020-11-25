@@ -8,8 +8,7 @@ import 'package:example/nested_fields.dart';
 import 'package:test/test.dart';
 
 void main() {
-
-  group('test nested json fields', (){
+  group('test nested json fields', () {
     test('JsonSerializable', () {
       final nestedFields = NestedFields('Rebaz', 'Raouf', 26, 'Raouf', 'Mhedin', 4, locationName: 'Iraq');
 
@@ -29,11 +28,13 @@ void main() {
     });
 
     test('JsonSerializable', () {
-      final nestedInfo = NestedInfoWithChecked<String>('Rebaz', 'Raouf', 26, 4, nestedGenericField: 'test', normalGeneric: 'normal');
+      final nestedInfo = NestedInfoWithChecked<String>('Rebaz', 'Raouf', 26, 4,
+          nestedGenericField: 'test', normalGeneric: 'normal');
 
       final nestedJson = _encode(nestedInfo);
 
-      final decodedExample = NestedInfoWithChecked<String>.fromJson(json.decode(nestedJson) as Map<String, dynamic>);
+      final decodedExample =
+          NestedInfoWithChecked<String>.fromJson(json.decode(nestedJson) as Map<String, dynamic>);
 
       expect(nestedInfo.firstName, decodedExample.firstName);
       expect(nestedInfo.lastName, decodedExample.lastName);
