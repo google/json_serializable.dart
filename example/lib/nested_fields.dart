@@ -55,6 +55,10 @@ class GeneralTestClass3 {
 
   @JsonKey(name: 'age')
   int age;
+
+  static GeneralTestClass3 fromJson(Map<String, dynamic> json) => _$GeneralTestClass3FromJson(json);
+
+  Map<String, dynamic> toJson() => _$GeneralTestClass3ToJson(this);
 }
 
 @JsonSerializable(checked: true, genericArgumentFactories: true)

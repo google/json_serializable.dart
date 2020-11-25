@@ -43,7 +43,7 @@ T $checkedConvert<T>(Map map, String key, T Function(Object) castFunc) {
     if (keys.length == 1) {
       return castFunc(map[key]);
     } else {
-      return _$checkedConvert<T>(map[keys.first], keys.sublist(1), castFunc);
+      return _$checkedConvert<T>(map[keys.first] as Map, keys.sublist(1), castFunc);
     }
   } on CheckedFromJsonException {
     rethrow;
@@ -56,7 +56,7 @@ T _$checkedConvert<T>(Map map, List<String> keys, T Function(Object) castFunc) {
   if (keys.length == 1) {
     return castFunc(map[keys.first]);
   } else {
-    return _$checkedConvert<T>(map[keys.first], keys.sublist(1), castFunc);
+    return _$checkedConvert<T>(map[keys.first] as Map, keys.sublist(1), castFunc);
   }
 }
 
