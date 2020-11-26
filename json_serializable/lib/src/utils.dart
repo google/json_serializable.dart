@@ -15,16 +15,12 @@ const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
 DartObject _jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
-    (element.getter == null
-        ? null
-        : _jsonKeyChecker.firstAnnotationOf(element.getter));
+    (element.getter == null ? null : _jsonKeyChecker.firstAnnotationOf(element.getter));
 
-ConstantReader jsonKeyAnnotation(FieldElement element) =>
-    ConstantReader(_jsonKeyAnnotation(element));
+ConstantReader jsonKeyAnnotation(FieldElement element) => ConstantReader(_jsonKeyAnnotation(element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
-bool hasJsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyAnnotation(element) != null;
+bool hasJsonKeyAnnotation(FieldElement element) => _jsonKeyAnnotation(element) != null;
 
 final _upperCase = RegExp('[A-Z]');
 
@@ -35,13 +31,17 @@ String snakeCase(String input) => _fixCase(input, '_');
 String pascalCase(String input) {
   if (input.isEmpty) {
     return '';
+  } else if (input.contains('.')) {
+    return input.split('.').map((item) {
+      //if (item.isEmpty) return item;
+      return item[0].toUpperCase() + item.substring(1);
+    }).join('.');
   }
 
   return input[0].toUpperCase() + input.substring(1);
 }
 
-String _fixCase(String input, String separator) =>
-    input.replaceAllMapped(_upperCase, (match) {
+String _fixCase(String input, String separator) => input.replaceAllMapped(_upperCase, (match) {
       var lower = match.group(0).toLowerCase();
 
       if (match.start > 0) {
@@ -53,8 +53,7 @@ String _fixCase(String input, String separator) =>
 
 @alwaysThrows
 void throwUnsupported(FieldElement element, String message) =>
-    throw InvalidGenerationSourceError(
-        'Error with `@JsonKey` on `${element.name}`. $message',
+    throw InvalidGenerationSourceError('Error with `@JsonKey` on `${element.name}`. $message',
         element: element);
 
 FieldRename _fromDartObject(ConstantReader reader) => reader.isNull
@@ -79,12 +78,10 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       checked: reader.read('checked').literalValue as bool,
       createFactory: reader.read('createFactory').literalValue as bool,
       createToJson: reader.read('createToJson').literalValue as bool,
-      disallowUnrecognizedKeys:
-          reader.read('disallowUnrecognizedKeys').literalValue as bool,
+      disallowUnrecognizedKeys: reader.read('disallowUnrecognizedKeys').literalValue as bool,
       explicitToJson: reader.read('explicitToJson').literalValue as bool,
       fieldRename: _fromDartObject(reader.read('fieldRename')),
-      genericArgumentFactories:
-          reader.read('genericArgumentFactories').literalValue as bool,
+      genericArgumentFactories: reader.read('genericArgumentFactories').literalValue as bool,
       ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool,
       includeIfNull: reader.read('includeIfNull').literalValue as bool,
       nullable: reader.read('nullable').literalValue as bool,
@@ -111,21 +108,18 @@ JsonSerializable mergeConfig(
     checked: annotation.checked ?? config.checked,
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
-    disallowUnrecognizedKeys:
-        annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
+    disallowUnrecognizedKeys: annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     genericArgumentFactories: annotation.genericArgumentFactories ??
-        (classElement.typeParameters.isNotEmpty &&
-            config.genericArgumentFactories),
+        (classElement.typeParameters.isNotEmpty && config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     nullable: annotation.nullable ?? config.nullable,
   );
 }
 
-bool isEnum(DartType targetType) =>
-    targetType is InterfaceType && targetType.element.isEnum;
+bool isEnum(DartType targetType) => targetType is InterfaceType && targetType.element.isEnum;
 
 final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 
@@ -140,8 +134,7 @@ final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 /// If [targetType] is not an enum, `null` is returned.
 Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
   MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
-    final annotation =
-        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
+    final annotation = const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
 
     dynamic fieldValue;
     if (annotation == null) {
@@ -168,10 +161,8 @@ Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
   }
 
   if (targetType is InterfaceType && targetType.element.isEnum) {
-    return _enumMapExpando[targetType] ??=
-        Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
-            .where((p) => !p.isSynthetic)
-            .map(_generateEntry));
+    return _enumMapExpando[targetType] ??= Map<FieldElement, dynamic>.fromEntries(
+        targetType.element.fields.where((p) => !p.isSynthetic).map(_generateEntry));
   }
   return null;
 }
@@ -180,8 +171,7 @@ Map<FieldElement, dynamic> enumFieldsMap(DartType targetType) {
 /// with its values.
 ///
 /// Otherwise, `null`.
-Iterable<FieldElement> iterateEnumFields(DartType targetType) =>
-    enumFieldsMap(targetType)?.keys;
+Iterable<FieldElement> iterateEnumFields(DartType targetType) => enumFieldsMap(targetType)?.keys;
 
 /// Returns a quoted String literal for [value] that can be used in generated
 /// Dart code.
@@ -268,6 +258,5 @@ String _getHexLiteral(String input) {
 extension DartTypeExtension on DartType {
   bool isAssignableTo(DartType other) =>
       // If the library is `null`, treat it like dynamic => `true`
-      element.library == null ||
-      element.library.typeSystem.isAssignableTo(this, other);
+      element.library == null || element.library.typeSystem.isAssignableTo(this, other);
 }

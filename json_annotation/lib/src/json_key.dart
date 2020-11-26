@@ -64,6 +64,13 @@ class JsonKey {
   /// If `null`, the field name is used.
   final String name;
 
+  /// The path key in a JSON map to use when reading and writing values corresponding
+  /// to the annotated fields.
+  ///
+  /// If `null`, the field name is used.
+  /// It should provide only [name] or [path]
+  final String path;
+
   /// When `true`, `null` fields are handled gracefully when encoding to JSON
   /// and when decoding `null` and nonexistent values from JSON.
   ///
@@ -113,6 +120,7 @@ class JsonKey {
     this.ignore,
     this.includeIfNull,
     this.name,
+    this.path,
     this.nullable,
     this.required,
     this.toJson,

@@ -195,6 +195,7 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
     ignore: obj.read('ignore').literalValue as bool,
     includeIfNull: obj.read('includeIfNull').literalValue as bool,
     name: obj.read('name').literalValue as String,
+    path: obj.read('path').literalValue as String,
     nullable: obj.read('nullable').literalValue as bool,
     required: obj.read('required').literalValue as bool,
     unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
@@ -209,6 +210,7 @@ JsonKey _populateJsonKey(
   bool ignore,
   bool includeIfNull,
   String name,
+  String path,
   bool nullable,
   bool required,
   Object unknownEnumValue,
@@ -228,7 +230,7 @@ JsonKey _populateJsonKey(
     ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
-    name: _encodedFieldName(classAnnotation, name, element),
+    name: _encodedFieldName(classAnnotation, name, path, element),
     nullable: nullable ?? classAnnotation.nullable,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
@@ -242,20 +244,22 @@ JsonKey _populateJsonKey(
 final _explicitNullableExpando = Expando<bool>('explicit nullable');
 
 String _encodedFieldName(JsonSerializable classAnnotation,
-    String jsonKeyNameValue, FieldElement fieldElement) {
+    String jsonKeyNameValue, String jsonKeyPathValue, FieldElement fieldElement) {
   if (jsonKeyNameValue != null) {
     return jsonKeyNameValue;
   }
 
+  final fieldName = jsonKeyPathValue ?? fieldElement.name;
+
   switch (classAnnotation.fieldRename) {
     case FieldRename.none:
-      return fieldElement.name;
+      return fieldName;
     case FieldRename.snake:
-      return snakeCase(fieldElement.name);
+      return snakeCase(fieldName);
     case FieldRename.kebab:
-      return kebabCase(fieldElement.name);
+      return kebabCase(fieldName);
     case FieldRename.pascal:
-      return pascalCase(fieldElement.name);
+      return pascalCase(fieldName);
   }
 
   throw ArgumentError.value(

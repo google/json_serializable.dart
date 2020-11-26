@@ -326,5 +326,5 @@ class _ConstructorData {
 
 String getNestedJsonKey(String jsonKey) {
   final split = jsonKey.replaceAll("'", '').split('.');
-  return split.map((i) => "['$i']").toList().join();
+  return split.map((k) => "['$k']").toList().join();
 }
