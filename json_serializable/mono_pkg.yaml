@@ -6,7 +6,7 @@ stages:
 - analyzer_and_format:
   - group:
     - dartfmt
-    - dartanalyzer: --fatal-warnings --fatal-infos .
+    - dartanalyzer: --fatal-infos .
 - unit_test:
   - test:
   - test: -p chrome

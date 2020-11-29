@@ -36,16 +36,16 @@ jobs:
       - run: pub global activate mono_repo 3.3.0
       - run: pub global run mono_repo generate --validate
   job_002:
-    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
+    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-infos .`]"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@v2
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-json_annotation-json_serializable;commands:dartfmt-dartanalyzer_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -55,56 +55,9 @@ jobs:
       - run: dart --version
       - uses: actions/checkout@v2
       - env:
-          PKGS: _test_yaml checked_yaml json_annotation json_serializable
+          PKGS: _test_yaml checked_yaml example json_annotation json_serializable
           TRAVIS_OS_NAME: linux
-        run: tool/ci.sh dartfmt dartanalyzer_0
-  job_005:
-    name: "OS: linux; SDK: 2.7.0; PKG: checked_yaml; TASKS: `dartanalyzer --fatal-warnings .`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml;commands:dartanalyzer_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: stable
-          version: "2.7.0"
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: checked_yaml
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh dartanalyzer_1
-  job_008:
-    name: "OS: linux; SDK: dev; PKG: example; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings .`]"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:example;commands:dartfmt-dartanalyzer_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:example
-            os:ubuntu-latest;pub-cache-hosted;dart:dev
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: dev
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: example
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh dartfmt dartanalyzer_1
+        run: tool/ci.sh dartfmt dartanalyzer
   job_003:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
@@ -131,38 +84,7 @@ jobs:
     needs:
       - job_001
       - job_002
-      - job_005
-      - job_008
-  job_006:
-    name: "OS: linux; SDK: 2.7.0; PKG: checked_yaml; TASKS: `pub run test`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml;commands:test_0"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: stable
-          version: "2.7.0"
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: checked_yaml
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_0
-    needs:
-      - job_001
-      - job_002
-      - job_005
-      - job_008
-  job_009:
+  job_005:
     name: "OS: linux; SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -188,8 +110,6 @@ jobs:
     needs:
       - job_001
       - job_002
-      - job_005
-      - job_008
   job_004:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
@@ -215,33 +135,4 @@ jobs:
         run: tool/ci.sh test_1
     needs:
       - job_003
-      - job_006
-      - job_009
-  job_007:
-    name: "OS: linux; SDK: 2.7.0; PKG: checked_yaml; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml;commands:test_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:checked_yaml
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: stable
-          version: "2.7.0"
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: checked_yaml
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_1
-    needs:
-      - job_003
-      - job_006
-      - job_009
+      - job_005
