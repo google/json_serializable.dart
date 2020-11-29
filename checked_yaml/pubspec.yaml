@@ -23,7 +23,6 @@ dev_dependencies:
 dependency_overrides:
   analyzer: ^0.41.0
   build_config:
-    path: /Users/kevmoo/github/build/build_config
   json_annotation:
     path: ../json_annotation
   json_serializable:
