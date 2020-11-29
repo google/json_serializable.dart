@@ -1,16 +1,17 @@
-<<<<<<< HEAD
-## 3.1.0-nullsafety
+## 3.2.0-nullsafety
 
 - Updated `$checkedConvert` helper to support null-safety.
-=======
-## 3.1.1-dev
 
+## 3.1.1
+
+- Avoid `null` values for `CheckedFromJsonException.message` by using 
+  `toString()` with unrecognized error types.
+- Added a helpful `UnrecognizedKeysException.toString()`.
 - Fixed doc comments for `JsonSerializable.genericArgumentFactories`.
 
 ## 3.1.0
 
 - Added `JsonSerializable.genericArgumentFactories` field. 
->>>>>>> master
 - Require at least Dart `2.7.0`.
 
 ## 3.0.1

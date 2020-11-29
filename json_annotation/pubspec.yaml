@@ -1,5 +1,5 @@
 name: json_annotation
-version: 3.1.0-nullsafety
+version: 3.2.0-nullsafety
 description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
