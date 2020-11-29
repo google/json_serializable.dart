@@ -58,8 +58,6 @@ jobs:
           PKGS: _test_yaml checked_yaml example json_annotation json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh dartfmt dartanalyzer_0
-    needs:
-      - job_001
   job_003:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: `dartanalyzer --fatal-warnings .`"
     runs-on: ubuntu-latest
@@ -84,8 +82,6 @@ jobs:
           PKGS: _test_yaml checked_yaml example json_annotation json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh dartanalyzer_1
-    needs:
-      - job_001
   job_004:
     name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
@@ -111,6 +107,7 @@ jobs:
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_0
     needs:
+      - job_001
       - job_002
       - job_003
   job_005:
@@ -137,6 +134,7 @@ jobs:
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_0
     needs:
+      - job_001
       - job_002
       - job_003
   job_008:
@@ -164,6 +162,7 @@ jobs:
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_2
     needs:
+      - job_001
       - job_002
       - job_003
   job_009:
@@ -190,6 +189,7 @@ jobs:
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_2
     needs:
+      - job_001
       - job_002
       - job_003
   job_006:
