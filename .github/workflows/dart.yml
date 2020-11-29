@@ -1,4 +1,4 @@
-# Created with package:mono_repo v3.1.0
+# Created with package:mono_repo v3.3.0
 name: Dart CI
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
           version: latest
       - run: dart --version
       - uses: actions/checkout@v2
-      - run: pub global activate mono_repo 3.1.0
+      - run: pub global activate mono_repo 3.3.0
       - run: pub global run mono_repo generate --validate
   job_002:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; TASKS: [`dartfmt -n --set-exit-if-changed .`, `dartanalyzer --fatal-warnings --fatal-infos .`]"
@@ -106,6 +106,10 @@ jobs:
           PKGS: _test_yaml checked_yaml example json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_0
+    needs:
+      - job_001
+      - job_002
+      - job_003
   job_005:
     name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test`"
     runs-on: ubuntu-latest
@@ -129,53 +133,10 @@ jobs:
           PKGS: _test_yaml checked_yaml example json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_0
-  job_006:
-    name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: stable
-          version: "2.7.0"
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: _test_yaml checked_yaml example json_serializable
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_1
-  job_007:
-    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:dev
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: cedx/setup-dart@v2
-        with:
-          release-channel: dev
-      - run: dart --version
-      - uses: actions/checkout@v2
-      - env:
-          PKGS: _test_yaml checked_yaml example json_serializable
-          TRAVIS_OS_NAME: linux
-        run: tool/ci.sh test_1
+    needs:
+      - job_001
+      - job_002
+      - job_003
   job_008:
     name: "OS: linux; SDK: 2.7.0; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
@@ -200,6 +161,10 @@ jobs:
           PKGS: json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_2
+    needs:
+      - job_001
+      - job_002
+      - job_003
   job_009:
     name: "OS: linux; SDK: dev; PKG: json_serializable; TASKS: `pub run test -p chrome`"
     runs-on: ubuntu-latest
@@ -223,3 +188,64 @@ jobs:
           PKGS: json_serializable
           TRAVIS_OS_NAME: linux
         run: tool/ci.sh test_2
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_006:
+    name: "OS: linux; SDK: 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - uses: cedx/setup-dart@v2
+        with:
+          release-channel: stable
+          version: "2.7.0"
+      - run: dart --version
+      - uses: actions/checkout@v2
+      - env:
+          PKGS: _test_yaml checked_yaml example json_serializable
+          TRAVIS_OS_NAME: linux
+        run: tool/ci.sh test_1
+    needs:
+      - job_004
+      - job_005
+      - job_008
+      - job_009
+  job_007:
+    name: "OS: linux; SDK: dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; TASKS: `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - uses: cedx/setup-dart@v2
+        with:
+          release-channel: dev
+      - run: dart --version
+      - uses: actions/checkout@v2
+      - env:
+          PKGS: _test_yaml checked_yaml example json_serializable
+          TRAVIS_OS_NAME: linux
+        run: tool/ci.sh test_1
+    needs:
+      - job_004
+      - job_005
+      - job_008
+      - job_009
