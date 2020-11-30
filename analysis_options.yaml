@@ -1,9 +1,6 @@
 analyzer:
   strong-mode:
     implicit-casts: false
-  errors:
-    # https://github.com/dart-lang/linter/issues/2331
-    package_names: ignore
 
 linter:
   rules:

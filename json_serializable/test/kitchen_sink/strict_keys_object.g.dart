@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.12
 
 part of 'strict_keys_object.dart';
 

@@ -9,7 +9,7 @@ import 'json_serializable.dart';
 class JsonKey {
   /// The value to use if the source JSON does not contain this key or if the
   /// value is `null`.
-  final Object defaultValue;
+  final Object? defaultValue;
 
   /// If `true`, generated code will throw a [DisallowedNullValueException] if
   /// the corresponding key exists, but the value is `null`.
@@ -22,7 +22,7 @@ class JsonKey {
   ///
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
-  final bool disallowNullValue;
+  final bool? disallowNullValue;
 
   /// A [Function] to use when decoding the associated JSON value to the
   /// annotated field.
@@ -33,13 +33,13 @@ class JsonKey {
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [toJson] if you set [fromJson].
   /// Values returned by [toJson] should "round-trip" through [fromJson].
-  final Function fromJson;
+  final Function? fromJson;
 
   /// `true` if the generator should ignore this field completely.
   ///
   /// If `null` (the default) or `false`, the field will be considered for
   /// serialization.
-  final bool ignore;
+  final bool? ignore;
 
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
@@ -56,26 +56,13 @@ class JsonKey {
   ///
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
-  final bool includeIfNull;
+  final bool? includeIfNull;
 
   /// The key in a JSON map to use when reading and writing values corresponding
   /// to the annotated fields.
   ///
   /// If `null`, the field name is used.
-  final String name;
-
-  /// When `true`, `null` fields are handled gracefully when encoding to JSON
-  /// and when decoding `null` and nonexistent values from JSON.
-  ///
-  /// Setting to `false` eliminates `null` verification in the generated code
-  /// for the annotated field, which reduces the code size. Errors may be thrown
-  /// at runtime if `null` values are encountered, but the original class should
-  /// also implement `null` runtime validation if it's critical.
-  ///
-  /// The default value, `null`, indicates that the behavior should be
-  /// acquired from the [JsonSerializable.nullable] annotation on the
-  /// enclosing class.
-  final bool nullable;
+  final String? name;
 
   /// When `true`, generated code for `fromJson` will verify that the source
   /// JSON map contains the associated key.
@@ -85,7 +72,7 @@ class JsonKey {
   ///
   /// Note: only the existence of the key is checked. A key with a `null` value
   /// is considered valid.
-  final bool required;
+  final bool? required;
 
   /// A [Function] to use when encoding the annotated field to JSON.
   ///
@@ -95,25 +82,25 @@ class JsonKey {
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [fromJson] if you set [toJson].
   /// Values returned by [toJson] should "round-trip" through [fromJson].
-  final Function toJson;
+  final Function? toJson;
 
   /// The value to use for an enum field when the value provided is not in the
   /// source enum.
   ///
   /// Valid only on enum fields with a compatible enum value.
-  final Object unknownEnumValue;
+  final Object? unknownEnumValue;
 
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey({
+    @Deprecated('Has no effect') bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
     this.ignore,
     this.includeIfNull,
     this.name,
-    this.nullable,
     this.required,
     this.toJson,
     this.unknownEnumValue,

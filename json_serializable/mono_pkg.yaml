@@ -1,6 +1,5 @@
 # See https://github.com/google/mono_repo.dart for details on this file
 dart:
-- 2.7.0
 - dev
 
 stages:
@@ -8,12 +7,8 @@ stages:
   - group:
     - dartfmt
     - dartanalyzer: --fatal-warnings --fatal-infos .
-    dart: [dev]
-  - group:
-    - dartanalyzer: --fatal-warnings .
-    dart: [2.7.0]
 - unit_test:
-  - test
+  - test:
   - test: -p chrome
 - ensure_build:
   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart

@@ -50,23 +50,47 @@ class TestTypeData {
 
     final simpleClassContent = '$classAnnotationSplit${split[1]}';
 
-    buffer.write(Replacement.generate(
-      simpleClassContent,
-      _libReplacements(type),
-    ));
+    buffer
+      ..write(
+        Replacement.generate(
+          simpleClassContent,
+          _libReplacements(type),
+        ),
+      )
+      ..write(
+        Replacement.generate(
+          simpleClassContent.replaceAll(
+            'SimpleClass',
+            'SimpleClassNullable',
+          ),
+          _libReplacements('$type?'),
+        ),
+      );
 
     for (var genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);
 
       final genericType = '$type<$genericArg>';
 
-      buffer.write(Replacement.generate(
-        simpleClassContent.replaceAll(
-          'SimpleClass',
-          'SimpleClass$genericArgClassPart',
-        ),
-        _libReplacements(genericType),
-      ));
+      buffer
+        ..write(
+          Replacement.generate(
+            simpleClassContent.replaceAll(
+              'SimpleClass',
+              'SimpleClassOf$genericArgClassPart',
+            ),
+            _libReplacements(genericType),
+          ),
+        )
+        ..write(
+          Replacement.generate(
+            simpleClassContent.replaceAll(
+              'SimpleClass',
+              'SimpleClassNullableOf$genericArgClassPart',
+            ),
+            _libReplacements('$genericType?'),
+          ),
+        );
     }
 
     return buffer.toString();
@@ -77,15 +101,13 @@ class TestTypeData {
       'final dynamic value;',
       'final $type value;',
     );
-    yield Replacement(
-      'final dynamic nullable;',
-      'final $type nullable;',
-    );
 
-    final defaultReplacement = (defaultExpression == null // no default provided
+    final defaultNotSupported = defaultExpression == null // no default provided
             ||
             type.contains('<') // no support for default values and generic args
-        )
+        ;
+
+    final defaultReplacement = defaultNotSupported
         ? ''
         : _defaultSource
             .replaceFirst('42', defaultExpression)
@@ -95,12 +117,59 @@ class TestTypeData {
       _defaultSource,
       defaultReplacement,
     );
+
+    if (defaultNotSupported) {
+      yield const Replacement(
+        '    this.withDefault,',
+        '',
+      );
+    }
   }
 
-  String testContent(String sourceContent, String type) => Replacement.generate(
-        sourceContent,
-        _testReplacements(type),
+  String testContent(String sourceContent, String type) {
+    const groupStart = "\n  group('non-nullable', () {";
+    const groupEnd = '}); // end non-nullable group\n';
+
+    final startIndex = sourceContent.indexOf(groupStart);
+    final endIndex = sourceContent.indexOf(groupEnd) + groupEnd.length;
+
+    final groupContent = sourceContent.substring(startIndex, endIndex);
+
+    final nullableGroupContent = groupContent
+        .replaceAll('non-nullable', 'nullable')
+        .replaceAll('SimpleClass', 'SimpleClassNullable');
+
+    final thrownError = type == customEnumType ? 'ArgumentError' : 'TypeError';
+
+    final newGroupContent = groupContent.replaceAll(
+      r'''
+      final object = SimpleClass.fromJson({});
+      final encoded = loudEncode(object);
+
+      expect(encoded, loudEncode(_nullableDefaultOutput));
+      final object2 = SimpleClass.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
       );
+      expect(loudEncode(object2), encoded);''',
+      '''
+      expect(
+        () => loudEncode(SimpleClass.fromJson({})),
+        throwsA(isA<$thrownError>()),
+      );''',
+    );
+
+    final updatedSourceContent = [
+      sourceContent.substring(0, startIndex),
+      newGroupContent,
+      nullableGroupContent,
+      sourceContent.substring(endIndex),
+    ].join();
+
+    return Replacement.generate(
+      updatedSourceContent,
+      _testReplacements(type),
+    );
+  }
 
   Iterable<Replacement> _testReplacements(String type) sync* {
     yield Replacement(
@@ -139,6 +208,7 @@ final _altValue = $altJsonExpression;
 }
 
 String _genericClassPart(String genericArg) => genericArg
+    .replaceAll('?', 'Nullable')
     .split(',')
     .map((e) => [
           e.substring(0, 1).toUpperCase(),

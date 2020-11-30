@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 part of '_json_serializable_test_input.dart';
 
 @ShouldThrow(
@@ -12,7 +14,7 @@ part of '_json_serializable_test_input.dart';
 @JsonSerializable()
 class DefaultWithSymbol {
   @JsonKey(defaultValue: #symbol)
-  Object field;
+  late Object field;
 
   DefaultWithSymbol();
 }
@@ -27,7 +29,7 @@ int _function() => 42;
 @JsonSerializable()
 class DefaultWithFunction {
   @JsonKey(defaultValue: _function)
-  Object field;
+  Object? field;
 
   DefaultWithFunction();
 }
@@ -40,7 +42,7 @@ class DefaultWithFunction {
 @JsonSerializable()
 class DefaultWithType {
   @JsonKey(defaultValue: Object)
-  Object field;
+  late Object field;
 
   DefaultWithType();
 }
@@ -53,7 +55,7 @@ class DefaultWithType {
 @JsonSerializable()
 class DefaultWithConstObject {
   @JsonKey(defaultValue: Duration())
-  Object field;
+  late Object field;
 
   DefaultWithConstObject();
 }
@@ -68,35 +70,9 @@ enum Enum { value }
 @JsonSerializable()
 class DefaultWithNestedEnum {
   @JsonKey(defaultValue: [Enum.value])
-  Object field;
+  late Object field;
 
   DefaultWithNestedEnum();
-}
-
-@ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
-  'Cannot use `defaultValue` on a field with `nullable` false.',
-  element: 'field',
-)
-@JsonSerializable()
-class DefaultWithNonNullableField {
-  @JsonKey(defaultValue: 42, nullable: false)
-  Object field;
-
-  DefaultWithNonNullableField();
-}
-
-@ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
-  'Cannot use `defaultValue` on a field with `nullable` false.',
-  element: 'field',
-)
-@JsonSerializable(nullable: false)
-class DefaultWithNonNullableClass {
-  @JsonKey(defaultValue: 42)
-  Object field;
-
-  DefaultWithNonNullableClass();
 }
 
 @ShouldGenerate(
@@ -118,7 +94,7 @@ Instead of using `defaultValue`, set `nullable: false` and handle `null` in the 
 @JsonSerializable(createToJson: false)
 class DefaultWithToJsonClass {
   @JsonKey(defaultValue: 7, fromJson: _fromJson)
-  int fieldDefaultValueToJson;
+  late int fieldDefaultValueToJson;
 
   DefaultWithToJsonClass();
 
@@ -132,7 +108,7 @@ DefaultWithDisallowNullRequiredClass
   $checkKeys(json,
       requiredKeys: const ['theField'], disallowNullValues: const ['theField']);
   return DefaultWithDisallowNullRequiredClass()
-    ..theField = json['theField'] as int ?? 7;
+    ..theField = json['theField'] as int? ?? 7;
 }
 ''',
   expectedLogItems: [
@@ -143,7 +119,7 @@ DefaultWithDisallowNullRequiredClass
 @JsonSerializable(createToJson: false)
 class DefaultWithDisallowNullRequiredClass {
   @JsonKey(defaultValue: 7, disallowNullValue: true, required: true)
-  int theField;
+  int? theField;
 
   DefaultWithDisallowNullRequiredClass();
 }
@@ -152,33 +128,33 @@ class DefaultWithDisallowNullRequiredClass {
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
     Map<String, dynamic> json) {
   return DefaultDoubleConstants()
-    ..defaultNan = (json['defaultNan'] as num)?.toDouble() ?? double.nan
+    ..defaultNan = (json['defaultNan'] as num?)?.toDouble() ?? double.nan
     ..defaultNegativeInfinity =
-        (json['defaultNegativeInfinity'] as num)?.toDouble() ??
+        (json['defaultNegativeInfinity'] as num?)?.toDouble() ??
             double.negativeInfinity
     ..defaultInfinity =
-        (json['defaultInfinity'] as num)?.toDouble() ?? double.infinity
+        (json['defaultInfinity'] as num?)?.toDouble() ?? double.infinity
     ..defaultMinPositive =
-        (json['defaultMinPositive'] as num)?.toDouble() ?? 5e-324
-    ..defaultMaxFinite = (json['defaultMaxFinite'] as num)?.toDouble() ??
+        (json['defaultMinPositive'] as num?)?.toDouble() ?? 5e-324
+    ..defaultMaxFinite = (json['defaultMaxFinite'] as num?)?.toDouble() ??
         1.7976931348623157e+308;
 }
 ''')
 @JsonSerializable(createToJson: false)
 class DefaultDoubleConstants {
   @JsonKey(defaultValue: double.nan)
-  double defaultNan;
+  late double defaultNan;
   @JsonKey(defaultValue: double.negativeInfinity)
-  double defaultNegativeInfinity;
+  late double defaultNegativeInfinity;
   @JsonKey(defaultValue: double.infinity)
-  double defaultInfinity;
+  late double defaultInfinity;
 
   // Since these values can be represented as number literals, there is no
   // special handling. Including them here for completeness, though.
   @JsonKey(defaultValue: double.minPositive)
-  double defaultMinPositive;
+  late double defaultMinPositive;
   @JsonKey(defaultValue: double.maxFinite)
-  double defaultMaxFinite;
+  late double defaultMaxFinite;
 
   DefaultDoubleConstants();
 }

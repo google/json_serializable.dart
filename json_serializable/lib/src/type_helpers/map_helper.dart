@@ -42,7 +42,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return expression;
     }
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    final optionalQuestion = targetType.isNullableType ? '?' : '';
 
     return '$expression$optionalQuestion'
         '.map(($_keyParam, $closureArg) => '
@@ -54,6 +54,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+    bool defaultProvided,
   ) {
     if (!coreMapTypeChecker.isExactlyType(targetType)) {
       return null;
@@ -66,23 +67,27 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     _checkSafeKeyType(expression, keyArg);
 
-    final valueArgIsAny = isObjectOrDynamic(valueArg);
+    final valueArgIsAny = valueArg.isDynamic ||
+        (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
+
+    final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
+    final optionalQuestion = targetTypeIsNullable ? '?' : '';
 
     if (!isKeyStringable) {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
-          if (isObjectOrDynamic(keyArg)) {
-            return '$expression as Map';
+          if (isLikeDynamic(keyArg)) {
+            return '$expression as Map$optionalQuestion';
           }
         } else {
           // this is the trivial case. Do a runtime cast to the known type of
           // JSON map values - `Map<String, dynamic>`
-          return '$expression as Map<String, dynamic>';
+          return '$expression as Map<String, dynamic>$optionalQuestion';
         }
       }
 
-      if (!context.nullable &&
+      if (!targetTypeIsNullable &&
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
@@ -96,16 +101,22 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    final optionalQuestion = context.nullable ? '?' : '';
+    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
-    final mapCast =
-        context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    if (targetTypeIsNullable) {
+      mapCast += '?';
+    }
 
     String keyUsage;
     if (isEnum(keyArg)) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
-    } else if (context.config.anyMap && !isObjectOrDynamic(keyArg)) {
+    } else if (context.config.anyMap &&
+        !(keyArg.isDartCoreObject || keyArg.isDynamic)) {
       keyUsage = '$_keyParam as String';
+    } else if (context.config.anyMap &&
+        keyArg.isDartCoreObject &&
+        !keyArg.isNullableType) {
+      keyUsage = '$_keyParam as Object';
     } else {
       keyUsage = _keyParam;
     }
@@ -142,9 +153,11 @@ bool _isKeyStringable(DartType keyType) =>
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
-  if (isObjectOrDynamic(keyArg) ||
-      coreStringTypeChecker.isExactlyType(keyArg) ||
-      _isKeyStringable(keyArg)) {
+  if (keyArg.isDynamic ||
+      (!keyArg.isNullableType &&
+          (keyArg.isDartCoreObject ||
+              coreStringTypeChecker.isExactlyType(keyArg) ||
+              _isKeyStringable(keyArg)))) {
     return;
   }
 

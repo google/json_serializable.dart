@@ -12,11 +12,11 @@ part 'generic_response_class_example.g.dart';
 
 @JsonSerializable(createToJson: false)
 class BaseResponse<T> {
-  final int status;
-  final String msg;
+  final int? status;
+  final String? msg;
 
   @JsonKey(fromJson: _dataFromJson)
-  final T data;
+  final T? data;
 
   const BaseResponse({
     this.status,
@@ -60,15 +60,13 @@ class Article {
   final int id;
   final String title;
 
-  @JsonKey(nullable: true)
-  final User author;
+  final User? author;
 
-  @JsonKey(nullable: true)
-  final List<Comment> comments;
+  final List<Comment>? comments;
 
   const Article({
-    this.id,
-    this.title,
+    required this.id,
+    required this.title,
     this.author,
     this.comments,
   });
@@ -79,8 +77,8 @@ class Article {
 
 @JsonSerializable(createToJson: false)
 class User {
-  final int id;
-  final String email;
+  final int? id;
+  final String? email;
 
   const User({
     this.id,
@@ -92,8 +90,8 @@ class User {
 
 @JsonSerializable(createToJson: false)
 class Comment {
-  final String content;
-  final int id;
+  final String? content;
+  final int? id;
 
   const Comment({
     this.id,

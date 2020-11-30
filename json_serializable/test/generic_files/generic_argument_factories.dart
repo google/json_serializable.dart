@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'generic_argument_factories.g.dart';
@@ -22,8 +24,8 @@ class GenericClassWithHelpers<T, S> {
 
   factory GenericClassWithHelpers.fromJson(
     Map<String, dynamic> json,
-    T Function(Object json) fromJsonT,
-    S Function(Object json) fromJsonS,
+    T Function(Object? json) fromJsonT,
+    S Function(Object? json) fromJsonS,
   ) =>
       _$GenericClassWithHelpersFromJson(json, fromJsonT, fromJsonS);
 

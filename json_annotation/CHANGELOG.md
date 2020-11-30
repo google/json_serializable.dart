@@ -1,3 +1,7 @@
+## 4.0.0-nullsafety.0
+
+- Updated `$checkedConvert` helper to support null-safety.
+
 ## 3.1.1
 
 - Avoid `null` values for `CheckedFromJsonException.message` by using 

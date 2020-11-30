@@ -19,7 +19,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       'generic_argument_factories',
       'ignore_unannotated',
       'include_if_null',
-      'nullable'
     ]);
     final val = JsonSerializable(
       anyMap: $checkedConvert(json, 'any_map', (v) => v as bool),
@@ -35,7 +34,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       ignoreUnannotated:
           $checkedConvert(json, 'ignore_unannotated', (v) => v as bool),
       includeIfNull: $checkedConvert(json, 'include_if_null', (v) => v as bool),
-      nullable: $checkedConvert(json, 'nullable', (v) => v as bool),
       genericArgumentFactories:
           $checkedConvert(json, 'generic_argument_factories', (v) => v as bool),
     );
@@ -65,13 +63,12 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
-      'nullable': instance.nullable,
     };
 
 T _$enumDecode<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     throw ArgumentError('A value must be provided. Supported values: '
@@ -79,20 +76,21 @@ T _$enumDecode<T>(
   }
 
   final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
+      .cast<MapEntry<T, String>?>()
+      .singleWhere((e) => e!.value == source, orElse: () => null)
       ?.key;
 
   if (value == null && unknownValue == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
         '${enumValues.values.join(', ')}');
   }
-  return value ?? unknownValue;
+  return value ?? unknownValue!;
 }
 
-T _$enumDecodeNullable<T>(
+T? _$enumDecodeNullable<T>(
   Map<T, dynamic> enumValues,
   dynamic source, {
-  T unknownValue,
+  T? unknownValue,
 }) {
   if (source == null) {
     return null;

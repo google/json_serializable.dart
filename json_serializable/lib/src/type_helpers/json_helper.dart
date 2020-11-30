@@ -55,7 +55,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (context.config.explicitToJson || toJsonArgs.isNotEmpty) {
-      return '$expression${context.nullable ? '?' : ''}'
+      return '$expression${interfaceType.isNullableType ? '?' : ''}'
           '.toJson(${toJsonArgs.map((a) => '$a, ').join()} )';
     }
     return expression;
@@ -66,6 +66,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+    bool defaultProvided,
   ) {
     if (targetType is! InterfaceType) {
       return null;
@@ -128,7 +129,8 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // https://github.com/google/json_serializable.dart/issues/19
     output = '${targetType.element.name}.fromJson($output)';
 
-    return commonNullPrefix(context.nullable, expression, output).toString();
+    return commonNullPrefix(targetType.isNullableType, expression, output)
+        .toString();
   }
 }
 
@@ -173,7 +175,8 @@ TypeParameterType _decodeHelper(
     if (param.name == fromJsonForName(funcReturnType.element.name)) {
       final funcParamType = type.normalParameterTypes.single;
 
-      if (funcParamType.isDartCoreObject || funcParamType.isDynamic) {
+      if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
+          funcParamType.isDynamic) {
         return funcReturnType as TypeParameterType;
       }
     }
@@ -183,7 +186,7 @@ TypeParameterType _decodeHelper(
     'Expecting a `fromJson` constructor with exactly one positional '
     'parameter. '
     'The only extra parameters allowed are functions of the form '
-    '`T Function(Object) ${fromJsonForName('T')}` where `T` is a type '
+    '`T Function(Object?) ${fromJsonForName('T')}` where `T` is a type '
     'parameter of the target type.',
     element: targetElement,
   );
@@ -196,7 +199,7 @@ TypeParameterType _encodeHelper(
   final type = param.type;
 
   if (type is FunctionType &&
-      isObjectOrDynamic(type.returnType) &&
+      (type.returnType.isDartCoreObject || type.returnType.isDynamic) &&
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 

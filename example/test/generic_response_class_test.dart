@@ -48,7 +48,7 @@ void _testUser(User user) {
 void _testArticle(Article article) {
   expect(article.id, 2);
   expect(article.title, 'title1');
-  _testUser(article.author);
+  _testUser(article.author!);
   expect(article.comments, hasLength(2));
 }
 

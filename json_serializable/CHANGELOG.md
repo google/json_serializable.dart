@@ -1,8 +1,11 @@
-## 3.5.1-dev
+## 4.0.0-nullsafety.1
 
+- Generates null-safe code.
 - Improved error messages for unsupported types.
 - `package:json_serializable/type_helper.dart`
   - Made the third parameter to `UnsupportedTypeError` positional (optional).
+- **BREAKING** `bool defaultProvided` arg added to `TypeHelper.deserialize`.
+  *Only applies to folks using `TypeHelper` directly.*
 
 ## 3.5.0
 
@@ -51,6 +54,7 @@
 
 - Support properties where the getter is defined in a class with a corresponding
   setter in a super type.
+>>>>>>> master
 
 ## 3.4.0
 

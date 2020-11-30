@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.9
+
 @TestOn('vm')
 import 'dart:convert';
 import 'dart:io';
@@ -31,7 +33,9 @@ void main() {
           final config = Config.fromJson(yamlContent);
           expect(config, isNotNull);
         } on CheckedFromJsonException catch (e) {
-          print(toParsedYamlException(e).formattedMessage);
+          if (e.message != null) {
+            print(toParsedYamlException(e).formattedMessage);
+          }
           rethrow;
         }
       });
@@ -88,7 +92,7 @@ builders:
   a:
     target: 42
   ''': r'''
-line 3, column 13 of file.yaml: Unsupported value for "target". type 'int' is not a subtype of type 'String' in type cast
+line 3, column 13 of file.yaml: Unsupported value for "target". type 'int' is not a subtype of type 'String?' in type cast
   ╷
 3 │     target: 42
   │             ^^

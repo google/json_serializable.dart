@@ -11,6 +11,7 @@ import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
+import 'utils.dart';
 
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
@@ -138,8 +139,9 @@ abstract class EncodeHelper implements HelperCore {
   /// we can avoid checking for `null`.
   bool _writeJsonValueNaive(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
+
     return jsonKey.includeIfNull ||
-        (!jsonKey.nullable && !_fieldHasCustomEncoder(field));
+        (!field.type.isNullableType && !_fieldHasCustomEncoder(field));
   }
 
   /// Returns `true` if [field] has a user-defined encoder.

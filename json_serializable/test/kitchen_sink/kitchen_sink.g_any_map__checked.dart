@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 // ignore_for_file: annotate_overrides, hash_and_equals
 import 'package:json_annotation/json_annotation.dart';
 
@@ -10,35 +12,44 @@ import 'kitchen_sink_interface.dart' as k;
 import 'simple_object.dart';
 import 'strict_keys_object.dart';
 
-part 'kitchen_sink.g_exclude_null__non_nullable.g.dart';
+part 'kitchen_sink.g_any_map__checked.g.dart';
 
 // NOTE: these methods are replaced in the `non_nullable` cases to return
 // non-null values.
-List<T> _defaultList<T>() => <T>[];
-Set<T> _defaultSet<T>() => <T>{};
-Map<String, T> _defaultMap<T>() => <String, T>{};
+List<T> _defaultList<T>() => [];
+
+Set<T> _defaultSet<T>() => {};
+
+Map<K, V> _defaultMap<K, V>() => {};
+
 SimpleObject _defaultSimpleObject() => SimpleObject(42);
-StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(10, 'cool');
+
+StrictKeysObject _defaultStrictKeysObject() => StrictKeysObject(42, 'value');
 
 const k.KitchenSinkFactory factory = _Factory();
 
-class _Factory implements k.KitchenSinkFactory<String, dynamic> {
+class _Factory implements k.KitchenSinkFactory<dynamic, dynamic> {
   const _Factory();
 
-  String get description => 'exclude_null__non_nullable';
-  bool get anyMap => false;
-  bool get checked => false;
-  bool get nullable => false;
-  bool get excludeNull => true;
+  String get description => 'any_map__checked';
+
+  bool get anyMap => true;
+
+  bool get checked => true;
+
+  bool get nullable => true;
+
+  bool get excludeNull => false;
+
   bool get explicitToJson => false;
 
   k.KitchenSink ctor({
-    int ctorValidatedNo42,
-    Iterable iterable,
-    Iterable dynamicIterable,
-    Iterable<Object> objectIterable,
-    Iterable<int> intIterable,
-    Iterable<DateTime> dateTimeIterable,
+    int? ctorValidatedNo42,
+    Iterable? iterable,
+    Iterable? dynamicIterable,
+    Iterable<Object>? objectIterable,
+    Iterable<int>? intIterable,
+    Iterable<DateTime>? dateTimeIterable,
   }) =>
       KitchenSink(
         ctorValidatedNo42: ctorValidatedNo42,
@@ -49,39 +60,46 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
         dateTimeIterable: dateTimeIterable,
       );
 
-  k.KitchenSink fromJson(Map<String, dynamic> json) =>
-      KitchenSink.fromJson(json);
+  k.KitchenSink fromJson(Map json) => KitchenSink.fromJson(json);
 
-  k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass();
+  k.JsonConverterTestClass jsonConverterCtor() => JsonConverterTestClass(
+        const Duration(),
+        [],
+        BigInt.zero,
+        {},
+        TrivialNumber(0),
+        {},
+        DateTime.fromMillisecondsSinceEpoch(0),
+      );
 
   k.JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json) =>
       JsonConverterTestClass.fromJson(json);
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  checked: true,
+  anyMap: true,
 )
 class KitchenSink implements k.KitchenSink {
   // NOTE: exposing these as Iterable, but storing the values as List
   // to make the equality test work trivially.
-  final Iterable _iterable;
+  final Iterable? _iterable;
   final Iterable<dynamic> _dynamicIterable;
   final Iterable<Object> _objectIterable;
   final Iterable<int> _intIterable;
   final Iterable<DateTime> _dateTimeIterable;
 
   @JsonKey(name: 'no-42')
-  final int ctorValidatedNo42;
+  final int? ctorValidatedNo42;
 
   KitchenSink({
     this.ctorValidatedNo42,
-    Iterable iterable,
-    Iterable<dynamic> dynamicIterable,
-    Iterable<Object> objectIterable,
-    Iterable<int> intIterable,
-    Iterable<DateTime> dateTimeIterable,
-  })  : _iterable = iterable?.toList() ?? _defaultList(),
+    Iterable? iterable,
+    Iterable<dynamic>? dynamicIterable,
+    Iterable<Object>? objectIterable,
+    Iterable<int>? intIterable,
+    Iterable<DateTime>? dateTimeIterable,
+  })  : _iterable = iterable?.toList(),
         _dynamicIterable = dynamicIterable?.toList() ?? _defaultList(),
         _objectIterable = objectIterable?.toList() ?? _defaultList(),
         _intIterable = intIterable?.toList() ?? _defaultList(),
@@ -92,18 +110,20 @@ class KitchenSink implements k.KitchenSink {
     }
   }
 
-  factory KitchenSink.fromJson(Map<String, dynamic> json) =>
-      _$KitchenSinkFromJson(json);
+  factory KitchenSink.fromJson(Map json) => _$KitchenSinkFromJson(json);
 
   Map<String, dynamic> toJson() => _$KitchenSinkToJson(this);
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime? dateTime;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt? bigInt;
 
-  Iterable get iterable => _iterable;
+  Iterable? get iterable => _iterable;
+
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
+
   Iterable<Object> get objectIterable => _objectIterable;
+
   Iterable<int> get intIterable => _intIterable;
 
   Set set = _defaultSet();
@@ -127,23 +147,24 @@ class KitchenSink implements k.KitchenSink {
   Map<dynamic, int> dynamicIntMap = _defaultMap();
   Map<Object, DateTime> objectDateTimeMap = _defaultMap();
 
-  List<Map<String, Map<String, List<List<DateTime>>>>> crazyComplex =
+  List<Map<String, Map<String, List<List<DateTime>?>?>?>?> crazyComplex =
       _defaultList();
 
   // Handle fields with names that collide with helper names
   Map<String, bool> val = _defaultMap();
-  bool writeNotNull;
+  bool? writeNotNull;
   @JsonKey(name: r'$string')
-  String string;
+  String? string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
 
   StrictKeysObject strictKeysObject = _defaultStrictKeysObject();
 
-  int _validatedPropertyNo42;
-  int get validatedPropertyNo42 => _validatedPropertyNo42;
+  int? _validatedPropertyNo42;
 
-  set validatedPropertyNo42(int value) {
+  int? get validatedPropertyNo42 => _validatedPropertyNo42;
+
+  set validatedPropertyNo42(int? value) {
     if (value == 42) {
       throw StateError('Cannot be 42!');
     }
@@ -154,8 +175,8 @@ class KitchenSink implements k.KitchenSink {
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  checked: true,
+  anyMap: true,
 )
 // referencing a top-level field should work
 @durationConverter
@@ -164,28 +185,36 @@ class KitchenSink implements k.KitchenSink {
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
 class JsonConverterTestClass implements k.JsonConverterTestClass {
-  JsonConverterTestClass();
+  JsonConverterTestClass(
+    this.duration,
+    this.durationList,
+    this.bigInt,
+    this.bigIntMap,
+    this.numberSilly,
+    this.numberSillySet,
+    this.dateTime,
+  );
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterTestClassFromJson(json);
 
   Map<String, dynamic> toJson() => _$JsonConverterTestClassToJson(this);
 
-  Duration duration;
-  List<Duration> durationList;
+  Duration? duration;
+  List<Duration?> durationList;
 
-  BigInt bigInt = BigInt.parse('10000000000000000000');
+  BigInt bigInt;
   Map<String, BigInt> bigIntMap;
 
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime dateTime = DateTime(1981, 6, 5);
+  DateTime? dateTime;
 }
 
 @JsonSerializable(
-  nullable: false,
-  includeIfNull: false,
+  checked: true,
+  anyMap: true,
 )
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
@@ -193,7 +222,11 @@ class JsonConverterGeneric<S, T, U> {
   List<T> itemList;
   Map<String, U> itemMap;
 
-  JsonConverterGeneric();
+  JsonConverterGeneric(
+    this.item,
+    this.itemList,
+    this.itemMap,
+  );
 
   factory JsonConverterGeneric.fromJson(Map<String, dynamic> json) =>
       _$JsonConverterGenericFromJson(json);

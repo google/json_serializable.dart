@@ -20,6 +20,5 @@ final generatorConfigNonDefaultJson =
   fieldRename: FieldRename.kebab,
   ignoreUnannotated: true,
   includeIfNull: false,
-  nullable: false,
   genericArgumentFactories: true,
 ).toJson());

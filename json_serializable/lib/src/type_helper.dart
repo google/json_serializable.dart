@@ -15,9 +15,6 @@ abstract class TypeHelperContext {
   /// The field that code is being generated for.
   FieldElement get fieldElement;
 
-  /// Returns `true` if [fieldElement] could potentially contain a `null` value.
-  bool get nullable;
-
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
   Object serialize(DartType fieldType, String expression);
@@ -79,7 +76,12 @@ abstract class TypeHelper<T extends TypeHelperContext> {
   /// String deserialize(DartType targetType, String expression) =>
   ///   "new ${targetType.name}.fromInt($expression)";
   /// ```.
-  Object deserialize(DartType targetType, String expression, T context);
+  Object deserialize(
+    DartType targetType,
+    String expression,
+    T context,
+    bool defaultProvided,
+  );
 }
 
 Object commonNullPrefix(

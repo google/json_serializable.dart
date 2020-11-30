@@ -34,21 +34,22 @@ const _trivialTypesToTest = {
     jsonExpression: '1234',
     altJsonExpression: '2345',
   ),
-  'int': TestTypeData(
-    defaultExpression: '42',
-    altJsonExpression: '43',
-  ),
   customEnumType: TestTypeData(
     defaultExpression: '$customEnumType.alpha',
     jsonExpression: "'alpha'",
     altJsonExpression: "'beta'",
+  ),
+  'int': TestTypeData(
+    defaultExpression: '42',
+    altJsonExpression: '43',
   ),
   'num': TestTypeData(
     defaultExpression: '88.6',
     altJsonExpression: '29',
   ),
   'Object': TestTypeData(
-    altJsonExpression: "'Object'",
+    defaultExpression: "'o1'",
+    altJsonExpression: "'o2'",
   ),
   'String': TestTypeData(
     defaultExpression: "'a string'",
@@ -103,6 +104,7 @@ const _mapKeyTypes = {
 
 final _iterableGenericArgs = ([
   ..._trivialTypesToTest.keys,
+  ..._trivialTypesToTest.keys.map((e) => '$e?'),
   'dynamic',
 ]..sort(compareAsciiLowerCase))
     .toSet();
