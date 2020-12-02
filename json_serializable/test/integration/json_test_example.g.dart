@@ -68,7 +68,7 @@ T _$enumDecode<T>(
           '${enumValues.values.join(', ')}',
         );
       }
-      return MapEntry(unknownValue, Object());
+      return MapEntry(unknownValue, enumValues.values.first);
     },
   ).key;
 }
