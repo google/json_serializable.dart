@@ -2,7 +2,14 @@
 self_validate: analyzer_and_format
 
 github:
-  cron: '0 0 * * 0' # “At 00:00 (UTC) on Sunday.”
+  on:
+    push:
+      branches:
+      - master
+      - 3_x
+    pull_request:
+    schedule:
+    - cron: "0 0 * * 0"
 
 merge_stages:
 - analyzer_and_format

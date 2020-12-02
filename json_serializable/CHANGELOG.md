@@ -1,8 +1,9 @@
-## 3.5.1-dev
+## 3.5.1
 
 - Improved error messages for unsupported types.
 - `package:json_serializable/type_helper.dart`
   - Made the third parameter to `UnsupportedTypeError` positional (optional).
+- Require `package:analyzer` `>=0.39.0 <0.42.0`.
 
 ## 3.5.0
 
