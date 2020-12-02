@@ -1,6 +1,8 @@
 ## 4.0.0-nullsafety.1
 
 - Generates null-safe code.
+  - The `nullable` field on `JsonKey` ignored. The nullability of a field is now 
+    determined by the Dart type system.
 - Improved error messages for unsupported types.
 - `package:json_serializable/type_helper.dart`
   - Made the third parameter to `UnsupportedTypeError` positional (optional).
@@ -54,7 +56,6 @@
 
 - Support properties where the getter is defined in a class with a corresponding
   setter in a super type.
->>>>>>> master
 
 ## 3.4.0
 
