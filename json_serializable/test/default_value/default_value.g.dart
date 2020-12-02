@@ -67,18 +67,18 @@ T _$enumDecode<T>(
     );
   }
 
-  final value = enumValues.entries
-      .cast<MapEntry<T, Object>?>()
-      .singleWhere((e) => e!.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError(
-      '`$source` is not one of the supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-  return value ?? unknownValue!;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, Object());
+    },
+  ).key;
 }
 
 T? _$enumDecodeNullable<T>(
