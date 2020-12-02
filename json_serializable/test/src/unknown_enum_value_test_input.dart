@@ -1,3 +1,5 @@
+// @dart=2.12
+
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
@@ -10,36 +12,41 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
         UnknownEnumValueItems.vNull;
 }
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$UnknownEnumValueItemsEnumMap = {
@@ -59,7 +66,7 @@ class UnknownEnumValue {
     defaultValue: UnknownEnumValueItems.vNull,
     unknownEnumValue: UnknownEnumValueItems.vUnknown,
   )
-  UnknownEnumValueItems value;
+  UnknownEnumValueItems? value;
 }
 
 enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
@@ -72,7 +79,7 @@ enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
 @JsonSerializable()
 class UnknownEnumValueListWrongType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  List<int> value;
+  late List<int> value;
 }
 
 @ShouldThrow(
@@ -83,7 +90,7 @@ class UnknownEnumValueListWrongType {
 @JsonSerializable()
 class UnknownEnumValueListWrongEnumType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  List<UnknownEnumValueItems> value;
+  late List<UnknownEnumValueItems> value;
 }
 
 enum WrongEnumType { otherValue }
@@ -96,7 +103,7 @@ enum WrongEnumType { otherValue }
 @JsonSerializable()
 class UnknownEnumValueWrongEnumType {
   @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
-  UnknownEnumValueItems value;
+  late UnknownEnumValueItems value;
 }
 
 @ShouldThrow(
@@ -106,7 +113,7 @@ class UnknownEnumValueWrongEnumType {
 @JsonSerializable()
 class UnknownEnumValueNotEnumValue {
   @JsonKey(unknownEnumValue: 'not enum value')
-  UnknownEnumValueItems value;
+  UnknownEnumValueItems? value;
 }
 
 @ShouldThrow(
@@ -116,5 +123,5 @@ class UnknownEnumValueNotEnumValue {
 @JsonSerializable()
 class UnknownEnumValueNotEnumField {
   @JsonKey(unknownEnumValue: UnknownEnumValueItems.vUnknown)
-  int value;
+  int? value;
 }

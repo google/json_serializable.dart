@@ -142,5 +142,4 @@ const _invalidConfig = {
   'generic_argument_factories': 42,
   'ignore_unannotated': 42,
   'include_if_null': 42,
-  'nullable': 42,
 };

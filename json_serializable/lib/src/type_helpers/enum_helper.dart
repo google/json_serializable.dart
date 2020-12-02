@@ -36,6 +36,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+    bool defaultProvided,
   ) {
     final memberContent = _enumValueMapFromType(targetType);
 
@@ -45,14 +46,15 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(_enumDecodeHelper);
 
-    if (context.nullable) {
+    String functionName;
+    if (targetType.isNullableType || defaultProvided) {
+      functionName = r'_$enumDecodeNullable';
       context.addMember(_enumDecodeHelperNullable);
+    } else {
+      functionName = r'_$enumDecode';
     }
 
     context.addMember(memberContent);
-
-    final functionName =
-        context.nullable ? r'_$enumDecodeNullable' : r'_$enumDecode';
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final args = [
@@ -85,36 +87,40 @@ String _enumValueMapFromType(DartType targetType) {
 }
 
 const _enumDecodeHelper = r'''
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-''';
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}''';
 
 const _enumDecodeHelperNullable = r'''
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }''';

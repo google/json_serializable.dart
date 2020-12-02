@@ -39,7 +39,7 @@ abstract class DecodeHelper implements HelperCore {
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
         );
 
-        buffer.write(', ${arg.name} Function(Object json) $helperName');
+        buffer.write(', ${arg.name} Function(Object? json) $helperName');
       }
       if (element.typeParameters.isNotEmpty) {
         buffer.write(',');
@@ -170,11 +170,18 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKeyName = safeNameAccess(field);
     final targetType = ctorParam?.type ?? field.type;
     final contextHelper = getHelperContext(field);
+    final defaultProvided = jsonKeyFor(field).defaultValue != null;
 
     String value;
     try {
       if (config.checked) {
-        value = contextHelper.deserialize(targetType, 'v').toString();
+        value = contextHelper
+            .deserialize(
+              targetType,
+              'v',
+              defaultProvided: defaultProvided,
+            )
+            .toString();
         if (!checkedProperty) {
           value = '\$checkedConvert(json, $jsonKeyName, (v) => $value)';
         }
@@ -183,7 +190,11 @@ abstract class DecodeHelper implements HelperCore {
             'should only be true if `_generator.checked` is true.');
 
         value = contextHelper
-            .deserialize(targetType, 'json[$jsonKeyName]')
+            .deserialize(
+              targetType,
+              'json[$jsonKeyName]',
+              defaultProvided: defaultProvided,
+            )
             .toString();
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
@@ -194,10 +205,6 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
     if (defaultValue != null) {
-      if (!contextHelper.nullable) {
-        throwUnsupported(field,
-            'Cannot use `defaultValue` on a field with `nullable` false.');
-      }
       if (jsonKey.disallowNullValue && jsonKey.required) {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '

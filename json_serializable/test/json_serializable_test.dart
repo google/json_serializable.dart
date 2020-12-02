@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
+import 'package:build/experiments.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen_test/source_gen_test.dart';
@@ -10,9 +11,12 @@ import 'package:test/test.dart';
 
 Future<void> main() async {
   initializeBuildLogTracking();
-  final reader = await initializeLibraryReaderForDirectory(
-    p.join('test', 'src'),
-    '_json_serializable_test_input.dart',
+  final reader = await withEnabledExperiments(
+    () => initializeLibraryReaderForDirectory(
+      p.join('test', 'src'),
+      '_json_serializable_test_input.dart',
+    ),
+    ['non-nullable'],
   );
 
   testAnnotatedElements(
@@ -22,7 +26,7 @@ Future<void> main() async {
   );
 }
 
-const _expectedAnnotatedTests = [
+const _expectedAnnotatedTests = {
   'annotatedMethod',
   'BadFromFuncReturnType',
   'BadNoArgs',
@@ -34,8 +38,6 @@ const _expectedAnnotatedTests = [
   'DefaultWithDisallowNullRequiredClass',
   'DefaultWithFunction',
   'DefaultWithNestedEnum',
-  'DefaultWithNonNullableClass',
-  'DefaultWithNonNullableField',
   'DefaultWithSymbol',
   'DefaultWithToJsonClass',
   'DefaultWithType',
@@ -64,18 +66,21 @@ const _expectedAnnotatedTests = [
   'InvalidFromFunc2Args',
   'InvalidToFunc2Args',
   'Issue713',
+  'JsonConvertOnField',
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
   'JsonConverterNamedCtor',
   'JsonConverterOnGetter',
   'JsonConverterWithBadTypeArg',
-  'JsonConvertOnField',
   'JsonValueValid',
   'JsonValueWithBool',
   'JustSetter',
   'JustSetterNoFromJson',
   'JustSetterNoToJson',
   'KeyDupesField',
+  'MapKeyNoNullableInt',
+  'MapKeyNoNullableObject',
+  'MapKeyNoNullableString',
   'MapKeyVariety',
   'NoCtorClass',
   'NoDeserializeBadKey',
@@ -114,4 +119,4 @@ const _expectedAnnotatedTests = [
   'ValidToFromFuncClassStatic',
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
-];
+};

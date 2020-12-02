@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
 import 'helper_core.dart';
+import 'utils.dart';
 
 /// A [TypeChecker] for [Iterable].
 const coreIterableTypeChecker = TypeChecker.fromUrl('dart:core#Iterable');
@@ -38,13 +39,13 @@ const simpleJsonTypeChecker = TypeChecker.any([
 ]);
 
 String asStatement(DartType type) {
-  if (isObjectOrDynamic(type)) {
+  if (isLikeDynamic(type)) {
     return '';
   }
 
   if (coreIterableTypeChecker.isAssignableFromType(type)) {
     final itemType = coreIterableGenericType(type);
-    if (isObjectOrDynamic(itemType)) {
+    if (isLikeDynamic(itemType)) {
       return ' as List';
     }
   }
@@ -53,7 +54,7 @@ String asStatement(DartType type) {
     final args = typeArgumentsOf(type, coreMapTypeChecker);
     assert(args.length == 2);
 
-    if (args.every(isObjectOrDynamic)) {
+    if (args.every(isLikeDynamic)) {
       return ' as Map';
     }
   }
@@ -62,8 +63,9 @@ String asStatement(DartType type) {
   return ' as $typeCode';
 }
 
-bool isObjectOrDynamic(DartType type) =>
-    type.isDartCoreObject || type.isDynamic;
+/// Returns `true` if [type] is `dynamic` or `Obect?`.
+bool isLikeDynamic(DartType type) =>
+    (type.isDartCoreObject && type.isNullableType) || type.isDynamic;
 
 /// Returns all of the [DartType] types that [type] implements, mixes-in, and
 /// extends, starting with [type] itself.

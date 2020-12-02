@@ -6,6 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 import 'helper_core.dart';
 import 'type_helper.dart';
@@ -14,19 +15,15 @@ import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 TypeHelperCtx typeHelperContext(
-        HelperCore helperCore, FieldElement fieldElement, JsonKey key) =>
-    TypeHelperCtx._(helperCore, fieldElement, key);
+        HelperCore helperCore, FieldElement fieldElement) =>
+    TypeHelperCtx._(helperCore, fieldElement);
 
 class TypeHelperCtx
     implements TypeHelperContextWithConfig, TypeHelperContextWithConvert {
   final HelperCore _helperCore;
-  final JsonKey _key;
 
   @override
   final FieldElement fieldElement;
-
-  @override
-  bool get nullable => _key.nullable;
 
   @override
   ClassElement get classElement => _helperCore.element;
@@ -34,7 +31,7 @@ class TypeHelperCtx
   @override
   JsonSerializable get config => _helperCore.config;
 
-  TypeHelperCtx._(this._helperCore, this.fieldElement, this._key);
+  TypeHelperCtx._(this._helperCore, this.fieldElement);
 
   @override
   ConvertData get serializeConvertData => _pairFromContext?.toJson;
@@ -57,10 +54,20 @@ class TypeHelperCtx
       );
 
   @override
-  Object deserialize(DartType targetType, String expression) => _run(
+  Object deserialize(
+    DartType targetType,
+    String expression, {
+    @required bool defaultProvided,
+  }) =>
+      _run(
         targetType,
         expression,
-        (TypeHelper th) => th.deserialize(targetType, expression, this),
+        (TypeHelper th) => th.deserialize(
+          targetType,
+          expression,
+          this,
+          defaultProvided ?? false,
+        ),
       );
 
   Object _run(

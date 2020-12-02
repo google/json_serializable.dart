@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'generic_class.g.dart';
@@ -9,19 +11,19 @@ part 'generic_class.g.dart';
 @JsonSerializable()
 class GenericClass<T extends num, S> {
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  Object fieldObject;
+  Object? fieldObject;
 
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
   dynamic fieldDynamic;
 
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  int fieldInt;
+  int? fieldInt;
 
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T fieldT;
+  T? fieldT;
 
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  S fieldS;
+  S? fieldS;
 
   GenericClass();
 
@@ -31,11 +33,11 @@ class GenericClass<T extends num, S> {
   Map<String, dynamic> toJson() => _$GenericClassToJson(this);
 
   static T _dataFromJson<T, S, U>(Map<String, dynamic> input,
-          [S other1, U other2]) =>
+          [S? other1, U? other2]) =>
       input['value'] as T;
 
   static Map<String, dynamic> _dataToJson<T, S, U>(T input,
-          [S other1, U other2]) =>
+          [S? other1, U? other2]) =>
       {'value': input};
 }
 
@@ -44,23 +46,23 @@ class GenericClass<T extends num, S> {
 @_DurationListMillisecondConverter()
 class GenericClassWithConverter<T extends num, S> {
   @_SimpleConverter()
-  Object fieldObject;
+  Object? fieldObject;
 
   @_SimpleConverter()
   dynamic fieldDynamic;
 
   @_SimpleConverter()
-  int fieldInt;
+  int? fieldInt;
 
   @_SimpleConverter()
-  T fieldT;
+  T? fieldT;
 
   @_SimpleConverter()
-  S fieldS;
+  S? fieldS;
 
-  Duration duration;
+  Duration? duration;
 
-  List<Duration> listDuration;
+  List<Duration>? listDuration;
 
   GenericClassWithConverter();
 
@@ -80,25 +82,26 @@ class _SimpleConverter<T> implements JsonConverter<T, Map<String, dynamic>> {
   Map<String, dynamic> toJson(T object) => {'value': object};
 }
 
-class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
+class _DurationMillisecondConverter implements JsonConverter<Duration?, int?> {
   const _DurationMillisecondConverter.named();
 
   @override
-  Duration fromJson(int json) =>
+  Duration? fromJson(int? json) =>
       json == null ? null : Duration(milliseconds: json);
 
   @override
-  int toJson(Duration object) => object?.inMilliseconds;
+  int? toJson(Duration? object) => object?.inMilliseconds;
 }
 
 class _DurationListMillisecondConverter
-    implements JsonConverter<List<Duration>, int> {
+    implements JsonConverter<List<Duration>?, int?> {
   const _DurationListMillisecondConverter();
 
   @override
-  List<Duration> fromJson(int json) => [Duration(milliseconds: json)];
+  List<Duration>? fromJson(int? json) =>
+      json == null ? null : [Duration(milliseconds: json)];
 
   @override
-  int toJson(List<Duration> object) =>
+  int? toJson(List<Duration>? object) =>
       object?.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
 }

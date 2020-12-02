@@ -1,3 +1,5 @@
+// @dart=2.12
+
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
@@ -6,7 +8,7 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) {
     json['subTypeViaCtor'] as int,
     json['super-final-field'] as int,
   )
-    ..superReadWriteField = json['superReadWriteField'] as int
+    ..superReadWriteField = json['superReadWriteField'] as int?
     ..subTypeReadWrite = json['subTypeReadWrite'] as int;
 }
 
@@ -29,8 +31,8 @@ Map<String, dynamic> _$SubTypeToJson(SubType instance) {
 ''')
 @JsonSerializable()
 class SubType extends SuperType {
-  final int subTypeViaCtor;
-  int subTypeReadWrite;
+  late final int subTypeViaCtor;
+  late int subTypeReadWrite;
 
   SubType(this.subTypeViaCtor, int superFinalField) : super(superFinalField);
 }
@@ -38,11 +40,11 @@ class SubType extends SuperType {
 // NOTE: `SuperType` is intentionally after `SubType` in the source file to
 // validate field ordering semantics.
 class SuperType {
-  @JsonKey(name: 'super-final-field', nullable: false)
-  final int superFinalField;
+  @JsonKey(name: 'super-final-field')
+  final int? superFinalField;
 
   @JsonKey(includeIfNull: false)
-  int superReadWriteField;
+  int? superReadWriteField;
 
   SuperType(this.superFinalField);
 
@@ -51,8 +53,7 @@ class SuperType {
   int get priceHalf => priceFraction(2);
 
   /// Add a method to try to throw-off the generator
-  int priceFraction(int other) =>
-      superFinalField == null ? null : superFinalField ~/ other;
+  int priceFraction(int other) => superFinalField! ~/ other;
 }
 
 @ShouldGenerate(r'''
@@ -97,17 +98,17 @@ class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
   /// The annotation applied here overrides the annotation in [SuperType].
   @JsonKey(includeIfNull: true)
   @override
-  int get superReadWriteField => super.superReadWriteField;
+  int? get superReadWriteField => super.superReadWriteField;
 
   @override
-  set superReadWriteField(int value) {
+  set superReadWriteField(int? value) {
     super.superReadWriteField = value;
   }
 
   /// The order is picked up by this override, but the annotation is still
   /// applied from [SuperType].
   @override
-  int get superFinalField => super.superFinalField;
+  int? get superFinalField => super.superFinalField;
 }
 
 @ShouldGenerate(r'''
@@ -122,7 +123,7 @@ Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideImplementsToJson(
 class SubTypeWithAnnotatedFieldOverrideImplements implements SuperType {
   // Note the order of fields in the output is determined by this class
   @override
-  int superReadWriteField;
+  int? superReadWriteField;
 
   @JsonKey(ignore: true)
   @override

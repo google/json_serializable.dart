@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.12
 
 part of 'json_test_example.g_any_map.dart';
 
@@ -10,39 +11,32 @@ Person _$PersonFromJson(Map json) {
   return Person(
     json['firstName'] as String,
     json['lastName'] as String,
-    _$enumDecodeNullable(_$CategoryEnumMap, json[r'$house']),
-    middleName: json['middleName'] as String,
+    _$enumDecode(_$CategoryEnumMap, json[r'$house']),
+    middleName: json['middleName'] as String?,
     dateOfBirth: json['dateOfBirth'] == null
         ? null
         : DateTime.parse(json['dateOfBirth'] as String),
   )
     ..order = json['order'] == null
         ? null
-        : Order.fromJson((json['order'] as Map)?.map(
-            (k, e) => MapEntry(k as String, e),
-          ))
+        : Order.fromJson(Map<String, dynamic>.from(json['order'] as Map))
     ..customOrders = json['customOrders'] == null
         ? null
-        : MyList.fromJson((json['customOrders'] as List)
-            ?.map((e) => e == null
-                ? null
-                : Order.fromJson((e as Map)?.map(
-                    (k, e) => MapEntry(k as String, e),
-                  )))
-            ?.toList())
-    ..houseMap = (json['houseMap'] as Map)?.map(
-      (k, e) =>
-          MapEntry(k as String, _$enumDecodeNullable(_$CategoryEnumMap, e)),
+        : MyList.fromJson((json['customOrders'] as List<dynamic>)
+            .map((e) => Order.fromJson(Map<String, dynamic>.from(e as Map)))
+            .toList())
+    ..houseMap = (json['houseMap'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, _$enumDecode(_$CategoryEnumMap, e)),
     )
-    ..categoryCounts = (json['categoryCounts'] as Map)?.map(
-      (k, e) => MapEntry(_$enumDecodeNullable(_$CategoryEnumMap, k), e as int),
+    ..categoryCounts = (json['categoryCounts'] as Map?)?.map(
+      (k, e) => MapEntry(_$enumDecode(_$CategoryEnumMap, k), e as int),
     );
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
-      'middleName': instance.middleName,
       'lastName': instance.lastName,
+      'middleName': instance.middleName,
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
       r'$house': _$CategoryEnumMap[instance.house],
       'order': instance.order,
@@ -53,36 +47,30 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
           ?.map((k, e) => MapEntry(_$CategoryEnumMap[k], e)),
     };
 
-T _$enumDecode<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
 }) {
   if (source == null) {
-    throw ArgumentError('A value must be provided. Supported values: '
-        '${enumValues.values.join(', ')}');
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
 
-  final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
-
-  if (value == null && unknownValue == null) {
-    throw ArgumentError('`$source` is not one of the supported values: '
-        '${enumValues.values.join(', ')}');
-  }
-  return value ?? unknownValue;
-}
-
-T _$enumDecodeNullable<T>(
-  Map<T, dynamic> enumValues,
-  dynamic source, {
-  T unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
 }
 
 const _$CategoryEnumMap = {
@@ -98,24 +86,20 @@ const _$CategoryEnumMap = {
 Order _$OrderFromJson(Map json) {
   $checkKeys(json, disallowNullValues: const ['count']);
   return Order(
-    _$enumDecode(_$CategoryEnumMap, json['category']),
-    (json['items'] as List)?.map((e) => e == null
-        ? null
-        : Item.fromJson((e as Map)?.map(
-            (k, e) => MapEntry(k as String, e),
-          ))),
+    _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
+    (json['items'] as List<dynamic>?)
+        ?.map((e) => Item.fromJson(Map<String, dynamic>.from(e as Map))),
   )
-    ..count = json['count'] as int
-    ..isRushed = json['isRushed'] as bool
+    ..count = json['count'] as int?
+    ..isRushed = json['isRushed'] as bool?
     ..duration = json['duration'] == null
         ? null
         : Duration(microseconds: json['duration'] as int)
     ..platform = json['platform'] == null
         ? null
         : Platform.fromJson(json['platform'] as String)
-    ..altPlatforms = (json['altPlatforms'] as Map)?.map(
-      (k, e) => MapEntry(
-          k as String, e == null ? null : Platform.fromJson(e as String)),
+    ..altPlatforms = (json['altPlatforms'] as Map?)?.map(
+      (k, e) => MapEntry(k as String, Platform.fromJson(e as String)),
     )
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
@@ -146,6 +130,17 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   return val;
 }
 
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
 const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
   StatusCode.notFound: 404,
@@ -155,13 +150,13 @@ const _$StatusCodeEnumMap = {
 
 Item _$ItemFromJson(Map json) {
   return Item(
-    json['price'] as int,
+    json['price'] as int?,
   )
-    ..itemNumber = json['item-number'] as int
-    ..saleDates = (json['saleDates'] as List)
-        ?.map((e) => e == null ? null : DateTime.parse(e as String))
-        ?.toList()
-    ..rates = (json['rates'] as List)?.map((e) => e as int)?.toList();
+    ..itemNumber = json['item-number'] as int?
+    ..saleDates = (json['saleDates'] as List<dynamic>?)
+        ?.map((e) => DateTime.parse(e as String))
+        .toList()
+    ..rates = (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList();
 }
 
 Map<String, dynamic> _$ItemToJson(Item instance) {
@@ -177,21 +172,23 @@ Map<String, dynamic> _$ItemToJson(Item instance) {
 
   writeNotNull('item-number', instance.itemNumber);
   val['saleDates'] =
-      instance.saleDates?.map((e) => e?.toIso8601String())?.toList();
+      instance.saleDates?.map((e) => e.toIso8601String()).toList();
   val['rates'] = instance.rates;
   return val;
 }
 
 Numbers _$NumbersFromJson(Map json) {
   return Numbers()
-    ..ints = (json['ints'] as List)?.map((e) => e as int)?.toList()
-    ..nums = (json['nums'] as List)?.map((e) => e as num)?.toList()
-    ..doubles =
-        (json['doubles'] as List)?.map((e) => (e as num)?.toDouble())?.toList()
-    ..nnDoubles =
-        (json['nnDoubles'] as List).map((e) => (e as num).toDouble()).toList()
-    ..duration = durationFromInt(json['duration'] as int)
-    ..date = dateTimeFromEpochUs(json['date'] as int);
+    ..ints = (json['ints'] as List<dynamic>?)?.map((e) => e as int).toList()
+    ..nums = (json['nums'] as List<dynamic>?)?.map((e) => e as num).toList()
+    ..doubles = (json['doubles'] as List<dynamic>?)
+        ?.map((e) => (e as num).toDouble())
+        .toList()
+    ..nnDoubles = (json['nnDoubles'] as List<dynamic>?)
+        ?.map((e) => (e as num).toDouble())
+        .toList()
+    ..duration = durationFromInt(json['duration'] as int?)
+    ..date = dateTimeFromEpochUs(json['date'] as int?);
 }
 
 Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
@@ -205,16 +202,16 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
 
 MapKeyVariety _$MapKeyVarietyFromJson(Map json) {
   return MapKeyVariety()
-    ..intIntMap = (json['intIntMap'] as Map)?.map(
+    ..intIntMap = (json['intIntMap'] as Map?)?.map(
       (k, e) => MapEntry(int.parse(k as String), e as int),
     )
-    ..uriIntMap = (json['uriIntMap'] as Map)?.map(
+    ..uriIntMap = (json['uriIntMap'] as Map?)?.map(
       (k, e) => MapEntry(Uri.parse(k as String), e as int),
     )
-    ..dateTimeIntMap = (json['dateTimeIntMap'] as Map)?.map(
+    ..dateTimeIntMap = (json['dateTimeIntMap'] as Map?)?.map(
       (k, e) => MapEntry(DateTime.parse(k as String), e as int),
     )
-    ..bigIntMap = (json['bigIntMap'] as Map)?.map(
+    ..bigIntMap = (json['bigIntMap'] as Map?)?.map(
       (k, e) => MapEntry(BigInt.parse(k as String), e as int),
     );
 }
@@ -230,17 +227,17 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
 
 UnknownEnumValue _$UnknownEnumValueFromJson(Map json) {
   return UnknownEnumValue()
-    ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'],
+    ..enumValue = _$enumDecode(_$CategoryEnumMap, json['enumValue'],
         unknownValue: Category.notDiscoveredYet)
-    ..enumIterable = (json['enumIterable'] as List)?.map((e) =>
-        _$enumDecodeNullable(_$CategoryEnumMap, e,
+    ..enumIterable = (json['enumIterable'] as List<dynamic>).map((e) =>
+        _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-    ..enumList = (json['enumList'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+    ..enumList = (json['enumList'] as List<dynamic>)
+        .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-        ?.toList()
-    ..enumSet = (json['enumSet'] as List)
-        ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+        .toList()
+    ..enumSet = (json['enumSet'] as List<dynamic>)
+        .map((e) => _$enumDecode(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
-        ?.toSet();
+        .toSet();
 }

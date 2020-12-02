@@ -63,6 +63,10 @@ class _TestBuilder implements Builder {
       final newId = buildStep.inputId.changeExtension('.factories.dart');
 
       final lines = <String>[
+        r'''
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// @dart=2.12
+''',
         ...factories.entries.map((e) => "import '${e.key}' as ${e.value};"),
         'const factories = [',
         ...factories.values.map((e) => '$e.factory,'),
@@ -81,7 +85,6 @@ class _TestBuilder implements Builder {
 const _configReplacements = {
   'any_map': Replacement.addJsonSerializableKey('anyMap', true),
   'checked': Replacement.addJsonSerializableKey('checked', true),
-  'non_nullable': Replacement.addJsonSerializableKey('nullable', false),
   'explicit_to_json':
       Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': Replacement.addJsonSerializableKey('includeIfNull', false),
@@ -126,35 +129,6 @@ const _kitchenSinkReplacements = {
   ],
   'non_nullable': [
     Replacement(
-      'bool get nullable => true;',
-      'bool get nullable => false;',
-    ),
-    Replacement(
-      'List<T> _defaultList<T>() => null;',
-      'List<T> _defaultList<T>() => <T>[];',
-    ),
-    Replacement(
-      'Set<T> _defaultSet<T>() => null;',
-      'Set<T> _defaultSet<T>() => <T>{};',
-    ),
-    Replacement(
-      'Map<K, V> _defaultMap<K, V>() => null;',
-      'Map<String, T> _defaultMap<T>() => <String, T>{};',
-    ),
-    Replacement(
-      'SimpleObject _defaultSimpleObject() => null;',
-      'SimpleObject _defaultSimpleObject() => SimpleObject(42);',
-    ),
-    Replacement(
-      'StrictKeysObject _defaultStrictKeysObject() => null;',
-      'StrictKeysObject _defaultStrictKeysObject() => '
-          "StrictKeysObject(10, 'cool');",
-    ),
-    Replacement(
-      'DateTime dateTime;',
-      'DateTime dateTime = DateTime(1981, 6, 5);',
-    ),
-    Replacement(
       'BigInt bigInt;',
       "BigInt bigInt = BigInt.parse('10000000000000000000');",
     ),
@@ -163,7 +137,12 @@ const _kitchenSinkReplacements = {
 
 Iterable<Replacement> _optionReplacement(
     String baseName, String optionKey) sync* {
-  yield _configReplacements[optionKey];
+  final value = _configReplacements[optionKey];
+  if (value == null) {
+    log.warning('no replacement thingy for `$optionKey`.');
+  } else {
+    yield value;
+  }
 
   if (baseName == _kitchenSinkBaseName &&
       _kitchenSinkReplacements.containsKey(optionKey)) {
@@ -189,12 +168,9 @@ const _kitchenSinkBaseName = 'kitchen_sink';
 
 const _fileConfigurationMap = <String, Set<Set<String>>>{
   _kitchenSinkBaseName: {
-    {'any_map', 'checked', 'non_nullable'},
-    {'any_map', 'non_nullable'},
+    {'any_map', 'checked'},
     {'any_map'},
     {'exclude_null'},
-    {'non_nullable'},
-    {'exclude_null', 'non_nullable'},
     {'explicit_to_json'},
   },
   'default_value': {
@@ -203,6 +179,8 @@ const _fileConfigurationMap = <String, Set<Set<String>>>{
   'generic_class': <Set<String>>{},
   'json_test_example': {
     {'any_map'},
-    {'non_nullable'},
-  }
+  },
+  'null_safety': <Set<String>>{
+    {'any_map'},
+  },
 };

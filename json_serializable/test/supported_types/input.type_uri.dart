@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'input.type_uri.g.dart';
@@ -10,16 +12,26 @@ part 'input.type_uri.g.dart';
 class SimpleClass {
   final Uri value;
 
-  @JsonKey(nullable: false)
-  final Uri nullable;
-
   SimpleClass(
     this.value,
-    this.nullable,
   );
 
-  factory SimpleClass.fromJson(Map<String, dynamic> json) =>
+  factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);
 
-  Map<String, dynamic> toJson() => _$SimpleClassToJson(this);
+  Map<String, Object?> toJson() => _$SimpleClassToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullable {
+  final Uri? value;
+
+  SimpleClassNullable(
+    this.value,
+  );
+
+  factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassNullableFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassNullableToJson(this);
 }

@@ -29,6 +29,7 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
+    bool defaultProvided,
   ) {
     if (context.config.genericArgumentFactories &&
         targetType is TypeParameterType) {
