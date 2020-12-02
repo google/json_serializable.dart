@@ -3,8 +3,8 @@ name: Dart CI
 on:
   push:
     branches:
-      - main
       - master
+      - "3_x"
   pull_request:
   schedule:
     - cron: "0 0 * * 0"
