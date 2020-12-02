@@ -33,10 +33,10 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
           instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k], e)),
     };
 
-T _$enumDecode<T>(
-  Map<T, Object> enumValues,
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
   Object? source, {
-  T? unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     throw ArgumentError(
@@ -145,15 +145,15 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   return val;
 }
 
-T? _$enumDecodeNullable<T>(
-  Map<T, Object> enumValues,
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
   dynamic source, {
-  T? unknownValue,
+  K? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$BuildToEnumMap = {
