@@ -1,3 +1,5 @@
+// @dart=2.12
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 import 'package:yaml/yaml.dart';
@@ -18,7 +20,7 @@ void main() {
 void _anyMapTests(KitchenSinkFactory factory) {
   test('valid values round-trip - yaml', () {
     final jsonEncoded = loudEncode(validValues);
-    final yaml = loadYaml(jsonEncoded, sourceUrl: 'input.yaml');
+    final yaml = loadYaml(jsonEncoded);
     expect(jsonEncoded, loudEncode(factory.fromJson(yaml as YamlMap)));
   });
 
@@ -51,7 +53,7 @@ void _testBadValue(String key, Object badValue, KitchenSinkFactory factory,
   }
 }
 
-Matcher _getMatcher(bool checked, String expectedKey, bool checkedAssignment) {
+Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
   Matcher innerMatcher;
 
   if (checked) {

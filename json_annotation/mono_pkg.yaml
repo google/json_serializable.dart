@@ -3,5 +3,5 @@ stages:
 - analyzer_and_format:
   - group:
     - dartfmt
-    - dartanalyzer: --fatal-warnings --fatal-infos .
+    - dartanalyzer: --fatal-infos .
     dart: [dev]
