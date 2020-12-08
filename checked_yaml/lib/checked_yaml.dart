@@ -28,7 +28,9 @@ T checkedYamlDecode<T>(
   YamlNode yaml;
 
   try {
-    yaml = loadYamlNode(yamlContent, sourceUrl: sourceUrl);
+    yaml = loadYamlNode(yamlContent,
+        sourceUrl:
+            sourceUrl is Uri ? sourceUrl : Uri.parse(sourceUrl as String));
   } on YamlException catch (e) {
     throw ParsedYamlException.fromYamlException(e);
   }
