@@ -11,7 +11,7 @@ import 'package:test_process/test_process.dart';
 
 final _examplePath = p.join('example', 'example.dart');
 
-final _readmeContent = File('readme.md').readAsStringSync();
+final _readmeContent = File('README.md').readAsStringSync();
 final _exampleContent = File(_examplePath).readAsStringSync();
 
 const _memberEnd = '\n}';
