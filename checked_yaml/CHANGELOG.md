@@ -3,6 +3,10 @@
 - *BREAKING* `checkedYamlDecode` `sourceUrl` parameter is now a `Uri`.
 - Require at least Dart `2.12.0-0`.
 
+## 1.0.4
+
+- Allow `package:yaml` `v3.x`.
+
 ## 1.0.3
 
 - Require at least Dart `2.7.0`.
