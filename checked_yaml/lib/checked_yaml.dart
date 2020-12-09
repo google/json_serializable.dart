@@ -27,10 +27,17 @@ T checkedYamlDecode<T>(
   allowNull ??= false;
   YamlNode yaml;
 
+  Uri sourceUri;
+  if (sourceUrl == null) {
+    // noop
+  } else if (sourceUrl is Uri) {
+    sourceUri = sourceUrl;
+  } else {
+    sourceUri = Uri.parse(sourceUrl as String);
+  }
+
   try {
-    yaml = loadYamlNode(yamlContent,
-        sourceUrl:
-            sourceUrl is Uri ? sourceUrl : Uri.parse(sourceUrl as String));
+    yaml = loadYamlNode(yamlContent, sourceUrl: sourceUri);
   } on YamlException catch (e) {
     throw ParsedYamlException.fromYamlException(e);
   }
