@@ -1,10 +1,10 @@
-## 4.0.0-nullsafety.1
+## 4.0.0-nullsafety.0
 
 - Generates null-safe code.
   - The `nullable` field on `JsonKey` ignored. The nullability of a field is now 
     determined by the Dart type system.
 - **BREAKING** `bool defaultProvided` arg added to `TypeHelper.deserialize`.
-  *Only applies to folks using `TypeHelper` directly.*
+  *Only applies to code using `TypeHelper` directly.*
 
 ## 3.5.1
 
