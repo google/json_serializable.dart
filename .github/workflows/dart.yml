@@ -1,4 +1,4 @@
-# Created with package:mono_repo v3.4.1
+# Created with package:mono_repo v3.4.2
 name: Dart CI
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
       - run: dart --version
       - uses: actions/checkout@v2
       - name: mono_repo self validate
-        run: pub global activate mono_repo 3.4.1
+        run: pub global activate mono_repo 3.4.2
       - name: mono_repo self validate
         run: pub global run mono_repo generate --validate
   job_002:
@@ -251,5 +251,7 @@ jobs:
         working-directory: json_serializable
         run: pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart
     needs:
+      - job_001
+      - job_002
       - job_003
       - job_004
