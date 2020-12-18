@@ -7,10 +7,9 @@ in [package:json_annotation].
 
 - To generate to/from JSON code for a class, annotate it with
   `@JsonSerializable`. You can provide arguments to `JsonSerializable` to
-  configure the generated code. You can also customize individual fields
-  by annotating them with `@JsonKey` and providing custom arguments.
-  See the table below for details on the
-  [annotation values](#annotation-values).
+  configure the generated code. You can also customize individual fields by
+  annotating them with `@JsonKey` and providing custom arguments. See the table
+  below for details on the [annotation values](#annotation-values).
 
 - To generate a Dart field with the contents of a file containing JSON, use the
   `JsonLiteral` annotation.
@@ -72,7 +71,7 @@ is generated:
 
 1. Set properties on `@JsonSerializable`.
 2. Add a `@JsonKey` annotation to a field and set properties there.
-3. Add configuration to `build.yaml` – [see below](#build-configuration). 
+3. Add configuration to `build.yaml` – [see below](#build-configuration).
 
 | `build.yaml` key           | JsonSerializable                            | JsonKey                     |
 | -------------------------- | ------------------------------------------- | --------------------------- |
@@ -154,5 +153,5 @@ targets:
 ```
 
 [example]: https://github.com/google/json_serializable.dart/tree/master/example
-[Dart Build System]: https://github.com/dart-lang/build
+[dart build system]: https://github.com/dart-lang/build
 [package:json_annotation]: https://pub.dev/packages/json_annotation
