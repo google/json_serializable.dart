@@ -115,15 +115,15 @@ is generated:
 [JsonKey.unknownEnumValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/unknownEnumValue.html
 
 > Note: every `JsonSerializable` field is configurable via `build.yaml` –
-  see the table for the corresponding key.
-  If you find you want all or most of your classes with the same configuration,
-  it may be easier to specify values once in the YAML file. Values set
-  explicitly on `@JsonSerializable` take precedence over settings in
-  `build.yaml`.
+> see the table for the corresponding key.
+> If you find you want all or most of your classes with the same configuration,
+> it may be easier to specify values once in the YAML file. Values set
+> explicitly on `@JsonSerializable` take precedence over settings in
+> `build.yaml`.
 
 > Note: There is some overlap between fields on `JsonKey` and
-  `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
-  it will take precedence over any value set on `JsonSerializable`.  
+> `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
+> it will take precedence over any value set on `JsonSerializable`.  
 
 # Build configuration
 
