@@ -3,11 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
-import 'dart:ui';
 
 part 'example.g.dart';
 
-@JsonSerializable(createEqual: true)
+@JsonSerializable()
 class Person {
   final String firstName;
   @JsonKey(includeIfNull: false)
@@ -34,14 +33,9 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
   Map<String, dynamic> toJson() => _$PersonToJson(this);
-
-  @override
-  bool operator ==(Object other) => _$PersonIsEqual(this, other);
-
-  int get hashCode => _$PersonHashCode(this);
 }
 
-@JsonSerializable(includeIfNull: false, createEqual: true)
+@JsonSerializable(includeIfNull: false)
 class Order {
   int? count;
   int? itemNumber;
@@ -74,14 +68,9 @@ class Order {
 
   static int? _dateTimeToEpochUs(DateTime? dateTime) =>
       dateTime?.microsecondsSinceEpoch;
-
-  @override
-  bool operator ==(Object other) => _$OrderIsEqual(this, other);
-
-  int get hashCode => _$OrderHashCode(this);
 }
 
-@JsonSerializable(createEqual: false)
+@JsonSerializable()
 class Item {
   int? count;
   int? itemNumber;
