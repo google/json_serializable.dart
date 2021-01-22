@@ -4,6 +4,8 @@ environment:
   sdk: '>=2.12.0-0 <3.0.0'
 
 dependencies:
+  flutter:
+    sdk: flutter
   json_annotation: ^3.0.0
 
 dev_dependencies:

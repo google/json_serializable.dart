@@ -174,6 +174,25 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+
+  /// When `true` , a private, static `_$ExampleEqual` method
+  /// is created in the generated part file.
+  ///
+  /// Call this method from a factory constructor added to the source class:
+  ///
+  /// ```dart
+  /// import 'dart:ui';
+  ///
+  /// @JsonSerializable()
+  /// class Example {
+  ///   // ...
+  ///   bool operator ==(dynamic other) => _$ExampleEqual(this, other);
+  ///
+  ///   int get hashCode => _$ExampleHashCode(this);
+  /// }
+  /// ```
+  final bool? createEqual;
+
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
     @Deprecated('Has no effect') bool? nullable,
@@ -187,6 +206,7 @@ class JsonSerializable {
     this.ignoreUnannotated,
     this.includeIfNull,
     this.genericArgumentFactories,
+    this.createEqual,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -205,6 +225,7 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
+    createEqual: false,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -225,6 +246,7 @@ class JsonSerializable {
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
         genericArgumentFactories:
             genericArgumentFactories ?? defaults.genericArgumentFactories,
+        createEqual: createEqual ?? defaults.createEqual,
       );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

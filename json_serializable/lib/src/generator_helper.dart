@@ -8,13 +8,15 @@ import 'package:source_gen/source_gen.dart';
 
 import 'decode_helper.dart';
 import 'encoder_helper.dart';
+import 'equal_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'settings.dart';
 import 'type_helper.dart';
 import 'utils.dart';
 
-class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
+class GeneratorHelper extends HelperCore
+    with EncodeHelper, DecodeHelper, EqualHelper {
   final Settings _generator;
   final _addedMembers = <String>{};
 
@@ -110,6 +112,10 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
     if (config.createToJson) {
       yield* createToJson(accessibleFieldSet);
+    }
+
+    if (config.createEqual) {
+      yield* createEqual(accessibleFieldSet);
     }
 
     yield* _addedMembers;
