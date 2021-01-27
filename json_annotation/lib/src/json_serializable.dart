@@ -190,7 +190,7 @@ class JsonSerializable {
   ///   int get hashCode => _$ExampleHashCode(this);
   /// }
   /// ```
-  final bool? createEqual;
+  // final bool? createEqual;
 
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
@@ -205,7 +205,6 @@ class JsonSerializable {
     this.ignoreUnannotated,
     this.includeIfNull,
     this.genericArgumentFactories,
-    this.createEqual,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -224,7 +223,6 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
-    createEqual: false,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -245,7 +243,6 @@ class JsonSerializable {
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
         genericArgumentFactories:
             genericArgumentFactories ?? defaults.genericArgumentFactories,
-        createEqual: createEqual ?? defaults.createEqual,
       );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

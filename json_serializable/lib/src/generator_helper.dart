@@ -114,9 +114,9 @@ class GeneratorHelper extends HelperCore
       yield* createToJson(accessibleFieldSet);
     }
 
-    if (config.createEqual) {
+    // if (config.createEqual) {
       yield* createEqual(accessibleFieldSet);
-    }
+    // }
 
     yield* _addedMembers;
   }

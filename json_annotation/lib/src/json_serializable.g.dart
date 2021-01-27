@@ -19,7 +19,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       'generic_argument_factories',
       'ignore_unannotated',
       'include_if_null',
-      'create_equal'
     ]);
     final val = JsonSerializable(
       anyMap: $checkedConvert(json, 'any_map', (v) => v as bool),
@@ -37,7 +36,6 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
       includeIfNull: $checkedConvert(json, 'include_if_null', (v) => v as bool),
       genericArgumentFactories:
           $checkedConvert(json, 'generic_argument_factories', (v) => v as bool),
-      createEqual: $checkedConvert(json, 'create_equal', (v) => v as bool),
     );
     return val;
   }, fieldKeyMap: const {
@@ -49,8 +47,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) {
     'fieldRename': 'field_rename',
     'ignoreUnannotated': 'ignore_unannotated',
     'includeIfNull': 'include_if_null',
-    'genericArgumentFactories': 'generic_argument_factories',
-    'createEqual': 'create_equal'
+    'genericArgumentFactories': 'generic_argument_factories'
   });
 }
 
@@ -66,7 +63,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
-      'create_equal': instance.createEqual,
     };
 
 T _$enumDecode<T>(

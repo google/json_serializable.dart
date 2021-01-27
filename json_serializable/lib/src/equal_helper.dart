@@ -11,7 +11,7 @@ abstract class EqualHelper implements HelperCore {
   String _fieldOtherAccess(FieldElement field) => '$_other.${field.name}';
 
   Iterable<String> createEqual(Set<FieldElement> accessibleFields) sync* {
-    assert(config.createEqual);
+    // assert(config.createEqual);
 
     final buffer = StringBuffer();
 
