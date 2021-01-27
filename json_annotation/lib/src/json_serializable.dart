@@ -174,7 +174,6 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
-
   /// When `true` , a private, static `_$ExampleEqual` method
   /// is created in the generated part file.
   ///

@@ -16,10 +16,10 @@ abstract class EqualHelper implements HelperCore {
     final buffer = StringBuffer();
 
     final functionName = '${prefix}IsEqual${genericClassArgumentsImpl(true)}';
-    buffer.write('bool '
-        '$functionName($targetClassReference $_instance, dynamic $_other');
-
-    buffer.write(') {\n');
+    buffer
+      ..write('bool '
+          '$functionName($targetClassReference $_instance, dynamic $_other')
+      ..write(') {\n');
 
     _writeOperatorToJsonSimple(buffer, accessibleFields);
 
@@ -33,16 +33,19 @@ abstract class EqualHelper implements HelperCore {
     buffer
       ..write('return other is $targetClassReference')
       ..writeAll(fields.map((field) {
-        final value = '${ _fieldInstanceAccess(field)} == ${_fieldOtherAccess(field)}';
+        final value =
+            '${_fieldInstanceAccess(field)} == ${_fieldOtherAccess(field)}';
         return '        && $value\n';
       }))
       ..write(';')
       ..writeln('}');
   }
 
-  void _writeHashCodeToJson(StringBuffer buffer, Iterable<FieldElement> fields) {
+  void _writeHashCodeToJson(
+      StringBuffer buffer, Iterable<FieldElement> fields) {
     buffer
-      ..write('int ${prefix}HashCode($targetClassReference $_instance) => hashList(<Object?>[')
+      ..write(
+          'int ${prefix}HashCode($targetClassReference $_instance) => hashList(<Object?>[')
       ..writeAll(fields.map((field) {
         return '        ${_fieldInstanceAccess(field)},\n';
       }))
