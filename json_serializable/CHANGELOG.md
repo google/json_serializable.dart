@@ -1,4 +1,4 @@
-## 4.0.0-nullsafety.0
+## 4.0.0-dev
 
 - Generates null-safe code.
   - The `nullable` field on `JsonKey` ignored. The nullability of a field is now
