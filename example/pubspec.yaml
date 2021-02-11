@@ -15,9 +15,9 @@ dev_dependencies:
   json_serializable: ^3.2.0
 
   # Used by tests. Not required to use `json_serializable`.
-  path: ^1.8.0-nullsafety.3
+  path: ^1.8.0
   # Used by tests. Not required to use `json_serializable`.
-  test: ^1.16.0-nullsafety.9
+  test: ^1.16.0
 
 dependency_overrides:
   json_annotation:
