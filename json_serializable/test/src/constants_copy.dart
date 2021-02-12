@@ -4,6 +4,8 @@
 
 // @dart=2.12
 
+part of '_json_serializable_test_input.dart';
+
 // TODO: remove this and return link to lib/src/constants.dart once this
 //  package runs with full null safety
 

@@ -11,7 +11,7 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
-import '../constants_copy.dart';
+part 'constants_copy.dart';
 
 part 'checked_test_input.dart';
 
