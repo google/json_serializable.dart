@@ -6,7 +6,7 @@ description: >-
 repository: https://github.com/google/json_serializable.dart
 environment:
   # Keeping this <2.12.0 because the code is not null safe – yet!
-  sdk: '>=2.11.0 <3.0.0'
+  sdk: '>=2.11.99 <3.0.0'
 
 dependencies:
   analyzer: ^0.41.2
