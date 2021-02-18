@@ -1,3 +1,7 @@
+## 4.0.1
+
+- Allow latest `package:analyzer`.
+
 ## 4.0.0
 
 - Requires Dart 2.12 or greater.
