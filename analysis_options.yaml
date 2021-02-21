@@ -8,6 +8,7 @@ linter:
     - always_require_non_null_named_parameters
     - annotate_overrides
     - avoid_catching_errors
+    - avoid_dynamic_calls
     - avoid_empty_else
     - avoid_function_literals_in_foreach_calls
     - avoid_init_to_null
