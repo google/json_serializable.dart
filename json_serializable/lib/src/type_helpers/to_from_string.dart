@@ -15,7 +15,7 @@ final bigIntString = ToFromStringHelper(
 
 final dateTimeString = ToFromStringHelper(
   'DateTime.parse',
-  'toIso8601String()',
+  'toUtc().toIso8601String()',
   'DateTime',
 );
 
@@ -57,11 +57,13 @@ class ToFromStringHelper {
       return null;
     }
 
+    var toString = _toString;
     if (nullable) {
+      toString = toString.replaceAll('.', '?.');
       expression = '$expression?';
     }
 
-    return '$expression.$_toString';
+    return '$expression.$toString';
   }
 
   String deserialize(
