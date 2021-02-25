@@ -93,8 +93,9 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   val['intSet'] = instance.intSet.toList();
   val['dateTimeSet'] =
       instance.dateTimeSet.map((e) => e.toUtc().toIso8601String()).toList();
-  val['datetime-iterable'] =
-      instance.dateTimeIterable.map((e) => e.toUtc().toIso8601String()).toList();
+  val['datetime-iterable'] = instance.dateTimeIterable
+      .map((e) => e.toUtc().toIso8601String())
+      .toList();
   val['list'] = instance.list;
   val['dynamicList'] = instance.dynamicList;
   val['objectList'] = instance.objectList;
@@ -112,7 +113,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
           e?.map((k, e) => MapEntry(
               k,
               e
-                  ?.map((e) => e?.map((e) => e.toUtc().toIso8601String()).toList())
+                  ?.map((e) =>
+                      e?.map((e) => e.toUtc().toIso8601String()).toList())
                   .toList())))))
       .toList();
   val['val'] = instance.val;
