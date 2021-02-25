@@ -1342,7 +1342,7 @@ Map<String, dynamic> _$SimpleClassOfBigIntToDateTimeNullableToJson(
         SimpleClassOfBigIntToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfBigIntToDateTimeNullable
@@ -1360,7 +1360,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBigIntToDateTimeNullableToJson(
         SimpleClassNullableOfBigIntToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value?.map(
-          (k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          (k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfDateTimeToDateTimeNullable
@@ -1378,7 +1378,7 @@ Map<String, dynamic> _$SimpleClassOfDateTimeToDateTimeNullableToJson(
         SimpleClassOfDateTimeToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value.map((k, e) =>
-          MapEntry(k.toUtc().toIso8601String(), e?.toUtc()?.toIso8601String())),
+          MapEntry(k.toUtc().toIso8601String(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfDateTimeToDateTimeNullable
@@ -1396,7 +1396,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToDateTimeNullableToJson(
         SimpleClassNullableOfDateTimeToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value?.map((k, e) =>
-          MapEntry(k.toUtc().toIso8601String(), e?.toUtc()?.toIso8601String())),
+          MapEntry(k.toUtc().toIso8601String(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfDynamicToDateTimeNullable
@@ -1413,7 +1413,7 @@ Map<String, dynamic> _$SimpleClassOfDynamicToDateTimeNullableToJson(
         SimpleClassOfDynamicToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfDynamicToDateTimeNullable
@@ -1430,7 +1430,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDynamicToDateTimeNullableToJson(
         SimpleClassNullableOfDynamicToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          ?.map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          ?.map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfEnumTypeToDateTimeNullable
@@ -1448,7 +1448,7 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToDateTimeNullableToJson(
         SimpleClassOfEnumTypeToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value.map((k, e) =>
-          MapEntry(_$EnumTypeEnumMap[k], e?.toUtc()?.toIso8601String())),
+          MapEntry(_$EnumTypeEnumMap[k], e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfEnumTypeToDateTimeNullable
@@ -1466,7 +1466,7 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToDateTimeNullableToJson(
         SimpleClassNullableOfEnumTypeToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value?.map((k, e) =>
-          MapEntry(_$EnumTypeEnumMap[k], e?.toUtc()?.toIso8601String())),
+          MapEntry(_$EnumTypeEnumMap[k], e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfIntToDateTimeNullable _$SimpleClassOfIntToDateTimeNullableFromJson(
@@ -1483,7 +1483,7 @@ Map<String, dynamic> _$SimpleClassOfIntToDateTimeNullableToJson(
         SimpleClassOfIntToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfIntToDateTimeNullable
@@ -1501,7 +1501,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToDateTimeNullableToJson(
         SimpleClassNullableOfIntToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value?.map(
-          (k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          (k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfObjectToDateTimeNullable
@@ -1517,7 +1517,7 @@ Map<String, dynamic> _$SimpleClassOfObjectToDateTimeNullableToJson(
         SimpleClassOfObjectToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfObjectToDateTimeNullable
@@ -1534,7 +1534,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToDateTimeNullableToJson(
         SimpleClassNullableOfObjectToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          ?.map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          ?.map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfStringToDateTimeNullable
@@ -1550,7 +1550,7 @@ Map<String, dynamic> _$SimpleClassOfStringToDateTimeNullableToJson(
         SimpleClassOfStringToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfStringToDateTimeNullable
@@ -1567,7 +1567,7 @@ Map<String, dynamic> _$SimpleClassNullableOfStringToDateTimeNullableToJson(
         SimpleClassNullableOfStringToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          ?.map((k, e) => MapEntry(k, e?.toUtc()?.toIso8601String())),
+          ?.map((k, e) => MapEntry(k, e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfUriToDateTimeNullable _$SimpleClassOfUriToDateTimeNullableFromJson(
@@ -1584,7 +1584,7 @@ Map<String, dynamic> _$SimpleClassOfUriToDateTimeNullableToJson(
         SimpleClassOfUriToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          .map((k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassNullableOfUriToDateTimeNullable
@@ -1602,7 +1602,7 @@ Map<String, dynamic> _$SimpleClassNullableOfUriToDateTimeNullableToJson(
         SimpleClassNullableOfUriToDateTimeNullable instance) =>
     <String, dynamic>{
       'value': instance.value?.map(
-          (k, e) => MapEntry(k.toString(), e?.toUtc()?.toIso8601String())),
+          (k, e) => MapEntry(k.toString(), e?.toUtc().toIso8601String())),
     };
 
 SimpleClassOfBigIntToDouble _$SimpleClassOfBigIntToDoubleFromJson(

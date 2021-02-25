@@ -27,5 +27,5 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>
     <String, dynamic>{
-      'value': instance.value?.toUtc()?.toIso8601String(),
+      'value': instance.value?.toUtc().toIso8601String(),
     };

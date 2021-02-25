@@ -20,5 +20,5 @@ Person _$PersonFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
-      'dateOfBirth': instance.dateOfBirth?.toUtc()?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth?.toUtc().toIso8601String(),
     };

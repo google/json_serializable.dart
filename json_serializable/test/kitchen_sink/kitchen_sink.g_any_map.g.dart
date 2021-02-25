@@ -72,7 +72,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) {
 Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
     <String, dynamic>{
       'no-42': instance.ctorValidatedNo42,
-      'dateTime': instance.dateTime?.toUtc()?.toIso8601String(),
+      'dateTime': instance.dateTime?.toUtc().toIso8601String(),
       'bigInt': instance.bigInt?.toString(),
       'iterable': instance.iterable?.toList(),
       'dynamicIterable': instance.dynamicIterable.toList(),

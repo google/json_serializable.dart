@@ -37,7 +37,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'middleName': instance.middleName,
-      'dateOfBirth': instance.dateOfBirth?.toUtc()?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth?.toUtc().toIso8601String(),
       r'$house': _$CategoryEnumMap[instance.house],
       'order': instance.order,
       'customOrders': instance.customOrders,

@@ -57,13 +57,11 @@ class ToFromStringHelper {
       return null;
     }
 
-    var toString = _toString;
     if (nullable) {
-      toString = toString.replaceAll('.', '?.');
       expression = '$expression?';
     }
 
-    return '$expression.$toString';
+    return '$expression.$_toString';
   }
 
   String deserialize(

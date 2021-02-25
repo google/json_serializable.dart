@@ -81,7 +81,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   }
 
   writeNotNull('no-42', instance.ctorValidatedNo42);
-  writeNotNull('dateTime', instance.dateTime?.toUtc()?.toIso8601String());
+  writeNotNull('dateTime', instance.dateTime?.toUtc().toIso8601String());
   writeNotNull('bigInt', instance.bigInt?.toString());
   writeNotNull('iterable', instance.iterable?.toList());
   val['dynamicIterable'] = instance.dynamicIterable.toList();
