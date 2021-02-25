@@ -81,7 +81,7 @@ Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'h': instance.height,
-      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth.toUtc().toIso8601String(),
       'dynamicType': instance.dynamicType,
       'varType': instance.varType,
       'listOfInts': instance.listOfInts,
@@ -114,7 +114,7 @@ Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'height': instance.height,
-      'dateOfBirth': instance.dateOfBirth.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth.toUtc().toIso8601String(),
     };
 ''')
 @JsonSerializable()

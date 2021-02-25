@@ -81,7 +81,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   }
 
   writeNotNull('no-42', instance.ctorValidatedNo42);
-  writeNotNull('dateTime', instance.dateTime?.toIso8601String());
+  writeNotNull('dateTime', instance.dateTime?.toUtc()?.toIso8601String());
   writeNotNull('bigInt', instance.bigInt?.toString());
   writeNotNull('iterable', instance.iterable?.toList());
   val['dynamicIterable'] = instance.dynamicIterable.toList();
@@ -92,27 +92,27 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   val['objectSet'] = instance.objectSet.toList();
   val['intSet'] = instance.intSet.toList();
   val['dateTimeSet'] =
-      instance.dateTimeSet.map((e) => e.toIso8601String()).toList();
+      instance.dateTimeSet.map((e) => e.toUtc().toIso8601String()).toList();
   val['datetime-iterable'] =
-      instance.dateTimeIterable.map((e) => e.toIso8601String()).toList();
+      instance.dateTimeIterable.map((e) => e.toUtc().toIso8601String()).toList();
   val['list'] = instance.list;
   val['dynamicList'] = instance.dynamicList;
   val['objectList'] = instance.objectList;
   val['intList'] = instance.intList;
   val['dateTimeList'] =
-      instance.dateTimeList.map((e) => e.toIso8601String()).toList();
+      instance.dateTimeList.map((e) => e.toUtc().toIso8601String()).toList();
   val['map'] = instance.map;
   val['stringStringMap'] = instance.stringStringMap;
   val['dynamicIntMap'] = instance.dynamicIntMap;
   val['objectDateTimeMap'] = instance.objectDateTimeMap
-      .map((k, e) => MapEntry(k, e.toIso8601String()));
+      .map((k, e) => MapEntry(k, e.toUtc().toIso8601String()));
   val['crazyComplex'] = instance.crazyComplex
       .map((e) => e?.map((k, e) => MapEntry(
           k,
           e?.map((k, e) => MapEntry(
               k,
               e
-                  ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
+                  ?.map((e) => e?.map((e) => e.toUtc().toIso8601String()).toList())
                   .toList())))))
       .toList();
   val['val'] = instance.val;
