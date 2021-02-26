@@ -1,4 +1,4 @@
-## 2.0.0-dev
+## 2.0.0
 
 - *BREAKING* `checkedYamlDecode` `sourceUrl` parameter is now a `Uri`.
 - Require at least Dart `2.12.0-0`.
