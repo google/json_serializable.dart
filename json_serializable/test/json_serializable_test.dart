@@ -47,6 +47,7 @@ const _expectedAnnotatedTests = {
   'FinalFields',
   'FinalFieldsNotSetInCtor',
   'FromDynamicCollection',
+  'FromNullableDynamicCollection',
   'GeneralTestClass1',
   'GeneralTestClass2',
   'GenericArgumentFactoriesFlagWithoutGenericType',
