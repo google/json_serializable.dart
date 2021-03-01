@@ -31,7 +31,8 @@ class JsonConverterHelper extends TypeHelper {
       return null;
     }
 
-    return LambdaResult(expression, '${converter.accessString}.toJson');
+    return LambdaResult('$expression${targetType.isNullableType ? '!' : ''}',
+        '${converter.accessString}.toJson');
   }
 
   @override
@@ -206,7 +207,7 @@ _ConverterMatch _compatibleMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
+      targetType.element.name,
     );
   }
 

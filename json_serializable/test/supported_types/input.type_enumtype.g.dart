@@ -10,8 +10,8 @@ part of 'input.type_enumtype.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     _$enumDecode(_$EnumTypeEnumMap, json['value']),
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
-        EnumType.alpha,
+    _$enumDecodeNullable(_$EnumTypeEnumMap,
+        json['withDefault'] == null ? EnumType.alpha : json['withDefault'])!,
   );
 }
 
@@ -34,7 +34,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(
@@ -67,9 +67,9 @@ K? _$enumDecodeNullable<K, V>(
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
-        EnumType.alpha,
+    _$enumDecodeNullable(_$EnumTypeEnumMap, json['value'])!,
+    _$enumDecodeNullable(_$EnumTypeEnumMap,
+        json['withDefault'] == null ? EnumType.alpha : json['withDefault'])!,
   );
 }
 

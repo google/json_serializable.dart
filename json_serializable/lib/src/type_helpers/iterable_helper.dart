@@ -75,9 +75,9 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    var output = '$expression as List<dynamic>';
+    var output = '$expression as List<${iterableGenericType.element.name}>';
 
-    final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
+    final targetTypeIsNullable = targetType.isNullableType;
 
     if (targetTypeIsNullable) {
       output += '?';

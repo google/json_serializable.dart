@@ -6,6 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:json_serializable/src/shared_checkers.dart';
 import 'package:meta/meta.dart';
 
 import 'helper_core.dart';
@@ -58,13 +59,16 @@ class TypeHelperCtx
     DartType targetType,
     String expression, {
     @required bool defaultProvided,
+    Object defaultValue,
   }) =>
       _run(
         targetType,
         expression,
         (TypeHelper th) => th.deserialize(
           targetType,
-          expression,
+          defaultValue != null
+              ? '$expression == null ? ${targetType.isDartCoreSet || targetType.isDartCoreList ? '<${coreIterableGenericType(targetType).element.name}>$defaultValue' : defaultValue} : $expression'
+              : expression,
           this,
           defaultProvided ?? false,
         ),

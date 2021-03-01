@@ -142,8 +142,7 @@ String typeToCode(
   } else if (type is InterfaceType) {
     final typeArguments = type.typeArguments;
     if (typeArguments.isEmpty) {
-      final nullablePostfix = (type.isNullableType || forceNullable) ? '?' : '';
-      return '${type.element.name}$nullablePostfix';
+      return type.element.name;
     } else {
       final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
       return '${type.element.name}<$typeArgumentsCode>';

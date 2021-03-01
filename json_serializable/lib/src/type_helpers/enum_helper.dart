@@ -64,7 +64,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
         'unknownValue: ${jsonKey.unknownEnumValue}',
     ];
 
-    return '$functionName(${args.join(', ')})';
+    return '$functionName(${args.join(', ')})${targetType.isNullableType || defaultProvided ? '!' : ''}';
   }
 }
 
@@ -100,7 +100,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(

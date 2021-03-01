@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
@@ -170,7 +169,9 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKeyName = safeNameAccess(field);
     final targetType = ctorParam?.type ?? field.type;
     final contextHelper = getHelperContext(field);
-    final defaultProvided = jsonKeyFor(field).defaultValue != null;
+    final jsonKey = jsonKeyFor(field);
+    final defaultValue = jsonKey.defaultValue;
+    final defaultProvided = defaultValue != null;
 
     String value;
     try {
@@ -180,6 +181,7 @@ abstract class DecodeHelper implements HelperCore {
               targetType,
               'v',
               defaultProvided: defaultProvided,
+              defaultValue: defaultValue,
             )
             .toString();
         if (!checkedProperty) {
@@ -194,6 +196,7 @@ abstract class DecodeHelper implements HelperCore {
               targetType,
               'json[$jsonKeyName]',
               defaultProvided: defaultProvided,
+              defaultValue: defaultValue,
             )
             .toString();
       }
@@ -202,22 +205,6 @@ abstract class DecodeHelper implements HelperCore {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
-    final jsonKey = jsonKeyFor(field);
-    final defaultValue = jsonKey.defaultValue;
-    if (defaultValue != null) {
-      if (jsonKey.disallowNullValue && jsonKey.required) {
-        log.warning('The `defaultValue` on field `${field.name}` will have no '
-            'effect because both `disallowNullValue` and `required` are set to '
-            '`true`.');
-      }
-      if (contextHelper.deserializeConvertData != null) {
-        log.warning('The field `${field.name}` has both `defaultValue` and '
-            '`fromJson` defined which likely won\'t work for your scenario.\n'
-            'Instead of using `defaultValue`, set `nullable: false` and handle '
-            '`null` in the `fromJson` function.');
-      }
-      value = '$value ?? $defaultValue';
-    }
     return value;
   }
 }

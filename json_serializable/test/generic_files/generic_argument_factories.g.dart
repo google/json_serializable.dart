@@ -14,8 +14,8 @@ GenericClassWithHelpers<T, S> _$GenericClassWithHelpersFromJson<T, S>(
 ) {
   return GenericClassWithHelpers<T, S>(
     fromJsonT(json['value']),
-    (json['list'] as List<dynamic>).map(fromJsonT).toList(),
-    (json['someSet'] as List<dynamic>).map(fromJsonS).toSet(),
+    (json['list'] as List<T>).map(fromJsonT).toList(),
+    (json['someSet'] as List<S>).map(fromJsonS).toSet(),
   );
 }
 

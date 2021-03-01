@@ -9,9 +9,9 @@ abstract class DefaultValue {
   String fieldString;
   int fieldInt;
   double fieldDouble;
-  List fieldListEmpty;
+  List<int> fieldListEmpty;
   Map fieldMapEmpty;
-  Set fieldSetEmpty;
+  Set<int> fieldSetEmpty;
   List<int> fieldListSimple;
   Set<String> fieldSetSimple;
   Map<String, int> fieldMapSimple;

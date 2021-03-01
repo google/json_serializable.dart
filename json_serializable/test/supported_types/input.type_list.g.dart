@@ -10,7 +10,9 @@ part of 'input.type_list.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as List<dynamic>,
-    json['withDefault'] as List<dynamic>? ?? [42, true, false, null],
+    json['withDefault'] == null
+        ? <dynamic>[42, true, false, null]
+        : json['withDefault'] as List<dynamic>,
   );
 }
 
@@ -23,7 +25,9 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     json['value'] as List<dynamic>?,
-    json['withDefault'] as List<dynamic>? ?? [42, true, false, null],
+    json['withDefault'] == null
+        ? <dynamic>[42, true, false, null]
+        : json['withDefault'] as List<dynamic>?,
   );
 }
 
@@ -36,7 +40,7 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
 
 SimpleClassOfBigInt _$SimpleClassOfBigIntFromJson(Map<String, dynamic> json) {
   return SimpleClassOfBigInt(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<BigInt>)
         .map((e) => BigInt.parse(e as String))
         .toList(),
   );
@@ -51,7 +55,7 @@ Map<String, dynamic> _$SimpleClassOfBigIntToJson(
 SimpleClassNullableOfBigInt _$SimpleClassNullableOfBigIntFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfBigInt(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<BigInt>?)
         ?.map((e) => BigInt.parse(e as String))
         .toList(),
   );
@@ -66,7 +70,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBigIntToJson(
 SimpleClassOfBigIntNullable _$SimpleClassOfBigIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfBigIntNullable(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<BigInt>)
         .map((e) => e == null ? null : BigInt.parse(e as String))
         .toList(),
   );
@@ -81,7 +85,7 @@ Map<String, dynamic> _$SimpleClassOfBigIntNullableToJson(
 SimpleClassNullableOfBigIntNullable
     _$SimpleClassNullableOfBigIntNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfBigIntNullable(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<BigInt>?)
         ?.map((e) => e == null ? null : BigInt.parse(e as String))
         .toList(),
   );
@@ -95,7 +99,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBigIntNullableToJson(
 
 SimpleClassOfBool _$SimpleClassOfBoolFromJson(Map<String, dynamic> json) {
   return SimpleClassOfBool(
-    (json['value'] as List<dynamic>).map((e) => e as bool).toList(),
+    (json['value'] as List<bool>).map((e) => e as bool).toList(),
   );
 }
 
@@ -107,7 +111,7 @@ Map<String, dynamic> _$SimpleClassOfBoolToJson(SimpleClassOfBool instance) =>
 SimpleClassNullableOfBool _$SimpleClassNullableOfBoolFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfBool(
-    (json['value'] as List<dynamic>?)?.map((e) => e as bool).toList(),
+    (json['value'] as List<bool>?)?.map((e) => e as bool).toList(),
   );
 }
 
@@ -120,7 +124,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBoolToJson(
 SimpleClassOfBoolNullable _$SimpleClassOfBoolNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfBoolNullable(
-    (json['value'] as List<dynamic>).map((e) => e as bool?).toList(),
+    (json['value'] as List<bool>).map((e) => e as bool).toList(),
   );
 }
 
@@ -133,7 +137,7 @@ Map<String, dynamic> _$SimpleClassOfBoolNullableToJson(
 SimpleClassNullableOfBoolNullable _$SimpleClassNullableOfBoolNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfBoolNullable(
-    (json['value'] as List<dynamic>?)?.map((e) => e as bool?).toList(),
+    (json['value'] as List<bool>?)?.map((e) => e as bool).toList(),
   );
 }
 
@@ -146,7 +150,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBoolNullableToJson(
 SimpleClassOfDateTime _$SimpleClassOfDateTimeFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDateTime(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<DateTime>)
         .map((e) => DateTime.parse(e as String))
         .toList(),
   );
@@ -161,7 +165,7 @@ Map<String, dynamic> _$SimpleClassOfDateTimeToJson(
 SimpleClassNullableOfDateTime _$SimpleClassNullableOfDateTimeFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfDateTime(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<DateTime>?)
         ?.map((e) => DateTime.parse(e as String))
         .toList(),
   );
@@ -176,7 +180,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToJson(
 SimpleClassOfDateTimeNullable _$SimpleClassOfDateTimeNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDateTimeNullable(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<DateTime>)
         .map((e) => e == null ? null : DateTime.parse(e as String))
         .toList(),
   );
@@ -191,7 +195,7 @@ Map<String, dynamic> _$SimpleClassOfDateTimeNullableToJson(
 SimpleClassNullableOfDateTimeNullable
     _$SimpleClassNullableOfDateTimeNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfDateTimeNullable(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<DateTime>?)
         ?.map((e) => e == null ? null : DateTime.parse(e as String))
         .toList(),
   );
@@ -205,7 +209,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeNullableToJson(
 
 SimpleClassOfDouble _$SimpleClassOfDoubleFromJson(Map<String, dynamic> json) {
   return SimpleClassOfDouble(
-    (json['value'] as List<dynamic>).map((e) => (e as num).toDouble()).toList(),
+    (json['value'] as List<double>).map((e) => (e as num).toDouble()).toList(),
   );
 }
 
@@ -218,7 +222,7 @@ Map<String, dynamic> _$SimpleClassOfDoubleToJson(
 SimpleClassNullableOfDouble _$SimpleClassNullableOfDoubleFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfDouble(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<double>?)
         ?.map((e) => (e as num).toDouble())
         .toList(),
   );
@@ -233,9 +237,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDoubleToJson(
 SimpleClassOfDoubleNullable _$SimpleClassOfDoubleNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDoubleNullable(
-    (json['value'] as List<dynamic>)
-        .map((e) => (e as num?)?.toDouble())
-        .toList(),
+    (json['value'] as List<double>).map((e) => (e as num).toDouble()).toList(),
   );
 }
 
@@ -248,8 +250,8 @@ Map<String, dynamic> _$SimpleClassOfDoubleNullableToJson(
 SimpleClassNullableOfDoubleNullable
     _$SimpleClassNullableOfDoubleNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfDoubleNullable(
-    (json['value'] as List<dynamic>?)
-        ?.map((e) => (e as num?)?.toDouble())
+    (json['value'] as List<double>?)
+        ?.map((e) => (e as num).toDouble())
         .toList(),
   );
 }
@@ -263,7 +265,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDoubleNullableToJson(
 SimpleClassOfDuration _$SimpleClassOfDurationFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDuration(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<Duration>)
         .map((e) => Duration(microseconds: e as int))
         .toList(),
   );
@@ -278,7 +280,7 @@ Map<String, dynamic> _$SimpleClassOfDurationToJson(
 SimpleClassNullableOfDuration _$SimpleClassNullableOfDurationFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfDuration(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<Duration>?)
         ?.map((e) => Duration(microseconds: e as int))
         .toList(),
   );
@@ -293,7 +295,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDurationToJson(
 SimpleClassOfDurationNullable _$SimpleClassOfDurationNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDurationNullable(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<Duration>)
         .map((e) => e == null ? null : Duration(microseconds: e as int))
         .toList(),
   );
@@ -308,7 +310,7 @@ Map<String, dynamic> _$SimpleClassOfDurationNullableToJson(
 SimpleClassNullableOfDurationNullable
     _$SimpleClassNullableOfDurationNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfDurationNullable(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<Duration>?)
         ?.map((e) => e == null ? null : Duration(microseconds: e as int))
         .toList(),
   );
@@ -348,7 +350,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDynamicToJson(
 SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfEnumType(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<EnumType>)
         .map((e) => _$enumDecode(_$EnumTypeEnumMap, e))
         .toList(),
   );
@@ -373,7 +375,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(
@@ -396,7 +398,7 @@ const _$EnumTypeEnumMap = {
 SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfEnumType(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<EnumType>?)
         ?.map((e) => _$enumDecode(_$EnumTypeEnumMap, e))
         .toList(),
   );
@@ -411,8 +413,8 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
 SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfEnumTypeNullable(
-    (json['value'] as List<dynamic>)
-        .map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e))
+    (json['value'] as List<EnumType>)
+        .map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e)!)
         .toList(),
   );
 }
@@ -437,8 +439,8 @@ K? _$enumDecodeNullable<K, V>(
 SimpleClassNullableOfEnumTypeNullable
     _$SimpleClassNullableOfEnumTypeNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfEnumTypeNullable(
-    (json['value'] as List<dynamic>?)
-        ?.map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e))
+    (json['value'] as List<EnumType>?)
+        ?.map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e)!)
         .toList(),
   );
 }
@@ -451,7 +453,7 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeNullableToJson(
 
 SimpleClassOfInt _$SimpleClassOfIntFromJson(Map<String, dynamic> json) {
   return SimpleClassOfInt(
-    (json['value'] as List<dynamic>).map((e) => e as int).toList(),
+    (json['value'] as List<int>).map((e) => e as int).toList(),
   );
 }
 
@@ -463,7 +465,7 @@ Map<String, dynamic> _$SimpleClassOfIntToJson(SimpleClassOfInt instance) =>
 SimpleClassNullableOfInt _$SimpleClassNullableOfIntFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfInt(
-    (json['value'] as List<dynamic>?)?.map((e) => e as int).toList(),
+    (json['value'] as List<int>?)?.map((e) => e as int).toList(),
   );
 }
 
@@ -476,7 +478,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToJson(
 SimpleClassOfIntNullable _$SimpleClassOfIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfIntNullable(
-    (json['value'] as List<dynamic>).map((e) => e as int?).toList(),
+    (json['value'] as List<int>).map((e) => e as int).toList(),
   );
 }
 
@@ -489,7 +491,7 @@ Map<String, dynamic> _$SimpleClassOfIntNullableToJson(
 SimpleClassNullableOfIntNullable _$SimpleClassNullableOfIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfIntNullable(
-    (json['value'] as List<dynamic>?)?.map((e) => e as int?).toList(),
+    (json['value'] as List<int>?)?.map((e) => e as int).toList(),
   );
 }
 
@@ -501,7 +503,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntNullableToJson(
 
 SimpleClassOfNum _$SimpleClassOfNumFromJson(Map<String, dynamic> json) {
   return SimpleClassOfNum(
-    (json['value'] as List<dynamic>).map((e) => e as num).toList(),
+    (json['value'] as List<num>).map((e) => e as num).toList(),
   );
 }
 
@@ -513,7 +515,7 @@ Map<String, dynamic> _$SimpleClassOfNumToJson(SimpleClassOfNum instance) =>
 SimpleClassNullableOfNum _$SimpleClassNullableOfNumFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfNum(
-    (json['value'] as List<dynamic>?)?.map((e) => e as num).toList(),
+    (json['value'] as List<num>?)?.map((e) => e as num).toList(),
   );
 }
 
@@ -526,7 +528,7 @@ Map<String, dynamic> _$SimpleClassNullableOfNumToJson(
 SimpleClassOfNumNullable _$SimpleClassOfNumNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfNumNullable(
-    (json['value'] as List<dynamic>).map((e) => e as num?).toList(),
+    (json['value'] as List<num>).map((e) => e as num).toList(),
   );
 }
 
@@ -539,7 +541,7 @@ Map<String, dynamic> _$SimpleClassOfNumNullableToJson(
 SimpleClassNullableOfNumNullable _$SimpleClassNullableOfNumNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfNumNullable(
-    (json['value'] as List<dynamic>?)?.map((e) => e as num?).toList(),
+    (json['value'] as List<num>?)?.map((e) => e as num).toList(),
   );
 }
 
@@ -551,7 +553,7 @@ Map<String, dynamic> _$SimpleClassNullableOfNumNullableToJson(
 
 SimpleClassOfObject _$SimpleClassOfObjectFromJson(Map<String, dynamic> json) {
   return SimpleClassOfObject(
-    (json['value'] as List<dynamic>).map((e) => e as Object).toList(),
+    (json['value'] as List<Object>).map((e) => e as Object).toList(),
   );
 }
 
@@ -564,7 +566,7 @@ Map<String, dynamic> _$SimpleClassOfObjectToJson(
 SimpleClassNullableOfObject _$SimpleClassNullableOfObjectFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfObject(
-    (json['value'] as List<dynamic>?)?.map((e) => e as Object).toList(),
+    (json['value'] as List<Object>?)?.map((e) => e as Object).toList(),
   );
 }
 
@@ -577,7 +579,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToJson(
 SimpleClassOfObjectNullable _$SimpleClassOfObjectNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfObjectNullable(
-    json['value'] as List<dynamic>,
+    json['value'] as List<Object>,
   );
 }
 
@@ -590,7 +592,7 @@ Map<String, dynamic> _$SimpleClassOfObjectNullableToJson(
 SimpleClassNullableOfObjectNullable
     _$SimpleClassNullableOfObjectNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfObjectNullable(
-    json['value'] as List<dynamic>?,
+    json['value'] as List<Object>?,
   );
 }
 
@@ -602,7 +604,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectNullableToJson(
 
 SimpleClassOfString _$SimpleClassOfStringFromJson(Map<String, dynamic> json) {
   return SimpleClassOfString(
-    (json['value'] as List<dynamic>).map((e) => e as String).toList(),
+    (json['value'] as List<String>).map((e) => e as String).toList(),
   );
 }
 
@@ -615,7 +617,7 @@ Map<String, dynamic> _$SimpleClassOfStringToJson(
 SimpleClassNullableOfString _$SimpleClassNullableOfStringFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfString(
-    (json['value'] as List<dynamic>?)?.map((e) => e as String).toList(),
+    (json['value'] as List<String>?)?.map((e) => e as String).toList(),
   );
 }
 
@@ -628,7 +630,7 @@ Map<String, dynamic> _$SimpleClassNullableOfStringToJson(
 SimpleClassOfStringNullable _$SimpleClassOfStringNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfStringNullable(
-    (json['value'] as List<dynamic>).map((e) => e as String?).toList(),
+    (json['value'] as List<String>).map((e) => e as String).toList(),
   );
 }
 
@@ -641,7 +643,7 @@ Map<String, dynamic> _$SimpleClassOfStringNullableToJson(
 SimpleClassNullableOfStringNullable
     _$SimpleClassNullableOfStringNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullableOfStringNullable(
-    (json['value'] as List<dynamic>?)?.map((e) => e as String?).toList(),
+    (json['value'] as List<String>?)?.map((e) => e as String).toList(),
   );
 }
 
@@ -653,9 +655,7 @@ Map<String, dynamic> _$SimpleClassNullableOfStringNullableToJson(
 
 SimpleClassOfUri _$SimpleClassOfUriFromJson(Map<String, dynamic> json) {
   return SimpleClassOfUri(
-    (json['value'] as List<dynamic>)
-        .map((e) => Uri.parse(e as String))
-        .toList(),
+    (json['value'] as List<Uri>).map((e) => Uri.parse(e as String)).toList(),
   );
 }
 
@@ -667,9 +667,7 @@ Map<String, dynamic> _$SimpleClassOfUriToJson(SimpleClassOfUri instance) =>
 SimpleClassNullableOfUri _$SimpleClassNullableOfUriFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfUri(
-    (json['value'] as List<dynamic>?)
-        ?.map((e) => Uri.parse(e as String))
-        .toList(),
+    (json['value'] as List<Uri>?)?.map((e) => Uri.parse(e as String)).toList(),
   );
 }
 
@@ -682,7 +680,7 @@ Map<String, dynamic> _$SimpleClassNullableOfUriToJson(
 SimpleClassOfUriNullable _$SimpleClassOfUriNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfUriNullable(
-    (json['value'] as List<dynamic>)
+    (json['value'] as List<Uri>)
         .map((e) => e == null ? null : Uri.parse(e as String))
         .toList(),
   );
@@ -697,7 +695,7 @@ Map<String, dynamic> _$SimpleClassOfUriNullableToJson(
 SimpleClassNullableOfUriNullable _$SimpleClassNullableOfUriNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassNullableOfUriNullable(
-    (json['value'] as List<dynamic>?)
+    (json['value'] as List<Uri>?)
         ?.map((e) => e == null ? null : Uri.parse(e as String))
         .toList(),
   );

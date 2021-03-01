@@ -10,42 +10,60 @@ part of 'default_value.g_any_map__checked.dart';
 DefaultValue _$DefaultValueFromJson(Map json) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue(
-      $checkedConvert(json, 'fieldBool', (v) => v as bool?) ?? true,
-      $checkedConvert(json, 'fieldString', (v) => v as String?) ?? 'string',
-      $checkedConvert(json, 'fieldInt', (v) => v as int?) ?? 42,
-      $checkedConvert(json, 'fieldDouble', (v) => (v as num?)?.toDouble()) ??
-          3.14,
-      $checkedConvert(json, 'fieldListEmpty', (v) => v as List<dynamic>?) ?? [],
+      $checkedConvert(json, 'fieldBool', (v) => v == null ? true : v as bool),
       $checkedConvert(
-              json, 'fieldSetEmpty', (v) => (v as List<dynamic>?)?.toSet()) ??
-          {},
-      $checkedConvert(json, 'fieldMapEmpty', (v) => v as Map?) ?? {},
-      $checkedConvert(json, 'fieldListSimple',
-              (v) => (v as List<dynamic>?)?.map((e) => e as int).toList()) ??
-          [1, 2, 3],
-      $checkedConvert(json, 'fieldSetSimple',
-              (v) => (v as List<dynamic>?)?.map((e) => e as String).toSet()) ??
-          {'entry1', 'entry2'},
+          json, 'fieldString', (v) => v == null ? 'string' : v as String),
+      $checkedConvert(json, 'fieldInt', (v) => v == null ? 42 : v as int),
       $checkedConvert(
-              json,
-              'fieldMapSimple',
-              (v) => (v as Map?)?.map(
-                    (k, e) => MapEntry(k as String, e as int),
-                  )) ??
-          {'answer': 42},
+          json, 'fieldDouble', (v) => (v == null ? 3.14 : v as num).toDouble()),
       $checkedConvert(
-              json,
-              'fieldMapListString',
-              (v) => (v as Map?)?.map(
-                    (k, e) => MapEntry(k as String,
-                        (e as List<dynamic>).map((e) => e as String).toList()),
-                  )) ??
-          {
-            'root': ['child']
-          },
-      $checkedConvert(json, 'fieldEnum',
-              (v) => _$enumDecodeNullable(_$GreekEnumMap, v)) ??
-          Greek.beta,
+          json,
+          'fieldListEmpty',
+          (v) => (v == null ? <int>[] : v as List<int>)
+              .map((e) => e as int)
+              .toList()),
+      $checkedConvert(
+          json,
+          'fieldSetEmpty',
+          (v) => (v == null ? <int>{} : v as List<int>)
+              .map((e) => e as int)
+              .toSet()),
+      $checkedConvert(json, 'fieldMapEmpty', (v) => v == null ? {} : v as Map),
+      $checkedConvert(
+          json,
+          'fieldListSimple',
+          (v) => (v == null ? <int>[1, 2, 3] : v as List<int>)
+              .map((e) => e as int)
+              .toList()),
+      $checkedConvert(
+          json,
+          'fieldSetSimple',
+          (v) => (v == null ? <String>{'entry1', 'entry2'} : v as List<String>)
+              .map((e) => e as String)
+              .toSet()),
+      $checkedConvert(
+          json,
+          'fieldMapSimple',
+          (v) => (v == null ? {'answer': 42} : v as Map).map(
+                (k, e) => MapEntry(k as String, e as int),
+              )),
+      $checkedConvert(
+          json,
+          'fieldMapListString',
+          (v) => (v == null
+                      ? {
+                          'root': ['child']
+                        }
+                      : v as Map)
+                  .map(
+                (k, e) => MapEntry(k as String,
+                    (e as List<String>).map((e) => e as String).toList()),
+              )),
+      $checkedConvert(
+          json,
+          'fieldEnum',
+          (v) => _$enumDecodeNullable(
+              _$GreekEnumMap, v == null ? Greek.beta : v)!),
     );
     return val;
   });
@@ -80,7 +98,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(

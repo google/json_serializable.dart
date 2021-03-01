@@ -9,33 +9,51 @@ part of 'default_value.dart';
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
   return DefaultValue(
-    json['fieldBool'] as bool? ?? true,
-    json['fieldString'] as String? ?? 'string',
-    json['fieldInt'] as int? ?? 42,
-    (json['fieldDouble'] as num?)?.toDouble() ?? 3.14,
-    json['fieldListEmpty'] as List<dynamic>? ?? [],
-    (json['fieldSetEmpty'] as List<dynamic>?)?.toSet() ?? {},
-    json['fieldMapEmpty'] as Map<String, dynamic>? ?? {},
-    (json['fieldListSimple'] as List<dynamic>?)
-            ?.map((e) => e as int)
-            .toList() ??
-        [1, 2, 3],
-    (json['fieldSetSimple'] as List<dynamic>?)
-            ?.map((e) => e as String)
-            .toSet() ??
-        {'entry1', 'entry2'},
-    (json['fieldMapSimple'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(k, e as int),
-        ) ??
-        {'answer': 42},
-    (json['fieldMapListString'] as Map<String, dynamic>?)?.map(
-          (k, e) => MapEntry(
-              k, (e as List<dynamic>).map((e) => e as String).toList()),
-        ) ??
-        {
-          'root': ['child']
-        },
-    _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+    json['fieldBool'] == null ? true : json['fieldBool'] as bool,
+    json['fieldString'] == null ? 'string' : json['fieldString'] as String,
+    json['fieldInt'] == null ? 42 : json['fieldInt'] as int,
+    (json['fieldDouble'] == null ? 3.14 : json['fieldDouble'] as num)
+        .toDouble(),
+    (json['fieldListEmpty'] == null
+            ? <int>[]
+            : json['fieldListEmpty'] as List<int>)
+        .map((e) => e as int)
+        .toList(),
+    (json['fieldSetEmpty'] == null
+            ? <int>{}
+            : json['fieldSetEmpty'] as List<int>)
+        .map((e) => e as int)
+        .toSet(),
+    json['fieldMapEmpty'] == null
+        ? {}
+        : json['fieldMapEmpty'] as Map<String, dynamic>,
+    (json['fieldListSimple'] == null
+            ? <int>[1, 2, 3]
+            : json['fieldListSimple'] as List<int>)
+        .map((e) => e as int)
+        .toList(),
+    (json['fieldSetSimple'] == null
+            ? <String>{'entry1', 'entry2'}
+            : json['fieldSetSimple'] as List<String>)
+        .map((e) => e as String)
+        .toSet(),
+    (json['fieldMapSimple'] == null
+            ? {'answer': 42}
+            : json['fieldMapSimple'] as Map<String, dynamic>)
+        .map(
+      (k, e) => MapEntry(k, e as int),
+    ),
+    (json['fieldMapListString'] == null
+            ? {
+                'root': ['child']
+              }
+            : json['fieldMapListString'] as Map<String, dynamic>)
+        .map(
+      (k, e) =>
+          MapEntry(k, (e as List<String>).map((e) => e as String).toList()),
+    ),
+    _$enumDecodeNullable(_$GreekEnumMap,
+        json['fieldEnum'] == null ? Greek.beta : json['fieldEnum'])!,
   );
 }
 
@@ -68,7 +86,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(
