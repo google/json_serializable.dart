@@ -104,18 +104,25 @@ class CheckedFromJsonException implements Exception {
         innerStack = null;
 
   CheckedFromJsonException._(
-    this.innerError,
+    Object innerError,
     this.innerStack,
     this.map,
     this.key, {
     String? className,
-  })  : _className = className,
+  })  :
+        // https://github.com/dart-lang/linter/issues/2491
+        // ignore: prefer_initializing_formals
+        innerError = innerError,
+        _className = className,
         badKey = innerError is BadKeyException,
         message = _getMessage(innerError);
 
-  static String? _getMessage(Object? error) {
+  static String _getMessage(Object error) {
     if (error is ArgumentError) {
-      return error.message?.toString();
+      final message = error.message;
+      if (message != null) {
+        return message.toString();
+      }
     }
     if (error is BadKeyException) {
       return error.message;
