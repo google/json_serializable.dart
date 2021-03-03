@@ -38,7 +38,7 @@ class ValueHelper extends TypeHelper {
       return '$expression as Object';
     } else if (targetType.isDartCoreObject || targetType.isDynamic) {
       // just return it as-is. We'll hope it's safe.
-      return expression;
+      return '$expression${defaultProvided ? ' as ${targetType.element.name}' : ''}';
     } else if (targetType.isDartCoreDouble) {
       final targetTypeNullable = !defaultProvided && targetType.isNullableType;
       final question = targetTypeNullable ? '?' : '';

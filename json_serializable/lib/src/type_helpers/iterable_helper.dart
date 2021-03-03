@@ -78,7 +78,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
     final useGeneric =
-        iterableGenericType.element.kind.name == 'TYPE_PARAMETER' ||
+        iterableGenericType.element.kind == ElementKind.TYPE_PARAMETER ||
             iterableGenericType.element.kind == ElementKind.ENUM ||
             !defaultProvided;
 
