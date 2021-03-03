@@ -75,21 +75,19 @@ class DefaultWithNestedEnum {
   DefaultWithNestedEnum();
 }
 
+// -
 @ShouldGenerate(
   r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
     Map<String, dynamic> json) {
   return DefaultWithToJsonClass()
     ..fieldDefaultValueToJson = DefaultWithToJsonClass._fromJson(
-            json['fieldDefaultValueToJson'] as String) ??
-        7;
+        json['fieldDefaultValueToJson'] == null
+            ? 7
+            : json['fieldDefaultValueToJson'] as String);
 }
 ''',
-  expectedLogItems: [
-    '''
-The field `fieldDefaultValueToJson` has both `defaultValue` and `fromJson` defined which likely won't work for your scenario.
-Instead of using `defaultValue`, set `nullable: false` and handle `null` in the `fromJson` function.'''
-  ],
+  expectedLogItems: [],
 )
 @JsonSerializable(createToJson: false)
 class DefaultWithToJsonClass {
@@ -108,13 +106,10 @@ DefaultWithDisallowNullRequiredClass
   $checkKeys(json,
       requiredKeys: const ['theField'], disallowNullValues: const ['theField']);
   return DefaultWithDisallowNullRequiredClass()
-    ..theField = json['theField'] as int? ?? 7;
+    ..theField = json['theField'] == null ? 7 : json['theField'] as int;
 }
 ''',
-  expectedLogItems: [
-    'The `defaultValue` on field `theField` will have no effect because both '
-        '`disallowNullValue` and `required` are set to `true`.',
-  ],
+  expectedLogItems: [],
 )
 @JsonSerializable(createToJson: false)
 class DefaultWithDisallowNullRequiredClass {
@@ -128,16 +123,25 @@ class DefaultWithDisallowNullRequiredClass {
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
     Map<String, dynamic> json) {
   return DefaultDoubleConstants()
-    ..defaultNan = (json['defaultNan'] as num?)?.toDouble() ?? double.nan
-    ..defaultNegativeInfinity =
-        (json['defaultNegativeInfinity'] as num?)?.toDouble() ??
-            double.negativeInfinity
-    ..defaultInfinity =
-        (json['defaultInfinity'] as num?)?.toDouble() ?? double.infinity
-    ..defaultMinPositive =
-        (json['defaultMinPositive'] as num?)?.toDouble() ?? 5e-324
-    ..defaultMaxFinite = (json['defaultMaxFinite'] as num?)?.toDouble() ??
-        1.7976931348623157e+308;
+    ..defaultNan =
+        (json['defaultNan'] == null ? double.nan : json['defaultNan'] as num)
+            .toDouble()
+    ..defaultNegativeInfinity = (json['defaultNegativeInfinity'] == null
+            ? double.negativeInfinity
+            : json['defaultNegativeInfinity'] as num)
+        .toDouble()
+    ..defaultInfinity = (json['defaultInfinity'] == null
+            ? double.infinity
+            : json['defaultInfinity'] as num)
+        .toDouble()
+    ..defaultMinPositive = (json['defaultMinPositive'] == null
+            ? 5e-324
+            : json['defaultMinPositive'] as num)
+        .toDouble()
+    ..defaultMaxFinite = (json['defaultMaxFinite'] == null
+            ? 1.7976931348623157e+308
+            : json['defaultMaxFinite'] as num)
+        .toDouble();
 }
 ''')
 @JsonSerializable(createToJson: false)

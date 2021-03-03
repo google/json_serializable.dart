@@ -7,32 +7,20 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
-
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
-part 'constants_copy.dart';
-
 part 'checked_test_input.dart';
-
+part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
-
 part 'default_value_input.dart';
-
 part 'field_namer_input.dart';
-
 part 'generic_test_input.dart';
-
 part 'inheritance_test_input.dart';
-
 part 'json_converter_test_input.dart';
-
 part 'map_key_variety_test_input.dart';
-
 part 'setter_test_input.dart';
-
 part 'to_from_json_test_input.dart';
-
 part 'unknown_enum_value_test_input.dart';
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
@@ -72,8 +60,7 @@ GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
     ..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String)
     ..dynamicType = json['dynamicType']
     ..varType = json['varType']
-    ..listOfInts =
-        (json['listOfInts'] as List<dynamic>).map((e) => e as int).toList();
+    ..listOfInts = (json['listOfInts'] as List).map((e) => e as int).toList();
 }
 
 Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
@@ -174,7 +161,7 @@ class FinalFieldsNotSetInCtor {
 @ShouldGenerate(r'''
 SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
   return SetSupport(
-    (json['values'] as List<dynamic>).map((e) => e as int).toSet(),
+    (json['values'] as List).map((e) => e as int).toSet(),
   );
 }
 
@@ -398,13 +385,14 @@ enum GoodEnum {
   nullValue
 }
 
+// -
 @ShouldGenerate(r'''
 FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
     Map<String, dynamic> json) {
   return FieldWithFromJsonCtorAndTypeParams()
     ..customOrders = json['customOrders'] == null
         ? null
-        : MyList.fromJson((json['customOrders'] as List<dynamic>)
+        : MyList.fromJson((json['customOrders'] as List)
             .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
             .toList());
 }

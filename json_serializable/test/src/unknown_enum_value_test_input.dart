@@ -6,10 +6,9 @@ part of '_json_serializable_test_input.dart';
   r'''
 UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
   return UnknownEnumValue()
-    ..value = _$enumDecodeNullable(
-            _$UnknownEnumValueItemsEnumMap, json['value'],
-            unknownValue: UnknownEnumValueItems.vUnknown) ??
-        UnknownEnumValueItems.vNull;
+    ..value = _$enumDecodeNullable(_$UnknownEnumValueItemsEnumMap,
+        json['value'] ?? UnknownEnumValueItems.vNull,
+        unknownValue: UnknownEnumValueItems.vUnknown)!;
 }
 
 K _$enumDecode<K, V>(
@@ -25,7 +24,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(
