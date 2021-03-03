@@ -10,7 +10,8 @@ part of 'input.type_double.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     (json['value'] as num).toDouble(),
-    (json['withDefault'] ?? 3.14 as num).toDouble(),
+    (json['withDefault'] == null ? 3.14 : json['withDefault'] as num)
+        .toDouble(),
   );
 }
 
@@ -23,7 +24,8 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     (json['value'] as num?)?.toDouble(),
-    (json['withDefault'] ?? 3.14 as num).toDouble(),
+    (json['withDefault'] == null ? 3.14 : json['withDefault'] as num)
+        .toDouble(),
   );
 }
 

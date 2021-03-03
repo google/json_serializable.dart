@@ -10,7 +10,9 @@ part of 'input.type_iterable.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as List,
-    json['withDefault'] ?? [42, true, false, null] as List<dynamic>,
+    json['withDefault'] == null
+        ? [42, true, false, null]
+        : json['withDefault'] as List<dynamic>,
   );
 }
 
@@ -23,7 +25,9 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     json['value'] as List?,
-    json['withDefault'] ?? [42, true, false, null] as List<dynamic>?,
+    json['withDefault'] == null
+        ? [42, true, false, null]
+        : json['withDefault'] as List<dynamic>?,
   );
 }
 

@@ -67,11 +67,9 @@ class TypeHelperCtx
         (TypeHelper th) => th.deserialize(
           targetType,
           defaultValue != null
-              ? targetType.isDartCoreSet ||
-                      targetType.isDartCoreList ||
-                      targetType.isDartCoreMap
-                  ? '$expression == null ? ${targetType.isDartCoreSet || targetType.isDartCoreList ? '<${coreIterableGenericType(targetType).element.name}>$defaultValue' : defaultValue} : $expression'
-                  : '$expression ?? $defaultValue'
+              ? targetType.element.kind == ElementKind.ENUM
+                  ? '$expression ?? $defaultValue'
+                  : '$expression == null ? ${targetType.isDartCoreSet || targetType.isDartCoreList ? '<${coreIterableGenericType(targetType).element.name}>$defaultValue' : defaultValue} : $expression'
               : expression,
           this,
           defaultProvided ?? false,

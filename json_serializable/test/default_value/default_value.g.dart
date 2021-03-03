@@ -9,10 +9,11 @@ part of 'default_value.dart';
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
   return DefaultValue(
-    json['fieldBool'] ?? true as bool,
-    json['fieldString'] ?? 'string' as String,
-    json['fieldInt'] ?? 42 as int,
-    (json['fieldDouble'] ?? 3.14 as num).toDouble(),
+    json['fieldBool'] == null ? true : json['fieldBool'] as bool,
+    json['fieldString'] == null ? 'string' : json['fieldString'] as String,
+    json['fieldInt'] == null ? 42 : json['fieldInt'] as int,
+    (json['fieldDouble'] == null ? 3.14 : json['fieldDouble'] as num)
+        .toDouble(),
     (json['fieldListEmpty'] == null
             ? <int>[]
             : json['fieldListEmpty'] as List<int>)

@@ -10,7 +10,7 @@ part of 'input.type_num.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'] as num,
-    json['withDefault'] ?? 88.6 as num,
+    json['withDefault'] == null ? 88.6 : json['withDefault'] as num,
   );
 }
 
@@ -23,7 +23,7 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
     json['value'] as num?,
-    json['withDefault'] ?? 88.6 as num,
+    json['withDefault'] == null ? 88.6 : json['withDefault'] as num,
   );
 }
 

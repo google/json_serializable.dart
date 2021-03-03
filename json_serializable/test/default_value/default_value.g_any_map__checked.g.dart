@@ -10,11 +10,12 @@ part of 'default_value.g_any_map__checked.dart';
 DefaultValue _$DefaultValueFromJson(Map json) {
   return $checkedNew('DefaultValue', json, () {
     final val = DefaultValue(
-      $checkedConvert(json, 'fieldBool', (v) => v ?? true as bool),
-      $checkedConvert(json, 'fieldString', (v) => v ?? 'string' as String),
-      $checkedConvert(json, 'fieldInt', (v) => v ?? 42 as int),
+      $checkedConvert(json, 'fieldBool', (v) => v == null ? true : v as bool),
       $checkedConvert(
-          json, 'fieldDouble', (v) => (v ?? 3.14 as num).toDouble()),
+          json, 'fieldString', (v) => v == null ? 'string' : v as String),
+      $checkedConvert(json, 'fieldInt', (v) => v == null ? 42 : v as int),
+      $checkedConvert(
+          json, 'fieldDouble', (v) => (v == null ? 3.14 : v as num).toDouble()),
       $checkedConvert(
           json,
           'fieldListEmpty',
