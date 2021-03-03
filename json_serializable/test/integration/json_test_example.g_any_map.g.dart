@@ -103,8 +103,8 @@ Order _$OrderFromJson(Map json) {
     )
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
-    ..statusCode = _$enumDecodeNullable(_$StatusCodeEnumMap,
-        json['status_code'] == null ? StatusCode.success : json['status_code'],
+    ..statusCode = _$enumDecodeNullable(
+        _$StatusCodeEnumMap, json['status_code'] ?? StatusCode.success,
         unknownValue: StatusCode.unknown)!;
 }
 

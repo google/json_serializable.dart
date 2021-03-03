@@ -10,7 +10,7 @@ part of 'input.dart';
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
   return SimpleClass(
     json['value'],
-    json['withDefault'] == null ? 42 : json['withDefault'],
+    json['withDefault'] ?? 42,
   );
 }
 
