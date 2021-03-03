@@ -71,20 +71,19 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
         (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
 
-    final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
+    final targetTypeIsNullable = !defaultProvided && targetType.isNullableType;
+    final optionalQuestion = targetTypeIsNullable ? '?' : '';
 
     if (!isKeyStringable) {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
           if (isLikeDynamic(keyArg)) {
-            // return '$expression as Map$optionalQuestion';
-            return '$expression as Map';
+            return '$expression as Map$optionalQuestion';
           }
         } else {
           // this is the trivial case. Do a runtime cast to the known type of
           // JSON map values - `Map<String, dynamic>`
-          // return '$expression as Map<String, dynamic>$optionalQuestion';
-          return '$expression as Map<String, dynamic>';
+          return '$expression as Map<String, dynamic>$optionalQuestion';
         }
       }
 
@@ -102,7 +101,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    final mapCast = context.config.anyMap
+        ? 'as Map$optionalQuestion'
+        : 'as Map<String, dynamic>$optionalQuestion';
 
     String keyUsage;
     if (isEnum(keyArg)) {
@@ -123,7 +124,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       keyUsage = toFromString.deserialize(keyArg, keyUsage, false, true);
     }
 
-    return '($expression $mapCast)${targetType.isNullableType ? '?' : ''}.map( '
+    return '($expression $mapCast)$optionalQuestion.map( '
         '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
   }
 }

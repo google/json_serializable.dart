@@ -64,7 +64,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
         'unknownValue: ${jsonKey.unknownEnumValue}',
     ];
 
-    return '$functionName(${args.join(', ')})${targetType.isNullableType || defaultProvided ? '!' : ''}';
+    return '$functionName(${args.join(', ')})${defaultProvided ? '!' : ''}';
   }
 }
 

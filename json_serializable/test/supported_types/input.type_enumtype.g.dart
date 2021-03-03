@@ -67,7 +67,7 @@ K? _$enumDecodeNullable<K, V>(
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['value'])!,
+    _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
     _$enumDecodeNullable(_$EnumTypeEnumMap,
         json['withDefault'] == null ? EnumType.alpha : json['withDefault'])!,
   );

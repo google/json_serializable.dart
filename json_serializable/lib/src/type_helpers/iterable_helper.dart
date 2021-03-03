@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 
@@ -70,14 +71,14 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
         _coreSetChecker.isExactlyType(targetType))) {
       return null;
     }
+    final targetTypeIsNullable = targetType.isNullableType;
 
     final iterableGenericType = coreIterableGenericType(targetType);
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    var output = '$expression as List<${iterableGenericType.element.name}>';
-
-    final targetTypeIsNullable = targetType.isNullableType;
+    var output =
+        '$expression as List${iterableGenericType.element.kind.name == 'TYPE_PARAMETER' || iterableGenericType.element.kind == ElementKind.ENUM || !defaultProvided ? '' : '<${iterableGenericType.element.name}>'}';
 
     if (targetTypeIsNullable) {
       output += '?';

@@ -41,12 +41,8 @@ DefaultValue _$DefaultValueFromJson(Map json) {
           (v) => (v == null ? <String>{'entry1', 'entry2'} : v as List<String>)
               .map((e) => e as String)
               .toSet()),
-      $checkedConvert(
-          json,
-          'fieldMapSimple',
-          (v) => (v == null ? {'answer': 42} : v as Map).map(
-                (k, e) => MapEntry(k as String, e as int),
-              )),
+      $checkedConvert(json, 'fieldMapSimple',
+          (v) => Map<String, int>.from(v == null ? {'answer': 42} : v as Map)),
       $checkedConvert(
           json,
           'fieldMapListString',
@@ -56,8 +52,8 @@ DefaultValue _$DefaultValueFromJson(Map json) {
                         }
                       : v as Map)
                   .map(
-                (k, e) => MapEntry(k as String,
-                    (e as List<String>).map((e) => e as String).toList()),
+                (k, e) => MapEntry(
+                    k as String, (e as List).map((e) => e as String).toList()),
               )),
       $checkedConvert(
           json,

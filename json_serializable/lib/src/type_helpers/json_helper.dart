@@ -72,6 +72,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
+    final targetTypeIsNullable = !defaultProvided && targetType.isNullableType;
+    final optionalQuestion = targetTypeIsNullable ? '?' : '';
+
     final type = targetType as InterfaceType;
     final classElement = type.element;
 
@@ -117,9 +120,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       output = args.join(', ');
     } else if (_annotation(context.config, type)?.createFactory == true) {
       if (context.config.anyMap) {
-        output += ' as Map';
+        output += ' as Map$optionalQuestion';
       } else {
-        output += ' as Map<String, dynamic>';
+        output += ' as Map<String, dynamic>$optionalQuestion';
       }
     } else {
       return null;

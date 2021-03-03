@@ -37,20 +37,16 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
             : json['fieldSetSimple'] as List<String>)
         .map((e) => e as String)
         .toSet(),
-    (json['fieldMapSimple'] == null
-            ? {'answer': 42}
-            : json['fieldMapSimple'] as Map<String, dynamic>)
-        .map(
-      (k, e) => MapEntry(k, e as int),
-    ),
+    Map<String, int>.from(json['fieldMapSimple'] == null
+        ? {'answer': 42}
+        : json['fieldMapSimple'] as Map),
     (json['fieldMapListString'] == null
             ? {
                 'root': ['child']
               }
             : json['fieldMapListString'] as Map<String, dynamic>)
         .map(
-      (k, e) =>
-          MapEntry(k, (e as List<String>).map((e) => e as String).toList()),
+      (k, e) => MapEntry(k, (e as List).map((e) => e as String).toList()),
     ),
     _$enumDecodeNullable(_$GreekEnumMap,
         json['fieldEnum'] == null ? Greek.beta : json['fieldEnum'])!,

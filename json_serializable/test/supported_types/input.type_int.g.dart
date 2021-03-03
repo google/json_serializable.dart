@@ -22,7 +22,7 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassNullable(
-    json['value'] as int,
+    json['value'] as int?,
     json['withDefault'] == null ? 42 : json['withDefault'] as int,
   );
 }
