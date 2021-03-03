@@ -77,8 +77,13 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
+    final useGeneric =
+        iterableGenericType.element.kind.name == 'TYPE_PARAMETER' ||
+            iterableGenericType.element.kind == ElementKind.ENUM ||
+            !defaultProvided;
+
     var output =
-        '$expression as List${iterableGenericType.element.kind.name == 'TYPE_PARAMETER' || iterableGenericType.element.kind == ElementKind.ENUM || !defaultProvided ? '' : '<${iterableGenericType.element.name}>'}';
+        '$expression as List${useGeneric ? '' : '<${iterableGenericType.element.name}>'}';
 
     if (targetTypeIsNullable) {
       output += '?';
@@ -95,7 +100,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var optionalQuestion = targetTypeIsNullable ? '?' : '';
 
-    if (closureArg != itemSubVal) {
+    if (closureArg != itemSubVal && useGeneric) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);
       output += '$optionalQuestion.map($lambda)';
       // No need to include the optional question below – it was used here!

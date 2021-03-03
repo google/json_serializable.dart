@@ -16,30 +16,17 @@ DefaultValue _$DefaultValueFromJson(Map json) {
       $checkedConvert(json, 'fieldInt', (v) => v == null ? 42 : v as int),
       $checkedConvert(
           json, 'fieldDouble', (v) => (v == null ? 3.14 : v as num).toDouble()),
-      $checkedConvert(
-          json,
-          'fieldListEmpty',
-          (v) => (v == null ? <int>[] : v as List<int>)
-              .map((e) => e as int)
-              .toList()),
-      $checkedConvert(
-          json,
-          'fieldSetEmpty',
-          (v) => (v == null ? <int>{} : v as List<int>)
-              .map((e) => e as int)
-              .toSet()),
+      $checkedConvert(json, 'fieldListEmpty',
+          (v) => (v == null ? <int>[] : v as List<int>).toList()),
+      $checkedConvert(json, 'fieldSetEmpty',
+          (v) => (v == null ? <int>{} : v as List<int>).toSet()),
       $checkedConvert(json, 'fieldMapEmpty', (v) => v == null ? {} : v as Map),
-      $checkedConvert(
-          json,
-          'fieldListSimple',
-          (v) => (v == null ? <int>[1, 2, 3] : v as List<int>)
-              .map((e) => e as int)
-              .toList()),
+      $checkedConvert(json, 'fieldListSimple',
+          (v) => (v == null ? <int>[1, 2, 3] : v as List<int>).toList()),
       $checkedConvert(
           json,
           'fieldSetSimple',
           (v) => (v == null ? <String>{'entry1', 'entry2'} : v as List<String>)
-              .map((e) => e as String)
               .toSet()),
       $checkedConvert(json, 'fieldMapSimple',
           (v) => Map<String, int>.from(v == null ? {'answer': 42} : v as Map)),

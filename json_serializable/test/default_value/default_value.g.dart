@@ -17,12 +17,10 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     (json['fieldListEmpty'] == null
             ? <int>[]
             : json['fieldListEmpty'] as List<int>)
-        .map((e) => e as int)
         .toList(),
     (json['fieldSetEmpty'] == null
             ? <int>{}
             : json['fieldSetEmpty'] as List<int>)
-        .map((e) => e as int)
         .toSet(),
     json['fieldMapEmpty'] == null
         ? {}
@@ -30,12 +28,10 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) {
     (json['fieldListSimple'] == null
             ? <int>[1, 2, 3]
             : json['fieldListSimple'] as List<int>)
-        .map((e) => e as int)
         .toList(),
     (json['fieldSetSimple'] == null
             ? <String>{'entry1', 'entry2'}
             : json['fieldSetSimple'] as List<String>)
-        .map((e) => e as String)
         .toSet(),
     Map<String, int>.from(json['fieldMapSimple'] == null
         ? {'answer': 42}
