@@ -6,10 +6,10 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/src/shared_checkers.dart';
 import 'package:meta/meta.dart';
 
 import 'helper_core.dart';
+import 'shared_checkers.dart';
 import 'type_helper.dart';
 import 'type_helpers/convert_helper.dart';
 import 'unsupported_type_error.dart';
