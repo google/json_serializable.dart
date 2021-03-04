@@ -77,13 +77,22 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg);
 
-    final useGeneric =
+    final useDynamic =
         iterableGenericType.element.kind == ElementKind.TYPE_PARAMETER ||
             iterableGenericType.element.kind == ElementKind.ENUM ||
             !defaultProvided;
 
+    final isPrimitiveObject = iterableGenericType.isDartCoreBool ||
+        iterableGenericType.isDartCoreDouble ||
+        iterableGenericType.isDartCoreInt ||
+        iterableGenericType.isDartCoreNum ||
+        iterableGenericType.isDartCoreString;
+    //
+    // var output =
+    //     '$expression as List${isPrimitiveObject && defaultProvided ? '<${iterableGenericType.element.name}>' : ''}';
+
     var output =
-        '$expression as List${useGeneric ? '' : '<${iterableGenericType.element.name}>'}';
+        '$expression as List${useDynamic ? '' : !isPrimitiveObject ? '' : '<${iterableGenericType.element.name}>'}';
 
     if (targetTypeIsNullable) {
       output += '?';
@@ -100,7 +109,8 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var optionalQuestion = targetTypeIsNullable ? '?' : '';
 
-    if (closureArg != itemSubVal && useGeneric) {
+    if ((closureArg != itemSubVal && useDynamic) ||
+        (!isPrimitiveObject && defaultProvided)) {
       final lambda = LambdaResult.process(itemSubVal, closureArg);
       output += '$optionalQuestion.map($lambda)';
       // No need to include the optional question below – it was used here!

@@ -12,7 +12,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
     (json['value'] as List).toSet(),
     (json['withDefault'] == null
             ? <dynamic>{42, true, false, null}
-            : json['withDefault'] as List<dynamic>)
+            : json['withDefault'] as List)
+        .map((e) => e)
         .toSet(),
   );
 }
@@ -28,8 +29,9 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
     (json['value'] as List?)?.toSet(),
     (json['withDefault'] == null
             ? <dynamic>{42, true, false, null}
-            : json['withDefault'] as List<dynamic>?)
-        ?.toSet(),
+            : json['withDefault'] as List?)
+        ?.map((e) => e)
+        .toSet(),
   );
 }
 
