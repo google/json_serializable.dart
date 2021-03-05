@@ -44,12 +44,12 @@ line 1, column 1: Not a map
   test('invalid yaml', () {
     _expectThrows(
       '{',
-      r'''
+      '''
 line 1, column 2: Expected node content.
-  ╷
-1 │ {
-  │  ^
-  ╵''',
+  ,
+1 | {
+  |  ^
+  \'''',
     );
   });
 
