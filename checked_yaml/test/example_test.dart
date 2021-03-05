@@ -21,7 +21,7 @@ Configuration: {name: bob, count: 42}
     _expectThrows(
       '{}',
       '''
-line 1, column 1: Required keys are missing: name, count.
+line 1, column 1: Required keys are missing: name.
   ,
 1 | {}
   | ^^
@@ -32,12 +32,12 @@ line 1, column 1: Required keys are missing: name, count.
   test('missing count', () {
     _expectThrows(
       '{"name":"something"}',
-      r'''
+      '''
 line 1, column 1: Missing key "count". type 'Null' is not a subtype of type 'int' in type cast
-  ╷
-1 │ {"name":"something"}
-  │ ^^^^^^^^^^^^^^^^^^^^
-  ╵''',
+  ,
+1 | {"name":"something"}
+  | ^^^^^^^^^^^^^^^^^^^^
+  \'''',
     );
   });
 
