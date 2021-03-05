@@ -160,9 +160,6 @@ line 4, column 21 of file.yaml: Unsupported value for "configLocation". Illegal 
   \''''
 };
 
-// ignore: deprecated_member_use
-final throwsCastError = throwsA(isA<CastError>());
-
 T roundTripObject<T>(
   T object,
   T Function(Map<String, dynamic> json) factory, {

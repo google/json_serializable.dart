@@ -1,3 +1,8 @@
+## 4.0.2
+
+- Correctly handle nullable `Map` and `Iterable` JSON types exposed by both
+  class- and function-based converters.
+
 ## 4.0.1
 
 - Allow latest `package:analyzer`.
