@@ -74,90 +74,90 @@ const _badConfigs = {
 builders:
 - a
 - b
-''': '''
+''': r'''
 line 2, column 1 of file.yaml: Unsupported value for "builders". type 'YamlList' is not a subtype of type 'Map<dynamic, dynamic>' in type cast
-  ,
-2 | / - a
-3 | \\ - b
-  \'''',
+  ╷
+2 │ ┌ - a
+3 │ └ - b
+  ╵''',
   r'''
 builders:
   sample:
     defaultEnumTest: bob
-''': '''
+''': r'''
 line 3, column 22 of file.yaml: Unsupported value for "defaultEnumTest". `bob` is not one of the supported values: none, dependents, all_packages, root_package
-  ,
-3 |     defaultEnumTest: bob
-  |                      ^^^
-  \'''',
+  ╷
+3 │     defaultEnumTest: bob
+  │                      ^^^
+  ╵''',
   r'''
 builders:
   a:
     target: 42
-  ''': '''
+  ''': r'''
 line 3, column 13 of file.yaml: Unsupported value for "target". type 'int' is not a subtype of type 'String?' in type cast
-  ,
-3 |     target: 42
-  |             ^^
-  \'''',
+  ╷
+3 │     target: 42
+  │             ^^
+  ╵''',
   r'''
 builders:
   a:
     target: "a target"
     auto_apply: unsupported
-''': '''
+''': r'''
 line 4, column 17 of file.yaml: Unsupported value for "auto_apply". `unsupported` is not one of the supported values: none, dependents, all_packages, root_package
-  ,
-4 |     auto_apply: unsupported
-  |                 ^^^^^^^^^^^
-  \'''',
+  ╷
+4 │     auto_apply: unsupported
+  │                 ^^^^^^^^^^^
+  ╵''',
   r'''
 builders:
   a:
     builder_factories: []
-  ''': '''
+  ''': r'''
 line 3, column 24 of file.yaml: Unsupported value for "builder_factories". Must have at least one value.
-  ,
-3 |     builder_factories: []
-  |                        ^^
-  \'''',
+  ╷
+3 │     builder_factories: []
+  │                        ^^
+  ╵''',
   r'''
 builders:
   a:
     foo: bar
     baz: zap
-''': '''
+''': r'''
 line 3, column 5 of file.yaml: Unrecognized keys: [foo, baz]; supported keys: [target, import, is_optional, configLocation, auto_apply, build_to, defaultEnumTest, builder_factories, applies_builders, required_inputs, build_extensions]
-  ,
-3 |     foo: bar
-  |     ^^^
-  \'''',
+  ╷
+3 │     foo: bar
+  │     ^^^
+  ╵''',
   r'''
-  bob: cool''': '''
+  bob: cool''': r'''
 line 1, column 3 of file.yaml: Required keys are missing: builders.
-  ,
-1 |   bob: cool
-  |   ^^^^^^^^^
-  \'''',
+  ╷
+1 │   bob: cool
+  │   ^^^^^^^^^
+  ╵''',
   r'''
 builders:
   builder_name:
     auto_apply:''': '''
 line 3, column 5 of file.yaml: These keys had `null` values, which is not allowed: [auto_apply]
-  ,
-3 |     auto_apply:
-  |     ^^^^^^^^^^
-  \'''',
+  ╷
+3 │     auto_apply:
+  │     ^^^^^^^^^^
+  ╵''',
   r'''
 builders:
   builder_name:
     builder_factories: ["scssBuilder"]
     configLocation: "user@host:invalid/uri"''': '''
 line 4, column 21 of file.yaml: Unsupported value for "configLocation". Illegal scheme character at offset 4.
-  ,
-4 |     configLocation: "user@host:invalid/uri"
-  |                     ^^^^^^^^^^^^^^^^^^^^^^^
-  \''''
+  ╷
+4 │     configLocation: "user@host:invalid/uri"
+  │                     ^^^^^^^^^^^^^^^^^^^^^^^
+  ╵'''
 };
 
 T roundTripObject<T>(

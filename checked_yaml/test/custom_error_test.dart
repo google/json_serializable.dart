@@ -32,10 +32,10 @@ void main() {
             )
             .having((e) => e.formattedMessage, 'formattedMessage', '''
 line 1, column 14: There was an error parsing the map.
-  ,
-1 | {"innerMap": {}}
-  |              ^^
-  \''''),
+  ╷
+1 │ {"innerMap": {}}
+  │              ^^
+  ╵'''),
       ),
     );
   });
