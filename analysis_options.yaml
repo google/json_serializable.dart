@@ -21,6 +21,7 @@ linter:
     - avoid_returning_null
     - avoid_returning_null_for_void
     - avoid_shadowing_type_parameters
+    - avoid_single_cascade_in_expression_statements
     - avoid_types_as_parameter_names
     - avoid_unused_constructor_parameters
     - avoid_void_async
@@ -88,6 +89,7 @@ linter:
     - provide_deprecation_message
     - recursive_getters
     - slash_for_doc_comments
+    - sort_child_properties_last
     - sort_pub_dependencies
     - test_types_in_equals
     - throw_in_finally
@@ -106,7 +108,10 @@ linter:
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
+    - unsafe_html
+    - use_full_hex_values_for_flutter_colors
     - use_function_type_syntax_for_parameters
+    - use_is_even_rather_than_modulo
     - use_rethrow_when_possible
     - use_string_buffers
     - valid_regexps
