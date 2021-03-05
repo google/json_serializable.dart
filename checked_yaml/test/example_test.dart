@@ -20,24 +20,24 @@ Configuration: {name: bob, count: 42}
   test('empty map', () {
     _expectThrows(
       '{}',
-      r'''
+      '''
 line 1, column 1: Required keys are missing: name, count.
-  ╷
-1 │ {}
-  │ ^^
-  ╵''',
+  ,
+1 | {}
+  | ^^
+  \'''',
     );
   });
 
   test('not a map', () {
     _expectThrows(
       '42',
-      r'''
+      '''
 line 1, column 1: Not a map
-  ╷
-1 │ 42
-  │ ^^
-  ╵''',
+  ,
+1 | 42
+  | ^^
+  \'''',
     );
   });
 
@@ -56,48 +56,48 @@ line 1, column 2: Expected node content.
   test('duplicate keys', () {
     _expectThrows(
       '{"a":null, "a":null}',
-      r'''
+      '''
 line 1, column 12: Duplicate mapping key.
-  ╷
-1 │ {"a":null, "a":null}
-  │            ^^^
-  ╵''',
+  ,
+1 | {"a":null, "a":null}
+  |            ^^^
+  \'''',
     );
   });
 
   test('unexpected key', () {
     _expectThrows(
       '{"bob": 42}',
-      r'''
+      '''
 line 1, column 2: Unrecognized keys: [bob]; supported keys: [name, count]
-  ╷
-1 │ {"bob": 42}
-  │  ^^^^^
-  ╵''',
+  ,
+1 | {"bob": 42}
+  |  ^^^^^
+  \'''',
     );
   });
 
   test('bad name type', () {
     _expectThrows(
       '{"name": 42, "count": 42}',
-      r'''
+      '''
 line 1, column 10: Unsupported value for "name". type 'int' is not a subtype of type 'String' in type cast
-  ╷
-1 │ {"name": 42, "count": 42}
-  │          ^^
-  ╵''',
+  ,
+1 | {"name": 42, "count": 42}
+  |          ^^
+  \'''',
     );
   });
 
   test('bad name contents', () {
     _expectThrows(
       '{"name": "", "count": 42}',
-      r'''
+      '''
 line 1, column 10: Unsupported value for "name". Cannot be empty.
-  ╷
-1 │ {"name": "", "count": 42}
-  │          ^^
-  ╵''',
+  ,
+1 | {"name": "", "count": 42}
+  |          ^^
+  \'''',
     );
   });
 }

@@ -46,7 +46,7 @@ K _$enumDecode<K, V>(
   }
 
   return enumValues.entries.singleWhere(
-    (e) => e.value == source,
+    (e) => source is K ? e.key == source : e.value == source,
     orElse: () {
       if (unknownValue == null) {
         throw ArgumentError(
@@ -95,17 +95,17 @@ Builder _$BuilderFromJson(Map json) {
       defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
           (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
       builderFactories: $checkedConvert(json, 'builder_factories',
-          (v) => (v as List<dynamic>).map((e) => e as String).toList()),
+          (v) => (v as List).map((e) => e as String).toList()),
       appliesBuilders: $checkedConvert(json, 'applies_builders',
-          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList()),
+          (v) => (v as List?)?.map((e) => e as String).toList()),
       requiredInputs: $checkedConvert(json, 'required_inputs',
-          (v) => (v as List<dynamic>?)?.map((e) => e as String).toList()),
+          (v) => (v as List?)?.map((e) => e as String).toList()),
       buildExtensions: $checkedConvert(
           json,
           'build_extensions',
           (v) => (v as Map?)?.map(
-                (k, e) => MapEntry(k as String,
-                    (e as List<dynamic>).map((e) => e as String).toList()),
+                (k, e) => MapEntry(
+                    k as String, (e as List).map((e) => e as String).toList()),
               )),
       configLocation: $checkedConvert(json, 'configLocation',
           (v) => v == null ? null : Uri.parse(v as String)),
