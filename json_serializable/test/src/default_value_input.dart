@@ -75,7 +75,6 @@ class DefaultWithNestedEnum {
   DefaultWithNestedEnum();
 }
 
-// -
 @ShouldGenerate(
   r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(

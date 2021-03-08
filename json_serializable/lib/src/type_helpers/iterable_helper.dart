@@ -87,9 +87,6 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
         iterableGenericType.isDartCoreInt ||
         iterableGenericType.isDartCoreNum ||
         iterableGenericType.isDartCoreString;
-    //
-    // var output =
-    //     '$expression as List${isPrimitiveObject && defaultProvided ? '<${iterableGenericType.element.name}>' : ''}';
 
     var output =
         '$expression as List${useDynamic ? '' : !isPrimitiveObject ? '' : '<${iterableGenericType.element.name}>'}';

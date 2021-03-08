@@ -385,7 +385,6 @@ enum GoodEnum {
   nullValue
 }
 
-// -
 @ShouldGenerate(r'''
 FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
     Map<String, dynamic> json) {
