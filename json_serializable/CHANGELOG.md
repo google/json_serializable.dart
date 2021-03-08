@@ -1,3 +1,7 @@
+## 4.0.3-dev
+
+- Correctly handle nullable values with `genericArgumentFactories`.
+
 ## 4.0.2
 
 - Correctly handle nullable `Map` and `Iterable` JSON types exposed by both
