@@ -1,6 +1,7 @@
-## 4.0.3-dev
+## 4.0.3
 
 - Correctly handle nullable values with `genericArgumentFactories`.
+- Require the latest `package:build`.
 
 ## 4.0.2
 
