@@ -33,8 +33,13 @@ class _DocBuilder extends Builder {
         ? 'latest'
         : jsonAnnotationVersion.toString();
 
-    final lib = LibraryReader(await buildStep.resolver.libraryFor(
-        AssetId.resolve('package:json_annotation/json_annotation.dart')));
+    final lib = LibraryReader(
+      await buildStep.resolver.libraryFor(
+        AssetId.resolve(
+          Uri.parse('package:json_annotation/json_annotation.dart'),
+        ),
+      ),
+    );
 
     final descriptionMap = <String, _FieldInfo>{};
 
