@@ -125,6 +125,8 @@ abstract class EncodeHelper implements HelperCore {
   }
 
   String _serializeField(FieldElement field, String accessExpression) {
+    if (field.type.element.kind == ElementKind.TYPE_PARAMETER)
+      accessExpression += '!';
     try {
       return getHelperContext(field)
           .serialize(field.type, accessExpression)
