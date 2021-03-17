@@ -11,12 +11,12 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const GenericFactoryHelper();
 
   @override
-  Object serialize(
+  Object? serialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    if (context.config.genericArgumentFactories &&
+    if (context.config.genericArgumentFactories! &&
         targetType is TypeParameterType) {
       return LambdaResult(expression, toJsonForType(targetType));
     }
@@ -25,13 +25,13 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  Object deserialize(
+  Object? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    if (context.config.genericArgumentFactories &&
+    if (context.config.genericArgumentFactories! &&
         targetType is TypeParameterType) {
       return LambdaResult(expression, fromJsonForType(targetType));
     }

@@ -1,3 +1,7 @@
+## 5.0.0-dev
+
+- Implementation is now null-safe.
+
 ## 4.0.3
 
 - Correctly handle nullable values with `genericArgumentFactories`.

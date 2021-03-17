@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=2.9
-
 @TestOn('vm')
 import 'dart:convert';
 import 'dart:io';
@@ -180,14 +178,14 @@ T roundTripObject<T>(
 }
 
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
-String loudEncode(Object object) {
+String loudEncode(Object? object) {
   try {
     return const JsonEncoder.withIndent(' ').convert(object);
   } on JsonUnsupportedObjectError catch (e) // ignore: avoid_catching_errors
   {
-    var error = e;
+    JsonUnsupportedObjectError? error = e;
     do {
-      final cause = error.cause;
+      final cause = error!.cause;
       print(cause);
       error = (cause is JsonUnsupportedObjectError) ? cause : null;
     } while (error != null);

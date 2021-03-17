@@ -52,8 +52,8 @@ class Settings {
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
   const Settings({
-    JsonSerializable config,
-    List<TypeHelper> typeHelpers,
+    JsonSerializable? config,
+    List<TypeHelper>? typeHelpers,
   })  : _config = config ?? JsonSerializable.defaults,
         _typeHelpers = typeHelpers ?? defaultHelpers;
 
@@ -65,7 +65,7 @@ class Settings {
   /// [UriHelper].
   factory Settings.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
-    JsonSerializable config,
+    JsonSerializable? config,
   }) =>
       Settings(
         config: config,
