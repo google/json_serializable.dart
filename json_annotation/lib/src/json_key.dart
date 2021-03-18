@@ -103,6 +103,9 @@ class JsonKey {
   /// Valid only on enum fields with a compatible enum value.
   final Object unknownEnumValue;
 
+  /// If `true`, allow the unknown enum value to be `null`.
+  final bool allowUnsupportedEnumValue;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -117,5 +120,6 @@ class JsonKey {
     this.required,
     this.toJson,
     this.unknownEnumValue,
+    this.allowUnsupportedEnumValue,
   });
 }
