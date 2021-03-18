@@ -96,8 +96,9 @@ T _$enumDecode<T>(
   }
 
   final value = enumValues.entries
-      .singleWhere((e) => e.value == source, orElse: () => unknownValue)
-      ?.key;
+          .singleWhere((e) => e.value == source, orElse: () => null)
+          ?.key ??
+      unknownValue;
 
   if (value == null) {
     throw ArgumentError('`$source` is not one of the supported values: '
@@ -119,5 +120,5 @@ T _$enumDecodeNullable<T>(
 
   return enumValues.entries
       .singleWhere((e) => e.value == source, orElse: () => null)
-      ?.key;
+      ?.key ?? unknownValue;
 }''';

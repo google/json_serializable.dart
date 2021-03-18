@@ -76,7 +76,11 @@ T _$enumDecodeNullable<T>(
   if (source == null) {
     return null;
   }
-  return _$enumDecode<T>(enumValues, source, unknownValue: unknownValue);
+
+  return enumValues.entries
+          .singleWhere((e) => e.value == source, orElse: () => null)
+          ?.key ??
+      unknownValue;
 }
 
 const _$CategoryEnumMap = {
@@ -233,4 +237,18 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
         ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
             unknownValue: Category.notDiscoveredYet))
         ?.toSet();
+}
+
+NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(
+    Map<String, dynamic> json) {
+  return NullableUnknownEnumValue()
+    ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'])
+    ..enumIterable = (json['enumIterable'] as List)
+        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+    ..enumList = (json['enumList'] as List)
+        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+        .toList()
+    ..enumSet = (json['enumSet'] as List)
+        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+        .toSet();
 }
