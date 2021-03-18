@@ -201,17 +201,3 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
             unknownValue: Category.notDiscoveredYet))
         .toSet();
 }
-
-NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(
-    Map<String, dynamic> json) {
-  return NullableUnknownEnumValue()
-    ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'])
-    ..enumIterable = (json['enumIterable'] as List)
-        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
-    ..enumList = (json['enumList'] as List)
-        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
-        .toList()
-    ..enumSet = (json['enumSet'] as List)
-        .map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
-        .toSet();
-}
