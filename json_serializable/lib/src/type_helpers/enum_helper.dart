@@ -43,10 +43,10 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    context.addMember(_enumDecodeHelper);
-
     if (context.nullable) {
       context.addMember(_enumDecodeHelperNullable);
+    } else {
+      context.addMember(_enumDecodeHelper);
     }
 
     context.addMember(memberContent);
