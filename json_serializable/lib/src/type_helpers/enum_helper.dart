@@ -117,7 +117,6 @@ T _$enumDecodeNullable<T>(
   if (source == null) {
     return null;
   }
-
   return enumValues.entries
       .singleWhere((e) => e.value == source, orElse: () => null)
       ?.key ?? unknownValue;
