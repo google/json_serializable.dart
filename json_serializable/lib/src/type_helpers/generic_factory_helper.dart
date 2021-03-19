@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 
 import '../lambda_result.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const GenericFactoryHelper();
@@ -18,7 +19,13 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   ) {
     if (context.config.genericArgumentFactories! &&
         targetType is TypeParameterType) {
-      return LambdaResult(expression, toJsonForType(targetType));
+      final toJsonFunc = toJsonForType(targetType);
+      if (targetType.isNullableType) {
+        context.addMember(_toJsonHelper);
+        return '$_toJsonHelperName($expression, $toJsonFunc)';
+      }
+
+      return LambdaResult(expression, toJsonFunc);
     }
 
     return null;
@@ -33,12 +40,39 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   ) {
     if (context.config.genericArgumentFactories! &&
         targetType is TypeParameterType) {
-      return LambdaResult(expression, fromJsonForType(targetType));
+      final fromJsonFunc = fromJsonForType(targetType);
+
+      if (targetType.isNullableType) {
+        context.addMember(_fromJsonHelper);
+        return '$_fromJsonHelperName($expression, $fromJsonFunc)';
+      }
+
+      return LambdaResult(expression, fromJsonFunc);
     }
 
     return null;
   }
 }
+
+const _fromJsonHelperName = r'_$nullableGenericFromJson';
+
+const _fromJsonHelper = '''
+T? $_fromJsonHelperName<T>(
+  Object? input,
+  T Function(Object? json) fromJson,
+) =>
+    input == null ? null : fromJson(input);
+''';
+
+const _toJsonHelperName = r'_$nullableGenericToJson';
+
+const _toJsonHelper = '''
+Object? $_toJsonHelperName<T>(
+  T? input,
+  Object? Function(T value) toJson,
+) =>
+    input == null ? null : toJson(input);
+''';
 
 String toJsonForType(TypeParameterType type) =>
     toJsonForName(type.getDisplayString(withNullability: false));

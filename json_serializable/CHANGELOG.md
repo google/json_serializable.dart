@@ -1,6 +1,8 @@
-## 5.0.0-dev
+## 4.1.0-dev
 
 - Implementation is now null-safe.
+- Correctly handle nullable generic fields (`T?`) with
+  `genericArgumentFactories`.
 
 ## 4.0.3
 
