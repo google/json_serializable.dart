@@ -17,7 +17,7 @@ abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
 
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
-    assert(config.createToJson);
+    assert(config.createToJson!);
 
     final buffer = StringBuffer();
 
@@ -25,7 +25,7 @@ abstract class EncodeHelper implements HelperCore {
     buffer.write('Map<String, dynamic> '
         '$functionName($targetClassReference $_toJsonParamName');
 
-    if (config.genericArgumentFactories) {
+    if (config.genericArgumentFactories!) {
       for (var arg in element.typeParameters) {
         final helperName = toJsonForType(
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
@@ -140,7 +140,7 @@ abstract class EncodeHelper implements HelperCore {
   bool _writeJsonValueNaive(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
 
-    return jsonKey.includeIfNull ||
+    return jsonKey.includeIfNull! ||
         (!field.type.isNullableType && !_fieldHasCustomEncoder(field));
   }
 

@@ -41,7 +41,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   Iterable<String> generate() sync* {
     assert(_addedMembers.isEmpty);
 
-    if (config.genericArgumentFactories && element.typeParameters.isEmpty) {
+    if (config.genericArgumentFactories! && element.typeParameters.isEmpty) {
       log.warning(
         'The class `${element.displayName}` is annotated '
         'with `JsonSerializable` field `genericArgumentFactories: true`. '
@@ -68,7 +68,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
           unavailableReasons[field.name] =
               'Setter-only properties are not supported.';
           log.warning('Setters are ignored: ${element.name}.${field.name}');
-        } else if (jsonKeyFor(field).ignore) {
+        } else if (jsonKeyFor(field).ignore!) {
           unavailableReasons[field.name] =
               'It is assigned to an ignored field.';
         } else {
@@ -81,7 +81,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     );
 
     var accessibleFieldSet = accessibleFields.values.toSet();
-    if (config.createFactory) {
+    if (config.createFactory!) {
       final createResult = createFactory(accessibleFields, unavailableReasons);
       yield createResult.output;
 
@@ -108,7 +108,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       },
     );
 
-    if (config.createToJson) {
+    if (config.createToJson!) {
       yield* createToJson(accessibleFieldSet);
     }
 

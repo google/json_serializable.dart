@@ -18,7 +18,7 @@ import 'package:test/test.dart';
 
 import 'shared_config.dart';
 
-LibraryReader _libraryReader;
+late LibraryReader _libraryReader;
 
 Future<void> main() async {
   initializeBuildLogTracking();
@@ -36,7 +36,7 @@ Future<void> main() async {
 
   group('configuration', () {
     Future<void> runWithConfigAndLogger(
-        JsonSerializable config, String className) async {
+        JsonSerializable? config, String className) async {
       await generateForElement(
           JsonSerializableGenerator(
               config: config, typeHelpers: const [_ConfigLogger()]),
@@ -214,7 +214,7 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   const _ConfigLogger();
 
   @override
-  Object deserialize(
+  Object? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
@@ -225,7 +225,7 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  Object serialize(DartType targetType, String expression,
+  Object? serialize(DartType targetType, String expression,
       TypeHelperContextWithConfig context) {
     configurations.add(context.config);
     return null;
