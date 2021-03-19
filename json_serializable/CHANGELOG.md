@@ -1,4 +1,4 @@
-## 4.1.0-dev
+## 4.1.0
 
 - Implementation is now null-safe.
 - Correctly handle nullable generic fields (`T?`) with
