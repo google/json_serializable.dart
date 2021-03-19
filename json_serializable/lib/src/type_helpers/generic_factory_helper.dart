@@ -17,7 +17,7 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    if (context.config.genericArgumentFactories! &&
+    if (context.config.genericArgumentFactories &&
         targetType is TypeParameterType) {
       final toJsonFunc = toJsonForType(targetType);
       if (targetType.isNullableType) {
@@ -38,7 +38,7 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    if (context.config.genericArgumentFactories! &&
+    if (context.config.genericArgumentFactories &&
         targetType is TypeParameterType) {
       final fromJsonFunc = fromJsonForType(targetType);
 

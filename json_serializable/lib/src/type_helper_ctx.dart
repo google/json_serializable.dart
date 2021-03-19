@@ -5,10 +5,10 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import 'helper_core.dart';
 import 'type_helper.dart';
+import 'type_helpers/config_types.dart';
 import 'type_helpers/convert_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
@@ -28,7 +28,7 @@ class TypeHelperCtx
   ClassElement get classElement => _helperCore.element;
 
   @override
-  JsonSerializable get config => _helperCore.config;
+  ClassConfig get config => _helperCore.config;
 
   TypeHelperCtx._(this._helperCore, this.fieldElement);
 

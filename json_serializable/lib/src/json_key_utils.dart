@@ -10,14 +10,15 @@ import 'package:source_gen/source_gen.dart';
 
 import 'json_literal_generator.dart';
 import 'shared_checkers.dart';
+import 'type_helpers/config_types.dart';
 import 'utils.dart';
 
-final _jsonKeyExpando = Expando<JsonKey>();
+final _jsonKeyExpando = Expando<KeyConfig>();
 
-JsonKey jsonKeyForField(FieldElement field, JsonSerializable classAnnotation) =>
+KeyConfig jsonKeyForField(FieldElement field, ClassConfig classAnnotation) =>
     _jsonKeyExpando[field] ??= _from(field, classAnnotation);
 
-JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
+KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
   // If the result is `null`, check the getter – it is a property.
   // TODO: setters: github.com/google/json_serializable.dart/issues/24
@@ -183,8 +184,8 @@ JsonKey _from(FieldElement element, JsonSerializable classAnnotation) {
   );
 }
 
-JsonKey _populateJsonKey(
-  JsonSerializable classAnnotation,
+KeyConfig _populateJsonKey(
+  ClassConfig classAnnotation,
   FieldElement element, {
   Object? defaultValue,
   bool? disallowNullValue,
@@ -203,7 +204,7 @@ JsonKey _populateJsonKey(
     }
   }
 
-  final jsonKey = JsonKey(
+  return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
     ignore: ignore ?? false,
@@ -213,8 +214,6 @@ JsonKey _populateJsonKey(
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
   );
-
-  return jsonKey;
 }
 
 String _encodedFieldName(
@@ -245,10 +244,10 @@ String _encodedFieldName(
   }
 }
 
-bool? _includeIfNull(
+bool _includeIfNull(
   bool? keyIncludeIfNull,
   bool? keyDisallowNullValue,
-  bool? classIncludeIfNull,
+  bool classIncludeIfNull,
 ) {
   if (keyDisallowNullValue == true) {
     assert(keyIncludeIfNull != true);

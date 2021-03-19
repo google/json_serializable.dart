@@ -11,6 +11,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
 import 'package:json_serializable/src/type_helper.dart';
+import 'package:json_serializable/src/type_helpers/config_types.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
 import 'package:source_gen_test/source_gen_test.dart';
@@ -31,7 +32,7 @@ Future<void> main() async {
   );
 
   group('without wrappers', () {
-    _registerTests(JsonSerializable.defaults);
+    _registerTests(ClassConfig.defaults);
   });
 
   group('configuration', () {
