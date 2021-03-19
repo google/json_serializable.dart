@@ -12,6 +12,7 @@ import 'package:source_gen/source_gen.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
+import 'config_types.dart';
 import 'generic_factory_helper.dart';
 
 const _helperLambdaParam = 'value';
@@ -55,7 +56,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
-    if (context.config.explicitToJson! || toJsonArgs.isNotEmpty) {
+    if (context.config.explicitToJson || toJsonArgs.isNotEmpty) {
       return '$expression${interfaceType.isNullableType ? '?' : ''}'
           '.toJson(${toJsonArgs.map((a) => '$a, ').join()} )';
     }
@@ -116,7 +117,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
       output = args.join(', ');
     } else if (_annotation(context.config, targetType)?.createFactory == true) {
-      if (context.config.anyMap!) {
+      if (context.config.anyMap) {
         output += ' as Map';
       } else {
         output += ' as Map<String, dynamic>';
@@ -219,7 +220,7 @@ TypeParameterType _encodeHelper(
   );
 }
 
-bool _canSerialize(JsonSerializable config, DartType type) {
+bool _canSerialize(ClassConfig config, DartType type) {
   if (type is InterfaceType) {
     final toJsonMethod = _toJsonMethod(type);
 
@@ -266,7 +267,7 @@ InterfaceType? _instantiate(
   );
 }
 
-JsonSerializable? _annotation(JsonSerializable config, InterfaceType source) {
+ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   final annotations = const TypeChecker.fromRuntime(JsonSerializable)
       .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();

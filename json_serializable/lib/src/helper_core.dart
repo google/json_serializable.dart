@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -12,12 +11,13 @@ import 'constants.dart';
 import 'json_key_utils.dart';
 import 'type_helper.dart';
 import 'type_helper_ctx.dart';
+import 'type_helpers/config_types.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 abstract class HelperCore {
   final ClassElement element;
-  final JsonSerializable config;
+  final ClassConfig config;
 
   HelperCore(this.element, this.config);
 
@@ -30,7 +30,7 @@ abstract class HelperCore {
       '${element.name}${genericClassArgumentsImpl(false)}';
 
   @protected
-  String nameAccess(FieldElement field) => jsonKeyFor(field).name!;
+  String nameAccess(FieldElement field) => jsonKeyFor(field).name;
 
   @protected
   String safeNameAccess(FieldElement field) =>
@@ -48,7 +48,7 @@ abstract class HelperCore {
       genericClassArguments(element, withConstraints);
 
   @protected
-  JsonKey jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);
+  KeyConfig jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);
 
   @protected
   TypeHelperCtx getHelperContext(FieldElement field) =>

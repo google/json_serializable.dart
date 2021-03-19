@@ -25,15 +25,15 @@ abstract class DecodeHelper implements HelperCore {
     Map<String, FieldElement> accessibleFields,
     Map<String, String> unavailableReasons,
   ) {
-    assert(config.createFactory!);
+    assert(config.createFactory);
     final buffer = StringBuffer();
 
-    final mapType = config.anyMap! ? 'Map' : 'Map<String, dynamic>';
+    final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
     buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
         '($mapType json');
 
-    if (config.genericArgumentFactories!) {
+    if (config.genericArgumentFactories) {
       for (var arg in element.typeParameters) {
         final helperName = fromJsonForType(
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
@@ -72,7 +72,7 @@ abstract class DecodeHelper implements HelperCore {
     final checks = _checkKeys(accessibleFields.values
         .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
 
-    if (config.checked!) {
+    if (config.checked) {
       final classLiteral = escapeDartString(element.name);
 
       buffer..write('''
@@ -131,14 +131,14 @@ abstract class DecodeHelper implements HelperCore {
     String constantList(Iterable<FieldElement> things) =>
         'const ${jsonLiteralAsDart(things.map(nameAccess).toList())}';
 
-    if (config.disallowUnrecognizedKeys!) {
+    if (config.disallowUnrecognizedKeys) {
       final allowKeysLiteral = constantList(accessibleFields);
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
     final requiredKeys =
-        accessibleFields.where((fe) => jsonKeyFor(fe).required!).toList();
+        accessibleFields.where((fe) => jsonKeyFor(fe).required).toList();
     if (requiredKeys.isNotEmpty) {
       final requiredKeyLiteral = constantList(requiredKeys);
 
@@ -146,7 +146,7 @@ abstract class DecodeHelper implements HelperCore {
     }
 
     final disallowNullKeys = accessibleFields
-        .where((fe) => jsonKeyFor(fe).disallowNullValue!)
+        .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {
       final disallowNullKeyLiteral = constantList(disallowNullKeys);
@@ -173,7 +173,7 @@ abstract class DecodeHelper implements HelperCore {
 
     String value;
     try {
-      if (config.checked!) {
+      if (config.checked) {
         value = contextHelper
             .deserialize(
               targetType,
@@ -204,7 +204,7 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
     if (defaultValue != null) {
-      if (jsonKey.disallowNullValue! && jsonKey.required!) {
+      if (jsonKey.disallowNullValue && jsonKey.required) {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '
             '`true`.');

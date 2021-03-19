@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
+import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
@@ -97,14 +98,14 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
 /// Note: if [JsonSerializable.genericArgumentFactories] is `false` for [reader]
 /// and `true` for [config], the corresponding field in the return value will
 /// only be `true` if [classElement] has type parameters.
-JsonSerializable mergeConfig(
-  JsonSerializable config,
+ClassConfig mergeConfig(
+  ClassConfig config,
   ConstantReader reader, {
   required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
 
-  return JsonSerializable(
+  return ClassConfig(
     anyMap: annotation.anyMap ?? config.anyMap,
     checked: annotation.checked ?? config.checked,
     createFactory: annotation.createFactory ?? config.createFactory,
@@ -115,7 +116,7 @@ JsonSerializable mergeConfig(
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     genericArgumentFactories: annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&
-            config.genericArgumentFactories!),
+            config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
   );

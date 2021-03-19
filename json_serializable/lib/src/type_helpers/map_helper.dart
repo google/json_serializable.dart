@@ -77,7 +77,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     if (!isKeyStringable) {
       if (valueArgIsAny) {
-        if (context.config.anyMap!) {
+        if (context.config.anyMap) {
           if (isLikeDynamic(keyArg)) {
             return '$expression as Map$optionalQuestion';
           }
@@ -102,7 +102,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    var mapCast = context.config.anyMap! ? 'as Map' : 'as Map<String, dynamic>';
+    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
 
     if (targetTypeIsNullable) {
       mapCast += '?';
@@ -111,10 +111,10 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String keyUsage;
     if (isEnum(keyArg)) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
-    } else if (context.config.anyMap! &&
+    } else if (context.config.anyMap &&
         !(keyArg.isDartCoreObject || keyArg.isDynamic)) {
       keyUsage = '$_keyParam as String';
-    } else if (context.config.anyMap! &&
+    } else if (context.config.anyMap &&
         keyArg.isDartCoreObject &&
         !keyArg.isNullableType) {
       keyUsage = '$_keyParam as Object';
