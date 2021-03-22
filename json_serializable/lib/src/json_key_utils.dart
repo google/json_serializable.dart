@@ -124,7 +124,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     if (enumFields != null) {
       if (mustBeEnum) {
         late DartType targetEnumType;
-        if (isEnum(element.type)) {
+        if (element.type.isEnum) {
           targetEnumType = element.type;
         } else if (coreIterableTypeChecker.isAssignableFromType(element.type)) {
           targetEnumType = coreIterableGenericType(element.type);

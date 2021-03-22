@@ -122,9 +122,6 @@ ClassConfig mergeConfig(
   );
 }
 
-bool isEnum(DartType targetType) =>
-    targetType is InterfaceType && targetType.element.isEnum;
-
 final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
 
 /// If [targetType] is an enum, returns a [Map] of the [FieldElement] instances
@@ -268,6 +265,9 @@ extension DartTypeExtension on DartType {
       // If the library is `null`, treat it like dynamic => `true`
       element!.library == null ||
       element!.library!.typeSystem.isAssignableTo(this, other);
+
+  bool get isEnum =>
+      this is InterfaceType && (this as InterfaceType).element.isEnum;
 }
 
 extension TypeExtension on DartType {

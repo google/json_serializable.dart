@@ -109,7 +109,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     String keyUsage;
-    if (isEnum(keyArg)) {
+    if (keyArg.isEnum) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
     } else if (context.config.anyMap &&
         !(keyArg.isDartCoreObject || keyArg.isDynamic)) {
@@ -149,7 +149,7 @@ ToFromStringHelper? _forType(DartType type) =>
 /// Returns `true` if [keyType] can be automatically converted to/from String –
 /// and is therefor usable as a key in a [Map].
 bool _isKeyStringable(DartType keyType) =>
-    isEnum(keyType) || _instances.any((inst) => inst.matches(keyType));
+    keyType.isEnum || _instances.any((inst) => inst.matches(keyType));
 
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
