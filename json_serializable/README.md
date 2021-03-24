@@ -1,5 +1,7 @@
 [![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
+> This project now produces null-safe code and itself does not need to be null-safe.
+
 Provides [Dart Build System] builders for handling JSON.
 
 The builders generate code when they find members annotated with classes defined
@@ -61,6 +63,13 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
     };
 ```
+
+# Running the code generator
+
+Once you have added the annotations to your code you then need to run the 
+code generator to generate the missing `.g.dart` generated dart files.
+
+With Flutter you run `flutter pub run build_runner build` in your project directory.
 
 # Annotation values
 
