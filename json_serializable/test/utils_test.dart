@@ -50,4 +50,15 @@ void main() {
       });
     }
   });
+
+  group('nonPrivateName', () {
+    test('removes leading underscores', () {
+      final name = nonPrivateName('__hello__world__');
+      expect(name, equals('hello__world__'));
+    });
+    test('does not changes public names', () {
+      final name = nonPrivateName('HelloWorld');
+      expect(name, equals('HelloWorld'));
+    });
+  });
 }

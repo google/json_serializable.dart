@@ -262,3 +262,24 @@ class OkayOnlyOptionalPositional {
   @JsonKey(fromJson: _onlyOptionalPositional)
   String? field;
 }
+
+@ShouldGenerate(
+  r'''
+_BetterPrivateNames _$BetterPrivateNamesFromJson(Map<String, dynamic> json) {
+  return _BetterPrivateNames(
+    name: json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$BetterPrivateNamesToJson(_BetterPrivateNames instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+    };
+''',
+)
+@JsonSerializable(createFactory: true, createToJson: true)
+// ignore: unused_element
+class _BetterPrivateNames {
+  final String name;
+  _BetterPrivateNames({required this.name});
+}
