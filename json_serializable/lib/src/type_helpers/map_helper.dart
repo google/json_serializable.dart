@@ -78,7 +78,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     if (!isKeyStringable) {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
-          if (isLikeDynamic(keyArg)) {
+          if (keyArg.isLikeDynamic) {
             return '$expression as Map$optionalQuestion';
           }
         } else {

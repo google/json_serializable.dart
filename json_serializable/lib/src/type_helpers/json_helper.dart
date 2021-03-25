@@ -9,7 +9,6 @@ import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 import 'config_types.dart';
@@ -283,6 +282,6 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   );
 }
 
-MethodElement? _toJsonMethod(DartType type) => typeImplementations(type)
+MethodElement? _toJsonMethod(DartType type) => type.typeImplementations
     .map((dt) => dt is InterfaceType ? dt.getMethod('toJson') : null)
     .firstWhereOrNull((me) => me != null);

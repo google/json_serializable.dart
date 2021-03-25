@@ -40,7 +40,7 @@ const simpleJsonTypeChecker = TypeChecker.any([
 ]);
 
 String asStatement(DartType type) {
-  if (isLikeDynamic(type)) {
+  if (type.isLikeDynamic) {
     return '';
   }
 
@@ -48,7 +48,7 @@ String asStatement(DartType type) {
 
   if (coreIterableTypeChecker.isAssignableFromType(type)) {
     final itemType = coreIterableGenericType(type);
-    if (isLikeDynamic(itemType)) {
+    if (itemType.isLikeDynamic) {
       return ' as List$nullableSuffix';
     }
   }
@@ -57,7 +57,7 @@ String asStatement(DartType type) {
     final args = typeArgumentsOf(type, coreMapTypeChecker);
     assert(args.length == 2);
 
-    if (args.every(isLikeDynamic)) {
+    if (args.every((e) => e.isLikeDynamic)) {
       return ' as Map$nullableSuffix';
     }
   }
@@ -66,24 +66,5 @@ String asStatement(DartType type) {
   return ' as $typeCode';
 }
 
-/// Returns `true` if [type] is `dynamic` or `Obect?`.
-bool isLikeDynamic(DartType type) =>
-    (type.isDartCoreObject && type.isNullableType) || type.isDynamic;
-
-/// Returns all of the [DartType] types that [type] implements, mixes-in, and
-/// extends, starting with [type] itself.
-Iterable<DartType> typeImplementations(DartType type) sync* {
-  yield type;
-
-  if (type is InterfaceType) {
-    yield* type.interfaces.expand(typeImplementations);
-    yield* type.mixins.expand(typeImplementations);
-
-    if (type.superclass != null) {
-      yield* typeImplementations(type.superclass!);
-    }
-  }
-}
-
 DartType? _getImplementationType(DartType type, TypeChecker checker) =>
-    typeImplementations(type).firstWhereOrNull(checker.isExactlyType);
+    type.typeImplementations.firstWhereOrNull(checker.isExactlyType);
