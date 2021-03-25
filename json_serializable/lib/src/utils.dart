@@ -268,9 +268,27 @@ extension DartTypeExtension on DartType {
 
   bool get isEnum =>
       this is InterfaceType && (this as InterfaceType).element.isEnum;
-}
 
-extension TypeExtension on DartType {
   bool get isNullableType =>
       isDynamic || nullabilitySuffix == NullabilitySuffix.question;
+
+  /// Returns `true` if `this` is `dynamic` or `Object?`.
+  bool get isLikeDynamic => (isDartCoreObject && isNullableType) || isDynamic;
+
+  /// Returns all of the [DartType] types that `this` implements, mixes-in, and
+  /// extends, starting with `this` itself.
+  Iterable<DartType> get typeImplementations sync* {
+    yield this;
+
+    final myType = this;
+
+    if (myType is InterfaceType) {
+      yield* myType.interfaces.expand((e) => e.typeImplementations);
+      yield* myType.mixins.expand((e) => e.typeImplementations);
+
+      if (myType.superclass != null) {
+        yield* myType.superclass!.typeImplementations;
+      }
+    }
+  }
 }
