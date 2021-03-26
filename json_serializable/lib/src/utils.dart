@@ -104,6 +104,14 @@ ClassConfig mergeConfig(
   required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
+  assert(config.ctorParamDefaults.isEmpty);
+
+  final defaultCtor = unnamedConstructorOrError(classElement);
+
+  final paramDefaultValueMap = Map<String, String>.fromEntries(defaultCtor
+      .parameters
+      .where((element) => element.hasDefaultValue)
+      .map((e) => MapEntry(e.name, e.defaultValueCode!)));
 
   return ClassConfig(
     anyMap: annotation.anyMap ?? config.anyMap,
@@ -119,7 +127,23 @@ ClassConfig mergeConfig(
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
+    ctorParamDefaults: paramDefaultValueMap,
   );
+}
+
+ConstructorElement unnamedConstructorOrError(ClassElement classElement) {
+  final className = classElement.name;
+
+  final ctor = classElement.unnamedConstructor;
+  if (ctor == null) {
+    // TODO: support using another ctor - google/json_serializable.dart#50
+    throw InvalidGenerationSourceError(
+      'The class `$className` has no default constructor.',
+      element: classElement,
+    );
+  }
+
+  return ctor;
 }
 
 final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
