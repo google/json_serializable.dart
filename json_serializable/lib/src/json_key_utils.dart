@@ -199,7 +199,7 @@ KeyConfig _populateJsonKey(
     if (includeIfNull == true) {
       throwUnsupported(
           element,
-          'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+          'Cannot set both `disallowNullValue` and `includeIfNull` to `true`. '
           'This leads to incompatible `toJson` and `fromJson` behavior.');
     }
   }

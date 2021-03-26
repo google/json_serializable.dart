@@ -346,7 +346,7 @@ class PrivateFieldCtorClass {
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. '
-  'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+  'Cannot set both `disallowNullValue` and `includeIfNull` to `true`. '
   'This leads to incompatible `toJson` and `fromJson` behavior.',
   element: 'field',
 )
