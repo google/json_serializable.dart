@@ -8,6 +8,7 @@ import '../test_utils.dart';
 import 'default_value.dart' as normal;
 import 'default_value.g_any_map__checked.dart' as checked;
 import 'default_value_interface.dart';
+import 'implicit_default_value.dart' as implicit;
 
 const _defaultInstance = {
   'fieldBool': true,
@@ -46,6 +47,7 @@ const _otherValues = {
 void main() {
   group('nullable', () => _test(normal.fromJson));
   group('non-nullable', () => _test(checked.fromJson));
+  group('implicit', () => _test(implicit.fromJson));
 }
 
 void _test(DefaultValue Function(Map<String, dynamic> json) fromJson) {

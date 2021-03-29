@@ -66,6 +66,8 @@ class ClassConfig implements JsonSerializable {
   @override
   final bool includeIfNull;
 
+  final Map<String, String> ctorParamDefaults;
+
   const ClassConfig({
     required this.anyMap,
     required this.checked,
@@ -77,6 +79,7 @@ class ClassConfig implements JsonSerializable {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    this.ctorParamDefaults = const {},
   });
 
   /// An instance of [JsonSerializable] with all fields set to their default

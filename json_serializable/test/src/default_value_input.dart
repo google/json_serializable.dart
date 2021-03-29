@@ -122,6 +122,30 @@ class DefaultWithDisallowNullRequiredClass {
   DefaultWithDisallowNullRequiredClass();
 }
 
+@ShouldGenerate(
+  r'''
+CtorDefaultValueAndJsonKeyDefaultValue
+    _$CtorDefaultValueAndJsonKeyDefaultValueFromJson(
+        Map<String, dynamic> json) {
+  return CtorDefaultValueAndJsonKeyDefaultValue(
+    json['theField'] as int? ?? 7,
+  );
+}
+''',
+  expectedLogItems: [
+    'The constructor parameter for `theField` has a default value `6`, but the '
+        '`JsonKey.defaultValue` value `7` will be used for missing or `null` '
+        'values in JSON decoding.',
+  ],
+)
+@JsonSerializable(createToJson: false)
+class CtorDefaultValueAndJsonKeyDefaultValue {
+  @JsonKey(defaultValue: 7)
+  final int theField;
+
+  CtorDefaultValueAndJsonKeyDefaultValue([this.theField = 6]);
+}
+
 @ShouldGenerate(r'''
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
     Map<String, dynamic> json) {
