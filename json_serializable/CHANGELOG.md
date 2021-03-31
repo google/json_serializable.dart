@@ -1,3 +1,9 @@
+## 5.0.0-dev
+
+- Use the default value for optional constructor parameters if
+  `JsonKey.defaultValue` is not provided. This could be a breaking behavior
+  change in generated code in some cases.
+
 ## 4.1.0
 
 - Implementation is now null-safe.

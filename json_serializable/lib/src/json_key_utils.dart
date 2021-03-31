@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -24,10 +25,13 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   // TODO: setters: github.com/google/json_serializable.dart/issues/24
   final obj = jsonKeyAnnotation(element);
 
+  final ctorParamDefault = classAnnotation.ctorParamDefaults[element.name];
+
   if (obj.isNull) {
     return _populateJsonKey(
       classAnnotation,
       element,
+      defaultValue: ctorParamDefault,
       ignore: classAnnotation.ignoreUnannotated,
     );
   }
@@ -171,10 +175,20 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     }
   }
 
+  final defaultValue = _annotationValue('defaultValue');
+  if (defaultValue != null && ctorParamDefault != null) {
+    log.warning(
+      'The constructor parameter for `${element.name}` has a default value '
+      '`$ctorParamDefault`, but the `JsonKey.defaultValue` value '
+      '`$defaultValue` will be used for missing or `null` values in JSON '
+      'decoding.',
+    );
+  }
+
   return _populateJsonKey(
     classAnnotation,
     element,
-    defaultValue: _annotationValue('defaultValue'),
+    defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
     ignore: obj.read('ignore').literalValue as bool?,
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
@@ -187,7 +201,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 KeyConfig _populateJsonKey(
   ClassConfig classAnnotation,
   FieldElement element, {
-  Object? defaultValue,
+  required Object? defaultValue,
   bool? disallowNullValue,
   bool? ignore,
   bool? includeIfNull,
@@ -199,7 +213,7 @@ KeyConfig _populateJsonKey(
     if (includeIfNull == true) {
       throwUnsupported(
           element,
-          'Cannot set both `disallowNullvalue` and `includeIfNull` to `true`. '
+          'Cannot set both `disallowNullValue` and `includeIfNull` to `true`. '
           'This leads to incompatible `toJson` and `fromJson` behavior.');
     }
   }

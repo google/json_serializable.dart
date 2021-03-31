@@ -3,33 +3,29 @@
 // BSD-style license that can be found in the LICENSE file.
 
 abstract class DefaultValue {
-  bool fieldBool;
-  String fieldString;
-  int fieldInt;
-  double fieldDouble;
-  List fieldListEmpty;
-  Map fieldMapEmpty;
-  Set fieldSetEmpty;
-  List<int> fieldListSimple;
-  Set<String> fieldSetSimple;
-  Map<String, int> fieldMapSimple;
-  Map<String, List<String>> fieldMapListString;
-  Greek fieldEnum;
+  bool get fieldBool;
 
-  DefaultValue(
-    this.fieldBool,
-    this.fieldString,
-    this.fieldInt,
-    this.fieldDouble,
-    this.fieldListEmpty,
-    this.fieldSetEmpty,
-    this.fieldMapEmpty,
-    this.fieldListSimple,
-    this.fieldSetSimple,
-    this.fieldMapSimple,
-    this.fieldMapListString,
-    this.fieldEnum,
-  );
+  String get fieldString;
+
+  int get fieldInt;
+
+  double get fieldDouble;
+
+  List get fieldListEmpty;
+
+  Map get fieldMapEmpty;
+
+  Set get fieldSetEmpty;
+
+  List<int> get fieldListSimple;
+
+  Set<String> get fieldSetSimple;
+
+  Map<String, int> get fieldMapSimple;
+
+  Map<String, List<String>> get fieldMapListString;
+
+  Greek get fieldEnum;
 }
 
 enum Greek { alpha, beta, gamma, delta }

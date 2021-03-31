@@ -241,13 +241,7 @@ _ConstructorData _writeConstructorInvocation(
 ) {
   final className = classElement.name;
 
-  final ctor = classElement.unnamedConstructor;
-  if (ctor == null) {
-    // TODO: support using another ctor - google/json_serializable.dart#50
-    throw InvalidGenerationSourceError(
-        'The class `$className` has no default constructor.',
-        element: classElement);
-  }
+  final ctor = unnamedConstructorOrError(classElement);
 
   final usedCtorParamsAndFields = <String>{};
   final constructorArguments = <ParameterElement>[];

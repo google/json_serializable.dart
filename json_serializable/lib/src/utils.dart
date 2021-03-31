@@ -106,6 +106,14 @@ ClassConfig mergeConfig(
   required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
+  assert(config.ctorParamDefaults.isEmpty);
+
+  final defaultCtor = unnamedConstructorOrError(classElement);
+
+  final paramDefaultValueMap = Map<String, String>.fromEntries(defaultCtor
+      .parameters
+      .where((element) => element.hasDefaultValue)
+      .map((e) => MapEntry(e.name, e.defaultValueCode!)));
 
   return ClassConfig(
     anyMap: annotation.anyMap ?? config.anyMap,
@@ -121,7 +129,23 @@ ClassConfig mergeConfig(
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
+    ctorParamDefaults: paramDefaultValueMap,
   );
+}
+
+ConstructorElement unnamedConstructorOrError(ClassElement classElement) {
+  final className = classElement.name;
+
+  final ctor = classElement.unnamedConstructor;
+  if (ctor == null) {
+    // TODO: support using another ctor - google/json_serializable.dart#50
+    throw InvalidGenerationSourceError(
+      'The class `$className` has no default constructor.',
+      element: classElement,
+    );
+  }
+
+  return ctor;
 }
 
 final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
@@ -270,9 +294,27 @@ extension DartTypeExtension on DartType {
 
   bool get isEnum =>
       this is InterfaceType && (this as InterfaceType).element.isEnum;
-}
 
-extension TypeExtension on DartType {
   bool get isNullableType =>
       isDynamic || nullabilitySuffix == NullabilitySuffix.question;
+
+  /// Returns `true` if `this` is `dynamic` or `Object?`.
+  bool get isLikeDynamic => (isDartCoreObject && isNullableType) || isDynamic;
+
+  /// Returns all of the [DartType] types that `this` implements, mixes-in, and
+  /// extends, starting with `this` itself.
+  Iterable<DartType> get typeImplementations sync* {
+    yield this;
+
+    final myType = this;
+
+    if (myType is InterfaceType) {
+      yield* myType.interfaces.expand((e) => e.typeImplementations);
+      yield* myType.mixins.expand((e) => e.typeImplementations);
+
+      if (myType.superclass != null) {
+        yield* myType.superclass!.typeImplementations;
+      }
+    }
+  }
 }
