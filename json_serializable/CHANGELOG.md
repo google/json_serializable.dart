@@ -3,6 +3,7 @@
 - Use the default value for optional constructor parameters if
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
   change in generated code in some cases.
+- Improve names of private classes' `toJson` and `fromJson`.
 
 ## 4.1.0
 
