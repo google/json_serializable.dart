@@ -29,6 +29,7 @@ const _expectedAnnotatedTests = {
   'BadOneNamed',
   'BadToFuncReturnType',
   'BadTwoRequiredPositional',
+  '_BetterPrivateNames',
   'CtorDefaultValueAndJsonKeyDefaultValue',
   'DefaultDoubleConstants',
   'DefaultWithConstObject',

@@ -52,6 +52,8 @@ String _fixCase(String input, String separator) =>
       return lower;
     });
 
+String nonPrivateName(String input) => input.replaceFirst(RegExp(r'^_*'), '');
+
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',
