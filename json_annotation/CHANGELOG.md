@@ -1,3 +1,7 @@
+## 4.0.2-dev
+
+- Added a `const` constructor to `JsonConverter`.
+
 ## 4.0.1
 
 - Fix a potential error with `checked: true` when `ArgumentError.message` is 
