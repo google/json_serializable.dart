@@ -4,12 +4,12 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:collection/collection.dart';
+import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
-import '../utils.dart';
 import 'to_from_string.dart';
 
 const _keyParam = 'k';
@@ -26,7 +26,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
       return null;
     }
-    final args = typeArgumentsOf(targetType, coreMapTypeChecker);
+    final args = targetType.typeArgumentsOf(coreMapTypeChecker)!;
     assert(args.length == 2);
 
     final keyType = args[0];
@@ -61,7 +61,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    final typeArgs = typeArgumentsOf(targetType, coreMapTypeChecker);
+    final typeArgs = targetType.typeArgumentsOf(coreMapTypeChecker)!;
     assert(typeArgs.length == 2);
     final keyArg = typeArgs.first;
     final valueArg = typeArgs.last;

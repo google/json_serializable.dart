@@ -3,9 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:source_helper/source_helper.dart';
 
 import '../type_helper.dart';
-import '../utils.dart';
 import 'to_from_string.dart';
 
 class DateTimeHelper extends TypeHelper {

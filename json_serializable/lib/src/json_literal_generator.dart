@@ -10,8 +10,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart';
-
-import 'utils.dart';
+import 'package:source_helper/source_helper.dart';
 
 class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
   const JsonLiteralGenerator();

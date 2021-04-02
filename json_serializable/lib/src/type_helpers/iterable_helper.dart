@@ -4,12 +4,12 @@
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
+import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
 import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../utils.dart';
 
 class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const IterableHelper();
