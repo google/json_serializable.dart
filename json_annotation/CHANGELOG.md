@@ -1,6 +1,8 @@
-## 4.0.2-dev
+## 4.1.0-dev
 
 - Added a `const` constructor to `JsonConverter`.
+- Added `$checkedCreate` helper that will be used by `package:json_serializable`
+  v5+ and replaces both `$checkedNew` and `$checkedConvert`.
 
 ## 4.0.1
 

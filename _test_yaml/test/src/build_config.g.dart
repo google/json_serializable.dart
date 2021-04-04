@@ -7,18 +7,16 @@ part of 'build_config.dart';
 // **************************************************************************
 
 Config _$ConfigFromJson(Map json) {
-  return $checkedNew('Config', json, () {
+  return $checkedCreate('Config', json, ($checkedConvert) {
     $checkKeys(json, requiredKeys: const ['builders']);
     final val = Config(
       builders: $checkedConvert(
-          json,
           'builders',
           (v) => (v as Map).map(
                 (k, e) => MapEntry(k as String, Builder.fromJson(e as Map)),
               )),
     );
     $checkedConvert(
-        json,
         'weights',
         (v) => val.weights = (v as Map?)?.map(
               (k, e) => MapEntry(_$enumDecode(_$AutoApplyEnumMap, k), e as int),
@@ -67,7 +65,7 @@ const _$AutoApplyEnumMap = {
 };
 
 Builder _$BuilderFromJson(Map json) {
-  return $checkedNew('Builder', json, () {
+  return $checkedCreate('Builder', json, ($checkedConvert) {
     $checkKeys(json, allowedKeys: const [
       'target',
       'import',
@@ -85,30 +83,29 @@ Builder _$BuilderFromJson(Map json) {
       'auto_apply'
     ]);
     final val = Builder(
-      import: $checkedConvert(json, 'import', (v) => v as String),
-      target: $checkedConvert(json, 'target', (v) => v as String?),
-      isOptional: $checkedConvert(json, 'is_optional', (v) => v as bool?),
-      autoApply: $checkedConvert(json, 'auto_apply',
-          (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+      import: $checkedConvert('import', (v) => v as String),
+      target: $checkedConvert('target', (v) => v as String?),
+      isOptional: $checkedConvert('is_optional', (v) => v as bool?),
+      autoApply: $checkedConvert(
+          'auto_apply', (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
       buildTo: $checkedConvert(
-          json, 'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
-      defaultEnumTest: $checkedConvert(json, 'defaultEnumTest',
+          'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
+      defaultEnumTest: $checkedConvert('defaultEnumTest',
           (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
-      builderFactories: $checkedConvert(json, 'builder_factories',
+      builderFactories: $checkedConvert('builder_factories',
           (v) => (v as List<dynamic>).map((e) => e as String).toList()),
-      appliesBuilders: $checkedConvert(json, 'applies_builders',
+      appliesBuilders: $checkedConvert('applies_builders',
           (v) => (v as List<dynamic>?)?.map((e) => e as String).toList()),
-      requiredInputs: $checkedConvert(json, 'required_inputs',
+      requiredInputs: $checkedConvert('required_inputs',
           (v) => (v as List<dynamic>?)?.map((e) => e as String).toList()),
       buildExtensions: $checkedConvert(
-          json,
           'build_extensions',
           (v) => (v as Map?)?.map(
                 (k, e) => MapEntry(k as String,
                     (e as List<dynamic>).map((e) => e as String).toList()),
               )),
-      configLocation: $checkedConvert(json, 'configLocation',
-          (v) => v == null ? null : Uri.parse(v as String)),
+      configLocation: $checkedConvert(
+          'configLocation', (v) => v == null ? null : Uri.parse(v as String)),
     );
     return val;
   }, fieldKeyMap: const {
