@@ -3,10 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:source_helper/source_helper.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
-import '../utils.dart';
 
 /// Information used by [ConvertHelper] when handling `JsonKey`-annotated
 /// fields with `toJson` or `fromJson` values set.

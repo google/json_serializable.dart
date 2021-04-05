@@ -4,6 +4,9 @@
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
   change in generated code in some cases.
 - Improve names of private classes' `toJson` and `fromJson`.
+- `type_helper.dart`:
+  - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed 
+    by `package:source_helper`. 
 
 ## 4.1.0
 
