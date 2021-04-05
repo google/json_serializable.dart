@@ -92,7 +92,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
           (valueArgIsAny ||
               simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
         // No mapping of the values or null check required!
-        final valueString = valueArg.getDisplayString(withNullability: false);
+        final valueString = valueArg.getDisplayString(withNullability: true);
         return 'Map<String, $valueString>.from($expression as Map)';
       }
     }

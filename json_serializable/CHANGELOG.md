@@ -3,6 +3,7 @@
 - Use the default value for optional constructor parameters if
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
   change in generated code in some cases.
+- Fixed `fromJson` for `Map` fields with nullable values.
 - Improve names of private classes' `toJson` and `fromJson`.
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed 
