@@ -885,7 +885,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToBoolNullableToJson(
 SimpleClassOfDynamicToBoolNullable _$SimpleClassOfDynamicToBoolNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDynamicToBoolNullable(
-    Map<String, bool>.from(json['value'] as Map),
+    Map<String, bool?>.from(json['value'] as Map),
   );
 }
 
@@ -976,7 +976,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToBoolNullableToJson(
 SimpleClassOfObjectToBoolNullable _$SimpleClassOfObjectToBoolNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfObjectToBoolNullable(
-    Map<String, bool>.from(json['value'] as Map),
+    Map<String, bool?>.from(json['value'] as Map),
   );
 }
 
@@ -1005,7 +1005,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToBoolNullableToJson(
 SimpleClassOfStringToBoolNullable _$SimpleClassOfStringToBoolNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfStringToBoolNullable(
-    Map<String, bool>.from(json['value'] as Map),
+    Map<String, bool?>.from(json['value'] as Map),
   );
 }
 
@@ -1889,7 +1889,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToDoubleNullableToJson(
 SimpleClassOfDynamicToDoubleNullable
     _$SimpleClassOfDynamicToDoubleNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfDynamicToDoubleNullable(
-    Map<String, double>.from(json['value'] as Map),
+    Map<String, double?>.from(json['value'] as Map),
   );
 }
 
@@ -1982,7 +1982,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToDoubleNullableToJson(
 SimpleClassOfObjectToDoubleNullable
     _$SimpleClassOfObjectToDoubleNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfObjectToDoubleNullable(
-    Map<String, double>.from(json['value'] as Map),
+    Map<String, double?>.from(json['value'] as Map),
   );
 }
 
@@ -2011,7 +2011,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToDoubleNullableToJson(
 SimpleClassOfStringToDoubleNullable
     _$SimpleClassOfStringToDoubleNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfStringToDoubleNullable(
-    Map<String, double>.from(json['value'] as Map),
+    Map<String, double?>.from(json['value'] as Map),
   );
 }
 
@@ -3666,7 +3666,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToIntNullableToJson(
 SimpleClassOfDynamicToIntNullable _$SimpleClassOfDynamicToIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDynamicToIntNullable(
-    Map<String, int>.from(json['value'] as Map),
+    Map<String, int?>.from(json['value'] as Map),
   );
 }
 
@@ -3756,7 +3756,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToIntNullableToJson(
 SimpleClassOfObjectToIntNullable _$SimpleClassOfObjectToIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfObjectToIntNullable(
-    Map<String, int>.from(json['value'] as Map),
+    Map<String, int?>.from(json['value'] as Map),
   );
 }
 
@@ -3785,7 +3785,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToIntNullableToJson(
 SimpleClassOfStringToIntNullable _$SimpleClassOfStringToIntNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfStringToIntNullable(
-    Map<String, int>.from(json['value'] as Map),
+    Map<String, int?>.from(json['value'] as Map),
   );
 }
 
@@ -4140,7 +4140,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToNumNullableToJson(
 SimpleClassOfDynamicToNumNullable _$SimpleClassOfDynamicToNumNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfDynamicToNumNullable(
-    Map<String, num>.from(json['value'] as Map),
+    Map<String, num?>.from(json['value'] as Map),
   );
 }
 
@@ -4230,7 +4230,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToNumNullableToJson(
 SimpleClassOfObjectToNumNullable _$SimpleClassOfObjectToNumNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfObjectToNumNullable(
-    Map<String, num>.from(json['value'] as Map),
+    Map<String, num?>.from(json['value'] as Map),
   );
 }
 
@@ -4259,7 +4259,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToNumNullableToJson(
 SimpleClassOfStringToNumNullable _$SimpleClassOfStringToNumNullableFromJson(
     Map<String, dynamic> json) {
   return SimpleClassOfStringToNumNullable(
-    Map<String, num>.from(json['value'] as Map),
+    Map<String, num?>.from(json['value'] as Map),
   );
 }
 
@@ -5090,7 +5090,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToStringNullableToJson(
 SimpleClassOfDynamicToStringNullable
     _$SimpleClassOfDynamicToStringNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfDynamicToStringNullable(
-    Map<String, String>.from(json['value'] as Map),
+    Map<String, String?>.from(json['value'] as Map),
   );
 }
 
@@ -5181,7 +5181,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToStringNullableToJson(
 SimpleClassOfObjectToStringNullable
     _$SimpleClassOfObjectToStringNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfObjectToStringNullable(
-    Map<String, String>.from(json['value'] as Map),
+    Map<String, String?>.from(json['value'] as Map),
   );
 }
 
@@ -5210,7 +5210,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToStringNullableToJson(
 SimpleClassOfStringToStringNullable
     _$SimpleClassOfStringToStringNullableFromJson(Map<String, dynamic> json) {
   return SimpleClassOfStringToStringNullable(
-    Map<String, String>.from(json['value'] as Map),
+    Map<String, String?>.from(json['value'] as Map),
   );
 }
 
