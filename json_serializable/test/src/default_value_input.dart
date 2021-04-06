@@ -76,12 +76,11 @@ class DefaultWithNestedEnum {
 @ShouldGenerate(
   r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
-    Map<String, dynamic> json) {
-  return DefaultWithToJsonClass()
-    ..fieldDefaultValueToJson = DefaultWithToJsonClass._fromJson(
-            json['fieldDefaultValueToJson'] as String) ??
-        7;
-}
+        Map<String, dynamic> json) =>
+    DefaultWithToJsonClass()
+      ..fieldDefaultValueToJson = DefaultWithToJsonClass._fromJson(
+              json['fieldDefaultValueToJson'] as String) ??
+          7;
 ''',
   expectedLogItems: [
     '''
@@ -103,8 +102,11 @@ class DefaultWithToJsonClass {
   r'''
 DefaultWithDisallowNullRequiredClass
     _$DefaultWithDisallowNullRequiredClassFromJson(Map<String, dynamic> json) {
-  $checkKeys(json,
-      requiredKeys: const ['theField'], disallowNullValues: const ['theField']);
+  $checkKeys(
+    json,
+    requiredKeys: const ['theField'],
+    disallowNullValues: const ['theField'],
+  );
   return DefaultWithDisallowNullRequiredClass()
     ..theField = json['theField'] as int? ?? 7;
 }
@@ -126,11 +128,10 @@ class DefaultWithDisallowNullRequiredClass {
   r'''
 CtorDefaultValueAndJsonKeyDefaultValue
     _$CtorDefaultValueAndJsonKeyDefaultValueFromJson(
-        Map<String, dynamic> json) {
-  return CtorDefaultValueAndJsonKeyDefaultValue(
-    json['theField'] as int? ?? 7,
-  );
-}
+            Map<String, dynamic> json) =>
+        CtorDefaultValueAndJsonKeyDefaultValue(
+          json['theField'] as int? ?? 7,
+        );
 ''',
   expectedLogItems: [
     'The constructor parameter for `theField` has a default value `6`, but the '
@@ -148,19 +149,18 @@ class CtorDefaultValueAndJsonKeyDefaultValue {
 
 @ShouldGenerate(r'''
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
-    Map<String, dynamic> json) {
-  return DefaultDoubleConstants()
-    ..defaultNan = (json['defaultNan'] as num?)?.toDouble() ?? double.nan
-    ..defaultNegativeInfinity =
-        (json['defaultNegativeInfinity'] as num?)?.toDouble() ??
-            double.negativeInfinity
-    ..defaultInfinity =
-        (json['defaultInfinity'] as num?)?.toDouble() ?? double.infinity
-    ..defaultMinPositive =
-        (json['defaultMinPositive'] as num?)?.toDouble() ?? 5e-324
-    ..defaultMaxFinite = (json['defaultMaxFinite'] as num?)?.toDouble() ??
-        1.7976931348623157e+308;
-}
+        Map<String, dynamic> json) =>
+    DefaultDoubleConstants()
+      ..defaultNan = (json['defaultNan'] as num?)?.toDouble() ?? double.nan
+      ..defaultNegativeInfinity =
+          (json['defaultNegativeInfinity'] as num?)?.toDouble() ??
+              double.negativeInfinity
+      ..defaultInfinity =
+          (json['defaultInfinity'] as num?)?.toDouble() ?? double.infinity
+      ..defaultMinPositive =
+          (json['defaultMinPositive'] as num?)?.toDouble() ?? 5e-324
+      ..defaultMaxFinite = (json['defaultMaxFinite'] as num?)?.toDouble() ??
+          1.7976931348623157e+308;
 ''')
 @JsonSerializable(createToJson: false)
 class DefaultDoubleConstants {

@@ -9,9 +9,9 @@ import 'package:json_annotation/json_annotation.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
-part 'constants_copy.dart';
-
 part 'checked_test_input.dart';
+
+part 'constants_copy.dart';
 
 part 'core_subclass_type_input.dart';
 
@@ -43,9 +43,8 @@ Object annotatedMethod() => throw UnimplementedError();
 
 @ShouldGenerate(
   r'''
-OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) {
-  return OnlyStaticMembers();
-}
+OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) =>
+    OnlyStaticMembers();
 
 Map<String, dynamic> _$OnlyStaticMembersToJson(OnlyStaticMembers instance) =>
     <String, dynamic>{};
@@ -62,17 +61,16 @@ class OnlyStaticMembers {
 }
 
 @ShouldGenerate(r'''
-GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) {
-  return GeneralTestClass1()
-    ..firstName = json['firstName'] as String
-    ..lastName = json['lastName'] as String
-    ..height = json['h'] as int
-    ..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String)
-    ..dynamicType = json['dynamicType']
-    ..varType = json['varType']
-    ..listOfInts =
-        (json['listOfInts'] as List<dynamic>).map((e) => e as int).toList();
-}
+GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) =>
+    GeneralTestClass1()
+      ..firstName = json['firstName'] as String
+      ..lastName = json['lastName'] as String
+      ..height = json['h'] as int
+      ..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String)
+      ..dynamicType = json['dynamicType']
+      ..varType = json['varType']
+      ..listOfInts =
+          (json['listOfInts'] as List<dynamic>).map((e) => e as int).toList();
 
 Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
     <String, dynamic>{
@@ -99,13 +97,12 @@ class GeneralTestClass1 {
 }
 
 @ShouldGenerate(r'''
-GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) {
-  return GeneralTestClass2(
-    json['height'] as int,
-    json['firstName'] as String,
-    json['lastName'] as String?,
-  )..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String);
-}
+GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) =>
+    GeneralTestClass2(
+      json['height'] as int,
+      json['firstName'] as String,
+      json['lastName'] as String?,
+    )..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String);
 
 Map<String, dynamic> _$GeneralTestClass2ToJson(GeneralTestClass2 instance) =>
     <String, dynamic>{
@@ -129,11 +126,9 @@ class GeneralTestClass2 {
 }
 
 @ShouldGenerate(r'''
-FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) {
-  return FinalFields(
-    json['a'] as int,
-  );
-}
+FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) => FinalFields(
+      json['a'] as int,
+    );
 
 Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance) =>
     <String, dynamic>{
@@ -152,9 +147,8 @@ class FinalFields {
 @ShouldGenerate(
   r'''
 FinalFieldsNotSetInCtor _$FinalFieldsNotSetInCtorFromJson(
-    Map<String, dynamic> json) {
-  return FinalFieldsNotSetInCtor();
-}
+        Map<String, dynamic> json) =>
+    FinalFieldsNotSetInCtor();
 
 Map<String, dynamic> _$FinalFieldsNotSetInCtorToJson(
         FinalFieldsNotSetInCtor instance) =>
@@ -170,11 +164,9 @@ class FinalFieldsNotSetInCtor {
 }
 
 @ShouldGenerate(r'''
-SetSupport _$SetSupportFromJson(Map<String, dynamic> json) {
-  return SetSupport(
-    (json['values'] as List<dynamic>).map((e) => e as int).toSet(),
-  );
-}
+SetSupport _$SetSupportFromJson(Map<String, dynamic> json) => SetSupport(
+      (json['values'] as List<dynamic>).map((e) => e as int).toSet(),
+    );
 
 Map<String, dynamic> _$SetSupportToJson(SetSupport instance) =>
     <String, dynamic>{
@@ -398,14 +390,13 @@ enum GoodEnum {
 
 @ShouldGenerate(r'''
 FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
-    Map<String, dynamic> json) {
-  return FieldWithFromJsonCtorAndTypeParams()
-    ..customOrders = json['customOrders'] == null
-        ? null
-        : MyList.fromJson((json['customOrders'] as List<dynamic>)
-            .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
-            .toList());
-}
+        Map<String, dynamic> json) =>
+    FieldWithFromJsonCtorAndTypeParams()
+      ..customOrders = json['customOrders'] == null
+          ? null
+          : MyList.fromJson((json['customOrders'] as List<dynamic>)
+              .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
+              .toList());
 ''')
 @JsonSerializable(createToJson: false)
 class FieldWithFromJsonCtorAndTypeParams {
@@ -442,11 +433,10 @@ mixin _PropInMixinI448RegressionMixin {
 
 @ShouldGenerate(r'''
 PropInMixinI448Regression _$PropInMixinI448RegressionFromJson(
-    Map<String, dynamic> json) {
-  return PropInMixinI448Regression()
-    ..nullable = json['nullable'] as int
-    ..notNullable = json['notNullable'] as int;
-}
+        Map<String, dynamic> json) =>
+    PropInMixinI448Regression()
+      ..nullable = json['nullable'] as int
+      ..notNullable = json['notNullable'] as int;
 
 Map<String, dynamic> _$PropInMixinI448RegressionToJson(
         PropInMixinI448Regression instance) =>
@@ -463,9 +453,8 @@ class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
 
 @ShouldGenerate(
   r'''
-IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json) {
-  return IgnoreUnannotated()..annotated = json['annotated'] as int;
-}
+IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json) =>
+    IgnoreUnannotated()..annotated = json['annotated'] as int;
 
 Map<String, dynamic> _$IgnoreUnannotatedToJson(IgnoreUnannotated instance) =>
     <String, dynamic>{
@@ -483,9 +472,8 @@ class IgnoreUnannotated {
 
 @ShouldGenerate(
   r'''
-SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) {
-  return SubclassedJsonKey()..annotatedWithSubclass = json['bob'] as int;
-}
+SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) =>
+    SubclassedJsonKey()..annotatedWithSubclass = json['bob'] as int;
 
 Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
     <String, dynamic>{
@@ -506,9 +494,8 @@ class MyJsonKey extends JsonKey {
 @ShouldGenerate(
   r'''
 OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
-    Map<String, dynamic> json) {
-  return OverrideGetterExampleI613()..id = json['id'] as String;
-}
+        Map<String, dynamic> json) =>
+    OverrideGetterExampleI613()..id = json['id'] as String;
 
 Map<String, dynamic> _$OverrideGetterExampleI613ToJson(
         OverrideGetterExampleI613 instance) =>

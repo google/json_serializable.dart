@@ -6,12 +6,10 @@ part of 'input.type_num.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
-  return SimpleClass(
-    json['value'] as num,
-    json['withDefault'] as num? ?? 88.6,
-  );
-}
+SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
+      json['value'] as num,
+      json['withDefault'] as num? ?? 88.6,
+    );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
@@ -19,12 +17,11 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'withDefault': instance.withDefault,
     };
 
-SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
-  return SimpleClassNullable(
-    json['value'] as num?,
-    json['withDefault'] as num? ?? 88.6,
-  );
-}
+SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
+    SimpleClassNullable(
+      json['value'] as num?,
+      json['withDefault'] as num? ?? 88.6,
+    );
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>

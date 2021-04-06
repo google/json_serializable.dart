@@ -39,10 +39,9 @@ class InvalidFromFunc2Args {
 @ShouldGenerate(
   r'''
 ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
-    Map<String, dynamic> json) {
-  return ValidToFromFuncClassStatic()
-    ..field = ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
-}
+        Map<String, dynamic> json) =>
+    ValidToFromFuncClassStatic()
+      ..field = ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
 
 Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
         ValidToFromFuncClassStatic instance) =>
@@ -149,12 +148,11 @@ String _fromDynamicIterable(Iterable input) => 'null';
 @ShouldGenerate(
   r'''
 FromDynamicCollection _$FromDynamicCollectionFromJson(
-    Map<String, dynamic> json) {
-  return FromDynamicCollection()
-    ..mapField = _fromDynamicMap(json['mapField'] as Map)
-    ..listField = _fromDynamicList(json['listField'] as List)
-    ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
-}
+        Map<String, dynamic> json) =>
+    FromDynamicCollection()
+      ..mapField = _fromDynamicMap(json['mapField'] as Map)
+      ..listField = _fromDynamicList(json['listField'] as List)
+      ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
 ''',
   configurations: ['default'],
 )
@@ -177,13 +175,12 @@ String _fromNullableDynamicIterable(Iterable? input) => 'null';
 @ShouldGenerate(
   r'''
 FromNullableDynamicCollection _$FromNullableDynamicCollectionFromJson(
-    Map<String, dynamic> json) {
-  return FromNullableDynamicCollection()
-    ..mapField = _fromNullableDynamicMap(json['mapField'] as Map?)
-    ..listField = _fromNullableDynamicList(json['listField'] as List?)
-    ..iterableField =
-        _fromNullableDynamicIterable(json['iterableField'] as List?);
-}
+        Map<String, dynamic> json) =>
+    FromNullableDynamicCollection()
+      ..mapField = _fromNullableDynamicMap(json['mapField'] as Map?)
+      ..listField = _fromNullableDynamicList(json['listField'] as List?)
+      ..iterableField =
+          _fromNullableDynamicIterable(json['iterableField'] as List?);
 ''',
   configurations: ['default'],
 )
@@ -265,11 +262,10 @@ class OkayOnlyOptionalPositional {
 
 @ShouldGenerate(
   r'''
-_BetterPrivateNames _$BetterPrivateNamesFromJson(Map<String, dynamic> json) {
-  return _BetterPrivateNames(
-    name: json['name'] as String,
-  );
-}
+_BetterPrivateNames _$BetterPrivateNamesFromJson(Map<String, dynamic> json) =>
+    _BetterPrivateNames(
+      name: json['name'] as String,
+    );
 
 Map<String, dynamic> _$BetterPrivateNamesToJson(_BetterPrivateNames instance) =>
     <String, dynamic>{
@@ -281,5 +277,6 @@ Map<String, dynamic> _$BetterPrivateNamesToJson(_BetterPrivateNames instance) =>
 // ignore: unused_element
 class _BetterPrivateNames {
   final String name;
+
   _BetterPrivateNames({required this.name});
 }

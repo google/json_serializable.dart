@@ -20,14 +20,13 @@ class Issue713<TResult> {
 
 @ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-    Map<String, dynamic> json) {
-  return GenericClass<T, S>()
-    ..fieldObject = _dataFromJson(json['fieldObject'])
-    ..fieldDynamic = _dataFromJson(json['fieldDynamic'])
-    ..fieldInt = _dataFromJson(json['fieldInt'])
-    ..fieldT = _dataFromJson(json['fieldT'])
-    ..fieldS = _dataFromJson(json['fieldS']);
-}
+        Map<String, dynamic> json) =>
+    GenericClass<T, S>()
+      ..fieldObject = _dataFromJson(json['fieldObject'])
+      ..fieldDynamic = _dataFromJson(json['fieldDynamic'])
+      ..fieldInt = _dataFromJson(json['fieldInt'])
+      ..fieldT = _dataFromJson(json['fieldT'])
+      ..fieldS = _dataFromJson(json['fieldS']);
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
         GenericClass<T, S> instance) =>
@@ -67,9 +66,8 @@ Object _dataToJson<T extends num>(T input) => throw UnimplementedError();
   r'''
 GenericArgumentFactoriesFlagWithoutGenericType
     _$GenericArgumentFactoriesFlagWithoutGenericTypeFromJson(
-        Map<String, dynamic> json) {
-  return GenericArgumentFactoriesFlagWithoutGenericType();
-}
+            Map<String, dynamic> json) =>
+        GenericArgumentFactoriesFlagWithoutGenericType();
 
 Map<String, dynamic> _$GenericArgumentFactoriesFlagWithoutGenericTypeToJson(
         GenericArgumentFactoriesFlagWithoutGenericType instance) =>
