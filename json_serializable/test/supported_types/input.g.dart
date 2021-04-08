@@ -6,12 +6,10 @@ part of 'input.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
-  return SimpleClass(
-    json['value'],
-    json['withDefault'] ?? 42,
-  );
-}
+SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
+      json['value'],
+      json['withDefault'] ?? 42,
+    );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{

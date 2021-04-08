@@ -6,15 +6,14 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
-    Map<String, dynamic> json) {
-  return JsonConverterNamedCtor<E>()
-    ..value = const _DurationMillisecondConverter.named()
-        .fromJson(json['value'] as int)
-    ..genericValue =
-        _GenericConverter<E>.named().fromJson(json['genericValue'] as int)
-    ..keyAnnotationFirst =
-        JsonConverterNamedCtor._fromJson(json['keyAnnotationFirst'] as int);
-}
+        Map<String, dynamic> json) =>
+    JsonConverterNamedCtor<E>()
+      ..value = const _DurationMillisecondConverter.named()
+          .fromJson(json['value'] as int)
+      ..genericValue =
+          _GenericConverter<E>.named().fromJson(json['genericValue'] as int)
+      ..keyAnnotationFirst =
+          JsonConverterNamedCtor._fromJson(json['keyAnnotationFirst'] as int);
 
 Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
         JsonConverterNamedCtor<E> instance) =>
@@ -45,17 +44,16 @@ class JsonConverterNamedCtor<E> {
 
 @ShouldGenerate(r'''
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
-    Map<String, dynamic> json) {
-  return JsonConvertOnField<E>()
-    ..annotatedField = const _DurationMillisecondConverter()
-        .fromJson(json['annotatedField'] as int)
-    ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
-        .fromJson(json['annotatedWithNamedCtor'] as int)
-    ..classAnnotatedWithField =
-        _durationConverter.fromJson(json['classAnnotatedWithField'] as int)
-    ..genericValue =
-        _GenericConverter<E>().fromJson(json['genericValue'] as int);
-}
+        Map<String, dynamic> json) =>
+    JsonConvertOnField<E>()
+      ..annotatedField = const _DurationMillisecondConverter()
+          .fromJson(json['annotatedField'] as int)
+      ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
+          .fromJson(json['annotatedWithNamedCtor'] as int)
+      ..classAnnotatedWithField =
+          _durationConverter.fromJson(json['classAnnotatedWithField'] as int)
+      ..genericValue =
+          _GenericConverter<E>().fromJson(json['genericValue'] as int);
 
 Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
         JsonConvertOnField<E> instance) =>

@@ -7,6 +7,7 @@
 - Improve names of private classes generated for `toJson` and `fromJson`.
 - Use the new `$checkedCreate` helper exposed in `package:json_annotation`
   v4.1+.
+- Generated code now conforms to this `prefer_expression_function_bodies` lint.
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed 
     by `package:source_helper`. 

@@ -41,7 +41,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 }
 
 /// Returns a [String] representing a valid Dart literal for [value].
-String jsonLiteralAsDart(dynamic value) {
+String jsonLiteralAsDart(Object? value) {
   if (value == null) return 'null';
 
   if (value is String) return escapeDartString(value);
@@ -74,7 +74,8 @@ String jsonLiteralAsDart(dynamic value) {
   if (value is Map) return jsonMapAsDart(value);
 
   throw StateError(
-      'Should never get here – with ${value.runtimeType} - `$value`.');
+    'Should never get here – with ${value.runtimeType} - `$value`.',
+  );
 }
 
 String jsonMapAsDart(Map value) {

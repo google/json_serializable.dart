@@ -47,7 +47,9 @@ abstract class DecodeHelper implements HelperCore {
       }
     }
 
-    buffer.write(') {\n');
+    buffer.write(')');
+
+    final fromJsonLines = <String>[];
 
     String deserializeFun(String paramOrFieldName,
             {ParameterElement? ctorParam}) =>
@@ -70,23 +72,25 @@ abstract class DecodeHelper implements HelperCore {
       deserializeFun,
     );
 
-    final checks = _checkKeys(accessibleFields.values
-        .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)));
+    final checks = _checkKeys(
+      accessibleFields.values
+          .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)),
+    ).toList();
 
     if (config.checked) {
       final classLiteral = escapeDartString(element.name);
 
-      buffer..write('''
-  return \$checkedCreate(
+      final sectionBuffer = StringBuffer()..write('''
+  \$checkedCreate(
     $classLiteral,
     json,
-    (\$checkedConvert) {\n''')..write(checks)..write('''
+    (\$checkedConvert) {\n''')..write(checks.join())..write('''
     final val = ${data.content};''');
 
       for (final field in data.fieldsToSet) {
-        buffer.writeln();
+        sectionBuffer.writeln();
         final safeName = safeNameAccess(accessibleFields[field]!);
-        buffer
+        sectionBuffer
           ..write('''
     \$checkedConvert($safeName, (v) => ''')
           ..write('val.$field = ')
@@ -95,7 +99,7 @@ abstract class DecodeHelper implements HelperCore {
           ..write(');');
       }
 
-      buffer.write('''\n    return val;
+      sectionBuffer.write('''\n    return val;
   }''');
 
       final fieldKeyMap = Map.fromEntries(data.usedCtorParamsAndFields
@@ -110,23 +114,38 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
-      buffer..write(fieldKeyMapArg)..write(')');
+      sectionBuffer..write(fieldKeyMapArg)..write(',);');
+      fromJsonLines.add(sectionBuffer.toString());
     } else {
-      buffer..write(checks)..write('''
-  return ${data.content}''');
+      fromJsonLines.addAll(checks);
+
+      final sectionBuffer = StringBuffer()..write('''
+  ${data.content}''');
       for (final field in data.fieldsToSet) {
-        buffer
+        sectionBuffer
           ..writeln()
           ..write('    ..$field = ')
           ..write(deserializeFun(field));
       }
+      sectionBuffer.writeln(';');
+      fromJsonLines.add(sectionBuffer.toString());
     }
-    buffer..writeln(';\n}')..writeln();
+
+    if (fromJsonLines.length == 1) {
+      buffer..write('=>')..write(fromJsonLines.single);
+    } else {
+      buffer
+        ..write('{')
+        ..writeAll(fromJsonLines.take(fromJsonLines.length - 1))
+        ..write('return ')
+        ..write(fromJsonLines.last)
+        ..write('}');
+    }
 
     return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
   }
 
-  String _checkKeys(Iterable<FieldElement> accessibleFields) {
+  Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
     final args = <String>[];
 
     String constantList(Iterable<FieldElement> things) =>
@@ -155,10 +174,8 @@ abstract class DecodeHelper implements HelperCore {
       args.add('disallowNullValues: $disallowNullKeyLiteral');
     }
 
-    if (args.isEmpty) {
-      return '';
-    } else {
-      return '\$checkKeys(json, ${args.join(', ')});\n';
+    if (args.isNotEmpty) {
+      yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
     }
   }
 

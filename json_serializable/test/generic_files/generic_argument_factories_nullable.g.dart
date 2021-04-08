@@ -12,17 +12,16 @@ GenericClassWithHelpersNullable<T, S>
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
   S Function(Object? json) fromJsonS,
-) {
-  return GenericClassWithHelpersNullable<T, S>(
-    value: _$nullableGenericFromJson(json['value'], fromJsonT),
-    list: (json['list'] as List<dynamic>?)
-        ?.map((e) => _$nullableGenericFromJson(e, fromJsonT))
-        .toList(),
-    someSet: (json['someSet'] as List<dynamic>?)
-        ?.map((e) => _$nullableGenericFromJson(e, fromJsonS))
-        .toSet(),
-  );
-}
+) =>
+        GenericClassWithHelpersNullable<T, S>(
+          value: _$nullableGenericFromJson(json['value'], fromJsonT),
+          list: (json['list'] as List<dynamic>?)
+              ?.map((e) => _$nullableGenericFromJson(e, fromJsonT))
+              .toList(),
+          someSet: (json['someSet'] as List<dynamic>?)
+              ?.map((e) => _$nullableGenericFromJson(e, fromJsonS))
+              .toSet(),
+        );
 
 Map<String, dynamic> _$GenericClassWithHelpersNullableToJson<T, S>(
   GenericClassWithHelpersNullable<T, S> instance,
@@ -52,22 +51,21 @@ Object? _$nullableGenericToJson<T>(
     input == null ? null : toJson(input);
 
 ConcreteClassNullable _$ConcreteClassNullableFromJson(
-    Map<String, dynamic> json) {
-  return ConcreteClassNullable(
-    GenericClassWithHelpersNullable.fromJson(
-        json['value'] as Map<String, dynamic>,
-        (value) => value as int,
-        (value) => value as String),
-    GenericClassWithHelpersNullable.fromJson(
-        json['value2'] as Map<String, dynamic>,
-        (value) => (value as num).toDouble(),
-        (value) => BigInt.parse(value as String)),
-    GenericClassWithHelpersNullable.fromJson(
-        json['value3'] as Map<String, dynamic>,
-        (value) => (value as num?)?.toDouble(),
-        (value) => value == null ? null : BigInt.parse(value as String)),
-  );
-}
+        Map<String, dynamic> json) =>
+    ConcreteClassNullable(
+      GenericClassWithHelpersNullable.fromJson(
+          json['value'] as Map<String, dynamic>,
+          (value) => value as int,
+          (value) => value as String),
+      GenericClassWithHelpersNullable.fromJson(
+          json['value2'] as Map<String, dynamic>,
+          (value) => (value as num).toDouble(),
+          (value) => BigInt.parse(value as String)),
+      GenericClassWithHelpersNullable.fromJson(
+          json['value3'] as Map<String, dynamic>,
+          (value) => (value as num?)?.toDouble(),
+          (value) => value == null ? null : BigInt.parse(value as String)),
+    );
 
 Map<String, dynamic> _$ConcreteClassNullableToJson(
         ConcreteClassNullable instance) =>

@@ -6,13 +6,11 @@ part of 'input.type_enumtype.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) {
-  return SimpleClass(
-    _$enumDecode(_$EnumTypeEnumMap, json['value']),
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
-        EnumType.alpha,
-  );
-}
+SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
+      _$enumDecode(_$EnumTypeEnumMap, json['value']),
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+          EnumType.alpha,
+    );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
@@ -64,13 +62,12 @@ K? _$enumDecodeNullable<K, V>(
   return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
-SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) {
-  return SimpleClassNullable(
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
-    _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
-        EnumType.alpha,
-  );
-}
+SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
+    SimpleClassNullable(
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+          EnumType.alpha,
+    );
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>

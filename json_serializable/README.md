@@ -48,15 +48,13 @@ Building creates the corresponding part `example.g.dart`:
 ```dart
 part of 'example.dart';
 
-Person _$PersonFromJson(Map<String, dynamic> json) {
-  return Person(
-    firstName: json['firstName'] as String,
-    lastName: json['lastName'] as String,
-    dateOfBirth: json['dateOfBirth'] == null
-        ? null
-        : DateTime.parse(json['dateOfBirth'] as String),
-  );
-}
+Person _$PersonFromJson(Map<String, dynamic> json) => Person(
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      dateOfBirth: json['dateOfBirth'] == null
+          ? null
+          : DateTime.parse(json['dateOfBirth'] as String),
+    );
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,

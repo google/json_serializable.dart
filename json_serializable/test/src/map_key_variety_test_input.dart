@@ -1,12 +1,11 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
-MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) {
-  return MapKeyVariety()
-    ..intIntMap = (json['intIntMap'] as Map<String, dynamic>).map(
-      (k, e) => MapEntry(int.parse(k), e as int),
-    );
-}
+MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) =>
+    MapKeyVariety()
+      ..intIntMap = (json['intIntMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(int.parse(k), e as int),
+      );
 
 Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
     <String, dynamic>{

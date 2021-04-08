@@ -2,13 +2,12 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
   r'''
-UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) {
-  return UnknownEnumValue()
-    ..value = _$enumDecodeNullable(
-            _$UnknownEnumValueItemsEnumMap, json['value'],
-            unknownValue: UnknownEnumValueItems.vUnknown) ??
-        UnknownEnumValueItems.vNull;
-}
+UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
+    UnknownEnumValue()
+      ..value = _$enumDecodeNullable(
+              _$UnknownEnumValueItemsEnumMap, json['value'],
+              unknownValue: UnknownEnumValueItems.vUnknown) ??
+          UnknownEnumValueItems.vNull;
 
 K _$enumDecode<K, V>(
   Map<K, V> enumValues,
