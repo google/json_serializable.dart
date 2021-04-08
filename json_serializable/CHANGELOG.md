@@ -4,7 +4,9 @@
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
   change in generated code in some cases.
 - Fixed `fromJson` for `Map` fields with nullable values.
-- Improve names of private classes' `toJson` and `fromJson`.
+- Improve names of private classes generated for `toJson` and `fromJson`.
+- Use the new `$checkedCreate` helper exposed in `package:json_annotation`
+  v4.1+.
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed 
     by `package:source_helper`. 

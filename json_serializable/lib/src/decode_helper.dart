@@ -77,10 +77,10 @@ abstract class DecodeHelper implements HelperCore {
       final classLiteral = escapeDartString(element.name);
 
       buffer..write('''
-  return \$checkedNew(
+  return \$checkedCreate(
     $classLiteral,
     json,
-    () {\n''')..write(checks)..write('''
+    (\$checkedConvert) {\n''')..write(checks)..write('''
     final val = ${data.content};''');
 
       for (final field in data.fieldsToSet) {
@@ -88,7 +88,7 @@ abstract class DecodeHelper implements HelperCore {
         final safeName = safeNameAccess(accessibleFields[field]!);
         buffer
           ..write('''
-    \$checkedConvert(json, $safeName, (v) => ''')
+    \$checkedConvert($safeName, (v) => ''')
           ..write('val.$field = ')
           ..write(_deserializeForField(accessibleFields[field]!,
               checkedProperty: true))
@@ -183,7 +183,7 @@ abstract class DecodeHelper implements HelperCore {
             )
             .toString();
         if (!checkedProperty) {
-          value = '\$checkedConvert(json, $jsonKeyName, (v) => $value)';
+          value = '\$checkedConvert($jsonKeyName, (v) => $value)';
         }
       } else {
         assert(!checkedProperty,
