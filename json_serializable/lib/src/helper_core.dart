@@ -141,14 +141,12 @@ String typeToCode(
   if (type.isDynamic) {
     return 'dynamic';
   } else if (type is InterfaceType) {
-    final typeArguments = type.typeArguments;
-    if (typeArguments.isEmpty) {
-      final nullablePostfix = (type.isNullableType || forceNullable) ? '?' : '';
-      return '${type.element.name}$nullablePostfix';
-    } else {
-      final typeArgumentsCode = typeArguments.map(typeToCode).join(', ');
-      return '${type.element.name}<$typeArgumentsCode>';
-    }
+    return [
+      type.element.name,
+      if (type.typeArguments.isNotEmpty)
+        '<${type.typeArguments.map(typeToCode).join(', ')}>',
+      (type.isNullableType || forceNullable) ? '?' : '',
+    ].join();
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
 }

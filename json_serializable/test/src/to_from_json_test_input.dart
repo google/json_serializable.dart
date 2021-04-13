@@ -71,6 +71,64 @@ class BadToFuncReturnType {
 }
 
 @ShouldThrow(
+  'Error with `@JsonKey` on `values`. The `fromJson` function `_fromList` '
+  'return type `List<int>?` is not compatible with field type `List<int>`.',
+  element: 'values',
+)
+@JsonSerializable()
+class Reproduce869NullableGenericType {
+  @JsonKey(
+    toJson: _toList, // nullable
+    fromJson: _fromList, // nullable
+  )
+  late final List<int> values;
+}
+
+@ShouldGenerate(
+  r'''
+Reproduce869NullableGenericTypeWithDefault
+    _$Reproduce869NullableGenericTypeWithDefaultFromJson(
+            Map<String, dynamic> json) =>
+        Reproduce869NullableGenericTypeWithDefault()
+          ..values = _fromList(json['values'] as List?) ?? []
+          ..valuesNullable = _fromList(json['valuesNullable'] as List?) ?? [];
+
+Map<String, dynamic> _$Reproduce869NullableGenericTypeWithDefaultToJson(
+        Reproduce869NullableGenericTypeWithDefault instance) =>
+    <String, dynamic>{
+      'values': _toList(instance.values),
+      'valuesNullable': _toList(instance.valuesNullable),
+    };
+''',
+)
+@JsonSerializable()
+class Reproduce869NullableGenericTypeWithDefault {
+  @JsonKey(
+    toJson: _toList, // nullable
+    fromJson: _fromList, // nullable
+    defaultValue: <int>[],
+  )
+  late List<int> values;
+
+  @JsonKey(
+    toJson: _toList, // nullable
+    fromJson: _fromList, // nullable
+    defaultValue: <int>[],
+  )
+  List<int>? valuesNullable;
+}
+
+List<int>? _fromList(List? pairs) {
+  return pairs?.map((it) {
+    return it as int;
+  }).toList(growable: false);
+}
+
+List<List>? _toList(List<int>? pairs) {
+  return pairs?.map((it) => [it]).toList(growable: false);
+}
+
+@ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function '
   '`_twoArgFunction` must have one positional parameter.',
   element: 'field',

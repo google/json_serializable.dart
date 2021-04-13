@@ -202,3 +202,8 @@ Map<FieldElement, dynamic>? enumFieldsMap(DartType targetType) {
 /// Otherwise, `null`.
 Iterable<FieldElement>? iterateEnumFields(DartType targetType) =>
     enumFieldsMap(targetType)?.keys;
+
+extension DartTypeExtension on DartType {
+  DartType promoteNonNullable() =>
+      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+}

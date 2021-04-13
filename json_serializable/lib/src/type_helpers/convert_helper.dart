@@ -14,7 +14,15 @@ class ConvertData {
   final String name;
   final DartType paramType;
 
-  ConvertData(this.name, this.paramType);
+  /// `true` if the function returns a nullable value AND there is a default
+  /// value assigned.
+  final bool nullableToAllowDefault;
+
+  ConvertData(
+    this.name,
+    this.paramType, {
+    required this.nullableToAllowDefault,
+  });
 }
 
 abstract class TypeHelperContextWithConvert extends TypeHelperContext {

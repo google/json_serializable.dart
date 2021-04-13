@@ -227,7 +227,11 @@ abstract class DecodeHelper implements HelperCore {
             'effect because both `disallowNullValue` and `required` are set to '
             '`true`.');
       }
-      if (contextHelper.deserializeConvertData != null) {
+
+      final deserializeConvertData = contextHelper.deserializeConvertData;
+
+      if (deserializeConvertData != null &&
+          !deserializeConvertData.nullableToAllowDefault) {
         log.warning('The field `${field.name}` has both `defaultValue` and '
             '`fromJson` defined which likely won\'t work for your scenario.\n'
             'Instead of using `defaultValue`, set `nullable: false` and handle '
