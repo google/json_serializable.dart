@@ -125,8 +125,13 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
         'positional parameter.');
   }
 
+  var nullableToAllowDefault = false;
+
   final argType = executableElement.parameters.first.type;
   if (isFrom) {
+    final hasDefaultValue =
+        !jsonKeyAnnotation(element).read('defaultValue').isNull;
+
     final returnType = executableElement.returnType;
 
     if (returnType is TypeParameterType) {
@@ -134,14 +139,20 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
     } else if (!returnType.isAssignableTo(element.type)) {
-      final returnTypeCode = typeToCode(returnType);
-      final elementTypeCode = typeToCode(element.type);
-      throwUnsupported(
-          element,
-          'The `$paramName` function `${executableElement.name}` return type '
-          '`$returnTypeCode` is not compatible with field type '
-          '`$elementTypeCode`.');
+      if (returnType.promoteNonNullable().isAssignableTo(element.type) &&
+          hasDefaultValue) {
+        // noop
+      } else {
+        final returnTypeCode = typeToCode(returnType);
+        final elementTypeCode = typeToCode(element.type);
+        throwUnsupported(
+            element,
+            'The `$paramName` function `${executableElement.name}` return type '
+            '`$returnTypeCode` is not compatible with field type '
+            '`$elementTypeCode`.');
+      }
     }
+    nullableToAllowDefault = hasDefaultValue && returnType.isNullableType;
   } else {
     if (argType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
@@ -164,5 +175,9 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     name = '${executableElement.enclosingElement.name}.$name';
   }
 
-  return ConvertData(name, argType);
+  return ConvertData(
+    name,
+    argType,
+    nullableToAllowDefault: nullableToAllowDefault,
+  );
 }

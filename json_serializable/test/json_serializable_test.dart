@@ -94,6 +94,8 @@ const _expectedAnnotatedTests = {
   'OverrideGetterExampleI613',
   'PrivateFieldCtorClass',
   'PropInMixinI448Regression',
+  'Reproduce869NullableGenericType',
+  'Reproduce869NullableGenericTypeWithDefault',
   'SetSupport',
   'SubclassedJsonKey',
   'SubType',
