@@ -1,3 +1,7 @@
+## 4.1.1
+
+- Allow the latest `package:build_config`.
+
 ## 4.1.0
 
 - Implementation is now null-safe.

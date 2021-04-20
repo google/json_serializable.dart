@@ -1,5 +1,5 @@
 name: json_serializable
-version: 4.1.0
+version: 4.1.1
 description: >-
   Automatically generate code for converting to and from JSON by annotating
   Dart classes.
@@ -10,7 +10,7 @@ environment:
 dependencies:
   analyzer: '>=0.41.2 <2.0.0'
   build: ^2.0.0
-  build_config: ^0.4.4
+  build_config: '>=0.4.4 <2.0.0'
   collection: ^1.14.0
 
   # Use a tight version constraint to ensure that a constraint on
@@ -21,7 +21,7 @@ dependencies:
   source_gen: ^1.0.0
 
 dev_dependencies:
-  build_runner: ^1.0.0
+  build_runner: ^2.0.0
   build_verify: ^2.0.0
   dart_style: ^2.0.0
   logging: ^1.0.0
