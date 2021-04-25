@@ -3,10 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
-
-import 'package:test/test.dart';
-
 import 'package:json_serializable/src/utils.dart';
+import 'package:test/test.dart';
 
 const _kebabItems = {
   'simple': 'simple',
