@@ -42,6 +42,13 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
       constClass: json['constClass'] == null
           ? const ConstClass('value')
           : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
+      valueFromConverter: json['valueFromConverter'] == null
+          ? const ConstClass('value')
+          : const ConstClassConverter()
+              .fromJson(json['valueFromConverter'] as String),
+      valueFromFunction: json['valueFromFunction'] == null
+          ? const ConstClass('value')
+          : constClassFromJson(json['valueFromFunction'] as String),
     );
 
 Map<String, dynamic> _$DefaultValueImplicitToJson(
@@ -60,6 +67,9 @@ Map<String, dynamic> _$DefaultValueImplicitToJson(
       'fieldMapListString': instance.fieldMapListString,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
       'constClass': instance.constClass,
+      'valueFromConverter':
+          const ConstClassConverter().toJson(instance.valueFromConverter),
+      'valueFromFunction': constClassToJson(instance.valueFromFunction),
     };
 
 K _$enumDecode<K, V>(

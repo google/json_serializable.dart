@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:json_annotation/json_annotation.dart';
+
 abstract class DefaultValue {
   bool get fieldBool;
 
@@ -28,6 +30,10 @@ abstract class DefaultValue {
   Greek get fieldEnum;
 
   ConstClass get constClass;
+
+  ConstClass get valueFromConverter;
+
+  ConstClass get valueFromFunction;
 }
 
 enum Greek { alpha, beta, gamma, delta }
@@ -45,4 +51,18 @@ class ConstClass {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'field': field,
       };
+}
+
+ConstClass constClassFromJson(String json) => ConstClass(json);
+
+String constClassToJson(ConstClass object) => object.field;
+
+class ConstClassConverter extends JsonConverter<ConstClass, String> {
+  const ConstClassConverter();
+
+  @override
+  ConstClass fromJson(String json) => ConstClass(json);
+
+  @override
+  String toJson(ConstClass object) => object.field;
 }

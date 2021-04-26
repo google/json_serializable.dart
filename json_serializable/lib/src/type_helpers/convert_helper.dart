@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 
@@ -14,15 +15,7 @@ class ConvertData {
   final String name;
   final DartType paramType;
 
-  /// `true` if the function returns a nullable value AND there is a default
-  /// value assigned.
-  final bool nullableToAllowDefault;
-
-  ConvertData(
-    this.name,
-    this.paramType, {
-    required this.nullableToAllowDefault,
-  });
+  ConvertData(this.name, this.paramType);
 }
 
 abstract class TypeHelperContextWithConvert extends TypeHelperContext {
@@ -36,7 +29,7 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   const ConvertHelper();
 
   @override
-  String? serialize(
+  Object? serialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConvert context,
@@ -48,11 +41,11 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
 
     assert(toJsonData.paramType is TypeParameterType ||
         targetType.isAssignableTo(toJsonData.paramType));
-    return '${toJsonData.name}($expression)';
+    return LambdaResult(expression, toJsonData.name);
   }
 
   @override
-  String? deserialize(
+  Object? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConvert context,
@@ -64,6 +57,6 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
     }
 
     final asContent = asStatement(fromJsonData.paramType);
-    return '${fromJsonData.name}($expression$asContent)';
+    return LambdaResult(expression, fromJsonData.name, asContent: asContent);
   }
 }

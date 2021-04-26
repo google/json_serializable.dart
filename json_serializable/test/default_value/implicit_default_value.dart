@@ -1,3 +1,5 @@
+// ignore_for_file: annotate_overrides
+
 import 'package:json_annotation/json_annotation.dart';
 
 import 'default_value_interface.dart';
@@ -10,32 +12,37 @@ dvi.DefaultValue fromJson(Map<String, dynamic> json) =>
 
 @JsonSerializable()
 class DefaultValueImplicit implements dvi.DefaultValue {
-  @override
   final bool fieldBool;
-  @override
+
   final String fieldString;
-  @override
+
   final int fieldInt;
-  @override
+
   final double fieldDouble;
-  @override
+
   final List fieldListEmpty;
-  @override
+
   final Set fieldSetEmpty;
-  @override
+
   final Map fieldMapEmpty;
-  @override
+
   final List<int> fieldListSimple;
-  @override
+
   final Set<String> fieldSetSimple;
-  @override
+
   final Map<String, int> fieldMapSimple;
-  @override
+
   final Map<String, List<String>> fieldMapListString;
-  @override
+
   final Greek fieldEnum;
-  @override
+
   final ConstClass constClass;
+
+  @ConstClassConverter()
+  ConstClass valueFromConverter;
+
+  @JsonKey(fromJson: constClassFromJson, toJson: constClassToJson)
+  ConstClass valueFromFunction;
 
   DefaultValueImplicit({
     this.fieldBool = true,
@@ -53,6 +60,8 @@ class DefaultValueImplicit implements dvi.DefaultValue {
     },
     this.fieldEnum = Greek.beta,
     this.constClass = const ConstClass('value'),
+    this.valueFromConverter = const ConstClass('value'),
+    this.valueFromFunction = const ConstClass('value'),
   });
 
   factory DefaultValueImplicit.fromJson(Map<String, dynamic> json) =>

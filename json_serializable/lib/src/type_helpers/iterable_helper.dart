@@ -38,7 +38,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // will be identical to `substitute` – so no explicit mapping is needed.
     // If they are not equal, then we to write out the substitution.
     if (subField != closureArg) {
-      final lambda = LambdaResult.process(subField, closureArg);
+      final lambda = LambdaResult.process(subField);
 
       expression = '$expression$optionalQuestion.map($lambda)';
 
@@ -95,7 +95,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var optionalQuestion = targetTypeIsNullable ? '?' : '';
 
     if (closureArg != itemSubVal) {
-      final lambda = LambdaResult.process(itemSubVal, closureArg);
+      final lambda = LambdaResult.process(itemSubVal);
       output += '$optionalQuestion.map($lambda)';
       // No need to include the optional question below – it was used here!
       optionalQuestion = '';

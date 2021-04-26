@@ -90,8 +90,11 @@ Reproduce869NullableGenericTypeWithDefault
     _$Reproduce869NullableGenericTypeWithDefaultFromJson(
             Map<String, dynamic> json) =>
         Reproduce869NullableGenericTypeWithDefault()
-          ..values = _fromList(json['values'] as List?) ?? []
-          ..valuesNullable = _fromList(json['valuesNullable'] as List?) ?? [];
+          ..values =
+              json['values'] == null ? [] : _fromList(json['values'] as List?)
+          ..valuesNullable = json['valuesNullable'] == null
+              ? []
+              : _fromList(json['valuesNullable'] as List?);
 
 Map<String, dynamic> _$Reproduce869NullableGenericTypeWithDefaultToJson(
         Reproduce869NullableGenericTypeWithDefault instance) =>

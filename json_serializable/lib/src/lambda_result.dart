@@ -2,17 +2,23 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'constants.dart';
+
 class LambdaResult {
   final String expression;
   final String lambda;
+  final String? asContent;
 
-  LambdaResult(this.expression, this.lambda);
+  String get _fullExpression => '$expression${asContent ?? ''}';
+
+  LambdaResult(this.expression, this.lambda, {this.asContent});
 
   @override
-  String toString() => '$lambda($expression)';
+  String toString() => '$lambda($_fullExpression)';
 
-  static String process(Object subField, String closureArg) =>
-      (subField is LambdaResult && closureArg == subField.expression)
-          ? subField.lambda
-          : '($closureArg) => $subField';
+  static String process(Object subField) {
+    return (subField is LambdaResult && closureArg == subField._fullExpression)
+        ? subField.lambda
+        : '($closureArg) => $subField';
+  }
 }
