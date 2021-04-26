@@ -18,6 +18,7 @@ import 'generic_factory_helper.dart';
 
 const _helperLambdaParam = 'value';
 
+/// Supports types that have `fromJson` constructors and/or `toJson` functions.
 class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const JsonHelper();
 

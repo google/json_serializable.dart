@@ -31,6 +31,7 @@ abstract class TypeHelperContextWithConvert extends TypeHelperContext {
   ConvertData? get deserializeConvertData;
 }
 
+/// Handles `JsonKey`-annotated fields with `toJson` or `fromJson` values set.
 class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   const ConvertHelper();
 
