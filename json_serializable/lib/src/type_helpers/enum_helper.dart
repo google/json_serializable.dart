@@ -45,14 +45,13 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    context.addMember(_enumDecodeHelper);
-
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
       functionName = r'_$enumDecodeNullable';
       context.addMember(_enumDecodeHelperNullable);
     } else {
       functionName = r'_$enumDecode';
+      context.addMember(_enumDecodeHelper);
     }
 
     context.addMember(memberContent);

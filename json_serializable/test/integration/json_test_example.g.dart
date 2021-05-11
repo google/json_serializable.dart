@@ -58,16 +58,8 @@ K _$enumDecode<K, V>(
 
   return enumValues.entries.singleWhere(
     (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
+    orElse: () => null)
+  ?.key ?? unknownValue;
 }
 
 const _$CategoryEnumMap = {
@@ -237,3 +229,17 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
           .map((e) => _$enumDecode(_$CategoryEnumMap, e,
               unknownValue: Category.notDiscoveredYet))
           .toSet();
+
+NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(
+Map<String, dynamic> json) {
+return NullableUnknownEnumValue()
+..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'])
+..enumIterable = (json['enumIterable'] as List)
+.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+..enumList = (json['enumList'] as List)
+.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+.toList()
+..enumSet = (json['enumSet'] as List)
+.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+.toSet();
+}
