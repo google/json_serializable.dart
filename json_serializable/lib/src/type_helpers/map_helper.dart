@@ -90,7 +90,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
       if (!targetTypeIsNullable &&
           (valueArgIsAny ||
-              simpleJsonTypeChecker.isAssignableFromType(valueArg))) {
+              // explicitly exclude double since we need to do an explicit
+              // `toDouble` on input values
+              valueArg.isSimpleJsonTypeNotDouble)) {
         // No mapping of the values or null check required!
         final valueString = valueArg.getDisplayString(withNullability: false);
         return 'Map<String, $valueString>.from($expression as Map)';
@@ -179,3 +181,8 @@ Iterable<String> get _allowedTypeNames => const [
       'enum',
       'String',
     ].followedBy(_instances.map((i) => i.coreTypeName));
+
+extension on DartType {
+  bool get isSimpleJsonTypeNotDouble =>
+      !isDartCoreDouble && simpleJsonTypeChecker.isAssignableFromType(this);
+}

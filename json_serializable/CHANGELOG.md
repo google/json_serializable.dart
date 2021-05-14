@@ -1,3 +1,7 @@
+## 4.1.2
+
+- Correctly decode `Map<String, double>` when the input has `int` literals.
+
 ## 4.1.1
 
 - Allow the latest `package:build_config`.
