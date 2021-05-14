@@ -6,7 +6,7 @@ github:
     push:
       branches:
       - master
-      - 3_x
+      - 4_x
     pull_request:
     schedule:
     - cron: "0 0 * * 0"

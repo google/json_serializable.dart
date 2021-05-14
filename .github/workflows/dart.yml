@@ -1,10 +1,10 @@
-# Created with package:mono_repo v3.4.7
+# Created with package:mono_repo v4.0.0
 name: Dart CI
 on:
   push:
     branches:
       - master
-      - "3_x"
+      - "4_x"
   pull_request:
   schedule:
     - cron: "0 0 * * 0"
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:stable"
@@ -31,9 +31,9 @@ jobs:
         with:
           sdk: stable
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - name: mono_repo self validate
-        run: pub global activate mono_repo 3.4.7
+        run: pub global activate mono_repo 4.0.0
       - name: mono_repo self validate
         run: pub global run mono_repo generate --validate
   job_002:
@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer"
@@ -54,7 +54,7 @@ jobs:
         with:
           sdk: "2.12.0"
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer"
@@ -138,7 +138,7 @@ jobs:
         with:
           sdk: dev
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -209,7 +209,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
@@ -222,7 +222,7 @@ jobs:
         with:
           sdk: "2.12.0"
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -268,7 +268,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
@@ -281,7 +281,7 @@ jobs:
         with:
           sdk: dev
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -327,7 +327,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:json_serializable;commands:test_2"
@@ -340,7 +340,7 @@ jobs:
         with:
           sdk: "2.12.0"
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: json_serializable_pub_upgrade
         name: "json_serializable; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -359,7 +359,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:test_2"
@@ -372,7 +372,7 @@ jobs:
         with:
           sdk: dev
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: json_serializable_pub_upgrade
         name: "json_serializable; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -391,7 +391,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
@@ -404,7 +404,7 @@ jobs:
         with:
           sdk: "2.12.0"
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
@@ -454,7 +454,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v2.1.5
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
@@ -467,7 +467,7 @@ jobs:
         with:
           sdk: dev
       - id: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
         name: "_test_yaml; pub upgrade --no-precompile"
         if: "always() && steps.checkout.conclusion == 'success'"
