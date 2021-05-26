@@ -104,6 +104,10 @@ class Item extends ItemCore {
   List<DateTime>? saleDates;
   List<int>? rates;
 
+  // Regression test for https://github.com/google/json_serializable.dart/issues/896
+  @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)
+  GeoPoint? geoPoint;
+
   Item([int? price]) : super(price);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
@@ -116,6 +120,27 @@ class Item extends ItemCore {
       price == other.price &&
       itemNumber == other.itemNumber &&
       deepEquals(saleDates, other.saleDates);
+}
+
+GeoPoint? _fromJsonGeoPoint(Map<String, dynamic>? json) {
+  if (json != null) {
+    return GeoPoint(json['latitude'], json['longitude']);
+  } else {
+    return null;
+  }
+}
+
+Map<String, dynamic>? _toJsonGeoPoint(GeoPoint? geoPoint) {
+  if (geoPoint == null) {
+    return null;
+  }
+  return {'latitude': geoPoint.latitude, 'longitude': geoPoint.longitude};
+}
+
+class GeoPoint {
+  final Object? latitude, longitude;
+
+  GeoPoint(this.latitude, this.longitude);
 }
 
 @JsonSerializable()
