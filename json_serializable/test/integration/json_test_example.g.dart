@@ -155,8 +155,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
       ..saleDates = (json['saleDates'] as List<dynamic>?)
           ?.map((e) => DateTime.parse(e as String))
           .toList()
-      ..rates =
-          (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList();
+      ..rates = (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList()
+      ..geoPoint = _fromJsonGeoPoint(json['geoPoint'] as Map<String, dynamic>?);
 
 Map<String, dynamic> _$ItemToJson(Item instance) {
   final val = <String, dynamic>{
@@ -173,6 +173,7 @@ Map<String, dynamic> _$ItemToJson(Item instance) {
   val['saleDates'] =
       instance.saleDates?.map((e) => e.toIso8601String()).toList();
   val['rates'] = instance.rates;
+  val['geoPoint'] = _toJsonGeoPoint(instance.geoPoint);
   return val;
 }
 

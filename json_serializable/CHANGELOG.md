@@ -12,6 +12,10 @@
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed 
     by `package:source_helper`. 
 
+## 4.1.3
+
+- Correctly handle nullable types with type arguments in generated code.
+
 ## 4.1.2
 
 - Correctly decode `Map<String, double>` when the input has `int` literals.
