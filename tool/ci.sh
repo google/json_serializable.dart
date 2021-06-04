@@ -1,5 +1,5 @@
 #!/bin/bash
-# Created with package:mono_repo v4.0.0
+# Created with package:mono_repo v4.1.0
 
 # Support built in commands on windows out of the box.
 # When it is a flutter repo (check the pubspec.yaml for "sdk: flutter")
@@ -16,7 +16,7 @@ function pub() {
     if [[ $TRAVIS_OS_NAME == "windows" ]]; then
       command pub.bat "$@"
     else
-      command pub "$@"
+      command dart pub "$@"
     fi
   fi
 }
@@ -58,11 +58,11 @@ for PKG in ${PKGS}; do
     exit 64
   fi
 
-  pub upgrade --no-precompile || EXIT_CODE=$?
+  dart pub upgrade || EXIT_CODE=$?
 
   if [[ ${EXIT_CODE} -ne 0 ]]; then
-    echo -e "\033[31mPKG: ${PKG}; 'pub upgrade' - FAILED  (${EXIT_CODE})\033[0m"
-    FAILURES+=("${PKG}; 'pub upgrade'")
+    echo -e "\033[31mPKG: ${PKG}; 'dart pub upgrade' - FAILED  (${EXIT_CODE})\033[0m"
+    FAILURES+=("${PKG}; 'dart pub upgrade'")
   else
     for TASK in "$@"; do
       EXIT_CODE=0
@@ -70,24 +70,24 @@ for PKG in ${PKGS}; do
       echo -e "\033[1mPKG: ${PKG}; TASK: ${TASK}\033[22m"
       case ${TASK} in
       dartanalyzer)
-        echo 'dartanalyzer --fatal-infos .'
-        dartanalyzer --fatal-infos . || EXIT_CODE=$?
+        echo 'dart analyze --fatal-infos .'
+        dart analyze --fatal-infos . || EXIT_CODE=$?
         ;;
       dartfmt)
-        echo 'dartfmt -n --set-exit-if-changed .'
-        dartfmt -n --set-exit-if-changed . || EXIT_CODE=$?
+        echo 'dart format --output=none --set-exit-if-changed .'
+        dart format --output=none --set-exit-if-changed . || EXIT_CODE=$?
         ;;
       test_0)
-        echo 'pub run test'
-        pub run test || EXIT_CODE=$?
+        echo 'dart test'
+        dart test || EXIT_CODE=$?
         ;;
       test_1)
-        echo 'pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart'
-        pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart || EXIT_CODE=$?
+        echo 'dart test --run-skipped -t presubmit-only test/ensure_build_test.dart'
+        dart test --run-skipped -t presubmit-only test/ensure_build_test.dart || EXIT_CODE=$?
         ;;
       test_2)
-        echo 'pub run test -p chrome'
-        pub run test -p chrome || EXIT_CODE=$?
+        echo 'dart test -p chrome'
+        dart test -p chrome || EXIT_CODE=$?
         ;;
       *)
         echo -e "\033[31mUnknown TASK '${TASK}' - TERMINATING JOB\033[0m"
