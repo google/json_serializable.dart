@@ -3,6 +3,8 @@
 - Added a `const` constructor to `JsonConverter`.
 - Added `$checkedCreate` helper that will be used by `package:json_serializable`
   v5+ and replaces both `$checkedNew` and `$checkedConvert`.
+- Annotate annotations with the supported target types, to minimize incorrect
+  usage.
 
 ## 4.0.1
 

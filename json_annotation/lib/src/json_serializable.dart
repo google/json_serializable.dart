@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:meta/meta_meta.dart';
+
 import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
 import 'json_key.dart';
@@ -29,6 +31,7 @@ enum FieldRename {
   disallowUnrecognizedKeys: true,
   fieldRename: FieldRename.snake,
 )
+@Target({TargetKind.classType})
 class JsonSerializable {
   /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
   /// – which is the default type of [Map] instances return by JSON decode in
