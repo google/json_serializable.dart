@@ -2,10 +2,13 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:meta/meta_meta.dart';
+
 import 'allowed_keys_helpers.dart';
 import 'json_serializable.dart';
 
 /// An annotation used to specify how a field is serialized.
+@Target({TargetKind.field, TargetKind.getter})
 class JsonKey {
   /// The value to use if the source JSON does not contain this key or if the
   /// value is `null`.

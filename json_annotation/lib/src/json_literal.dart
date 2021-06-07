@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:meta/meta_meta.dart';
+
 /// An annotation used to generate a private field containing the contents of a
 /// JSON file.
 ///
@@ -15,6 +17,7 @@
 /// @JsonLiteral('data.json')
 /// Map get glossaryData => _$glossaryDataJsonLiteral;
 /// ```
+@Target({TargetKind.getter})
 class JsonLiteral {
   /// The relative path from the Dart file with the annotation to the file
   /// containing the source JSON.
