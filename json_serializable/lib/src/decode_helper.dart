@@ -8,6 +8,7 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'default_container.dart';
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -187,41 +188,40 @@ abstract class DecodeHelper implements HelperCore {
     final jsonKeyName = safeNameAccess(field);
     final targetType = ctorParam?.type ?? field.type;
     final contextHelper = getHelperContext(field);
-    final defaultProvided = jsonKeyFor(field).defaultValue != null;
+    final jsonKey = jsonKeyFor(field);
+    final defaultValue = jsonKey.defaultValue;
+    final defaultProvided = defaultValue != null;
+
+    String deserialize(String expression) {
+      final value = contextHelper.deserialize(
+        targetType,
+        expression,
+        defaultProvided: defaultProvided,
+      )!;
+
+      return DefaultContainer.encode(value, defaultValue: defaultValue);
+    }
 
     String value;
     try {
       if (config.checked) {
-        value = contextHelper
-            .deserialize(
-              targetType,
-              'v',
-              defaultProvided: defaultProvided,
-            )
-            .toString();
+        value = deserialize('v');
         if (!checkedProperty) {
           value = '\$checkedConvert($jsonKeyName, (v) => $value)';
         }
       } else {
-        assert(!checkedProperty,
-            'should only be true if `_generator.checked` is true.');
-
-        value = contextHelper
-            .deserialize(
-              targetType,
-              'json[$jsonKeyName]',
-              defaultProvided: defaultProvided,
-            )
-            .toString();
+        assert(
+          !checkedProperty,
+          'should only be true if `_generator.checked` is true.',
+        );
+        value = deserialize('json[$jsonKeyName]');
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
-    final jsonKey = jsonKeyFor(field);
-    final defaultValue = jsonKey.defaultValue;
-    if (defaultValue != null) {
+    if (defaultProvided) {
       if (jsonKey.disallowNullValue && jsonKey.required) {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '
@@ -237,7 +237,6 @@ abstract class DecodeHelper implements HelperCore {
             'Instead of using `defaultValue`, set `nullable: false` and handle '
             '`null` in the `fromJson` function.');
       }
-      value = '$value ?? $defaultValue';
     }
     return value;
   }

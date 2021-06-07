@@ -34,6 +34,9 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) => DefaultValue(
             'root': ['child']
           },
       _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      constClass: json['constClass'] == null
+          ? const ConstClass('value')
+          : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
@@ -50,6 +53,7 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
+      'constClass': instance.constClass,
     };
 
 K _$enumDecode<K, V>(

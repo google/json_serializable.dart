@@ -24,7 +24,8 @@ const _defaultInstance = {
   'fieldMapListString': {
     'root': ['child']
   },
-  'fieldEnum': 'beta'
+  'fieldEnum': 'beta',
+  'constClass': {'field': 'value'}
 };
 
 const _otherValues = {
@@ -41,7 +42,8 @@ const _otherValues = {
   'fieldMapListString': {
     'root2': ['alpha']
   },
-  'fieldEnum': 'delta'
+  'fieldEnum': 'delta',
+  'constClass': {'field': 'otherValue'}
 };
 
 void main() {

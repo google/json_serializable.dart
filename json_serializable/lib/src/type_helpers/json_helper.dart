@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../default_container.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 import 'config_types.dart';
@@ -64,7 +65,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  String? deserialize(
+  Object? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
@@ -130,8 +131,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // https://github.com/google/json_serializable.dart/issues/19
     output = '${targetType.element.name}.fromJson($output)';
 
-    return commonNullPrefix(targetType.isNullableType, expression, output)
-        .toString();
+    return DefaultContainer(targetType.isNullableType, expression, output);
   }
 }
 

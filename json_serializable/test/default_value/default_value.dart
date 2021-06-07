@@ -8,6 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'default_value_interface.dart' as dvi hide Greek;
 import 'default_value_interface.dart' show Greek;
+import 'implicit_default_value.dart';
 
 part 'default_value.g.dart';
 
@@ -56,6 +57,8 @@ class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: Greek.beta)
   Greek fieldEnum;
 
+  ConstClass constClass;
+
   DefaultValue(
     this.fieldBool,
     this.fieldString,
@@ -68,8 +71,9 @@ class DefaultValue implements dvi.DefaultValue {
     this.fieldSetSimple,
     this.fieldMapSimple,
     this.fieldMapListString,
-    this.fieldEnum,
-  );
+    this.fieldEnum, {
+    this.constClass = const ConstClass('value'),
+  });
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueFromJson(json);
