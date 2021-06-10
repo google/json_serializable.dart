@@ -199,7 +199,11 @@ abstract class DecodeHelper implements HelperCore {
         defaultProvided: defaultProvided,
       )!;
 
-      return DefaultContainer.encode(value, defaultValue: defaultValue);
+      return DefaultContainer.encode(
+        value,
+        nullable: targetType.isNullableType,
+        defaultValue: defaultValue,
+      );
     }
 
     String value;

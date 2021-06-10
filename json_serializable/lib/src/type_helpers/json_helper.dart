@@ -132,7 +132,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // https://github.com/google/json_serializable.dart/issues/19
     output = '${targetType.element.name}.fromJson($output)';
 
-    return DefaultContainer(targetType.isNullableType, expression, output);
+    return DefaultContainer(expression, output);
   }
 }
 

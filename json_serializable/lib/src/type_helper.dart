@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 import 'type_helpers/config_types.dart';
+import 'utils.dart';
 
 /// Context information provided in calls to [TypeHelper.serialize] and
 /// [TypeHelper.deserialize].
@@ -91,5 +92,5 @@ Object commonNullPrefix(
   Object unsafeExpression,
 ) =>
     nullable
-        ? '$expression == null ? null : $unsafeExpression'
+        ? ifNullOrElse(expression, 'null', '$unsafeExpression')
         : unsafeExpression;
