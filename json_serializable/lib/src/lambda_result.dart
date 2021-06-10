@@ -16,9 +16,8 @@ class LambdaResult {
   @override
   String toString() => '$lambda($_fullExpression)';
 
-  static String process(Object subField) {
-    return (subField is LambdaResult && closureArg == subField._fullExpression)
-        ? subField.lambda
-        : '($closureArg) => $subField';
-  }
+  static String process(Object subField) =>
+      (subField is LambdaResult && closureArg == subField._fullExpression)
+          ? subField.lambda
+          : '($closureArg) => $subField';
 }

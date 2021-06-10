@@ -121,15 +121,11 @@ class Reproduce869NullableGenericTypeWithDefault {
   List<int>? valuesNullable;
 }
 
-List<int>? _fromList(List? pairs) {
-  return pairs?.map((it) {
-    return it as int;
-  }).toList(growable: false);
-}
+List<int>? _fromList(List? pairs) =>
+    pairs?.map((it) => it as int).toList(growable: false);
 
-List<List>? _toList(List<int>? pairs) {
-  return pairs?.map((it) => [it]).toList(growable: false);
-}
+List<List>? _toList(List<int>? pairs) =>
+    pairs?.map((it) => [it]).toList(growable: false);
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function '
