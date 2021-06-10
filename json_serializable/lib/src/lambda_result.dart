@@ -2,8 +2,14 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'constants.dart';
+import 'constants.dart' show closureArg;
 
+/// Represents a lambda that can be used as a tear-off depending on the context
+/// in which it is used.
+///
+/// Allows generated code to support the
+/// https://dart-lang.github.io/linter/lints/unnecessary_lambdas.html
+/// lint.
 class LambdaResult {
   final String expression;
   final String lambda;
