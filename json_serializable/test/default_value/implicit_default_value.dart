@@ -60,16 +60,3 @@ class DefaultValueImplicit implements dvi.DefaultValue {
 
   Map<String, dynamic> toJson() => _$DefaultValueImplicitToJson(this);
 }
-
-// Regression for https://github.com/google/json_serializable.dart/issues/903
-@JsonSerializable()
-class ConstClass {
-  final String field;
-
-  const ConstClass(this.field);
-
-  factory ConstClass.fromJson(Map<String, dynamic> json) =>
-      _$ConstClassFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ConstClassToJson(this);
-}

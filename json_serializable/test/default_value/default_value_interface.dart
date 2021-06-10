@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'implicit_default_value.dart';
-
 abstract class DefaultValue {
   bool get fieldBool;
 
@@ -33,3 +31,18 @@ abstract class DefaultValue {
 }
 
 enum Greek { alpha, beta, gamma, delta }
+
+// Regression for https://github.com/google/json_serializable.dart/issues/903
+class ConstClass {
+  final String field;
+
+  const ConstClass(this.field);
+
+  factory ConstClass.fromJson(Map<String, dynamic> json) => ConstClass(
+        json['field'] as String,
+      );
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+        'field': field,
+      };
+}

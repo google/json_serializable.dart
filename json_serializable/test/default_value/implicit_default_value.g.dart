@@ -105,12 +105,3 @@ const _$GreekEnumMap = {
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
 };
-
-ConstClass _$ConstClassFromJson(Map<String, dynamic> json) => ConstClass(
-      json['field'] as String,
-    );
-
-Map<String, dynamic> _$ConstClassToJson(ConstClass instance) =>
-    <String, dynamic>{
-      'field': instance.field,
-    };
