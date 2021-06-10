@@ -39,6 +39,9 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
               },
       fieldEnum:
           _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      constClass: json['constClass'] == null
+          ? const ConstClass('value')
+          : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DefaultValueImplicitToJson(
@@ -56,6 +59,7 @@ Map<String, dynamic> _$DefaultValueImplicitToJson(
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
+      'constClass': instance.constClass,
     };
 
 K _$enumDecode<K, V>(
@@ -101,3 +105,12 @@ const _$GreekEnumMap = {
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
 };
+
+ConstClass _$ConstClassFromJson(Map<String, dynamic> json) => ConstClass(
+      json['field'] as String,
+    );
+
+Map<String, dynamic> _$ConstClassToJson(ConstClass instance) =>
+    <String, dynamic>{
+      'field': instance.field,
+    };

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'implicit_default_value.dart';
+
 abstract class DefaultValue {
   bool get fieldBool;
 
@@ -26,6 +28,8 @@ abstract class DefaultValue {
   Map<String, List<String>> get fieldMapListString;
 
   Greek get fieldEnum;
+
+  ConstClass get constClass;
 }
 
 enum Greek { alpha, beta, gamma, delta }

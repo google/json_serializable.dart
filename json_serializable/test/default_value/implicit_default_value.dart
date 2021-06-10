@@ -34,6 +34,8 @@ class DefaultValueImplicit implements dvi.DefaultValue {
   final Map<String, List<String>> fieldMapListString;
   @override
   final Greek fieldEnum;
+  @override
+  final ConstClass constClass;
 
   DefaultValueImplicit({
     this.fieldBool = true,
@@ -50,10 +52,24 @@ class DefaultValueImplicit implements dvi.DefaultValue {
       'root': ['child']
     },
     this.fieldEnum = Greek.beta,
+    this.constClass = const ConstClass('value'),
   });
 
   factory DefaultValueImplicit.fromJson(Map<String, dynamic> json) =>
       _$DefaultValueImplicitFromJson(json);
 
   Map<String, dynamic> toJson() => _$DefaultValueImplicitToJson(this);
+}
+
+// Regression for https://github.com/google/json_serializable.dart/issues/903
+@JsonSerializable()
+class ConstClass {
+  final String field;
+
+  const ConstClass(this.field);
+
+  factory ConstClass.fromJson(Map<String, dynamic> json) =>
+      _$ConstClassFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ConstClassToJson(this);
 }
