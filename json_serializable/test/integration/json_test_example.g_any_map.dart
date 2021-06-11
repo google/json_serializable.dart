@@ -234,13 +234,13 @@ class NullableUnknownEnumValue {
   Category? enumValue;
 
   @JsonKey()
-  Iterable<Category>? enumIterable;
+  Iterable<Category?>? enumIterable;
 
   @JsonKey()
-  List<Category>? enumList;
+  List<Category?>? enumList;
 
   @JsonKey()
-  Set<Category>? enumSet;
+  Set<Category?>? enumSet;
 
   NullableUnknownEnumValue();
 
