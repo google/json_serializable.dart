@@ -221,16 +221,16 @@ class UnknownEnumValue {
 @JsonSerializable(createToJson: false)
 class NullableUnknownEnumValue {
   @JsonKey()
-  Category enumValue;
+  Category? enumValue;
 
   @JsonKey()
-  Iterable<Category> enumIterable;
+  Iterable<Category>? enumIterable;
 
   @JsonKey()
-  List<Category> enumList;
+  List<Category>? enumList;
 
   @JsonKey()
-  Set<Category> enumSet;
+  Set<Category>? enumSet;
 
   NullableUnknownEnumValue();
 
