@@ -25,7 +25,9 @@ const _defaultInstance = {
     'root': ['child']
   },
   'fieldEnum': 'beta',
-  'constClass': {'field': 'value'}
+  'constClass': {'field': 'value'},
+  'valueFromConverter': 'value',
+  'valueFromFunction': 'value',
 };
 
 const _otherValues = {
@@ -43,7 +45,9 @@ const _otherValues = {
     'root2': ['alpha']
   },
   'fieldEnum': 'delta',
-  'constClass': {'field': 'otherValue'}
+  'constClass': {'field': 'otherValue'},
+  'valueFromConverter': 'otherValue',
+  'valueFromFunction': 'otherValue',
 };
 
 void main() {

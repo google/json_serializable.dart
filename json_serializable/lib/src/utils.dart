@@ -207,3 +207,6 @@ extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
       element?.library?.typeSystem.promoteToNonNull(this) ?? this;
 }
+
+String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
+    '$test == null ? $ifNull : $ifNotNull';

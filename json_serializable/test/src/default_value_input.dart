@@ -78,15 +78,11 @@ class DefaultWithNestedEnum {
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(
         Map<String, dynamic> json) =>
     DefaultWithToJsonClass()
-      ..fieldDefaultValueToJson = DefaultWithToJsonClass._fromJson(
-              json['fieldDefaultValueToJson'] as String) ??
-          7;
+      ..fieldDefaultValueToJson = json['fieldDefaultValueToJson'] == null
+          ? 7
+          : DefaultWithToJsonClass._fromJson(
+              json['fieldDefaultValueToJson'] as String);
 ''',
-  expectedLogItems: [
-    '''
-The field `fieldDefaultValueToJson` has both `defaultValue` and `fromJson` defined which likely won't work for your scenario.
-Instead of using `defaultValue`, set `nullable: false` and handle `null` in the `fromJson` function.'''
-  ],
 )
 @JsonSerializable(createToJson: false)
 class DefaultWithToJsonClass {

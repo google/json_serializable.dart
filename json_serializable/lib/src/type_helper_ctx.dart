@@ -125,8 +125,6 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
         'positional parameter.');
   }
 
-  var nullableToAllowDefault = false;
-
   final argType = executableElement.parameters.first.type;
   if (isFrom) {
     final hasDefaultValue =
@@ -152,7 +150,6 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
             '`$elementTypeCode`.');
       }
     }
-    nullableToAllowDefault = hasDefaultValue && returnType.isNullableType;
   } else {
     if (argType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
@@ -175,9 +172,5 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     name = '${executableElement.enclosingElement.name}.$name';
   }
 
-  return ConvertData(
-    name,
-    argType,
-    nullableToAllowDefault: nullableToAllowDefault,
-  );
+  return ConvertData(name, argType);
 }

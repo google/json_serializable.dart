@@ -50,7 +50,10 @@ class JsonConverterHelper extends TypeHelper {
     final asContent = asStatement(converter.jsonType);
 
     return LambdaResult(
-        '$expression$asContent', '${converter.accessString}.fromJson');
+      expression,
+      '${converter.accessString}.fromJson',
+      asContent: asContent,
+    );
   }
 }
 

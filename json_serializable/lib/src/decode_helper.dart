@@ -199,7 +199,11 @@ abstract class DecodeHelper implements HelperCore {
         defaultProvided: defaultProvided,
       )!;
 
-      return DefaultContainer.encode(value, defaultValue: defaultValue);
+      return DefaultContainer.encode(
+        value,
+        nullable: targetType.isNullableType,
+        defaultValue: defaultValue,
+      );
     }
 
     String value;
@@ -226,16 +230,6 @@ abstract class DecodeHelper implements HelperCore {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '
             '`true`.');
-      }
-
-      final deserializeConvertData = contextHelper.deserializeConvertData;
-
-      if (deserializeConvertData != null &&
-          !deserializeConvertData.nullableToAllowDefault) {
-        log.warning('The field `${field.name}` has both `defaultValue` and '
-            '`fromJson` defined which likely won\'t work for your scenario.\n'
-            'Instead of using `defaultValue`, set `nullable: false` and handle '
-            '`null` in the `fromJson` function.');
       }
     }
     return value;

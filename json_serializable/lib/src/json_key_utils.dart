@@ -120,7 +120,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// If [mustBeEnum] is `true`, throws an [InvalidGenerationSourceError] if
   /// either the annotated field is not an `enum` or `List` or if the value in
   /// [fieldName] is not an `enum` value.
-  Object? _annotationValue(String fieldName, {bool mustBeEnum = false}) {
+  String? _annotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
 
     final enumFields = annotationValue.isNull
@@ -202,7 +202,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 KeyConfig _populateJsonKey(
   ClassConfig classAnnotation,
   FieldElement element, {
-  required Object? defaultValue,
+  required String? defaultValue,
   bool? disallowNullValue,
   bool? ignore,
   bool? includeIfNull,

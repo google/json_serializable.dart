@@ -2,32 +2,38 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'lambda_result.dart';
+import 'utils.dart';
+
 /// Represents an expression that may be represented differently if there is
 /// a default value available to replace it if `null`.
 class DefaultContainer {
-  final bool nullable;
   final String expression;
   final String output;
 
-  DefaultContainer(this.nullable, this.expression, this.output);
+  DefaultContainer(this.expression, this.output);
 
-  String _result([Object? defaultValue]) {
-    if (defaultValue != null || nullable) {
-      return '$expression == null ? $defaultValue : $output';
+  static String encode(
+    Object value, {
+    bool nullable = false,
+    String? defaultValue,
+  }) {
+    if (value is DefaultContainer) {
+      if (defaultValue != null || nullable) {
+        return ifNullOrElse(
+          value.expression,
+          defaultValue ?? 'null',
+          value.output,
+        );
+      }
+      value = value.output;
     }
 
-    if (defaultValue == null) {
-      return output;
-    }
-    return '$output ?? $defaultValue';
-  }
-
-  static String encode(Object input, {Object? defaultValue}) {
-    if (input is DefaultContainer) {
-      return input._result(defaultValue);
+    if (value is LambdaResult && defaultValue != null) {
+      return ifNullOrElse(value.expression, defaultValue, value.toString());
     }
 
-    var result = input.toString();
+    var result = value.toString();
 
     if (defaultValue != null) {
       result = '$result ?? $defaultValue';
@@ -36,5 +42,5 @@ class DefaultContainer {
   }
 
   @override
-  String toString() => _result();
+  String toString() => encode(this);
 }

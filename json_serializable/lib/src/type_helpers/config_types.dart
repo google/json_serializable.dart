@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 /// Represents values from [JsonKey] when merged with local configuration.
 class KeyConfig {
-  final Object? defaultValue;
+  final String? defaultValue;
 
   final bool disallowNullValue;
 

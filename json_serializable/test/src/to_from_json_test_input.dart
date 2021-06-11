@@ -90,8 +90,11 @@ Reproduce869NullableGenericTypeWithDefault
     _$Reproduce869NullableGenericTypeWithDefaultFromJson(
             Map<String, dynamic> json) =>
         Reproduce869NullableGenericTypeWithDefault()
-          ..values = _fromList(json['values'] as List?) ?? []
-          ..valuesNullable = _fromList(json['valuesNullable'] as List?) ?? [];
+          ..values =
+              json['values'] == null ? [] : _fromList(json['values'] as List?)
+          ..valuesNullable = json['valuesNullable'] == null
+              ? []
+              : _fromList(json['valuesNullable'] as List?);
 
 Map<String, dynamic> _$Reproduce869NullableGenericTypeWithDefaultToJson(
         Reproduce869NullableGenericTypeWithDefault instance) =>
@@ -118,15 +121,11 @@ class Reproduce869NullableGenericTypeWithDefault {
   List<int>? valuesNullable;
 }
 
-List<int>? _fromList(List? pairs) {
-  return pairs?.map((it) {
-    return it as int;
-  }).toList(growable: false);
-}
+List<int>? _fromList(List? pairs) =>
+    pairs?.map((it) => it as int).toList(growable: false);
 
-List<List>? _toList(List<int>? pairs) {
-  return pairs?.map((it) => [it]).toList(growable: false);
-}
+List<List>? _toList(List<int>? pairs) =>
+    pairs?.map((it) => [it]).toList(growable: false);
 
 @ShouldThrow(
   'Error with `@JsonKey` on `field`. The `toJson` function '

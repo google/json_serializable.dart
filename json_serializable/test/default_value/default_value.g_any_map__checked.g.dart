@@ -54,6 +54,16 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
               (v) => v == null
                   ? const ConstClass('value')
                   : ConstClass.fromJson(Map<String, dynamic>.from(v as Map))),
+          valueFromConverter: $checkedConvert(
+              'valueFromConverter',
+              (v) => v == null
+                  ? const ConstClass('value')
+                  : const ConstClassConverter().fromJson(v as String)),
+          valueFromFunction: $checkedConvert(
+              'valueFromFunction',
+              (v) => v == null
+                  ? const ConstClass('value')
+                  : constClassFromJson(v as String)),
         );
         return val;
       },
@@ -74,6 +84,9 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'fieldMapListString': instance.fieldMapListString,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
       'constClass': instance.constClass,
+      'valueFromConverter':
+          const ConstClassConverter().toJson(instance.valueFromConverter),
+      'valueFromFunction': constClassToJson(instance.valueFromFunction),
     };
 
 K _$enumDecode<K, V>(

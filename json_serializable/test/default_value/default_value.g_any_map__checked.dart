@@ -7,8 +7,13 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'default_value_interface.dart' as dvi hide Greek;
-import 'default_value_interface.dart' show Greek;
-import 'implicit_default_value.dart';
+import 'default_value_interface.dart'
+    show
+        Greek,
+        ConstClass,
+        ConstClassConverter,
+        constClassFromJson,
+        constClassToJson;
 
 part 'default_value.g_any_map__checked.g.dart';
 
@@ -62,6 +67,12 @@ class DefaultValue implements dvi.DefaultValue {
 
   ConstClass constClass;
 
+  @ConstClassConverter()
+  ConstClass valueFromConverter;
+
+  @JsonKey(fromJson: constClassFromJson, toJson: constClassToJson)
+  ConstClass valueFromFunction;
+
   DefaultValue(
     this.fieldBool,
     this.fieldString,
@@ -76,6 +87,8 @@ class DefaultValue implements dvi.DefaultValue {
     this.fieldMapListString,
     this.fieldEnum, {
     this.constClass = const ConstClass('value'),
+    this.valueFromConverter = const ConstClass('value'),
+    this.valueFromFunction = const ConstClass('value'),
   });
 
   factory DefaultValue.fromJson(Map<String, dynamic> json) =>

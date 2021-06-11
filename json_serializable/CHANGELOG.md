@@ -8,8 +8,8 @@
 - Use the new `$checkedCreate` helper exposed in `package:json_annotation`
   v4.1+.
 - Generated code now conforms to this `prefer_expression_function_bodies` lint.
-- Support default values in constructors for types with a `fromJson`
-  constructor.
+- Support default values and types with a `fromJson` constructor.
+- Support default values with class- and function-based converters.
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed by
     `package:source_helper`.
