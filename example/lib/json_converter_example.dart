@@ -75,13 +75,11 @@ class _Converter<T> implements JsonConverter<T, Object?> {
     return json as T;
   }
 
+  // This will only work if `object` is a native JSON type:
+  //   num, String, bool, null, etc
+  // Or if it has a `toJson()` function`.
   @override
-  Object? toJson(T object) {
-    // This will only work if `object` is a native JSON type:
-    //   num, String, bool, null, etc
-    // Or if it has a `toJson()` function`.
-    return object;
-  }
+  Object? toJson(T object) => object;
 }
 
 @JsonSerializable()
