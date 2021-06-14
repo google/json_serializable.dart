@@ -53,7 +53,7 @@ class Order {
 
   Duration? duration;
 
-  final Category? category;
+  final Category category;
   final UnmodifiableListView<Item>? items;
   Platform? platform;
   Map<String, Platform>? altPlatforms;
