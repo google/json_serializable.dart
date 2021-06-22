@@ -61,12 +61,7 @@ abstract class DecodeHelper implements HelperCore {
       element,
       accessibleFields.keys,
       accessibleFields.values
-          .where((fe) =>
-              !fe.isFinal ||
-              // Handle the case where `fe` defines a getter in `element`
-              // and there is a setter in a super class
-              // See google/json_serializable.dart#613
-              element.lookUpSetter(fe.name, element.library) != null)
+          .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
           .map((fe) => fe.name)
           .toList(),
       unavailableReasons,

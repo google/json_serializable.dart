@@ -13,6 +13,7 @@
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed by
     `package:source_helper`.
+- Require `package:analyzer` `^1.7.0`.
 
 ## 4.1.3
 
