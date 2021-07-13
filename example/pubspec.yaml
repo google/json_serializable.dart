@@ -13,13 +13,9 @@ dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^2.0.0
 
-  json_serializable: ^4.0.0
+  json_serializable: ^5.0.0
 
   # Used by tests. Not required to use `json_serializable`.
   path: ^1.8.0
   # Used by tests. Not required to use `json_serializable`.
   test: ^1.16.0
-
-dependency_overrides:
-  json_serializable:
-    path: ../json_serializable
