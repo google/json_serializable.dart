@@ -68,7 +68,7 @@ linter:
     - prefer_contains
     - prefer_equal_for_default_values
     # Enable once we roll checked_yaml and example
-    #- prefer_expression_function_bodies
+    - prefer_expression_function_bodies
     - prefer_final_fields
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable
