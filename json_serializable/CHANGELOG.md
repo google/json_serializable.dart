@@ -15,6 +15,10 @@
     `package:source_helper`.
 - Require `package:analyzer` `^2.0.0`.
 
+## 4.1.4
+
+- Allow the latest `package:json_annotation`.
+
 ## 4.1.3
 
 - Correctly handle nullable types with type arguments in generated code.
