@@ -1,4 +1,4 @@
-## 5.0.0-dev
+## 5.0.0
 
 - Use the default value for optional constructor parameters if
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
