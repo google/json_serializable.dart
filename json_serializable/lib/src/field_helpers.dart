@@ -101,7 +101,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
   final fields = allFields
       .map((e) => _FieldSet(elementInstanceFields[e], inheritedFields[e]))
       .toList()
-        ..sort();
+    ..sort();
 
   return fields.map((fs) => fs.field).toList();
 }
