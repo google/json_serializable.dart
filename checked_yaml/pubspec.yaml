@@ -9,7 +9,7 @@ environment:
   sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  json_annotation: ^4.0.0
+  json_annotation: ^4.1.0
   source_span: ^1.8.0
   yaml: ^3.0.0
 
@@ -22,7 +22,5 @@ dev_dependencies:
   test_process: ^2.0.0
 
 dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
   json_serializable:
     path: ../json_serializable
