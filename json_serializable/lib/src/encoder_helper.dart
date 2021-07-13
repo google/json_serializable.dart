@@ -121,7 +121,9 @@ abstract class EncodeHelper implements HelperCore {
       }
     }
 
-    buffer..writeln('    return $generatedLocalVarName;')..writeln('  }');
+    buffer
+      ..writeln('    return $generatedLocalVarName;')
+      ..writeln('  }');
   }
 
   String _serializeField(FieldElement field, String accessExpression) {
