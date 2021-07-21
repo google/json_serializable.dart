@@ -22,7 +22,6 @@ targets:
         - test/default_value/default_value.dart
         - test/generic_files/generic_class.dart
         - test/integration/json_test_example.dart
-        - test/integration/json_test_example.dart
         - test/kitchen_sink/kitchen_sink.dart
 
       json_serializable|_type_builder:
