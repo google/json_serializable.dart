@@ -1,4 +1,4 @@
-# Created with package:mono_repo v5.0.0
+# Created with package:mono_repo v5.0.1
 name: Dart CI
 on:
   push:
@@ -27,13 +27,13 @@ jobs:
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: stable
       - id: checkout
         uses: actions/checkout@v2.3.4
       - name: mono_repo self validate
-        run: dart pub global activate mono_repo 5.0.0
+        run: dart pub global activate mono_repo 5.0.1
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
@@ -50,7 +50,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
@@ -134,7 +134,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
@@ -218,7 +218,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
@@ -277,7 +277,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
@@ -309,7 +309,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
@@ -368,7 +368,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
@@ -400,7 +400,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
@@ -463,7 +463,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
