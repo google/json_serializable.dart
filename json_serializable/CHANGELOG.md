@@ -1,3 +1,7 @@
+## 5.0.1-dev
+
+- Require the latest `package:source_helper`.
+
 ## 5.0.0
 
 - Use the default value for optional constructor parameters if
