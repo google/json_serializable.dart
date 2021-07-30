@@ -1,6 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // @dart=2.12
 
+// ignore_for_file: lines_longer_than_80_chars
+
 part of 'generic_argument_factories_nullable.dart';
 
 // **************************************************************************

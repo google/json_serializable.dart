@@ -42,7 +42,8 @@ DateTime? dateTimeFromEpochUs(int? us) =>
 
 int? dateTimeToEpochUs(DateTime? dateTime) => dateTime?.microsecondsSinceEpoch;
 
-bool deepEquals(a, b) => const DeepCollectionEquality().equals(a, b);
+bool deepEquals(dynamic a, dynamic b) =>
+    const DeepCollectionEquality().equals(a, b);
 
 class Platform {
   final String description;

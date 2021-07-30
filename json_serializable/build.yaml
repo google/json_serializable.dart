@@ -2,6 +2,11 @@
 targets:
   $default:
     builders:
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+          - lines_longer_than_80_chars
+
       json_serializable:
         generate_for:
         - example/*
