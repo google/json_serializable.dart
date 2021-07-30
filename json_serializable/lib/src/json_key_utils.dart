@@ -158,7 +158,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue.objectValue, enumValueNames, (n) => n);
 
-      return '${annotationValue.objectValue.type!.element!.name}.$enumValueName';
+      return '${annotationValue.objectValue.type!.element!.name}'
+          '.$enumValueName';
     } else {
       final defaultValueLiteral = annotationValue.isNull
           ? null

@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: lines_longer_than_80_chars
+
 part of 'kitchen_sink.g_explicit_to_json.dart';
 
 // **************************************************************************
