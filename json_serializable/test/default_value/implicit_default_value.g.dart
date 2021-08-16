@@ -39,8 +39,9 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
               const {
                 'root': ['child']
               },
-      fieldEnum:
-          _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      fieldEnum: _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum'],
+              disallowNullValue: false) ??
+          Greek.beta,
       constClass: json['constClass'] == null
           ? const ConstClass('value')
           : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
@@ -78,6 +79,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -87,6 +89,14 @@ K? _$enumDecodeNullable<K, V>(
       return element.key;
     }
   }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
   return unknownValue;
 }
 

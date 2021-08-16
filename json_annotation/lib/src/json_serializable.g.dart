@@ -35,8 +35,10 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
               $checkedConvert('disallow_unrecognized_keys', (v) => v as bool?),
           explicitToJson:
               $checkedConvert('explicit_to_json', (v) => v as bool?),
-          fieldRename: $checkedConvert('field_rename',
-              (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v)),
+          fieldRename: $checkedConvert(
+              'field_rename',
+              (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v,
+                  disallowNullValue: false)),
           ignoreUnannotated:
               $checkedConvert('ignore_unannotated', (v) => v as bool?),
           includeIfNull: $checkedConvert('include_if_null', (v) => v as bool?),
@@ -76,6 +78,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -85,6 +88,14 @@ K? _$enumDecodeNullable<K, V>(
       return element.key;
     }
   }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
   return unknownValue;
 }
 

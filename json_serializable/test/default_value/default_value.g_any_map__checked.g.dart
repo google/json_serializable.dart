@@ -49,8 +49,12 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
                   {
                     'root': ['child']
                   }),
-          $checkedConvert('fieldEnum',
-              (v) => _$enumDecodeNullable(_$GreekEnumMap, v) ?? Greek.beta),
+          $checkedConvert(
+              'fieldEnum',
+              (v) =>
+                  _$enumDecodeNullable(_$GreekEnumMap, v,
+                      disallowNullValue: false) ??
+                  Greek.beta),
           constClass: $checkedConvert(
               'constClass',
               (v) => v == null
@@ -95,6 +99,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -104,6 +109,14 @@ K? _$enumDecodeNullable<K, V>(
       return element.key;
     }
   }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
   return unknownValue;
 }
 

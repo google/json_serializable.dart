@@ -10,7 +10,8 @@ part of 'input.type_enumtype.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
       _$enumDecode(_$EnumTypeEnumMap, json['value']),
-      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault'],
+              disallowNullValue: false) ??
           EnumType.alpha,
     );
 
@@ -57,6 +58,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -66,13 +68,23 @@ K? _$enumDecodeNullable<K, V>(
       return element.key;
     }
   }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
   return unknownValue;
 }
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
     SimpleClassNullable(
-      _$enumDecodeNullable(_$EnumTypeEnumMap, json['value']),
-      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['value'],
+          disallowNullValue: false),
+      _$enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault'],
+              disallowNullValue: false) ??
           EnumType.alpha,
     );
 

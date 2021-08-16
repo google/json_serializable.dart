@@ -96,11 +96,17 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
           target: $checkedConvert('target', (v) => v as String?),
           isOptional: $checkedConvert('is_optional', (v) => v as bool?),
           autoApply: $checkedConvert(
-              'auto_apply', (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              'auto_apply',
+              (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v,
+                  disallowNullValue: true)),
           buildTo: $checkedConvert(
-              'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
-          defaultEnumTest: $checkedConvert('defaultEnumTest',
-              (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              'build_to',
+              (v) => _$enumDecodeNullable(_$BuildToEnumMap, v,
+                  disallowNullValue: false)),
+          defaultEnumTest: $checkedConvert(
+              'defaultEnumTest',
+              (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v,
+                  disallowNullValue: false)),
           builderFactories: $checkedConvert('builder_factories',
               (v) => (v as List<dynamic>).map((e) => e as String).toList()),
           appliesBuilders: $checkedConvert('applies_builders',
@@ -156,6 +162,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -164,6 +171,13 @@ K? _$enumDecodeNullable<K, V>(
     if (element.value == source) {
       return element.key;
     }
+  }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
   }
   return unknownValue;
 }

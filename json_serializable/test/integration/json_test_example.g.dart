@@ -107,7 +107,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
     ..statusCode = _$enumDecodeNullable(
             _$StatusCodeEnumMap, json['status_code'],
-            unknownValue: StatusCode.unknown) ??
+            unknownValue: StatusCode.unknown, disallowNullValue: false) ??
         StatusCode.success;
 }
 
@@ -136,6 +136,7 @@ K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {
   K? unknownValue,
+  required bool disallowNullValue,
 }) {
   if (source == null) {
     return null;
@@ -145,6 +146,14 @@ K? _$enumDecodeNullable<K, V>(
       return element.key;
     }
   }
+
+  if (unknownValue == null && disallowNullValue) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
   return unknownValue;
 }
 
@@ -248,12 +257,15 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
 NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(
         Map<String, dynamic> json) =>
     NullableUnknownEnumValue()
-      ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'])
-      ..enumIterable = (json['enumIterable'] as List<dynamic>?)
-          ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+      ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'],
+          disallowNullValue: false)
+      ..enumIterable = (json['enumIterable'] as List<dynamic>?)?.map((e) =>
+          _$enumDecodeNullable(_$CategoryEnumMap, e, disallowNullValue: false))
       ..enumList = (json['enumList'] as List<dynamic>?)
-          ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+          ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+              disallowNullValue: false))
           .toList()
       ..enumSet = (json['enumSet'] as List<dynamic>?)
-          ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e))
+          ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
+              disallowNullValue: false))
           .toSet();
