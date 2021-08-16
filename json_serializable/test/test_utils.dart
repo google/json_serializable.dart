@@ -36,7 +36,8 @@ String loudEncode(Object? object) {
 
       while (error is JsonUnsupportedObjectError) {
         print(
-          '(${count++}) $error ${error.unsupportedObject} (${error.unsupportedObject.runtimeType}) !!!',
+          '(${count++}) $error ${error.unsupportedObject} '
+          '(${error.unsupportedObject.runtimeType}) !!!',
         );
         print(Trace.from(error.stackTrace!).terse);
         error = error.cause;

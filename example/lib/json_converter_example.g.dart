@@ -6,27 +6,26 @@ part of 'json_converter_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-DateTimeExample _$DateTimeExampleFromJson(Map<String, dynamic> json) {
-  return DateTimeExample(
-    const _DateTimeEpochConverter().fromJson(json['when'] as int),
-  );
-}
+DateTimeExample _$DateTimeExampleFromJson(Map<String, dynamic> json) =>
+    DateTimeExample(
+      const _DateTimeEpochConverter().fromJson(json['when'] as int),
+    );
 
 Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
     <String, dynamic>{
       'when': const _DateTimeEpochConverter().toJson(instance.when),
     };
 
-GenericCollection<T> _$GenericCollectionFromJson<T>(Map<String, dynamic> json) {
-  return GenericCollection<T>(
-    page: json['page'] as int?,
-    totalResults: json['total_results'] as int?,
-    totalPages: json['total_pages'] as int?,
-    results: (json['results'] as List<dynamic>?)
-        ?.map(_Converter<T>().fromJson)
-        .toList(),
-  );
-}
+GenericCollection<T> _$GenericCollectionFromJson<T>(
+        Map<String, dynamic> json) =>
+    GenericCollection<T>(
+      page: json['page'] as int?,
+      totalResults: json['total_results'] as int?,
+      totalPages: json['total_pages'] as int?,
+      results: (json['results'] as List<dynamic>?)
+          ?.map(_Converter<T>().fromJson)
+          .toList(),
+    );
 
 Map<String, dynamic> _$GenericCollectionToJson<T>(
         GenericCollection<T> instance) =>
@@ -37,12 +36,10 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
       'results': instance.results?.map(_Converter<T>().toJson).toList(),
     };
 
-CustomResult _$CustomResultFromJson(Map<String, dynamic> json) {
-  return CustomResult(
-    json['name'] as String,
-    json['size'] as int,
-  );
-}
+CustomResult _$CustomResultFromJson(Map<String, dynamic> json) => CustomResult(
+      json['name'] as String,
+      json['size'] as int,
+    );
 
 Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
     <String, dynamic>{

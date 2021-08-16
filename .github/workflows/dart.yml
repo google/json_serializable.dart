@@ -1,4 +1,4 @@
-# Created with package:mono_repo v4.1.0
+# Created with package:mono_repo v5.0.1
 name: Dart CI
 on:
   push:
@@ -27,13 +27,13 @@ jobs:
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: stable
       - id: checkout
         uses: actions/checkout@v2.3.4
       - name: mono_repo self validate
-        run: dart pub global activate mono_repo 4.1.0
+        run: dart pub global activate mono_repo 5.0.1
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
@@ -44,22 +44,22 @@ jobs:
         uses: actions/cache@v2.1.6
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:format-analyze"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "_test_yaml; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
@@ -69,10 +69,10 @@ jobs:
         working-directory: _test_yaml
         run: dart analyze --fatal-infos .
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "checked_yaml; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
@@ -82,10 +82,10 @@ jobs:
         working-directory: checked_yaml
         run: dart analyze --fatal-infos .
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "example; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
@@ -95,10 +95,10 @@ jobs:
         working-directory: example
         run: dart analyze --fatal-infos .
       - id: json_annotation_pub_upgrade
-        name: json_annotation; pub upgrade
+        name: json_annotation; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_annotation
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_annotation; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.json_annotation_pub_upgrade.conclusion == 'success'"
         working-directory: json_annotation
@@ -108,10 +108,10 @@ jobs:
         working-directory: json_annotation
         run: dart analyze --fatal-infos .
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -128,22 +128,22 @@ jobs:
         uses: actions/cache@v2.1.6
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartfmt-dartanalyzer"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:format-analyze"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "_test_yaml; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
@@ -153,10 +153,10 @@ jobs:
         working-directory: _test_yaml
         run: dart analyze --fatal-infos .
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "checked_yaml; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
@@ -166,10 +166,10 @@ jobs:
         working-directory: checked_yaml
         run: dart analyze --fatal-infos .
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "example; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
@@ -179,10 +179,10 @@ jobs:
         working-directory: example
         run: dart analyze --fatal-infos .
       - id: json_annotation_pub_upgrade
-        name: json_annotation; pub upgrade
+        name: json_annotation; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_annotation
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_annotation; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.json_annotation_pub_upgrade.conclusion == 'success'"
         working-directory: json_annotation
@@ -192,10 +192,10 @@ jobs:
         working-directory: json_annotation
         run: dart analyze --fatal-infos .
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart format --output=none --set-exit-if-changed ."
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -218,43 +218,43 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: _test_yaml; dart test
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
         run: dart test
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: checked_yaml; dart test
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
         run: dart test
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: example; dart test
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
         run: dart test
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: json_serializable; dart test
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -277,16 +277,16 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart test -p chrome"
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -309,43 +309,43 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: _test_yaml; dart test
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
         run: dart test
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: checked_yaml; dart test
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
         run: dart test
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: example; dart test
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
         run: dart test
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: json_serializable; dart test
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -368,16 +368,16 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart test -p chrome"
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -400,43 +400,43 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:2.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: "2.12.0"
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "_test_yaml; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "checked_yaml; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "example; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
@@ -463,43 +463,43 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted;dart:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
+      - uses: dart-lang/setup-dart@v1.1
         with:
           sdk: dev
       - id: checkout
         uses: actions/checkout@v2.3.4
       - id: _test_yaml_pub_upgrade
-        name: _test_yaml; pub upgrade
+        name: _test_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "_test_yaml; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: checked_yaml_pub_upgrade
-        name: checked_yaml; pub upgrade
+        name: checked_yaml; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "checked_yaml; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: example_pub_upgrade
-        name: example; pub upgrade
+        name: example; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "example; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
       - id: json_serializable_pub_upgrade
-        name: json_serializable; pub upgrade
+        name: json_serializable; dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: json_serializable
-        run: pub upgrade
+        run: dart pub upgrade
       - name: "json_serializable; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable

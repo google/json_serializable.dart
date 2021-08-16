@@ -61,12 +61,7 @@ abstract class DecodeHelper implements HelperCore {
       element,
       accessibleFields.keys,
       accessibleFields.values
-          .where((fe) =>
-              !fe.isFinal ||
-              // Handle the case where `fe` defines a getter in `element`
-              // and there is a setter in a super class
-              // See google/json_serializable.dart#613
-              element.lookUpSetter(fe.name, element.library) != null)
+          .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
           .map((fe) => fe.name)
           .toList(),
       unavailableReasons,
@@ -81,11 +76,14 @@ abstract class DecodeHelper implements HelperCore {
     if (config.checked) {
       final classLiteral = escapeDartString(element.name);
 
-      final sectionBuffer = StringBuffer()..write('''
+      final sectionBuffer = StringBuffer()
+        ..write('''
   \$checkedCreate(
     $classLiteral,
     json,
-    (\$checkedConvert) {\n''')..write(checks.join())..write('''
+    (\$checkedConvert) {\n''')
+        ..write(checks.join())
+        ..write('''
     final val = ${data.content};''');
 
       for (final field in data.fieldsToSet) {
@@ -115,7 +113,9 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
-      sectionBuffer..write(fieldKeyMapArg)..write(',);');
+      sectionBuffer
+        ..write(fieldKeyMapArg)
+        ..write(',);');
       fromJsonLines.add(sectionBuffer.toString());
     } else {
       fromJsonLines.addAll(checks);
@@ -133,7 +133,9 @@ abstract class DecodeHelper implements HelperCore {
     }
 
     if (fromJsonLines.length == 1) {
-      buffer..write('=>')..write(fromJsonLines.single);
+      buffer
+        ..write('=>')
+        ..write(fromJsonLines.single);
     } else {
       buffer
         ..write('{')

@@ -6,17 +6,22 @@ part of 'example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Configuration _$ConfigurationFromJson(Map json) {
-  return $checkedNew('Configuration', json, () {
-    $checkKeys(json,
-        allowedKeys: const ['name', 'count'], requiredKeys: const ['name']);
-    final val = Configuration(
-      name: $checkedConvert(json, 'name', (v) => v as String),
-      count: $checkedConvert(json, 'count', (v) => v as int),
+Configuration _$ConfigurationFromJson(Map json) => $checkedCreate(
+      'Configuration',
+      json,
+      ($checkedConvert) {
+        $checkKeys(
+          json,
+          allowedKeys: const ['name', 'count'],
+          requiredKeys: const ['name'],
+        );
+        final val = Configuration(
+          name: $checkedConvert('name', (v) => v as String),
+          count: $checkedConvert('count', (v) => v as int),
+        );
+        return val;
+      },
     );
-    return val;
-  });
-}
 
 Map<String, dynamic> _$ConfigurationToJson(Configuration instance) =>
     <String, dynamic>{

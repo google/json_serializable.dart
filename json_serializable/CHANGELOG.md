@@ -1,4 +1,8 @@
-## 5.0.0-dev
+## 5.0.1-dev
+
+- Require the latest `package:source_helper`.
+
+## 5.0.0
 
 - Use the default value for optional constructor parameters if
   `JsonKey.defaultValue` is not provided. This could be a breaking behavior
@@ -13,6 +17,11 @@
 - `type_helper.dart`:
   - **BREAKING**: removed `typeArgumentsOf`. This is now an extension exposed by
     `package:source_helper`.
+- Require `package:analyzer` `^2.0.0`.
+
+## 4.1.4
+
+- Allow the latest `package:json_annotation`.
 
 ## 4.1.3
 

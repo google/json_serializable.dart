@@ -38,6 +38,7 @@ linter:
     - empty_catches
     - empty_constructor_bodies
     - empty_statements
+    - exhaustive_cases
     - file_names
     - hash_and_equals
     - implementation_imports
@@ -46,6 +47,7 @@ linter:
     - join_return_with_assignment
     - library_names
     - library_prefixes
+    - lines_longer_than_80_chars
     - list_remove_unrelated_type
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
@@ -67,8 +69,7 @@ linter:
     - prefer_const_declarations
     - prefer_contains
     - prefer_equal_for_default_values
-    # Enable once we roll checked_yaml and example
-    #- prefer_expression_function_bodies
+    - prefer_expression_function_bodies
     - prefer_final_fields
     - prefer_final_locals
     - prefer_for_elements_to_map_fromIterable
@@ -95,6 +96,7 @@ linter:
     - sort_pub_dependencies
     - test_types_in_equals
     - throw_in_finally
+    - type_annotate_public_apis
     - type_init_formals
     - unawaited_futures
     - unnecessary_brace_in_string_interps
@@ -107,6 +109,7 @@ linter:
     - unnecessary_overrides
     - unnecessary_parenthesis
     - unnecessary_statements
+    - unnecessary_string_escapes
     - unnecessary_string_interpolations
     - unnecessary_this
     - unrelated_type_equality_checks
