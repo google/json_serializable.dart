@@ -8,7 +8,7 @@ import 'kitchen_sink_interface.dart';
 import 'kitchen_sink_test_shared.dart';
 
 void main() {
-  for (var factory in factories.where((element) => element.anyMap)) {
+  for (final factory in factories.where((element) => element.anyMap)) {
     group(factory.description, () {
       _anyMapTests(factory);
     });

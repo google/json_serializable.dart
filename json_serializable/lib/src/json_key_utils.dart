@@ -74,7 +74,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 
     if (reader.isList) {
       return [
-        for (var e in reader.listValue)
+        for (final e in reader.listValue)
           literalForObject(e, [
             ...typeInformation,
             'List',
@@ -84,7 +84,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 
     if (reader.isSet) {
       return {
-        for (var e in reader.setValue)
+        for (final e in reader.setValue)
           literalForObject(e, [
             ...typeInformation,
             'Set',

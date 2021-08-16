@@ -27,7 +27,7 @@ class _TestBuilder implements Builder {
     final factories =
         SplayTreeMap.from({'$_kitchenSinkBaseName.dart': 'normal'});
 
-    for (var config in _fileConfigurationMap[baseName]!) {
+    for (final config in _fileConfigurationMap[baseName]!) {
       final extension = _configToExtension(config);
       final newId = buildStep.inputId.changeExtension(extension);
 
@@ -50,7 +50,7 @@ class _TestBuilder implements Builder {
         factories['$baseName$partName.dart'] = description;
       }
 
-      for (var entry in config) {
+      for (final entry in config) {
         replacements.addAll(_optionReplacement(baseName, entry));
       }
 

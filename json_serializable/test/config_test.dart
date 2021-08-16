@@ -35,7 +35,7 @@ void main() {
     expect(generatorConfigNonDefaultJson.keys,
         unorderedEquals(generatorConfigDefaultJson.keys));
 
-    for (var entry in generatorConfigDefaultJson.entries) {
+    for (final entry in generatorConfigDefaultJson.entries) {
       expect(generatorConfigNonDefaultJson,
           containsPair(entry.key, isNot(entry.value)),
           reason: 'should have values that are different than the defaults');

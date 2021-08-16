@@ -21,7 +21,7 @@ void main() {
   });
 
   test('tracking Map/Iterable types correctly', () {
-    for (var entry in validValues.entries) {
+    for (final entry in validValues.entries) {
       if (_iterableMapKeys.contains(entry.key) ||
           _encodedAsMapKeys.contains(entry.key)) {
         expect(entry.value, anyOf(isMap, isList));
@@ -38,7 +38,7 @@ void main() {
             'Required keys are missing: value, custom_field.')));
   });
 
-  for (var factory in factories) {
+  for (final factory in factories) {
     group(factory.description, () {
       if (factory.nullable) {
         _nullableTests(factory);

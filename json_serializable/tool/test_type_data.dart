@@ -65,7 +65,7 @@ class TestTypeData {
         ),
       );
 
-    for (var genericArg in genericArgs) {
+    for (final genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);
 
       final genericType = '$type<$genericArg>';
