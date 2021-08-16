@@ -3,3 +3,6 @@
 .pub
 packages
 pubspec.lock
+build
+.DS_Store
+.idea
