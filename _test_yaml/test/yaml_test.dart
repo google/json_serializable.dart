@@ -82,16 +82,6 @@ line 2, column 1 of file.yaml: Unsupported value for "builders". type 'YamlList'
   ╵''',
   r'''
 builders:
-  sample:
-    defaultEnumTest: bob
-''': r'''
-line 3, column 22 of file.yaml: Unsupported value for "defaultEnumTest". `bob` is not one of the supported values: none, dependents, all_packages, root_package
-  ╷
-3 │     defaultEnumTest: bob
-  │                      ^^^
-  ╵''',
-  r'''
-builders:
   a:
     target: 42
   ''': r'''
@@ -99,17 +89,6 @@ line 3, column 13 of file.yaml: Unsupported value for "target". type 'int' is no
   ╷
 3 │     target: 42
   │             ^^
-  ╵''',
-  r'''
-builders:
-  a:
-    target: "a target"
-    auto_apply: unsupported
-''': r'''
-line 4, column 17 of file.yaml: Unsupported value for "auto_apply". `unsupported` is not one of the supported values: none, dependents, all_packages, root_package
-  ╷
-4 │     auto_apply: unsupported
-  │                 ^^^^^^^^^^^
   ╵''',
   r'''
 builders:

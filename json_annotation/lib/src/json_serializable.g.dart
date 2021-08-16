@@ -106,7 +106,12 @@ K? _$enumDecodeNullable<K, V>(
   if (source == null) {
     return null;
   }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+  for (final element in enumValues.entries) {
+    if (element.value == source) {
+      return element.key;
+    }
+  }
+  return unknownValue;
 }
 
 const _$FieldRenameEnumMap = {
