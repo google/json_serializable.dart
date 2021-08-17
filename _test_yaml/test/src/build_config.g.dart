@@ -179,6 +179,7 @@ K? _$enumDecodeNullable<K, V>(
       '${enumValues.values.join(', ')}',
     );
   }
+
   return unknownValue;
 }
 
