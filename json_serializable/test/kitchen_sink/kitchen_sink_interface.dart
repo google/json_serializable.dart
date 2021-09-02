@@ -70,6 +70,10 @@ abstract class KitchenSink {
 
   set dateTimeList(List<DateTime> value);
 
+  List<SimpleObject?> get nullableSimpleObjectList;
+
+  set nullableSimpleObjectList(List<SimpleObject?> value);
+
   Set get set;
 
   Set<dynamic> get dynamicSet;
@@ -91,6 +95,10 @@ abstract class KitchenSink {
   Map<Object, DateTime> get objectDateTimeMap;
 
   set objectDateTimeMap(Map<Object, DateTime> value);
+
+  Map<String, SimpleObject?> get nullableSimpleObjectMap;
+
+  set nullableSimpleObjectMap(Map<String, SimpleObject?> value);
 
   List<Map<String, Map<String, List<List<DateTime>?>?>?>?> get crazyComplex;
 

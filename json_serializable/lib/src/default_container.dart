@@ -13,7 +13,7 @@ class DefaultContainer {
 
   DefaultContainer(this.expression, this.output);
 
-  static String encode(
+  static Object deserialize(
     Object value, {
     bool nullable = false,
     String? defaultValue,
@@ -33,14 +33,12 @@ class DefaultContainer {
       return ifNullOrElse(value.expression, defaultValue, value.toString());
     }
 
-    var result = value.toString();
-
     if (defaultValue != null) {
-      result = '$result ?? $defaultValue';
+      value = '$value ?? $defaultValue';
     }
-    return result;
+    return value;
   }
 
   @override
-  String toString() => encode(this);
+  String toString() => deserialize(this).toString();
 }

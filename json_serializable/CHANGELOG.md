@@ -1,5 +1,6 @@
-## 5.0.1-dev
+## 5.1.0-dev
 
+- Correctly handle nullable custom objects within `Iterable` and `Map`.
 - Require the latest `package:source_helper`.
 
 ## 5.0.0
