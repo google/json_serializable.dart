@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'default_container.dart';
 import 'helper_core.dart';
 import 'type_helper.dart';
 import 'type_helpers/config_types.dart';
@@ -54,21 +55,28 @@ class TypeHelperCtx
       );
 
   @override
-  Object? deserialize(
+  Object deserialize(
     DartType targetType,
     String expression, {
-    bool defaultProvided = false,
-  }) =>
-      _run(
+    String? defaultValue,
+  }) {
+    final value = _run(
+      targetType,
+      expression,
+      (TypeHelper th) => th.deserialize(
         targetType,
         expression,
-        (TypeHelper th) => th.deserialize(
-          targetType,
-          expression,
-          this,
-          defaultProvided,
-        ),
-      );
+        this,
+        defaultValue != null,
+      ),
+    );
+
+    return DefaultContainer.deserialize(
+      value,
+      nullable: targetType.isNullableType,
+      defaultValue: defaultValue,
+    );
+  }
 
   Object _run(
     DartType targetType,
