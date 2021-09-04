@@ -1,8 +1,5 @@
 [![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
-> `json_serializable` produces null-safe code. We are waiting for dependencies
-> to be migrated before it will appear "null-safe" on `pub.dev`.
-
 Provides [Dart Build System] builders for handling JSON.
 
 The builders generate code when they find members annotated with classes defined
