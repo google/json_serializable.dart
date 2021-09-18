@@ -391,6 +391,24 @@ class FieldWithFromJsonCtorAndTypeParams {
   MyList<GeneralTestClass2, int>? customOrders;
 }
 
+@ShouldGenerate(r'''
+ListElementWithFromJsonCtorAndTypeParams
+    _$ListElementWithFromJsonCtorAndTypeParamsFromJson(
+            Map<String, dynamic> json) =>
+        ListElementWithFromJsonCtorAndTypeParams()
+          ..customOrders = (json['customOrders'] as List<dynamic>?)
+              ?.map((e) => MyList<GeneralTestClass2, int>.fromJson(
+                  (e as List<dynamic>)
+                      .map((e) =>
+                          GeneralTestClass2.fromJson(e as Map<String, dynamic>))
+                      .toList()))
+              .toList();
+''')
+@JsonSerializable(createToJson: false)
+class ListElementWithFromJsonCtorAndTypeParams {
+  List<MyList<GeneralTestClass2, int>>? customOrders;
+}
+
 class MyList<T, Q> extends ListBase<T> {
   final List<T> _data;
 

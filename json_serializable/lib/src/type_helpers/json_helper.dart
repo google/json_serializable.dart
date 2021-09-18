@@ -11,6 +11,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../default_container.dart';
+import '../helper_core.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 import 'config_types.dart';
@@ -130,7 +131,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     // TODO: the type could be imported from a library with a prefix!
     // https://github.com/google/json_serializable.dart/issues/19
-    output = '${targetType.element.name}.fromJson($output)';
+    output = '${typeToCode(targetType)}.fromJson($output)';
 
     return DefaultContainer(expression, output);
   }
