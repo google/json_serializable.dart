@@ -131,7 +131,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     // TODO: the type could be imported from a library with a prefix!
     // https://github.com/google/json_serializable.dart/issues/19
-    output = '${typeToCode(targetType)}.fromJson($output)';
+    output = '${typeToCode(targetType.promoteNonNullable())}.fromJson($output)';
 
     return DefaultContainer(expression, output);
   }

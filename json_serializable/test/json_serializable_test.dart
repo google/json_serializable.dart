@@ -78,6 +78,7 @@ const _expectedAnnotatedTests = {
   'JustSetterNoToJson',
   'KeyDupesField',
   'ListElementWithFromJsonCtorAndTypeParams',
+  'ListElementNullableWithFromJsonCtorAndTypeParams',
   'MapKeyNoNullableInt',
   'MapKeyNoNullableObject',
   'MapKeyNoNullableString',

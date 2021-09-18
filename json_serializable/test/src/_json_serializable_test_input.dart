@@ -409,6 +409,25 @@ class ListElementWithFromJsonCtorAndTypeParams {
   List<MyList<GeneralTestClass2, int>>? customOrders;
 }
 
+@ShouldGenerate(r'''
+ListElementNullableWithFromJsonCtorAndTypeParams
+    _$ListElementNullableWithFromJsonCtorAndTypeParamsFromJson(
+            Map<String, dynamic> json) =>
+        ListElementNullableWithFromJsonCtorAndTypeParams()
+          ..customOrders = (json['customOrders'] as List<dynamic>?)
+              ?.map((e) => e == null
+                  ? null
+                  : MyList<GeneralTestClass2, int>.fromJson((e as List<dynamic>)
+                      .map((e) =>
+                          GeneralTestClass2.fromJson(e as Map<String, dynamic>))
+                      .toList()))
+              .toList();
+''')
+@JsonSerializable(createToJson: false)
+class ListElementNullableWithFromJsonCtorAndTypeParams {
+  List<MyList<GeneralTestClass2, int>?>? customOrders;
+}
+
 class MyList<T, Q> extends ListBase<T> {
   final List<T> _data;
 
