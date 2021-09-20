@@ -2,7 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../test_utils.dart';
 
 part 'generic_class.g.dart';
 
@@ -102,4 +105,41 @@ class _DurationListMillisecondConverter
   @override
   int? toJson(List<Duration>? object) =>
       object?.fold<int>(0, (sum, obj) => sum + obj.inMilliseconds);
+}
+
+class Issue980GenericClass<T> {
+  final T value;
+
+  Issue980GenericClass(this.value);
+
+  factory Issue980GenericClass.fromJson(Map<String, dynamic> json) =>
+      Issue980GenericClass(json['value'] as T);
+
+  Map<String, dynamic> toJson() => {'value': value};
+
+  @override
+  bool operator ==(Object other) =>
+      other is Issue980GenericClass && value == other.value;
+
+  @override
+  int get hashCode => value.hashCode;
+}
+
+@JsonSerializable()
+class Issue980ParentClass {
+  final List<Issue980GenericClass<int>> list;
+
+  Issue980ParentClass(this.list);
+
+  factory Issue980ParentClass.fromJson(Map<String, dynamic> json) =>
+      _$Issue980ParentClassFromJson(json);
+
+  Map<String, dynamic> toJson() => _$Issue980ParentClassToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      other is Issue980ParentClass && deepEquals(list, other.list);
+
+  @override
+  int get hashCode => const DeepCollectionEquality().hash(list);
 }

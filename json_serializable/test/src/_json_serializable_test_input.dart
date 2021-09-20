@@ -382,7 +382,8 @@ FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
     FieldWithFromJsonCtorAndTypeParams()
       ..customOrders = json['customOrders'] == null
           ? null
-          : MyList.fromJson((json['customOrders'] as List<dynamic>)
+          : MyList<GeneralTestClass2, int>.fromJson((json['customOrders']
+                  as List<dynamic>)
               .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
               .toList());
 ''')

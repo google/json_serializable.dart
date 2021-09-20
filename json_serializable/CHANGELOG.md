@@ -1,3 +1,8 @@
+## 5.0.2
+
+- Include type arguments when invoking `fromJson` on custom types.
+  This fixes an edge case where the generic arguments could not be inferred.
+
 ## 5.0.1
 
 - Correctly handle nullable custom objects within `Iterable` and `Map`.

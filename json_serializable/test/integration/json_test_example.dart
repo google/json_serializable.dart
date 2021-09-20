@@ -7,6 +7,7 @@ import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../test_utils.dart';
 import 'json_test_common.dart';
 
 part 'json_test_example.g.dart';
