@@ -4,12 +4,16 @@
 
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 
 final throwsTypeError = throwsA(isTypeError);
 
 final isTypeError = isA<TypeError>();
+
+bool deepEquals(dynamic a, dynamic b) =>
+    const DeepCollectionEquality().equals(a, b);
 
 T roundTripObject<T>(T object, T Function(Map<String, dynamic> json) factory) {
   final data = loudEncode(object);

@@ -32,13 +32,15 @@ Map<String, dynamic> _$GenericClassWithHelpersToJson<T, S>(
 
 ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
-      GenericClassWithHelpers.fromJson(json['value'] as Map<String, dynamic>,
-          (value) => value as int, (value) => value as String),
-      GenericClassWithHelpers.fromJson(
+      GenericClassWithHelpers<int, String>.fromJson(
+          json['value'] as Map<String, dynamic>,
+          (value) => value as int,
+          (value) => value as String),
+      GenericClassWithHelpers<double, BigInt>.fromJson(
           json['value2'] as Map<String, dynamic>,
           (value) => (value as num).toDouble(),
           (value) => BigInt.parse(value as String)),
-      GenericClassWithHelpers.fromJson(
+      GenericClassWithHelpers<double?, BigInt?>.fromJson(
           json['value3'] as Map<String, dynamic>,
           (value) => (value as num?)?.toDouble(),
           (value) => value == null ? null : BigInt.parse(value as String)),
