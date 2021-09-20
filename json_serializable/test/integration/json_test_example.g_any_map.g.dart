@@ -22,7 +22,7 @@ Person _$PersonFromJson(Map json) => Person(
           : Order.fromJson(Map<String, dynamic>.from(json['order'] as Map))
       ..customOrders = json['customOrders'] == null
           ? null
-          : MyList.fromJson((json['customOrders'] as List<dynamic>)
+          : MyList<Order>.fromJson((json['customOrders'] as List<dynamic>)
               .map((e) => Order.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList())
       ..houseMap = (json['houseMap'] as Map?)?.map(
