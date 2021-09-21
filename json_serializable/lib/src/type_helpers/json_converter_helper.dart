@@ -179,7 +179,7 @@ _ConverterMatch? _compatibleMatch(
 
   final jsonConverterSuper =
       converterClassElement.allSupertypes.singleWhereOrNull(
-    (e) => e is InterfaceType && _jsonConverterChecker.isExactly(e.element),
+    (e) => _jsonConverterChecker.isExactly(e.element),
   );
 
   if (jsonConverterSuper == null) {
