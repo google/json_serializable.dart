@@ -15,6 +15,7 @@ final generatorConfigNonDefaultJson =
     Map<String, dynamic>.unmodifiable(const JsonSerializable(
   anyMap: true,
   checked: true,
+  constructor: 'something',
   createFactory: false,
   createToJson: false,
   disallowUnrecognizedKeys: true,

@@ -37,7 +37,6 @@ OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$OnlyStaticMembersToJson(OnlyStaticMembers instance) =>
     <String, dynamic>{};
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class OnlyStaticMembers {
@@ -142,7 +141,6 @@ Map<String, dynamic> _$FinalFieldsNotSetInCtorToJson(
         FinalFieldsNotSetInCtor instance) =>
     <String, dynamic>{};
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class FinalFieldsNotSetInCtor {
@@ -173,7 +171,6 @@ class SetSupport {
 Could not generate `toJson` code for `watch`.
 To support the type `Stopwatch` you can:
 $converterOrKeyInstructions''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
@@ -185,7 +182,6 @@ class NoSerializeFieldType {
 Could not generate `fromJson` code for `watch`.
 To support the type `Stopwatch` you can:
 $converterOrKeyInstructions''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeFieldType {
@@ -196,7 +192,6 @@ class NoDeserializeFieldType {
   '''
 Could not generate `toJson` code for `durationDateTimeMap` because of type `Duration`.
 Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeBadKey {
@@ -207,7 +202,6 @@ class NoSerializeBadKey {
   '''
 Could not generate `fromJson` code for `durationDateTimeMap` because of type `Duration`.
 Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
@@ -232,7 +226,6 @@ Map<String, dynamic> _$IncludeIfNullOverrideToJson(
   return val;
 }
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {
@@ -244,7 +237,6 @@ class IncludeIfNullOverride {
 // https://github.com/google/json_serializable.dart/issues/7 regression
 @ShouldThrow(
   'The class `NoCtorClass` has no default constructor.',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class NoCtorClass {
@@ -253,6 +245,16 @@ class NoCtorClass {
   //ignore: avoid_unused_constructor_parameters
   factory NoCtorClass.fromJson(Map<String, dynamic> json) =>
       throw UnimplementedError();
+}
+
+// https://github.com/google/json_serializable.dart/issues/7 regression
+@ShouldThrow(
+  'The class `WrongConstructorNameClass` does not have a constructor with the '
+  'name `bob`.',
+)
+@JsonSerializable(constructor: 'bob')
+class WrongConstructorNameClass {
+  late final int member;
 }
 
 @ShouldThrow(

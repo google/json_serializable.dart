@@ -87,7 +87,7 @@ Order _$OrderFromJson(Map json) {
     json,
     disallowNullValues: const ['count'],
   );
-  return Order(
+  return Order.custom(
     _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(Map<String, dynamic>.from(e as Map))),
@@ -237,3 +237,15 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map json) => UnknownEnumValue()
       .map((e) => _$enumDecode(_$CategoryEnumMap, e,
           unknownValue: Category.notDiscoveredYet))
       .toSet();
+
+PrivateConstructor _$PrivateConstructorFromJson(Map json) =>
+    PrivateConstructor._(
+      json['id'] as int,
+      json['value'] as String,
+    );
+
+Map<String, dynamic> _$PrivateConstructorToJson(PrivateConstructor instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'value': instance.value,
+    };

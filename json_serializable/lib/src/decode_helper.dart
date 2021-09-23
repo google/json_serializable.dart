@@ -58,6 +58,7 @@ abstract class DecodeHelper implements HelperCore {
 
     final data = _writeConstructorInvocation(
       element,
+      config.constructor,
       accessibleFields.keys,
       accessibleFields.values
           .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
@@ -242,6 +243,7 @@ abstract class DecodeHelper implements HelperCore {
 /// been defined by a constructor parameter with the same name.
 _ConstructorData _writeConstructorInvocation(
   ClassElement classElement,
+  String constructorName,
   Iterable<String> availableConstructorParameters,
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
@@ -250,7 +252,7 @@ _ConstructorData _writeConstructorInvocation(
 ) {
   final className = classElement.name;
 
-  final ctor = unnamedConstructorOrError(classElement);
+  final ctor = constructorByName(classElement, constructorName);
 
   final usedCtorParamsAndFields = <String>{};
   final constructorArguments = <ParameterElement>[];
@@ -287,8 +289,14 @@ _ConstructorData _writeConstructorInvocation(
   final remainingFieldsForInvocationBody =
       writableFields.toSet().difference(usedCtorParamsAndFields);
 
+  final constructorExtra = constructorName.isEmpty ? '' : '.$constructorName';
+
   final buffer = StringBuffer()
-    ..write('$className${genericClassArguments(classElement, false)}(');
+    ..write(
+      '$className'
+      '${genericClassArguments(classElement, false)}'
+      '$constructorExtra(',
+    );
   if (constructorArguments.isNotEmpty) {
     buffer
       ..writeln()

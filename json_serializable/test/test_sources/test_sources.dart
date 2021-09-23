@@ -2,6 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class ConfigurationImplicitDefaults {
+  ConfigurationImplicitDefaults();
+  ConfigurationImplicitDefaults.something();
+
   int? field;
 }
 
@@ -9,6 +12,7 @@ class ConfigurationImplicitDefaults {
 @JsonSerializable(
   anyMap: false,
   checked: false,
+  constructor: '',
   createFactory: true,
   createToJson: true,
   disallowUnrecognizedKeys: false,

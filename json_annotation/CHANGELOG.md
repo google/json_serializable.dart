@@ -1,3 +1,8 @@
+## 4.2.0-dev
+
+- Added `JsonSerializabel.constructor` field to allow specifying an alternative
+  constructor to invoke when creating a `fromJson` helper.
+
 ## 4.1.0
 
 - Added a `const` constructor to `JsonConverter`.

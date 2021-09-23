@@ -49,7 +49,6 @@ Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
       'field': ValidToFromFuncClassStatic._staticFunc(instance.field),
     };
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class ValidToFromFuncClassStatic {
@@ -151,7 +150,6 @@ class ObjectConvertMethods {
 @ShouldGenerate(
   "_toDynamic(json['field'])",
   contains: true,
-  configurations: ['default'],
 )
 @JsonSerializable()
 class DynamicConvertMethods {
@@ -164,7 +162,6 @@ String _toString(String input) => 'null';
 @ShouldGenerate(
   "_toString(json['field'] as String)",
   contains: true,
-  configurations: ['default'],
 )
 @JsonSerializable()
 class TypedConvertMethods {
@@ -188,7 +185,6 @@ Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
   return val;
 }
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class ToJsonNullableFalseIncludeIfNullFalse {
@@ -211,7 +207,6 @@ FromDynamicCollection _$FromDynamicCollectionFromJson(
       ..listField = _fromDynamicList(json['listField'] as List)
       ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class FromDynamicCollection {
@@ -239,7 +234,6 @@ FromNullableDynamicCollection _$FromNullableDynamicCollectionFromJson(
       ..iterableField =
           _fromNullableDynamicIterable(json['iterableField'] as List?);
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class FromNullableDynamicCollection {

@@ -120,4 +120,5 @@ const _expectedAnnotatedTests = {
   'ValidToFromFuncClassStatic',
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
+  'WrongConstructorNameClass',
 };

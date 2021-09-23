@@ -1,3 +1,9 @@
+## 5.1.0-dev
+
+- Added support for `JsonSerializabel.constructor` to allow specifying an 
+  alternative constructor to invoke when creating a `fromJson` helper.
+- Require `json_annotation` `'>=4.2.0 <4.3.0'`.
+
 ## 5.0.2
 
 - Include type arguments when invoking `fromJson` on custom types.
