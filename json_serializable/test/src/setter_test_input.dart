@@ -8,7 +8,6 @@ Map<String, dynamic> _$JustSetterToJson(JustSetter instance) =>
     <String, dynamic>{};
 ''',
   expectedLogItems: ['Setters are ignored: JustSetter.someSetter'],
-  configurations: ['default'],
 )
 @JsonSerializable()
 class JustSetter {
@@ -21,7 +20,6 @@ JustSetterNoToJson _$JustSetterNoToJsonFromJson(Map<String, dynamic> json) =>
     JustSetterNoToJson();
 ''',
   expectedLogItems: ['Setters are ignored: JustSetterNoToJson.someSetter'],
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class JustSetterNoToJson {
@@ -35,7 +33,6 @@ Map<String, dynamic> _$JustSetterNoFromJsonToJson(
     <String, dynamic>{};
 ''',
   expectedLogItems: ['Setters are ignored: JustSetterNoFromJson.someSetter'],
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class JustSetterNoFromJson {

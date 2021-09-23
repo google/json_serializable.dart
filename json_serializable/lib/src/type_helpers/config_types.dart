@@ -43,6 +43,9 @@ class ClassConfig implements JsonSerializable {
   final bool checked;
 
   @override
+  final String constructor;
+
+  @override
   final bool createFactory;
 
   @override
@@ -71,6 +74,7 @@ class ClassConfig implements JsonSerializable {
   const ClassConfig({
     required this.anyMap,
     required this.checked,
+    required this.constructor,
     required this.createFactory,
     required this.createToJson,
     required this.disallowUnrecognizedKeys,
@@ -87,6 +91,7 @@ class ClassConfig implements JsonSerializable {
   static const defaults = ClassConfig(
     anyMap: false,
     checked: false,
+    constructor: '',
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
@@ -116,6 +121,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
     <String, dynamic>{
       'any_map': instance.anyMap,
       'checked': instance.checked,
+      'constructor': instance.constructor,
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,

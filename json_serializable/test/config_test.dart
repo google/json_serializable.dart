@@ -115,10 +115,21 @@ void main() {
         final config = Map<String, dynamic>.from(generatorConfigDefaultJson);
         config[entry.key] = entry.value;
 
-        final lastLine = entry.key == 'field_rename'
-            ? '`42` is not one of the supported values: none, kebab, snake, '
-                'pascal'
-            : "type 'int' is not a subtype of type 'bool?' in type cast";
+        String lastLine;
+        switch (entry.key) {
+          case 'field_rename':
+            lastLine =
+                '`42` is not one of the supported values: none, kebab, snake, '
+                'pascal';
+            break;
+          case 'constructor':
+            lastLine = "type 'int' is not a subtype of type 'String?' in type "
+                'cast';
+            break;
+          default:
+            lastLine =
+                "type 'int' is not a subtype of type 'bool?' in type cast";
+        }
 
         final matcher = isA<StateError>().having(
           (v) => v.message,
@@ -139,6 +150,7 @@ $lastLine''',
 const _invalidConfig = {
   'any_map': 42,
   'checked': 42,
+  'constructor': 42,
   'create_factory': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,

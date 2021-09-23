@@ -52,18 +52,19 @@ void main() {
     }
 
     test('null', () {
-      roundTripOrder(Order(Category.charmed)..statusCode = StatusCode.success);
+      roundTripOrder(
+          Order.custom(Category.charmed)..statusCode = StatusCode.success);
     });
 
     test('empty', () {
-      roundTripOrder(Order(Category.strange, const [])
+      roundTripOrder(Order.custom(Category.strange, const [])
         ..statusCode = StatusCode.success
         ..count = 0
         ..isRushed = false);
     });
 
     test('simple', () {
-      roundTripOrder(Order(Category.top, <Item>[
+      roundTripOrder(Order.custom(Category.top, <Item>[
         Item(24)
           ..itemNumber = 42
           ..saleDates = [DateTime.now()]
@@ -103,7 +104,7 @@ void main() {
     });
 
     test('platform', () {
-      final order = Order(Category.charmed)
+      final order = Order.custom(Category.charmed)
         ..statusCode = StatusCode.success
         ..platform = Platform.undefined
         ..altPlatforms = {
@@ -115,7 +116,7 @@ void main() {
     });
 
     test('homepage', () {
-      final order = Order(Category.charmed)
+      final order = Order.custom(Category.charmed)
         ..platform = Platform.undefined
         ..statusCode = StatusCode.success
         ..altPlatforms = {
@@ -152,7 +153,7 @@ void main() {
     });
 
     test('duration toJson', () {
-      final order = Order(Category.notDiscoveredYet)
+      final order = Order.custom(Category.notDiscoveredYet)
         ..statusCode = StatusCode.success
         ..duration = const Duration(
           days: 2,
@@ -288,5 +289,11 @@ void main() {
     expect(instance.enumIterable, [Category.notDiscoveredYet]);
     expect(instance.enumList, [Category.notDiscoveredYet]);
     expect(instance.enumSet, [Category.notDiscoveredYet]);
+  });
+
+  test('PrivateConstructor', () {
+    final value = PrivateConstructor('test');
+
+    validateRoundTrip(value, (json) => PrivateConstructor.fromJson(json));
   });
 }
