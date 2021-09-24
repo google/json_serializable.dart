@@ -14,7 +14,7 @@ Matcher _throwsArgumentError(matcher) =>
 void main() {
   group('Person', () {
     void roundTripPerson(Person p) {
-      roundTripObject(p, (json) => Person.fromJson(json));
+      validateRoundTrip(p, (json) => Person.fromJson(json));
     }
 
     test('now', () {
@@ -48,7 +48,7 @@ void main() {
 
   group('Order', () {
     void roundTripOrder(Order p) {
-      roundTripObject(p, (json) => Order.fromJson(json));
+      validateRoundTrip(p, (json) => Order.fromJson(json));
     }
 
     test('null', () {
@@ -187,7 +187,7 @@ void main() {
 
   group('Item', () {
     void roundTripItem(Item p) {
-      roundTripObject(p, (json) => Item.fromJson(json));
+      validateRoundTrip(p, (json) => Item.fromJson(json));
     }
 
     test('empty json', () {
@@ -228,7 +228,7 @@ void main() {
 
   group('Numbers', () {
     void roundTripNumber(Numbers p) {
-      roundTripObject(p, (json) => Numbers.fromJson(json));
+      validateRoundTrip(p, (json) => Numbers.fromJson(json));
     }
 
     test('simple', () {
@@ -273,10 +273,7 @@ void main() {
       ..intIntMap = {3: 3}
       ..uriIntMap = {Uri.parse('https://example.com'): 4};
 
-    final roundTrip =
-        roundTripObject(instance, (j) => MapKeyVariety.fromJson(j));
-
-    expect(roundTrip, instance);
+    validateRoundTrip(instance, (j) => MapKeyVariety.fromJson(j));
   });
 
   test('UnknownEnumValue', () {
