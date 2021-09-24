@@ -26,33 +26,6 @@ ConstantReader jsonKeyAnnotation(FieldElement element) =>
 bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
 
-final _upperCase = RegExp('[A-Z]');
-
-String kebabCase(String input) => _fixCase(input, '-');
-
-String snakeCase(String input) => _fixCase(input, '_');
-
-String pascalCase(String input) {
-  if (input.isEmpty) {
-    return '';
-  }
-
-  return input[0].toUpperCase() + input.substring(1);
-}
-
-String _fixCase(String input, String separator) =>
-    input.replaceAllMapped(_upperCase, (match) {
-      var lower = match.group(0)!.toLowerCase();
-
-      if (match.start > 0) {
-        lower = '$separator$lower';
-      }
-
-      return lower;
-    });
-
-String nonPrivateName(String input) => input.replaceFirst(RegExp(r'^_*'), '');
-
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',

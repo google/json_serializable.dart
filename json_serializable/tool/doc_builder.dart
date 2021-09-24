@@ -5,9 +5,9 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:json_serializable/src/utils.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 import 'package:yaml/yaml.dart';
 
 Builder docBuilder([_]) => _DocBuilder();
@@ -144,7 +144,7 @@ class _FieldInfo implements Comparable<_FieldInfo> {
       return '';
     }
 
-    return snakeCase(_classField!.name);
+    return _classField!.name.snake;
   }
 
   _FieldInfo(this._keyField, this._classField);
