@@ -14,7 +14,6 @@ import 'type_helper.dart';
 import 'type_helper_ctx.dart';
 import 'type_helpers/config_types.dart';
 import 'unsupported_type_error.dart';
-import 'utils.dart';
 
 abstract class HelperCore {
   final ClassElement element;
@@ -38,7 +37,7 @@ abstract class HelperCore {
       escapeDartString(nameAccess(field));
 
   @protected
-  String get prefix => '_\$${nonPrivateName(element.name)}';
+  String get prefix => '_\$${element.name.nonPrivate}';
 
   /// Returns a [String] representing the type arguments that exist on
   /// [element].
