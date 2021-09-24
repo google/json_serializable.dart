@@ -76,8 +76,12 @@ void main() {
 
     final configMap = Map<String, dynamic>.from(yaml);
 
-    expect(configMap.keys, unorderedEquals(generatorConfigDefaultJson.keys),
-        reason: 'All supported keys are documented.');
+    expect(
+      configMap.keys,
+      unorderedEquals(generatorConfigDefaultJson.keys),
+      reason: 'All supported keys are documented. '
+          'Did you forget to change README.md?',
+    );
 
     expect(
       JsonSerializable.fromJson(configMap).toJson(),
@@ -131,6 +135,7 @@ $lastLine''',
   });
 }
 
+// #CHANGE WHEN UPDATING json_annotation
 const _invalidConfig = {
   'any_map': 42,
   'checked': 42,

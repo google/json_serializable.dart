@@ -75,6 +75,7 @@ T enumValueForDartObject<T>(
 
 /// Return an instance of [JsonSerializable] corresponding to a the provided
 /// [reader].
+// #CHANGE WHEN UPDATING json_annotation
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       anyMap: reader.read('anyMap').literalValue as bool?,
       checked: reader.read('checked').literalValue as bool?,

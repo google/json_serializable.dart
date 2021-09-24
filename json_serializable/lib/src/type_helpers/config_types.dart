@@ -111,6 +111,7 @@ const _$FieldRenameEnumMap = {
   FieldRename.pascal: 'pascal',
 };
 
+// #CHANGE WHEN UPDATING json_annotation
 Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
     <String, dynamic>{
       'any_map': instance.anyMap,

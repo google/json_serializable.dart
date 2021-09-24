@@ -7,9 +7,10 @@ import 'package:json_serializable/src/type_helpers/config_types.dart';
 
 final jsonSerializableFields = generatorConfigDefaultJson.keys.toList();
 
-final generatorConfigDefaultJson = Map<String, dynamic>.unmodifiable(
-    ClassConfig.defaults.withDefaults().toJson());
+final generatorConfigDefaultJson =
+    Map<String, dynamic>.unmodifiable(ClassConfig.defaults.toJson());
 
+// #CHANGE WHEN UPDATING json_annotation
 final generatorConfigNonDefaultJson =
     Map<String, dynamic>.unmodifiable(const JsonSerializable(
   anyMap: true,

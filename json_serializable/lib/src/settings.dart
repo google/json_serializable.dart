@@ -45,6 +45,7 @@ class Settings {
 
   final JsonSerializable _config;
 
+  // #CHANGE WHEN UPDATING json_annotation
   ClassConfig get config => ClassConfig(
         checked: _config.checked ?? ClassConfig.defaults.checked,
         anyMap: _config.anyMap ?? ClassConfig.defaults.anyMap,
