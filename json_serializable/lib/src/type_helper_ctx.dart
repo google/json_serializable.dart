@@ -40,7 +40,7 @@ class TypeHelperCtx
   @override
   ConvertData? get deserializeConvertData => _pairFromContext.fromJson;
 
-  _ConvertPair get _pairFromContext => _ConvertPair(fieldElement);
+  late final _pairFromContext = _ConvertPair(fieldElement);
 
   @override
   void addMember(String memberContent) {
