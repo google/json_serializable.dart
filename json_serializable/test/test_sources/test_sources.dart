@@ -5,6 +5,7 @@ class ConfigurationImplicitDefaults {
   int? field;
 }
 
+// #CHANGE WHEN UPDATING json_annotation
 @JsonSerializable(
   anyMap: false,
   checked: false,
