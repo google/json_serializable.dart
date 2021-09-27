@@ -6,6 +6,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'json_enum_generator.dart';
 import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
 import 'settings.dart';
@@ -23,10 +24,70 @@ Builder jsonPartBuilder({
 
   return SharedPartBuilder(
     [
-      JsonSerializableGenerator.fromSettings(settings),
+      _UnifiedGenerator([
+        JsonSerializableGenerator.fromSettings(settings),
+        const JsonEnumGenerator(),
+      ]),
       const JsonLiteralGenerator(),
     ],
     'json_serializable',
     formatOutput: formatOutput,
   );
 }
+
+/// Allows exposing separate [GeneratorForAnnotation] instances as one
+/// generator.
+///
+/// Output can be merged while keeping implementations separate.
+class _UnifiedGenerator extends Generator {
+  final List<GeneratorForAnnotation> _generators;
+
+  _UnifiedGenerator(this._generators);
+
+  @override
+  Future<String?> generate(LibraryReader library, BuildStep buildStep) async {
+    final values = <String>{};
+
+    for (var generator in _generators) {
+      for (var annotatedElement
+          in library.annotatedWith(generator.typeChecker)) {
+        final generatedValue = generator.generateForAnnotatedElement(
+            annotatedElement.element, annotatedElement.annotation, buildStep);
+        for (var value in _normalizeGeneratorOutput(generatedValue)) {
+          assert(value.length == value.trim().length);
+          values.add(value);
+        }
+      }
+    }
+
+    return values.join('\n\n');
+  }
+
+  @override
+  String toString() => 'JsonSerializableGenerator';
+}
+
+// Borrowed from `package:source_gen`
+Iterable<String> _normalizeGeneratorOutput(Object? value) {
+  if (value == null) {
+    return const [];
+  } else if (value is String) {
+    value = [value];
+  }
+
+  if (value is Iterable) {
+    return value.where((e) => e != null).map((e) {
+      if (e is String) {
+        return e.trim();
+      }
+
+      throw _argError(e as Object);
+    }).where((e) => e.isNotEmpty);
+  }
+  throw _argError(value);
+}
+
+// Borrowed from `package:source_gen`
+ArgumentError _argError(Object value) => ArgumentError(
+    'Must be a String or be an Iterable containing String values. '
+    'Found `${Error.safeToString(value)}` (${value.runtimeType}).');
