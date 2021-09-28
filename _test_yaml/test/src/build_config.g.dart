@@ -25,7 +25,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
             'weights',
             (v) => val.weights = (v as Map?)?.map(
                   (k, e) =>
-                      MapEntry(_$enumDecode(_$AutoApplyEnumMap, k), e as int),
+                      MapEntry($enumDecode(_$AutoApplyEnumMap, k), e as int),
                 ));
         return val;
       },
@@ -36,32 +36,6 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'weights':
           instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k], e)),
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$AutoApplyEnumMap = {
   AutoApply.none: 'none',
@@ -96,11 +70,11 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
           target: $checkedConvert('target', (v) => v as String?),
           isOptional: $checkedConvert('is_optional', (v) => v as bool?),
           autoApply: $checkedConvert(
-              'auto_apply', (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              'auto_apply', (v) => $enumDecodeNullable(_$AutoApplyEnumMap, v)),
           buildTo: $checkedConvert(
-              'build_to', (v) => _$enumDecodeNullable(_$BuildToEnumMap, v)),
+              'build_to', (v) => $enumDecodeNullable(_$BuildToEnumMap, v)),
           defaultEnumTest: $checkedConvert('defaultEnumTest',
-              (v) => _$enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              (v) => $enumDecodeNullable(_$AutoApplyEnumMap, v)),
           builderFactories: $checkedConvert('builder_factories',
               (v) => (v as List<dynamic>).map((e) => e as String).toList()),
           appliesBuilders: $checkedConvert('applies_builders',
@@ -150,17 +124,6 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   writeNotNull('required_inputs', instance.requiredInputs);
   writeNotNull('build_extensions', instance.buildExtensions);
   return val;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
 }
 
 const _$BuildToEnumMap = {

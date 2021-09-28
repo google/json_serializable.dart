@@ -330,7 +330,7 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumType(
       (json['value'] as List<dynamic>)
-          .map((e) => _$enumDecode(_$EnumTypeEnumMap, e))
+          .map((e) => $enumDecode(_$EnumTypeEnumMap, e))
           .toList(),
     );
 
@@ -339,32 +339,6 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
     <String, dynamic>{
       'value': instance.value.map((e) => _$EnumTypeEnumMap[e]).toList(),
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
@@ -377,7 +351,7 @@ SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumType(
       (json['value'] as List<dynamic>?)
-          ?.map((e) => _$enumDecode(_$EnumTypeEnumMap, e))
+          ?.map((e) => $enumDecode(_$EnumTypeEnumMap, e))
           .toList(),
     );
 
@@ -391,7 +365,7 @@ SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeNullable(
       (json['value'] as List<dynamic>)
-          .map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e))
+          .map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e))
           .toList(),
     );
 
@@ -401,23 +375,12 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeNullableToJson(
       'value': instance.value.map((e) => _$EnumTypeEnumMap[e]).toList(),
     };
 
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
-
 SimpleClassNullableOfEnumTypeNullable
     _$SimpleClassNullableOfEnumTypeNullableFromJson(
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeNullable(
           (json['value'] as List<dynamic>?)
-              ?.map((e) => _$enumDecodeNullable(_$EnumTypeEnumMap, e))
+              ?.map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e))
               .toList(),
         );
 

@@ -31,10 +31,7 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
       return const [];
     }
 
-    return [
-      enumDecodeHelper,
-      enumValueMapFromType(element.thisType)!,
-    ];
+    return [enumValueMapFromType(element.thisType)!];
   }
 }
 

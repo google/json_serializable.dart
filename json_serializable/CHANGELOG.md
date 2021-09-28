@@ -3,6 +3,10 @@
 - Added support for `JsonSerializabel.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
 - Support the new `@JsonEnum` annotation in `package:json_annotation`.
+- Use the new `$enumDecodeNullable` and `$enumDecode` in `json_annotation'
+  instead of generating these for each library.
+  **NOTE**: This is a potential breaking change if any user code relies on
+  the previously generated private functions.
 - Require Dart SDK `>=2.14.0`.
 - Require `json_annotation` `'>=4.2.0 <4.3.0'`.
 

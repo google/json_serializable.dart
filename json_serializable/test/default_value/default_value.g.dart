@@ -35,7 +35,7 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) => DefaultValue(
           {
             'root': ['child']
           },
-      _$enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
       constClass: json['constClass'] == null
           ? const ConstClass('value')
           : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
@@ -67,43 +67,6 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
           const ConstClassConverter().toJson(instance.valueFromConverter),
       'valueFromFunction': constClassToJson(instance.valueFromFunction),
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$GreekEnumMap = {
   Greek.alpha: 'alpha',
