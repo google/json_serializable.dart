@@ -270,6 +270,9 @@ InterfaceType? _instantiate(
 }
 
 ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
+  if (source.isEnum) {
+    return null;
+  }
   final annotations = const TypeChecker.fromRuntime(JsonSerializable)
       .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();

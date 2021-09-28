@@ -296,4 +296,8 @@ void main() {
 
     validateRoundTrip(value, (json) => PrivateConstructor.fromJson(json));
   });
+
+  test('enum helpers', () {
+    expect(standAloneEnumKeys, ['a', 'b', 'g', 'd']);
+  });
 }

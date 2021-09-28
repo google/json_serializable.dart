@@ -5,7 +5,6 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
@@ -24,6 +23,10 @@ part 'unknown_enum_value_test_input.dart';
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target
 const theAnswer = 42;
+
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
+@JsonSerializable() // ignore: invalid_annotation_target
+enum unsupportedEnum { not, valid }
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target

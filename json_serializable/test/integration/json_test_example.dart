@@ -239,3 +239,17 @@ class PrivateConstructor {
   bool operator ==(Object other) =>
       other is PrivateConstructor && id == other.id && value == other.value;
 }
+
+@JsonEnum()
+enum StandAloneEnum {
+  @JsonValue('a')
+  alpha,
+  @JsonValue('b')
+  beta,
+  @JsonValue('g')
+  gamma,
+  @JsonValue('d')
+  delta,
+}
+
+Iterable<String> get standAloneEnumKeys => _$StandAloneEnumEnumMap.values;
