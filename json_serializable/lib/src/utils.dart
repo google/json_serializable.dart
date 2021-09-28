@@ -175,21 +175,26 @@ Map<FieldElement, dynamic>? enumFieldsMap(DartType targetType) {
     return entry;
   }
 
-  if (targetType is InterfaceType && targetType.element.isEnum) {
-    return _enumMapExpando[targetType] ??=
-        Map<FieldElement, dynamic>.fromEntries(targetType.element.fields
-            .where((p) => !p.isSynthetic)
-            .map(_generateEntry));
+  final enumFields = iterateEnumFields(targetType);
+
+  if (enumFields == null) {
+    return null;
   }
-  return null;
+
+  return _enumMapExpando[targetType] ??=
+      Map<FieldElement, dynamic>.fromEntries(enumFields.map(_generateEntry));
 }
 
 /// If [targetType] is an enum, returns the [FieldElement] instances associated
 /// with its values.
 ///
 /// Otherwise, `null`.
-Iterable<FieldElement>? iterateEnumFields(DartType targetType) =>
-    enumFieldsMap(targetType)?.keys;
+Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
+  if (targetType is InterfaceType && targetType.element.isEnum) {
+    return targetType.element.fields.where((element) => !element.isSynthetic);
+  }
+  return null;
+}
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
