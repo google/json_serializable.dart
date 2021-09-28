@@ -80,7 +80,9 @@ abstract class DecodeHelper implements HelperCore {
   \$checkedCreate(
     $classLiteral,
     json,
-    (\$checkedConvert) {\n''')..write(checks.join())..write('''
+    (\$checkedConvert) {\n''')
+        ..write(checks.join())
+        ..write('''
     final val = ${data.content};''');
 
       for (final field in data.fieldsToSet) {
@@ -110,12 +112,15 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
-      sectionBuffer..write(fieldKeyMapArg)..write(',);');
+      sectionBuffer
+        ..write(fieldKeyMapArg)
+        ..write(',);');
       fromJsonLines.add(sectionBuffer.toString());
     } else {
       fromJsonLines.addAll(checks);
 
-      final sectionBuffer = StringBuffer()..write('''
+      final sectionBuffer = StringBuffer()
+        ..write('''
   ${data.content}''');
       for (final field in data.fieldsToSet) {
         sectionBuffer
@@ -128,7 +133,9 @@ abstract class DecodeHelper implements HelperCore {
     }
 
     if (fromJsonLines.length == 1) {
-      buffer..write('=>')..write(fromJsonLines.single);
+      buffer
+        ..write('=>')
+        ..write(fromJsonLines.single);
     } else {
       buffer
         ..write('{')
