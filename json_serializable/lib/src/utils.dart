@@ -26,33 +26,6 @@ ConstantReader jsonKeyAnnotation(FieldElement element) =>
 bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
 
-final _upperCase = RegExp('[A-Z]');
-
-String kebabCase(String input) => _fixCase(input, '-');
-
-String snakeCase(String input) => _fixCase(input, '_');
-
-String pascalCase(String input) {
-  if (input.isEmpty) {
-    return '';
-  }
-
-  return input[0].toUpperCase() + input.substring(1);
-}
-
-String _fixCase(String input, String separator) =>
-    input.replaceAllMapped(_upperCase, (match) {
-      var lower = match.group(0)!.toLowerCase();
-
-      if (match.start > 0) {
-        lower = '$separator$lower';
-      }
-
-      return lower;
-    });
-
-String nonPrivateName(String input) => input.replaceFirst(RegExp(r'^_*'), '');
-
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
         'Error with `@JsonKey` on `${element.name}`. $message',
@@ -75,9 +48,11 @@ T enumValueForDartObject<T>(
 
 /// Return an instance of [JsonSerializable] corresponding to a the provided
 /// [reader].
+// #CHANGE WHEN UPDATING json_annotation
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       anyMap: reader.read('anyMap').literalValue as bool?,
       checked: reader.read('checked').literalValue as bool?,
+      constructor: reader.read('constructor').literalValue as String?,
       createFactory: reader.read('createFactory').literalValue as bool?,
       createToJson: reader.read('createToJson').literalValue as bool?,
       disallowUnrecognizedKeys:
@@ -107,16 +82,18 @@ ClassConfig mergeConfig(
   final annotation = _valueForAnnotation(reader);
   assert(config.ctorParamDefaults.isEmpty);
 
-  final defaultCtor = unnamedConstructorOrError(classElement);
+  final constructor = annotation.constructor ?? config.constructor;
+  final constructorInstance = constructorByName(classElement, constructor);
 
-  final paramDefaultValueMap = Map<String, String>.fromEntries(defaultCtor
-      .parameters
-      .where((element) => element.hasDefaultValue)
-      .map((e) => MapEntry(e.name, e.defaultValueCode!)));
+  final paramDefaultValueMap = Map<String, String>.fromEntries(
+      constructorInstance.parameters
+          .where((element) => element.hasDefaultValue)
+          .map((e) => MapEntry(e.name, e.defaultValueCode!)));
 
   return ClassConfig(
     anyMap: annotation.anyMap ?? config.anyMap,
     checked: annotation.checked ?? config.checked,
+    constructor: constructor,
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:
@@ -132,16 +109,27 @@ ClassConfig mergeConfig(
   );
 }
 
-ConstructorElement unnamedConstructorOrError(ClassElement classElement) {
+ConstructorElement constructorByName(ClassElement classElement, String name) {
   final className = classElement.name;
 
-  final ctor = classElement.unnamedConstructor;
-  if (ctor == null) {
-    // TODO: support using another ctor - google/json_serializable.dart#50
-    throw InvalidGenerationSourceError(
-      'The class `$className` has no default constructor.',
-      element: classElement,
-    );
+  ConstructorElement? ctor;
+  if (name.isEmpty) {
+    ctor = classElement.unnamedConstructor;
+    if (ctor == null) {
+      throw InvalidGenerationSourceError(
+        'The class `$className` has no default constructor.',
+        element: classElement,
+      );
+    }
+  } else {
+    ctor = classElement.getNamedConstructor(name);
+    if (ctor == null) {
+      throw InvalidGenerationSourceError(
+        'The class `$className` does not have a constructor with the name '
+        '`$name`.',
+        element: classElement,
+      );
+    }
   }
 
   return ctor;

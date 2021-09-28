@@ -14,7 +14,7 @@ Matcher _throwsArgumentError(matcher) =>
 void main() {
   group('Person', () {
     void roundTripPerson(Person p) {
-      roundTripObject(p, (json) => Person.fromJson(json));
+      validateRoundTrip(p, (json) => Person.fromJson(json));
     }
 
     test('now', () {
@@ -48,22 +48,23 @@ void main() {
 
   group('Order', () {
     void roundTripOrder(Order p) {
-      roundTripObject(p, (json) => Order.fromJson(json));
+      validateRoundTrip(p, (json) => Order.fromJson(json));
     }
 
     test('null', () {
-      roundTripOrder(Order(Category.charmed)..statusCode = StatusCode.success);
+      roundTripOrder(
+          Order.custom(Category.charmed)..statusCode = StatusCode.success);
     });
 
     test('empty', () {
-      roundTripOrder(Order(Category.strange, const [])
+      roundTripOrder(Order.custom(Category.strange, const [])
         ..statusCode = StatusCode.success
         ..count = 0
         ..isRushed = false);
     });
 
     test('simple', () {
-      roundTripOrder(Order(Category.top, <Item>[
+      roundTripOrder(Order.custom(Category.top, <Item>[
         Item(24)
           ..itemNumber = 42
           ..saleDates = [DateTime.now()]
@@ -103,7 +104,7 @@ void main() {
     });
 
     test('platform', () {
-      final order = Order(Category.charmed)
+      final order = Order.custom(Category.charmed)
         ..statusCode = StatusCode.success
         ..platform = Platform.undefined
         ..altPlatforms = {
@@ -115,7 +116,7 @@ void main() {
     });
 
     test('homepage', () {
-      final order = Order(Category.charmed)
+      final order = Order.custom(Category.charmed)
         ..platform = Platform.undefined
         ..statusCode = StatusCode.success
         ..altPlatforms = {
@@ -152,7 +153,7 @@ void main() {
     });
 
     test('duration toJson', () {
-      final order = Order(Category.notDiscoveredYet)
+      final order = Order.custom(Category.notDiscoveredYet)
         ..statusCode = StatusCode.success
         ..duration = const Duration(
           days: 2,
@@ -187,7 +188,7 @@ void main() {
 
   group('Item', () {
     void roundTripItem(Item p) {
-      roundTripObject(p, (json) => Item.fromJson(json));
+      validateRoundTrip(p, (json) => Item.fromJson(json));
     }
 
     test('empty json', () {
@@ -228,7 +229,7 @@ void main() {
 
   group('Numbers', () {
     void roundTripNumber(Numbers p) {
-      roundTripObject(p, (json) => Numbers.fromJson(json));
+      validateRoundTrip(p, (json) => Numbers.fromJson(json));
     }
 
     test('simple', () {
@@ -273,10 +274,7 @@ void main() {
       ..intIntMap = {3: 3}
       ..uriIntMap = {Uri.parse('https://example.com'): 4};
 
-    final roundTrip =
-        roundTripObject(instance, (j) => MapKeyVariety.fromJson(j));
-
-    expect(roundTrip, instance);
+    validateRoundTrip(instance, (j) => MapKeyVariety.fromJson(j));
   });
 
   test('UnknownEnumValue', () {
@@ -291,6 +289,16 @@ void main() {
     expect(instance.enumIterable, [Category.notDiscoveredYet]);
     expect(instance.enumList, [Category.notDiscoveredYet]);
     expect(instance.enumSet, [Category.notDiscoveredYet]);
+  });
+
+  test('PrivateConstructor', () {
+    final value = PrivateConstructor('test');
+
+    validateRoundTrip(value, (json) => PrivateConstructor.fromJson(json));
+  });
+
+  test('enum helpers', () {
+    expect(standAloneEnumKeys, ['a', 'b', 'g', 'd']);
   });
 
   test('NullableUnknownEnumValue', () {

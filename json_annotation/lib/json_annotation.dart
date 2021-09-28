@@ -13,6 +13,7 @@ library json_annotation;
 export 'src/allowed_keys_helpers.dart';
 export 'src/checked_helpers.dart';
 export 'src/json_converter.dart';
+export 'src/json_enum.dart';
 export 'src/json_key.dart';
 export 'src/json_literal.dart';
 export 'src/json_serializable.dart';

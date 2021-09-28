@@ -22,7 +22,7 @@ Person _$PersonFromJson(Map json) => Person(
           : Order.fromJson(Map<String, dynamic>.from(json['order'] as Map))
       ..customOrders = json['customOrders'] == null
           ? null
-          : MyList.fromJson((json['customOrders'] as List<dynamic>)
+          : MyList<Order>.fromJson((json['customOrders'] as List<dynamic>)
               .map((e) => Order.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList())
       ..houseMap = (json['houseMap'] as Map?)?.map(
@@ -87,7 +87,7 @@ Order _$OrderFromJson(Map json) {
     json,
     disallowNullValues: const ['count'],
   );
-  return Order(
+  return Order.custom(
     _$enumDecode(_$CategoryEnumMap, json['category']),
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(Map<String, dynamic>.from(e as Map))),
@@ -252,6 +252,18 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map json) => UnknownEnumValue()
           unknownValue: Category.notDiscoveredYet))
       .toSet();
 
+PrivateConstructor _$PrivateConstructorFromJson(Map json) =>
+    PrivateConstructor._(
+      json['id'] as int,
+      json['value'] as String,
+    );
+
+Map<String, dynamic> _$PrivateConstructorToJson(PrivateConstructor instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'value': instance.value,
+    };
+
 NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(Map json) =>
     NullableUnknownEnumValue()
       ..enumValue = _$enumDecodeNullable(_$CategoryEnumMap, json['enumValue'],
@@ -266,3 +278,10 @@ NullableUnknownEnumValue _$NullableUnknownEnumValueFromJson(Map json) =>
           ?.map((e) => _$enumDecodeNullable(_$CategoryEnumMap, e,
               disallowNullValue: false))
           .toSet();
+
+const _$StandAloneEnumEnumMap = {
+  StandAloneEnum.alpha: 'a',
+  StandAloneEnum.beta: 'b',
+  StandAloneEnum.gamma: 'g',
+  StandAloneEnum.delta: 'd',
+};

@@ -5,7 +5,6 @@
 import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
@@ -27,6 +26,10 @@ const theAnswer = 42;
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target
+enum unsupportedEnum { not, valid }
+
+@ShouldThrow('`@JsonSerializable` can only be used on classes.')
+@JsonSerializable() // ignore: invalid_annotation_target
 Object annotatedMethod() => throw UnimplementedError();
 
 @ShouldGenerate(
@@ -37,7 +40,6 @@ OnlyStaticMembers _$OnlyStaticMembersFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$OnlyStaticMembersToJson(OnlyStaticMembers instance) =>
     <String, dynamic>{};
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class OnlyStaticMembers {
@@ -142,7 +144,6 @@ Map<String, dynamic> _$FinalFieldsNotSetInCtorToJson(
         FinalFieldsNotSetInCtor instance) =>
     <String, dynamic>{};
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class FinalFieldsNotSetInCtor {
@@ -173,7 +174,6 @@ class SetSupport {
 Could not generate `toJson` code for `watch`.
 To support the type `Stopwatch` you can:
 $converterOrKeyInstructions''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeFieldType {
@@ -185,7 +185,6 @@ class NoSerializeFieldType {
 Could not generate `fromJson` code for `watch`.
 To support the type `Stopwatch` you can:
 $converterOrKeyInstructions''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeFieldType {
@@ -196,7 +195,6 @@ class NoDeserializeFieldType {
   '''
 Could not generate `toJson` code for `durationDateTimeMap` because of type `Duration`.
 Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false)
 class NoSerializeBadKey {
@@ -207,7 +205,6 @@ class NoSerializeBadKey {
   '''
 Could not generate `fromJson` code for `durationDateTimeMap` because of type `Duration`.
 Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-  configurations: ['default'],
 )
 @JsonSerializable(createToJson: false)
 class NoDeserializeBadKey {
@@ -232,7 +229,6 @@ Map<String, dynamic> _$IncludeIfNullOverrideToJson(
   return val;
 }
 ''',
-  configurations: ['default'],
 )
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {
@@ -244,7 +240,6 @@ class IncludeIfNullOverride {
 // https://github.com/google/json_serializable.dart/issues/7 regression
 @ShouldThrow(
   'The class `NoCtorClass` has no default constructor.',
-  configurations: ['default'],
 )
 @JsonSerializable()
 class NoCtorClass {
@@ -253,6 +248,16 @@ class NoCtorClass {
   //ignore: avoid_unused_constructor_parameters
   factory NoCtorClass.fromJson(Map<String, dynamic> json) =>
       throw UnimplementedError();
+}
+
+// https://github.com/google/json_serializable.dart/issues/7 regression
+@ShouldThrow(
+  'The class `WrongConstructorNameClass` does not have a constructor with the '
+  'name `bob`.',
+)
+@JsonSerializable(constructor: 'bob')
+class WrongConstructorNameClass {
+  late final int member;
 }
 
 @ShouldThrow(
@@ -382,7 +387,8 @@ FieldWithFromJsonCtorAndTypeParams _$FieldWithFromJsonCtorAndTypeParamsFromJson(
     FieldWithFromJsonCtorAndTypeParams()
       ..customOrders = json['customOrders'] == null
           ? null
-          : MyList.fromJson((json['customOrders'] as List<dynamic>)
+          : MyList<GeneralTestClass2, int>.fromJson((json['customOrders']
+                  as List<dynamic>)
               .map((e) => GeneralTestClass2.fromJson(e as Map<String, dynamic>))
               .toList());
 ''')

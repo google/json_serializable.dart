@@ -4,7 +4,6 @@
 
 import 'dart:collection';
 
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 enum Category {
@@ -41,9 +40,6 @@ DateTime? dateTimeFromEpochUs(int? us) =>
     us == null ? null : DateTime.fromMicrosecondsSinceEpoch(us);
 
 int? dateTimeToEpochUs(DateTime? dateTime) => dateTime?.microsecondsSinceEpoch;
-
-bool deepEquals(dynamic a, dynamic b) =>
-    const DeepCollectionEquality().equals(a, b);
 
 class Platform {
   final String description;

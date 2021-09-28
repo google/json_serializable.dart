@@ -8,7 +8,6 @@ import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
-import 'default_container.dart';
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -59,6 +58,7 @@ abstract class DecodeHelper implements HelperCore {
 
     final data = _writeConstructorInvocation(
       element,
+      config.constructor,
       accessibleFields.keys,
       accessibleFields.values
           .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
@@ -185,21 +185,14 @@ abstract class DecodeHelper implements HelperCore {
     final contextHelper = getHelperContext(field);
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
-    final defaultProvided = defaultValue != null;
 
-    String deserialize(String expression) {
-      final value = contextHelper.deserialize(
-        targetType,
-        expression,
-        defaultProvided: defaultProvided,
-      )!;
-
-      return DefaultContainer.encode(
-        value,
-        nullable: targetType.isNullableType,
-        defaultValue: defaultValue,
-      );
-    }
+    String deserialize(String expression) => contextHelper
+        .deserialize(
+          targetType,
+          expression,
+          defaultValue: defaultValue,
+        )
+        .toString();
 
     String value;
     try {
@@ -220,7 +213,7 @@ abstract class DecodeHelper implements HelperCore {
       throw createInvalidGenerationError('fromJson', field, e);
     }
 
-    if (defaultProvided) {
+    if (defaultValue != null) {
       if (jsonKey.disallowNullValue && jsonKey.required) {
         log.warning('The `defaultValue` on field `${field.name}` will have no '
             'effect because both `disallowNullValue` and `required` are set to '
@@ -243,6 +236,7 @@ abstract class DecodeHelper implements HelperCore {
 /// been defined by a constructor parameter with the same name.
 _ConstructorData _writeConstructorInvocation(
   ClassElement classElement,
+  String constructorName,
   Iterable<String> availableConstructorParameters,
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
@@ -251,7 +245,7 @@ _ConstructorData _writeConstructorInvocation(
 ) {
   final className = classElement.name;
 
-  final ctor = unnamedConstructorOrError(classElement);
+  final ctor = constructorByName(classElement, constructorName);
 
   final usedCtorParamsAndFields = <String>{};
   final constructorArguments = <ParameterElement>[];
@@ -288,8 +282,14 @@ _ConstructorData _writeConstructorInvocation(
   final remainingFieldsForInvocationBody =
       writableFields.toSet().difference(usedCtorParamsAndFields);
 
+  final constructorExtra = constructorName.isEmpty ? '' : '.$constructorName';
+
   final buffer = StringBuffer()
-    ..write('$className${genericClassArguments(classElement, false)}(');
+    ..write(
+      '$className'
+      '${genericClassArguments(classElement, false)}'
+      '$constructorExtra(',
+    );
   if (constructorArguments.isNotEmpty) {
     buffer
       ..writeln()

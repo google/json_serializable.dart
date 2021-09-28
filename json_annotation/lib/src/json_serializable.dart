@@ -50,6 +50,15 @@ class JsonSerializable {
   /// [CheckedFromJsonException] is thrown.
   final bool? checked;
 
+  /// Specifies a named constructor to target when creating the `fromJson`
+  /// function.
+  ///
+  /// If the value is not set or an empty [String], the default constructor
+  /// is used.
+  ///
+  /// This setting has no effect if [createFactory] is `false`.
+  final String? constructor;
+
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
   ///
@@ -182,6 +191,7 @@ class JsonSerializable {
     @Deprecated('Has no effect') bool? nullable,
     this.anyMap,
     this.checked,
+    this.constructor,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
@@ -201,6 +211,7 @@ class JsonSerializable {
   static const defaults = JsonSerializable(
     anyMap: false,
     checked: false,
+    constructor: '',
     createFactory: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
@@ -220,6 +231,7 @@ class JsonSerializable {
   JsonSerializable withDefaults() => JsonSerializable(
         anyMap: anyMap ?? defaults.anyMap,
         checked: checked ?? defaults.checked,
+        constructor: constructor ?? defaults.constructor,
         createFactory: createFactory ?? defaults.createFactory,
         createToJson: createToJson ?? defaults.createToJson,
         disallowUnrecognizedKeys:

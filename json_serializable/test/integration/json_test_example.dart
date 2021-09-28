@@ -7,6 +7,7 @@ import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 
+import '../test_utils.dart';
 import 'json_test_common.dart';
 
 part 'json_test_example.g.dart';
@@ -44,7 +45,7 @@ class Person {
       deepEquals(houseMap, other.houseMap);
 }
 
-@JsonSerializable()
+@JsonSerializable(constructor: 'custom')
 class Order {
   /// Used to test that `disallowNullValues: true` forces `includeIfNull: false`
   @JsonKey(disallowNullValue: true)
@@ -80,7 +81,7 @@ class Order {
   @JsonKey(ignore: true)
   bool? shouldBeCached;
 
-  Order(this.category, [Iterable<Item>? items])
+  Order.custom(this.category, [Iterable<Item>? items])
       : items = UnmodifiableListView<Item>(
             List<Item>.unmodifiable(items ?? const <Item>[]));
 
@@ -217,6 +218,41 @@ class UnknownEnumValue {
   factory UnknownEnumValue.fromJson(Map<String, dynamic> json) =>
       _$UnknownEnumValueFromJson(json);
 }
+
+@JsonSerializable(constructor: '_')
+class PrivateConstructor {
+  static int _id = 0;
+
+  final int id;
+  final String value;
+
+  PrivateConstructor._(this.id, this.value);
+
+  PrivateConstructor(this.value) : id = _id++;
+
+  factory PrivateConstructor.fromJson(Map<String, dynamic> json) =>
+      _$PrivateConstructorFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrivateConstructorToJson(this);
+
+  @override
+  bool operator ==(Object other) =>
+      other is PrivateConstructor && id == other.id && value == other.value;
+}
+
+@JsonEnum()
+enum StandAloneEnum {
+  @JsonValue('a')
+  alpha,
+  @JsonValue('b')
+  beta,
+  @JsonValue('g')
+  gamma,
+  @JsonValue('d')
+  delta,
+}
+
+Iterable<String> get standAloneEnumKeys => _$StandAloneEnumEnumMap.values;
 
 @JsonSerializable(createToJson: false)
 class NullableUnknownEnumValue {

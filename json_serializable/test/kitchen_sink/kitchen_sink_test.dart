@@ -84,7 +84,7 @@ void _nonNullableTests(KitchenSinkFactory factory) {
 
 void _nullableTests(KitchenSinkFactory factory) {
   void roundTripSink(KitchenSink p) {
-    roundTripObject(p, factory.fromJson);
+    validateRoundTrip(p, factory.fromJson);
   }
 
   test('nullable values are allowed in the nullable version', () {
@@ -164,7 +164,7 @@ void _nullableTests(KitchenSinkFactory factory) {
 void _sharedTests(KitchenSinkFactory factory) {
   test('empty', () {
     final item = factory.ctor();
-    roundTripObject(item, factory.fromJson);
+    validateRoundTrip(item, factory.fromJson);
   });
 
   test('list and map of DateTime - not null', () {
@@ -173,7 +173,7 @@ void _sharedTests(KitchenSinkFactory factory) {
       ..dateTimeList = <DateTime>[now, now]
       ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
-    roundTripObject(item, factory.fromJson);
+    validateRoundTrip(item, factory.fromJson);
   });
 
   test('complex nested type - not null', () {
@@ -191,7 +191,7 @@ void _sharedTests(KitchenSinkFactory factory) {
           }
         }
       ];
-    roundTripObject(item, factory.fromJson);
+    validateRoundTrip(item, factory.fromJson);
   });
 
   test('round trip valid, empty values', () {
@@ -210,7 +210,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
     final validInstance = factory.fromJson(values);
 
-    roundTripObject(validInstance, factory.fromJson);
+    validateRoundTrip(validInstance, factory.fromJson);
   });
 
   test('JSON keys should be defined in field/property order', () {
@@ -224,7 +224,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(validValues);
-    roundTripObject(validInstance, factory.fromJson);
+    validateRoundTrip(validInstance, factory.fromJson);
   });
 }
 
@@ -243,10 +243,12 @@ const _nonNullableFields = {
   'objectList',
   'intList',
   'dateTimeList',
+  'nullableSimpleObjectList',
   'map',
   'stringStringMap',
   'dynamicIntMap',
   'objectDateTimeMap',
+  'nullableSimpleObjectMap',
   'crazyComplex',
   'val',
   'simpleObject',
@@ -270,8 +272,10 @@ const _iterableMapKeys = {
   'intList',
   'intSet',
   'iterable',
+  'nullableSimpleObjectList',
   'list',
   'map',
+  'nullableSimpleObjectMap',
   'numberSillySet',
   'objectDateTimeMap',
   'objectIterable',

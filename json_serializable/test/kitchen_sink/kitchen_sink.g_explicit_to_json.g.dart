@@ -41,6 +41,12 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
       ..dateTimeList = (json['dateTimeList'] as List<dynamic>)
           .map((e) => DateTime.parse(e as String))
           .toList()
+      ..nullableSimpleObjectList =
+          (json['nullableSimpleObjectList'] as List<dynamic>)
+              .map((e) => e == null
+                  ? null
+                  : SimpleObject.fromJson(e as Map<String, dynamic>))
+              .toList()
       ..map = json['map'] as Map<String, dynamic>
       ..stringStringMap =
           Map<String, String>.from(json['stringStringMap'] as Map)
@@ -48,6 +54,14 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
       ..objectDateTimeMap =
           (json['objectDateTimeMap'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(k, DateTime.parse(e as String)),
+      )
+      ..nullableSimpleObjectMap =
+          (json['nullableSimpleObjectMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            e == null
+                ? null
+                : SimpleObject.fromJson(e as Map<String, dynamic>)),
       )
       ..crazyComplex = (json['crazyComplex'] as List<dynamic>)
           .map((e) => (e as Map<String, dynamic>?)?.map(
@@ -96,11 +110,15 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'intList': instance.intList,
       'dateTimeList':
           instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'nullableSimpleObjectList':
+          instance.nullableSimpleObjectList.map((e) => e?.toJson()).toList(),
       'map': instance.map,
       'stringStringMap': instance.stringStringMap,
       'dynamicIntMap': instance.dynamicIntMap,
       'objectDateTimeMap': instance.objectDateTimeMap
           .map((k, e) => MapEntry(k, e.toIso8601String())),
+      'nullableSimpleObjectMap': instance.nullableSimpleObjectMap
+          .map((k, e) => MapEntry(k, e?.toJson())),
       'crazyComplex': instance.crazyComplex
           .map((e) => e?.map((k, e) => MapEntry(
               k,

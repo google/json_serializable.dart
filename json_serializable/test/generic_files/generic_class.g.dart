@@ -61,3 +61,17 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
       'listDuration': const _DurationListMillisecondConverter()
           .toJson(instance.listDuration),
     };
+
+Issue980ParentClass _$Issue980ParentClassFromJson(Map<String, dynamic> json) =>
+    Issue980ParentClass(
+      (json['list'] as List<dynamic>)
+          .map((e) =>
+              Issue980GenericClass<int>.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$Issue980ParentClassToJson(
+        Issue980ParentClass instance) =>
+    <String, dynamic>{
+      'list': instance.list,
+    };

@@ -21,7 +21,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    final memberContent = _enumValueMapFromType(targetType);
+    final memberContent = enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -39,7 +39,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    final memberContent = _enumValueMapFromType(targetType);
+    final memberContent = enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -48,10 +48,10 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
       functionName = r'_$enumDecodeNullable';
-      context.addMember(_enumDecodeHelperNullable);
+      context.addMember(enumDecodeHelperNullable);
     } else {
       functionName = r'_$enumDecode';
-      context.addMember(_enumDecodeHelper);
+      context.addMember(enumDecodeHelper);
     }
 
     context.addMember(memberContent);
@@ -73,7 +73,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 String _constMapName(DartType targetType) =>
     '_\$${targetType.element!.name}EnumMap';
 
-String? _enumValueMapFromType(DartType targetType) {
+String? enumValueMapFromType(DartType targetType) {
   final enumMap = enumFieldsMap(targetType);
 
   if (enumMap == null) {
@@ -88,7 +88,7 @@ String? _enumValueMapFromType(DartType targetType) {
   return 'const ${_constMapName(targetType)} = {\n$items\n};';
 }
 
-const _enumDecodeHelper = r'''
+const enumDecodeHelper = r'''
 K _$enumDecode<K, V>(
   Map<K, V> enumValues,
   Object? source, {
@@ -115,7 +115,7 @@ K _$enumDecode<K, V>(
   ).key;
 }''';
 
-const _enumDecodeHelperNullable = r'''
+const enumDecodeHelperNullable = r'''
 K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {

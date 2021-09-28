@@ -110,7 +110,11 @@ Future<void> main() async {
           expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
         }
 
-        expect(_ConfigLogger.configurations.first.toJson(), expected);
+        expect(
+          _ConfigLogger.configurations.first.toJson(),
+          expected,
+          reason: 'Did you forget to change README.md?',
+        );
       },
     );
   });

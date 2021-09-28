@@ -24,6 +24,7 @@ Future<void> main() async {
 
 const _expectedAnnotatedTests = {
   'annotatedMethod',
+  'unsupportedEnum',
   'BadFromFuncReturnType',
   'BadNoArgs',
   'BadOneNamed',
@@ -120,4 +121,5 @@ const _expectedAnnotatedTests = {
   'ValidToFromFuncClassStatic',
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
+  'WrongConstructorNameClass',
 };

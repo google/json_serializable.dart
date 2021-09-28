@@ -2,8 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:collection/collection.dart';
-
+import '../test_utils.dart';
 import 'simple_object.dart';
 
 abstract class KitchenSinkFactory<K, V> {
@@ -70,6 +69,10 @@ abstract class KitchenSink {
 
   set dateTimeList(List<DateTime> value);
 
+  List<SimpleObject?> get nullableSimpleObjectList;
+
+  set nullableSimpleObjectList(List<SimpleObject?> value);
+
   Set get set;
 
   Set<dynamic> get dynamicSet;
@@ -91,6 +94,10 @@ abstract class KitchenSink {
   Map<Object, DateTime> get objectDateTimeMap;
 
   set objectDateTimeMap(Map<Object, DateTime> value);
+
+  Map<String, SimpleObject?> get nullableSimpleObjectMap;
+
+  set nullableSimpleObjectMap(Map<String, SimpleObject?> value);
 
   List<Map<String, Map<String, List<List<DateTime>?>?>?>?> get crazyComplex;
 
@@ -115,24 +122,21 @@ bool sinkEquals(KitchenSink a, Object other) =>
     other is KitchenSink &&
     a.ctorValidatedNo42 == other.ctorValidatedNo42 &&
     a.dateTime == other.dateTime &&
-    _deepEquals(a.iterable, other.iterable) &&
-    _deepEquals(a.dynamicIterable, other.dynamicIterable) &&
+    deepEquals(a.iterable, other.iterable) &&
+    deepEquals(a.dynamicIterable, other.dynamicIterable) &&
     // objectIterable
     // intIterable
-    _deepEquals(a.dateTimeIterable, other.dateTimeIterable) &&
+    deepEquals(a.dateTimeIterable, other.dateTimeIterable) &&
     // list
     // dynamicList
     // objectList
     // intList
-    _deepEquals(a.dateTimeList, other.dateTimeList) &&
+    deepEquals(a.dateTimeList, other.dateTimeList) &&
     // map
     // stringStringMap
     // stringIntMap
-    _deepEquals(a.objectDateTimeMap, other.objectDateTimeMap) &&
-    _deepEquals(a.crazyComplex, other.crazyComplex) &&
+    deepEquals(a.objectDateTimeMap, other.objectDateTimeMap) &&
+    deepEquals(a.crazyComplex, other.crazyComplex) &&
     // val
     a.writeNotNull == other.writeNotNull &&
     a.string == other.string;
-
-bool _deepEquals(Object? a, Object? b) =>
-    const DeepCollectionEquality().equals(a, b);

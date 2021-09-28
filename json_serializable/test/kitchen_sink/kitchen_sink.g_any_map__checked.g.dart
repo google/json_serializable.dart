@@ -64,6 +64,11 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
             (v) => val.dateTimeList = (v as List<dynamic>)
                 .map((e) => DateTime.parse(e as String))
                 .toList());
+        $checkedConvert(
+            'nullableSimpleObjectList',
+            (v) => val.nullableSimpleObjectList = (v as List<dynamic>)
+                .map((e) => e == null ? null : SimpleObject.fromJson(e as Map))
+                .toList());
         $checkedConvert('map', (v) => val.map = v as Map);
         $checkedConvert('stringStringMap',
             (v) => val.stringStringMap = Map<String, String>.from(v as Map));
@@ -73,6 +78,12 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
             'objectDateTimeMap',
             (v) => val.objectDateTimeMap = (v as Map).map(
                   (k, e) => MapEntry(k as Object, DateTime.parse(e as String)),
+                ));
+        $checkedConvert(
+            'nullableSimpleObjectMap',
+            (v) => val.nullableSimpleObjectMap = (v as Map).map(
+                  (k, e) => MapEntry(k as String,
+                      e == null ? null : SimpleObject.fromJson(e as Map)),
                 ));
         $checkedConvert(
             'crazyComplex',
@@ -134,11 +145,13 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'intList': instance.intList,
       'dateTimeList':
           instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'nullableSimpleObjectList': instance.nullableSimpleObjectList,
       'map': instance.map,
       'stringStringMap': instance.stringStringMap,
       'dynamicIntMap': instance.dynamicIntMap,
       'objectDateTimeMap': instance.objectDateTimeMap
           .map((k, e) => MapEntry(k, e.toIso8601String())),
+      'nullableSimpleObjectMap': instance.nullableSimpleObjectMap,
       'crazyComplex': instance.crazyComplex
           .map((e) => e?.map((k, e) => MapEntry(
               k,

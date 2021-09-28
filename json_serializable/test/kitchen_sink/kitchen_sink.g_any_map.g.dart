@@ -41,12 +41,20 @@ KitchenSink _$KitchenSinkFromJson(Map json) => KitchenSink(
       ..dateTimeList = (json['dateTimeList'] as List<dynamic>)
           .map((e) => DateTime.parse(e as String))
           .toList()
+      ..nullableSimpleObjectList =
+          (json['nullableSimpleObjectList'] as List<dynamic>)
+              .map((e) => e == null ? null : SimpleObject.fromJson(e as Map))
+              .toList()
       ..map = json['map'] as Map
       ..stringStringMap =
           Map<String, String>.from(json['stringStringMap'] as Map)
       ..dynamicIntMap = Map<String, int>.from(json['dynamicIntMap'] as Map)
       ..objectDateTimeMap = (json['objectDateTimeMap'] as Map).map(
         (k, e) => MapEntry(k as Object, DateTime.parse(e as String)),
+      )
+      ..nullableSimpleObjectMap = (json['nullableSimpleObjectMap'] as Map).map(
+        (k, e) => MapEntry(
+            k as String, e == null ? null : SimpleObject.fromJson(e as Map)),
       )
       ..crazyComplex = (json['crazyComplex'] as List<dynamic>)
           .map((e) => (e as Map?)?.map(
@@ -94,11 +102,13 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'intList': instance.intList,
       'dateTimeList':
           instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'nullableSimpleObjectList': instance.nullableSimpleObjectList,
       'map': instance.map,
       'stringStringMap': instance.stringStringMap,
       'dynamicIntMap': instance.dynamicIntMap,
       'objectDateTimeMap': instance.objectDateTimeMap
           .map((k, e) => MapEntry(k, e.toIso8601String())),
+      'nullableSimpleObjectMap': instance.nullableSimpleObjectMap,
       'crazyComplex': instance.crazyComplex
           .map((e) => e?.map((k, e) => MapEntry(
               k,

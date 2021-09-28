@@ -316,4 +316,14 @@ void main() {
       });
     });
   });
+
+  test('issue 980 regression test', () {
+    validateRoundTrip(
+      Issue980ParentClass([
+        Issue980GenericClass(45),
+        Issue980GenericClass(42),
+      ]),
+      (json) => Issue980ParentClass.fromJson(json),
+    );
+  });
 }

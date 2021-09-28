@@ -245,11 +245,11 @@ String _encodedFieldName(
     case FieldRename.none:
       return fieldElement.name;
     case FieldRename.snake:
-      return snakeCase(fieldElement.name);
+      return fieldElement.name.snake;
     case FieldRename.kebab:
-      return kebabCase(fieldElement.name);
+      return fieldElement.name.kebab;
     case FieldRename.pascal:
-      return pascalCase(fieldElement.name);
+      return fieldElement.name.pascal;
     default:
       throw ArgumentError.value(
         classAnnotation,

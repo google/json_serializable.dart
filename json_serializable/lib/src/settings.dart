@@ -45,9 +45,11 @@ class Settings {
 
   final JsonSerializable _config;
 
+  // #CHANGE WHEN UPDATING json_annotation
   ClassConfig get config => ClassConfig(
         checked: _config.checked ?? ClassConfig.defaults.checked,
         anyMap: _config.anyMap ?? ClassConfig.defaults.anyMap,
+        constructor: _config.constructor ?? ClassConfig.defaults.constructor,
         createFactory:
             _config.createFactory ?? ClassConfig.defaults.createFactory,
         createToJson: _config.createToJson ?? ClassConfig.defaults.createToJson,
