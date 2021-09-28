@@ -43,8 +43,8 @@ class _DocBuilder extends Builder {
 
     final descriptionMap = <String, _FieldInfo>{};
 
-    for (final className in _annotationClasses) {
-      for (final fe in lib
+    for (var className in _annotationClasses) {
+      for (var fe in lib
           .findType(className)!
           .fields
           .where((fe) => !fe.isStatic && !fe.hasDeprecated)) {
@@ -60,7 +60,7 @@ class _DocBuilder extends Builder {
     final rows = <List<String>>[
       ['`build.yaml` key', _jsonSerializable, _jsonKey],
       ['-', '-', '-'],
-      for (final info in sortedValues)
+      for (var info in sortedValues)
         [
           info.buildKey,
           info.classAnnotationName,
@@ -69,7 +69,7 @@ class _DocBuilder extends Builder {
     ];
 
     final longest = List<int>.generate(rows.first.length, (_) => 0);
-    for (final row in rows) {
+    for (var row in rows) {
       for (var column = 0; column < longest.length; column++) {
         if (row[column].length > longest[column]) {
           longest[column] = row[column].length;
@@ -77,7 +77,7 @@ class _DocBuilder extends Builder {
       }
     }
 
-    for (final row in rows) {
+    for (var row in rows) {
       for (var column = 0; column < longest.length; column++) {
         var content = row[column];
         if (content == '-') {
@@ -92,7 +92,7 @@ class _DocBuilder extends Builder {
 
     buffer.writeln();
 
-    for (final info in sortedValues) {
+    for (var info in sortedValues) {
       if (info._classField != null) {
         buffer.writeln(_link(targetVersion, _jsonSerializable, info.name));
       }

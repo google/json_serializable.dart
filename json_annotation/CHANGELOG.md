@@ -2,7 +2,7 @@
 
 - Added `JsonSerializabel.constructor` field to allow specifying an alternative
   constructor to invoke when creating a `fromJson` helper.
-- Added `JsonEnum` for annotating `enum` types.
+- Added `JsonEnum` for annotating `enum` types.  
 
 ## 4.1.0
 

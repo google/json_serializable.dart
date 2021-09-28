@@ -15,7 +15,7 @@ Builder validate(String builderName, Builder builder) {
     sourceUrl: Uri.parse('build.yaml'),
   ) as YamlMap;
 
-  for (final key in ['builders', builderName, 'build_extensions']) {
+  for (var key in ['builders', builderName, 'build_extensions']) {
     buildYaml = buildYaml[key] as YamlMap;
   }
 

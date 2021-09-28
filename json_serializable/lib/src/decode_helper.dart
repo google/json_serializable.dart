@@ -35,7 +35,7 @@ abstract class DecodeHelper implements HelperCore {
         '($mapType json');
 
     if (config.genericArgumentFactories) {
-      for (final arg in element.typeParameters) {
+      for (var arg in element.typeParameters) {
         final helperName = fromJsonForType(
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
         );

@@ -13,7 +13,7 @@ import '../test_utils.dart';
 import 'input.type_map.dart' show SimpleClassOfStringToStringNullable;
 
 void main() {
-  for (final input in const <Map<String, Object?>>{
+  for (var input in const <Map<String, Object?>>{
     {'value': {}},
     {
       'value': {'key': 'value'}

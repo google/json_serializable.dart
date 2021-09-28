@@ -1,6 +1,6 @@
 ## 5.1.0-dev
 
-- Added support for `JsonSerializabel.constructor` to allow specifying an
+- Added support for `JsonSerializabel.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
 - Support the new `@JsonEnum` annotation by generating the corresponding private
   `_$EnumNameEnumMap` and `_$enumDecode` helpers, even  if the `enum` is not

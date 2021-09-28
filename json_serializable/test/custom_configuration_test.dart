@@ -48,11 +48,11 @@ Future<void> main() async {
     setUp(_ConfigLogger.configurations.clear);
 
     group('defaults', () {
-      for (final className in [
+      for (var className in [
         'ConfigurationImplicitDefaults',
         'ConfigurationExplicitDefaults',
       ]) {
-        for (final nullConfig in [true, false]) {
+        for (var nullConfig in [true, false]) {
           final testDescription =
               '$className with ${nullConfig ? 'null' : 'default'} config';
 
@@ -106,7 +106,7 @@ Future<void> main() async {
 
         final expected =
             Map<String, dynamic>.from(generatorConfigNonDefaultJson);
-        for (final jsonSerialKey in jsonSerializableFields) {
+        for (var jsonSerialKey in jsonSerializableFields) {
           expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
         }
 

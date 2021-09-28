@@ -48,7 +48,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
       functionName = r'_$enumDecodeNullable';
-      context.addMember(enumDecodeHelperNullable);
+      context.addMember(_enumDecodeHelperNullable);
     } else {
       functionName = r'_$enumDecode';
       context.addMember(enumDecodeHelper);
@@ -115,7 +115,7 @@ K _$enumDecode<K, V>(
   ).key;
 }''';
 
-const enumDecodeHelperNullable = r'''
+const _enumDecodeHelperNullable = r'''
 K? _$enumDecodeNullable<K, V>(
   Map<K, V> enumValues,
   dynamic source, {

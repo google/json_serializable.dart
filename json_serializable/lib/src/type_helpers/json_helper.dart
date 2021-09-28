@@ -145,13 +145,13 @@ List<String> _helperParams(
   Element targetElement,
 ) {
   final rest = <TypeParameterType>[];
-  for (final param in positionalParams) {
+  for (var param in positionalParams) {
     rest.add(paramMapper(param, targetElement));
   }
 
   final args = <String>[];
 
-  for (final helperArg in rest) {
+  for (var helperArg in rest) {
     final typeParamIndex =
         type.element.typeParameters.indexOf(helperArg.element);
 

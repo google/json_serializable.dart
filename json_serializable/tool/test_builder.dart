@@ -27,7 +27,7 @@ class _TestBuilder implements Builder {
     final factories =
         SplayTreeMap.from({'$_kitchenSinkBaseName.dart': 'normal'});
 
-    for (final config in _fileConfigurationMap[baseName]!) {
+    for (var config in _fileConfigurationMap[baseName]!) {
       final extension = _configToExtension(config);
       final newId = buildStep.inputId.changeExtension(extension);
 
@@ -50,7 +50,7 @@ class _TestBuilder implements Builder {
         factories['$baseName$partName.dart'] = description;
       }
 
-      for (final entry in config) {
+      for (var entry in config) {
         replacements.addAll(_optionReplacement(baseName, entry));
       }
 
@@ -162,7 +162,7 @@ List<String> get _fileConfigurations => _fileConfigurationMap.values
     .followedBy(['.factories.dart'])
     .toSet()
     .toList()
-      ..sort();
+  ..sort();
 
 const _kitchenSinkBaseName = 'kitchen_sink';
 

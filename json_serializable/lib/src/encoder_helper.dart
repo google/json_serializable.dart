@@ -26,7 +26,7 @@ abstract class EncodeHelper implements HelperCore {
         '$functionName($targetClassReference $_toJsonParamName');
 
     if (config.genericArgumentFactories) {
-      for (final arg in element.typeParameters) {
+      for (var arg in element.typeParameters) {
         final helperName = toJsonForType(
           arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
         );

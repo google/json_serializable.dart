@@ -123,7 +123,7 @@ class _TypeBuilder implements Builder {
 
     final sourceContent = await buildStep.readAsString(inputId);
 
-    for (final entry in _typesToTest.entries) {
+    for (var entry in _typesToTest.entries) {
       final type = entry.key;
       final newId = buildStep.inputId.changeExtension(toTypeExtension(type));
 
@@ -152,7 +152,7 @@ class _TypeTestBuilder implements Builder {
 
     final sourceContent = await buildStep.readAsString(inputId);
 
-    for (final entry in _typesToTest.entries) {
+    for (var entry in _typesToTest.entries) {
       final type = entry.key;
       final newId =
           buildStep.inputId.changeExtension(_toTypeTestExtension(type));
