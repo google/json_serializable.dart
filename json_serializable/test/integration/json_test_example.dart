@@ -240,7 +240,7 @@ class PrivateConstructor {
       other is PrivateConstructor && id == other.id && value == other.value;
 }
 
-@JsonEnum()
+@JsonEnum(alwaysCreate: true)
 enum StandAloneEnum {
   @JsonValue('a')
   alpha,
