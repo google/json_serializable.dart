@@ -10,15 +10,26 @@ import 'package:test/test.dart';
 
 Future<void> main() async {
   initializeBuildLogTracking();
-  final reader = await initializeLibraryReaderForDirectory(
+  final jsonSerializableTestReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
     '_json_serializable_test_input.dart',
   );
 
   testAnnotatedElements(
-    reader,
+    jsonSerializableTestReader,
     JsonSerializableGenerator(),
     expectedAnnotatedTests: _expectedAnnotatedTests,
+  );
+
+  final jsonEnumTestReader = await initializeLibraryReaderForDirectory(
+    p.join('test', 'src'),
+    '_json_enum_test_input.dart',
+  );
+
+  testAnnotatedElements(
+    jsonEnumTestReader,
+    const JsonEnumGenerator(),
+    expectedAnnotatedTests: {'UnsupportedClass'},
   );
 }
 
