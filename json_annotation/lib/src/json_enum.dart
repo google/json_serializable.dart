@@ -4,10 +4,20 @@
 
 import 'package:meta/meta_meta.dart';
 
-/// When applied to `enum` definitions, causes the corresponding private
-//  `_$EnumNameEnumMap` and `_$enumDecode` helpers to be generated, even  if the
-//  `enum` is not referenced elsewhere in generated code.
+import 'json_serializable.dart';
+
+/// Allows configuration of how `enum` elements are treated as JSON.
 @Target({TargetKind.enumType})
 class JsonEnum {
-  const JsonEnum();
+  const JsonEnum({
+    this.alwaysCreate = false,
+  });
+
+  /// If `true`, `_$EnumNameEnumMap` and `_$enumDecode` are generated for the
+  /// library containing the `enum`, even if the `enum` is not used as a field
+  /// in a class annotated with [JsonSerializable].
+  ///
+  /// The default, `false`, means no extra helpers are generated for this `enum`
+  /// unless it is used by a class annotated with [JsonSerializable].
+  final bool alwaysCreate;
 }

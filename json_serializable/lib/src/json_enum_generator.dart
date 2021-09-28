@@ -25,9 +25,19 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
       );
     }
 
+    final jsonEnum = _fromAnnotation(annotation);
+
+    if (!jsonEnum.alwaysCreate) {
+      return const [];
+    }
+
     return [
       enumDecodeHelper,
       enumValueMapFromType(element.thisType)!,
     ];
   }
 }
+
+JsonEnum _fromAnnotation(ConstantReader reader) => JsonEnum(
+      alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
+    );
