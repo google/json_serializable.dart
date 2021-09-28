@@ -211,10 +211,3 @@ Map<String, dynamic> _$PrivateConstructorToJson(PrivateConstructor instance) =>
       'id': instance.id,
       'value': instance.value,
     };
-
-const _$StandAloneEnumEnumMap = {
-  StandAloneEnum.alpha: 'a',
-  StandAloneEnum.beta: 'b',
-  StandAloneEnum.gamma: 'g',
-  StandAloneEnum.delta: 'd',
-};
