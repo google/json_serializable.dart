@@ -299,6 +299,7 @@ void main() {
   });
 
   test('enum helpers', () {
-    expect(standAloneEnumKeys, ['a', 'b', 'g', 'd']);
+    expect(standAloneEnumValues, ['a', 'b', 'g', 'd']);
+    expect(dayTypeEnumValues, ['no-good', 'rotten', 'very-bad']);
   });
 }

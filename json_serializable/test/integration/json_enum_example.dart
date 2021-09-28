@@ -14,4 +14,13 @@ enum StandAloneEnum {
   delta,
 }
 
-Iterable<String> get standAloneEnumKeys => _$StandAloneEnumEnumMap.values;
+Iterable<String> get standAloneEnumValues => _$StandAloneEnumEnumMap.values;
+
+@JsonEnum(alwaysCreate: true, fieldRename: FieldRename.kebab)
+enum DayType {
+  noGood,
+  rotten,
+  veryBad,
+}
+
+Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;
