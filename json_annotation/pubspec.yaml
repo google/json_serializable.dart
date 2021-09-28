@@ -5,7 +5,7 @@ description: >-
   `json_serializable` package.
 repository: https://github.com/google/json_serializable.dart
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
   meta: ^1.4.0
