@@ -14,6 +14,7 @@ import 'type_helper.dart';
 import 'type_helper_ctx.dart';
 import 'type_helpers/config_types.dart';
 import 'unsupported_type_error.dart';
+import 'utils.dart';
 
 abstract class HelperCore {
   final ClassElement element;
@@ -126,27 +127,4 @@ String genericClassArguments(ClassElement element, bool? withConstraints) {
     }
   }).join(', ');
   return '<$values>';
-}
-
-/// Return the Dart code presentation for the given [type].
-///
-/// This function is intentionally limited, and does not support all possible
-/// types and locations of these files in code. Specifically, it supports
-/// only [InterfaceType]s, with optional type arguments that are also should
-/// be [InterfaceType]s.
-String typeToCode(
-  DartType type, {
-  bool forceNullable = false,
-}) {
-  if (type.isDynamic) {
-    return 'dynamic';
-  } else if (type is InterfaceType) {
-    return [
-      type.element.name,
-      if (type.typeArguments.isNotEmpty)
-        '<${type.typeArguments.map(typeToCode).join(', ')}>',
-      (type.isNullableType || forceNullable) ? '?' : '',
-    ].join();
-  }
-  throw UnimplementedError('(${type.runtimeType}) $type');
 }

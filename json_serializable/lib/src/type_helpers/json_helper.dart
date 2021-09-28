@@ -11,7 +11,6 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../default_container.dart';
-import '../helper_core.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 import 'config_types.dart';

@@ -6,7 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import 'package:source_helper/source_helper.dart';
 
-import 'helper_core.dart';
+import 'utils.dart';
 
 /// A [TypeChecker] for [Iterable].
 const coreIterableTypeChecker = TypeChecker.fromUrl('dart:core#Iterable');
