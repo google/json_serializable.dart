@@ -4,47 +4,10 @@ part of '_json_serializable_test_input.dart';
   r'''
 UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
     UnknownEnumValue()
-      ..value = _$enumDecodeNullable(
+      ..value = $enumDecodeNullable(
               _$UnknownEnumValueItemsEnumMap, json['value'],
               unknownValue: UnknownEnumValueItems.vUnknown) ??
           UnknownEnumValueItems.vNull;
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$UnknownEnumValueItemsEnumMap = {
   UnknownEnumValueItems.v0: 'v0',

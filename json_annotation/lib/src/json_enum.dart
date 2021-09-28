@@ -13,9 +13,9 @@ class JsonEnum {
     this.alwaysCreate = false,
   });
 
-  /// If `true`, `_$EnumNameEnumMap` and `_$enumDecode` are generated for the
-  /// library containing the `enum`, even if the `enum` is not used as a field
-  /// in a class annotated with [JsonSerializable].
+  /// If `true`, `_$[enum name]EnumMap` is generated for in library containing
+  /// the `enum`, even if the `enum` is not used as a field in a class annotated
+  /// with [JsonSerializable].
   ///
   /// The default, `false`, means no extra helpers are generated for this `enum`
   /// unless it is used by a class annotated with [JsonSerializable].

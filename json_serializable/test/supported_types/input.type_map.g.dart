@@ -126,7 +126,7 @@ SimpleClassOfEnumTypeToBigInt _$SimpleClassOfEnumTypeToBigIntFromJson(
     SimpleClassOfEnumTypeToBigInt(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
-            _$enumDecode(_$EnumTypeEnumMap, k), BigInt.parse(e as String)),
+            $enumDecode(_$EnumTypeEnumMap, k), BigInt.parse(e as String)),
       ),
     );
 
@@ -136,32 +136,6 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToBigIntToJson(
       'value': instance.value
           .map((k, e) => MapEntry(_$EnumTypeEnumMap[k], e.toString())),
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
@@ -176,7 +150,7 @@ SimpleClassNullableOfEnumTypeToBigInt
         SimpleClassNullableOfEnumTypeToBigInt(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                _$enumDecode(_$EnumTypeEnumMap, k), BigInt.parse(e as String)),
+                $enumDecode(_$EnumTypeEnumMap, k), BigInt.parse(e as String)),
           ),
         );
 
@@ -404,7 +378,7 @@ SimpleClassOfEnumTypeToBigIntNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToBigIntNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : BigInt.parse(e as String)),
           ),
         );
@@ -421,7 +395,7 @@ SimpleClassNullableOfEnumTypeToBigIntNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToBigIntNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : BigInt.parse(e as String)),
           ),
         );
@@ -643,7 +617,7 @@ SimpleClassOfEnumTypeToBool _$SimpleClassOfEnumTypeToBoolFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToBool(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as bool),
       ),
     );
 
@@ -657,7 +631,7 @@ SimpleClassNullableOfEnumTypeToBool
     _$SimpleClassNullableOfEnumTypeToBoolFromJson(Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToBool(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as bool),
           ),
         );
 
@@ -864,7 +838,7 @@ SimpleClassOfEnumTypeToBoolNullable
     _$SimpleClassOfEnumTypeToBoolNullableFromJson(Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToBoolNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as bool?),
           ),
         );
 
@@ -879,7 +853,7 @@ SimpleClassNullableOfEnumTypeToBoolNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToBoolNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as bool?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as bool?),
           ),
         );
 
@@ -1097,7 +1071,7 @@ SimpleClassOfEnumTypeToDateTime _$SimpleClassOfEnumTypeToDateTimeFromJson(
     SimpleClassOfEnumTypeToDateTime(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) => MapEntry(
-            _$enumDecode(_$EnumTypeEnumMap, k), DateTime.parse(e as String)),
+            $enumDecode(_$EnumTypeEnumMap, k), DateTime.parse(e as String)),
       ),
     );
 
@@ -1113,8 +1087,8 @@ SimpleClassNullableOfEnumTypeToDateTime
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToDateTime(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
-                DateTime.parse(e as String)),
+            (k, e) => MapEntry(
+                $enumDecode(_$EnumTypeEnumMap, k), DateTime.parse(e as String)),
           ),
         );
 
@@ -1348,7 +1322,7 @@ SimpleClassOfEnumTypeToDateTimeNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToDateTimeNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : DateTime.parse(e as String)),
           ),
         );
@@ -1365,7 +1339,7 @@ SimpleClassNullableOfEnumTypeToDateTimeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToDateTimeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : DateTime.parse(e as String)),
           ),
         );
@@ -1597,7 +1571,7 @@ SimpleClassOfEnumTypeToDouble _$SimpleClassOfEnumTypeToDoubleFromJson(
     SimpleClassOfEnumTypeToDouble(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) =>
-            MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), (e as num).toDouble()),
+            MapEntry($enumDecode(_$EnumTypeEnumMap, k), (e as num).toDouble()),
       ),
     );
 
@@ -1613,7 +1587,7 @@ SimpleClassNullableOfEnumTypeToDouble
         SimpleClassNullableOfEnumTypeToDouble(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                _$enumDecode(_$EnumTypeEnumMap, k), (e as num).toDouble()),
+                $enumDecode(_$EnumTypeEnumMap, k), (e as num).toDouble()),
           ),
         );
 
@@ -1829,7 +1803,7 @@ SimpleClassOfEnumTypeToDoubleNullable
         SimpleClassOfEnumTypeToDoubleNullable(
           (json['value'] as Map<String, dynamic>).map(
             (k, e) => MapEntry(
-                _$enumDecode(_$EnumTypeEnumMap, k), (e as num?)?.toDouble()),
+                $enumDecode(_$EnumTypeEnumMap, k), (e as num?)?.toDouble()),
           ),
         );
 
@@ -1845,7 +1819,7 @@ SimpleClassNullableOfEnumTypeToDoubleNullable
         SimpleClassNullableOfEnumTypeToDoubleNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                _$enumDecode(_$EnumTypeEnumMap, k), (e as num?)?.toDouble()),
+                $enumDecode(_$EnumTypeEnumMap, k), (e as num?)?.toDouble()),
           ),
         );
 
@@ -2068,7 +2042,7 @@ SimpleClassOfEnumTypeToDuration _$SimpleClassOfEnumTypeToDurationFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToDuration(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
             Duration(microseconds: e as int)),
       ),
     );
@@ -2085,7 +2059,7 @@ SimpleClassNullableOfEnumTypeToDuration
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToDuration(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 Duration(microseconds: e as int)),
           ),
         );
@@ -2320,7 +2294,7 @@ SimpleClassOfEnumTypeToDurationNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToDurationNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : Duration(microseconds: e as int)),
           ),
         );
@@ -2337,7 +2311,7 @@ SimpleClassNullableOfEnumTypeToDurationNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToDurationNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : Duration(microseconds: e as int)),
           ),
         );
@@ -2565,7 +2539,7 @@ SimpleClassOfEnumTypeToDynamic _$SimpleClassOfEnumTypeToDynamicFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToDynamic(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e),
       ),
     );
 
@@ -2580,7 +2554,7 @@ SimpleClassNullableOfEnumTypeToDynamic
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToDynamic(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e),
           ),
         );
 
@@ -2698,7 +2672,7 @@ SimpleClassOfBigIntToEnumType _$SimpleClassOfBigIntToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfBigIntToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(BigInt.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(BigInt.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2715,7 +2689,7 @@ SimpleClassNullableOfBigIntToEnumType
         SimpleClassNullableOfBigIntToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) =>
-                MapEntry(BigInt.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+                MapEntry(BigInt.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2731,7 +2705,7 @@ SimpleClassOfDateTimeToEnumType _$SimpleClassOfDateTimeToEnumTypeFromJson(
     SimpleClassOfDateTimeToEnumType(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) =>
-            MapEntry(DateTime.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+            MapEntry(DateTime.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2748,7 +2722,7 @@ SimpleClassNullableOfDateTimeToEnumType
         SimpleClassNullableOfDateTimeToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) =>
-                MapEntry(DateTime.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+                MapEntry(DateTime.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2763,7 +2737,7 @@ SimpleClassOfDynamicToEnumType _$SimpleClassOfDynamicToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfDynamicToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2778,7 +2752,7 @@ SimpleClassNullableOfDynamicToEnumType
             Map<String, dynamic> json) =>
         SimpleClassNullableOfDynamicToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2792,8 +2766,8 @@ SimpleClassOfEnumTypeToEnumType _$SimpleClassOfEnumTypeToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
-            _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
+            $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2809,8 +2783,8 @@ SimpleClassNullableOfEnumTypeToEnumType
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
-                _$enumDecode(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
+                $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2825,7 +2799,7 @@ SimpleClassOfIntToEnumType _$SimpleClassOfIntToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfIntToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(int.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(int.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2840,7 +2814,7 @@ SimpleClassNullableOfIntToEnumType _$SimpleClassNullableOfIntToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfIntToEnumType(
       (json['value'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(int.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(int.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2855,7 +2829,7 @@ SimpleClassOfObjectToEnumType _$SimpleClassOfObjectToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfObjectToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2870,7 +2844,7 @@ SimpleClassNullableOfObjectToEnumType
             Map<String, dynamic> json) =>
         SimpleClassNullableOfObjectToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2884,7 +2858,7 @@ SimpleClassOfStringToEnumType _$SimpleClassOfStringToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfStringToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2899,7 +2873,7 @@ SimpleClassNullableOfStringToEnumType
             Map<String, dynamic> json) =>
         SimpleClassNullableOfStringToEnumType(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecode(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecode(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2913,7 +2887,7 @@ SimpleClassOfUriToEnumType _$SimpleClassOfUriToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfUriToEnumType(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(Uri.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(Uri.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2928,7 +2902,7 @@ SimpleClassNullableOfUriToEnumType _$SimpleClassNullableOfUriToEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfUriToEnumType(
       (json['value'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(Uri.parse(k), _$enumDecode(_$EnumTypeEnumMap, e)),
+        (k, e) => MapEntry(Uri.parse(k), $enumDecode(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -2945,7 +2919,7 @@ SimpleClassOfBigIntToEnumTypeNullable
         SimpleClassOfBigIntToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
             (k, e) => MapEntry(
-                BigInt.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                BigInt.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2956,24 +2930,13 @@ Map<String, dynamic> _$SimpleClassOfBigIntToEnumTypeNullableToJson(
           .map((k, e) => MapEntry(k.toString(), _$EnumTypeEnumMap[e])),
     };
 
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
-
 SimpleClassNullableOfBigIntToEnumTypeNullable
     _$SimpleClassNullableOfBigIntToEnumTypeNullableFromJson(
             Map<String, dynamic> json) =>
         SimpleClassNullableOfBigIntToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                BigInt.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                BigInt.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -2990,7 +2953,7 @@ SimpleClassOfDateTimeToEnumTypeNullable
         SimpleClassOfDateTimeToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
             (k, e) => MapEntry(
-                DateTime.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                DateTime.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3007,7 +2970,7 @@ SimpleClassNullableOfDateTimeToEnumTypeNullable
         SimpleClassNullableOfDateTimeToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                DateTime.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                DateTime.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3023,7 +2986,7 @@ SimpleClassOfDynamicToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassOfDynamicToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3038,7 +3001,7 @@ SimpleClassNullableOfDynamicToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfDynamicToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3053,8 +3016,8 @@ SimpleClassOfEnumTypeToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
-                _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
+                $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3070,8 +3033,8 @@ SimpleClassNullableOfEnumTypeToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
-                _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
+                $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3087,7 +3050,7 @@ SimpleClassOfIntToEnumTypeNullable _$SimpleClassOfIntToEnumTypeNullableFromJson(
     SimpleClassOfIntToEnumTypeNullable(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) =>
-            MapEntry(int.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            MapEntry(int.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -3104,7 +3067,7 @@ SimpleClassNullableOfIntToEnumTypeNullable
         SimpleClassNullableOfIntToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                int.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                int.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3120,7 +3083,7 @@ SimpleClassOfObjectToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassOfObjectToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3135,7 +3098,7 @@ SimpleClassNullableOfObjectToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfObjectToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3150,7 +3113,7 @@ SimpleClassOfStringToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassOfStringToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3165,7 +3128,7 @@ SimpleClassNullableOfStringToEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfStringToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            (k, e) => MapEntry(k, $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3180,7 +3143,7 @@ SimpleClassOfUriToEnumTypeNullable _$SimpleClassOfUriToEnumTypeNullableFromJson(
     SimpleClassOfUriToEnumTypeNullable(
       (json['value'] as Map<String, dynamic>).map(
         (k, e) =>
-            MapEntry(Uri.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+            MapEntry(Uri.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
       ),
     );
 
@@ -3197,7 +3160,7 @@ SimpleClassNullableOfUriToEnumTypeNullable
         SimpleClassNullableOfUriToEnumTypeNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(
-                Uri.parse(k), _$enumDecodeNullable(_$EnumTypeEnumMap, e)),
+                Uri.parse(k), $enumDecodeNullable(_$EnumTypeEnumMap, e)),
           ),
         );
 
@@ -3294,7 +3257,7 @@ SimpleClassOfEnumTypeToInt _$SimpleClassOfEnumTypeToIntFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToInt(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as int),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as int),
       ),
     );
 
@@ -3308,7 +3271,7 @@ SimpleClassNullableOfEnumTypeToInt _$SimpleClassNullableOfEnumTypeToIntFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumTypeToInt(
       (json['value'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as int),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as int),
       ),
     );
 
@@ -3515,7 +3478,7 @@ SimpleClassOfEnumTypeToIntNullable _$SimpleClassOfEnumTypeToIntNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToIntNullable(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as int?),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as int?),
       ),
     );
 
@@ -3530,7 +3493,7 @@ SimpleClassNullableOfEnumTypeToIntNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToIntNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as int?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as int?),
           ),
         );
 
@@ -3738,7 +3701,7 @@ SimpleClassOfEnumTypeToNum _$SimpleClassOfEnumTypeToNumFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToNum(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as num),
       ),
     );
 
@@ -3752,7 +3715,7 @@ SimpleClassNullableOfEnumTypeToNum _$SimpleClassNullableOfEnumTypeToNumFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumTypeToNum(
       (json['value'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as num),
       ),
     );
 
@@ -3959,7 +3922,7 @@ SimpleClassOfEnumTypeToNumNullable _$SimpleClassOfEnumTypeToNumNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToNumNullable(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num?),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as num?),
       ),
     );
 
@@ -3974,7 +3937,7 @@ SimpleClassNullableOfEnumTypeToNumNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToNumNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as num?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as num?),
           ),
         );
 
@@ -4185,7 +4148,7 @@ SimpleClassOfEnumTypeToObject _$SimpleClassOfEnumTypeToObjectFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToObject(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as Object),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as Object),
       ),
     );
 
@@ -4200,7 +4163,7 @@ SimpleClassNullableOfEnumTypeToObject
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToObject(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as Object),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as Object),
           ),
         );
 
@@ -4411,7 +4374,7 @@ SimpleClassOfEnumTypeToObjectNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToObjectNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e),
           ),
         );
 
@@ -4426,7 +4389,7 @@ SimpleClassNullableOfEnumTypeToObjectNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToObjectNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e),
           ),
         );
 
@@ -4631,7 +4594,7 @@ SimpleClassOfEnumTypeToString _$SimpleClassOfEnumTypeToStringFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToString(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as String),
       ),
     );
 
@@ -4646,7 +4609,7 @@ SimpleClassNullableOfEnumTypeToString
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToString(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as String),
           ),
         );
 
@@ -4855,8 +4818,7 @@ SimpleClassOfEnumTypeToStringNullable
             Map<String, dynamic> json) =>
         SimpleClassOfEnumTypeToStringNullable(
           (json['value'] as Map<String, dynamic>).map(
-            (k, e) =>
-                MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as String?),
           ),
         );
 
@@ -4871,8 +4833,7 @@ SimpleClassNullableOfEnumTypeToStringNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToStringNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) =>
-                MapEntry(_$enumDecode(_$EnumTypeEnumMap, k), e as String?),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k), e as String?),
           ),
         );
 
@@ -5086,8 +5047,8 @@ SimpleClassOfEnumTypeToUri _$SimpleClassOfEnumTypeToUriFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToUri(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(
-            _$enumDecode(_$EnumTypeEnumMap, k), Uri.parse(e as String)),
+        (k, e) =>
+            MapEntry($enumDecode(_$EnumTypeEnumMap, k), Uri.parse(e as String)),
       ),
     );
 
@@ -5102,8 +5063,8 @@ SimpleClassNullableOfEnumTypeToUri _$SimpleClassNullableOfEnumTypeToUriFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumTypeToUri(
       (json['value'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-            _$enumDecode(_$EnumTypeEnumMap, k), Uri.parse(e as String)),
+        (k, e) =>
+            MapEntry($enumDecode(_$EnumTypeEnumMap, k), Uri.parse(e as String)),
       ),
     );
 
@@ -5329,7 +5290,7 @@ SimpleClassOfEnumTypeToUriNullable _$SimpleClassOfEnumTypeToUriNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeToUriNullable(
       (json['value'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+        (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
             e == null ? null : Uri.parse(e as String)),
       ),
     );
@@ -5346,7 +5307,7 @@ SimpleClassNullableOfEnumTypeToUriNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeToUriNullable(
           (json['value'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(_$enumDecode(_$EnumTypeEnumMap, k),
+            (k, e) => MapEntry($enumDecode(_$EnumTypeEnumMap, k),
                 e == null ? null : Uri.parse(e as String)),
           ),
         );
