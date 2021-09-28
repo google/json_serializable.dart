@@ -226,37 +226,25 @@ KeyConfig _populateJsonKey(
     ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
-    name: _encodedFieldName(classAnnotation, name, element),
+    name: name ?? _encodedFieldName(classAnnotation.fieldRename, element.name),
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
   );
 }
 
 String _encodedFieldName(
-  JsonSerializable classAnnotation,
-  String? jsonKeyNameValue,
-  FieldElement fieldElement,
+  FieldRename fieldRename,
+  String declaredName,
 ) {
-  if (jsonKeyNameValue != null) {
-    return jsonKeyNameValue;
-  }
-
-  switch (classAnnotation.fieldRename) {
+  switch (fieldRename) {
     case FieldRename.none:
-      return fieldElement.name;
+      return declaredName;
     case FieldRename.snake:
-      return fieldElement.name.snake;
+      return declaredName.snake;
     case FieldRename.kebab:
-      return fieldElement.name.kebab;
+      return declaredName.kebab;
     case FieldRename.pascal:
-      return fieldElement.name.pascal;
-    default:
-      throw ArgumentError.value(
-        classAnnotation,
-        'classAnnotation',
-        'The provided `fieldRename` (${classAnnotation.fieldRename}) is not '
-            'supported.',
-      );
+      return declaredName.pascal;
   }
 }
 
