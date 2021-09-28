@@ -38,7 +38,12 @@ Builder jsonPartBuilder({
 /// Allows exposing separate [GeneratorForAnnotation] instances as one
 /// generator.
 ///
-/// Output can be merged while keeping implementations separate.
+/// We want duplicate items to be merged if folks use both `@JsonEnum` and
+/// `@JsonSerializable` so we don't get duplicate enum helper functions.
+///
+/// This can only be done if the output is merged into one generator.
+///
+/// This class allows us to keep the implementations separate.
 class _UnifiedGenerator extends Generator {
   final List<GeneratorForAnnotation> _generators;
 
