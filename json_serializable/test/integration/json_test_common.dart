@@ -6,6 +6,7 @@ import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 
+@JsonEnum(fieldRename: FieldRename.kebab)
 enum Category {
   top,
   bottom,
@@ -13,6 +14,7 @@ enum Category {
   charmed,
   up,
   down,
+  // NOTE: this should override the kebab bits below!
   @JsonValue('not_discovered_yet')
   notDiscoveredYet
 }

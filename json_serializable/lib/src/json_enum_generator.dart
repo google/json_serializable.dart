@@ -7,7 +7,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'type_helpers/enum_helper.dart';
+import 'enum_utils.dart';
 
 class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
   const JsonEnumGenerator();
@@ -25,16 +25,11 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
       );
     }
 
-    final jsonEnum = _fromAnnotation(annotation);
+    final value =
+        enumValueMapFromType(element.thisType, nullWithNoAnnotation: true);
 
-    if (!jsonEnum.alwaysCreate) {
-      return const [];
-    }
-
-    return [enumValueMapFromType(element.thisType)!];
+    return [
+      if (value != null) value,
+    ];
   }
 }
-
-JsonEnum _fromAnnotation(ConstantReader reader) => JsonEnum(
-      alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
-    );

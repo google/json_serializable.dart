@@ -14,3 +14,9 @@ const _$StandAloneEnumEnumMap = {
   StandAloneEnum.gamma: 'g',
   StandAloneEnum.delta: 'd',
 };
+
+const _$DayTypeEnumMap = {
+  DayType.noGood: 'no-good',
+  DayType.rotten: 'rotten',
+  DayType.veryBad: 'very-bad',
+};

@@ -5,10 +5,9 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../enum_utils.dart';
 import '../json_key_utils.dart';
-import '../json_literal_generator.dart';
 import '../type_helper.dart';
-import '../utils.dart';
 
 final simpleExpression = RegExp('^[a-zA-Z_]+\$');
 
@@ -29,7 +28,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(memberContent);
 
-    return '${_constMapName(targetType)}[$expression]';
+    return '${constMapName(targetType)}[$expression]';
   }
 
   @override
@@ -56,7 +55,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final args = [
-      _constMapName(targetType),
+      constMapName(targetType),
       expression,
       if (jsonKey.unknownEnumValue != null)
         'unknownValue: ${jsonKey.unknownEnumValue}',
@@ -64,22 +63,4 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     return '$functionName(${args.join(', ')})';
   }
-}
-
-String _constMapName(DartType targetType) =>
-    '_\$${targetType.element!.name}EnumMap';
-
-String? enumValueMapFromType(DartType targetType) {
-  final enumMap = enumFieldsMap(targetType);
-
-  if (enumMap == null) {
-    return null;
-  }
-
-  final items = enumMap.entries
-      .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
-          '${jsonLiteralAsDart(e.value)},')
-      .join();
-
-  return 'const ${_constMapName(targetType)} = {\n$items\n};';
 }

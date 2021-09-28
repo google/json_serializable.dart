@@ -7,8 +7,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
-import 'helper_core.dart';
 import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
@@ -135,56 +135,6 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
   return ctor;
 }
 
-final _enumMapExpando = Expando<Map<FieldElement, dynamic>>();
-
-/// If [targetType] is an enum, returns a [Map] of the [FieldElement] instances
-/// associated with the enum values mapped to the [String] values that represent
-/// the serialized output.
-///
-/// By default, the [String] value is just the name of the enum value.
-/// If the enum value is annotated with [JsonKey], then the `name` property is
-/// used if it's set and not `null`.
-///
-/// If [targetType] is not an enum, `null` is returned.
-Map<FieldElement, dynamic>? enumFieldsMap(DartType targetType) {
-  MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
-    final annotation =
-        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
-
-    dynamic fieldValue;
-    if (annotation == null) {
-      fieldValue = fe.name;
-    } else {
-      final reader = ConstantReader(annotation);
-
-      final valueReader = reader.read('value');
-
-      if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
-        fieldValue = valueReader.literalValue;
-      } else {
-        final targetTypeCode = typeToCode(targetType);
-        throw InvalidGenerationSourceError(
-            'The `JsonValue` annotation on `$targetTypeCode.${fe.name}` does '
-            'not have a value of type String, int, or null.',
-            element: fe);
-      }
-    }
-
-    final entry = MapEntry(fe, fieldValue);
-
-    return entry;
-  }
-
-  final enumFields = iterateEnumFields(targetType);
-
-  if (enumFields == null) {
-    return null;
-  }
-
-  return _enumMapExpando[targetType] ??=
-      Map<FieldElement, dynamic>.fromEntries(enumFields.map(_generateEntry));
-}
-
 /// If [targetType] is an enum, returns the [FieldElement] instances associated
 /// with its values.
 ///
@@ -203,3 +153,19 @@ extension DartTypeExtension on DartType {
 
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
+
+String encodedFieldName(
+  FieldRename fieldRename,
+  String declaredName,
+) {
+  switch (fieldRename) {
+    case FieldRename.none:
+      return declaredName;
+    case FieldRename.snake:
+      return declaredName.snake;
+    case FieldRename.kebab:
+      return declaredName.kebab;
+    case FieldRename.pascal:
+      return declaredName.pascal;
+  }
+}

@@ -5,12 +5,14 @@
 import 'package:meta/meta_meta.dart';
 
 import 'json_serializable.dart';
+import 'json_value.dart';
 
 /// Allows configuration of how `enum` elements are treated as JSON.
 @Target({TargetKind.enumType})
 class JsonEnum {
   const JsonEnum({
     this.alwaysCreate = false,
+    this.fieldRename = FieldRename.none,
   });
 
   /// If `true`, `_$[enum name]EnumMap` is generated for in library containing
@@ -20,4 +22,16 @@ class JsonEnum {
   /// The default, `false`, means no extra helpers are generated for this `enum`
   /// unless it is used by a class annotated with [JsonSerializable].
   final bool alwaysCreate;
+
+  /// Defines the naming strategy when converting enum entry names to JSON
+  /// values.
+  ///
+  /// With a value [FieldRename.none] (the default), the name of the enum entry
+  /// is used without modification.
+  ///
+  /// See [FieldRename] for details on the other options.
+  ///
+  /// Note: the value for [JsonValue.value] takes precedence over this option
+  /// for entries annotated with [JsonValue].
+  final FieldRename fieldRename;
 }

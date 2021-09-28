@@ -6,7 +6,6 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -226,26 +225,10 @@ KeyConfig _populateJsonKey(
     ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
-    name: name ?? _encodedFieldName(classAnnotation.fieldRename, element.name),
+    name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
   );
-}
-
-String _encodedFieldName(
-  FieldRename fieldRename,
-  String declaredName,
-) {
-  switch (fieldRename) {
-    case FieldRename.none:
-      return declaredName;
-    case FieldRename.snake:
-      return declaredName.snake;
-    case FieldRename.kebab:
-      return declaredName.kebab;
-    case FieldRename.pascal:
-      return declaredName.pascal;
-  }
 }
 
 bool _includeIfNull(
