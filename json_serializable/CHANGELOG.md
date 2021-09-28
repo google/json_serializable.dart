@@ -3,6 +3,7 @@
 - Added support for `JsonSerializabel.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
 - Support the new `@JsonEnum` annotation in `package:json_annotation`.
+- Require Dart SDK `>=2.14.0`.
 - Require `json_annotation` `'>=4.2.0 <4.3.0'`.
 
 ## 5.0.2
