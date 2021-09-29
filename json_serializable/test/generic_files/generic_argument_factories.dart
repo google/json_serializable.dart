@@ -50,3 +50,33 @@ class ConcreteClass {
 
   Map<String, dynamic> toJson() => _$ConcreteClassToJson(this);
 }
+
+class CustomMap<K, V> {
+  final Map<K, V> map;
+
+  CustomMap(this.map);
+
+  factory CustomMap.fromJson(
+    Map<String, dynamic> json,
+    K Function(String?) fromJsonK,
+    V Function(Object?) fromJsonV,
+  ) =>
+      CustomMap(json.map<K, V>(
+          (key, value) => MapEntry(fromJsonK(key), fromJsonV(value))));
+
+  Map<String?, dynamic> toJson(
+          String? Function(K) toJsonK, Object? Function(V) toJsonV) =>
+      map.map((key, value) => MapEntry(toJsonK(key), toJsonV(value)));
+}
+
+@JsonSerializable()
+class UseOfCustomMap {
+  final CustomMap<int, String> map;
+
+  UseOfCustomMap(this.map);
+
+  factory UseOfCustomMap.fromJson(Map<String, dynamic> json) =>
+      _$UseOfCustomMapFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UseOfCustomMapToJson(this);
+}
