@@ -6,13 +6,13 @@ The builders generate code when they find members annotated with classes defined
 in [package:json_annotation].
 
 - To generate to/from JSON code for a class, annotate it with
-  `@JsonSerializable`. You can provide arguments to `JsonSerializable` to
+  `ja:JsonSerializable`. You can provide arguments to `ja:JsonSerializable` to
   configure the generated code. You can also customize individual fields by
-  annotating them with `@JsonKey` and providing custom arguments. See the table
-  below for details on the [annotation values](#annotation-values).
+  annotating them with `ja:JsonKey` and providing custom arguments. See the
+  table below for details on the [annotation values](#annotation-values).
 
 - To generate a Dart field with the contents of a file containing JSON, use the
-  `JsonLiteral` annotation.
+  `ja:JsonLiteral` annotation.
 
 ## Setup
 
@@ -22,7 +22,7 @@ To configure your project for the latest released version of,
 ## Example
 
 Given a library `example.dart` with an `Person` class annotated with
-`@JsonSerializable()`:
+`ja:JsonSerializable`:
 
 <!-- REPLACE example.dart -->
 
@@ -35,33 +35,88 @@ Building creates the corresponding part `example.g.dart`:
 Once you have added the annotations to your code you then need to run the code
 generator to generate the missing `.g.dart` generated dart files.
 
-With a Dart package, run `pub run build_runner build` in the package directory.
+With a Dart package, run `dart run build_runner build` in the package directory.
 
 With a Flutter package, run `flutter pub run build_runner build` in your package
 directory.
 
 # Annotation values
 
-The only annotation required to use this package is `@JsonSerializable`. When
+The only annotation required to use this package is `ja:JsonSerializable`. When
 applied to a class (in a correctly configured package), `toJson` and `fromJson`
 code will be generated when you build. There are three ways to control how code
 is generated:
 
-1. Set properties on `@JsonSerializable`.
-2. Add a `@JsonKey` annotation to a field and set properties there.
-3. Add configuration to `build.yaml` – [see below](#build-configuration).
+1. Setting properties on `ja:JsonKey` annotating the target field.
+1. Set properties on `ja:JsonSerializable` annotating the target type.
+1. Add configuration to `build.yaml` – [see below](#build-configuration).
 
-<!-- REPLACE api.md -->
+Every `ja:JsonSerializable` field is configurable via `build.yaml`. If you find
+you want all or most of your classes with the same configuration, it may be
+easier to specify values once in the YAML file. Values set explicitly on
+`ja:JsonSerializable` take precedence over settings in `build.yaml`.
 
-> Note: every `JsonSerializable` field is configurable via `build.yaml` – see
-> the table for the corresponding key. If you find you want all or most of your
-> classes with the same configuration, it may be easier to specify values once
-> in the YAML file. Values set explicitly on `@JsonSerializable` take precedence
-> over settings in `build.yaml`.
+There is some overlap between settings on `ja:JsonKey` and
+`ja:JsonSerializable`. In these cases, the property on `ja:JsonKey` takes
+precedence over any value set on `ja:JsonSerializable`.
 
-> Note: There is some overlap between fields on `JsonKey` and
-> `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
-> it will take precedence over any value set on `JsonSerializable`.
+<!-- TODO: add an example! -->
+
+## Enums
+
+Annotate `enum` types with `ja:JsonEnum` (new in `json_annotation` 4.2.0) to:
+
+1. Specify the default rename logic for each enum value using `fieldRename`. For
+   instance, use `fieldRename: FieldRename.kebab` to encode `enum` value
+   `noGood` as `"no-good"`.
+1. Force the generation of the `enum` helpers, even if the `enum` is not
+   referenced in code. This is an edge scenario, but useful for some.
+
+Annotate `enum` values with `ja:JsonValue` to specify the encoded value to map
+to target `enum` entries. Values can be of type `core:String` or `core:int`.
+
+<!-- TODO: hoist out to source code! -->
+
+```dart
+enum StatusCode {
+  @JsonValue(200)
+  success,
+  @JsonValue('500')
+  weird,
+}
+```
+
+# Supported types
+
+Out of the box, `json_serializable` supports many common types in the
+[dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
+library: 
+<!-- REPLACE supported_types -->
+
+The collection types –
+<!-- REPLACE collection_types -->
+– can contain values of all the above types.
+
+For `core:Map`, the key value must be one of
+<!-- REPLACE map_key_types -->
+
+# Custom types and custom encoding
+
+If you want to use types that are not supported out-of-the-box or if you want to
+customize the encoding/decoding of any type, you have a few options.
+
+1. If you own/cotrol the desired type, add a `fromJson` constructor and/or a
+   `toJson()` function to the type. Note: while you can use `json_serializable`
+   for these types, you don't have to! The generator code only looks for these
+   methods. It doesn't care how they were created.
+1. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
+   custom conversions on the annotated field. The functions specified must be
+   top-level or static. See the documentation of these properties for details.
+1. Create an implementation of `ja:JsonConverter` and annotate either the
+   corresponding field or the containing class. `ja:JsonConverter` is convenient
+   if you want to use the same conversion logic on many fields. It also allows
+   you to support a type within collections. Check out
+   [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
 
 # Build configuration
 

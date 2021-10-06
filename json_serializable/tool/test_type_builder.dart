@@ -61,16 +61,16 @@ const _trivialTypesToTest = {
   ),
 };
 
-final _typesToTest = {
-  ..._trivialTypesToTest,
-  //
-  // Collection types
-  //
+Iterable<String> supportedTypes() => _typesToTest.keys;
+
+Iterable<String> collectionTypes() => _collectionTypes.keys;
+
+final _collectionTypes = {
   'Map': TestTypeData(
     defaultExpression: "{'a': 1}",
     altJsonExpression: "{'b': 2}",
     genericArgs: _iterableGenericArgs
-        .expand((v) => _mapKeyTypes.map((k) => '$k,$v'))
+        .expand((v) => mapKeyTypes.map((k) => '$k,$v'))
         .toSet(),
   ),
   'List': TestTypeData(
@@ -91,11 +91,16 @@ final _typesToTest = {
   ),
 };
 
-const _mapKeyTypes = {
+final _typesToTest = {
+  ..._trivialTypesToTest,
+  ..._collectionTypes,
+};
+
+const mapKeyTypes = {
   'BigInt',
   'DateTime',
   'dynamic',
-  'EnumType',
+  customEnumType,
   'int',
   'Object',
   'String',
