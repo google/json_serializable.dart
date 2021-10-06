@@ -4,6 +4,7 @@
 | checked                    | [JsonSerializable.checked]                  |                             |
 | constructor                | [JsonSerializable.constructor]              |                             |
 | create_factory             | [JsonSerializable.createFactory]            |                             |
+| create_fields_class        | [JsonSerializable.createFieldsClass]        |                             |
 | create_to_json             | [JsonSerializable.createToJson]             |                             |
 | disallow_unrecognized_keys | [JsonSerializable.disallowUnrecognizedKeys] |                             |
 | explicit_to_json           | [JsonSerializable.explicitToJson]           |                             |
@@ -24,6 +25,7 @@
 [JsonSerializable.checked]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/checked.html
 [JsonSerializable.constructor]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/constructor.html
 [JsonSerializable.createFactory]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/createFactory.html
+[JsonSerializable.createFieldsClass]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/createFieldsClass.html
 [JsonSerializable.createToJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/createToJson.html
 [JsonSerializable.disallowUnrecognizedKeys]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/disallowUnrecognizedKeys.html
 [JsonSerializable.explicitToJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/explicitToJson.html

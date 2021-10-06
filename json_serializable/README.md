@@ -88,6 +88,7 @@ is generated:
 | checked                    | [JsonSerializable.checked]                  |                             |
 | constructor                | [JsonSerializable.constructor]              |                             |
 | create_factory             | [JsonSerializable.createFactory]            |                             |
+| create_fields_class        | [JsonSerializable.createFieldsClass]        |                             |
 | create_to_json             | [JsonSerializable.createToJson]             |                             |
 | disallow_unrecognized_keys | [JsonSerializable.disallowUnrecognizedKeys] |                             |
 | explicit_to_json           | [JsonSerializable.explicitToJson]           |                             |
@@ -154,6 +155,7 @@ targets:
           checked: false
           constructor: ""
           create_factory: true
+          create_fields_class: true
           create_to_json: true
           disallow_unrecognized_keys: false
           explicit_to_json: false
