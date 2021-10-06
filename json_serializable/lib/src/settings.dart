@@ -52,6 +52,8 @@ class Settings {
         constructor: _config.constructor ?? ClassConfig.defaults.constructor,
         createFactory:
             _config.createFactory ?? ClassConfig.defaults.createFactory,
+        createFieldsClass:
+            _config.createFieldsClass ?? ClassConfig.defaults.createFieldsClass,
         createToJson: _config.createToJson ?? ClassConfig.defaults.createToJson,
         ignoreUnannotated:
             _config.ignoreUnannotated ?? ClassConfig.defaults.ignoreUnannotated,

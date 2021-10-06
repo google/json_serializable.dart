@@ -49,6 +49,9 @@ class ClassConfig implements JsonSerializable {
   final bool createFactory;
 
   @override
+  final bool createFieldsClass;
+
+  @override
   final bool createToJson;
 
   @override
@@ -83,6 +86,7 @@ class ClassConfig implements JsonSerializable {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    required this.createFieldsClass,
     this.ctorParamDefaults = const {},
   });
 
@@ -93,6 +97,7 @@ class ClassConfig implements JsonSerializable {
     checked: false,
     constructor: '',
     createFactory: true,
+    createFieldsClass: true,
     createToJson: true,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
@@ -123,6 +128,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'checked': instance.checked,
       'constructor': instance.constructor,
       'create_factory': instance.createFactory,
+      'create_fields_class': instance.createFieldsClass,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,

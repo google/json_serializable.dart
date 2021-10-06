@@ -17,6 +17,7 @@ final generatorConfigNonDefaultJson =
   checked: true,
   constructor: 'something',
   createFactory: false,
+  createFieldsClass: false,
   createToJson: false,
   disallowUnrecognizedKeys: true,
   explicitToJson: true,

@@ -54,6 +54,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       checked: reader.read('checked').literalValue as bool?,
       constructor: reader.read('constructor').literalValue as String?,
       createFactory: reader.read('createFactory').literalValue as bool?,
+      createFieldsClass: reader.read('createFieldsClass').literalValue as bool?,
       createToJson: reader.read('createToJson').literalValue as bool?,
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool?,
@@ -95,6 +96,7 @@ ClassConfig mergeConfig(
     checked: annotation.checked ?? config.checked,
     constructor: constructor,
     createFactory: annotation.createFactory ?? config.createFactory,
+    createFieldsClass: annotation.createFieldsClass ?? config.createFieldsClass,
     createToJson: annotation.createToJson ?? config.createToJson,
     disallowUnrecognizedKeys:
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
