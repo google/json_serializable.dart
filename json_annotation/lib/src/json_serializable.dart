@@ -28,6 +28,7 @@ enum FieldRename {
 /// An annotation used to specify a class to generate code for.
 @JsonSerializable(
   checked: true,
+  createFieldsClass: false,
   disallowUnrecognizedKeys: true,
   fieldRename: FieldRename.snake,
 )
@@ -73,6 +74,19 @@ class JsonSerializable {
   /// }
   /// ```
   final bool? createFactory;
+
+  /// If `true` (the default), A top-level function is created that you can
+  /// reference from your class.
+  ///
+  /// Generates properties' names from JSON keys.
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// class Example {
+  ///   _$ExampleFields get fields => _$ExampleFields();
+  /// }
+  /// ```
+  final bool? createFieldsClass;
 
   /// If `true` (the default), A top-level function is created that you can
   /// reference from your class.
@@ -193,6 +207,7 @@ class JsonSerializable {
     this.checked,
     this.constructor,
     this.createFactory,
+    this.createFieldsClass,
     this.createToJson,
     this.disallowUnrecognizedKeys,
     this.explicitToJson,
