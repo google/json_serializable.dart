@@ -179,7 +179,7 @@ class KitchenSink implements k.KitchenSink {
 // referencing via a const constructor should work
 @BigIntStringConverter()
 @TrivialNumberConverter.instance
-@EpochDateTimeConverter()
+//@EpochDateTimeConverter()
 class JsonConverterTestClass implements k.JsonConverterTestClass {
   JsonConverterTestClass(
     this.duration,
@@ -205,7 +205,9 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
-  DateTime? dateTime;
+  @JsonKey(name: 'Date Created')
+  @DateTimeConverter()
+  DateTime dateTime;
 }
 
 @JsonSerializable()

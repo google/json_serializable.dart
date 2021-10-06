@@ -150,7 +150,7 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
       (json['numberSillySet'] as List<dynamic>)
           .map((e) => TrivialNumberConverter.instance.fromJson(e as int?))
           .toSet(),
-      const EpochDateTimeConverter().fromJson(json['dateTime'] as int?),
+      const DateTimeConverter().fromJson(json['Date Created']),
     );
 
 Map<String, dynamic> _$JsonConverterTestClassToJson(
@@ -167,7 +167,7 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'numberSillySet': instance.numberSillySet
           .map(TrivialNumberConverter.instance.toJson)
           .toList(),
-      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
+      'Date Created': const DateTimeConverter().toJson(instance.dateTime),
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(

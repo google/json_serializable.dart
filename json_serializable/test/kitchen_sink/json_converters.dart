@@ -65,3 +65,13 @@ class EpochDateTimeConverter implements JsonConverter<DateTime?, int?> {
   @override
   int? toJson(DateTime? object) => object?.millisecondsSinceEpoch;
 }
+
+class DateTimeConverter extends JsonConverter<DateTime, Object?> {
+  const DateTimeConverter();
+
+  @override
+  DateTime fromJson(Object? json) => throw UnimplementedError();
+
+  @override
+  String toJson(DateTime object) => throw UnimplementedError();
+}

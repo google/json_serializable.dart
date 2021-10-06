@@ -198,11 +198,12 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
                   .map((e) =>
                       TrivialNumberConverter.instance.fromJson(e as int?))
                   .toSet()),
-          $checkedConvert('dateTime',
-              (v) => const EpochDateTimeConverter().fromJson(v as int?)),
+          $checkedConvert(
+              'Date Created', (v) => const DateTimeConverter().fromJson(v)),
         );
         return val;
       },
+      fieldKeyMap: const {'dateTime': 'Date Created'},
     );
 
 Map<String, dynamic> _$JsonConverterTestClassToJson(
@@ -219,7 +220,7 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'numberSillySet': instance.numberSillySet
           .map(TrivialNumberConverter.instance.toJson)
           .toList(),
-      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
+      'Date Created': const DateTimeConverter().toJson(instance.dateTime),
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
