@@ -14,10 +14,11 @@ import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 import 'utils.dart';
 
-final _jsonKeyExpando = Expando<KeyConfig>();
+final _jsonKeyExpando = Expando<Map<ClassConfig, KeyConfig>>();
 
 KeyConfig jsonKeyForField(FieldElement field, ClassConfig classAnnotation) =>
-    _jsonKeyExpando[field] ??= _from(field, classAnnotation);
+    (_jsonKeyExpando[field] ??= Map.identity())[classAnnotation] ??=
+        _from(field, classAnnotation);
 
 KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   // If an annotation exists on `element` the source is a 'real' field.
