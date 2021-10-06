@@ -10,12 +10,14 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 import 'package:yaml/yaml.dart';
 
-Builder docBuilder([_]) => _DocBuilder();
+import 'shared.dart';
+
+Builder apiTableBuilder([_]) => _ApiTableBuilder();
 
 const _jsonKey = 'JsonKey';
 const _jsonSerializable = 'JsonSerializable';
 
-class _DocBuilder extends Builder {
+class _ApiTableBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
     final lockFileAssetId = AssetId(buildStep.inputId.package, 'pubspec.lock');
@@ -102,12 +104,12 @@ class _DocBuilder extends Builder {
     }
 
     await buildStep.writeAsString(
-        AssetId(buildStep.inputId.package, 'doc/doc.md'), buffer.toString());
+        AssetId(buildStep.inputId.package, readmeApiPath), buffer.toString());
   }
 
   @override
   final buildExtensions = const {
-    r'lib/json_serializable.dart': ['doc/doc.md']
+    r'lib/json_serializable.dart': [readmeApiPath]
   };
 }
 

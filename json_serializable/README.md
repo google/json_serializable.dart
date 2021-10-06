@@ -1,3 +1,4 @@
+<!-- This content is generated. See tool/readme/readme_template.md -->
 [![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
 Provides [Dart Build System] builders for handling JSON.
@@ -62,9 +63,8 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
 
 # Running the code generator
 
-Once you have added the annotations to your code you then need to run the 
-code generator to generate the missing `.g.dart` generated dart files.
-
+Once you have added the annotations to your code you then need to run the code
+generator to generate the missing `.g.dart` generated dart files.
 
 With a Dart package, run `pub run build_runner build` in the package directory.
 
@@ -125,21 +125,19 @@ is generated:
 [JsonKey.toJson]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
 [JsonKey.unknownEnumValue]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/unknownEnumValue.html
 
-
-> Note: every `JsonSerializable` field is configurable via `build.yaml` –
-> see the table for the corresponding key.
-> If you find you want all or most of your classes with the same configuration,
-> it may be easier to specify values once in the YAML file. Values set
-> explicitly on `@JsonSerializable` take precedence over settings in
-> `build.yaml`.
+> Note: every `JsonSerializable` field is configurable via `build.yaml` – see
+> the table for the corresponding key. If you find you want all or most of your
+> classes with the same configuration, it may be easier to specify values once
+> in the YAML file. Values set explicitly on `@JsonSerializable` take precedence
+> over settings in `build.yaml`.
 
 > Note: There is some overlap between fields on `JsonKey` and
 > `JsonSerializable`. In these cases, if a value is set explicitly via `JsonKey`
-> it will take precedence over any value set on `JsonSerializable`.  
+> it will take precedence over any value set on `JsonSerializable`.
 
 # Build configuration
 
-Besides setting arguments on the associated annotation classes, you can also
+Aside from setting arguments on the associated annotation classes, you can also
 configure code generation by setting values in `build.yaml`.
 
 ```yaml
@@ -154,7 +152,7 @@ targets:
           # The default value for each is listed.
           any_map: false
           checked: false
-          constructor: ''
+          constructor: ""
           create_factory: true
           create_to_json: true
           disallow_unrecognized_keys: false
