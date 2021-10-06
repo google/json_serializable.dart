@@ -16,7 +16,9 @@ import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 TypeHelperCtx typeHelperContext(
-        HelperCore helperCore, FieldElement fieldElement) =>
+  HelperCore helperCore,
+  FieldElement fieldElement,
+) =>
     TypeHelperCtx._(helperCore, fieldElement);
 
 class TypeHelperCtx
@@ -32,8 +34,6 @@ class TypeHelperCtx
   @override
   ClassConfig get config => _helperCore.config;
 
-  TypeHelperCtx._(this._helperCore, this.fieldElement);
-
   @override
   ConvertData? get serializeConvertData => _pairFromContext.toJson;
 
@@ -41,6 +41,8 @@ class TypeHelperCtx
   ConvertData? get deserializeConvertData => _pairFromContext.fromJson;
 
   late final _pairFromContext = _ConvertPair(fieldElement);
+
+  TypeHelperCtx._(this._helperCore, this.fieldElement);
 
   @override
   void addMember(String memberContent) {
