@@ -53,6 +53,8 @@ class BaseResponse<T> {
       'Cannot convert the provided data.',
     );
   }
+
+  static _$BaseResponseFields get fields => const _$BaseResponseFields();
 }
 
 @JsonSerializable(createToJson: false)
@@ -73,6 +75,8 @@ class Article {
 
   factory Article.fromJson(Map<String, dynamic> json) =>
       _$ArticleFromJson(json);
+
+  static _$ArticleFields get fields => const _$ArticleFields();
 }
 
 @JsonSerializable(createToJson: false)
@@ -86,6 +90,8 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  static _$UserFields get fields => const _$UserFields();
 }
 
 @JsonSerializable(createToJson: false)
@@ -100,4 +106,6 @@ class Comment {
 
   factory Comment.fromJson(Map<String, dynamic> json) =>
       _$CommentFromJson(json);
+
+  static _$CommentFields get fields => const _$CommentFields();
 }

@@ -26,6 +26,12 @@ Map<String, dynamic> _$TupleToJson<T, S>(
       'value2': toJsonS(instance.value2),
     };
 
+class _$TupleFields {
+  const _$TupleFields();
+  final String value1 = 'value1';
+  final String value2 = 'value2';
+}
+
 ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
       Tuple<int, DateTime>.fromJson(json['tuple1'] as Map<String, dynamic>,
@@ -47,3 +53,9 @@ Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
         (value) => value.toString(),
       ),
     };
+
+class _$ConcreteClassFields {
+  const _$ConcreteClassFields();
+  final String tuple1 = 'tuple1';
+  final String tuple2 = 'tuple2';
+}

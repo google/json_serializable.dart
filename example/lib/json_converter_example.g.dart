@@ -16,6 +16,11 @@ Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
       'when': const _DateTimeEpochConverter().toJson(instance.when),
     };
 
+class _$DateTimeExampleFields {
+  const _$DateTimeExampleFields();
+  final String when = 'when';
+}
+
 GenericCollection<T> _$GenericCollectionFromJson<T>(
         Map<String, dynamic> json) =>
     GenericCollection<T>(
@@ -36,6 +41,14 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
       'results': instance.results?.map(_Converter<T>().toJson).toList(),
     };
 
+class _$GenericCollectionFields {
+  const _$GenericCollectionFields();
+  final String page = 'page';
+  final String totalResults = 'total_results';
+  final String totalPages = 'total_pages';
+  final String results = 'results';
+}
+
 CustomResult _$CustomResultFromJson(Map<String, dynamic> json) => CustomResult(
       json['name'] as String,
       json['size'] as int,
@@ -46,3 +59,9 @@ Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
       'name': instance.name,
       'size': instance.size,
     };
+
+class _$CustomResultFields {
+  const _$CustomResultFields();
+  final String name = 'name';
+  final String size = 'size';
+}

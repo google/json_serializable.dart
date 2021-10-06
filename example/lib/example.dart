@@ -33,6 +33,8 @@ class Person {
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
   Map<String, dynamic> toJson() => _$PersonToJson(this);
+
+  static _$PersonFields get fields => const _$PersonFields();
 }
 
 @JsonSerializable(includeIfNull: false)
@@ -68,6 +70,8 @@ class Order {
 
   static int? _dateTimeToEpochUs(DateTime? dateTime) =>
       dateTime?.microsecondsSinceEpoch;
+
+  static _$OrderFields get fields => const _$OrderFields();
 }
 
 @JsonSerializable()
@@ -81,6 +85,8 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ItemToJson(this);
+
+  static _$ItemFields get fields => const _$ItemFields();
 }
 
 @JsonLiteral('data.json')

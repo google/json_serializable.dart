@@ -21,3 +21,10 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'lastName': instance.lastName,
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
     };
+
+class _$PersonFields {
+  const _$PersonFields();
+  final String firstName = 'firstName';
+  final String lastName = 'lastName';
+  final String dateOfBirth = 'dateOfBirth';
+}

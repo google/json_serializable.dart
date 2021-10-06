@@ -19,6 +19,8 @@ class DateTimeExample {
       _$DateTimeExampleFromJson(json);
 
   Map<String, dynamic> toJson() => _$DateTimeExampleToJson(this);
+
+  static _$DateTimeExampleFields get fields => const _$DateTimeExampleFields();
 }
 
 class _DateTimeEpochConverter implements JsonConverter<DateTime, int> {
@@ -57,6 +59,9 @@ class GenericCollection<T> {
       _$GenericCollectionFromJson<T>(json);
 
   Map<String, dynamic> toJson() => _$GenericCollectionToJson(this);
+
+  static _$GenericCollectionFields get fields =>
+      const _$GenericCollectionFields();
 }
 
 class _Converter<T> implements JsonConverter<T, Object?> {
@@ -93,6 +98,8 @@ class CustomResult {
       _$CustomResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$CustomResultToJson(this);
+
+  static _$CustomResultFields get fields => const _$CustomResultFields();
 
   @override
   bool operator ==(Object other) =>

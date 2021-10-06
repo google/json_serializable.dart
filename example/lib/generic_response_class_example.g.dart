@@ -13,6 +13,13 @@ BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
       data: BaseResponse._dataFromJson(json['data'] as Object),
     );
 
+class _$BaseResponseFields {
+  const _$BaseResponseFields();
+  final String status = 'status';
+  final String msg = 'msg';
+  final String data = 'data';
+}
+
 Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
       id: json['id'] as int,
       title: json['title'] as String,
@@ -24,12 +31,32 @@ Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
           .toList(),
     );
 
+class _$ArticleFields {
+  const _$ArticleFields();
+  final String id = 'id';
+  final String title = 'title';
+  final String author = 'author';
+  final String comments = 'comments';
+}
+
 User _$UserFromJson(Map<String, dynamic> json) => User(
       id: json['id'] as int?,
       email: json['email'] as String?,
     );
 
+class _$UserFields {
+  const _$UserFields();
+  final String id = 'id';
+  final String email = 'email';
+}
+
 Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
       id: json['id'] as int?,
       content: json['content'] as String?,
     );
+
+class _$CommentFields {
+  const _$CommentFields();
+  final String content = 'content';
+  final String id = 'id';
+}

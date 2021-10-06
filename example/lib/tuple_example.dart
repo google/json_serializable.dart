@@ -26,6 +26,8 @@ class Tuple<T, S> {
     Object Function(S value) toJsonS,
   ) =>
       _$TupleToJson(this, toJsonT, toJsonS);
+
+  static _$TupleFields get fields => const _$TupleFields();
 }
 
 @JsonSerializable()
@@ -40,4 +42,6 @@ class ConcreteClass {
       _$ConcreteClassFromJson(json);
 
   Map<String, dynamic> toJson() => _$ConcreteClassToJson(this);
+
+  static _$ConcreteClassFields get fields => const _$ConcreteClassFields();
 }
