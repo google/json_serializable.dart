@@ -131,14 +131,17 @@ enum StatusCode {
 Out of the box, `json_serializable` supports many common types in the
 [dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
 library: 
-[`BigInt`], [`bool`], [`DateTime`], [`double`], [`Duration`], [`Enum`], [`int`], [`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Set`], [`String`], [`Uri`]
+[`BigInt`], [`bool`], [`DateTime`], [`double`], [`Duration`], [`Enum`], [`int`],
+[`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Set`], [`String`],
+[`Uri`]
 
 The collection types –
 [`Iterable`], [`List`], [`Map`], [`Set`]
 – can contain values of all the above types.
 
 For [`Map`], the key value must be one of
-[`BigInt`], [`DateTime`], [`dynamic`], [`Enum`], [`int`], [`Object`], [`String`], [`Uri`]
+[`BigInt`], [`DateTime`], [`dynamic`], [`Enum`], [`int`], [`Object`],
+[`String`], [`Uri`]
 
 # Custom types and custom encoding
 

@@ -101,19 +101,54 @@ ${foundClasses.entries.map((e) => '${e.key}: ${e.value}').join('\n')}
   };
 }
 
-String _linkDartClass(String clazz) => '`core:$clazz`';
-
 const _templatePath = 'tool/readme/readme_template.md';
 const _readmePath = 'README.md';
 
 String _coreTypeUri(String type) =>
     'https://api.dart.dev/stable/dart-core/$type-class.html';
 
-String _classCleanAndSort(Iterable<String> classes) =>
-    (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()
-          ..sort(compareAsciiLowerCase))
-        .map(_linkDartClass)
-        .join(', ');
+String _classCleanAndSort(Iterable<String> classes) {
+  final initial = (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()
+        ..sort(compareAsciiLowerCase))
+      // Start by mapping to the output format – so we wrap correctly
+      .map((e) => '[`$e`]')
+      .join(', ');
+
+  if (initial.length <= 80) {
+    return initial;
+  }
+
+  final splits = initial.split(' ');
+  final lines = <String>[];
+  String? currentLine;
+  for (var split in splits) {
+    if (currentLine == null) {
+      currentLine = split;
+    } else {
+      final option = '$currentLine $split';
+      if (option.length > 80) {
+        lines.add(currentLine);
+        currentLine = split;
+      } else {
+        currentLine = option;
+      }
+    }
+    if (currentLine.length > 80) {
+      lines.add(currentLine);
+      currentLine = null;
+    }
+  }
+
+  if (currentLine != null) {
+    lines.add(currentLine);
+  }
+
+  return lines.join('\n').replaceAllMapped(
+        // Now put in the core: logic so we autolink correctly
+        RegExp(r'\[`(\w+)`\]'),
+        (match) => '`core:${match[1]}`',
+      );
+}
 
 extension on BuildStep {
   AssetId assetIdForInputPackage(String path) => AssetId(inputId.package, path);
