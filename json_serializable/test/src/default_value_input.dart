@@ -5,7 +5,7 @@
 part of '_json_serializable_test_input.dart';
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
+  'Error with `@JsonKey` on the `field` field. '
   '`defaultValue` is `Symbol`, it must be a literal.',
   element: 'field',
 )
@@ -20,7 +20,7 @@ class DefaultWithSymbol {
 int _function() => 42;
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
+  'Error with `@JsonKey` on the `field` field. '
   '`defaultValue` is `Function`, it must be a literal.',
   element: 'field',
 )
@@ -33,7 +33,7 @@ class DefaultWithFunction {
 }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
+  'Error with `@JsonKey` on the `field` field. '
   '`defaultValue` is `Type`, it must be a literal.',
   element: 'field',
 )
@@ -46,7 +46,7 @@ class DefaultWithType {
 }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
+  'Error with `@JsonKey` on the `field` field. '
   '`defaultValue` is `Duration`, it must be a literal.',
   element: 'field',
 )
@@ -61,7 +61,7 @@ class DefaultWithConstObject {
 enum Enum { value }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. '
+  'Error with `@JsonKey` on the `field` field. '
   '`defaultValue` is `List > Enum`, it must be a literal.',
   element: 'field',
 )

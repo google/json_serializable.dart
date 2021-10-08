@@ -15,8 +15,8 @@ Object _toObject(Object input) => throw UnimplementedError();
 String _toStringFromObject(Object? input) => throw UnimplementedError();
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `fromJson` function `_toInt` '
-  'return type `int` is not compatible with field type `String`.',
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
+  '`_toInt` return type `int` is not compatible with field type `String`.',
   element: 'field',
 )
 @JsonSerializable()
@@ -26,7 +26,7 @@ class BadFromFuncReturnType {
 }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `fromJson` function '
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
   '`_twoArgFunction` must have one positional parameter.',
   element: 'field',
 )
@@ -59,7 +59,7 @@ class ValidToFromFuncClassStatic {
 }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `toJson` function `_toInt` '
+  'Error with `@JsonKey` on the `field` field. The `toJson` function `_toInt` '
   'argument type `bool` is not compatible with field type `String`.',
   element: 'field',
 )
@@ -70,8 +70,9 @@ class BadToFuncReturnType {
 }
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `values`. The `fromJson` function `_fromList` '
-  'return type `List<int>?` is not compatible with field type `List<int>`.',
+  'Error with `@JsonKey` on the `values` field. The `fromJson` function '
+  '`_fromList` return type `List<int>?` is not compatible with field type '
+  '`List<int>`.',
   element: 'values',
 )
 @JsonSerializable()
@@ -127,7 +128,7 @@ List<List>? _toList(List<int>? pairs) =>
     pairs?.map((it) => [it]).toList(growable: false);
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `toJson` function '
+  'Error with `@JsonKey` on the `field` field. The `toJson` function '
   '`_twoArgFunction` must have one positional parameter.',
   element: 'field',
 )
@@ -248,7 +249,7 @@ class FromNullableDynamicCollection {
 String _noArgs() => throw UnimplementedError();
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `fromJson` function '
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
   '`_noArgs` must have one positional parameter.',
   element: 'field',
 )
@@ -261,7 +262,7 @@ class BadNoArgs {
 String? _twoArgs(a, b) => null;
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `fromJson` function '
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
   '`_twoArgs` must have one positional parameter.',
   element: 'field',
 )
@@ -274,7 +275,7 @@ class BadTwoRequiredPositional {
 String? _oneNamed({a}) => null;
 
 @ShouldThrow(
-  'Error with `@JsonKey` on `field`. The `fromJson` function '
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
   '`_oneNamed` must have one positional parameter.',
   element: 'field',
 )
