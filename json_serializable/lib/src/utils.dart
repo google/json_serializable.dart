@@ -28,8 +28,9 @@ bool hasJsonKeyAnnotation(FieldElement element) =>
 
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
-        'Error with `@JsonKey` on `${element.name}`. $message',
-        element: element);
+      'Error with `@JsonKey` on the `${element.name}` field. $message',
+      element: element,
+    );
 
 FieldRename? _fromDartObject(ConstantReader reader) => reader.isNull
     ? null

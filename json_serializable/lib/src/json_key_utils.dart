@@ -41,6 +41,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// an [InvalidGenerationSourceError] using [typeInformation] to describe
   /// the unsupported type.
   Object? literalForObject(
+    String fieldName,
     DartObject dartObject,
     Iterable<String> typeInformation,
   ) {
@@ -65,7 +66,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     if (badType != null) {
       badType = typeInformation.followedBy([badType]).join(' > ');
       throwUnsupported(
-          element, '`defaultValue` is `$badType`, it must be a literal.');
+        element,
+        '`$fieldName` is `$badType`, it must be a literal.',
+      );
     }
 
     if (reader.isDouble || reader.isInt || reader.isString || reader.isBool) {
@@ -75,7 +78,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     if (reader.isList) {
       return [
         for (var e in reader.listValue)
-          literalForObject(e, [
+          literalForObject(fieldName, e, [
             ...typeInformation,
             'List',
           ])
@@ -85,7 +88,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     if (reader.isSet) {
       return {
         for (var e in reader.setValue)
-          literalForObject(e, [
+          literalForObject(fieldName, e, [
             ...typeInformation,
             'Set',
           ])
@@ -99,8 +102,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       ];
       return reader.mapValue.map(
         (k, v) => MapEntry(
-          literalForObject(k!, mapTypeInformation),
-          literalForObject(v!, mapTypeInformation),
+          literalForObject(fieldName, k!, mapTypeInformation),
+          literalForObject(fieldName, v!, mapTypeInformation),
         ),
       );
     }
@@ -163,7 +166,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     } else {
       final defaultValueLiteral = annotationValue.isNull
           ? null
-          : literalForObject(annotationValue.objectValue, []);
+          : literalForObject(fieldName, annotationValue.objectValue, []);
       if (defaultValueLiteral == null) {
         return null;
       }
