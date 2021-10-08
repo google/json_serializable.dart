@@ -7,8 +7,6 @@ import 'dart:io';
 import 'package:build/build.dart';
 import 'package:yaml/yaml.dart';
 
-const readmeApiPath = 'tool/readme/api.md';
-
 // Until we have verification in pkg:build and friends
 // https://github.com/dart-lang/build/issues/590
 Builder validate(String builderName, Builder builder) {

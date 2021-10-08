@@ -92,18 +92,10 @@ builders:
     build_to: source
     runs_before: ["json_serializable"]
 
-  _api_table_builder:
-    import: "tool/api_table_builder.dart"
-    builder_factories: ["apiTableBuilder"]
-    build_extensions: {"lib/json_serializable.dart": ["tool/readme/api.md"]}
-    build_to: source
-    auto_apply: root_package
-    runs_before: ["_readme_builder"]
-
   _readme_builder:
     import: "tool/readme_builder.dart"
     builder_factories: ["readmeBuilder"]
-    build_extensions: {"tool/readme/api.md": ["README.md"]}
+    build_extensions: {"tool/readme/readme_template.md": ["README.md"]}
     build_to: source
     auto_apply: root_package
     required_inputs: ['.dart']
