@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
@@ -301,5 +302,24 @@ void main() {
   test('enum helpers', () {
     expect(standAloneEnumValues, ['a', 'b', 'g', 'd']);
     expect(dayTypeEnumValues, ['no-good', 'rotten', 'very-bad']);
+  });
+
+  test('unknown as null for enum', () {
+    expect(
+      () => Issue559Regression.fromJson({}).status,
+      throwsA(isA<MissingRequiredKeysException>()),
+    );
+    expect(
+      () => Issue559Regression.fromJson({'status': null}).status,
+      throwsA(isA<DisallowedNullValueException>()),
+    );
+    expect(
+      Issue559Regression.fromJson({'status': 'gamma'}).status,
+      Issue559RegressionEnum.gamma,
+    );
+    expect(
+      Issue559Regression.fromJson({'status': 'bob'}).status,
+      isNull,
+    );
   });
 }

@@ -5,6 +5,8 @@
 - Added `JsonEnum` for annotating `enum` types.
 - Added `$enumDecodeNullable` and `$enumDecode` helpers to minimize generated
   code.
+- Added `const` `JsonKey.nullForUndefinedEnumValue` for use in
+  `JsonKey.unknownEnumValue` when you want to use `null` for an unknown value.
 - Require Dart SDK `>=2.14.0`.
 
 ## 4.1.0

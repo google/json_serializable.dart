@@ -86,3 +86,23 @@ class UnknownEnumValueNotEnumField {
   @JsonKey(unknownEnumValue: UnknownEnumValueItems.vUnknown)
   int? value;
 }
+
+@ShouldThrow(
+  '`JsonKey.nullForUndefinedEnumValue` cannot be used with '
+  '`JsonKey.unknownEnumValue` unless the field is nullable.',
+)
+@JsonSerializable()
+class NullForUndefinedEnumValueOnNonNullableField {
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  late UnknownEnumValueItems value;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` is '
+  '`JsonSerializable`, it must be a literal.',
+)
+@JsonSerializable()
+class WeirdValueForUnknownEnumValue {
+  @JsonKey(unknownEnumValue: JsonSerializable())
+  late UnknownEnumValueItems value;
+}

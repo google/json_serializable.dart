@@ -91,6 +91,10 @@ class JsonKey {
   /// source enum.
   ///
   /// Valid only on enum fields with a compatible enum value.
+  ///
+  /// If you want to use the value `null` when encountering an unknown value,
+  /// use the value of [JsonKey.nullForUndefinedEnumValue] instead. This is only
+  /// valid on an nullable enum field.
   final Object? unknownEnumValue;
 
   /// Creates a new [JsonKey] instance.
@@ -108,4 +112,10 @@ class JsonKey {
     this.toJson,
     this.unknownEnumValue,
   });
+
+  /// Sentinel value for use with [unknownEnumValue].
+  ///
+  /// Read the documentation on [unknownEnumValue] for more details.
+  static const Object nullForUndefinedEnumValue =
+      r'JsonKey.nullForUndefinedEnumValue';
 }
