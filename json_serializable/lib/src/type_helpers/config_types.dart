@@ -18,7 +18,7 @@ class KeyConfig {
 
   final bool required;
 
-  final Object? unknownEnumValue;
+  final String? unknownEnumValue;
 
   KeyConfig({
     required this.defaultValue,

@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'json_key.dart';
+
 /// Returns the key associated with value [source] from [enumValues], if one
 /// exists.
 ///
@@ -14,13 +16,31 @@
 /// Not meant to be used directly by user code.
 K? $enumDecodeNullable<K extends Enum, V>(
   Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
+  Object? source, {
+  Object? unknownValue,
 }) {
   if (source == null) {
     return null;
   }
-  return $enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+
+  for (var entry in enumValues.entries) {
+    if (entry.value == source) {
+      return entry.key;
+    }
+  }
+
+  if (unknownValue == JsonKey.nullForUndefinedEnumValue) {
+    return null;
+  }
+
+  if (unknownValue == null) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return unknownValue as K;
 }
 
 /// Returns the key associated with value [source] from [enumValues], if one
@@ -45,16 +65,18 @@ K $enumDecode<K extends Enum, V>(
     );
   }
 
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
+  for (var entry in enumValues.entries) {
+    if (entry.value == source) {
+      return entry.key;
+    }
+  }
+
+  if (unknownValue == null) {
+    throw ArgumentError(
+      '`$source` is not one of the supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return unknownValue;
 }

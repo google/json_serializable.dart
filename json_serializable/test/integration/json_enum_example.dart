@@ -24,3 +24,28 @@ enum DayType {
 }
 
 Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;
+
+@JsonSerializable(
+  createToJson: false,
+)
+class Issue559Regression {
+  Issue559Regression({
+    required this.status,
+  });
+
+  factory Issue559Regression.fromJson(Map<String, dynamic> json) =>
+      _$Issue559RegressionFromJson(json);
+
+  @JsonKey(
+    disallowNullValue: true,
+    required: true,
+    unknownEnumValue: JsonKey.nullForUndefinedEnumValue,
+  )
+  final Issue559RegressionEnum? status;
+}
+
+enum Issue559RegressionEnum {
+  alpha,
+  beta,
+  gamma,
+}

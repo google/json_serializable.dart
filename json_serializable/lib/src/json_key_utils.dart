@@ -6,6 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -171,6 +172,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         return null;
       }
       if (mustBeEnum) {
+        if (defaultValueLiteral == JsonKey.nullForUndefinedEnumValue) {
+          return defaultValueLiteral as String;
+        }
         throwUnsupported(
           element,
           'The value provided for `$fieldName` must be a matching enum.',
@@ -212,7 +216,7 @@ KeyConfig _populateJsonKey(
   bool? includeIfNull,
   String? name,
   bool? required,
-  Object? unknownEnumValue,
+  String? unknownEnumValue,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {

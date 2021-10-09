@@ -73,6 +73,19 @@ class DefaultWithNestedEnum {
   DefaultWithNestedEnum();
 }
 
+@ShouldThrow(
+  '`JsonKey.nullForUndefinedEnumValue` cannot be used with '
+  '`JsonKey.defaultValue`.',
+  element: 'enumValue',
+)
+@JsonSerializable()
+class BadEnumDefaultValue {
+  @JsonKey(defaultValue: JsonKey.nullForUndefinedEnumValue)
+  Enum? enumValue;
+
+  BadEnumDefaultValue();
+}
+
 @ShouldGenerate(
   r'''
 DefaultWithToJsonClass _$DefaultWithToJsonClassFromJson(

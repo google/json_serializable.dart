@@ -3,6 +3,8 @@
 - Added support for `JsonSerializabel.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
 - Support the new `@JsonEnum` annotation in `package:json_annotation`.
+- Support `JsonKey.nullForUndefinedEnumValue` as a value for
+  `JsonKey.unknownEnumValue` when you want to use `null` as the unknown value.
 - Use the new `$enumDecodeNullable` and `$enumDecode` in `json_annotation'
   instead of generating these for each library.
   **NOTE**: This is a potential breaking change if any user code relies on
