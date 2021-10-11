@@ -6,6 +6,7 @@ import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
+import 'check_dependencies.dart';
 import 'json_enum_generator.dart';
 import 'json_literal_generator.dart';
 import 'json_serializable_generator.dart';
@@ -51,6 +52,8 @@ class _UnifiedGenerator extends Generator {
 
   @override
   Future<String?> generate(LibraryReader library, BuildStep buildStep) async {
+    await pubspecHasRightVersion(buildStep);
+
     final values = <String>{};
 
     for (var generator in _generators) {

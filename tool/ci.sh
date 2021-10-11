@@ -87,6 +87,10 @@ for PKG in ${PKGS}; do
         echo 'dart test -p chrome'
         dart test -p chrome || EXIT_CODE=$?
         ;;
+      test_3)
+        echo 'dart test --run-skipped -t presubmit-only test/annotation_version_test.dart'
+        dart test --run-skipped -t presubmit-only test/annotation_version_test.dart || EXIT_CODE=$?
+        ;;
       *)
         echo -e "\033[31mUnknown TASK '${TASK}' - TERMINATING JOB\033[0m"
         exit 64

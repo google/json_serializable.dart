@@ -1,4 +1,4 @@
-## 5.1.0-dev
+## 6.0.0-dev
 
 - Added support for `JsonSerializabel.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
@@ -9,6 +9,8 @@
   instead of generating these for each library.
   **NOTE**: This is a potential breaking change if any user code relies on
   the previously generated private functions.
+- The builder now checks to make sure there is a correctly constrained
+  dependency on `package:json_annotation`.
 - Require Dart SDK `>=2.14.0`.
 - Require `json_annotation` `'>=4.2.0 <4.3.0'`.
 

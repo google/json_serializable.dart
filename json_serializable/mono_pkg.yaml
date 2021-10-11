@@ -11,7 +11,7 @@ stages:
 - unit_test:
   - test:
   - test: -p chrome
-- ensure_build:
+  - test: --run-skipped -t presubmit-only test/annotation_version_test.dart
   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 
 cache:
