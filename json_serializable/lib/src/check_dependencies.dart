@@ -10,6 +10,8 @@ import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
 const _productionDirectories = {'lib', 'bin'};
+const _annotationPkgName = 'json_annotation';
+final requiredJsonAnnotationMinVersion = Version.parse('4.2.0');
 
 Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   final segments = buildStep.inputId.pathSegments;
@@ -28,9 +30,6 @@ Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   throw BadPackageDependencyError(errorMessage);
 }
 
-const _pkgName = 'json_serializable';
-const _annotationPkgName = 'json_annotation';
-
 final _productionDependencyCheckResource =
     _OncePerBuild.resource<bool, String?>(true, _validatePubspec);
 
@@ -38,15 +37,11 @@ final _developmentDependencyCheckResource =
     _OncePerBuild.resource<bool, String?>(false, _validatePubspec);
 
 Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
-  final jsonSerialPubspecAssetId = AssetId(_pkgName, 'pubspec.yaml');
-
   final pubspecAssetId = AssetId(buildStep.inputId.package, 'pubspec.yaml');
 
-  if (!await buildStep.canRead(pubspecAssetId) ||
-      !await buildStep.canRead(jsonSerialPubspecAssetId)) {
+  if (!await buildStep.canRead(pubspecAssetId)) {
     log.warning(
-      'Could not read the "pubspec.yaml` files associated with this package or '
-      'the $_pkgName package. '
+      'Could not read the "pubspec.yaml` file associated with this package. '
       'Usage of package:$_annotationPkgName could not be verified.',
     );
     return null;
@@ -57,26 +52,16 @@ Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
     return Pubspec.parse(string, sourceUrl: asset.uri);
   }
 
-  final jsonSerialPubspec = await readPubspec(jsonSerialPubspecAssetId);
-
-  final annotationLowerConstraint = _annotationVersion(jsonSerialPubspec);
-
-  if (annotationLowerConstraint == null) {
-    return null;
-  }
-
   final pubspec = await readPubspec(pubspecAssetId);
 
   return _checkAnnotationConstraint(
     pubspec,
-    annotationLowerConstraint,
     !production,
   );
 }
 
 String? _checkAnnotationConstraint(
   Pubspec pubspec,
-  Version requiredJsonAnnotationMinVersion,
   bool includeDevDependencies,
 ) {
   var dependency = pubspec.dependencies[_annotationPkgName];
@@ -129,25 +114,6 @@ String? _checkAnnotationConstraint(
   }
 
   return null;
-}
-
-Version? _annotationVersion(Pubspec jsonSerialPubspec) {
-  final jsonSerialAnnotationDep =
-      jsonSerialPubspec.dependencies[_annotationPkgName];
-
-  if (jsonSerialAnnotationDep is! HostedDependency) {
-    log.warning(
-      'The local `$_pkgName` dependency on `$_annotationPkgName` is not a '
-      '`$HostedDependency`, as expected. Version checking is being skipped.',
-    );
-    return null;
-  }
-
-  final constraint = jsonSerialAnnotationDep.version as VersionRange;
-
-  assert(constraint.includeMin);
-
-  return constraint.min!;
 }
 
 class _OncePerBuild<S, T> {

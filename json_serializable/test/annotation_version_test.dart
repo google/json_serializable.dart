@@ -5,20 +5,31 @@
 @TestOn('vm')
 @Tags(['presubmit-only'])
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:json_serializable/src/check_dependencies.dart';
 import 'package:path/path.dart' as p;
+import 'package:pub_semver/pub_semver.dart';
+import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:test/test.dart';
 import 'package:test_descriptor/test_descriptor.dart' as d;
 import 'package:test_process/test_process.dart';
 
-const _annotationLowerBound = '4.2.0';
-
-const _missingProductionDep =
-    'You are missing a required dependency on json_annotation in the '
-    '"dependencies" section of your pubspec with a lower bound of at least '
-    '"$_annotationLowerBound".';
-
 void main() {
+  test('validate pubspec constraint', () {
+    final pubspec = Pubspec.parse(
+      File('pubspec.yaml').readAsStringSync(),
+      sourceUrl: Uri.file('pubspec.yaml'),
+    );
+
+    final annotationConstraint =
+        pubspec.dependencies['json_annotation'] as HostedDependency;
+    final versionRange = annotationConstraint.version as VersionRange;
+
+    expect(versionRange.includeMin, isTrue);
+    expect(versionRange.min, requiredJsonAnnotationMinVersion);
+  });
+
   test(
     'missing dependency in production code',
     () => _structurePackage(
@@ -79,6 +90,13 @@ void main() {
     ),
   );
 }
+
+final _annotationLowerBound = requiredJsonAnnotationMinVersion.toString();
+
+final _missingProductionDep =
+    'You are missing a required dependency on json_annotation in the '
+    '"dependencies" section of your pubspec with a lower bound of at least '
+    '"$_annotationLowerBound".';
 
 Future<void> _structurePackage({
   required String sourceDirectory,
