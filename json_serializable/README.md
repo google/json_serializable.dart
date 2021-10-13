@@ -140,8 +140,7 @@ The collection types –
 – can contain values of all the above types.
 
 For [`Map`], the key value must be one of
-[`BigInt`], [`DateTime`], [`dynamic`], [`Enum`], [`int`], [`Object`],
-[`String`], [`Uri`]
+[`BigInt`], [`DateTime`], [`Enum`], [`int`], [`Object`], [`String`], [`Uri`]
 
 # Custom types and custom encoding
 
@@ -197,7 +196,6 @@ targets:
 [`DateTime`]: https://api.dart.dev/stable/dart-core/DateTime-class.html
 [`double`]: https://api.dart.dev/stable/dart-core/double-class.html
 [`Duration`]: https://api.dart.dev/stable/dart-core/Duration-class.html
-[`dynamic`]: https://api.dart.dev/stable/dart-core/dynamic-class.html
 [`Enum`]: https://api.dart.dev/stable/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/stable/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/stable/dart-core/Iterable-class.html

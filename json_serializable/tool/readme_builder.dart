@@ -110,6 +110,8 @@ String _coreTypeUri(String type) =>
 String _classCleanAndSort(Iterable<String> classes) {
   final initial = (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()
         ..sort(compareAsciiLowerCase))
+      // Dropping `dynamic` – it's not linkable!
+      .where((element) => element != 'dynamic')
       // Start by mapping to the output format – so we wrap correctly
       .map((e) => '[`$e`]')
       .join(', ');
