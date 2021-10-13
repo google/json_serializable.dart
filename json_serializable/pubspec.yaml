@@ -31,7 +31,3 @@ dev_dependencies:
   stack_trace: ^1.10.0
   test: ^1.16.0
   yaml: ^3.0.0
-
-dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
