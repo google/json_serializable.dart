@@ -44,6 +44,11 @@ Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
 
   if (!await buildStep.canRead(pubspecAssetId) ||
       !await buildStep.canRead(jsonSerialPubspecAssetId)) {
+    log.warning(
+      'Could not read the "pubspec.yaml` files associated with this package or '
+      'the $_pkgName package. '
+      'Usage of package:$_annotationPkgName could not be verified.',
+    );
     return null;
   }
 
@@ -145,9 +150,9 @@ Version? _annotationVersion(Pubspec jsonSerialPubspec) {
   return constraint.min!;
 }
 
-class _OncePerBuild<State, T> {
-  final State state;
-  final FutureOr<T> Function(State, BuildStep) _callback;
+class _OncePerBuild<S, T> {
+  final S state;
+  final FutureOr<T> Function(S, BuildStep) _callback;
   AsyncMemoizer<T>? _memo;
 
   static Resource<_OncePerBuild<State, T>> resource<State, T>(
