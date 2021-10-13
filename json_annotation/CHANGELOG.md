@@ -1,6 +1,6 @@
-## 4.2.0-dev
+## 4.2.0
 
-- Added `JsonSerializabel.constructor` field to allow specifying an alternative
+- Added `JsonSerializable.constructor` field to allow specifying an alternative
   constructor to invoke when creating a `fromJson` helper.
 - Added `JsonEnum` for annotating `enum` types.
 - Added `$enumDecodeNullable` and `$enumDecode` helpers to minimize generated
