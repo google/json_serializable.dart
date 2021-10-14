@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:async/async.dart';
 import 'package:build/build.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
@@ -17,26 +16,17 @@ Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   final segments = buildStep.inputId.pathSegments;
   final productionDependency =
       segments.length > 1 && _productionDirectories.contains(segments.first);
-  final resource = await buildStep.fetchResource(
-    productionDependency
-        ? _productionDependencyCheckResource
-        : _developmentDependencyCheckResource,
-  );
+  final resource =
+      productionDependency ? _productionDependency : _developmentDependency;
 
-  final errorMessage = await resource.run(buildStep);
-
-  if (errorMessage == null) return;
-
-  throw BadPackageDependencyError(errorMessage);
+  await resource.run(buildStep);
 }
 
-final _productionDependencyCheckResource =
-    _OncePerBuild.resource<bool, String?>(true, _validatePubspec);
+final _productionDependency = _OncePerBuild(true, _validatePubspec);
 
-final _developmentDependencyCheckResource =
-    _OncePerBuild.resource<bool, String?>(false, _validatePubspec);
+final _developmentDependency = _OncePerBuild(false, _validatePubspec);
 
-Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
+Future<void> _validatePubspec(bool production, BuildStep buildStep) async {
   final pubspecAssetId = AssetId(buildStep.inputId.package, 'pubspec.yaml');
 
   if (!await buildStep.canRead(pubspecAssetId)) {
@@ -44,7 +34,7 @@ Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
       'Could not read the "pubspec.yaml` file associated with this package. '
       'Usage of package:$_annotationPkgName could not be verified.',
     );
-    return null;
+    return;
   }
 
   Future<Pubspec> readPubspec(AssetId asset) async {
@@ -54,10 +44,14 @@ Future<String?> _validatePubspec(bool production, BuildStep buildStep) async {
 
   final pubspec = await readPubspec(pubspecAssetId);
 
-  return _checkAnnotationConstraint(
+  final errorMessage = _checkAnnotationConstraint(
     pubspec,
     !production,
   );
+
+  if (errorMessage == null) return;
+
+  throw BadPackageDependencyError(errorMessage);
 }
 
 String? _checkAnnotationConstraint(
@@ -116,27 +110,18 @@ String? _checkAnnotationConstraint(
   return null;
 }
 
-class _OncePerBuild<S, T> {
-  final S state;
-  final FutureOr<T> Function(S, BuildStep) _callback;
-  AsyncMemoizer<T>? _memo;
+class _OncePerBuild {
+  final bool state;
+  final FutureOr<void> Function(bool, BuildStep) _callback;
+  bool _ran = false;
 
-  static Resource<_OncePerBuild<State, T>> resource<State, T>(
-    State state,
-    FutureOr<T> Function(State, BuildStep) callback,
-  ) =>
-      Resource<_OncePerBuild<State, T>>(
-        () => _OncePerBuild._(state, callback),
-        dispose: (c) => c._dispose(),
-      );
+  _OncePerBuild(this.state, this._callback);
 
-  _OncePerBuild._(this.state, this._callback);
-
-  Future<T> run(BuildStep buildStep) =>
-      (_memo ??= AsyncMemoizer()).runOnce(() => _callback(state, buildStep));
-
-  void _dispose() {
-    _memo = null;
+  Future<void> run(BuildStep buildStep) async {
+    if (!_ran) {
+      _ran = true;
+      await _callback(state, buildStep);
+    }
   }
 }
 
