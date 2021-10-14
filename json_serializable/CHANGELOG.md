@@ -1,6 +1,6 @@
-## 6.0.0-dev
+## 6.0.0
 
-- Added support for `JsonSerializabel.constructor` to allow specifying an 
+- Added support for `JsonSerializable.constructor` to allow specifying an 
   alternative constructor to invoke when creating a `fromJson` helper.
 - Support the new `@JsonEnum` annotation in `package:json_annotation`.
 - Support `JsonKey.nullForUndefinedEnumValue` as a value for
@@ -12,7 +12,7 @@
 - The builder now checks to make sure there is a correctly constrained
   dependency on `package:json_annotation`.
 - Require Dart SDK `>=2.14.0`.
-- Require `json_annotation` `'>=4.2.0 <4.3.0'`.
+- Require `json_annotation` `'>=4.3.0 <4.4.0'`.
 
 ## 5.0.2
 
