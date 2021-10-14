@@ -126,10 +126,11 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// [fieldName] is not an `enum` value.
   String? _annotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
+    late final DartType annotationType;
 
     final enumFields = annotationValue.isNull
         ? null
-        : iterateEnumFields(annotationValue.objectValue.type!);
+        : iterateEnumFields(annotationType = annotationValue.objectValue.type!);
     if (enumFields != null) {
       if (mustBeEnum) {
         late DartType targetEnumType;
@@ -144,16 +145,26 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
             'Iterable, List, or Set instances of an enum type.',
           );
         }
-        final annotatedEnumType = annotationValue.objectValue.type!;
-        if (!_interfaceTypesEqual(annotatedEnumType, targetEnumType)) {
+
+        if (_nullAsUnknownChecker.isExactlyType(annotationType)) {
+          return jsonKeyNullForUndefinedEnumValueFieldName;
+        } else if (!_interfaceTypesEqual(annotationType, targetEnumType)) {
           throwUnsupported(
             element,
             '`$fieldName` has type '
             '`${targetEnumType.getDisplayString(withNullability: false)}`, but '
             'the provided unknownEnumValue is of type '
-            '`${annotatedEnumType.getDisplayString(withNullability: false)}`.',
+            '`${annotationType.getDisplayString(withNullability: false)}`.',
           );
         }
+      }
+
+      if (_nullAsUnknownChecker.isExactlyType(annotationType)) {
+        throw InvalidGenerationSourceError(
+          '`$jsonKeyNullForUndefinedEnumValueFieldName` cannot be used with '
+          '`JsonKey.defaultValue`.',
+          element: element,
+        );
       }
 
       final enumValueNames =
@@ -162,7 +173,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue.objectValue, enumValueNames, (n) => n);
 
-      return '${annotationValue.objectValue.type!.element!.name}'
+      return '${annotationType.element!.name}'
           '.$enumValueName';
     } else {
       final defaultValueLiteral = annotationValue.isNull
@@ -172,9 +183,6 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         return null;
       }
       if (mustBeEnum) {
-        if (defaultValueLiteral == JsonKey.nullForUndefinedEnumValue) {
-          return defaultValueLiteral as String;
-        }
         throwUnsupported(
           element,
           'The value provided for `$fieldName` must be a matching enum.',
@@ -258,3 +266,9 @@ bool _interfaceTypesEqual(DartType a, DartType b) {
   }
   return a == b;
 }
+
+const jsonKeyNullForUndefinedEnumValueFieldName =
+    'JsonKey.nullForUndefinedEnumValue';
+
+final _nullAsUnknownChecker =
+    TypeChecker.fromRuntime(JsonKey.nullForUndefinedEnumValue.runtimeType);
