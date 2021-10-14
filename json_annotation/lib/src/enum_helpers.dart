@@ -17,7 +17,7 @@ import 'json_key.dart';
 K? $enumDecodeNullable<K extends Enum, V>(
   Map<K, V> enumValues,
   Object? source, {
-  Object? unknownValue,
+  Enum? unknownValue,
 }) {
   if (source == null) {
     return null;
@@ -40,7 +40,15 @@ K? $enumDecodeNullable<K extends Enum, V>(
     );
   }
 
-  return unknownValue as K;
+  if (unknownValue is! K) {
+    throw ArgumentError.value(
+      unknownValue,
+      'unknownValue',
+      'Must by of type `$K` or `JsonKey.nullForUndefinedEnumValue`.',
+    );
+  }
+
+  return unknownValue;
 }
 
 /// Returns the key associated with value [source] from [enumValues], if one

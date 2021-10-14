@@ -17,13 +17,8 @@ import 'package:test_process/test_process.dart';
 
 void main() {
   test('validate pubspec constraint', () {
-    final pubspec = Pubspec.parse(
-      File('pubspec.yaml').readAsStringSync(),
-      sourceUrl: Uri.file('pubspec.yaml'),
-    );
-
     final annotationConstraint =
-        pubspec.dependencies['json_annotation'] as HostedDependency;
+        _jsonSerialPubspec.dependencies['json_annotation'] as HostedDependency;
     final versionRange = annotationConstraint.version as VersionRange;
 
     expect(versionRange.includeMin, isTrue);
@@ -91,6 +86,23 @@ void main() {
   );
 }
 
+final _jsonSerialPubspec = Pubspec.parse(
+  File('pubspec.yaml').readAsStringSync(),
+  sourceUrl: Uri.file('pubspec.yaml'),
+);
+
+String _fixPath(String path) {
+  if (p.isAbsolute(path)) return path;
+
+  return p.canonicalize(p.join(p.current, path));
+}
+
+final _jsonSerialPathDependencyOverrides = {
+  for (var entry in _jsonSerialPubspec.dependencyOverrides.entries)
+    if (entry.value is PathDependency)
+      entry.key: {'path': _fixPath((entry.value as PathDependency).path)}
+};
+
 final _annotationLowerBound = requiredJsonAnnotationMinVersion.toString();
 
 final _missingProductionDep =
@@ -113,7 +125,8 @@ Future<void> _structurePackage({
         ...devDependencies,
         'build_runner': 'any',
         'json_serializable': {'path': p.current},
-      }
+      },
+      'dependency_overrides': _jsonSerialPathDependencyOverrides,
     },
   );
 
@@ -154,8 +167,6 @@ class SomeClass{}
       ]),
     ),
   );
-
-  await expectLater(proc.stderr, emitsDone);
 
   await proc.shouldExit(1);
 }

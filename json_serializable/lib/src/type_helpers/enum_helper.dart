@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -48,19 +47,11 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
 
-    if (jsonKey.defaultValue == "'${JsonKey.nullForUndefinedEnumValue}'") {
-      throw InvalidGenerationSourceError(
-        '`${JsonKey.nullForUndefinedEnumValue}` cannot be used with '
-        '`JsonKey.defaultValue`.',
-        element: context.fieldElement,
-      );
-    }
-
     if (!targetType.isNullableType &&
-        jsonKey.unknownEnumValue == JsonKey.nullForUndefinedEnumValue) {
+        jsonKey.unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
       // If the target is not nullable,
       throw InvalidGenerationSourceError(
-        '`${JsonKey.nullForUndefinedEnumValue}` cannot be used with '
+        '`$jsonKeyNullForUndefinedEnumValueFieldName` cannot be used with '
         '`JsonKey.unknownEnumValue` unless the field is nullable.',
         element: context.fieldElement,
       );

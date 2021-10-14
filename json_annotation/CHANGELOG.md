@@ -1,3 +1,11 @@
+## 4.3.0
+
+- Changed the type of `JsonKey.unknownEnumValue` from `Object?` to `Enum?`.
+  Assuming this feature has been used correctly, it shouldn't be a breaking
+  change.
+- Changed the type of the `$enumDecodeNullable` parameter `unknownValue` from
+  `Object?` to `Enum?`.
+
 ## 4.2.0
 
 - Added `JsonSerializable.constructor` field to allow specifying an alternative
