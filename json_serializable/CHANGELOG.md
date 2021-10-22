@@ -1,3 +1,7 @@
+## 6.0.1
+
+- Don't require `json_annotation` in `dependencies` if it's just used in tests.
+
 ## 6.0.0
 
 - Added support for `JsonSerializable.constructor` to allow specifying an 
