@@ -132,6 +132,16 @@ Future<void> _structurePackage({
 
   await d.file('pubspec.yaml', pubspec).create();
 
+  /// A file in the lib directory without JsonSerializable should do nothing!
+  await d.dir(
+    'lib',
+    [
+      d.file('no_op.dart', '''
+class NoOp {}
+''')
+    ],
+  ).create();
+
   await d.dir(
     sourceDirectory,
     [
@@ -155,18 +165,17 @@ class SomeClass{}
     workingDirectory: d.sandbox,
   );
 
-  await proc.stdoutStream().forEach(print);
+  final lines = StringBuffer();
+  await for (var line in proc.stdoutStream()) {
+    lines.writeln(line);
+    print(line);
+  }
 
-  await expectLater(
-    proc.stdout,
-    emitsThrough(
-      emitsInOrder([
-        '[SEVERE] json_serializable:json_serializable on $sourceDirectory/sample.dart:',
-        '',
-        message,
-      ]),
-    ),
-  );
+  expect(lines.toString(), contains('''
+[SEVERE] json_serializable:json_serializable on $sourceDirectory/sample.dart:
+
+$message
+'''));
 
   await proc.shouldExit(1);
 }

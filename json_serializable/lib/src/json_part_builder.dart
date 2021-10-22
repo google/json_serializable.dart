@@ -52,13 +52,13 @@ class _UnifiedGenerator extends Generator {
 
   @override
   Future<String?> generate(LibraryReader library, BuildStep buildStep) async {
-    await pubspecHasRightVersion(buildStep);
-
     final values = <String>{};
 
     for (var generator in _generators) {
       for (var annotatedElement
           in library.annotatedWith(generator.typeChecker)) {
+        await pubspecHasRightVersion(buildStep);
+
         final generatedValue = generator.generateForAnnotatedElement(
             annotatedElement.element, annotatedElement.annotation, buildStep);
         for (var value in _normalizeGeneratorOutput(generatedValue)) {
