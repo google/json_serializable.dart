@@ -1,5 +1,8 @@
 ## 2.0.2-dev
 
+- Require `json_annotation` `^4.3.0`
+- Require Dart SDK `>=2.14`
+
 ## 2.0.1
 
 - If `CheckedFromJsonException` is caught for a key missing in the source map,
