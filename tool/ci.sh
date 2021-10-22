@@ -84,10 +84,6 @@ for PKG in ${PKGS}; do
         dart test --run-skipped -t presubmit-only test/ensure_build_test.dart || EXIT_CODE=$?
         ;;
       test_2)
-        echo 'dart test -p chrome'
-        dart test -p chrome || EXIT_CODE=$?
-        ;;
-      test_3)
         echo 'dart test --run-skipped -t presubmit-only test/annotation_version_test.dart'
         dart test --run-skipped -t presubmit-only test/annotation_version_test.dart || EXIT_CODE=$?
         ;;
