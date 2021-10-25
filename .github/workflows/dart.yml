@@ -271,7 +271,7 @@ jobs:
         uses: actions/cache@v2.1.6
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.14.0;packages:json_serializable;commands:test_2"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.14.0;packages:json_serializable;commands:test_3"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;dart:2.14.0;packages:json_serializable
             os:ubuntu-latest;pub-cache-hosted;dart:2.14.0
@@ -328,6 +328,38 @@ jobs:
       - job_002
       - job_003
   job_007:
+    name: "unit_test; Dart 2.14.0; PKG: json_serializable; `dart test -p chrome`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2.1.6
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.14.0;packages:json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:2.14.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.14.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: "2.14.0"
+      - id: checkout
+        uses: actions/checkout@v2.3.5
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart pub upgrade
+      - name: "json_serializable; dart test -p chrome"
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart test -p chrome
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_008:
     name: "unit_test; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
@@ -386,7 +418,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_008:
+  job_009:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -394,7 +426,7 @@ jobs:
         uses: actions/cache@v2.1.6
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:test_2"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:test_3"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable
             os:ubuntu-latest;pub-cache-hosted;dart:dev
@@ -418,7 +450,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_009:
+  job_010:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -450,7 +482,39 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_010:
+  job_011:
+    name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2.1.6
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - uses: dart-lang/setup-dart@v1.3
+        with:
+          sdk: dev
+      - id: checkout
+        uses: actions/checkout@v2.3.5
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart pub upgrade
+      - name: "json_serializable; dart test -p chrome"
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart test -p chrome
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_012:
     name: "ensure_build; Dart 2.14.0; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -506,7 +570,9 @@ jobs:
       - job_007
       - job_008
       - job_009
-  job_011:
+      - job_010
+      - job_011
+  job_013:
     name: "ensure_build; Dart dev; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -562,3 +628,5 @@ jobs:
       - job_007
       - job_008
       - job_009
+      - job_010
+      - job_011
