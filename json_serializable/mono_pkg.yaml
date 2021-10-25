@@ -10,8 +10,7 @@ stages:
     - analyze: --fatal-infos .
 - unit_test:
   - test:
-  # Skip browser tests - hitting https://github.com/dart-lang/test/issues/1610
-  #- test: -p chrome
+  - test: -p chrome
   - test: --run-skipped -t presubmit-only test/annotation_version_test.dart
   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 
