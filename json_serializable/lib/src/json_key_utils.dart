@@ -194,12 +194,19 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 
   final defaultValue = _annotationValue('defaultValue');
   if (defaultValue != null && ctorParamDefault != null) {
-    log.warning(
-      'The constructor parameter for `${element.name}` has a default value '
-      '`$ctorParamDefault`, but the `JsonKey.defaultValue` value '
-      '`$defaultValue` will be used for missing or `null` values in JSON '
-      'decoding.',
-    );
+    if (defaultValue == ctorParamDefault) {
+      log.info(
+        'The default value `$defaultValue` for `${element.name}` is defined '
+        'twice in the constructor and in the `JsonKey.defaultValue`.',
+      );
+    } else {
+      log.warning(
+        'The constructor parameter for `${element.name}` has a default value '
+        '`$ctorParamDefault`, but the `JsonKey.defaultValue` value '
+        '`$defaultValue` will be used for missing or `null` values in JSON '
+        'decoding.',
+      );
+    }
   }
 
   return _populateJsonKey(
