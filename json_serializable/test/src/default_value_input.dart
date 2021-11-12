@@ -158,12 +158,11 @@ class CtorDefaultValueAndJsonKeyDefaultValue {
 
 @ShouldGenerate(
   r'''
-SameCtorAndJsonKeyDefaultValue
-    _$SameCtorAndJsonKeyDefaultValueFromJson(
-            Map<String, dynamic> json) =>
-        SameCtorAndJsonKeyDefaultValue(
-          json['theField'] as int? ?? 3,
-        );
+SameCtorAndJsonKeyDefaultValue _$SameCtorAndJsonKeyDefaultValueFromJson(
+        Map<String, dynamic> json) =>
+    SameCtorAndJsonKeyDefaultValue(
+      json['theField'] as int? ?? 3,
+    );
 ''',
   expectedLogItems: [
     'The default value `3` for `theField` is defined twice '
