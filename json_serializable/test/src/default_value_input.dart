@@ -156,6 +156,28 @@ class CtorDefaultValueAndJsonKeyDefaultValue {
   CtorDefaultValueAndJsonKeyDefaultValue([this.theField = 6]);
 }
 
+@ShouldGenerate(
+  r'''
+SameCtorAndJsonKeyDefaultValue
+    _$SameCtorAndJsonKeyDefaultValueFromJson(
+            Map<String, dynamic> json) =>
+        SameCtorAndJsonKeyDefaultValue(
+          json['theField'] as int? ?? 3,
+        );
+''',
+  expectedLogItems: [
+    'The default value `3` for `theField` is defined twice '
+        'in the constructor and in the `JsonKey.defaultValue`.',
+  ],
+)
+@JsonSerializable(createToJson: false)
+class SameCtorAndJsonKeyDefaultValue {
+  @JsonKey(defaultValue: 3)
+  final int theField;
+
+  SameCtorAndJsonKeyDefaultValue([this.theField = 3]);
+}
+
 @ShouldGenerate(r'''
 DefaultDoubleConstants _$DefaultDoubleConstantsFromJson(
         Map<String, dynamic> json) =>
