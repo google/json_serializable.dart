@@ -44,6 +44,7 @@ const _expectedAnnotatedTests = {
   'BadEnumDefaultValue',
   '_BetterPrivateNames',
   'CtorDefaultValueAndJsonKeyDefaultValue',
+  'SameCtorAndJsonKeyDefaultValue',
   'DefaultDoubleConstants',
   'DefaultWithConstObject',
   'DefaultWithDisallowNullRequiredClass',
