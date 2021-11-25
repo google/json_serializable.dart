@@ -73,7 +73,7 @@ class UnrecognizedKeysException extends BadKeyException {
       : super._(map);
 
   @override
-  String toString() => message;
+  String toString() => 'UnrecognizedKeysException: $message';
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was
@@ -88,6 +88,9 @@ class MissingRequiredKeysException extends BadKeyException {
   MissingRequiredKeysException(this.missingKeys, Map map)
       : assert(missingKeys.isNotEmpty),
         super._(map);
+
+  @override
+  String toString() => 'MissingRequiredKeyException: $message';
 }
 
 /// Exception thrown if there are keys with disallowed `null` values in a JSON
@@ -100,4 +103,7 @@ class DisallowedNullValueException extends BadKeyException {
   @override
   String get message => 'These keys had `null` values, '
       'which is not allowed: $keysWithNullValues';
+
+  @override
+  String toString() => 'DisallowedNullValueException: $message';
 }
