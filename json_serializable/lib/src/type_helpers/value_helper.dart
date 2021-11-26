@@ -9,6 +9,8 @@ import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
+/// Handles the types corresponding to [simpleJsonTypeChecker], namely
+/// [String], [bool], [num], [int], [double].
 class ValueHelper extends TypeHelper {
   const ValueHelper();
 
