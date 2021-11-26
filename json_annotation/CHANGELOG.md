@@ -1,3 +1,7 @@
+## 4.3.1-dev
+
+- Improved `toString` in included exceptions.
+
 ## 4.3.0
 
 - Changed the type of `JsonKey.unknownEnumValue` from `Object?` to `Enum?`.
