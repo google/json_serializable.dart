@@ -67,6 +67,21 @@ class JsonKey {
   /// If `null`, the field name is used.
   final String? name;
 
+  /// Specialize how a value is read from the source JSON map.
+  ///
+  /// Typically, the value corresponding to a given key is read directly from
+  /// the JSON map using `map[key]`. At times it's convenient to customize this
+  /// behavior to support alternative names or to support logic that requires
+  /// accessing multiple values at once.
+  ///
+  /// The provided, the [Function] must be a top-level or static within the
+  /// using class.
+  ///
+  /// Note: using this feature does not change any of the subsequent decoding
+  /// logic for the field. For instance, if the field is of type [DateTime] we
+  /// expect the function provided here to return a [String].
+  final Object? Function(Map, String)? readValue;
+
   /// When `true`, generated code for `fromJson` will verify that the source
   /// JSON map contains the associated key.
   ///
@@ -108,6 +123,7 @@ class JsonKey {
     this.ignore,
     this.includeIfNull,
     this.name,
+    this.readValue,
     this.required,
     this.toJson,
     this.unknownEnumValue,

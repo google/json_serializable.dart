@@ -162,6 +162,22 @@ void _nullableTests(KitchenSinkFactory factory) {
 }
 
 void _sharedTests(KitchenSinkFactory factory) {
+  test('other names', () {
+    final originalName = factory.fromJson(validValues);
+
+    final aliasName = factory.fromJson(
+      <String, dynamic>{
+        ...validValues,
+        'theIterable': validValues['iterable'],
+        'STRING': validValues[trickyKeyName]
+      }
+        ..remove('iterable')
+        ..remove(trickyKeyName),
+    );
+
+    expect(loudEncode(aliasName), loudEncode(originalName));
+  });
+
   test('empty', () {
     final item = factory.ctor();
     validateRoundTrip(item, factory.fromJson);

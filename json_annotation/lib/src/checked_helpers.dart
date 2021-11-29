@@ -13,11 +13,22 @@ typedef _CastFunction<R> = R Function(Object?);
 T $checkedCreate<T>(
   String className,
   Map map,
-  T Function(S Function<S>(String, _CastFunction<S>) converter) constructor, {
+  T Function(
+    S Function<S>(
+      String,
+      _CastFunction<S>, {
+      Object? Function(Map, String)? readValue,
+    }),
+  )
+      constructor, {
   Map<String, String> fieldKeyMap = const {},
 }) {
-  Q _checkedConvert<Q>(String key, _CastFunction<Q> convertFunction) =>
-      $checkedConvert<Q>(map, key, convertFunction);
+  Q _checkedConvert<Q>(
+    String key,
+    _CastFunction<Q> convertFunction, {
+    Object? Function(Map, String)? readValue,
+  }) =>
+      $checkedConvert<Q>(map, key, convertFunction, readValue: readValue);
 
   return $checkedNew(
     className,
@@ -69,9 +80,14 @@ T $checkedNew<T>(
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
 /// Should not be used directly.
-T $checkedConvert<T>(Map map, String key, T Function(dynamic) castFunc) {
+T $checkedConvert<T>(
+  Map map,
+  String key,
+  T Function(dynamic) castFunc, {
+  Object? Function(Map, String)? readValue,
+}) {
   try {
-    return castFunc(map[key]);
+    return castFunc(readValue == null ? map[key] : readValue(map, key));
   } on CheckedFromJsonException {
     rethrow;
   } catch (error, stack) {

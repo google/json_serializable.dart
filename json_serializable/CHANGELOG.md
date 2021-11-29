@@ -1,3 +1,9 @@
+## 6.1.0-dev
+
+- Support `JsonKey.readValue` to allow customized reading of values from source
+  JSON map objects.
+- Require `json_annotation` `'>=4.4.0 <4.5.0'`.
+
 ## 6.0.1
 
 - Don't require `json_annotation` in `dependencies` if it's just used in tests.

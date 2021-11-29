@@ -20,12 +20,15 @@ class KeyConfig {
 
   final String? unknownEnumValue;
 
+  final String? readValueFunctionName;
+
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
     required this.ignore,
     required this.includeIfNull,
     required this.name,
+    required this.readValueFunctionName,
     required this.required,
     required this.unknownEnumValue,
   });

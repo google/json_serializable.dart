@@ -1,5 +1,8 @@
-## 4.3.1-dev
+## 4.4.0-dev
 
+- Added `JsonKey.readValue`.
+- Non-breaking updates to `checkedCreate` and `checkedConvert` to support
+  `JsonKey.readValue`.
 - Improved `toString` in included exceptions.
 
 ## 4.3.0

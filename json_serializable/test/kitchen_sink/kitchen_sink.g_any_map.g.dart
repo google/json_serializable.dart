@@ -10,7 +10,7 @@ part of 'kitchen_sink.g_any_map.dart';
 
 KitchenSink _$KitchenSinkFromJson(Map json) => KitchenSink(
       ctorValidatedNo42: json['no-42'] as int?,
-      iterable: json['iterable'] as List<dynamic>?,
+      iterable: _valueAccessor(json, 'iterable') as List<dynamic>?,
       dynamicIterable: json['dynamicIterable'] as List<dynamic>?,
       objectIterable:
           (json['objectIterable'] as List<dynamic>?)?.map((e) => e as Object),
@@ -73,7 +73,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) => KitchenSink(
           .toList()
       ..val = Map<String, bool>.from(json['val'] as Map)
       ..writeNotNull = json['writeNotNull'] as bool?
-      ..string = json[r'$string'] as String?
+      ..string = _valueAccessor(json, r'$string') as String?
       ..simpleObject = SimpleObject.fromJson(json['simpleObject'] as Map)
       ..strictKeysObject =
           StrictKeysObject.fromJson(json['strictKeysObject'] as Map)

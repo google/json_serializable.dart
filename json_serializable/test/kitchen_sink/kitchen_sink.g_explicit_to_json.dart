@@ -75,6 +75,18 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
       JsonConverterTestClass.fromJson(json);
 }
 
+Object? _valueAccessor(Map json, String key) {
+  if (key == k.trickyKeyName) {
+    return json[k.trickyKeyName] ?? json['STRING'];
+  }
+
+  if (key == 'iterable') {
+    return json['iterable'] ?? json['theIterable'];
+  }
+
+  return json[key];
+}
+
 @JsonSerializable(
   explicitToJson: true,
 )
@@ -117,6 +129,7 @@ class KitchenSink implements k.KitchenSink {
 
   BigInt? bigInt;
 
+  @JsonKey(readValue: _valueAccessor)
   Iterable? get iterable => _iterable;
 
   Iterable<dynamic> get dynamicIterable => _dynamicIterable;
@@ -154,7 +167,7 @@ class KitchenSink implements k.KitchenSink {
   // Handle fields with names that collide with helper names
   Map<String, bool> val = _defaultMap();
   bool? writeNotNull;
-  @JsonKey(name: r'$string')
+  @JsonKey(name: k.trickyKeyName, readValue: _valueAccessor)
   String? string;
 
   SimpleObject simpleObject = _defaultSimpleObject();

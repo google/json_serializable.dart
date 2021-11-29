@@ -86,16 +86,24 @@ abstract class DecodeHelper implements HelperCore {
         ..write('''
     final val = ${data.content};''');
 
-      for (final field in data.fieldsToSet) {
+      for (final fieldName in data.fieldsToSet) {
         sectionBuffer.writeln();
-        final safeName = safeNameAccess(accessibleFields[field]!);
+        final fieldValue = accessibleFields[fieldName]!;
+        final safeName = safeNameAccess(fieldValue);
         sectionBuffer
           ..write('''
     \$checkedConvert($safeName, (v) => ''')
-          ..write('val.$field = ')
-          ..write(_deserializeForField(accessibleFields[field]!,
-              checkedProperty: true))
-          ..write(');');
+          ..write('val.$fieldName = ')
+          ..write(
+            _deserializeForField(fieldValue, checkedProperty: true),
+          );
+
+        final readValueFunc = jsonKeyFor(fieldValue).readValueFunctionName;
+        if (readValueFunc != null) {
+          sectionBuffer.writeln(',readValue: $readValueFunc,');
+        }
+
+        sectionBuffer.write(');');
       }
 
       sectionBuffer.write('''\n    return val;
@@ -182,6 +190,8 @@ abstract class DecodeHelper implements HelperCore {
     }
   }
 
+  /// If [checkedProperty] is `true`, we're using this function to write to a
+  /// setter.
   String _deserializeForField(
     FieldElement field, {
     ParameterElement? ctorParam,
@@ -192,6 +202,7 @@ abstract class DecodeHelper implements HelperCore {
     final contextHelper = getHelperContext(field);
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
+    final readValueFunc = jsonKey.readValueFunctionName;
 
     String deserialize(String expression) => contextHelper
         .deserialize(
@@ -206,14 +217,21 @@ abstract class DecodeHelper implements HelperCore {
       if (config.checked) {
         value = deserialize('v');
         if (!checkedProperty) {
-          value = '\$checkedConvert($jsonKeyName, (v) => $value)';
+          final readValueBit =
+              readValueFunc == null ? '' : ',readValue: $readValueFunc,';
+          value = '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
         }
       } else {
         assert(
           !checkedProperty,
           'should only be true if `_generator.checked` is true.',
         );
-        value = deserialize('json[$jsonKeyName]');
+
+        value = deserialize(
+          readValueFunc == null
+              ? 'json[$jsonKeyName]'
+              : '$readValueFunc(json, $jsonKeyName)',
+        );
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
