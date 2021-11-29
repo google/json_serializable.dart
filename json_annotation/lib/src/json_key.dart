@@ -76,6 +76,10 @@ class JsonKey {
   ///
   /// The provided, the [Function] must be a top-level or static within the
   /// using class.
+  ///
+  /// Note: using this feature does not change any of the subsequent decoding
+  /// logic for the field. For instance, if the field is of type [DateTime] we
+  /// expect the function provided here to return a [String].
   final Object? Function(Map, String)? readValue;
 
   /// When `true`, generated code for `fromJson` will verify that the source
