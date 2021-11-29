@@ -14,11 +14,12 @@ T $checkedCreate<T>(
   String className,
   Map map,
   T Function(
-          S Function<S>(
-    String,
-    _CastFunction<S>, {
-    Object? Function(Map, String)? readValue,
-  }))
+    S Function<S>(
+      String,
+      _CastFunction<S>, {
+      Object? Function(Map, String)? readValue,
+    }),
+  )
       constructor, {
   Map<String, String> fieldKeyMap = const {},
 }) {
