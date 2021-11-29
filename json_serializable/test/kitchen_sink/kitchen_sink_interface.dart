@@ -5,6 +5,9 @@
 import '../test_utils.dart';
 import 'simple_object.dart';
 
+/// A key name that requires special encoding
+const trickyKeyName = r'$string';
+
 abstract class KitchenSinkFactory<K, V> {
   String get description;
 

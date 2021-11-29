@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
+import 'kitchen_sink_interface.dart' show trickyKeyName;
+
 const validValues = <String, dynamic>{
   'no-42': 0,
   'dateTime': '2018-05-10T14:20:58.927',
@@ -35,7 +37,7 @@ const validValues = <String, dynamic>{
   'crazyComplex': [<String, dynamic>{}],
   generatedLocalVarName: <String, dynamic>{'key': true},
   _toJsonMapHelperName: true,
-  r'$string': 'string',
+  trickyKeyName: 'string',
   'simpleObject': {'value': 42},
   'strictKeysObject': {'value': 10, 'custom_field': 'cool'},
   'validatedPropertyNo42': 0
@@ -69,7 +71,7 @@ const invalidValueTypes = {
   'crazyComplex': [true],
   generatedLocalVarName: {'key': 42},
   _toJsonMapHelperName: 42,
-  r'$string': true,
+  trickyKeyName: true,
   'simpleObject': 42,
   'strictKeysObject': {
     'value': 10,

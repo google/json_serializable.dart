@@ -14,7 +14,11 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
       ($checkedConvert) {
         final val = KitchenSink(
           ctorValidatedNo42: $checkedConvert('no-42', (v) => v as int?),
-          iterable: $checkedConvert('iterable', (v) => v as List<dynamic>?),
+          iterable: $checkedConvert(
+            'iterable',
+            (v) => v as List<dynamic>?,
+            readValue: _valueAccessor,
+          ),
           dynamicIterable:
               $checkedConvert('dynamicIterable', (v) => v as List<dynamic>?),
           objectIterable: $checkedConvert('objectIterable',
@@ -106,7 +110,11 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
         $checkedConvert(
             'val', (v) => val.val = Map<String, bool>.from(v as Map));
         $checkedConvert('writeNotNull', (v) => val.writeNotNull = v as bool?);
-        $checkedConvert(r'$string', (v) => val.string = v as String?);
+        $checkedConvert(
+          r'$string',
+          (v) => val.string = v as String?,
+          readValue: _valueAccessor,
+        );
         $checkedConvert('simpleObject',
             (v) => val.simpleObject = SimpleObject.fromJson(v as Map));
         $checkedConvert('strictKeysObject',
