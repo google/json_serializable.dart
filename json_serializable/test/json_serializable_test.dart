@@ -79,6 +79,7 @@ const _expectedAnnotatedTests = {
   'InvalidFromFunc2Args',
   'InvalidToFunc2Args',
   'Issue713',
+  'Issue1038RegressionTest',
   'JsonConvertOnField',
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
