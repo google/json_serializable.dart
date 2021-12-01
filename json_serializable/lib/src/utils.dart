@@ -85,7 +85,7 @@ ClassConfig mergeConfig(
 
   final constructor = annotation.constructor ?? config.constructor;
   final constructorInstance =
-      constructorByNameOrNull(classElement, constructor);
+      _constructorByNameOrNull(classElement, constructor);
 
   final paramDefaultValueMap = constructorInstance == null
       ? <String, String>{}
@@ -112,7 +112,7 @@ ClassConfig mergeConfig(
   );
 }
 
-ConstructorElement? constructorByNameOrNull(
+ConstructorElement? _constructorByNameOrNull(
   ClassElement classElement,
   String name,
 ) {
