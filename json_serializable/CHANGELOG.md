@@ -2,6 +2,8 @@
 
 - Support `JsonKey.readValue` to allow customized reading of values from source
   JSON map objects.
+- The check to make sure there is a correctly constrained dependency on
+  `package:json_annotation` is now a warning and doesn't fail the build.
 - Require `json_annotation` `'>=4.4.0 <4.5.0'`.
 
 ## 6.0.1

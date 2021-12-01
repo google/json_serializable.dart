@@ -51,7 +51,7 @@ Future<void> _validatePubspec(bool production, BuildStep buildStep) async {
 
   if (errorMessage == null) return;
 
-  throw BadPackageDependencyError(errorMessage);
+  log.warning(errorMessage);
 }
 
 String? _checkAnnotationConstraint(
@@ -123,14 +123,4 @@ class _OncePerBuild {
       await _callback(state, buildStep);
     }
   }
-}
-
-/// Thrown when a pubspec dependency is missing or incorrectly specified.
-class BadPackageDependencyError extends Error {
-  final String message;
-
-  BadPackageDependencyError(this.message);
-
-  @override
-  String toString() => message;
 }
