@@ -1,4 +1,4 @@
-## 4.4.0-beta.0
+## 4.4.0
 
 - Added `JsonKey.readValue`.
 - Non-breaking updates to `checkedCreate` and `checkedConvert` to support
