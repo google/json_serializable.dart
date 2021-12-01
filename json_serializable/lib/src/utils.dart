@@ -84,10 +84,12 @@ ClassConfig mergeConfig(
   assert(config.ctorParamDefaults.isEmpty);
 
   final constructor = annotation.constructor ?? config.constructor;
-  final constructorInstance = constructorByName(classElement, constructor);
+  final constructorInstance =
+      constructorByNameOrNull(classElement, constructor);
 
-  final paramDefaultValueMap = Map<String, String>.fromEntries(
-      constructorInstance.parameters
+  final paramDefaultValueMap = constructorInstance == null
+      ? <String, String>{}
+      : Map<String, String>.fromEntries(constructorInstance.parameters
           .where((element) => element.hasDefaultValue)
           .map((e) => MapEntry(e.name, e.defaultValueCode!)));
 
@@ -108,6 +110,18 @@ ClassConfig mergeConfig(
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     ctorParamDefaults: paramDefaultValueMap,
   );
+}
+
+ConstructorElement? constructorByNameOrNull(
+  ClassElement classElement,
+  String name,
+) {
+  try {
+    return constructorByName(classElement, name);
+    // ignore: avoid_catching_errors
+  } on InvalidGenerationSourceError {
+    return null;
+  }
 }
 
 ConstructorElement constructorByName(ClassElement classElement, String name) {
