@@ -1,4 +1,4 @@
-## 6.1.0-dev
+## 6.1.0
 
 - Support `JsonKey.readValue` to allow customized reading of values from source
   JSON map objects.
