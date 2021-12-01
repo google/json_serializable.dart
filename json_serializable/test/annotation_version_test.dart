@@ -172,10 +172,8 @@ class SomeClass{}
   }
 
   expect(lines.toString(), contains('''
-[SEVERE] json_serializable:json_serializable on $sourceDirectory/sample.dart:
+[WARNING] json_serializable:json_serializable on $sourceDirectory/sample.dart:
+$message'''));
 
-$message
-'''));
-
-  await proc.shouldExit(1);
+  await proc.shouldExit(0);
 }
