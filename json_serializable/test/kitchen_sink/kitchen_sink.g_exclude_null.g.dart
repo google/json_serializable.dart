@@ -80,7 +80,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
           .toList()
       ..val = Map<String, bool>.from(json['val'] as Map)
       ..writeNotNull = json['writeNotNull'] as bool?
-      ..string = _valueAccessor(json, r'$string') as String?
+      ..string = KitchenSink._trickyValueAccessor(json, r'$string') as String?
       ..simpleObject =
           SimpleObject.fromJson(json['simpleObject'] as Map<String, dynamic>)
       ..strictKeysObject = StrictKeysObject.fromJson(
