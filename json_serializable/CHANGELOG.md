@@ -1,3 +1,7 @@
+## 6.1.1
+
+- Fix `JsonKey.readValue` support to allow static functions.
+
 ## 6.1.0
 
 - Support `JsonKey.readValue` to allow customized reading of values from source

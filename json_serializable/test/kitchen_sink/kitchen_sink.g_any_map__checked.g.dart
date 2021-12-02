@@ -113,7 +113,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
         $checkedConvert(
           r'$string',
           (v) => val.string = v as String?,
-          readValue: _valueAccessor,
+          readValue: KitchenSink._trickyValueAccessor,
         );
         $checkedConvert('simpleObject',
             (v) => val.simpleObject = SimpleObject.fromJson(v as Map));

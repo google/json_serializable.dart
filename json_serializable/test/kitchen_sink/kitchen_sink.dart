@@ -76,10 +76,6 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
 }
 
 Object? _valueAccessor(Map json, String key) {
-  if (key == k.trickyKeyName) {
-    return json[k.trickyKeyName] ?? json['STRING'];
-  }
-
   if (key == 'iterable') {
     return json['iterable'] ?? json['theIterable'];
   }
@@ -165,7 +161,7 @@ class KitchenSink implements k.KitchenSink {
   // Handle fields with names that collide with helper names
   Map<String, bool> val = _defaultMap();
   bool? writeNotNull;
-  @JsonKey(name: k.trickyKeyName, readValue: _valueAccessor)
+  @JsonKey(name: k.trickyKeyName, readValue: _trickyValueAccessor)
   String? string;
 
   SimpleObject simpleObject = _defaultSimpleObject();
@@ -184,6 +180,14 @@ class KitchenSink implements k.KitchenSink {
   }
 
   bool operator ==(Object other) => k.sinkEquals(this, other);
+
+  static Object? _trickyValueAccessor(Map json, String key) {
+    if (key == k.trickyKeyName) {
+      return json[k.trickyKeyName] ?? json['STRING'];
+    }
+
+    return json[key];
+  }
 }
 
 @JsonSerializable()

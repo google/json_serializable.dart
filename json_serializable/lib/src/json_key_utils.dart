@@ -212,8 +212,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   String? readValueFunctionName;
   final readValue = obj.read('readValue');
   if (!readValue.isNull) {
-    final objValue = readValue.objectValue.toFunctionValue()!;
-    readValueFunctionName = objValue.name;
+    readValueFunctionName =
+        readValue.objectValue.toFunctionValue()!.qualifiedName;
   }
 
   return _populateJsonKey(

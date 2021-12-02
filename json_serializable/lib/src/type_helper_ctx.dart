@@ -176,11 +176,5 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     }
   }
 
-  var name = executableElement.name;
-
-  if (executableElement is MethodElement) {
-    name = '${executableElement.enclosingElement.name}.$name';
-  }
-
-  return ConvertData(name, argType);
+  return ConvertData(executableElement.qualifiedName, argType);
 }
