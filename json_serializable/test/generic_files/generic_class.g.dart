@@ -75,3 +75,42 @@ Map<String, dynamic> _$Issue980ParentClassToJson(
     <String, dynamic>{
       'list': instance.list,
     };
+
+Issue1047ParentClass<T> _$Issue1047ParentClassFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    Issue1047ParentClass<T>(
+      edges: (json['edges'] as List<dynamic>)
+          .map((e) => Issue1047Class<T>.fromJson(
+              e as Map<String, dynamic>, (value) => fromJsonT(value)))
+          .toList(),
+    );
+
+Map<String, dynamic> _$Issue1047ParentClassToJson<T>(
+  Issue1047ParentClass<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
+    <String, dynamic>{
+      'edges': instance.edges
+          .map((e) => e.toJson(
+                (value) => toJsonT(value),
+              ))
+          .toList(),
+    };
+
+Issue1047Class<T> _$Issue1047ClassFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) =>
+    Issue1047Class<T>(
+      node: fromJsonT(json['node']),
+    );
+
+Map<String, dynamic> _$Issue1047ClassToJson<T>(
+  Issue1047Class<T> instance,
+  Object? Function(T value) toJsonT,
+) =>
+    <String, dynamic>{
+      'node': toJsonT(instance.node),
+    };

@@ -143,3 +143,35 @@ class Issue980ParentClass {
   @override
   int get hashCode => const DeepCollectionEquality().hash(list);
 }
+
+@JsonSerializable(genericArgumentFactories: true)
+class Issue1047ParentClass<T> {
+  Issue1047ParentClass({required this.edges});
+
+  factory Issue1047ParentClass.fromJson(
+          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
+      _$Issue1047ParentClassFromJson<T>(json, fromJsonT);
+
+  final List<Issue1047Class<T>> edges;
+
+  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
+      _$Issue1047ParentClassToJson(this, toJsonT);
+}
+
+@JsonSerializable(genericArgumentFactories: true)
+class Issue1047Class<T> {
+  Issue1047Class({
+    required this.node,
+  });
+
+  factory Issue1047Class.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) =>
+      _$Issue1047ClassFromJson<T>(json, fromJsonT);
+
+  final T node;
+
+  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
+      _$Issue1047ClassToJson(this, toJsonT);
+}
