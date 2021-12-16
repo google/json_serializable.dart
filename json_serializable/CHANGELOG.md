@@ -1,3 +1,8 @@
+## 6.1.2
+
+- Fix issue with nested generics and `genericArgumentFactories: true`.
+  ([#1047](https://github.com/google/json_serializable.dart/issues/1047))
+
 ## 6.1.1
 
 - Fix `JsonKey.readValue` support to allow static functions.

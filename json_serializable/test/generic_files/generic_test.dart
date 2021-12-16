@@ -326,4 +326,33 @@ void main() {
       (json) => Issue980ParentClass.fromJson(json),
     );
   });
+
+  test('issue 1047 regression', () {
+    _roundTrip(
+      sourceJson: {
+        'edges': [
+          {'node': '42'}
+        ]
+      },
+      genericEncode: (o) => o.toString(),
+      genericDecode: (o) => int.parse(o as String),
+    );
+  });
+}
+
+void _roundTrip<T>({
+  required Map<String, dynamic> sourceJson,
+  required Object? Function(T) genericEncode,
+  required T Function(Object?) genericDecode,
+}) {
+  final json = jsonEncode(sourceJson);
+
+  final instance2 = Issue1047ParentClass<T>.fromJson(
+    jsonDecode(json) as Map<String, dynamic>,
+    genericDecode,
+  );
+
+  final json2 = jsonEncode(instance2.toJson(genericEncode));
+
+  expect(json2, json);
 }

@@ -205,6 +205,10 @@ String typeToCode(
       (type.isNullableType || forceNullable) ? '?' : '',
     ].join();
   }
+
+  if (type is TypeParameterType) {
+    return type.getDisplayString(withNullability: false);
+  }
   throw UnimplementedError('(${type.runtimeType}) $type');
 }
 
