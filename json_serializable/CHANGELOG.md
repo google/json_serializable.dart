@@ -1,3 +1,7 @@
+## 6.1.3
+
+- Allow latest `package:analyzer`.
+
 ## 6.1.2
 
 - Fix issue with nested generics and `genericArgumentFactories: true`.
