@@ -121,22 +121,22 @@ jobs:
         working-directory: json_serializable
         run: dartanalyzer --fatal-warnings --fatal-infos .
   job_003:
-    name: "analyzer_and_format; Dart 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dartanalyzer --fatal-warnings .`"
+    name: "analyzer_and_format; Dart 2.13.4; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dartanalyzer --fatal-warnings .`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@v2
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartanalyzer_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:dartanalyzer_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - uses: dart-lang/setup-dart@v1.0
         with:
-          sdk: "2.7.0"
+          sdk: "2.13.4"
       - id: checkout
         uses: actions/checkout@v2
       - id: _test_yaml_pub_upgrade
@@ -185,22 +185,22 @@ jobs:
         working-directory: json_serializable
         run: dartanalyzer --fatal-warnings .
   job_004:
-    name: "unit_test; Dart 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `pub run test`"
+    name: "unit_test; Dart 2.13.4; PKGS: _test_yaml, checked_yaml, example, json_serializable; `pub run test`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@v2
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - uses: dart-lang/setup-dart@v1.0
         with:
-          sdk: "2.7.0"
+          sdk: "2.13.4"
       - id: checkout
         uses: actions/checkout@v2
       - id: _test_yaml_pub_upgrade
@@ -303,22 +303,22 @@ jobs:
       - job_002
       - job_003
   job_006:
-    name: "unit_test; Dart 2.7.0; PKG: json_serializable; `pub run test -p chrome`"
+    name: "unit_test; Dart 2.13.4; PKG: json_serializable; `pub run test -p chrome`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@v2
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:json_serializable;commands:test_2"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:json_serializable;commands:test_2"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - uses: dart-lang/setup-dart@v1.0
         with:
-          sdk: "2.7.0"
+          sdk: "2.13.4"
       - id: checkout
         uses: actions/checkout@v2
       - id: json_serializable_pub_upgrade
@@ -367,22 +367,22 @@ jobs:
       - job_002
       - job_003
   job_008:
-    name: "ensure_build; Dart 2.7.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    name: "ensure_build; Dart 2.13.4; PKGS: _test_yaml, checked_yaml, example, json_serializable; `pub run test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@v2
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0;packages:_test_yaml-checked_yaml-example-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:2.7.0
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:2.13.4
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - uses: dart-lang/setup-dart@v1.0
         with:
-          sdk: "2.7.0"
+          sdk: "2.13.4"
       - id: checkout
         uses: actions/checkout@v2
       - id: _test_yaml_pub_upgrade
