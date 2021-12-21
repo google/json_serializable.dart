@@ -2,9 +2,9 @@
 stages:
 - analyzer_and_format:
   - group:
-    - dartfmt
-    - dartanalyzer: --fatal-warnings --fatal-infos .
-    dart: [dev]
+    - analyze: --fatal-warnings --fatal-infos .
+    dart: [stable]
   - group:
-    - dartanalyzer: --fatal-warnings .
+    - format
+    - analyze: --fatal-warnings .
     dart: [2.13.4]
