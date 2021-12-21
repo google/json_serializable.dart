@@ -6,9 +6,8 @@ dart:
 stages:
 - analyzer_and_format:
   - group:
-    - format
-    - analyze: --fatal-warnings --fatal-infos .
-    dart: [dev]
+    - analyze: --fatal-warnings .
+    dart: [stable]
   - group:
     - format
     - analyze: --fatal-warnings .

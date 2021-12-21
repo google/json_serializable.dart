@@ -121,38 +121,6 @@ jobs:
         working-directory: json_serializable
         run: dart analyze --fatal-warnings .
   job_003:
-    name: "analyzer_and_format; Dart dev; PKG: json_serializable; `dart format --output=none --set-exit-if-changed .`, `dart analyze --fatal-warnings --fatal-infos .`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@v2.1.6
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable;commands:format-analyze_0"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;dart:dev;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;dart:dev
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - uses: dart-lang/setup-dart@v1.0
-        with:
-          sdk: dev
-      - id: checkout
-        uses: actions/checkout@v2.3.4
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-        run: dart pub upgrade
-      - name: "json_serializable; dart format --output=none --set-exit-if-changed ."
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-        run: "dart format --output=none --set-exit-if-changed ."
-      - name: "json_serializable; dart analyze --fatal-warnings --fatal-infos ."
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-        run: dart analyze --fatal-warnings --fatal-infos .
-  job_004:
     name: "analyzer_and_format; Dart stable; PKGS: _test_yaml, checked_yaml, example, json_annotation; `dart analyze --fatal-warnings --fatal-infos .`"
     runs-on: ubuntu-latest
     steps:
@@ -207,6 +175,34 @@ jobs:
         if: "always() && steps.json_annotation_pub_upgrade.conclusion == 'success'"
         working-directory: json_annotation
         run: dart analyze --fatal-warnings --fatal-infos .
+  job_004:
+    name: "analyzer_and_format; Dart stable; PKG: json_serializable; `dart analyze --fatal-warnings .`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@v2.1.6
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;dart:stable;packages:json_serializable;commands:analyze_1"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;dart:stable;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;dart:stable
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - uses: dart-lang/setup-dart@v1.0
+        with:
+          sdk: stable
+      - id: checkout
+        uses: actions/checkout@v2.3.4
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart pub upgrade
+      - name: "json_serializable; dart analyze --fatal-warnings ."
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+        run: dart analyze --fatal-warnings .
   job_005:
     name: "unit_test; Dart 2.13.4; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
