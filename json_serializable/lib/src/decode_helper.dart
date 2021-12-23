@@ -75,14 +75,11 @@ abstract class DecodeHelper implements HelperCore {
     if (config.checked) {
       final classLiteral = escapeDartString(element.name);
 
-      buffer
-        ..write('''
+      buffer..write('''
   return \$checkedNew(
     $classLiteral,
     json,
-    () {\n''')
-        ..write(checks)
-        ..write('''
+    () {\n''')..write(checks)..write('''
     final val = ${data.content};''');
 
       for (final field in data.fieldsToSet) {
@@ -112,13 +109,9 @@ abstract class DecodeHelper implements HelperCore {
         fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
       }
 
-      buffer
-        ..write(fieldKeyMapArg)
-        ..write(')');
+      buffer..write(fieldKeyMapArg)..write(')');
     } else {
-      buffer
-        ..write(checks)
-        ..write('''
+      buffer..write(checks)..write('''
   return ${data.content}''');
       for (final field in data.fieldsToSet) {
         buffer
@@ -127,9 +120,7 @@ abstract class DecodeHelper implements HelperCore {
           ..write(deserializeFun(field));
       }
     }
-    buffer
-      ..writeln(';\n}')
-      ..writeln();
+    buffer..writeln(';\n}')..writeln();
 
     return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
   }
