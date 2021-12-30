@@ -32,7 +32,7 @@ abstract class DecodeHelper implements HelperCore {
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
     buffer.write('$targetClassReference '
         '${prefix}FromJson${genericClassArgumentsImpl(true)}'
-        '($mapType json, $targetClassReference? existingInstance');
+        '($mapType json, { $targetClassReference? existingInstance }');
 
     if (config.genericArgumentFactories) {
       for (var arg in element.typeParameters) {
@@ -311,7 +311,7 @@ _ConstructorData _writeConstructorInvocation(
 
   final buffer = StringBuffer()
     ..write(
-      '(existingInstance != null ? existingInstance : $className'
+      '(existingInstance ?? $className'
       '${genericClassArguments(classElement, false)}'
       '$constructorExtra(',
     );
