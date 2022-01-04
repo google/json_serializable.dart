@@ -14,8 +14,9 @@ stages:
     dart: [2.13.4]
 - unit_test:
   - test
-- ensure_build:
-  - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
+# Skipping this because the build fails on stable due to https://github.com/dart-lang/sdk/issues/47191
+# - ensure_build:
+#   - test: --run-skipped -t presubmit-only test/ensure_build_test.dart
 
 cache:
   directories:
