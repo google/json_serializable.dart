@@ -1,16 +1,12 @@
 # See https://github.com/google/mono_repo.dart for details on this file
 dart:
 - 2.13.4
-- stable
 
 stages:
 - analyzer_and_format:
   - group:
-    - analyze: --fatal-warnings --fatal-infos .
-    dart: [stable]
-  - group:
     - format
-    - analyze: --fatal-warnings .
+    - analyze: --fatal-warnings --fatal-infos .
     dart: [2.13.4]
 
 - unit_test:
