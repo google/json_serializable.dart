@@ -24,3 +24,11 @@ dependency_overrides:
     path: ../json_annotation
   json_serializable:
     path: ../json_serializable
+  # Normally pubspec_parse would be constrained to <1.0.0 because of this
+  # package's constraint on json_annotation ^3.0.0, but because json_annotation
+  # is also overridden here, that does not happen, and pubspec_parse would
+  # otherwise resolve to v1 which will fail. To avoid that issue, we override
+  # pubspec_parse here, but note that this is not representative of a consumer
+  # would actually need to do – depending on json_annotation ^3.0.0 is
+  # sufficient for consumers.
+  pubspec_parse: <1.0.0

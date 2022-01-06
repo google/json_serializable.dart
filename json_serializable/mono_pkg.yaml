@@ -1,17 +1,17 @@
 # See https://github.com/google/mono_repo.dart for details on this file
 dart:
-- 2.7.0
-- dev
+- 2.13.4
+- stable
 
 stages:
 - analyzer_and_format:
   - group:
-    - dartfmt
-    - dartanalyzer: --fatal-warnings --fatal-infos .
-    dart: [dev]
+    - analyze: --fatal-warnings .
+    dart: [stable]
   - group:
-    - dartanalyzer: --fatal-warnings .
-    dart: [2.7.0]
+    - format
+    - analyze: --fatal-warnings .
+    dart: [2.13.4]
 - unit_test:
   - test
   - test: -p chrome

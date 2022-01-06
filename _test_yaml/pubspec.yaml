@@ -10,6 +10,7 @@ dev_dependencies:
   checked_yaml: any
   json_annotation: any
   json_serializable: any
+  meta: ">=1.2.2 <1.7.0" # Workaround to avoid https://github.com/dart-lang/sdk/issues/46142
   test: ^1.6.0
 
 dependency_overrides:

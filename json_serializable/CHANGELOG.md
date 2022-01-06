@@ -1,3 +1,7 @@
+## 3.5.2
+
+- Widen `package:analyzer` range to allow v1.x.
+
 ## 3.5.1
 
 - Improved error messages for unsupported types.
