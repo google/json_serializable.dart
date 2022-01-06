@@ -116,6 +116,10 @@
 - **BREAKING** `bool defaultProvided` arg added to `TypeHelper.deserialize`.
   _Only applies to code using `TypeHelper` directly._
 
+## 3.5.2
+
+- Widen `package:analyzer` range to allow v1.x.
+
 ## 3.5.1
 
 - Improved error messages for unsupported types.
