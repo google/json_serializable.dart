@@ -35,7 +35,7 @@ Future<void> main() async {
 
 const _expectedAnnotatedTests = {
   'annotatedMethod',
-  'unsupportedEnum',
+  'UnsupportedEnum',
   'BadFromFuncReturnType',
   'BadNoArgs',
   'BadOneNamed',

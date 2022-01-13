@@ -26,7 +26,7 @@ const theAnswer = 42;
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target
-enum unsupportedEnum { not, valid }
+enum UnsupportedEnum { not, valid }
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target
