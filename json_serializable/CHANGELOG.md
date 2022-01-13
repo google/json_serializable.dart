@@ -1,3 +1,7 @@
+## 6.1.4
+
+- Fix issues with latest `package:analyzer` related to enums and annotations.
+
 ## 6.1.3
 
 - Allow latest `package:analyzer`.
