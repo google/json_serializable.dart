@@ -84,7 +84,7 @@ void _nonNullableTests(KitchenSinkFactory factory) {
 
 void _nullableTests(KitchenSinkFactory factory) {
   void roundTripSink(KitchenSink p) {
-    validateRoundTrip(p, factory.fromJson);
+    roundTripObject(p, factory.fromJson);
   }
 
   test('nullable values are allowed in the nullable version', () {
@@ -180,7 +180,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('empty', () {
     final item = factory.ctor();
-    validateRoundTrip(item, factory.fromJson);
+    roundTripObject(item, factory.fromJson);
   });
 
   test('list and map of DateTime - not null', () {
@@ -189,7 +189,7 @@ void _sharedTests(KitchenSinkFactory factory) {
       ..dateTimeList = <DateTime>[now, now]
       ..objectDateTimeMap = <Object, DateTime>{'value': now};
 
-    validateRoundTrip(item, factory.fromJson);
+    roundTripObject(item, factory.fromJson);
   });
 
   test('complex nested type - not null', () {
@@ -207,7 +207,7 @@ void _sharedTests(KitchenSinkFactory factory) {
           }
         }
       ];
-    validateRoundTrip(item, factory.fromJson);
+    roundTripObject(item, factory.fromJson);
   });
 
   test('round trip valid, empty values', () {
@@ -226,7 +226,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
     final validInstance = factory.fromJson(values);
 
-    validateRoundTrip(validInstance, factory.fromJson);
+    roundTripObject(validInstance, factory.fromJson);
   });
 
   test('JSON keys should be defined in field/property order', () {
@@ -240,7 +240,7 @@ void _sharedTests(KitchenSinkFactory factory) {
 
   test('valid values round-trip - json', () {
     final validInstance = factory.fromJson(validValues);
-    validateRoundTrip(validInstance, factory.fromJson);
+    roundTripObject(validInstance, factory.fromJson);
   });
 }
 
