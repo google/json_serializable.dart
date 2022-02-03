@@ -2,12 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=2.9
-
 @TestOn('vm')
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:_json_serial_shared_test/shared_test.dart';
 import 'package:checked_yaml/checked_yaml.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
@@ -159,38 +157,3 @@ line 4, column 21 of file.yaml: Unsupported value for "configLocation". Illegal 
   │                     ^^^^^^^^^^^^^^^^^^^^^^^
   ╵'''
 };
-
-T roundTripObject<T>(
-  T object,
-  T Function(Map<String, dynamic> json) factory, {
-  bool skipObjectEquals = false,
-}) {
-  final data = loudEncode(object);
-
-  final object2 = factory(json.decode(data) as Map<String, dynamic>);
-
-  if (!skipObjectEquals) {
-    expect(object2, equals(object));
-  }
-
-  final json2 = loudEncode(object2);
-
-  expect(json2, equals(data));
-  return object2;
-}
-
-/// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
-String loudEncode(Object object) {
-  try {
-    return const JsonEncoder.withIndent(' ').convert(object);
-  } on JsonUnsupportedObjectError catch (e) // ignore: avoid_catching_errors
-  {
-    var error = e;
-    do {
-      final cause = error.cause;
-      print(cause);
-      error = (cause is JsonUnsupportedObjectError) ? cause : null;
-    } while (error != null);
-    rethrow;
-  }
-}

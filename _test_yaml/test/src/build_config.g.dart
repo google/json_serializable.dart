@@ -25,7 +25,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
             'weights',
             (v) => val.weights = (v as Map?)?.map(
                   (k, e) =>
-                      MapEntry($enumDecode(_$AutoApplyEnumMap, k), e as int),
+                      MapEntry($enumDecode(_$AutoApplyEnumMap, k), e as int?),
                 ));
         return val;
       },
@@ -66,7 +66,7 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
           disallowNullValues: const ['configLocation', 'auto_apply'],
         );
         final val = Builder(
-          import: $checkedConvert('import', (v) => v as String),
+          import: $checkedConvert('import', (v) => v as String?),
           target: $checkedConvert('target', (v) => v as String?),
           isOptional: $checkedConvert('is_optional', (v) => v as bool?),
           autoApply: $checkedConvert(
@@ -113,7 +113,7 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   }
 
   writeNotNull('target', instance.target);
-  val['import'] = instance.import;
+  writeNotNull('import', instance.import);
   writeNotNull('is_optional', instance.isOptional);
   writeNotNull('configLocation', instance.configLocation?.toString());
   writeNotNull('auto_apply', _$AutoApplyEnumMap[instance.autoApply]);

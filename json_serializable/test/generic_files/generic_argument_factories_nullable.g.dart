@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// @dart=2.12
 
 // ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
 
