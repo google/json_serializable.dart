@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:_json_serial_shared_test/shared_test.dart';
 import 'package:example/example.dart';
 import 'package:test/test.dart';
 
@@ -12,7 +13,7 @@ void main() {
     final person = Person('Inigo', 'Montoya', DateTime(1560, 5, 5))
       ..orders = [Order(DateTime.now())..item = (Item()..count = 42)];
 
-    final personJson = _encode(person);
+    final personJson = loudEncode(person);
 
     final person2 =
         Person.fromJson(json.decode(personJson) as Map<String, dynamic>);
@@ -23,13 +24,10 @@ void main() {
     expect(person.orders.single.date, person2.orders.single.date);
     expect(person.orders.single.item!.count, 42);
 
-    expect(_encode(person2), equals(personJson));
+    expect(loudEncode(person2), equals(personJson));
   });
 
   test('JsonLiteral', () {
     expect(glossaryData, hasLength(1));
   });
 }
-
-String _encode(Object object) =>
-    const JsonEncoder.withIndent(' ').convert(object);

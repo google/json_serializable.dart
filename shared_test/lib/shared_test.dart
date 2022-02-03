@@ -3,6 +3,10 @@ import 'dart:convert';
 import 'package:stack_trace/stack_trace.dart';
 import 'package:test/test.dart';
 
+final throwsTypeError = throwsA(isTypeError);
+
+final isTypeError = isA<TypeError>();
+
 /// Prints out nested causes before throwing `JsonUnsupportedObjectError`.
 String loudEncode(Object? object) {
   try {
