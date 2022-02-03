@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:_json_serial_shared_test/shared_test.dart';
 import 'package:example/tuple_example.dart';
 import 'package:test/test.dart';
 
@@ -14,7 +15,7 @@ void main() {
       Tuple(const Duration(seconds: 42), BigInt.two),
     );
 
-    final encoded = _encode(instance);
+    final encoded = loudEncode(instance);
 
     const expected = r'''
 {
@@ -32,10 +33,7 @@ void main() {
     final decoded = ConcreteClass.fromJson(
       jsonDecode(encoded) as Map<String, dynamic>,
     );
-    final encoded2 = _encode(decoded);
+    final encoded2 = loudEncode(decoded);
     expect(encoded2, encoded);
   });
 }
-
-String _encode(Object object) =>
-    const JsonEncoder.withIndent(' ').convert(object);

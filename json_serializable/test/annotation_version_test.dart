@@ -4,7 +4,6 @@
 
 @TestOn('vm')
 @Tags(['presubmit-only'])
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:json_serializable/src/check_dependencies.dart';
@@ -14,6 +13,8 @@ import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:test/test.dart';
 import 'package:test_descriptor/test_descriptor.dart' as d;
 import 'package:test_process/test_process.dart';
+
+import 'test_utils.dart';
 
 void main() {
   test('validate pubspec constraint', () {
@@ -116,7 +117,7 @@ Future<void> _structurePackage({
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
 }) async {
-  final pubspec = const JsonEncoder.withIndent(' ').convert(
+  final pubspec = loudEncode(
     {
       'name': '_test_pkg',
       'environment': {'sdk': '>=2.14.0 <3.0.0'},

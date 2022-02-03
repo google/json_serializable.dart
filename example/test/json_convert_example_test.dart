@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:_json_serial_shared_test/shared_test.dart';
 import 'package:example/json_converter_example.dart';
 import 'package:test/test.dart';
 
@@ -13,7 +14,7 @@ void main() {
 
     final epochDateTime = DateTime.fromMillisecondsSinceEpoch(value);
     final instance = DateTimeExample(epochDateTime);
-    final json = _encode(instance);
+    final json = loudEncode(instance);
     expect(json, '''{
  "when": $value
 }''');
@@ -27,13 +28,13 @@ void main() {
     final collection = GenericCollection<int>(
         page: 0, totalPages: 3, totalResults: 10, results: [1, 2, 3]);
 
-    final encoded = _encode(collection);
+    final encoded = loudEncode(collection);
     final collection2 = GenericCollection<int>.fromJson(
         jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [1, 2, 3]);
 
-    expect(_encode(collection2), encoded);
+    expect(loudEncode(collection2), encoded);
   });
 
   test('custom result', () {
@@ -43,13 +44,13 @@ void main() {
         totalResults: 10,
         results: [CustomResult('bob', 42)]);
 
-    final encoded = _encode(collection);
+    final encoded = loudEncode(collection);
     final collection2 = GenericCollection<CustomResult>.fromJson(
         jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [CustomResult('bob', 42)]);
 
-    expect(_encode(collection2), encoded);
+    expect(loudEncode(collection2), encoded);
   });
 
   test('mixed values in generic collection', () {
@@ -64,22 +65,22 @@ void main() {
       CustomResult('bob', 42)
     ]);
 
-    final encoded = _encode(collection);
+    final encoded = loudEncode(collection);
 
     expect(
       () => GenericCollection<CustomResult>.fromJson(
           jsonDecode(encoded) as Map<String, dynamic>),
-      _throwsTypeError,
+      throwsTypeError,
     );
     expect(
       () => GenericCollection<int>.fromJson(
           jsonDecode(encoded) as Map<String, dynamic>),
-      _throwsTypeError,
+      throwsTypeError,
     );
     expect(
       () => GenericCollection<String>.fromJson(
           jsonDecode(encoded) as Map<String, dynamic>),
-      _throwsTypeError,
+      throwsTypeError,
     );
 
     final collection2 =
@@ -95,11 +96,6 @@ void main() {
       CustomResult('bob', 42)
     ]);
 
-    expect(_encode(collection2), encoded);
+    expect(loudEncode(collection2), encoded);
   });
 }
-
-final _throwsTypeError = throwsA(isA<TypeError>());
-
-String _encode(Object object) =>
-    const JsonEncoder.withIndent(' ').convert(object);
