@@ -8,6 +8,9 @@ dependencies:
   json_annotation: ^4.4.0
 
 dev_dependencies:
+  # Used by tests. Not required to use `json_serializable`.
+  _json_serial_shared_test:
+    path: ../shared_test
   build_runner: ^2.0.0
 
   # Used by tests. Not required to use `json_serializable`.
