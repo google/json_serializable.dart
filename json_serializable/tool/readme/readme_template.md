@@ -16,8 +16,8 @@ in [package:json_annotation].
 
 ## Setup
 
-To configure your project for the latest released version of,
-`json_serializable` see the [example].
+To configure your project for the latest released version of
+`json_serializable`, see the [example].
 
 ## Example
 
