@@ -3,13 +3,20 @@ _This example assumes you're using a recent version of the Dart or Flutter SDK._
 To use [package:json_serializable][json_serializable] in your package, add these
 dependencies to your `pubspec.yaml`.
 
-```yaml
-dependencies:
-  json_annotation: ^4.4.0
+If you are using creating a Flutter project:
 
-dev_dependencies:
-  build_runner: ^2.0.0
-  json_serializable: ^6.0.0
+```console
+$ flutter pub add json_annotation
+$ flutter pub add --dev build_runner
+$ flutter pub add --dev json_serializable
+```
+
+If you are using creating a Dart project:
+
+```console
+$ dart pub add json_annotation
+$ dart pub add --dev build_runner
+$ dart pub add --dev json_serializable
 ```
 
 Annotate your code with classes defined in
