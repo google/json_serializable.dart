@@ -156,7 +156,7 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
 /// Otherwise, `null`.
 Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
   if (targetType is InterfaceType && targetType.element.isEnum) {
-    return targetType.element.fields.where((element) => !element.isSynthetic);
+    return targetType.element.fields.where((element) => element.isEnumConstant);
   }
   return null;
 }
