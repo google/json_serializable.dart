@@ -19,12 +19,16 @@ Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
 GenericCollection<T> _$GenericCollectionFromJson<T>(
         Map<String, dynamic> json) =>
     GenericCollection<T>(
-      page: json['page'] as int?,
-      totalResults: json['total_results'] as int?,
-      totalPages: json['total_pages'] as int?,
-      results: (json['results'] as List<dynamic>?)
-          ?.map(_Converter<T>().fromJson)
-          .toList(),
+      page: json['page'] is int? ? json['page'] as int? : null,
+      totalResults:
+          json['total_results'] is int? ? json['total_results'] as int? : null,
+      totalPages:
+          json['total_pages'] is int? ? json['total_pages'] as int? : null,
+      results: json['results'] is List<T>?
+          ? (json['results'] as List<dynamic>?)
+              ?.map(_Converter<T>().fromJson)
+              .toList()
+          : null,
     );
 
 Map<String, dynamic> _$GenericCollectionToJson<T>(

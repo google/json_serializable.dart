@@ -7,21 +7,27 @@ part of 'example.dart';
 // **************************************************************************
 
 Person _$PersonFromJson(Map<String, dynamic> json) => Person(
-      json['firstName'] as String,
-      json['lastName'] as String,
+      json['first-name'] as String,
+      json['last-name'] as String,
       DateTime.parse(json['date-of-birth'] as String),
-      middleName: json['middleName'] as String?,
-      lastOrder: json['last-order'] == null
-          ? null
-          : DateTime.parse(json['last-order'] as String),
-      orders: (json['orders'] as List<dynamic>?)
-          ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      middleName: json['middle-name'] is String?
+          ? json['middle-name'] as String?
+          : null,
+      lastOrder: json['last-order'] is DateTime?
+          ? json['last-order'] == null
+              ? null
+              : DateTime.parse(json['last-order'] as String)
+          : null,
+      orders: json['orders'] is List<Order>?
+          ? (json['orders'] as List<dynamic>?)
+              ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
+              .toList()
+          : null,
     );
 
 Map<String, dynamic> _$PersonToJson(Person instance) {
   final val = <String, dynamic>{
-    'firstName': instance.firstName,
+    'first-name': instance.firstName,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -30,8 +36,8 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
     }
   }
 
-  writeNotNull('middleName', instance.middleName);
-  val['lastName'] = instance.lastName;
+  writeNotNull('middle-name', instance.middleName);
+  val['last-name'] = instance.lastName;
   val['date-of-birth'] = instance.dateOfBirth.toIso8601String();
   val['last-order'] = instance.lastOrder?.toIso8601String();
   val['orders'] = instance.orders;
@@ -41,13 +47,18 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       Order._dateTimeFromEpochUs(json['date'] as int),
     )
-      ..count = json['count'] as int?
-      ..itemNumber = json['itemNumber'] as int?
-      ..isRushed = json['isRushed'] as bool?
-      ..item = json['item'] == null
-          ? null
-          : Item.fromJson(json['item'] as Map<String, dynamic>)
-      ..prepTime = Order._durationFromMilliseconds(json['prep-time'] as int?);
+      ..count = json['count'] is int? ? json['count'] as int? : null
+      ..itemNumber =
+          json['itemNumber'] is int? ? json['itemNumber'] as int? : null
+      ..isRushed = json['isRushed'] is bool? ? json['isRushed'] as bool? : null
+      ..item = json['item'] is Item?
+          ? json['item'] == null
+              ? null
+              : Item.fromJson(json['item'] as Map<String, dynamic>)
+          : null
+      ..prepTime = json['prep-time'] is Duration?
+          ? Order._durationFromMilliseconds(json['prep-time'] as int?)
+          : null;
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
   final val = <String, dynamic>{};
@@ -68,9 +79,9 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()
-  ..count = json['count'] as int?
-  ..itemNumber = json['itemNumber'] as int?
-  ..isRushed = json['isRushed'] as bool?;
+  ..count = json['count'] is int? ? json['count'] as int? : null
+  ..itemNumber = json['itemNumber'] is int? ? json['itemNumber'] as int? : null
+  ..isRushed = json['isRushed'] is bool? ? json['isRushed'] as bool? : null;
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'count': instance.count,

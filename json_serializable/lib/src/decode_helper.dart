@@ -233,6 +233,10 @@ abstract class DecodeHelper implements HelperCore {
               : '$readValueFunc(json, $jsonKeyName)',
         );
       }
+      if (targetType.toString().contains('?')) {
+        value =
+            'json[$jsonKeyName] is ${targetType.toString()} ? $value : null';
+      }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('fromJson', field, e);

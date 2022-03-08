@@ -10,7 +10,7 @@ part 'generic_response_class_example.g.dart';
 // https://github.com/google/json_serializable.dart/issues/646
 // https://github.com/google/json_serializable.dart/issues/671
 
-@JsonSerializable(createToJson: false)
+@JsonSerializable(createToJson: false, checked: true)
 class BaseResponse<T> {
   final int? status;
   final String? msg;

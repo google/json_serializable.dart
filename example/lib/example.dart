@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.kebab)
 class Person {
   final String firstName;
   @JsonKey(includeIfNull: false)
