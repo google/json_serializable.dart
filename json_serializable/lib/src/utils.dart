@@ -5,11 +5,12 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
-import 'type_helpers/config_types.dart';
+import '../type_helper.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
@@ -228,4 +229,15 @@ extension ExecutableElementExtension on ExecutableElement {
       'Not sure how to support typeof $runtimeType',
     );
   }
+}
+
+// Return the prefix used by json_annotation if there is one
+String? getPrefixOfJsonAnnotationImport(TypeHelperContextWithConfig context) {
+  final annotationImport = context.classElement.declaration.library?.imports
+      .firstWhereOrNull((element) {
+    if (element.getDisplayString(withNullability: true) ==
+        'import json_annotation') return true;
+    return false;
+  });
+  return annotationImport?.prefix?.name;
 }

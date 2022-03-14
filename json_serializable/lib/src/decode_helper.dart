@@ -10,6 +10,7 @@ import 'package:source_helper/source_helper.dart';
 
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
+import 'type_helper.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
@@ -71,17 +72,24 @@ abstract class DecodeHelper implements HelperCore {
     final checks = _checkKeys(
       accessibleFields.values
           .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)),
+      getHelperContext(accessibleFields.values.first),
     ).toList();
 
     if (config.checked) {
       final classLiteral = escapeDartString(element.name);
+      final prefix = getPrefixOfJsonAnnotationImport(
+          getHelperContext(accessibleFields.values.first));
+      final checkedCreate =
+          prefix != null ? '$prefix.\$checkedCreate' : '\$checkedCreate';
+      final checkedConvert =
+          prefix != null ? '$prefix.\$checkedConvert' : '\$checkedConvert';
 
       final sectionBuffer = StringBuffer()
         ..write('''
-  \$checkedCreate(
+  $checkedCreate(
     $classLiteral,
     json,
-    (\$checkedConvert) {\n''')
+    ($checkedConvert) {\n''')
         ..write(checks.join())
         ..write('''
     final val = ${data.content};''');
@@ -92,7 +100,7 @@ abstract class DecodeHelper implements HelperCore {
         final safeName = safeNameAccess(fieldValue);
         sectionBuffer
           ..write('''
-    \$checkedConvert($safeName, (v) => ''')
+   $checkedConvert($safeName, (v) => ''')
           ..write('val.$fieldName = ')
           ..write(
             _deserializeForField(fieldValue, checkedProperty: true),
@@ -156,7 +164,8 @@ abstract class DecodeHelper implements HelperCore {
     return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
   }
 
-  Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
+  Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields,
+      TypeHelperContextWithConfig context) sync* {
     final args = <String>[];
 
     String constantList(Iterable<FieldElement> things) =>
@@ -186,7 +195,12 @@ abstract class DecodeHelper implements HelperCore {
     }
 
     if (args.isNotEmpty) {
-      yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
+      final prefix = getPrefixOfJsonAnnotationImport(context);
+      if (prefix != null) {
+        yield '$prefix.\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
+      } else {
+        yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
+      }
     }
   }
 
@@ -217,9 +231,17 @@ abstract class DecodeHelper implements HelperCore {
       if (config.checked) {
         value = deserialize('v');
         if (!checkedProperty) {
+          final prefix = getPrefixOfJsonAnnotationImport(contextHelper);
+
           final readValueBit =
               readValueFunc == null ? '' : ',readValue: $readValueFunc,';
-          value = '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
+          if (prefix != null) {
+            value =
+                '$prefix.\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
+          } else {
+            value =
+                '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
+          }
         }
       } else {
         assert(

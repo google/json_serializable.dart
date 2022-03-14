@@ -9,6 +9,7 @@ import 'package:source_helper/source_helper.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 final simpleExpression = RegExp('^[a-zA-Z_]+\$');
 
@@ -46,7 +47,6 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
-
     if (!targetType.isNullableType &&
         jsonKey.unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
       // If the target is not nullable,
@@ -63,7 +63,10 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     } else {
       functionName = r'$enumDecode';
     }
-
+    final prefix = getPrefixOfJsonAnnotationImport(context);
+    if (prefix != null) {
+      functionName = '$prefix.$functionName';
+    }
     context.addMember(memberContent);
 
     final args = [
