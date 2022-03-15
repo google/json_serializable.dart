@@ -232,12 +232,14 @@ extension ExecutableElementExtension on ExecutableElement {
 }
 
 // Return the prefix used by json_annotation if there is one
-String? getPrefixOfJsonAnnotationImport(TypeHelperContextWithConfig context) {
+String getPrefixOfJsonAnnotationImport(TypeHelperContextWithConfig context) {
   final annotationImport = context.classElement.declaration.library?.imports
       .firstWhereOrNull((element) {
     if (element.getDisplayString(withNullability: true) ==
         'import json_annotation') return true;
     return false;
   });
-  return annotationImport?.prefix?.name;
+  return annotationImport?.prefix != null
+      ? '${annotationImport?.prefix?.name}.'
+      : '';
 }

@@ -79,17 +79,13 @@ abstract class DecodeHelper implements HelperCore {
       final classLiteral = escapeDartString(element.name);
       final prefix = getPrefixOfJsonAnnotationImport(
           getHelperContext(accessibleFields.values.first));
-      final checkedCreate =
-          prefix != null ? '$prefix.\$checkedCreate' : '\$checkedCreate';
-      final checkedConvert =
-          prefix != null ? '$prefix.\$checkedConvert' : '\$checkedConvert';
 
       final sectionBuffer = StringBuffer()
         ..write('''
-  $checkedCreate(
+  $prefix\$checkedCreate(
     $classLiteral,
     json,
-    ($checkedConvert) {\n''')
+    ($prefix\$checkedConvert) {\n''')
         ..write(checks.join())
         ..write('''
     final val = ${data.content};''');
@@ -100,7 +96,7 @@ abstract class DecodeHelper implements HelperCore {
         final safeName = safeNameAccess(fieldValue);
         sectionBuffer
           ..write('''
-   $checkedConvert($safeName, (v) => ''')
+   $prefix\$checkedConvert($safeName, (v) => ''')
           ..write('val.$fieldName = ')
           ..write(
             _deserializeForField(fieldValue, checkedProperty: true),
@@ -196,11 +192,7 @@ abstract class DecodeHelper implements HelperCore {
 
     if (args.isNotEmpty) {
       final prefix = getPrefixOfJsonAnnotationImport(context);
-      if (prefix != null) {
-        yield '$prefix.\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
-      } else {
-        yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
-      }
+      yield '$prefix\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
     }
   }
 
@@ -235,13 +227,8 @@ abstract class DecodeHelper implements HelperCore {
 
           final readValueBit =
               readValueFunc == null ? '' : ',readValue: $readValueFunc,';
-          if (prefix != null) {
-            value =
-                '$prefix.\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
-          } else {
-            value =
-                '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
-          }
+          value =
+              '$prefix\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
         }
       } else {
         assert(

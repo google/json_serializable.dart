@@ -57,15 +57,12 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
+    final prefix = getPrefixOfJsonAnnotationImport(context);
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
-      functionName = r'$enumDecodeNullable';
+      functionName = '$prefix\$enumDecodeNullable';
     } else {
-      functionName = r'$enumDecode';
-    }
-    final prefix = getPrefixOfJsonAnnotationImport(context);
-    if (prefix != null) {
-      functionName = '$prefix.$functionName';
+      functionName = '$prefix\$enumDecode';
     }
     context.addMember(memberContent);
 
