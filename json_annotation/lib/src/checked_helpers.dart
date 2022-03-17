@@ -4,8 +4,6 @@
 
 import 'allowed_keys_helpers.dart';
 
-typedef _CastFunction<R> = R Function(Object?);
-
 /// Helper function used in generated code when
 /// `JsonSerializableGenerator.checked` is `true`.
 ///
@@ -16,16 +14,16 @@ T $checkedCreate<T>(
   T Function(
     S Function<S>(
       String,
-      _CastFunction<S>, {
+      S Function(Object?), {
       Object? Function(Map, String)? readValue,
     }),
   )
       constructor, {
   Map<String, String> fieldKeyMap = const {},
 }) {
-  Q _checkedConvert<Q>(
+  Q checkedConvert<Q>(
     String key,
-    _CastFunction<Q> convertFunction, {
+    Q Function(Object?) convertFunction, {
     Object? Function(Map, String)? readValue,
   }) =>
       $checkedConvert<Q>(map, key, convertFunction, readValue: readValue);
@@ -33,7 +31,7 @@ T $checkedCreate<T>(
   return $checkedNew(
     className,
     map,
-    () => constructor(_checkedConvert),
+    () => constructor(checkedConvert),
     fieldKeyMap: fieldKeyMap,
   );
 }
