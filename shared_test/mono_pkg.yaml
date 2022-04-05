@@ -1,0 +1,2 @@
+# No tests to run, this only registers this package with mono_repo for
+# commands like `mono_repo pub get`.
