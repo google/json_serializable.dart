@@ -1,3 +1,7 @@
+## 6.1.6
+
+- Allow latest `package:analyzer`.
+
 ## 6.1.5
 
 - Fix enum support for upcoming enhanced enums in Dart 2.17.
