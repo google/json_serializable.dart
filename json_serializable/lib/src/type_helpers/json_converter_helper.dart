@@ -32,6 +32,19 @@ class JsonConverterHelper extends TypeHelper {
       return null;
     }
 
+    if (!converter.fieldType.isNullableType && targetType.isNullableType) {
+      // Hacky way to hoist the expression to avoid casting
+      // Ideally we should be able to cleanly declare a variable in the
+      // parent code-block, instead of using (){}()
+      return '''
+() {
+  final val = $expression;
+  return val == null
+      ? null
+      : ${converter.accessString}.toJson(val);
+}()''';
+    }
+
     return LambdaResult(expression, '${converter.accessString}.toJson');
   }
 
@@ -49,6 +62,19 @@ class JsonConverterHelper extends TypeHelper {
 
     final asContent = asStatement(converter.jsonType);
 
+    if (!converter.jsonType.isNullableType && targetType.isNullableType) {
+      // Hacky way to hoist the expression to avoid casting
+      // Ideally we should be able to cleanly declare a variable in the
+      // parent code-block, instead of using (){}()
+      return '''
+() {
+  final val = $expression;
+  return val == null
+      ? null
+      : ${converter.accessString}.fromJson(val$asContent);
+}()''';
+    }
+
     return LambdaResult(
       expression,
       '${converter.accessString}.fromJson',
@@ -60,11 +86,13 @@ class JsonConverterHelper extends TypeHelper {
 class _JsonConvertData {
   final String accessString;
   final DartType jsonType;
+  final DartType fieldType;
 
   _JsonConvertData.className(
     String className,
     String accessor,
     this.jsonType,
+    this.fieldType,
   ) : accessString = 'const $className${_withAccessor(accessor)}()';
 
   _JsonConvertData.genericClass(
@@ -72,9 +100,14 @@ class _JsonConvertData {
     String genericTypeArg,
     String accessor,
     this.jsonType,
+    this.fieldType,
   ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()';
 
-  _JsonConvertData.propertyAccess(this.accessString, this.jsonType);
+  _JsonConvertData.propertyAccess(
+    this.accessString,
+    this.jsonType,
+    this.fieldType,
+  );
 
   static String _withAccessor(String accessor) =>
       accessor.isEmpty ? '' : '.$accessor';
@@ -127,7 +160,11 @@ _JsonConvertData? _typeConverterFrom(
       accessString = '${enclosing.name}.$accessString';
     }
 
-    return _JsonConvertData.propertyAccess(accessString, match.jsonType);
+    return _JsonConvertData.propertyAccess(
+      accessString,
+      match.jsonType,
+      match.fieldType,
+    );
   }
 
   final reviver = ConstantReader(match.annotation).revive();
@@ -145,6 +182,7 @@ _JsonConvertData? _typeConverterFrom(
       match.genericTypeArg!,
       reviver.accessor,
       match.jsonType,
+      match.fieldType,
     );
   }
 
@@ -152,11 +190,13 @@ _JsonConvertData? _typeConverterFrom(
     match.annotation.type!.element!.name!,
     reviver.accessor,
     match.jsonType,
+    match.fieldType,
   );
 }
 
 class _ConverterMatch {
   final DartObject annotation;
+  final DartType fieldType;
   final DartType jsonType;
   final ElementAnnotation elementAnnotation;
   final String? genericTypeArg;
@@ -166,6 +206,7 @@ class _ConverterMatch {
     this.annotation,
     this.jsonType,
     this.genericTypeArg,
+    this.fieldType,
   );
 }
 
@@ -191,9 +232,15 @@ _ConverterMatch? _compatibleMatch(
 
   final fieldType = jsonConverterSuper.typeArguments[0];
 
-  if (fieldType == targetType) {
+  // Allow assigning T to T?
+  if (fieldType == targetType.promoteNonNullable()) {
     return _ConverterMatch(
-        annotation, constantValue, jsonConverterSuper.typeArguments[1], null);
+      annotation,
+      constantValue,
+      jsonConverterSuper.typeArguments[1],
+      null,
+      fieldType,
+    );
   }
 
   if (fieldType is TypeParameterType && targetType is TypeParameterType) {
@@ -212,6 +259,7 @@ _ConverterMatch? _compatibleMatch(
       constantValue,
       jsonConverterSuper.typeArguments[1],
       '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
+      fieldType,
     );
   }
 

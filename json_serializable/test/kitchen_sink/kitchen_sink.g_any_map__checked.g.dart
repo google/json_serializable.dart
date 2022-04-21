@@ -183,12 +183,13 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
       json,
       ($checkedConvert) {
         final val = JsonConverterTestClass(
-          $checkedConvert(
-              'duration', (v) => durationConverter.fromJson(v as int?)),
+          $checkedConvert('duration',
+              (v) => v == null ? null : Duration(microseconds: v as int)),
           $checkedConvert(
               'durationList',
               (v) => (v as List<dynamic>)
-                  .map((e) => durationConverter.fromJson(e as int?))
+                  .map((e) =>
+                      e == null ? null : Duration(microseconds: e as int))
                   .toList()),
           $checkedConvert('bigInt',
               (v) => const BigIntStringConverter().fromJson(v as String)),
@@ -197,6 +198,25 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
               (v) => (v as Map).map(
                     (k, e) => MapEntry(k as String,
                         const BigIntStringConverter().fromJson(e as String)),
+                  )),
+          $checkedConvert(
+              'nullableBigInt',
+              (v) => () {
+                    final val = v;
+                    return val == null
+                        ? null
+                        : const BigIntStringConverter().fromJson(val as String);
+                  }()),
+          $checkedConvert(
+              'nullableBigIntMap',
+              (v) => (v as Map).map(
+                    (k, e) => MapEntry(k as String, () {
+                      final val = e;
+                      return val == null
+                          ? null
+                          : const BigIntStringConverter()
+                              .fromJson(val as String);
+                    }()),
                   )),
           $checkedConvert('numberSilly',
               (v) => TrivialNumberConverter.instance.fromJson(v as int?)),
@@ -207,7 +227,15 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
                       TrivialNumberConverter.instance.fromJson(e as int?))
                   .toSet()),
           $checkedConvert('dateTime',
-              (v) => const EpochDateTimeConverter().fromJson(v as int?)),
+              (v) => v == null ? null : DateTime.parse(v as String)),
+          $checkedConvert('nullableNumberSilly',
+              (v) => TrivialNumberConverter.instance.fromJson(v as int?)),
+          $checkedConvert(
+              'nullableNumberSillySet',
+              (v) => (v as List<dynamic>)
+                  .map((e) =>
+                      TrivialNumberConverter.instance.fromJson(e as int?))
+                  .toSet()),
         );
         return val;
       },
@@ -216,18 +244,41 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
 Map<String, dynamic> _$JsonConverterTestClassToJson(
         JsonConverterTestClass instance) =>
     <String, dynamic>{
-      'duration': durationConverter.toJson(instance.duration),
+      'duration': instance.duration?.inMicroseconds,
       'durationList':
-          instance.durationList.map(durationConverter.toJson).toList(),
+          instance.durationList.map((e) => e?.inMicroseconds).toList(),
       'bigInt': const BigIntStringConverter().toJson(instance.bigInt),
       'bigIntMap': instance.bigIntMap
           .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
+      'nullableBigInt': () {
+        final val = instance.nullableBigInt;
+        return val == null ? null : const BigIntStringConverter().toJson(val);
+      }(),
+      'nullableBigIntMap':
+          instance.nullableBigIntMap.map((k, e) => MapEntry(k, () {
+                final val = e;
+                return val == null
+                    ? null
+                    : const BigIntStringConverter().toJson(val);
+              }())),
       'numberSilly':
           TrivialNumberConverter.instance.toJson(instance.numberSilly),
       'numberSillySet': instance.numberSillySet
           .map(TrivialNumberConverter.instance.toJson)
           .toList(),
-      'dateTime': const EpochDateTimeConverter().toJson(instance.dateTime),
+      'dateTime': instance.dateTime?.toIso8601String(),
+      'nullableNumberSilly': () {
+        final val = instance.nullableNumberSilly;
+        return val == null ? null : TrivialNumberConverter.instance.toJson(val);
+      }(),
+      'nullableNumberSillySet': instance.nullableNumberSillySet
+          .map((e) => () {
+                final val = e;
+                return val == null
+                    ? null
+                    : TrivialNumberConverter.instance.toJson(val);
+              }())
+          .toList(),
     };
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(

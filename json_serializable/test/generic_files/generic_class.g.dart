@@ -39,14 +39,24 @@ GenericClassWithConverter<T, S>
           ..fieldObject = json['fieldObject']
           ..fieldDynamic = json['fieldDynamic']
           ..fieldInt = json['fieldInt'] as int?
-          ..fieldT = _SimpleConverter<T?>()
-              .fromJson(json['fieldT'] as Map<String, dynamic>)
-          ..fieldS = _SimpleConverter<S?>()
-              .fromJson(json['fieldS'] as Map<String, dynamic>)
-          ..duration = const _DurationMillisecondConverter.named()
-              .fromJson(json['duration'] as int?)
-          ..listDuration = const _DurationListMillisecondConverter()
-              .fromJson(json['listDuration'] as int?);
+          ..fieldT = () {
+            final val = json['fieldT'];
+            return val == null
+                ? null
+                : _SimpleConverter<T?>().fromJson(val as Map<String, dynamic>);
+          }()
+          ..fieldS = () {
+            final val = json['fieldS'];
+            return val == null
+                ? null
+                : _SimpleConverter<S?>().fromJson(val as Map<String, dynamic>);
+          }()
+          ..duration = json['duration'] == null
+              ? null
+              : Duration(microseconds: json['duration'] as int)
+          ..listDuration = (json['listDuration'] as List<dynamic>?)
+              ?.map((e) => Duration(microseconds: e as int))
+              .toList();
 
 Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
         GenericClassWithConverter<T, S> instance) =>
@@ -54,12 +64,17 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
       'fieldObject': instance.fieldObject,
       'fieldDynamic': instance.fieldDynamic,
       'fieldInt': instance.fieldInt,
-      'fieldT': _SimpleConverter<T?>().toJson(instance.fieldT),
-      'fieldS': _SimpleConverter<S?>().toJson(instance.fieldS),
-      'duration':
-          const _DurationMillisecondConverter.named().toJson(instance.duration),
-      'listDuration': const _DurationListMillisecondConverter()
-          .toJson(instance.listDuration),
+      'fieldT': () {
+        final val = instance.fieldT;
+        return val == null ? null : _SimpleConverter<T?>().toJson(val);
+      }(),
+      'fieldS': () {
+        final val = instance.fieldS;
+        return val == null ? null : _SimpleConverter<S?>().toJson(val);
+      }(),
+      'duration': instance.duration?.inMicroseconds,
+      'listDuration':
+          instance.listDuration?.map((e) => e.inMicroseconds).toList(),
     };
 
 Issue980ParentClass _$Issue980ParentClassFromJson(Map<String, dynamic> json) =>

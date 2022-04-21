@@ -57,7 +57,8 @@ const _jsonConverterValidValues = {
   'bigIntMap': {'vaule': '5'},
   'numberSilly': 5,
   'numberSillySet': [5],
-  'dateTime': 5
+  'dateTime': 5,
+  'nullableNumberSilly': 5,
 };
 
 void _nonNullableTests(KitchenSinkFactory factory) {
