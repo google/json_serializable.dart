@@ -43,38 +43,19 @@ class Settings {
         GenericFactoryHelper(),
       ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
-  final JsonSerializable _config;
-
-  // #CHANGE WHEN UPDATING json_annotation
-  ClassConfig get config => ClassConfig(
-        checked: _config.checked ?? ClassConfig.defaults.checked,
-        anyMap: _config.anyMap ?? ClassConfig.defaults.anyMap,
-        constructor: _config.constructor ?? ClassConfig.defaults.constructor,
-        createFactory:
-            _config.createFactory ?? ClassConfig.defaults.createFactory,
-        createToJson: _config.createToJson ?? ClassConfig.defaults.createToJson,
-        ignoreUnannotated:
-            _config.ignoreUnannotated ?? ClassConfig.defaults.ignoreUnannotated,
-        explicitToJson:
-            _config.explicitToJson ?? ClassConfig.defaults.explicitToJson,
-        includeIfNull:
-            _config.includeIfNull ?? ClassConfig.defaults.includeIfNull,
-        genericArgumentFactories: _config.genericArgumentFactories ??
-            ClassConfig.defaults.genericArgumentFactories,
-        fieldRename: _config.fieldRename ?? ClassConfig.defaults.fieldRename,
-        disallowUnrecognizedKeys: _config.disallowUnrecognizedKeys ??
-            ClassConfig.defaults.disallowUnrecognizedKeys,
-      );
+  final ClassConfig config;
 
   /// Creates an instance of [Settings].
   ///
   /// If [typeHelpers] is not provided, the built-in helpers are used:
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
-  const Settings({
+  Settings({
     JsonSerializable? config,
     List<TypeHelper>? typeHelpers,
-  })  : _config = config ?? ClassConfig.defaults,
+  })  : config = config != null
+            ? ClassConfig.fromJsonSerializable(config)
+            : ClassConfig.defaults,
         _typeHelpers = typeHelpers ?? defaultHelpers;
 
   /// Creates an instance of [Settings].

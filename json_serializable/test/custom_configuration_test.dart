@@ -32,7 +32,7 @@ Future<void> main() async {
   );
 
   group('without wrappers', () {
-    _registerTests(ClassConfig.defaults);
+    _registerTests(ClassConfig.defaults.toJsonSerializable());
   });
 
   group('configuration', () {
@@ -225,14 +225,14 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    configurations.add(context.config);
+    configurations.add(context.config.toJsonSerializable());
     return null;
   }
 
   @override
   Object? serialize(DartType targetType, String expression,
       TypeHelperContextWithConfig context) {
-    configurations.add(context.config);
+    configurations.add(context.config.toJsonSerializable());
     return null;
   }
 }
