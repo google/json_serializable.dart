@@ -105,7 +105,7 @@ _JsonConvertData? _typeConverter(
       matchingAnnotations = converterMatches(ctx.classElement.metadata);
 
       if (matchingAnnotations.isEmpty) {
-        matchingAnnotations = ctx.config.typeConverters
+        matchingAnnotations = ctx.config.converters
             .map((e) => _compatibleMatch(targetType, null, e))
             .whereType<_ConverterMatch>()
             .toList();

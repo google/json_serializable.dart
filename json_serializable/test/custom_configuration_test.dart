@@ -61,8 +61,10 @@ Future<void> main() async {
                 nullConfig ? null : const JsonSerializable(), className);
 
             expect(_ConfigLogger.configurations, hasLength(2));
-            expect(_ConfigLogger.configurations.first,
-                same(_ConfigLogger.configurations.last));
+            expect(
+              _ConfigLogger.configurations.first.toJson(),
+              _ConfigLogger.configurations.last.toJson(),
+            );
             expect(_ConfigLogger.configurations.first.toJson(),
                 generatorConfigDefaultJson);
           });
@@ -98,8 +100,10 @@ Future<void> main() async {
             'ConfigurationExplicitDefaults');
 
         expect(_ConfigLogger.configurations, hasLength(2));
-        expect(_ConfigLogger.configurations.first,
-            same(_ConfigLogger.configurations.last));
+        expect(
+          _ConfigLogger.configurations.first.toJson(),
+          _ConfigLogger.configurations.last.toJson(),
+        );
 
         // The effective configuration should be non-Default configuration, but
         // with all fields set from JsonSerializable as the defaults

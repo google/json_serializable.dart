@@ -137,9 +137,9 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
         Map<String, dynamic> json) =>
     JsonConverterTestClass(
-      durationConverter.fromJson(json['duration'] as int?),
+      const DurationMillisecondConverter().fromJson(json['duration'] as int?),
       (json['durationList'] as List<dynamic>)
-          .map((e) => durationConverter.fromJson(e as int?))
+          .map((e) => const DurationMillisecondConverter().fromJson(e as int?))
           .toList(),
       const BigIntStringConverter().fromJson(json['bigInt'] as String),
       (json['bigIntMap'] as Map<String, dynamic>).map(
@@ -156,9 +156,11 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
 Map<String, dynamic> _$JsonConverterTestClassToJson(
         JsonConverterTestClass instance) =>
     <String, dynamic>{
-      'duration': durationConverter.toJson(instance.duration),
-      'durationList':
-          instance.durationList.map(durationConverter.toJson).toList(),
+      'duration':
+          const DurationMillisecondConverter().toJson(instance.duration),
+      'durationList': instance.durationList
+          .map(const DurationMillisecondConverter().toJson)
+          .toList(),
       'bigInt': const BigIntStringConverter().toJson(instance.bigInt),
       'bigIntMap': instance.bigIntMap
           .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),

@@ -190,11 +190,12 @@ class KitchenSink implements k.KitchenSink {
   }
 }
 
-@JsonSerializable()
-// referencing a top-level field should work
-@durationConverter
-// referencing via a const constructor should work
-@BigIntStringConverter()
+@JsonSerializable(converters: [
+  // referencing a top-level field should work
+  durationConverter,
+  // referencing via a const constructor should work
+  BigIntStringConverter(),
+])
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
 class JsonConverterTestClass implements k.JsonConverterTestClass {

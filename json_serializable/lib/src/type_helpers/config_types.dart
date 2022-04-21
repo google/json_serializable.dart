@@ -53,7 +53,7 @@ class ClassConfig {
   final bool ignoreUnannotated;
   final bool includeIfNull;
   final Map<String, String> ctorParamDefaults;
-  final List<DartObject> typeConverters;
+  final List<DartObject> converters;
 
   const ClassConfig({
     required this.anyMap,
@@ -67,7 +67,7 @@ class ClassConfig {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
-    this.typeConverters = const [],
+    this.converters = const [],
     this.ctorParamDefaults = const {},
   });
 

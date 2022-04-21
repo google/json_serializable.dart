@@ -66,7 +66,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       includeIfNull: reader.read('includeIfNull').literalValue as bool?,
     );
 
-/// Returns a [JsonSerializable] with values from the [JsonSerializable]
+/// Returns a [ClassConfig] with values from the [JsonSerializable]
 /// instance represented by [reader].
 ///
 /// For fields that are not defined in [JsonSerializable] or `null` in [reader],
@@ -93,6 +93,8 @@ ClassConfig mergeConfig(
           .where((element) => element.hasDefaultValue)
           .map((e) => MapEntry(e.name, e.defaultValueCode!)));
 
+  final converters = reader.read('converters');
+
   return ClassConfig(
     anyMap: annotation.anyMap ?? config.anyMap,
     checked: annotation.checked ?? config.checked,
@@ -109,6 +111,7 @@ ClassConfig mergeConfig(
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     ctorParamDefaults: paramDefaultValueMap,
+    converters: converters.isNull ? const [] : converters.listValue,
   );
 }
 
