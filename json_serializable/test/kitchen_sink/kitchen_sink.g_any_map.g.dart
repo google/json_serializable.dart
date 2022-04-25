@@ -139,19 +139,13 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
         (k, e) => MapEntry(
             k as String, const BigIntStringConverter().fromJson(e as String)),
       ),
-      () {
-        final val = json['nullableBigInt'];
-        return val == null
-            ? null
-            : const BigIntStringConverter().fromJson(val as String);
-      }(),
+      _$JsonConverterFromJson<String, BigInt>(
+          json['nullableBigInt'], const BigIntStringConverter().fromJson),
       (json['nullableBigIntMap'] as Map).map(
-        (k, e) => MapEntry(k as String, () {
-          final val = e;
-          return val == null
-              ? null
-              : const BigIntStringConverter().fromJson(val as String);
-        }()),
+        (k, e) => MapEntry(
+            k as String,
+            _$JsonConverterFromJson<String, BigInt>(
+                e, const BigIntStringConverter().fromJson)),
       ),
       TrivialNumberConverter.instance.fromJson(json['numberSilly'] as int?),
       (json['numberSillySet'] as List<dynamic>)
@@ -176,36 +170,37 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       'bigInt': const BigIntStringConverter().toJson(instance.bigInt),
       'bigIntMap': instance.bigIntMap
           .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
-      'nullableBigInt': () {
-        final val = instance.nullableBigInt;
-        return val == null ? null : const BigIntStringConverter().toJson(val);
-      }(),
-      'nullableBigIntMap':
-          instance.nullableBigIntMap.map((k, e) => MapEntry(k, () {
-                final val = e;
-                return val == null
-                    ? null
-                    : const BigIntStringConverter().toJson(val);
-              }())),
+      'nullableBigInt': _$JsonConverterToJson<String, BigInt>(
+          instance.nullableBigInt, const BigIntStringConverter().toJson),
+      'nullableBigIntMap': instance.nullableBigIntMap.map((k, e) => MapEntry(
+          k,
+          _$JsonConverterToJson<String, BigInt>(
+              e, const BigIntStringConverter().toJson))),
       'numberSilly':
           TrivialNumberConverter.instance.toJson(instance.numberSilly),
       'numberSillySet': instance.numberSillySet
           .map(TrivialNumberConverter.instance.toJson)
           .toList(),
       'dateTime': instance.dateTime?.toIso8601String(),
-      'nullableNumberSilly': () {
-        final val = instance.nullableNumberSilly;
-        return val == null ? null : TrivialNumberConverter.instance.toJson(val);
-      }(),
+      'nullableNumberSilly': _$JsonConverterToJson<int?, TrivialNumber>(
+          instance.nullableNumberSilly, TrivialNumberConverter.instance.toJson),
       'nullableNumberSillySet': instance.nullableNumberSillySet
-          .map((e) => () {
-                final val = e;
-                return val == null
-                    ? null
-                    : TrivialNumberConverter.instance.toJson(val);
-              }())
+          .map((e) => _$JsonConverterToJson<int?, TrivialNumber>(
+              e, TrivialNumberConverter.instance.toJson))
           .toList(),
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
 
 JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
         Map json) =>

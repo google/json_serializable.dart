@@ -33,16 +33,21 @@ class JsonConverterHelper extends TypeHelper {
     }
 
     if (!converter.fieldType.isNullableType && targetType.isNullableType) {
-      // Hacky way to hoist the expression to avoid casting
-      // Ideally we should be able to cleanly declare a variable in the
-      // parent code-block, instead of using (){}()
-      return '''
-() {
-  final val = $expression;
-  return val == null
-      ? null
-      : ${converter.accessString}.toJson(val);
-}()''';
+      const converterToJsonName = r'_$JsonConverterToJson';
+      context.addMember('''
+Json? $converterToJsonName<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => ${ifNullOrElse('value', 'null', 'toJson(value)')};
+''');
+
+      return _nullableJsonConverterLambdaResult(
+        converter,
+        name: converterToJsonName,
+        targetType: targetType,
+        expression: expression,
+        callback: '${converter.accessString}.toJson',
+      );
     }
 
     return LambdaResult(expression, '${converter.accessString}.toJson');
@@ -63,16 +68,21 @@ class JsonConverterHelper extends TypeHelper {
     final asContent = asStatement(converter.jsonType);
 
     if (!converter.jsonType.isNullableType && targetType.isNullableType) {
-      // Hacky way to hoist the expression to avoid casting
-      // Ideally we should be able to cleanly declare a variable in the
-      // parent code-block, instead of using (){}()
-      return '''
-() {
-  final val = $expression;
-  return val == null
-      ? null
-      : ${converter.accessString}.fromJson(val$asContent);
-}()''';
+      const converterFromJsonName = r'_$JsonConverterFromJson';
+      context.addMember('''
+Value? $converterFromJsonName<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => ${ifNullOrElse('json', 'null', 'fromJson(json as Json)')};
+''');
+
+      return _nullableJsonConverterLambdaResult(
+        converter,
+        name: converterFromJsonName,
+        targetType: targetType,
+        expression: expression,
+        callback: '${converter.accessString}.fromJson',
+      );
     }
 
     return LambdaResult(
@@ -83,17 +93,35 @@ class JsonConverterHelper extends TypeHelper {
   }
 }
 
+String _nullableJsonConverterLambdaResult(
+  _JsonConvertData converter, {
+  required String name,
+  required DartType targetType,
+  required String expression,
+  required String callback,
+}) {
+  final jsonDisplayString = typeToCode(converter.jsonType);
+  final fieldTypeDisplayString = converter.isGeneric
+      ? typeToCode(targetType)
+      : typeToCode(converter.fieldType);
+
+  return '$name<$jsonDisplayString, $fieldTypeDisplayString>('
+      '$expression, $callback)';
+}
+
 class _JsonConvertData {
   final String accessString;
   final DartType jsonType;
   final DartType fieldType;
+  final bool isGeneric;
 
   _JsonConvertData.className(
     String className,
     String accessor,
     this.jsonType,
     this.fieldType,
-  ) : accessString = 'const $className${_withAccessor(accessor)}()';
+  )   : accessString = 'const $className${_withAccessor(accessor)}()',
+        isGeneric = false;
 
   _JsonConvertData.genericClass(
     String className,
@@ -101,13 +129,15 @@ class _JsonConvertData {
     String accessor,
     this.jsonType,
     this.fieldType,
-  ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()';
+  )   : accessString =
+            '$className<$genericTypeArg>${_withAccessor(accessor)}()',
+        isGeneric = true;
 
   _JsonConvertData.propertyAccess(
     this.accessString,
     this.jsonType,
     this.fieldType,
-  );
+  ) : isGeneric = false;
 
   static String _withAccessor(String accessor) =>
       accessor.isEmpty ? '' : '.$accessor';

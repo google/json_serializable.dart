@@ -39,18 +39,10 @@ GenericClassWithConverter<T, S>
           ..fieldObject = json['fieldObject']
           ..fieldDynamic = json['fieldDynamic']
           ..fieldInt = json['fieldInt'] as int?
-          ..fieldT = () {
-            final val = json['fieldT'];
-            return val == null
-                ? null
-                : _SimpleConverter<T?>().fromJson(val as Map<String, dynamic>);
-          }()
-          ..fieldS = () {
-            final val = json['fieldS'];
-            return val == null
-                ? null
-                : _SimpleConverter<S?>().fromJson(val as Map<String, dynamic>);
-          }()
+          ..fieldT = _$JsonConverterFromJson<Map<String, dynamic>, T>(
+              json['fieldT'], _SimpleConverter<T?>().fromJson)
+          ..fieldS = _$JsonConverterFromJson<Map<String, dynamic>, S>(
+              json['fieldS'], _SimpleConverter<S?>().fromJson)
           ..duration = json['duration'] == null
               ? null
               : Duration(microseconds: json['duration'] as int)
@@ -64,18 +56,26 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
       'fieldObject': instance.fieldObject,
       'fieldDynamic': instance.fieldDynamic,
       'fieldInt': instance.fieldInt,
-      'fieldT': () {
-        final val = instance.fieldT;
-        return val == null ? null : _SimpleConverter<T?>().toJson(val);
-      }(),
-      'fieldS': () {
-        final val = instance.fieldS;
-        return val == null ? null : _SimpleConverter<S?>().toJson(val);
-      }(),
+      'fieldT': _$JsonConverterToJson<Map<String, dynamic>, T>(
+          instance.fieldT, _SimpleConverter<T?>().toJson),
+      'fieldS': _$JsonConverterToJson<Map<String, dynamic>, S>(
+          instance.fieldS, _SimpleConverter<S?>().toJson),
       'duration': instance.duration?.inMicroseconds,
       'listDuration':
           instance.listDuration?.map((e) => e.inMicroseconds).toList(),
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
 
 Issue980ParentClass _$Issue980ParentClassFromJson(Map<String, dynamic> json) =>
     Issue980ParentClass(
