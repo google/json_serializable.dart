@@ -35,12 +35,6 @@ abstract class TypeHelperContextWithConfig extends TypeHelperContext {
   ClassConfig get config;
 }
 
-class Expression {
-  Expression(this.expression, this.isNullable);
-  final String expression;
-  final bool isNullable;
-}
-
 abstract class TypeHelper<T extends TypeHelperContext> {
   const TypeHelper();
 
