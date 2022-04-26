@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'json_converters.dart';
 import 'kitchen_sink.factories.dart';
 import 'kitchen_sink_interface.dart';
 import 'kitchen_sink_test_shared.dart';
@@ -189,6 +190,18 @@ void _sharedTests(KitchenSinkFactory factory) {
   test('empty', () {
     final item = factory.ctor();
     roundTripObject(item, factory.fromJson);
+  });
+
+  test('JsonConverters with nullable JSON keys handle `null` JSON values', () {
+    final item = factory.jsonConverterFromJson({
+      ..._jsonConverterValidValues,
+      'nullableNumberSilly': null,
+    });
+
+    expect(
+      item.nullableNumberSilly,
+      isA<TrivialNumber>().having((e) => e.value, 'value', isNull),
+    );
   });
 
   test('list and map of DateTime - not null', () {
