@@ -1,3 +1,7 @@
+## 4.5.0
+
+- Added `FieldRename.screamingSnake`.
+
 ## 4.4.0
 
 - Added `JsonKey.readValue`.
