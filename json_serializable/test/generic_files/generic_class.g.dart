@@ -43,12 +43,10 @@ GenericClassWithConverter<T, S>
               json['fieldT'], _SimpleConverter<T?>().fromJson)
           ..fieldS = _$JsonConverterFromJson<Map<String, dynamic>, S>(
               json['fieldS'], _SimpleConverter<S?>().fromJson)
-          ..duration = json['duration'] == null
-              ? null
-              : Duration(microseconds: json['duration'] as int)
-          ..listDuration = (json['listDuration'] as List<dynamic>?)
-              ?.map((e) => Duration(microseconds: e as int))
-              .toList();
+          ..duration = const _DurationMillisecondConverter.named()
+              .fromJson(json['duration'] as int?)
+          ..listDuration = const _DurationListMillisecondConverter()
+              .fromJson(json['listDuration'] as int?);
 
 Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
         GenericClassWithConverter<T, S> instance) =>
@@ -60,9 +58,10 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
           instance.fieldT, _SimpleConverter<T?>().toJson),
       'fieldS': _$JsonConverterToJson<Map<String, dynamic>, S>(
           instance.fieldS, _SimpleConverter<S?>().toJson),
-      'duration': instance.duration?.inMicroseconds,
-      'listDuration':
-          instance.listDuration?.map((e) => e.inMicroseconds).toList(),
+      'duration':
+          const _DurationMillisecondConverter.named().toJson(instance.duration),
+      'listDuration': const _DurationListMillisecondConverter()
+          .toJson(instance.listDuration),
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
