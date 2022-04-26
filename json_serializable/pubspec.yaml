@@ -36,3 +36,7 @@ dev_dependencies:
   test_descriptor: ^2.0.0
   test_process: ^2.0.0
   yaml: ^3.0.0
+
+dependency_overrides:
+  json_annotation:
+   path: ../json_annotation

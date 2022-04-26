@@ -24,3 +24,5 @@ dev_dependencies:
 dependency_overrides:
   json_annotation:
     path: ../json_annotation
+  json_serializable:
+    path: ../json_serializable
