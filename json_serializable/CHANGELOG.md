@@ -1,3 +1,8 @@
+## 6.2.0
+
+- Added support for the new `FieldRename.screamingSnake` field in
+  `package:json_annotation`.
+
 ## 6.1.6
 
 - Allow latest `package:analyzer`.
