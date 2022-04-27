@@ -181,6 +181,8 @@ String encodedFieldName(
       return declaredName;
     case FieldRename.snake:
       return declaredName.snake;
+    case FieldRename.screamingSnake:
+      return declaredName.snake.toUpperCase();
     case FieldRename.kebab:
       return declaredName.kebab;
     case FieldRename.pascal:

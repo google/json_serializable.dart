@@ -120,7 +120,7 @@ void main() {
           case 'field_rename':
             lastLine =
                 '`42` is not one of the supported values: none, kebab, snake, '
-                'pascal';
+                'pascal, screamingSnake';
             break;
           case 'constructor':
             lastLine = "type 'int' is not a subtype of type 'String?' in type "

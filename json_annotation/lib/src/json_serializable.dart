@@ -23,7 +23,11 @@ enum FieldRename {
   snake,
 
   /// Encodes a field named `pascalCase` with a JSON key `PascalCase`.
-  pascal
+  pascal,
+
+  /// Encodes a field named `screamingSnakeCase` with a JSON key
+  /// `SCREAMING_SNAKE_CASE`
+  screamingSnake,
 }
 
 /// An annotation used to specify a class to generate code for.
