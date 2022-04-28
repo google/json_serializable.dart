@@ -189,3 +189,25 @@ class _NeedsConversionConverter
   @override
   int toJson(_NeedsConversion object) => 0;
 }
+
+@ShouldThrow(
+  '''
+Could not generate `fromJson` code for `value`.
+To support the type `_NeedsConversion` you can:
+$converterOrKeyInstructions''',
+)
+@_NullableConverter()
+@JsonSerializable()
+class JsonConverterNullableToNonNullable {
+  late _NeedsConversion value;
+}
+
+class _NullableConverter implements JsonConverter<_NeedsConversion?, Object?> {
+  const _NullableConverter();
+
+  @override
+  _NeedsConversion? fromJson(Object? json) => null;
+
+  @override
+  Object? toJson(_NeedsConversion? object) => null;
+}

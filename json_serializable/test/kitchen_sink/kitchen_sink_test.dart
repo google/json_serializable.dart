@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'json_converters.dart';
 import 'kitchen_sink.factories.dart';
 import 'kitchen_sink_interface.dart';
 import 'kitchen_sink_test_shared.dart';
@@ -54,10 +55,14 @@ const _jsonConverterValidValues = {
   'duration': 5,
   'durationList': [5],
   'bigInt': '5',
-  'bigIntMap': {'vaule': '5'},
+  'bigIntMap': {'value': '5'},
   'numberSilly': 5,
   'numberSillySet': [5],
-  'dateTime': 5
+  'dateTime': 5,
+  'nullableNumberSilly': 5,
+  'nullableBigInt': '42',
+  'nullableBigIntMap': {'value': '42'},
+  'nullableNumberSillySet': [42],
 };
 
 void _nonNullableTests(KitchenSinkFactory factory) {
@@ -96,9 +101,13 @@ void _nullableTests(KitchenSinkFactory factory) {
       'durationList': [],
       'bigInt': '0',
       'bigIntMap': {},
+      'nullableBigInt': '0',
+      'nullableBigIntMap': {},
       'numberSilly': 0,
       'numberSillySet': [],
-      'dateTime': 0
+      'dateTime': 0,
+      'nullableNumberSilly': 0,
+      'nullableNumberSillySet': [],
     });
 
     expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
@@ -181,6 +190,18 @@ void _sharedTests(KitchenSinkFactory factory) {
   test('empty', () {
     final item = factory.ctor();
     roundTripObject(item, factory.fromJson);
+  });
+
+  test('JsonConverters with nullable JSON keys handle `null` JSON values', () {
+    final item = factory.jsonConverterFromJson({
+      ..._jsonConverterValidValues,
+      'nullableNumberSilly': null,
+    });
+
+    expect(
+      item.nullableNumberSilly,
+      isA<TrivialNumber>().having((e) => e.value, 'value', isNull),
+    );
   });
 
   test('list and map of DateTime - not null', () {
