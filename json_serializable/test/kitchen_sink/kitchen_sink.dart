@@ -66,9 +66,13 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
         [],
         BigInt.zero,
         {},
+        BigInt.zero,
+        {},
         TrivialNumber(0),
         {},
         DateTime.fromMillisecondsSinceEpoch(0),
+        TrivialNumber(0),
+        {},
       );
 
   k.JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json) =>
@@ -204,9 +208,13 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
     this.durationList,
     this.bigInt,
     this.bigIntMap,
+    this.nullableBigInt,
+    this.nullableBigIntMap,
     this.numberSilly,
     this.numberSillySet,
     this.dateTime,
+    this.nullableNumberSilly,
+    this.nullableNumberSillySet,
   );
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
@@ -220,10 +228,16 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   BigInt bigInt;
   Map<String, BigInt> bigIntMap;
 
+  BigInt? nullableBigInt;
+  Map<String, BigInt?> nullableBigIntMap;
+
   TrivialNumber numberSilly;
   Set<TrivialNumber> numberSillySet;
 
   DateTime? dateTime;
+
+  TrivialNumber? nullableNumberSilly;
+  Set<TrivialNumber?> nullableNumberSillySet;
 }
 
 @JsonSerializable()

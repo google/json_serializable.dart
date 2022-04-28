@@ -22,7 +22,5 @@ dev_dependencies:
   test_process: ^2.0.0
 
 dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
   json_serializable:
     path: ../json_serializable
