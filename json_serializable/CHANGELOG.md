@@ -1,3 +1,13 @@
+## 6.3.0-dev
+
+- Added support for using a `JsonConverter<MyClass, Object>` on properties
+  of type `MyClass?`. ([#822](https://github.com/google/json_serializable.dart/issues/822))
+
+## 6.2.0
+
+- Added support for the new `FieldRename.screamingSnake` field in
+  `package:json_annotation`.
+
 ## 6.1.6
 
 - Allow latest `package:analyzer`.
