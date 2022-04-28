@@ -117,6 +117,7 @@ const _$FieldRenameEnumMap = {
   FieldRename.kebab: 'kebab',
   FieldRename.snake: 'snake',
   FieldRename.pascal: 'pascal',
+  FieldRename.screamingSnake: 'screamingSnake',
 };
 
 // #CHANGE WHEN UPDATING json_annotation

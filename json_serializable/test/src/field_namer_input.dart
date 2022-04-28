@@ -59,3 +59,19 @@ class FieldNamerSnake {
   @JsonKey(name: 'NAME_OVERRIDE')
   late String nameOverride;
 }
+
+@ShouldGenerate(r'''
+Map<String, dynamic> _$FieldNamerScreamingSnakeToJson(
+        FieldNamerScreamingSnake instance) =>
+    <String, dynamic>{
+      'THE_FIELD': instance.theField,
+      'nameOverride': instance.nameOverride,
+    };
+''')
+@JsonSerializable(fieldRename: FieldRename.screamingSnake, createFactory: false)
+class FieldNamerScreamingSnake {
+  late String theField;
+
+  @JsonKey(name: 'nameOverride')
+  late String nameOverride;
+}

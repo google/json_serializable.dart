@@ -58,6 +58,7 @@ const _expectedAnnotatedTests = {
   'FieldNamerKebab',
   'FieldNamerNone',
   'FieldNamerPascal',
+  'FieldNamerScreamingSnake',
   'FieldNamerSnake',
   'FieldWithFromJsonCtorAndTypeParams',
   'FinalFields',
