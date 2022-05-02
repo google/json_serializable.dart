@@ -69,6 +69,7 @@ class _Factory implements k.KitchenSinkFactory<String, dynamic> {
         TrivialNumber(0),
         {},
         DateTime.fromMillisecondsSinceEpoch(0),
+        TrivialString(''),
       );
 
   k.JsonConverterTestClass jsonConverterFromJson(Map<String, dynamic> json) =>
@@ -196,6 +197,8 @@ class KitchenSink implements k.KitchenSink {
   // referencing via a const constructor should work
   BigIntStringConverter(),
 ])
+// referencing a top-level field should work
+@trivialStringConverter
 @TrivialNumberConverter.instance
 @EpochDateTimeConverter()
 class JsonConverterTestClass implements k.JsonConverterTestClass {
@@ -207,6 +210,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
     this.numberSilly,
     this.numberSillySet,
     this.dateTime,
+    this.trivialString,
   );
 
   factory JsonConverterTestClass.fromJson(Map<String, dynamic> json) =>
@@ -224,6 +228,8 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
   Set<TrivialNumber> numberSillySet;
 
   DateTime? dateTime;
+
+  TrivialString? trivialString;
 }
 
 @JsonSerializable()

@@ -57,7 +57,8 @@ const _jsonConverterValidValues = {
   'bigIntMap': {'vaule': '5'},
   'numberSilly': 5,
   'numberSillySet': [5],
-  'dateTime': 5
+  'dateTime': 5,
+  'trivialString': '',
 };
 
 void _nonNullableTests(KitchenSinkFactory factory) {
@@ -98,7 +99,8 @@ void _nullableTests(KitchenSinkFactory factory) {
       'bigIntMap': {},
       'numberSilly': 0,
       'numberSillySet': [],
-      'dateTime': 0
+      'dateTime': 0,
+      'trivialString': '',
     });
 
     expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
