@@ -39,10 +39,10 @@ GenericClassWithConverter<T, S>
           ..fieldObject = json['fieldObject']
           ..fieldDynamic = json['fieldDynamic']
           ..fieldInt = json['fieldInt'] as int?
-          ..fieldT = _SimpleConverter<T?>()
-              .fromJson(json['fieldT'] as Map<String, dynamic>)
-          ..fieldS = _SimpleConverter<S?>()
-              .fromJson(json['fieldS'] as Map<String, dynamic>)
+          ..fieldT = _$JsonConverterFromJson<Map<String, dynamic>, T>(
+              json['fieldT'], _SimpleConverter<T?>().fromJson)
+          ..fieldS = _$JsonConverterFromJson<Map<String, dynamic>, S>(
+              json['fieldS'], _SimpleConverter<S?>().fromJson)
           ..duration = const _DurationMillisecondConverter.named()
               .fromJson(json['duration'] as int?)
           ..listDuration = const _DurationListMillisecondConverter()
@@ -54,13 +54,27 @@ Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
       'fieldObject': instance.fieldObject,
       'fieldDynamic': instance.fieldDynamic,
       'fieldInt': instance.fieldInt,
-      'fieldT': _SimpleConverter<T?>().toJson(instance.fieldT),
-      'fieldS': _SimpleConverter<S?>().toJson(instance.fieldS),
+      'fieldT': _$JsonConverterToJson<Map<String, dynamic>, T>(
+          instance.fieldT, _SimpleConverter<T?>().toJson),
+      'fieldS': _$JsonConverterToJson<Map<String, dynamic>, S>(
+          instance.fieldS, _SimpleConverter<S?>().toJson),
       'duration':
           const _DurationMillisecondConverter.named().toJson(instance.duration),
       'listDuration': const _DurationListMillisecondConverter()
           .toJson(instance.listDuration),
     };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
 
 Issue980ParentClass _$Issue980ParentClassFromJson(Map<String, dynamic> json) =>
     Issue980ParentClass(
