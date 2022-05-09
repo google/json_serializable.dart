@@ -4,6 +4,8 @@
   of type `MyClass?`. ([#822](https://github.com/google/json_serializable.dart/issues/822))
 - Added support for `JsonSerializable(converters: <JsonConverter>[])`
   ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
+- Fix issue with serialization of non-nullable enumerations emitting a nullable
+  type ([#1146](https://github.com/google/json_serializable.dart/pull/1146))
 
 ## 6.2.0
 
