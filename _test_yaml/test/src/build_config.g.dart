@@ -34,7 +34,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'builders': instance.builders,
       'weights':
-          instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k], e)),
+          instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k]!, e)),
     };
 
 const _$AutoApplyEnumMap = {

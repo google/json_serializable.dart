@@ -49,3 +49,35 @@ enum Issue559RegressionEnum {
   beta,
   gamma,
 }
+
+enum Issue1145RegressionEnum {
+  alpha,
+  beta,
+  gamma,
+}
+
+@JsonSerializable(
+  createFactory: false,
+)
+class Issue1145RegressionA {
+  Issue1145RegressionA({
+    required this.status,
+  });
+
+  Map<String, dynamic> toJson() => _$Issue1145RegressionAToJson(this);
+
+  final Map<Issue1145RegressionEnum, bool> status;
+}
+
+@JsonSerializable(
+  createFactory: false,
+)
+class Issue1145RegressionB {
+  Issue1145RegressionB({
+    required this.status,
+  });
+
+  Map<String, dynamic> toJson() => _$Issue1145RegressionBToJson(this);
+
+  final List<Issue1145RegressionEnum?> status;
+}
