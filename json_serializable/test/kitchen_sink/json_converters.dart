@@ -55,6 +55,25 @@ class DurationMillisecondConverter implements JsonConverter<Duration?, int?> {
   int? toJson(Duration? object) => object?.inMilliseconds;
 }
 
+class TrivialString {
+  TrivialString(this.value);
+
+  final String? value;
+}
+
+const trivialStringConverter = TrivialStringConverter();
+
+class TrivialStringConverter implements JsonConverter<TrivialString?, String?> {
+  const TrivialStringConverter();
+
+  @override
+  TrivialString? fromJson(String? json) =>
+      json == null ? null : TrivialString(json);
+
+  @override
+  String? toJson(TrivialString? object) => object?.value;
+}
+
 class EpochDateTimeConverter implements JsonConverter<DateTime?, int?> {
   const EpochDateTimeConverter();
 

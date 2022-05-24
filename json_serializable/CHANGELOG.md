@@ -2,6 +2,8 @@
 
 - Added support for using a `JsonConverter<MyClass, Object>` on properties
   of type `MyClass?`. ([#822](https://github.com/google/json_serializable.dart/issues/822))
+- Added support for `JsonSerializable(converters: <JsonConverter>[])`
+  ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
 
 ## 6.2.0
 

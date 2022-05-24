@@ -145,9 +145,9 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
         Map<String, dynamic> json) =>
     JsonConverterTestClass(
-      durationConverter.fromJson(json['duration'] as int?),
+      const DurationMillisecondConverter().fromJson(json['duration'] as int?),
       (json['durationList'] as List<dynamic>)
-          .map((e) => durationConverter.fromJson(e as int?))
+          .map((e) => const DurationMillisecondConverter().fromJson(e as int?))
           .toList(),
       const BigIntStringConverter().fromJson(json['bigInt'] as String),
       (json['bigIntMap'] as Map<String, dynamic>).map(
@@ -167,6 +167,7 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
           .map((e) => TrivialNumberConverter.instance.fromJson(e as int?))
           .toSet(),
       const EpochDateTimeConverter().fromJson(json['dateTime'] as int?),
+      trivialStringConverter.fromJson(json['trivialString'] as String?),
       TrivialNumberConverter.instance
           .fromJson(json['nullableNumberSilly'] as int?),
       (json['nullableNumberSillySet'] as List<dynamic>)
@@ -184,9 +185,11 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
     }
   }
 
-  writeNotNull('duration', durationConverter.toJson(instance.duration));
-  val['durationList'] =
-      instance.durationList.map(durationConverter.toJson).toList();
+  writeNotNull('duration',
+      const DurationMillisecondConverter().toJson(instance.duration));
+  val['durationList'] = instance.durationList
+      .map(const DurationMillisecondConverter().toJson)
+      .toList();
   writeNotNull('bigInt', const BigIntStringConverter().toJson(instance.bigInt));
   val['bigIntMap'] = instance.bigIntMap
       .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)));
@@ -205,6 +208,8 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       .toList();
   writeNotNull(
       'dateTime', const EpochDateTimeConverter().toJson(instance.dateTime));
+  writeNotNull(
+      'trivialString', trivialStringConverter.toJson(instance.trivialString));
   writeNotNull(
       'nullableNumberSilly',
       _$JsonConverterToJson<int?, TrivialNumber>(instance.nullableNumberSilly,
