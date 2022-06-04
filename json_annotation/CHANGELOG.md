@@ -1,3 +1,8 @@
+## 4.6.0
+
+- Added `JsonSerializable(converters: <JsonConverter>[])`
+  ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
+
 ## 4.5.0
 
 - Added `FieldRename.screamingSnake`.
@@ -38,7 +43,7 @@
 
 ## 4.0.1
 
-- Fix a potential error with `checked: true` when `ArgumentError.message` is 
+- Fix a potential error with `checked: true` when `ArgumentError.message` is
   `null`.
 - Updated `JsonSerializable.fromJson` to handle `null` values.
 - Deprecate `JsonSerializable` `defaults` and `withDefaults()`.

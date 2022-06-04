@@ -20,7 +20,7 @@ class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
   final Settings _settings;
 
-  JsonSerializable get config => _settings.config;
+  JsonSerializable get config => _settings.config.toJsonSerializable();
 
   JsonSerializableGenerator.fromSettings(this._settings);
 

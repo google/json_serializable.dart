@@ -6,6 +6,7 @@ import 'package:meta/meta_meta.dart';
 
 import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
+import 'json_converter.dart';
 import 'json_key.dart';
 
 part 'json_serializable.g.dart';
@@ -190,6 +191,40 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+  /// A list of [JsonConverter] to apply to this class.
+  ///
+  /// Writing:
+  ///
+  /// ```dart
+  /// @JsonSerializable(converters: [MyJsonConverter()])
+  /// class Example {...}
+  /// ```
+  ///
+  /// is equivalent to writing:
+  ///
+  /// ```dart
+  /// @JsonSerializable()
+  /// @MyJsonConverter()
+  /// class Example {...}
+  /// ```
+  ///
+  /// The main difference is that this allows reusing a custom
+  /// [JsonSerializable] over multiple classes:
+  ///
+  /// ```dart
+  /// const myCustomAnnotation = JsonSerializable(
+  ///   converters: [MyJsonConverter()],
+  /// );
+  ///
+  /// @myCustomAnnotation
+  /// class Example {...}
+  ///
+  /// @myCustomAnnotation
+  /// class Another {...}
+  /// ```
+  @JsonKey(ignore: true)
+  final List<JsonConverter>? converters;
+
   /// Creates a new [JsonSerializable] instance.
   const JsonSerializable({
     @Deprecated('Has no effect') bool? nullable,
@@ -203,6 +238,7 @@ class JsonSerializable {
     this.fieldRename,
     this.ignoreUnannotated,
     this.includeIfNull,
+    this.converters,
     this.genericArgumentFactories,
   });
 
