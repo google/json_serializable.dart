@@ -71,6 +71,8 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       expression,
       if (jsonKey.unknownEnumValue != null)
         'unknownValue: ${jsonKey.unknownEnumValue}',
+      if ((jsonKey.caseInsensitive ?? false) == true)
+        r'comparator: $enumCompareCaseInsensitive',
     ];
 
     return '$functionName(${args.join(', ')})';

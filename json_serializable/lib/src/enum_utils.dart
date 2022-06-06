@@ -75,6 +75,7 @@ JsonEnum _fromAnnotation(DartObject? dartObject) {
   final reader = ConstantReader(dartObject);
   return JsonEnum(
       alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
+      caseInsensitive: reader.read('caseInsensitive').literalValue as bool,
       fieldRename: enumValueForDartObject(
         reader.read('fieldRename').objectValue,
         FieldRename.values,

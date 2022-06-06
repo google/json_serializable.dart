@@ -13,6 +13,8 @@ import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
+const _jsonEnumChecker = TypeChecker.fromRuntime(JsonEnum);
+
 DartObject? _jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
     (element.getter == null
@@ -21,6 +23,14 @@ DartObject? _jsonKeyAnnotation(FieldElement element) =>
 
 ConstantReader jsonKeyAnnotation(FieldElement element) =>
     ConstantReader(_jsonKeyAnnotation(element));
+
+DartObject? _jsonEnumAnnotation(Element? element) =>
+    (element != null && element is ClassElement) ?
+      _jsonEnumChecker.firstAnnotationOf(element)
+      : null;
+
+ConstantReader jsonEnumAnnotation(FieldElement element) =>
+  ConstantReader(_jsonEnumAnnotation(element.type.element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
 bool hasJsonKeyAnnotation(FieldElement element) =>

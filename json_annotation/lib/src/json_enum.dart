@@ -13,6 +13,7 @@ class JsonEnum {
   const JsonEnum({
     this.alwaysCreate = false,
     this.fieldRename = FieldRename.none,
+    this.caseInsensitive = false,
   });
 
   /// If `true`, `_$[enum name]EnumMap` is generated for in library containing
@@ -34,4 +35,16 @@ class JsonEnum {
   /// Note: the value for [JsonValue.value] takes precedence over this option
   /// for entries annotated with [JsonValue].
   final FieldRename fieldRename;
+
+  /// if `true`, enum comparison will be done using case-insensitive.
+  ///
+  /// The default, `false`, means enum comparison will be done using
+  /// case-sensitive.
+  final bool caseInsensitive;
+
+  factory JsonEnum.fromJson(Map<String, dynamic> json) {
+    final caseInsensitive = json['case_insensitive'] as bool?;
+    return // caseInsensitive == null ? null :
+      JsonEnum(caseInsensitive: caseInsensitive ?? false);
+  }
 }

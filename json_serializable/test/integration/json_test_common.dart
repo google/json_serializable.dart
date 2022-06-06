@@ -6,7 +6,7 @@ import 'dart:collection';
 
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonEnum(fieldRename: FieldRename.kebab)
+@JsonEnum(fieldRename: FieldRename.kebab, caseInsensitive: true)
 enum Category {
   top,
   bottom,
