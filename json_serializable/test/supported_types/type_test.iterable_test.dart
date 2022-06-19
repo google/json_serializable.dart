@@ -4,9 +4,10 @@
 
 // ignore_for_file: prefer_const_declarations
 
+@TestOn('vm')
+
 import 'dart:convert';
 
-@TestOn('vm')
 import 'package:test/test.dart';
 
 import '../test_utils.dart';

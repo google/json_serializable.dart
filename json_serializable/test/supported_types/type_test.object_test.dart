@@ -6,7 +6,6 @@
 
 import 'dart:convert';
 
-@TestOn('vm')
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
