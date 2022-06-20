@@ -33,7 +33,7 @@ Run `pub run build_runner build` to generate files into your source directory.
 ```
 
 _NOTE_: If you're using Flutter, replace `pub run` with
-`flutter packages pub run`.
+`flutter pub run`.
 
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart
