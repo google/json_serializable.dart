@@ -126,6 +126,10 @@ void main() {
             lastLine = "type 'int' is not a subtype of type 'String?' in type "
                 'cast';
             break;
+          case 'create_to_json':
+            lastLine = "type 'int' is not a subtype of type 'bool?' in type "
+                'cast';
+            break;
           default:
             lastLine =
                 "type 'int' is not a subtype of type 'bool?' in type cast";
