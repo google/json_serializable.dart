@@ -16,6 +16,26 @@ import 'unsupported_type_error.dart';
 abstract class EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
 
+  /// Generates an object containing metadatas related to the encoding,
+  /// destined to be used by other code-generators.
+  String createJsonMeta(Set<FieldElement> accessibleFieldSet) {
+    assert(config.createJsonMeta);
+
+    final buffer =
+        StringBuffer('const _\$${element.name}JsonMeta = <String, String> {');
+
+    for (final field in accessibleFieldSet) {
+      buffer.writeln(
+        '${escapeDartString(field.name)}: '
+        '${escapeDartString(nameAccess(field))},',
+      );
+    }
+
+    buffer.write('};');
+
+    return buffer.toString();
+  }
+
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(config.createToJson);
 

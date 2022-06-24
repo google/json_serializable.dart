@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 import '../test_utils.dart';
 import 'json_enum_example.dart';
+import 'json_meta_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 
@@ -320,6 +321,16 @@ void main() {
     expect(
       Issue559Regression.fromJson({'status': 'bob'}).status,
       isNull,
+    );
+  });
+
+  test(r'_$ModelJsonMeta', () {
+    expect(
+      modelMeta,
+      {
+        'firstName': 'first-name',
+        'lastName': 'LAST_NAME',
+      },
     );
   });
 }

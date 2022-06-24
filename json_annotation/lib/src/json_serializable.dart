@@ -64,6 +64,13 @@ class JsonSerializable {
   /// This setting has no effect if [createFactory] is `false`.
   final String? constructor;
 
+  /// If `true` (defaults to false), a private, static `_$ExampleJsonMeta`
+  /// constant is created in the generated part file.
+  ///
+  /// This constant can be used by other code-generators to support features
+  /// such as [fieldRename].
+  final bool? createJsonMeta;
+
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
   ///
@@ -231,6 +238,7 @@ class JsonSerializable {
     this.anyMap,
     this.checked,
     this.constructor,
+    this.createJsonMeta,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,

@@ -152,6 +152,7 @@ const _invalidConfig = {
   'checked': 42,
   'constructor': 42,
   'create_factory': 42,
+  'create_json_meta': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,
   'explicit_to_json': 42,
