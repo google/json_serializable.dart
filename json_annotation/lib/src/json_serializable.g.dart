@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
+
 part of 'json_serializable.dart';
 
 // **************************************************************************
@@ -17,6 +19,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'any_map',
             'checked',
             'constructor',
+            'create_json_meta',
             'create_factory',
             'create_to_json',
             'disallow_unrecognized_keys',
@@ -31,6 +34,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           anyMap: $checkedConvert('any_map', (v) => v as bool?),
           checked: $checkedConvert('checked', (v) => v as bool?),
           constructor: $checkedConvert('constructor', (v) => v as String?),
+          createJsonMeta:
+              $checkedConvert('create_json_meta', (v) => v as bool?),
           createFactory: $checkedConvert('create_factory', (v) => v as bool?),
           createToJson: $checkedConvert('create_to_json', (v) => v as bool?),
           disallowUnrecognizedKeys:
@@ -38,7 +43,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           explicitToJson:
               $checkedConvert('explicit_to_json', (v) => v as bool?),
           fieldRename: $checkedConvert('field_rename',
-              (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v)),
+              (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v)),
           ignoreUnannotated:
               $checkedConvert('ignore_unannotated', (v) => v as bool?),
           includeIfNull: $checkedConvert('include_if_null', (v) => v as bool?),
@@ -49,6 +54,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
       },
       fieldKeyMap: const {
         'anyMap': 'any_map',
+        'createJsonMeta': 'create_json_meta',
         'createFactory': 'create_factory',
         'createToJson': 'create_to_json',
         'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
@@ -65,6 +71,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'any_map': instance.anyMap,
       'checked': instance.checked,
       'constructor': instance.constructor,
+      'create_json_meta': instance.createJsonMeta,
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
@@ -74,43 +81,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$FieldRenameEnumMap = {
   FieldRename.none: 'none',

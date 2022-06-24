@@ -6,6 +6,7 @@ import 'package:meta/meta_meta.dart';
 
 import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
+import 'enum_helpers.dart';
 import 'json_converter.dart';
 import 'json_key.dart';
 
