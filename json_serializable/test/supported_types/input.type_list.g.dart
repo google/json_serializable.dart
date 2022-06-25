@@ -337,7 +337,7 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
 Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
         SimpleClassOfEnumType instance) =>
     <String, dynamic>{
-      'value': instance.value.map((e) => _$EnumTypeEnumMap[e]).toList(),
+      'value': instance.value.map((e) => _$EnumTypeEnumMap[e]!).toList(),
     };
 
 const _$EnumTypeEnumMap = {
@@ -358,7 +358,7 @@ SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
 Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
         SimpleClassNullableOfEnumType instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((e) => _$EnumTypeEnumMap[e]).toList(),
+      'value': instance.value?.map((e) => _$EnumTypeEnumMap[e]!).toList(),
     };
 
 SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(

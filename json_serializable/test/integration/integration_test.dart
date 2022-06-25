@@ -304,6 +304,23 @@ void main() {
     expect(dayTypeEnumValues, ['no-good', 'rotten', 'very-bad']);
   });
 
+  test(
+      'serializing a non-nullable enum as a key in a map should produce a '
+      'non-nullable string key', () {
+    final cls =
+        Issue1145RegressionA(status: {Issue1145RegressionEnum.gamma: true});
+    // Due to issue 1145 this resulted in Map<String?, dynamic>
+    expect(cls.toJson()['status'], const TypeMatcher<Map<String, dynamic>>());
+  });
+
+  test(
+      'serializing a nullable enum in a list should produce a list with'
+      ' nullable entries', () {
+    final cls = Issue1145RegressionB(status: [Issue1145RegressionEnum.gamma]);
+    // Issue 1145 should not have affected nullable enums
+    expect(cls.toJson()['status'], const TypeMatcher<List<String?>>());
+  });
+
   test('unknown as null for enum', () {
     expect(
       () => Issue559Regression.fromJson({}).status,
