@@ -23,11 +23,6 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
       'LAST_NAME': instance.lastName,
     };
 
-_PrivateModel _$PrivateModelFromJson(Map<String, dynamic> json) =>
-    _PrivateModel(
-      json['full-name'] as String,
-    );
-
 const _$PrivateModelFieldMap = <String, String>{
   'fullName': 'full-name',
 };

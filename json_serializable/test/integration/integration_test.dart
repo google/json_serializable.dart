@@ -6,8 +6,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
-import 'json_enum_example.dart';
 import 'field_map_example.dart';
+import 'json_enum_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 

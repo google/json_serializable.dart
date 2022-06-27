@@ -27,7 +27,11 @@ class Model {
 
 const modelFieldMap = _$ModelFieldMap;
 
-@JsonSerializable(createFieldMap: true, fieldRename: FieldRename.kebab)
+@JsonSerializable(
+  createFieldMap: true,
+  fieldRename: FieldRename.kebab,
+  createFactory: false,
+)
 class _PrivateModel {
   _PrivateModel(this.fullName);
 
