@@ -178,6 +178,7 @@ targets:
           any_map: false
           checked: false
           constructor: ""
+          create_field_map: false
           create_factory: true
           create_to_json: true
           disallow_unrecognized_keys: false
