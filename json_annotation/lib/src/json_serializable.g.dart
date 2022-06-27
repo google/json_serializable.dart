@@ -19,7 +19,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'any_map',
             'checked',
             'constructor',
-            'create_json_meta',
+            'create_field_map',
             'create_factory',
             'create_to_json',
             'disallow_unrecognized_keys',
@@ -34,8 +34,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           anyMap: $checkedConvert('any_map', (v) => v as bool?),
           checked: $checkedConvert('checked', (v) => v as bool?),
           constructor: $checkedConvert('constructor', (v) => v as String?),
-          createJsonMeta:
-              $checkedConvert('create_json_meta', (v) => v as bool?),
+          createFieldMap:
+              $checkedConvert('create_field_map', (v) => v as bool?),
           createFactory: $checkedConvert('create_factory', (v) => v as bool?),
           createToJson: $checkedConvert('create_to_json', (v) => v as bool?),
           disallowUnrecognizedKeys:
@@ -54,7 +54,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
       },
       fieldKeyMap: const {
         'anyMap': 'any_map',
-        'createJsonMeta': 'create_json_meta',
+        'createFieldMap': 'create_field_map',
         'createFactory': 'create_factory',
         'createToJson': 'create_to_json',
         'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
@@ -71,7 +71,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'any_map': instance.anyMap,
       'checked': instance.checked,
       'constructor': instance.constructor,
-      'create_json_meta': instance.createJsonMeta,
+      'create_field_map': instance.createFieldMap,
       'create_factory': instance.createFactory,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,

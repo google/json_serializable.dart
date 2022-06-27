@@ -15,7 +15,7 @@ class ConfigurationImplicitDefaults {
   constructor: '',
   createFactory: true,
   createToJson: true,
-  createJsonMeta: false,
+  createFieldMap: false,
   disallowUnrecognizedKeys: false,
   explicitToJson: false,
   fieldRename: FieldRename.none,

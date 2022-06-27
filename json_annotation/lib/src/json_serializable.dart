@@ -70,7 +70,7 @@ class JsonSerializable {
   ///
   /// This constant can be used by other code-generators to support features
   /// such as [fieldRename].
-  final bool? createJsonMeta;
+  final bool? createFieldMap;
 
   /// If `true` (the default), a private, static `_$ExampleFromJson` method
   /// is created in the generated part file.
@@ -239,7 +239,7 @@ class JsonSerializable {
     this.anyMap,
     this.checked,
     this.constructor,
-    this.createJsonMeta,
+    this.createFieldMap,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,

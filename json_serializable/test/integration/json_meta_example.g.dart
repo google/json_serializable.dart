@@ -13,7 +13,7 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
       lastName: json['LAST_NAME'] as String,
     );
 
-const _$ModelJsonMeta = <String, String>{
+const _$ModelFieldMap = <String, String>{
   'firstName': 'first-name',
   'lastName': 'LAST_NAME',
 };

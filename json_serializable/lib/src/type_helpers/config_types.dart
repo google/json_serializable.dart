@@ -45,7 +45,7 @@ class ClassConfig {
   final String constructor;
   final bool createFactory;
   final bool createToJson;
-  final bool createJsonMeta;
+  final bool createFieldMap;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
@@ -61,7 +61,7 @@ class ClassConfig {
     required this.constructor,
     required this.createFactory,
     required this.createToJson,
-    required this.createJsonMeta,
+    required this.createFieldMap,
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
@@ -78,8 +78,8 @@ class ClassConfig {
         checked: config.checked ?? ClassConfig.defaults.checked,
         anyMap: config.anyMap ?? ClassConfig.defaults.anyMap,
         constructor: config.constructor ?? ClassConfig.defaults.constructor,
-        createJsonMeta:
-            config.createJsonMeta ?? ClassConfig.defaults.createJsonMeta,
+        createFieldMap:
+            config.createFieldMap ?? ClassConfig.defaults.createFieldMap,
         createFactory:
             config.createFactory ?? ClassConfig.defaults.createFactory,
         createToJson: config.createToJson ?? ClassConfig.defaults.createToJson,
@@ -105,7 +105,7 @@ class ClassConfig {
     constructor: '',
     createFactory: true,
     createToJson: true,
-    createJsonMeta: false,
+    createFieldMap: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
@@ -120,7 +120,7 @@ class ClassConfig {
         constructor: constructor,
         createFactory: createFactory,
         createToJson: createToJson,
-        createJsonMeta: createJsonMeta,
+        createFieldMap: createFieldMap,
         ignoreUnannotated: ignoreUnannotated,
         explicitToJson: explicitToJson,
         includeIfNull: includeIfNull,

@@ -108,8 +108,8 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       },
     );
 
-    if (config.createJsonMeta) {
-      yield createJsonMeta(accessibleFieldSet);
+    if (config.createFieldMap) {
+      yield createFieldMap(accessibleFieldSet);
     }
 
     if (config.createToJson) {

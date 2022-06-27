@@ -18,11 +18,11 @@ abstract class EncodeHelper implements HelperCore {
 
   /// Generates an object containing metadatas related to the encoding,
   /// destined to be used by other code-generators.
-  String createJsonMeta(Set<FieldElement> accessibleFieldSet) {
-    assert(config.createJsonMeta);
+  String createFieldMap(Set<FieldElement> accessibleFieldSet) {
+    assert(config.createFieldMap);
 
     final buffer =
-        StringBuffer('const _\$${element.name}JsonMeta = <String, String> {');
+        StringBuffer('const _\$${element.name}FieldMap = <String, String> {');
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
