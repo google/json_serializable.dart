@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
-
 part of 'json_serializable.dart';
 
 // **************************************************************************
@@ -19,8 +17,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'any_map',
             'checked',
             'constructor',
-            'create_field_map',
             'create_factory',
+            'create_field_map',
             'create_to_json',
             'disallow_unrecognized_keys',
             'explicit_to_json',
@@ -71,8 +69,8 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'any_map': instance.anyMap,
       'checked': instance.checked,
       'constructor': instance.constructor,
-      'create_field_map': instance.createFieldMap,
       'create_factory': instance.createFactory,
+      'create_field_map': instance.createFieldMap,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
