@@ -2,7 +2,7 @@
 
 // ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
 
-part of 'json_meta_example.dart';
+part of 'field_map_example.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -21,4 +21,18 @@ const _$ModelFieldMap = <String, String>{
 Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
       'first-name': instance.firstName,
       'LAST_NAME': instance.lastName,
+    };
+
+_PrivateModel _$PrivateModelFromJson(Map<String, dynamic> json) =>
+    _PrivateModel(
+      json['full-name'] as String,
+    );
+
+const _$PrivateModelFieldMap = <String, String>{
+  'fullName': 'full-name',
+};
+
+Map<String, dynamic> _$PrivateModelToJson(_PrivateModel instance) =>
+    <String, dynamic>{
+      'full-name': instance.fullName,
     };

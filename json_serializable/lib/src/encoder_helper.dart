@@ -21,8 +21,9 @@ abstract class EncodeHelper implements HelperCore {
   String createFieldMap(Set<FieldElement> accessibleFieldSet) {
     assert(config.createFieldMap);
 
-    final buffer =
-        StringBuffer('const _\$${element.name}FieldMap = <String, String> {');
+    final buffer = StringBuffer(
+      'const _\$${element.name.nonPrivate}FieldMap = <String, String> {',
+    );
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(

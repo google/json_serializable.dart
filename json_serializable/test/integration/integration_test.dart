@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 
 import '../test_utils.dart';
 import 'json_enum_example.dart';
-import 'json_meta_example.dart';
+import 'field_map_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 
@@ -324,13 +324,21 @@ void main() {
     );
   });
 
-  test(r'_$ModelJsonMeta', () {
+  test(r'_$ModelFieldMap', () {
     expect(
-      modelMeta,
+      modelFieldMap,
       {
         'firstName': 'first-name',
         'lastName': 'LAST_NAME',
       },
+    );
+  });
+
+  test(r'Generates _$PrivateModelFieldMap instead of __$PrivateModelFieldMap',
+      () {
+    expect(
+      privateModelFieldMap,
+      {'fullName': 'full-name'},
     );
   });
 }

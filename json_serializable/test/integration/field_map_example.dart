@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'json_meta_example.g.dart';
+part 'field_map_example.g.dart';
 
 @JsonSerializable(createFieldMap: true, fieldRename: FieldRename.kebab)
 class Model {
@@ -25,4 +25,15 @@ class Model {
   Map<String, Object?> toJson() => _$ModelToJson(this);
 }
 
-const modelMeta = _$ModelFieldMap;
+const modelFieldMap = _$ModelFieldMap;
+
+@JsonSerializable(createFieldMap: true, fieldRename: FieldRename.kebab)
+class _PrivateModel {
+  _PrivateModel(this.fullName);
+
+  final String fullName;
+
+  Map<String, Object?> toJson() => _$PrivateModelToJson(this);
+}
+
+const privateModelFieldMap = _$PrivateModelFieldMap;
