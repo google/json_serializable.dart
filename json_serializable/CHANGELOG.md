@@ -1,3 +1,9 @@
+## 6.3.1-dev
+
+- Added support for generating `_$ExampleFieldMeta`, which can be used by other
+  code-generators that needs to interact with the JSON serialization.
+  ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
+
 ## 6.3.0-dev
 
 - Added support for using a `JsonConverter<MyClass, Object>` on properties

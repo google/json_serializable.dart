@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'field_map_example.dart';
 import 'json_enum_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
@@ -337,6 +338,24 @@ void main() {
     expect(
       Issue559Regression.fromJson({'status': 'bob'}).status,
       isNull,
+    );
+  });
+
+  test(r'_$ModelFieldMap', () {
+    expect(
+      modelFieldMap,
+      {
+        'firstName': 'first-name',
+        'lastName': 'LAST_NAME',
+      },
+    );
+  });
+
+  test(r'Generates _$PrivateModelFieldMap instead of __$PrivateModelFieldMap',
+      () {
+    expect(
+      privateModelFieldMap,
+      {'fullName': 'full-name'},
     );
   });
 }

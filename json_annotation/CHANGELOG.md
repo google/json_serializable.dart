@@ -1,5 +1,7 @@
 ## 4.6.0
 
+- Added `JsonSerializable(createFieldMap: true)`.
+  ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
 - Added `JsonSerializable(converters: <JsonConverter>[])`
   ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
 

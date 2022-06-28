@@ -6,6 +6,7 @@ import 'package:meta/meta_meta.dart';
 
 import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
+import 'enum_helpers.dart';
 import 'json_converter.dart';
 import 'json_key.dart';
 
@@ -78,6 +79,13 @@ class JsonSerializable {
   /// }
   /// ```
   final bool? createFactory;
+
+  /// If `true` (defaults to false), a private, static `_$ExampleJsonMeta`
+  /// constant is created in the generated part file.
+  ///
+  /// This constant can be used by other code-generators to support features
+  /// such as [fieldRename].
+  final bool? createFieldMap;
 
   /// If `true` (the default), A top-level function is created that you can
   /// reference from your class.
@@ -231,6 +239,7 @@ class JsonSerializable {
     this.anyMap,
     this.checked,
     this.constructor,
+    this.createFieldMap,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,

@@ -19,6 +19,7 @@ final generatorConfigNonDefaultJson =
   constructor: 'something',
   createFactory: false,
   createToJson: false,
+  createFieldMap: true,
   disallowUnrecognizedKeys: true,
   explicitToJson: true,
   fieldRename: FieldRename.kebab,

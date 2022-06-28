@@ -137,6 +137,7 @@ targets:
           checked: false
           constructor: ""
           create_factory: true
+          create_field_map: false
           create_to_json: true
           disallow_unrecognized_keys: false
           explicit_to_json: false
