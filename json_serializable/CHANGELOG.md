@@ -1,13 +1,11 @@
-## 6.3.1-dev
+## 6.3.0
 
-- Added support for generating `_$ExampleFieldMeta`, which can be used by other
-  code-generators that needs to interact with the JSON serialization.
+- Added support for generating `_$ExampleFieldMap`, which can be used by other
+  code-generators that needs to interact with JSON serialization.
   ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
-
-## 6.3.0-dev
-
-- Added support for using a `JsonConverter<MyClass, Object>` on properties
-  of type `MyClass?`. ([#822](https://github.com/google/json_serializable.dart/issues/822))
+- Added support for using a `JsonConverter<MyClass, Object>` on properties of
+  type `MyClass?`.
+  ([#822](https://github.com/google/json_serializable.dart/issues/822))
 - Added support for `JsonSerializable(converters: <JsonConverter>[])`
   ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
 - Fix issue with serialization of non-nullable enumerations emitting a nullable
