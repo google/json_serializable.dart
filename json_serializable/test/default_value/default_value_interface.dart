@@ -27,6 +27,8 @@ abstract class DefaultValue {
 
   Map<String, List<String>> get fieldMapListString;
 
+  Duration get durationField;
+
   Greek get fieldEnum;
 
   ConstClass get constClass;

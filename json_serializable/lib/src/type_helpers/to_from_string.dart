@@ -5,7 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../type_helper.dart';
+import '../utils.dart';
 
 final bigIntString = ToFromStringHelper(
   'BigInt.parse',
@@ -76,7 +76,8 @@ class ToFromStringHelper {
 
     final parseParam = isString ? expression : '$expression as String';
 
-    return commonNullPrefix(nullable, expression, '$_parse($parseParam)')
-        .toString();
+    final output = '$_parse($parseParam)';
+
+    return nullable ? ifNullOrElse(expression, 'null', output) : output;
   }
 }

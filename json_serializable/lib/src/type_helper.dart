@@ -6,7 +6,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 import 'type_helpers/config_types.dart';
-import 'utils.dart';
 
 /// Context information provided in calls to [TypeHelper.serialize] and
 /// [TypeHelper.deserialize].
@@ -85,12 +84,3 @@ abstract class TypeHelper<T extends TypeHelperContext> {
     bool defaultProvided,
   );
 }
-
-Object commonNullPrefix(
-  bool nullable,
-  String expression,
-  Object unsafeExpression,
-) =>
-    nullable
-        ? ifNullOrElse(expression, 'null', '$unsafeExpression')
-        : unsafeExpression;

@@ -34,6 +34,8 @@ class DefaultValueImplicit implements dvi.DefaultValue {
 
   final Map<String, List<String>> fieldMapListString;
 
+  final Duration durationField;
+
   final Greek fieldEnum;
 
   final ConstClass constClass;
@@ -59,6 +61,7 @@ class DefaultValueImplicit implements dvi.DefaultValue {
       'root': ['child']
     },
     this.fieldEnum = Greek.beta,
+    this.durationField = const Duration(),
     this.constClass = const ConstClass('value'),
     this.valueFromConverter = const ConstClass('value'),
     this.valueFromFunction = const ConstClass('value'),
