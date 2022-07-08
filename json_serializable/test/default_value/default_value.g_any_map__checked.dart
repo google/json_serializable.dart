@@ -62,6 +62,8 @@ class DefaultValue implements dvi.DefaultValue {
   })
   Map<String, List<String>> fieldMapListString;
 
+  Duration durationField;
+
   @JsonKey(defaultValue: Greek.beta)
   Greek fieldEnum;
 
@@ -86,6 +88,7 @@ class DefaultValue implements dvi.DefaultValue {
     this.fieldMapSimple,
     this.fieldMapListString,
     this.fieldEnum, {
+    this.durationField = Duration.zero,
     this.constClass = const ConstClass('value'),
     this.valueFromConverter = const ConstClass('value'),
     this.valueFromFunction = const ConstClass('value'),

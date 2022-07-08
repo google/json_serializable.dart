@@ -24,6 +24,7 @@ const _defaultInstance = {
   'fieldMapListString': {
     'root': ['child']
   },
+  'durationField': 0,
   'fieldEnum': 'beta',
   'constClass': {'field': 'value'},
   'valueFromConverter': 'value',
@@ -44,6 +45,7 @@ const _otherValues = {
   'fieldMapListString': {
     'root2': ['alpha']
   },
+  'durationField': 1,
   'fieldEnum': 'delta',
   'constClass': {'field': 'otherValue'},
   'valueFromConverter': 'otherValue',

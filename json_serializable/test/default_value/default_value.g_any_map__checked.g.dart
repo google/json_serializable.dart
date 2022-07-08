@@ -51,6 +51,10 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
                   }),
           $checkedConvert('fieldEnum',
               (v) => $enumDecodeNullable(_$GreekEnumMap, v) ?? Greek.beta),
+          durationField: $checkedConvert(
+              'durationField',
+              (v) =>
+                  v == null ? Duration.zero : Duration(microseconds: v as int)),
           constClass: $checkedConvert(
               'constClass',
               (v) => v == null
@@ -84,6 +88,7 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'fieldSetSimple': instance.fieldSetSimple.toList(),
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
+      'durationField': instance.durationField.inMicroseconds,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum]!,
       'constClass': instance.constClass,
       'valueFromConverter':

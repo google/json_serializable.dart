@@ -1,3 +1,8 @@
+## 6.3.1
+
+- Fixed support for `Duration` fields with default values.
+  ([#1170](https://github.com/google/json_serializable.dart/issues/1170))
+
 ## 6.3.0
 
 - Added support for generating `_$ExampleFieldMap`, which can be used by other
