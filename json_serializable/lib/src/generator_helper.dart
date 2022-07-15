@@ -86,7 +86,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       yield createResult.output;
 
       accessibleFieldSet = accessibleFields.entries
-          .where((e) => createResult.usedFields.contains(e.key))
+          .where((e) =>
+              createResult.usedFields.contains(e.key) ||
+              includeIfUnusedAccess(e.value))
           .map((e) => e.value)
           .toSet();
     }

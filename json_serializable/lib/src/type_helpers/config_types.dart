@@ -13,6 +13,8 @@ class KeyConfig {
 
   final bool ignore;
 
+  final bool includeIfUnused;
+
   final bool includeIfNull;
 
   final String name;
@@ -27,6 +29,7 @@ class KeyConfig {
     required this.defaultValue,
     required this.disallowNullValue,
     required this.ignore,
+    required this.includeIfUnused,
     required this.includeIfNull,
     required this.name,
     required this.readValueFunctionName,

@@ -44,6 +44,8 @@ class JsonKey {
   /// serialization.
   final bool? ignore;
 
+  final bool? includeIfUnused;
+
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
   ///
@@ -121,6 +123,7 @@ class JsonKey {
     this.disallowNullValue,
     this.fromJson,
     this.ignore,
+    this.includeIfUnused,
     this.includeIfNull,
     this.name,
     this.readValue,

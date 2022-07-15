@@ -222,6 +222,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
     ignore: obj.read('ignore').literalValue as bool?,
+    includeIfUnused: obj.read('includeIfUnused').literalValue as bool?,
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
@@ -236,6 +237,7 @@ KeyConfig _populateJsonKey(
   required String? defaultValue,
   bool? disallowNullValue,
   bool? ignore,
+  bool? includeIfUnused,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
@@ -255,6 +257,7 @@ KeyConfig _populateJsonKey(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
     ignore: ignore ?? false,
+    includeIfUnused: includeIfUnused ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
     name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),

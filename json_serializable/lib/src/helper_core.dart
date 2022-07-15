@@ -38,6 +38,10 @@ abstract class HelperCore {
       escapeDartString(nameAccess(field));
 
   @protected
+  bool includeIfUnusedAccess(FieldElement field) =>
+      jsonKeyFor(field).includeIfUnused;
+
+  @protected
   String get prefix => '_\$${element.name.nonPrivate}';
 
   /// Returns a [String] representing the type arguments that exist on
