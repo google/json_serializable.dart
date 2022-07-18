@@ -25,6 +25,7 @@ abstract class DecodeHelper implements HelperCore {
   CreateFactoryResult createFactory(
     Map<String, FieldElement> accessibleFields,
     Map<String, String> unavailableReasons,
+    List<FieldElement> extras,
   ) {
     assert(config.createFactory);
     final buffer = StringBuffer();
@@ -47,6 +48,16 @@ abstract class DecodeHelper implements HelperCore {
       }
     }
 
+    if (extras.isNotEmpty) {
+      buffer.writeln(', {');
+      for (final extra in extras) {
+        if (!extra.type.isNullableType) buffer.write('required ');
+        buffer.writeln(
+            '${extra.type.getDisplayString(withNullability: true)} ${extra.name},');
+      }
+      buffer.write('}');
+    }
+
     buffer.write(')');
 
     final fromJsonLines = <String>[];
@@ -56,15 +67,17 @@ abstract class DecodeHelper implements HelperCore {
         _deserializeForField(accessibleFields[paramOrFieldName]!,
             ctorParam: ctorParam);
 
+    final extraNames = [for (final extra in extras) extra.name];
     final data = _writeConstructorInvocation(
       element,
       config.constructor,
-      accessibleFields.keys,
+      [...accessibleFields.keys, ...extraNames],
       accessibleFields.values
           .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
           .map((fe) => fe.name)
           .toList(),
       unavailableReasons,
+      extraNames,
       deserializeFun,
     );
 
@@ -265,6 +278,7 @@ _ConstructorData _writeConstructorInvocation(
   Iterable<String> availableConstructorParameters,
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
+  List<String> extras,
   String Function(String paramOrFieldName, {ParameterElement ctorParam})
       deserializeForField,
 ) {
@@ -301,7 +315,7 @@ _ConstructorData _writeConstructorInvocation(
     } else {
       constructorArguments.add(arg);
     }
-    usedCtorParamsAndFields.add(arg.name);
+    if (!extras.contains(arg.name)) usedCtorParamsAndFields.add(arg.name);
   }
 
   // fields that aren't already set by the constructor and that aren't final
@@ -320,8 +334,9 @@ _ConstructorData _writeConstructorInvocation(
     buffer
       ..writeln()
       ..writeAll(constructorArguments.map((paramElement) {
-        final content =
-            deserializeForField(paramElement.name, ctorParam: paramElement);
+        final content = extras.contains(paramElement.name)
+            ? paramElement.name
+            : deserializeForField(paramElement.name, ctorParam: paramElement);
         return '      $content,\n';
       }));
   }
@@ -329,8 +344,9 @@ _ConstructorData _writeConstructorInvocation(
     buffer
       ..writeln()
       ..writeAll(namedConstructorArguments.map((paramElement) {
-        final value =
-            deserializeForField(paramElement.name, ctorParam: paramElement);
+        final value = extras.contains(paramElement.name)
+            ? paramElement.name
+            : deserializeForField(paramElement.name, ctorParam: paramElement);
         return '      ${paramElement.name}: $value,\n';
       }));
   }
