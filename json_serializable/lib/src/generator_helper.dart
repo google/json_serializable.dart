@@ -62,14 +62,16 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     final accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
       <String, FieldElement>{},
       (map, field) {
+        final jsonKey = jsonKeyFor(field);
         if (!field.isPublic) {
           unavailableReasons[field.name] = 'It is assigned to a private field.';
-        } else if (field.getter == null) {
+        } else if (field.getter == null &&
+            jsonKey.includeWith == IncludeWith.legacy) {
           assert(field.setter != null);
           unavailableReasons[field.name] =
               'Setter-only properties are not supported.';
           log.warning('Setters are ignored: ${element.name}.${field.name}');
-        } else if (jsonKeyFor(field).includeWith == IncludeWith.ignore) {
+        } else if (jsonKey.includeWith == IncludeWith.ignore) {
           unavailableReasons[field.name] =
               'It is assigned to an ignored field.';
         } else {
@@ -83,13 +85,19 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
     var accessibleFieldSet = accessibleFields.values.toSet();
     if (config.createFactory) {
-      final createResult = createFactory(accessibleFields, unavailableReasons);
+      final createResult = createFactory(Map.from(accessibleFields)
+        ..removeWhere((_, field) =>
+        !{
+          IncludeWith.both,
+          IncludeWith.fromJson,
+          IncludeWith.legacy
+        }.contains(jsonKeyFor(field).includeWith)), unavailableReasons);
       yield createResult.output;
 
       accessibleFieldSet = accessibleFields.entries
           .where((e) =>
               createResult.usedFields.contains(e.key) ||
-              includeIfUnusedAccess(e.value))
+              jsonKeyFor(e.value).includeWith != IncludeWith.legacy)
           .map((e) => e.value)
           .toSet();
     }
@@ -116,8 +124,13 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     }
 
     if (config.createToJson) {
-      yield* createToJson(accessibleFieldSet);
-    }
+      yield* createToJson(accessibleFieldSet.where((field) =>
+          {
+            IncludeWith.both,
+            IncludeWith.toJson,
+            IncludeWith.legacy
+          }.contains(jsonKeyFor(field).includeWith)).toSet());
+      }
 
     yield* _addedMembers;
   }

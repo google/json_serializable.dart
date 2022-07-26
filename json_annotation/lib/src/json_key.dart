@@ -137,4 +137,4 @@ class JsonKey {
 
 enum _NullAsDefault { value }
 
-enum IncludeWith { both, toJson, fromJson, ignore }
+enum IncludeWith { both, toJson, fromJson, ignore, legacy }

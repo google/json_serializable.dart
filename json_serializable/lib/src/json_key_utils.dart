@@ -6,6 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -34,7 +35,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      ignore: classAnnotation.ignoreUnannotated,
+      includeWith: classAnnotation.ignoreUnannotated
+          ? IncludeWith.ignore.toString()
+          : null,
     );
   }
 
@@ -221,7 +224,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
-    includeWith: obj.read('includeWith').literalValue as IncludeWith?,
+    includeWith: _annotationValue('includeWith'),
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
@@ -235,8 +238,7 @@ KeyConfig _populateJsonKey(
   FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
-  bool? ignore,
-  IncludeWith? includeWith,
+  String? includeWith,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
@@ -255,7 +257,9 @@ KeyConfig _populateJsonKey(
   return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
-    includeWith: includeWith ?? IncludeWith.both,
+    includeWith: IncludeWith.values
+            .firstWhereOrNull((v) => v.toString() == includeWith) ??
+        IncludeWith.legacy,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
     name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),
