@@ -11,9 +11,7 @@ class KeyConfig {
 
   final bool disallowNullValue;
 
-  final bool ignore;
-
-  final bool includeIfUnused;
+  final IncludeWith includeWith;
 
   final bool includeIfNull;
 
@@ -28,8 +26,7 @@ class KeyConfig {
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
-    required this.ignore,
-    required this.includeIfUnused,
+    required this.includeWith,
     required this.includeIfNull,
     required this.name,
     required this.readValueFunctionName,

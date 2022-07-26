@@ -230,7 +230,7 @@ class JsonSerializable {
   /// @myCustomAnnotation
   /// class Another {...}
   /// ```
-  @JsonKey(ignore: true)
+  @JsonKey(includeWith: IncludeWith.ignore)
   final List<JsonConverter>? converters;
 
   /// Creates a new [JsonSerializable] instance.

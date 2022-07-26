@@ -23,12 +23,12 @@ class UnusedFieldsClass<T extends num, S> {
 
   String get getterExcluded => someString.toLowerCase();
 
-  @JsonKey(includeIfUnused: true)
+  @JsonKey(includeWith: IncludeWith.toJson)
   String get getterIncluded => someString.toLowerCase();
 
   final finalFieldExcluded = 'finalFieldExcluded';
 
-  @JsonKey(includeIfUnused: true)
+  @JsonKey(includeWith: IncludeWith.toJson)
   final finalFieldIncluded = 'finalFieldIncluded';
 
   UnusedFieldsClass();

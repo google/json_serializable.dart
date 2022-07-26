@@ -17,7 +17,7 @@ class Model {
   @JsonKey(name: 'LAST_NAME')
   final String lastName;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeWith: IncludeWith.ignore)
   final String? ignoredName;
 
   String get fullName => '$firstName $lastName';

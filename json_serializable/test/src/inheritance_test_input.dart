@@ -121,7 +121,7 @@ class SubTypeWithAnnotatedFieldOverrideImplements implements SuperType {
   @override
   int? superReadWriteField;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeWith: IncludeWith.ignore)
   @override
   int get priceHalf => 42;
 

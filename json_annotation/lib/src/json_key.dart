@@ -42,9 +42,7 @@ class JsonKey {
   ///
   /// If `null` (the default) or `false`, the field will be considered for
   /// serialization.
-  final bool? ignore;
-
-  final bool? includeIfUnused;
+  final IncludeWith? includeWith;
 
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
@@ -122,8 +120,7 @@ class JsonKey {
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
-    this.ignore,
-    this.includeIfUnused,
+    this.includeWith,
     this.includeIfNull,
     this.name,
     this.readValue,
@@ -139,3 +136,5 @@ class JsonKey {
 }
 
 enum _NullAsDefault { value }
+
+enum IncludeWith { both, toJson, fromJson, ignore }

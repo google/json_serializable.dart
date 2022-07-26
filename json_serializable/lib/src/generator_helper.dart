@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'decode_helper.dart';
@@ -68,7 +69,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
           unavailableReasons[field.name] =
               'Setter-only properties are not supported.';
           log.warning('Setters are ignored: ${element.name}.${field.name}');
-        } else if (jsonKeyFor(field).ignore) {
+        } else if (jsonKeyFor(field).includeWith == IncludeWith.ignore) {
           unavailableReasons[field.name] =
               'It is assigned to an ignored field.';
         } else {

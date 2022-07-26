@@ -295,10 +295,10 @@ Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
 ''')
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
-  @JsonKey(ignore: true)
+  @JsonKey(includeWith: IncludeWith.ignore)
   late int ignoredTrueField;
 
-  @JsonKey(ignore: false)
+  @JsonKey(includeWith: IncludeWith.ignore)
   late int ignoredFalseField;
 
   late int ignoredNullField;
@@ -311,7 +311,7 @@ class IgnoredFieldClass {
 )
 @JsonSerializable()
 class IgnoredFieldCtorClass {
-  @JsonKey(ignore: true)
+  @JsonKey(includeWith: IncludeWith.ignore)
   int ignoredTrueField;
 
   IgnoredFieldCtorClass(this.ignoredTrueField);
