@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -37,10 +36,6 @@ abstract class HelperCore {
   @protected
   String safeNameAccess(FieldElement field) =>
       escapeDartString(nameAccess(field));
-
-  @protected
-  IncludeWith includeWithAccess(FieldElement field) =>
-      jsonKeyFor(field).includeWith;
 
   @protected
   String get prefix => '_\$${element.name.nonPrivate}';
