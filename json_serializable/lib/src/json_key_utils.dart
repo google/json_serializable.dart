@@ -35,9 +35,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      includeWith: classAnnotation.ignoreUnannotated
-          ? IncludeWith.ignore.toString()
-          : null,
+      includeWith:
+          classAnnotation.ignoreUnannotated ? IncludeWith.ignore : null,
     );
   }
 
@@ -219,12 +218,15 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         readValue.objectValue.toFunctionValue()!.qualifiedName;
   }
 
+  final includeWithAnnotationValue = _annotationValue('includeWith');
+  final includeWith = IncludeWith.values
+      .firstWhereOrNull((v) => v.toString() == includeWithAnnotationValue);
   return _populateJsonKey(
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
-    includeWith: _annotationValue('includeWith'),
+    includeWith: includeWith,
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
@@ -238,7 +240,7 @@ KeyConfig _populateJsonKey(
   FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
-  String? includeWith,
+  IncludeWith? includeWith,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
@@ -257,9 +259,7 @@ KeyConfig _populateJsonKey(
   return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
-    includeWith: IncludeWith.values
-            .firstWhereOrNull((v) => v.toString() == includeWith) ??
-        IncludeWith.legacy,
+    includeWith: includeWith ?? IncludeWith.legacy,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
     name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),
