@@ -17,7 +17,7 @@ Matcher _throwsArgumentError(matcher) =>
 void main() {
   group('Person', () {
     void roundTripPerson(Person p) {
-      roundTripObject(p, (json) => Person.fromJson(json));
+      roundTripObject(p, Person.fromJson);
     }
 
     test('now', () {
@@ -51,7 +51,7 @@ void main() {
 
   group('Order', () {
     void roundTripOrder(Order p) {
-      roundTripObject(p, (json) => Order.fromJson(json));
+      roundTripObject(p, Order.fromJson);
     }
 
     test('null', () {
@@ -191,7 +191,7 @@ void main() {
 
   group('Item', () {
     void roundTripItem(Item p) {
-      roundTripObject(p, (json) => Item.fromJson(json));
+      roundTripObject(p, Item.fromJson);
     }
 
     test('empty json', () {
@@ -232,7 +232,7 @@ void main() {
 
   group('Numbers', () {
     void roundTripNumber(Numbers p) {
-      roundTripObject(p, (json) => Numbers.fromJson(json));
+      roundTripObject(p, Numbers.fromJson);
     }
 
     test('simple', () {
@@ -277,7 +277,7 @@ void main() {
       ..intIntMap = {3: 3}
       ..uriIntMap = {Uri.parse('https://example.com'): 4};
 
-    roundTripObject(instance, (j) => MapKeyVariety.fromJson(j));
+    roundTripObject(instance, MapKeyVariety.fromJson);
   });
 
   test('UnknownEnumValue', () {
@@ -297,7 +297,7 @@ void main() {
   test('PrivateConstructor', () {
     final value = PrivateConstructor('test');
 
-    roundTripObject(value, (json) => PrivateConstructor.fromJson(json));
+    roundTripObject(value, PrivateConstructor.fromJson);
   });
 
   test('enum helpers', () {
