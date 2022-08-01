@@ -1,3 +1,7 @@
+## 4.6.1-dev
+
+- Require Dart SDK 2.17
+
 ## 4.6.0
 
 - Added `JsonSerializable(createFieldMap: true)`.

@@ -228,7 +228,7 @@ extension ExecutableElementExtension on ExecutableElement {
     }
 
     if (this is MethodElement) {
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement2.name}.$name';
     }
 
     throw UnsupportedError(

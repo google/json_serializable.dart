@@ -1,3 +1,8 @@
+## 6.3.2-dev
+
+- Require Dart SDK 2.17
+- Require package:analyzer >=4.3.1
+
 ## 6.3.1
 
 - Fixed support for `Duration` fields with default values.

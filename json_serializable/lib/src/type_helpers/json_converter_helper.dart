@@ -199,7 +199,7 @@ _JsonConvertData? _typeConverterFrom(
 
   final annotationElement = match.elementAnnotation?.element;
   if (annotationElement is PropertyAccessorElement) {
-    final enclosing = annotationElement.enclosingElement;
+    final enclosing = annotationElement.enclosingElement2;
 
     var accessString = annotationElement.name;
 

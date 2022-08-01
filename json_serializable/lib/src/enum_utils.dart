@@ -27,7 +27,7 @@ String? enumValueMapFromType(
     return null;
   }
 
-  MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
+  MapEntry<FieldElement, dynamic> generateEntry(FieldElement fe) {
     final annotation =
         const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
 
@@ -56,7 +56,7 @@ String? enumValueMapFromType(
   }
 
   final enumMap =
-      Map<FieldElement, dynamic>.fromEntries(enumFields.map(_generateEntry));
+      Map<FieldElement, dynamic>.fromEntries(enumFields.map(generateEntry));
 
   final items = enumMap.entries
       .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
