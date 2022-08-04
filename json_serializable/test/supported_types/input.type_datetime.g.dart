@@ -10,11 +10,13 @@ part of 'input.type_datetime.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
       DateTime.parse(json['value'] as String),
+      DateTime.parse(json['constructorValue'] as String),
     );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': instance.value.toIso8601String(),
+      'constructorValue': instance.constructorValue.toIso8601String(),
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>

@@ -9,9 +9,12 @@ part 'input.type_datetime.g.dart';
 @JsonSerializable()
 class SimpleClass {
   final DateTime value;
+  @JsonKey(fromJson: DateTime.parse)
+  final DateTime constructorValue;
 
   SimpleClass(
     this.value,
+    this.constructorValue,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
