@@ -1,3 +1,7 @@
+## 6.3.3
+
+- Support `ConstructorElement` which allows using tear-off constructors.
+
 ## 6.3.2
 
 - Require `analyzer: '>=4.6.0 <6.0.0'`
