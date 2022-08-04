@@ -10,13 +10,11 @@ part of 'input.type_uri.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
       Uri.parse(json['value'] as String),
-      Uri.parse(json['constructorValue'] as String),
     );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': instance.value.toString(),
-      'constructorValue': instance.constructorValue.toString(),
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>

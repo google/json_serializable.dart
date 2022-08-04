@@ -9,12 +9,9 @@ part 'input.type_uri.g.dart';
 @JsonSerializable()
 class SimpleClass {
   final Uri value;
-  @JsonKey(fromJson: Uri.parse)
-  final Uri constructorValue;
 
   SimpleClass(
     this.value,
-    this.constructorValue,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>

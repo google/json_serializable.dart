@@ -9,12 +9,9 @@ part 'input.type_bigint.g.dart';
 @JsonSerializable()
 class SimpleClass {
   final BigInt value;
-  @JsonKey(fromJson: BigInt.parse)
-  final BigInt constructorValue;
 
   SimpleClass(
     this.value,
-    this.constructorValue,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
