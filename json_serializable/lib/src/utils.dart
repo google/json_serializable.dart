@@ -232,6 +232,14 @@ extension ExecutableElementExtension on ExecutableElement {
       return '${enclosingElement3.name}.$name';
     }
 
+    if (this is ConstructorElement) {
+      // Ignore the default constructor.
+      if (name == 'new') {
+        return '${enclosingElement2.name}';
+      }
+      return '${enclosingElement2.name}.$name';
+    }
+
     throw UnsupportedError(
       'Not sure how to support typeof $runtimeType',
     );
