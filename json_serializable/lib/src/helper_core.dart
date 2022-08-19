@@ -78,7 +78,7 @@ $converterOrKeyInstructions
     message = '$message because of type `${typeToCode(error.type)}`';
   } else {
     todo = '''
-To support the type `${error.type.element!.name}` you can:
+To support the type `${error.type.element2!.name}` you can:
 $converterOrKeyInstructions''';
   }
 
