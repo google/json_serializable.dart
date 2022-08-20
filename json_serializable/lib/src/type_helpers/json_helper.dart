@@ -280,6 +280,10 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
     return null;
   }
 
+  if (source.element2 is! ClassElement) {
+    return null;
+  }
+
   return mergeConfig(
     config,
     ConstantReader(annotations.single),
