@@ -13,7 +13,7 @@
 /// [JsonConverter]s can be placed either on the class:
 ///
 /// ```dart
-/// class MyConverter extends JsonConverter<Value, JSON> {
+/// class MyJsonConverter extends JsonConverter<Value, JSON> {
 ///   // TODO
 /// }
 ///
