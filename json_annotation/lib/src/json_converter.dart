@@ -36,7 +36,7 @@
 /// Or finally, passed to the annotation:
 ///
 ///```dart
-/// @JsonSerializable(converters: [MyConverter()])
+/// @JsonSerializable(converters: [MyJsonConverter()])
 /// class Example {}
 /// ```
 abstract class JsonConverter<T, S> {
