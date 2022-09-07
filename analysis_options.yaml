@@ -2,7 +2,7 @@ include: package:lints/recommended.yaml
 
 analyzer:
   errors:
-    # TODO: remove wher pkg:analyzer v5 is out
+    # TODO: remove when pkg:analyzer v5 is out
     deprecated_member_use: ignore
   language:
     strict-casts: true
