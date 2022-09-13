@@ -48,7 +48,7 @@ class _FieldSet implements Comparable<_FieldSet> {
       }
 
       final checkerB = TypeChecker.fromStatic(
-          (b.enclosingElement3 as ClassElement).thisType);
+          (b.enclosingElement3 as InterfaceElement).thisType);
 
       if (checkerB.isAssignableFrom(a.enclosingElement3)) {
         return 1;
