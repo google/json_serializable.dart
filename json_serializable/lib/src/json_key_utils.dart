@@ -61,7 +61,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       // TODO: Support calling function for the default value?
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element!.name;
+      badType = dartObject.type!.element2!.name;
     }
 
     if (badType != null) {
@@ -173,7 +173,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue.objectValue, enumValueNames, (n) => n);
 
-      return '${annotationType.element!.name}'
+      return '${annotationType.element2!.name}'
           '.$enumValueName';
     } else {
       final defaultValueLiteral = annotationValue.isNull
@@ -280,7 +280,7 @@ bool _includeIfNull(
 bool _interfaceTypesEqual(DartType a, DartType b) {
   if (a is InterfaceType && b is InterfaceType) {
     // Handle nullability case. Pretty sure this is fine for enums.
-    return a.element == b.element;
+    return a.element2 == b.element2;
   }
   return a == b;
 }

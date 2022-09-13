@@ -12,13 +12,13 @@ import 'json_literal_generator.dart';
 import 'utils.dart';
 
 String constMapName(DartType targetType) =>
-    '_\$${targetType.element!.name}EnumMap';
+    '_\$${targetType.element2!.name}EnumMap';
 
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
-  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element!);
+  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element2!);
   final jsonEnum = _fromAnnotation(annotation);
 
   final enumFields = iterateEnumFields(targetType);
@@ -59,7 +59,7 @@ String? enumValueMapFromType(
       Map<FieldElement, dynamic>.fromEntries(enumFields.map(generateEntry));
 
   final items = enumMap.entries
-      .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
+      .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
           '${jsonLiteralAsDart(e.value)},')
       .join();
 

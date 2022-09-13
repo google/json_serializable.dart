@@ -22,3 +22,7 @@ dev_dependencies:
   lints: ^2.0.0
   path: ^1.8.0
   test: ^1.16.0
+
+dependency_overrides:
+  json_serializable:
+    path: ../json_serializable
