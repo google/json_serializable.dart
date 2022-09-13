@@ -1,7 +1,7 @@
-## 6.3.2-dev
+## 6.3.2
 
-- Require Dart SDK 2.17
-- Require package:analyzer >=4.3.1
+- Require `analyzer: '>=4.6.0 <6.0.0'`
+- Require `sdk: '>=2.17.0 <3.0.0'`
 
 ## 6.3.1
 
