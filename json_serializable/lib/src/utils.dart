@@ -235,9 +235,9 @@ extension ExecutableElementExtension on ExecutableElement {
     if (this is ConstructorElement) {
       // Ignore the default constructor.
       if (name == 'new') {
-        return '${enclosingElement2.name}';
+        return '${enclosingElement3.name}';
       }
-      return '${enclosingElement2.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     throw UnsupportedError(
