@@ -9,12 +9,9 @@ part 'input.type_duration.g.dart';
 @JsonSerializable()
 class SimpleClass {
   final Duration value;
-  @JsonKey(fromJson: Duration.new)
-  final Duration constructorValue;
 
   SimpleClass(
     this.value,
-    this.constructorValue,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>

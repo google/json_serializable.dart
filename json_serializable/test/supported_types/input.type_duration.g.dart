@@ -10,13 +10,11 @@ part of 'input.type_duration.dart';
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
       Duration(microseconds: json['value'] as int),
-      Duration(microseconds: json['constructorValue'] as int),
     );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
       'value': instance.value.inMicroseconds,
-      'constructorValue': instance.constructorValue.inMicroseconds,
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
