@@ -234,7 +234,7 @@ extension ExecutableElementExtension on ExecutableElement {
 
     if (this is ConstructorElement) {
       // Ignore the default constructor.
-      if (name == 'new') {
+      if (name.isEmpty) {
         return '${enclosingElement3.name}';
       }
       return '${enclosingElement3.name}.$name';
