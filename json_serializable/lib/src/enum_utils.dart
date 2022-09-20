@@ -27,66 +27,14 @@ String? enumValueMapFromType(
     return null;
   }
 
-  MapEntry<FieldElement, dynamic> generateEntry(FieldElement fe) {
-    final annotation =
-        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
-
-    dynamic fieldValue;
-    if (annotation == null) {
-      if (jsonEnum.valueField != null) {
-        // TODO: fieldRename is pointless here!!! At least log a warning!
-
-        final fieldElementType = fe.type.element2 as EnumElement;
-
-        final e = fieldElementType.getField(jsonEnum.valueField!);
-
-        if (e == null || e.isStatic) {
-          throw InvalidGenerationSourceError(
-            '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
-            'that is not a valid, instance field on '
-            '`${typeToCode(targetType)}`.',
-            element: targetType.element2,
-          );
-        }
-
-        final reader = ConstantReader(fe.computeConstantValue());
-        final valueReader = reader.read(jsonEnum.valueField!);
-        if (valueReader.validValueType) {
-          fieldValue = valueReader.literalValue;
-        } else {
-          throw InvalidGenerationSourceError(
-            '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
-            'that field does not have a type of String, int, or null.',
-            element: targetType.element2,
-          );
-        }
-      } else {
-        fieldValue = encodedFieldName(jsonEnum.fieldRename, fe.name);
-      }
-    } else {
-      final reader = ConstantReader(annotation);
-
-      final valueReader = reader.read('value');
-
-      if (valueReader.validValueType) {
-        fieldValue = valueReader.literalValue;
-      } else {
-        final targetTypeCode = typeToCode(targetType);
-        throw InvalidGenerationSourceError(
-          'The `JsonValue` annotation on `$targetTypeCode.${fe.name}` does '
-          'not have a value of type String, int, or null.',
-          element: fe,
-        );
-      }
-    }
-
-    final entry = MapEntry(fe, fieldValue);
-
-    return entry;
-  }
-
-  final enumMap =
-      Map<FieldElement, dynamic>.fromEntries(enumFields.map(generateEntry));
+  final enumMap = {
+    for (var field in enumFields)
+      field: generateEntry(
+        field: field,
+        jsonEnum: jsonEnum,
+        targetType: targetType,
+      ),
+  };
 
   final items = enumMap.entries
       .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
@@ -94,6 +42,63 @@ String? enumValueMapFromType(
       .join();
 
   return 'const ${constMapName(targetType)} = {\n$items\n};';
+}
+
+Object? generateEntry({
+  required FieldElement field,
+  required JsonEnum jsonEnum,
+  required DartType targetType,
+}) {
+  final annotation =
+      const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(field);
+
+  if (annotation == null) {
+    if (jsonEnum.valueField != null) {
+      // TODO: fieldRename is pointless here!!! At least log a warning!
+
+      final fieldElementType = field.type.element2 as EnumElement;
+
+      final e = fieldElementType.getField(jsonEnum.valueField!);
+
+      if (e == null || e.isStatic) {
+        throw InvalidGenerationSourceError(
+          '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
+          'that is not a valid, instance field on '
+          '`${typeToCode(targetType)}`.',
+          element: targetType.element2,
+        );
+      }
+
+      final reader = ConstantReader(field.computeConstantValue());
+      final valueReader = reader.read(jsonEnum.valueField!);
+      if (valueReader.validValueType) {
+        return valueReader.literalValue;
+      } else {
+        throw InvalidGenerationSourceError(
+          '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
+          'that field does not have a type of String, int, or null.',
+          element: targetType.element2,
+        );
+      }
+    } else {
+      return encodedFieldName(jsonEnum.fieldRename, field.name);
+    }
+  } else {
+    final reader = ConstantReader(annotation);
+
+    final valueReader = reader.read('value');
+
+    if (valueReader.validValueType) {
+      return valueReader.literalValue;
+    } else {
+      final targetTypeCode = typeToCode(targetType);
+      throw InvalidGenerationSourceError(
+        'The `JsonValue` annotation on `$targetTypeCode.${field.name}` does '
+        'not have a value of type String, int, or null.',
+        element: field,
+      );
+    }
+  }
 }
 
 const _jsonEnumChecker = TypeChecker.fromRuntime(JsonEnum);
