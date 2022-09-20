@@ -29,7 +29,7 @@ String? enumValueMapFromType(
 
   final enumMap = {
     for (var field in enumFields)
-      field: generateEntry(
+      field: _generateEntry(
         field: field,
         jsonEnum: jsonEnum,
         targetType: targetType,
@@ -44,7 +44,7 @@ String? enumValueMapFromType(
   return 'const ${constMapName(targetType)} = {\n$items\n};';
 }
 
-Object? generateEntry({
+Object? _generateEntry({
   required FieldElement field,
   required JsonEnum jsonEnum,
   required DartType targetType,
