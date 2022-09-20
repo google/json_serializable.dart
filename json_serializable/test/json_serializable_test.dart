@@ -29,7 +29,13 @@ Future<void> main() async {
   testAnnotatedElements(
     jsonEnumTestReader,
     const JsonEnumGenerator(),
-    expectedAnnotatedTests: {'UnsupportedClass'},
+    expectedAnnotatedTests: {
+      'EnumValueIssue1147',
+      'EnumValueNotAField',
+      'EnumValueNotSupportType',
+      'EnumValueWeirdField',
+      'UnsupportedClass',
+    },
   );
 }
 
