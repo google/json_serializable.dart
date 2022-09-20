@@ -10,7 +10,7 @@ import 'package:pubspec_parse/pubspec_parse.dart';
 
 const _productionDirectories = {'lib', 'bin'};
 const _annotationPkgName = 'json_annotation';
-final requiredJsonAnnotationMinVersion = Version.parse('4.6.0');
+final requiredJsonAnnotationMinVersion = Version.parse('4.7.0');
 
 Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   final segments = buildStep.inputId.pathSegments;
