@@ -43,7 +43,8 @@ String? enumValueMapFromType(
         if (e == null || e.isStatic) {
           throw InvalidGenerationSourceError(
             '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
-            'that is not a valid, instance field on `${typeToCode(targetType)}`.',
+            'that is not a valid, instance field on '
+            '`${typeToCode(targetType)}`.',
             element: targetType.element2,
           );
         }
