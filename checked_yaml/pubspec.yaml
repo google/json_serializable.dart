@@ -6,7 +6,7 @@ description: >-
   package:json_serializable and package:yaml.
 repository: https://github.com/google/json_serializable.dart/tree/master/checked_yaml
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
   json_annotation: ^4.3.0
@@ -17,6 +17,7 @@ dev_dependencies:
   build_runner: ^2.0.0
   build_verify: ^3.0.0
   json_serializable: ^6.0.0
+  lints: ^2.0.0
   path: ^1.0.0
   test: ^1.16.0
   test_process: ^2.0.0

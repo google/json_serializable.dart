@@ -160,15 +160,16 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
 ///
 /// Otherwise, `null`.
 Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
-  if (targetType is InterfaceType && targetType.element.isEnum) {
-    return targetType.element.fields.where((element) => element.isEnumConstant);
+  if (targetType is InterfaceType && targetType.element2 is EnumElement) {
+    return targetType.element2.fields
+        .where((element) => element.isEnumConstant);
   }
   return null;
 }
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
-      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+      element2?.library?.typeSystem.promoteToNonNull(this) ?? this;
 }
 
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
@@ -206,7 +207,7 @@ String typeToCode(
     return 'dynamic';
   } else if (type is InterfaceType) {
     return [
-      type.element.name,
+      type.element2.name,
       if (type.typeArguments.isNotEmpty)
         '<${type.typeArguments.map(typeToCode).join(', ')}>',
       (type.isNullableType || forceNullable) ? '?' : '',
@@ -228,7 +229,7 @@ extension ExecutableElementExtension on ExecutableElement {
     }
 
     if (this is MethodElement) {
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     throw UnsupportedError(

@@ -323,7 +323,7 @@ void main() {
         Issue980GenericClass(45),
         Issue980GenericClass(42),
       ]),
-      (json) => Issue980ParentClass.fromJson(json),
+      Issue980ParentClass.fromJson,
     );
   });
 

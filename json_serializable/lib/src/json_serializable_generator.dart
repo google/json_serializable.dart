@@ -69,7 +69,7 @@ class JsonSerializableGenerator
       );
     }
 
-    if (element is! ClassElement || element.isEnum) {
+    if (element is! ClassElement || element is EnumElement) {
       throw InvalidGenerationSourceError(
         '`@JsonSerializable` can only be used on classes.',
         element: element,

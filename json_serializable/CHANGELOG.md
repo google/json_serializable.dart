@@ -1,3 +1,15 @@
+## 6.4.0
+
+- Add support for `JsonEnum.valueField` which allows specifying a field in an
+  "enhanced enum" to use for serialization instead of specifying each value
+  individually with `JsonValue
+- Require `json_annotation: '>=4.7.0 <4.8.0'`
+
+## 6.3.2
+
+- Require `analyzer: '>=4.6.0 <6.0.0'`
+- Require `sdk: '>=2.17.0 <3.0.0'`
+
 ## 6.3.1
 
 - Fixed support for `Duration` fields with default values.

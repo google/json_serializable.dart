@@ -72,8 +72,7 @@ Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
 ''')
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideExtends extends SuperType {
-  SubTypeWithAnnotatedFieldOverrideExtends(int superTypeViaCtor)
-      : super(superTypeViaCtor);
+  SubTypeWithAnnotatedFieldOverrideExtends(int super.superTypeViaCtor);
 }
 
 @ShouldGenerate(r'''
@@ -88,8 +87,8 @@ Map<String, dynamic>
 ''')
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
-  SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides(int superTypeViaCtor)
-      : super(superTypeViaCtor);
+  SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides(
+      int super.superTypeViaCtor);
 
   /// The annotation applied here overrides the annotation in [SuperType].
   @JsonKey(includeIfNull: true)

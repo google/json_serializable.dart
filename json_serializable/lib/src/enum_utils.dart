@@ -12,13 +12,13 @@ import 'json_literal_generator.dart';
 import 'utils.dart';
 
 String constMapName(DartType targetType) =>
-    '_\$${targetType.element!.name}EnumMap';
+    '_\$${targetType.element2!.name}EnumMap';
 
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
-  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element!);
+  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element2!);
   final jsonEnum = _fromAnnotation(annotation);
 
   final enumFields = iterateEnumFields(targetType);
@@ -27,43 +27,79 @@ String? enumValueMapFromType(
     return null;
   }
 
-  MapEntry<FieldElement, dynamic> _generateEntry(FieldElement fe) {
-    final annotation =
-        const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(fe);
-
-    dynamic fieldValue;
-    if (annotation == null) {
-      fieldValue = encodedFieldName(jsonEnum.fieldRename, fe.name);
-    } else {
-      final reader = ConstantReader(annotation);
-
-      final valueReader = reader.read('value');
-
-      if (valueReader.isString || valueReader.isNull || valueReader.isInt) {
-        fieldValue = valueReader.literalValue;
-      } else {
-        final targetTypeCode = typeToCode(targetType);
-        throw InvalidGenerationSourceError(
-            'The `JsonValue` annotation on `$targetTypeCode.${fe.name}` does '
-            'not have a value of type String, int, or null.',
-            element: fe);
-      }
-    }
-
-    final entry = MapEntry(fe, fieldValue);
-
-    return entry;
-  }
-
-  final enumMap =
-      Map<FieldElement, dynamic>.fromEntries(enumFields.map(_generateEntry));
+  final enumMap = {
+    for (var field in enumFields)
+      field: _generateEntry(
+        field: field,
+        jsonEnum: jsonEnum,
+        targetType: targetType,
+      ),
+  };
 
   final items = enumMap.entries
-      .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
+      .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
           '${jsonLiteralAsDart(e.value)},')
       .join();
 
   return 'const ${constMapName(targetType)} = {\n$items\n};';
+}
+
+Object? _generateEntry({
+  required FieldElement field,
+  required JsonEnum jsonEnum,
+  required DartType targetType,
+}) {
+  final annotation =
+      const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(field);
+
+  if (annotation == null) {
+    final valueField = jsonEnum.valueField;
+    if (valueField != null) {
+      // TODO: fieldRename is pointless here!!! At least log a warning!
+
+      final fieldElementType = field.type.element2 as EnumElement;
+
+      final e = fieldElementType.getField(valueField);
+
+      if (e == null || e.isStatic) {
+        throw InvalidGenerationSourceError(
+          '`JsonEnum.valueField` was set to "$valueField", but '
+          'that is not a valid, instance field on '
+          '`${typeToCode(targetType)}`.',
+          element: targetType.element2,
+        );
+      }
+
+      final reader = ConstantReader(field.computeConstantValue());
+      final valueReader = reader.read(valueField);
+      if (valueReader.validValueType) {
+        return valueReader.literalValue;
+      } else {
+        throw InvalidGenerationSourceError(
+          '`JsonEnum.valueField` was set to "$valueField", but '
+          'that field does not have a type of String, int, or null.',
+          element: targetType.element2,
+        );
+      }
+    } else {
+      return encodedFieldName(jsonEnum.fieldRename, field.name);
+    }
+  } else {
+    final reader = ConstantReader(annotation);
+
+    final valueReader = reader.read('value');
+
+    if (valueReader.validValueType) {
+      return valueReader.literalValue;
+    } else {
+      final targetTypeCode = typeToCode(targetType);
+      throw InvalidGenerationSourceError(
+        'The `JsonValue` annotation on `$targetTypeCode.${field.name}` does '
+        'not have a value of type String, int, or null.',
+        element: field,
+      );
+    }
+  }
 }
 
 const _jsonEnumChecker = TypeChecker.fromRuntime(JsonEnum);
@@ -74,10 +110,16 @@ JsonEnum _fromAnnotation(DartObject? dartObject) {
   }
   final reader = ConstantReader(dartObject);
   return JsonEnum(
-      alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
-      fieldRename: enumValueForDartObject(
-        reader.read('fieldRename').objectValue,
-        FieldRename.values,
-        (f) => f.toString().split('.')[1],
-      ));
+    alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
+    fieldRename: enumValueForDartObject(
+      reader.read('fieldRename').objectValue,
+      FieldRename.values,
+      (f) => f.toString().split('.')[1],
+    ),
+    valueField: reader.read('valueField').literalValue as String?,
+  );
+}
+
+extension on ConstantReader {
+  bool get validValueType => isString || isNull || isInt;
 }

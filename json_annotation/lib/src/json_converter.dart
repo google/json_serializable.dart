@@ -13,7 +13,7 @@
 /// [JsonConverter]s can be placed either on the class:
 ///
 /// ```dart
-/// class MyConverter extends JsonConverter<Value, JSON> {
+/// class MyJsonConverter extends JsonConverter<Value, JSON> {
 ///   // TODO
 /// }
 ///
@@ -36,7 +36,7 @@
 /// Or finally, passed to the annotation:
 ///
 ///```dart
-/// @JsonSerializable(converters: [MyConverter()])
+/// @JsonSerializable(converters: [MyJsonConverter()])
 /// class Example {}
 /// ```
 abstract class JsonConverter<T, S> {

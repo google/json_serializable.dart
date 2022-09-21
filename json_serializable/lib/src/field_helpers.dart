@@ -37,34 +37,34 @@ class _FieldSet implements Comparable<_FieldSet> {
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
     final checkerA =
-        TypeChecker.fromStatic((a.enclosingElement as ClassElement).thisType);
+        TypeChecker.fromStatic((a.enclosingElement3 as ClassElement).thisType);
 
-    if (!checkerA.isExactly(b.enclosingElement)) {
+    if (!checkerA.isExactly(b.enclosingElement3)) {
       // in this case, you want to prioritize the enclosingElement that is more
       // "super".
 
-      if (checkerA.isAssignableFrom(b.enclosingElement)) {
+      if (checkerA.isAssignableFrom(b.enclosingElement3)) {
         return -1;
       }
 
-      final checkerB =
-          TypeChecker.fromStatic((b.enclosingElement as ClassElement).thisType);
+      final checkerB = TypeChecker.fromStatic(
+          (b.enclosingElement3 as InterfaceElement).thisType);
 
-      if (checkerB.isAssignableFrom(a.enclosingElement)) {
+      if (checkerB.isAssignableFrom(a.enclosingElement3)) {
         return 1;
       }
     }
 
     /// Returns the offset of given field/property in its source file – with a
     /// preference for the getter if it's defined.
-    int _offsetFor(FieldElement e) {
+    int offsetFor(FieldElement e) {
       if (e.isSynthetic) {
         return (e.getter ?? e.setter)!.nameOffset;
       }
       return e.nameOffset;
     }
 
-    return _offsetFor(a).compareTo(_offsetFor(b));
+    return offsetFor(a).compareTo(offsetFor(b));
   }
 }
 
@@ -82,7 +82,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
 
   for (final v in manager.getInheritedConcreteMap2(element).values) {
     assert(v is! FieldElement);
-    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement3)) {
       continue;
     }
 

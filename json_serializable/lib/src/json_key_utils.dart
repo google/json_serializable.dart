@@ -63,7 +63,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       // TODO: Support calling function for the default value?
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element!.name;
+      badType = dartObject.type!.element2!.name;
     }
 
     if (badType != null) {
@@ -126,7 +126,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// If [mustBeEnum] is `true`, throws an [InvalidGenerationSourceError] if
   /// either the annotated field is not an `enum` or `List` or if the value in
   /// [fieldName] is not an `enum` value.
-  String? _annotationValue(String fieldName, {bool mustBeEnum = false}) {
+  String? createAnnotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
     late final DartType annotationType;
 
@@ -175,7 +175,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueName = enumValueForDartObject<String>(
           annotationValue.objectValue, enumValueNames, (n) => n);
 
-      return '${annotationType.element!.name}'
+      return '${annotationType.element2!.name}'
           '.$enumValueName';
     } else {
       final defaultValueLiteral = annotationValue.isNull
@@ -194,7 +194,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     }
   }
 
-  final defaultValue = _annotationValue('defaultValue');
+  final defaultValue = createAnnotationValue('defaultValue');
   if (defaultValue != null && ctorParamDefault != null) {
     if (defaultValue == ctorParamDefault) {
       log.info(
@@ -231,7 +231,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
     required: obj.read('required').literalValue as bool?,
-    unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
+    unknownEnumValue:
+        createAnnotationValue('unknownEnumValue', mustBeEnum: true),
   );
 }
 
@@ -284,7 +285,7 @@ bool _includeIfNull(
 bool _interfaceTypesEqual(DartType a, DartType b) {
   if (a is InterfaceType && b is InterfaceType) {
     // Handle nullability case. Pretty sure this is fine for enums.
-    return a.element == b.element;
+    return a.element2 == b.element2;
   }
   return a == b;
 }

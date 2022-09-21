@@ -113,7 +113,7 @@ class Item extends ItemCore {
   @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)
   GeoPoint? geoPoint;
 
-  Item([int? price]) : super(price);
+  Item([super.price]);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
