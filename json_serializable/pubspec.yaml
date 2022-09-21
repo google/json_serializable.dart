@@ -1,5 +1,5 @@
 name: json_serializable
-version: 6.4.0-dev
+version: 6.4.0
 description: >-
   Automatically generate code for converting to and from JSON by annotating
   Dart classes.
@@ -37,7 +37,3 @@ dev_dependencies:
   test_descriptor: ^2.0.0
   test_process: ^2.0.0
   yaml: ^3.0.0
-
-dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
