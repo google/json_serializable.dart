@@ -53,16 +53,17 @@ Object? _generateEntry({
       const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(field);
 
   if (annotation == null) {
-    if (jsonEnum.valueField != null) {
+    final valueField = jsonEnum.valueField;
+    if (valueField != null) {
       // TODO: fieldRename is pointless here!!! At least log a warning!
 
       final fieldElementType = field.type.element2 as EnumElement;
 
-      final e = fieldElementType.getField(jsonEnum.valueField!);
+      final e = fieldElementType.getField(valueField);
 
       if (e == null || e.isStatic) {
         throw InvalidGenerationSourceError(
-          '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
+          '`JsonEnum.valueField` was set to "$valueField", but '
           'that is not a valid, instance field on '
           '`${typeToCode(targetType)}`.',
           element: targetType.element2,
@@ -70,12 +71,12 @@ Object? _generateEntry({
       }
 
       final reader = ConstantReader(field.computeConstantValue());
-      final valueReader = reader.read(jsonEnum.valueField!);
+      final valueReader = reader.read(valueField);
       if (valueReader.validValueType) {
         return valueReader.literalValue;
       } else {
         throw InvalidGenerationSourceError(
-          '`JsonEnum.valueField` was set to "${jsonEnum.valueField}", but '
+          '`JsonEnum.valueField` was set to "$valueField", but '
           'that field does not have a type of String, int, or null.',
           element: targetType.element2,
         );
