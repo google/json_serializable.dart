@@ -24,11 +24,11 @@ To configure your project for the latest released version of
 Given a library `example.dart` with an `Person` class annotated with
 `ja:JsonSerializable`:
 
-<!-- REPLACE example.dart -->
+<!-- REPLACE example/example.dart -->
 
 Building creates the corresponding part `example.g.dart`:
 
-<!-- REPLACE example.g.dart -->
+<!-- REPLACE example/example.g.dart -->
 
 # Running the code generator
 
@@ -75,16 +75,14 @@ Annotate `enum` types with `ja:JsonEnum` (new in `json_annotation` 4.2.0) to:
 Annotate `enum` values with `ja:JsonValue` to specify the encoded value to map
 to target `enum` entries. Values can be of type `core:String` or `core:int`.
 
-<!-- TODO: hoist out to source code! -->
+<!-- REPLACE tool/readme/enum_example.dart-simple_example -->
 
-```dart
-enum StatusCode {
-  @JsonValue(200)
-  success,
-  @JsonValue('500')
-  weird,
-}
-```
+If you are annotating an
+[enhanced enum](https://dart.dev/guides/language/language-tour#declaring-enhanced-enums),
+you can use `ja:JsonEnum.valueField` to specify the field to use for the
+serialized value.
+
+<!-- REPLACE tool/readme/enum_example.dart-enhanced_example -->
 
 # Supported types
 
