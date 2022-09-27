@@ -1,3 +1,7 @@
+## 6.4.1-dev
+
+- Added more documentation `@JsonEnum`.
+
 ## 6.4.0
 
 - Add support for `JsonEnum.valueField` which allows specifying a field in an
