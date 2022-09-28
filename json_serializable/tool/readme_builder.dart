@@ -24,7 +24,7 @@ class _ReadmeBuilder extends Builder {
     final replacements = {
       ...await buildStep.getExampleContent('example/example.dart'),
       ...await buildStep.getExampleContent('example/example.g.dart'),
-      ...await buildStep.getExampleContent('tool/readme/enum_example.dart'),
+      ...await buildStep.getExampleContent('tool/readme/readme_examples.dart'),
       'supported_types': _classCleanAndSort(supportedTypes()),
       'collection_types': _classCleanAndSort(collectionTypes()),
       'map_key_types': _classCleanAndSort(mapKeyTypes),

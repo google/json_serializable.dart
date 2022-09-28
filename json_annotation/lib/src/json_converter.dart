@@ -26,16 +26,15 @@
 ///
 /// ```dart
 /// @JsonSerializable()
-/// @MyJsonConverter()
 /// class Example {
 ///   @MyJsonConverter()
 ///   final Value property;
 /// }
 /// ```
 ///
-/// Or finally, passed to the annotation:
+/// Or finally, passed to the `@JsonSerializable` annotation:
 ///
-///```dart
+/// ```dart
 /// @JsonSerializable(converters: [MyJsonConverter()])
 /// class Example {}
 /// ```

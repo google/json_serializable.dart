@@ -1,6 +1,7 @@
 ## 6.4.2-dev
 
-- Support `ConstructorElement` which allows using tear-off constructors.
+- Allow constructors to be passed to `JsonKey` parameters that support
+  `Function` types. 
 
 ## 6.4.1
 
