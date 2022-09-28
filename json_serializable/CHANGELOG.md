@@ -1,5 +1,6 @@
-## 6.4.1-dev
+## 6.4.1
 
+- Fixed a bug when an `@JsonSerializable` class uses a mixin with fields.
 - Added more documentation `@JsonEnum`.
 
 ## 6.4.0

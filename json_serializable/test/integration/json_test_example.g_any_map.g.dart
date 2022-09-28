@@ -211,3 +211,14 @@ Map<String, dynamic> _$PrivateConstructorToJson(PrivateConstructor instance) =>
       'id': instance.id,
       'value': instance.value,
     };
+
+RegressionTestIssue1210 _$RegressionTestIssue1210FromJson(Map json) =>
+    RegressionTestIssue1210(
+      json['field'] as String,
+    );
+
+Map<String, dynamic> _$RegressionTestIssue1210ToJson(
+        RegressionTestIssue1210 instance) =>
+    <String, dynamic>{
+      'field': instance.field,
+    };
