@@ -115,14 +115,34 @@ Annotate `enum` types with [`JsonEnum`] (new in `json_annotation` 4.2.0) to:
 Annotate `enum` values with [`JsonValue`] to specify the encoded value to map
 to target `enum` entries. Values can be of type [`String`] or [`int`].
 
-<!-- TODO: hoist out to source code! -->
-
 ```dart
 enum StatusCode {
   @JsonValue(200)
   success,
-  @JsonValue('500')
-  weird,
+  @JsonValue(301)
+  movedPermanently,
+  @JsonValue(302)
+  found,
+  @JsonValue(500)
+  internalServerError,
+}
+```
+
+If you are annotating an
+[enhanced enum](https://dart.dev/guides/language/language-tour#declaring-enhanced-enums),
+you can use [`JsonEnum.valueField`] to specify the field to use for the
+serialized value.
+
+```dart
+@JsonEnum(valueField: 'code')
+enum StatusCodeEnhanced {
+  success(200),
+  movedPermanently(301),
+  found(302),
+  internalServerError(500);
+
+  const StatusCodeEnhanced(this.code);
+  final int code;
 }
 ```
 
@@ -200,14 +220,15 @@ targets:
 [`Enum`]: https://api.dart.dev/stable/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/stable/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/stable/dart-core/Iterable-class.html
-[`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonConverter-class.html
-[`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonEnum-class.html
-[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonKey/fromJson.html
-[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonKey/toJson.html
-[`JsonKey`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonKey-class.html
-[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonLiteral-class.html
-[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonSerializable-class.html
-[`JsonValue`]: https://pub.dev/documentation/json_annotation/4.6.0/json_annotation/JsonValue-class.html
+[`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonConverter-class.html
+[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonEnum/valueField.html
+[`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonEnum-class.html
+[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonKey/fromJson.html
+[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonKey/toJson.html
+[`JsonKey`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonKey-class.html
+[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonLiteral-class.html
+[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonSerializable-class.html
+[`JsonValue`]: https://pub.dev/documentation/json_annotation/4.7.0/json_annotation/JsonValue-class.html
 [`List`]: https://api.dart.dev/stable/dart-core/List-class.html
 [`Map`]: https://api.dart.dev/stable/dart-core/Map-class.html
 [`num`]: https://api.dart.dev/stable/dart-core/num-class.html

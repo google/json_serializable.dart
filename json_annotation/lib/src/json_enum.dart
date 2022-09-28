@@ -13,6 +13,7 @@ class JsonEnum {
   const JsonEnum({
     this.alwaysCreate = false,
     this.fieldRename = FieldRename.none,
+    this.valueField,
   });
 
   /// If `true`, `_$[enum name]EnumMap` is generated for in library containing
@@ -34,4 +35,11 @@ class JsonEnum {
   /// Note: the value for [JsonValue.value] takes precedence over this option
   /// for entries annotated with [JsonValue].
   final FieldRename fieldRename;
+
+  /// Specifies the field within an "enhanced enum" to use as the value
+  /// to use for serialization.
+  ///
+  /// If an individual `enum` element is annotated with `@JsonValue`
+  /// that value still takes precedence.
+  final String? valueField;
 }

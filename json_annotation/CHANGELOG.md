@@ -1,5 +1,8 @@
-## 4.6.1-dev
+## 4.7.0
 
+- Added `JsonEnum.valueField` which allows specifying a field in an 
+  "enhanced enum" to use for serialization instead of specifying each value
+  individually with `JsonValue`.
 - Require Dart SDK 2.17
 
 ## 4.6.0

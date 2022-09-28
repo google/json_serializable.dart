@@ -1,6 +1,18 @@
-## 6.3.3
+## 6.4.2
 
 - Support `ConstructorElement` which allows using tear-off constructors.
+
+## 6.4.1
+
+- Fixed a bug when an `@JsonSerializable` class uses a mixin with fields.
+- Added more documentation `@JsonEnum`.
+
+## 6.4.0
+
+- Add support for `JsonEnum.valueField` which allows specifying a field in an
+  "enhanced enum" to use for serialization instead of specifying each value
+  individually with `JsonValue
+- Require `json_annotation: '>=4.7.0 <4.8.0'`
 
 ## 6.3.2
 

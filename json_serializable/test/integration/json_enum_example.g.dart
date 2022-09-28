@@ -59,3 +59,8 @@ const _$DayTypeEnumMap = {
   DayType.rotten: 'rotten',
   DayType.veryBad: 'very-bad',
 };
+
+const _$MyStatusCodeEnumMap = {
+  MyStatusCode.success: 200,
+  MyStatusCode.weird: 701,
+};

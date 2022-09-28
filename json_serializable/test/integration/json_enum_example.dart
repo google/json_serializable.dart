@@ -25,6 +25,19 @@ enum DayType {
 
 Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;
 
+@JsonEnum(alwaysCreate: true, valueField: 'value')
+enum MyStatusCode {
+  success(200),
+  @JsonValue(701) // explicit value always takes precedence
+  weird(601);
+
+  const MyStatusCode(this.value);
+
+  final int value;
+}
+
+Iterable<int> get myStatusCodeEnumValues => _$MyStatusCodeEnumMap.values;
+
 @JsonSerializable(
   createToJson: false,
 )
