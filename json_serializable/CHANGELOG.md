@@ -1,5 +1,7 @@
 ## 6.4.2-dev
 
+- Support `ConstructorElement` which allows using tear-off constructors.
+
 ## 6.4.1
 
 - Fixed a bug when an `@JsonSerializable` class uses a mixin with fields.

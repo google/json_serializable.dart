@@ -126,6 +126,7 @@ const _expectedAnnotatedTests = {
   'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
   'SubTypeWithAnnotatedFieldOverrideImplements',
   'theAnswer',
+  'TearOffFromJsonClass',
   'ToJsonNullableFalseIncludeIfNullFalse',
   'TypedConvertMethods',
   'UnknownEnumValue',
