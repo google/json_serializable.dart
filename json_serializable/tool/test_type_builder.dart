@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:json_serializable/src/type_helpers/map_helper.dart';
 
 import 'shared.dart';
 import 'test_type_data.dart';
@@ -96,16 +97,9 @@ final _typesToTest = {
   ..._collectionTypes,
 };
 
-const mapKeyTypes = {
-  'BigInt',
-  'DateTime',
-  'dynamic',
-  customEnumType,
-  'int',
-  'Object',
-  'String',
-  'Uri',
-};
+Iterable<String> get mapKeyTypes =>
+    allowedMapKeyTypes.map((e) => e == 'enum' ? customEnumType : e).toList()
+      ..sort(compareAsciiLowerCase);
 
 final _iterableGenericArgs = ([
   ..._trivialTypesToTest.keys,

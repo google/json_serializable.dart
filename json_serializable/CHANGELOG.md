@@ -1,3 +1,5 @@
+## 6.4.2-dev
+
 ## 6.4.1
 
 - Fixed a bug when an `@JsonSerializable` class uses a mixin with fields.

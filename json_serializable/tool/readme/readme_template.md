@@ -103,7 +103,7 @@ For `core:Map`, the key value must be one of
 If you want to use types that are not supported out-of-the-box or if you want to
 customize the encoding/decoding of any type, you have a few options.
 
-1. If you own/cotrol the desired type, add a `fromJson` constructor and/or a
+1. If you own/control the desired type, add a `fromJson` constructor and/or a
    `toJson()` function to the type. Note: while you can use `json_serializable`
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
