@@ -251,5 +251,9 @@ mixin RegressionTestIssue1210Mixin {
 class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
   const RegressionTestIssue1210(this.field);
 
+  factory RegressionTestIssue1210.fromJson(Map<String, dynamic> json) =>
+      _$RegressionTestIssue1210FromJson(json);
   final String field;
+
+  Map<String, dynamic> toJson() => _$RegressionTestIssue1210ToJson(this);
 }
