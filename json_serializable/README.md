@@ -171,14 +171,93 @@ customize the encoding/decoding of any type, you have a few options.
    `toJson()` function to the type. Note: while you can use `json_serializable`
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
+
+    ```dart
+    @JsonSerializable()
+    class Sample1 {
+      Sample1(this.value);
+
+      factory Sample1.fromJson(Map<String, dynamic> json) =>
+          _$Sample1FromJson(json);
+
+      // Sample2 is NOT annotated with @JsonSerializable(), but that's okay
+      // The class has a `fromJson` constructor and a `toJson` method, which is
+      // all that is required.
+      final Sample2 value;
+
+      Map<String, dynamic> toJson() => _$Sample1ToJson(this);
+    }
+
+    class Sample2 {
+      Sample2(this.value);
+
+      // The convention is for `fromJson` to take a single parameter of type
+      // `Map<String, dynamic>` but any JSON-compatible type is allowed.
+      factory Sample2.fromJson(int value) => Sample2(value);
+      final int value;
+
+      // The convention is for `toJson` to take return a type of
+      // `Map<String, dynamic>` but any JSON-compatible type is allowed.
+      int toJson() => value;
+    }
+    ```
+
 1. Use the [`JsonKey.toJson`] and [`JsonKey.fromJson`] properties to specify
    custom conversions on the annotated field. The functions specified must be
    top-level or static. See the documentation of these properties for details.
+
+    ```dart
+    @JsonSerializable()
+    class Sample3 {
+      Sample3(this.value);
+
+      factory Sample3.fromJson(Map<String, dynamic> json) =>
+          _$Sample3FromJson(json);
+
+      @JsonKey(
+        toJson: _toJson,
+        fromJson: _fromJson,
+      )
+      final DateTime value;
+
+      Map<String, dynamic> toJson() => _$Sample3ToJson(this);
+
+      static int _toJson(DateTime value) => value.millisecondsSinceEpoch;
+      static DateTime _fromJson(int value) =>
+          DateTime.fromMillisecondsSinceEpoch(value);
+    }
+    ```
+
 1. Create an implementation of [`JsonConverter`] and annotate either the
    corresponding field or the containing class. [`JsonConverter`] is convenient
    if you want to use the same conversion logic on many fields. It also allows
    you to support a type within collections. Check out
    [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
+
+    ```dart
+    @JsonSerializable()
+    class Sample4 {
+      Sample4(this.value);
+
+      factory Sample4.fromJson(Map<String, dynamic> json) =>
+          _$Sample4FromJson(json);
+
+      @EpochDateTimeConverter()
+      final DateTime value;
+
+      Map<String, dynamic> toJson() => _$Sample4ToJson(this);
+    }
+
+    class EpochDateTimeConverter implements JsonConverter<DateTime, int> {
+      const EpochDateTimeConverter();
+
+      @override
+      DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
+
+      @override
+      int toJson(DateTime object) => object.millisecondsSinceEpoch;
+    }
+    ```
 
 # Build configuration
 

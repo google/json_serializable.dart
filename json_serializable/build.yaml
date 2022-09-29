@@ -18,6 +18,7 @@ targets:
         - test/kitchen_sink/*
         - test/literal/*
         - test/supported_types/*
+        - tool/readme/*
 
       json_serializable|_test_builder:
         generate_for:
