@@ -44,11 +44,14 @@ class _ReadmeBuilder extends Builder {
     final foundClasses = SplayTreeMap<String, String>(compareAsciiLowerCase);
 
     final theMap = <Pattern, String Function(Match)>{
-      RegExp(r'<!-- REPLACE ([\/\w\d\._-]+) -->'): (match) {
-        final replacementKey = match.group(1)!;
+      RegExp(r'( *)<!-- REPLACE ([\/\w\d\._-]+) -->'): (match) {
+        final replacementKey = match.group(2)!;
         availableKeys.remove(replacementKey);
-        return (replacements[replacementKey] ?? '*MISSING! `$replacementKey`*')
-            .trim();
+        final replacement =
+            (replacements[replacementKey] ?? '*MISSING! `$replacementKey`*')
+                .trim();
+
+        return replacement.indent(match.group(1)!);
       },
       RegExp(r'`(\w+):(\w+)(\.\w+)?`'): (match) {
         final context = match.group(1)!;
@@ -278,4 +281,7 @@ ${trim()}
 ```''';
 
   static const _blockComment = r'// # ';
+
+  String indent(String indent) =>
+      LineSplitter.split(this).map((e) => '$indent$e'.trimRight()).join('\n');
 }

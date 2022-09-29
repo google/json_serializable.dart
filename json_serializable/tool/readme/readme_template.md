@@ -108,21 +108,21 @@ customize the encoding/decoding of any type, you have a few options.
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
 
-<!-- REPLACE tool/readme/readme_examples.dart-to_from -->
+    <!-- REPLACE tool/readme/readme_examples.dart-to_from -->
 
-2. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
+1. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
    custom conversions on the annotated field. The functions specified must be
    top-level or static. See the documentation of these properties for details.
 
-<!-- REPLACE tool/readme/readme_examples.dart-json_key -->
+    <!-- REPLACE tool/readme/readme_examples.dart-json_key -->
 
-3. Create an implementation of `ja:JsonConverter` and annotate either the
+1. Create an implementation of `ja:JsonConverter` and annotate either the
    corresponding field or the containing class. `ja:JsonConverter` is convenient
    if you want to use the same conversion logic on many fields. It also allows
    you to support a type within collections. Check out
    [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
 
-<!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
+    <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
 
 # Build configuration
 
