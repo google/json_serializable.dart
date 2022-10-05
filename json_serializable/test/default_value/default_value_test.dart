@@ -29,6 +29,9 @@ const _defaultInstance = {
   'constClass': {'field': 'value'},
   'valueFromConverter': 'value',
   'valueFromFunction': 'value',
+  'intDefaultValueFromFunction': 43,
+  'valueFromDefaultValueDefaultConstructor': {'field': 'default'},
+  'valueFromDefaultValueNamedConstructor': {'field': 'easy'},
 };
 
 const _otherValues = {
@@ -50,6 +53,9 @@ const _otherValues = {
   'constClass': {'field': 'otherValue'},
   'valueFromConverter': 'otherValue',
   'valueFromFunction': 'otherValue',
+  'intDefaultValueFromFunction': 44,
+  'valueFromDefaultValueDefaultConstructor': {'field': 'other'},
+  'valueFromDefaultValueNamedConstructor': {'field': 'other'},
 };
 
 void main() {
