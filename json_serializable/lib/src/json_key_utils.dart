@@ -144,11 +144,10 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 
       final functionValue = objectValue.toFunctionValue()!;
 
-      // Is it a const constructor?!?!
-      var invokeConst = '';
-      if (functionValue is ConstructorElement && functionValue.isConst) {
-        invokeConst = 'const ';
-      }
+      final invokeConst =
+          functionValue is ConstructorElement && functionValue.isConst
+              ? 'const '
+              : '';
 
       return '$invokeConst${functionValue.qualifiedName}()';
     }
