@@ -70,6 +70,19 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
               (v) => v == null
                   ? const ConstClass('value')
                   : constClassFromJson(v as String)),
+          intDefaultValueFromFunction: $checkedConvert(
+              'intDefaultValueFromFunction',
+              (v) => v as int? ?? intDefaultValueFunction()),
+          valueFromDefaultValueDefaultConstructor: $checkedConvert(
+              'valueFromDefaultValueDefaultConstructor',
+              (v) => v == null
+                  ? const ConstClass()
+                  : ConstClass.fromJson(Map<String, dynamic>.from(v as Map))),
+          valueFromDefaultValueNamedConstructor: $checkedConvert(
+              'valueFromDefaultValueNamedConstructor',
+              (v) => v == null
+                  ? ConstClass.easy()
+                  : ConstClass.fromJson(Map<String, dynamic>.from(v as Map))),
         );
         return val;
       },
@@ -94,6 +107,11 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'valueFromConverter':
           const ConstClassConverter().toJson(instance.valueFromConverter),
       'valueFromFunction': constClassToJson(instance.valueFromFunction),
+      'intDefaultValueFromFunction': instance.intDefaultValueFromFunction,
+      'valueFromDefaultValueDefaultConstructor':
+          instance.valueFromDefaultValueDefaultConstructor,
+      'valueFromDefaultValueNamedConstructor':
+          instance.valueFromDefaultValueNamedConstructor,
     };
 
 const _$GreekEnumMap = {

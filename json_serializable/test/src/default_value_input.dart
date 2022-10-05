@@ -19,10 +19,17 @@ class DefaultWithSymbol {
 
 int _function() => 42;
 
-@ShouldThrow(
-  'Error with `@JsonKey` on the `field` field. '
-  '`defaultValue` is `Function`, it must be a literal.',
-  element: 'field',
+@ShouldGenerate(
+  r'''
+DefaultWithFunction _$DefaultWithFunctionFromJson(Map<String, dynamic> json) =>
+    DefaultWithFunction()..field = json['field'] ?? _function();
+
+Map<String, dynamic> _$DefaultWithFunctionToJson(
+        DefaultWithFunction instance) =>
+    <String, dynamic>{
+      'field': instance.field,
+    };
+''',
 )
 @JsonSerializable()
 class DefaultWithFunction {
@@ -30,6 +37,19 @@ class DefaultWithFunction {
   Object? field;
 
   DefaultWithFunction();
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `field` field. '
+  '`defaultValue` is `List > Function`, it must be a literal.',
+  element: 'field',
+)
+@JsonSerializable()
+class DefaultWithFunctionInList {
+  @JsonKey(defaultValue: [_function])
+  Object? field;
+
+  DefaultWithFunctionInList();
 }
 
 @ShouldThrow(

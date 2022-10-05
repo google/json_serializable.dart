@@ -1,7 +1,10 @@
-## 6.4.2-dev
+## 6.5.0
 
 - Allow constructors to be passed to `JsonKey` parameters that support
   `Function` types. 
+- Accept `Function` values for `JsonKey.defaultValue`. The provided
+  `Function` will be invoked for the default value if the target JSON element is
+  missing or `null`.
 
 ## 6.4.1
 

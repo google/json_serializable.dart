@@ -55,6 +55,7 @@ const _expectedAnnotatedTests = {
   'DefaultWithConstObject',
   'DefaultWithDisallowNullRequiredClass',
   'DefaultWithFunction',
+  'DefaultWithFunctionInList',
   'DefaultWithNestedEnum',
   'DefaultWithSymbol',
   'DefaultWithToJsonClass',

@@ -12,6 +12,10 @@ import 'json_serializable.dart';
 class JsonKey {
   /// The value to use if the source JSON does not contain this key or if the
   /// value is `null`.
+  ///
+  /// Also supported: a top-level or static [Function] or a constructor with no
+  /// required parameters and a return type compatible with the field being
+  /// assigned.
   final Object? defaultValue;
 
   /// If `true`, generated code will throw a [DisallowedNullValueException] if
@@ -30,8 +34,9 @@ class JsonKey {
   /// A [Function] to use when decoding the associated JSON value to the
   /// annotated field.
   ///
-  /// Must be a top-level or static [Function] that takes one argument mapping
-  /// a JSON literal to a value compatible with the type of the annotated field.
+  /// Must be a top-level or static [Function] or a constructor that accepts one
+  /// positional argument mapping a JSON literal to a value compatible with the
+  /// type of the annotated field.
   ///
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [toJson] if you set [fromJson].
@@ -94,8 +99,9 @@ class JsonKey {
 
   /// A [Function] to use when encoding the annotated field to JSON.
   ///
-  /// Must be a top-level or static [Function] with one parameter compatible
-  /// with the field being serialized that returns a JSON-compatible value.
+  /// Must be a top-level or static [Function] or a constructor that accepts one
+  /// positional argument compatible with the field being serialized that
+  /// returns a JSON-compatible value.
   ///
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [fromJson] if you set [toJson].
