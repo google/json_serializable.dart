@@ -6,6 +6,7 @@ const _annotationImport =
     "import 'package:json_annotation/json_annotation.dart';";
 
 class TestTypeData {
+  final bool stringParseType;
   final String? defaultExpression;
   final String? jsonExpression;
   final String? altJsonExpression;
@@ -18,7 +19,16 @@ class TestTypeData {
     this.genericArgs = const {},
   })  : jsonExpression = jsonExpression ?? defaultExpression,
         altJsonExpression =
-            altJsonExpression ?? jsonExpression ?? defaultExpression;
+            altJsonExpression ?? jsonExpression ?? defaultExpression,
+        stringParseType = false;
+
+  const TestTypeData.defaultFunc({
+    this.jsonExpression,
+    required String? altJsonExpression,
+  })  : altJsonExpression = altJsonExpression ?? jsonExpression,
+        genericArgs = const {},
+        defaultExpression = null,
+        stringParseType = true;
 
   String libContent(String source, String type) {
     const classAnnotationSplit = '@JsonSerializable()';
@@ -91,7 +101,29 @@ class TestTypeData {
         );
     }
 
+    final defaultValueFuncBody = _defaultValueFuncBody(type);
+
+    if (defaultValueFuncBody != null) {
+      buffer.write(defaultValueFuncBody);
+    }
+
     return buffer.toString();
+  }
+
+  String? _defaultValueFuncBody(String type) {
+    if (stringParseType) {
+      return '$type _defaultValueFunc() => $type.parse($jsonExpression);';
+    }
+
+    return null;
+  }
+
+  String? get _annotationDefaultValue {
+    if (stringParseType) {
+      return '_defaultValueFunc';
+    }
+
+    return defaultExpression;
   }
 
   Iterable<Replacement> _libReplacements(String type) sync* {
@@ -100,7 +132,8 @@ class TestTypeData {
       'final $type value;',
     );
 
-    final defaultNotSupported = defaultExpression == null // no default provided
+    final defaultNotSupported =
+        _annotationDefaultValue == null // no default provided
             ||
             type.contains('<') // no support for default values and generic args
         ;
@@ -108,7 +141,7 @@ class TestTypeData {
     final defaultReplacement = defaultNotSupported
         ? ''
         : _defaultSource
-            .replaceFirst('42', defaultExpression!)
+            .replaceFirst('42', _annotationDefaultValue!)
             .replaceFirst('dynamic', type);
 
     yield Replacement(
@@ -187,7 +220,7 @@ final _altValue = $altJsonExpression;
 ''',
     );
 
-    if (defaultExpression == null) {
+    if (defaultExpression == null && !stringParseType) {
       yield const Replacement(
         "  'withDefault': _defaultValue,\n",
         '',
