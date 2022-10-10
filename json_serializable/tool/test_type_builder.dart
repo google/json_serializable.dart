@@ -15,7 +15,7 @@ import 'test_type_data.dart';
 final _formatter = DartFormatter();
 
 const _trivialTypesToTest = {
-  'BigInt': TestTypeData(
+  'BigInt': TestTypeData.defaultFunc(
     jsonExpression: "'12345'",
     altJsonExpression: "'67890'",
   ),
@@ -23,7 +23,7 @@ const _trivialTypesToTest = {
     defaultExpression: 'true',
     altJsonExpression: 'false',
   ),
-  'DateTime': TestTypeData(
+  'DateTime': TestTypeData.defaultFunc(
     jsonExpression: "'2020-01-01T00:00:00.000'",
     altJsonExpression: "'2018-01-01T00:00:00.000'",
   ),
@@ -56,7 +56,7 @@ const _trivialTypesToTest = {
     defaultExpression: "'a string'",
     altJsonExpression: "'another string'",
   ),
-  'Uri': TestTypeData(
+  'Uri': TestTypeData.defaultFunc(
     jsonExpression: "'https://example.com'",
     altJsonExpression: "'https://dart.dev'",
   ),

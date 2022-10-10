@@ -1,3 +1,8 @@
+## 6.5.1
+
+- Fixed `BigInt`, `DateTime`, and `Uri` support for `JsonKey.defaultValue` with
+  a function value.
+
 ## 6.5.0
 
 - Allow constructors to be passed to `JsonKey` parameters that support
