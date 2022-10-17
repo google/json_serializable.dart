@@ -1,3 +1,8 @@
+## 6.5.2
+
+- Better handling of `null` when encoding `enum` values or values with
+  conversions.
+
 ## 6.5.1
 
 - Fixed `BigInt`, `DateTime`, and `Uri` support for `JsonKey.defaultValue` with
