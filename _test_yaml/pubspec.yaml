@@ -10,7 +10,7 @@ dev_dependencies:
   build_runner: ^2.0.0
   build_verify: ^3.0.0
   checked_yaml: any
-  json_annotation: ^4.4.0
+  json_annotation: ^4.7.0
   json_serializable: any
   lints: ^2.0.0
   path: ^1.8.2
