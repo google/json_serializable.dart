@@ -170,6 +170,8 @@ class TypedConvertMethods {
   late String field;
 }
 
+String? _toStringNullOnEmpty(String input) => input.isEmpty ? null : input;
+
 @ShouldGenerate(
   r'''
 Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
@@ -182,14 +184,14 @@ Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
     }
   }
 
-  writeNotNull('field', _toString(instance.field));
+  writeNotNull('field', _toStringNullOnEmpty(instance.field));
   return val;
 }
 ''',
 )
 @JsonSerializable(createFactory: false)
 class ToJsonNullableFalseIncludeIfNullFalse {
-  @JsonKey(toJson: _toString, includeIfNull: false)
+  @JsonKey(toJson: _toStringNullOnEmpty, includeIfNull: false)
   late String field;
 }
 
