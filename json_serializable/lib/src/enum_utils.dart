@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'json_literal_generator.dart';
 import 'utils.dart';
@@ -16,12 +17,16 @@ String constMapName(DartType targetType) =>
 
 /// If [targetType] is not an enum, return `null`.
 ///
-/// Otherwise, returns `true` if one of the encoded values of the enum is
-/// `null`.
+/// Otherwise, returns `true` if [targetType] is nullable OR if one of the
+/// encoded values of the enum is `null`.
 bool? enumFieldWithNullInEncodeMap(DartType targetType) {
   final enumMap = _enumMap(targetType);
 
   if (enumMap == null) return null;
+
+  if (targetType.isNullableType) {
+    return true;
+  }
 
   return enumMap.values.contains(null);
 }
