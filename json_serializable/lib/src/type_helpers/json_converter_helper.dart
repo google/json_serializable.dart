@@ -143,6 +143,24 @@ class _JsonConvertData {
       accessor.isEmpty ? '' : '.$accessor';
 }
 
+/// If there is no converter for the params, return `null`.
+///
+/// Otherwise, returns `true` if the converter has a null return value.
+///
+/// Used to make sure we create a smart encoding function.
+bool? hasConverterNullEncode(
+  DartType targetType,
+  TypeHelperContextWithConfig ctx,
+) {
+  final data = _typeConverter(targetType, ctx);
+
+  if (data == null) {
+    return null;
+  }
+
+  return data.jsonType.isNullableType;
+}
+
 _JsonConvertData? _typeConverter(
   DartType targetType,
   TypeHelperContextWithConfig ctx,

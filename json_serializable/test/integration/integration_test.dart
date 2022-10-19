@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
 import '../test_utils.dart';
+import 'converter_examples.dart';
 import 'field_map_example.dart';
 import 'json_enum_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
@@ -357,5 +358,65 @@ void main() {
       privateModelFieldMap,
       {'fullName': 'full-name'},
     );
+  });
+
+  group('classes with converters', () {
+    Issue1202RegressionClass roundTripIssue1202RegressionClass(int value) {
+      final instance = Issue1202RegressionClass(
+        normalNullableValue: value,
+        notNullableValueWithConverter: value,
+        notNullableValueWithNullableConverter: value,
+        value: Issue1202RegressionEnum.normalValue,
+        valueWithFunctions: value,
+        valueWithNullableFunctions: value,
+      );
+      return roundTripObject(instance, Issue1202RegressionClass.fromJson);
+    }
+
+    test('With default values', () {
+      final thing = roundTripIssue1202RegressionClass(42);
+
+      expect(thing.toJson(), {
+        'valueWithFunctions': '42',
+        'notNullableValueWithConverter': '42',
+        'value': 42,
+        'normalNullableValue': 42,
+      });
+    });
+
+    test('With non-default values', () {
+      final thing = roundTripIssue1202RegressionClass(43);
+
+      expect(thing.toJson(), {
+        'valueWithFunctions': '43',
+        'notNullableValueWithConverter': '43',
+        'value': 42,
+        'normalNullableValue': 43,
+        'notNullableValueWithNullableConverter': '43',
+        'valueWithNullableFunctions': '43',
+      });
+    });
+
+    test('enum with null value', () {
+      final instance = Issue1202RegressionClass(
+        normalNullableValue: 42,
+        notNullableValueWithConverter: 42,
+        notNullableValueWithNullableConverter: 42,
+        value: Issue1202RegressionEnum.nullValue,
+        valueWithFunctions: 42,
+        valueWithNullableFunctions: 42,
+      );
+
+      expect(instance.toJson(), {
+        'valueWithFunctions': '42',
+        'notNullableValueWithConverter': '42',
+        'normalNullableValue': 42,
+      });
+    });
+  });
+
+  test('Issue1226Regression', () {
+    final instance = Issue1226Regression(durationType: null);
+    expect(instance.toJson(), isEmpty);
   });
 }

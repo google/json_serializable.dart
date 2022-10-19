@@ -126,7 +126,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final toFromString = mapKeyHelperForType(keyArg);
     if (toFromString != null) {
-      keyUsage = toFromString.deserialize(keyArg, keyUsage, false, true)!;
+      keyUsage =
+          toFromString.deserialize(keyArg, keyUsage, false, true).toString();
     }
 
     return '($expression $mapCast)$optionalQuestion.map( '

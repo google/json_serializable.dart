@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'json_literal_generator.dart';
 import 'utils.dart';
@@ -14,7 +15,40 @@ import 'utils.dart';
 String constMapName(DartType targetType) =>
     '_\$${targetType.element2!.name}EnumMap';
 
+/// If [targetType] is not an enum, return `null`.
+///
+/// Otherwise, returns `true` if [targetType] is nullable OR if one of the
+/// encoded values of the enum is `null`.
+bool? enumFieldWithNullInEncodeMap(DartType targetType) {
+  final enumMap = _enumMap(targetType);
+
+  if (enumMap == null) return null;
+
+  if (targetType.isNullableType) {
+    return true;
+  }
+
+  return enumMap.values.contains(null);
+}
+
 String? enumValueMapFromType(
+  DartType targetType, {
+  bool nullWithNoAnnotation = false,
+}) {
+  final enumMap =
+      _enumMap(targetType, nullWithNoAnnotation: nullWithNoAnnotation);
+
+  if (enumMap == null) return null;
+
+  final items = enumMap.entries
+      .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
+          '${jsonLiteralAsDart(e.value)},')
+      .join();
+
+  return 'const ${constMapName(targetType)} = {\n$items\n};';
+}
+
+Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
@@ -27,7 +61,7 @@ String? enumValueMapFromType(
     return null;
   }
 
-  final enumMap = {
+  return {
     for (var field in enumFields)
       field: _generateEntry(
         field: field,
@@ -35,13 +69,6 @@ String? enumValueMapFromType(
         targetType: targetType,
       ),
   };
-
-  final items = enumMap.entries
-      .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
-          '${jsonLiteralAsDart(e.value)},')
-      .join();
-
-  return 'const ${constMapName(targetType)} = {\n$items\n};';
 }
 
 Object? _generateEntry({

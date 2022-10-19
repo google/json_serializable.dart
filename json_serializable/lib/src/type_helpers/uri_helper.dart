@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../default_container.dart';
 import '../type_helper.dart';
 import 'to_from_string.dart';
 
@@ -24,7 +25,7 @@ class UriHelper extends TypeHelper {
       );
 
   @override
-  String? deserialize(
+  DefaultContainer? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContext context,

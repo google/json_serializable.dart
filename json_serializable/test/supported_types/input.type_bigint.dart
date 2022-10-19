@@ -10,8 +10,12 @@ part 'input.type_bigint.g.dart';
 class SimpleClass {
   final BigInt value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  BigInt withDefault;
+
   SimpleClass(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
@@ -24,8 +28,12 @@ class SimpleClass {
 class SimpleClassNullable {
   final BigInt? value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  BigInt? withDefault;
+
   SimpleClassNullable(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
@@ -33,3 +41,5 @@ class SimpleClassNullable {
 
   Map<String, Object?> toJson() => _$SimpleClassNullableToJson(this);
 }
+
+BigInt _defaultValueFunc() => BigInt.parse('12345');

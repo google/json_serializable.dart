@@ -86,11 +86,21 @@ class Issue1145RegressionA {
   createFactory: false,
 )
 class Issue1145RegressionB {
-  Issue1145RegressionB({
-    required this.status,
-  });
+  Issue1145RegressionB({required this.status});
 
   Map<String, dynamic> toJson() => _$Issue1145RegressionBToJson(this);
 
   final List<Issue1145RegressionEnum?> status;
+}
+
+@JsonSerializable(includeIfNull: false)
+class Issue1226Regression {
+  Issue1226Regression({required this.durationType});
+
+  factory Issue1226Regression.fromJson(Map<String, dynamic> json) =>
+      _$Issue1226RegressionFromJson(json);
+
+  final Issue1145RegressionEnum? durationType;
+
+  Map<String, dynamic> toJson() => _$Issue1226RegressionToJson(this);
 }

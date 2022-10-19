@@ -14,8 +14,9 @@ import '../type_helper.dart';
 class ConvertData {
   final String name;
   final DartType paramType;
+  final DartType returnType;
 
-  ConvertData(this.name, this.paramType);
+  ConvertData(this.name, this.paramType, this.returnType);
 }
 
 abstract class TypeHelperContextWithConvert extends TypeHelperContext {
