@@ -116,9 +116,9 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) {
   writeNotNull('import', instance.import);
   writeNotNull('is_optional', instance.isOptional);
   writeNotNull('configLocation', instance.configLocation?.toString());
-  val['auto_apply'] = _$AutoApplyEnumMap[instance.autoApply];
-  val['build_to'] = _$BuildToEnumMap[instance.buildTo];
-  val['defaultEnumTest'] = _$AutoApplyEnumMap[instance.defaultEnumTest];
+  writeNotNull('auto_apply', _$AutoApplyEnumMap[instance.autoApply]);
+  writeNotNull('build_to', _$BuildToEnumMap[instance.buildTo]);
+  writeNotNull('defaultEnumTest', _$AutoApplyEnumMap[instance.defaultEnumTest]);
   val['builder_factories'] = instance.builderFactories;
   writeNotNull('applies_builders', instance.appliesBuilders);
   writeNotNull('required_inputs', instance.requiredInputs);

@@ -47,6 +47,26 @@ Map<String, dynamic> _$Issue1145RegressionBToJson(
           .toList(),
     };
 
+Issue1226Regression _$Issue1226RegressionFromJson(Map<String, dynamic> json) =>
+    Issue1226Regression(
+      durationType: $enumDecodeNullable(
+          _$Issue1145RegressionEnumEnumMap, json['durationType']),
+    );
+
+Map<String, dynamic> _$Issue1226RegressionToJson(Issue1226Regression instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull(
+      'durationType', _$Issue1145RegressionEnumEnumMap[instance.durationType]);
+  return val;
+}
+
 const _$StandAloneEnumEnumMap = {
   StandAloneEnum.alpha: 'a',
   StandAloneEnum.beta: 'b',

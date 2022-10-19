@@ -414,4 +414,9 @@ void main() {
       });
     });
   });
+
+  test('Issue1226Regression', () {
+    final instance = Issue1226Regression(durationType: null);
+    expect(instance.toJson(), isEmpty);
+  });
 }

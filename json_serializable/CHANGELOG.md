@@ -1,3 +1,7 @@
+## 6.5.3
+
+- Fixed handling of nullable `enum` fields with `includeIfNull: false`.
+
 ## 6.5.2
 
 - Better handling of `null` when encoding `enum` values or values with
