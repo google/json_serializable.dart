@@ -12,9 +12,11 @@ import 'package:source_helper/source_helper.dart';
 
 import '../default_container.dart';
 import '../type_helper.dart';
+import '../unsupported_type_error.dart';
 import '../utils.dart';
 import 'config_types.dart';
 import 'generic_factory_helper.dart';
+import 'map_helper.dart';
 
 const _helperLambdaParam = 'value';
 
@@ -49,11 +51,12 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
       toJsonArgs.addAll(
         _helperParams(
-          context.serialize,
+          context,
           _encodeHelper,
           interfaceType,
           toJson.parameters.where((element) => element.isRequiredPositional),
           toJson,
+          isSerializing: true,
         ),
       );
     }
@@ -109,11 +112,12 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       final args = [
         output,
         ..._helperParams(
-          context.deserialize,
+          context,
           _decodeHelper,
           targetType,
           positionalParams.skip(1),
           fromJsonCtor,
+          isSerializing: false,
         ),
       ];
 
@@ -137,13 +141,15 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 }
 
 List<String> _helperParams(
-  Object? Function(DartType, String) execute,
-  TypeParameterType Function(ParameterElement, Element) paramMapper,
+  TypeHelperContextWithConfig context,
+  TypeParameterTypeWithKeyHelper Function(ParameterElement, Element)
+      paramMapper,
   InterfaceType type,
   Iterable<ParameterElement> positionalParams,
-  Element targetElement,
-) {
-  final rest = <TypeParameterType>[];
+  Element targetElement, {
+  required bool isSerializing,
+}) {
+  final rest = <TypeParameterTypeWithKeyHelper>[];
   for (var param in positionalParams) {
     rest.add(paramMapper(param, targetElement));
   }
@@ -152,18 +158,28 @@ List<String> _helperParams(
 
   for (var helperArg in rest) {
     final typeParamIndex =
-        type.element2.typeParameters.indexOf(helperArg.element2);
+        type.element2.typeParameters.indexOf(helperArg.type.element2);
 
     // TODO: throw here if `typeParamIndex` is -1 ?
     final typeArg = type.typeArguments[typeParamIndex];
-    final body = execute(typeArg, _helperLambdaParam);
-    args.add('($_helperLambdaParam) => $body');
+    final body = isSerializing
+        ? context.serialize(typeArg, _helperLambdaParam)
+        : context.deserialize(typeArg, _helperLambdaParam);
+    if (helperArg.isJsonKey) {
+      const keyHelper = MapKeyHelper();
+      final newBody = isSerializing
+          ? keyHelper.serialize(typeArg, '', context)
+          : keyHelper.deserialize(typeArg, '', context, false);
+      args.add('($_helperLambdaParam) => $newBody');
+    } else {
+      args.add('($_helperLambdaParam) => $body');
+    }
   }
 
   return args;
 }
 
-TypeParameterType _decodeHelper(
+TypeParameterTypeWithKeyHelper _decodeHelper(
   ParameterElement param,
   Element targetElement,
 ) {
@@ -178,8 +194,11 @@ TypeParameterType _decodeHelper(
       final funcParamType = type.normalParameterTypes.single;
 
       if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
-          funcParamType.isDynamic) {
-        return funcReturnType as TypeParameterType;
+          funcParamType.isDynamic ||
+          funcParamType.isDartCoreString) {
+        return TypeParameterTypeWithKeyHelper(
+            funcReturnType as TypeParameterType,
+            funcParamType.isDartCoreString);
       }
     }
   }
@@ -194,20 +213,30 @@ TypeParameterType _decodeHelper(
   );
 }
 
-TypeParameterType _encodeHelper(
+class TypeParameterTypeWithKeyHelper {
+  final TypeParameterType type;
+  final bool isJsonKey;
+
+  TypeParameterTypeWithKeyHelper(this.type, this.isJsonKey);
+}
+
+TypeParameterTypeWithKeyHelper _encodeHelper(
   ParameterElement param,
   Element targetElement,
 ) {
   final type = param.type;
 
   if (type is FunctionType &&
-      (type.returnType.isDartCoreObject || type.returnType.isDynamic) &&
+      (type.returnType.isDartCoreObject ||
+          type.returnType.isDynamic ||
+          type.returnType.isDartCoreString) &&
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 
     if (param.name == toJsonForName(funcParamType.element2!.name!)) {
       if (funcParamType is TypeParameterType) {
-        return funcParamType;
+        return TypeParameterTypeWithKeyHelper(
+            funcParamType, type.returnType.isDartCoreString);
       }
     }
   }
@@ -290,3 +319,71 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
 MethodElement? _toJsonMethod(DartType type) => type.typeImplementations
     .map((dt) => dt is InterfaceType ? dt.getMethod('toJson') : null)
     .firstWhereOrNull((me) => me != null);
+
+class MapKeyHelper extends TypeHelper<TypeHelperContextWithConfig> {
+  const MapKeyHelper();
+
+  @override
+  String? serialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
+    final keyType = targetType;
+
+    checkSafeMapKeyType(expression, keyType);
+
+    final subKeyValue = mapKeyHelperForType(keyType)
+            ?.serialize(keyType, _helperLambdaParam, false) ??
+        context.serialize(keyType, _helperLambdaParam);
+
+    if (_helperLambdaParam == subKeyValue) {
+      return expression;
+    }
+
+    return '$subKeyValue';
+  }
+
+  @override
+  String? deserialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+    bool defaultProvided,
+  ) {
+    final keyArg = targetType;
+
+    checkSafeMapKeyType(expression, keyArg);
+
+    final isKeyStringable = isMapKeyStringable(keyArg);
+    if (!isKeyStringable) {
+      throw UnsupportedTypeError(
+        keyArg,
+        expression,
+        'Map keys must be one of: ${allowedMapKeyTypes.join(', ')}.',
+      );
+    }
+
+    String keyUsage;
+    if (keyArg.isEnum) {
+      keyUsage = context.deserialize(keyArg, _helperLambdaParam).toString();
+    } else if (context.config.anyMap &&
+        !(keyArg.isDartCoreObject || keyArg.isDynamic)) {
+      keyUsage = '$_helperLambdaParam as String';
+    } else if (context.config.anyMap &&
+        keyArg.isDartCoreObject &&
+        !keyArg.isNullableType) {
+      keyUsage = '$_helperLambdaParam as Object';
+    } else {
+      keyUsage = '$_helperLambdaParam as String';
+    }
+
+    final toFromString = mapKeyHelperForType(keyArg);
+    if (toFromString != null) {
+      keyUsage =
+          toFromString.deserialize(keyArg, keyUsage, false, true)!.toString();
+    }
+
+    return keyUsage;
+  }
+}

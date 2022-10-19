@@ -1,3 +1,7 @@
+## 6.6.0
+- Allow custom map types to automatically have key types serialized. 
+  Fixes[#396](https://github.com/google/json_serializable.dart/issues/396)
+
 ## 6.5.3
 
 - Fixed handling of nullable `enum` fields with `includeIfNull: false`.

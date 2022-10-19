@@ -61,3 +61,17 @@ Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
         (value) => value?.toString(),
       ),
     };
+
+UseOfCustomMap _$UseOfCustomMapFromJson(Map<String, dynamic> json) =>
+    UseOfCustomMap(
+      CustomMap<int, String>.fromJson(json['map'] as Map<String, dynamic>,
+          (value) => int.parse(value as String), (value) => value as String),
+    );
+
+Map<String, dynamic> _$UseOfCustomMapToJson(UseOfCustomMap instance) =>
+    <String, dynamic>{
+      'map': instance.map.toJson(
+        (value) => value.toString(),
+        (value) => value,
+      ),
+    };

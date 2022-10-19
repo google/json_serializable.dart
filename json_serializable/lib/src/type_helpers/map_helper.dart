@@ -32,11 +32,11 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final keyType = args[0];
     final valueType = args[1];
 
-    _checkSafeKeyType(expression, keyType);
+    checkSafeMapKeyType(expression, keyType);
 
     final subFieldValue = context.serialize(valueType, closureArg);
     final subKeyValue =
-        _forType(keyType)?.serialize(keyType, _keyParam, false) ??
+        mapKeyHelperForType(keyType)?.serialize(keyType, _keyParam, false) ??
             context.serialize(keyType, _keyParam);
 
     if (closureArg == subFieldValue && _keyParam == subKeyValue) {
@@ -66,11 +66,11 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final keyArg = typeArgs.first;
     final valueArg = typeArgs.last;
 
-    _checkSafeKeyType(expression, keyArg);
+    checkSafeMapKeyType(expression, keyArg);
 
     final valueArgIsAny = valueArg.isDynamic ||
         (valueArg.isDartCoreObject && valueArg.isNullableType);
-    final isKeyStringable = _isKeyStringable(keyArg);
+    final isKeyStringable = isMapKeyStringable(keyArg);
 
     final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
     final optionalQuestion = targetTypeIsNullable ? '?' : '';
@@ -124,7 +124,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       keyUsage = _keyParam;
     }
 
-    final toFromString = _forType(keyArg);
+    final toFromString = mapKeyHelperForType(keyArg);
     if (toFromString != null) {
       keyUsage =
           toFromString.deserialize(keyArg, keyUsage, false, true).toString();
@@ -146,22 +146,22 @@ final _instances = [
   uriString,
 ];
 
-ToFromStringHelper? _forType(DartType type) =>
+ToFromStringHelper? mapKeyHelperForType(DartType type) =>
     _instances.singleWhereOrNull((i) => i.matches(type));
 
 /// Returns `true` if [keyType] can be automatically converted to/from String –
 /// and is therefor usable as a key in a [Map].
-bool _isKeyStringable(DartType keyType) =>
+bool isMapKeyStringable(DartType keyType) =>
     keyType.isEnum || _instances.any((inst) => inst.matches(keyType));
 
-void _checkSafeKeyType(String expression, DartType keyArg) {
+void checkSafeMapKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
   if (keyArg.isDynamic ||
       (!keyArg.isNullableType &&
           (keyArg.isDartCoreObject ||
               coreStringTypeChecker.isExactlyType(keyArg) ||
-              _isKeyStringable(keyArg)))) {
+              isMapKeyStringable(keyArg)))) {
     return;
   }
 
@@ -174,7 +174,7 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
 
 /// The names of types that can be used as [Map] keys.
 ///
-/// Used in [_checkSafeKeyType] to provide a helpful error with unsupported
+/// Used in [checkSafeMapKeyType] to provide a helpful error with unsupported
 /// types.
 List<String> get allowedMapKeyTypes => [
       'Object',
