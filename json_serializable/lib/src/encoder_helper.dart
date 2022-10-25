@@ -178,7 +178,7 @@ abstract class EncodeHelper implements HelperCore {
         hasConverterNullEncode(field.type, helperContext);
 
     if (nullableEncodeConverter != null) {
-      return !nullableEncodeConverter;
+      return !nullableEncodeConverter && !field.type.isNullableType;
     }
 
     // We can consider enums as kinda like having custom converters
