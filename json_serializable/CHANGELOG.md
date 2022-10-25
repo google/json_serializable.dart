@@ -1,3 +1,8 @@
+## 6.5.4
+
+- Fixed handling of nullable fields with converters which return non-nullable
+  values.
+
 ## 6.5.3
 
 - Fixed handling of nullable `enum` fields with `includeIfNull: false`.

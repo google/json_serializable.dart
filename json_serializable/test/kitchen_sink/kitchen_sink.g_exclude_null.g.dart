@@ -193,8 +193,10 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
   val['bigInt'] = const BigIntStringConverter().toJson(instance.bigInt);
   val['bigIntMap'] = instance.bigIntMap
       .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)));
-  val['nullableBigInt'] = _$JsonConverterToJson<String, BigInt>(
-      instance.nullableBigInt, const BigIntStringConverter().toJson);
+  writeNotNull(
+      'nullableBigInt',
+      _$JsonConverterToJson<String, BigInt>(
+          instance.nullableBigInt, const BigIntStringConverter().toJson));
   val['nullableBigIntMap'] = instance.nullableBigIntMap.map((k, e) => MapEntry(
       k,
       _$JsonConverterToJson<String, BigInt>(

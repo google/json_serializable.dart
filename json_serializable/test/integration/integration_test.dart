@@ -419,4 +419,9 @@ void main() {
     final instance = Issue1226Regression(durationType: null);
     expect(instance.toJson(), isEmpty);
   });
+
+  test('Regression1229', () {
+    final instance = Regression1229();
+    expect(instance.toJson(), isEmpty);
+  });
 }

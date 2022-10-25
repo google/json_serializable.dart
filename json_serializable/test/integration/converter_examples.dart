@@ -95,3 +95,27 @@ class _Issue1202RegressionNotNullConverter extends JsonConverter<int, String> {
   @override
   String toJson(int object) => object.toString();
 }
+
+class DateTimeConverter extends JsonConverter<DateTime, String> {
+  const DateTimeConverter();
+  @override
+  DateTime fromJson(String json) => DateTime.parse(json).toLocal();
+  @override
+  String toJson(DateTime object) => object.toUtc().toIso8601String();
+}
+
+@JsonSerializable()
+@DateTimeConverter()
+class Regression1229 {
+  @JsonKey(includeIfNull: false)
+  final DateTime? date;
+
+  Regression1229({
+    this.date,
+  });
+
+  factory Regression1229.fromJson(Map<String, dynamic> json) =>
+      _$Regression1229FromJson(json);
+
+  Map<String, dynamic> toJson() => _$Regression1229ToJson(this);
+}

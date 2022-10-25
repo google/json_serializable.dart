@@ -58,3 +58,37 @@ const _$Issue1202RegressionEnumEnumMap = {
   Issue1202RegressionEnum.normalValue: 42,
   Issue1202RegressionEnum.nullValue: null,
 };
+
+Regression1229 _$Regression1229FromJson(Map<String, dynamic> json) =>
+    Regression1229(
+      date: _$JsonConverterFromJson<String, DateTime>(
+          json['date'], const DateTimeConverter().fromJson),
+    );
+
+Map<String, dynamic> _$Regression1229ToJson(Regression1229 instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull(
+      'date',
+      _$JsonConverterToJson<String, DateTime>(
+          instance.date, const DateTimeConverter().toJson));
+  return val;
+}
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);
