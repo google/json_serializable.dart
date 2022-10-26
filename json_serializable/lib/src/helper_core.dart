@@ -28,7 +28,7 @@ abstract class HelperCore {
 
   @protected
   String get targetClassReference =>
-      '${element.name}${genericClassArgumentsImpl(false)}';
+      '${element.name}${genericClassArgumentsImpl(withConstraints: false)}';
 
   @protected
   String nameAccess(FieldElement field) => jsonKeyFor(field).name;
@@ -45,7 +45,7 @@ abstract class HelperCore {
   ///
   /// Returns the output of calling [genericClassArguments] with [element].
   @protected
-  String genericClassArgumentsImpl(bool withConstraints) =>
+  String genericClassArgumentsImpl({required bool withConstraints}) =>
       genericClassArguments(element, withConstraints);
 
   @protected
