@@ -1,3 +1,7 @@
+## 4.7.1-dev+1
+
+- Require Dart SDK `>=2.18.0`.
+
 ## 4.7.1-dev
 
 - Update `JsonKey` documentation to align with new features in 

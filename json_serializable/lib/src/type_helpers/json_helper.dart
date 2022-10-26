@@ -76,7 +76,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    final classElement = targetType.element2;
+    final classElement = targetType.element;
 
     final fromJsonCtor = classElement.constructors
         .singleWhereOrNull((ce) => ce.name == 'fromJson');
@@ -152,7 +152,7 @@ List<String> _helperParams(
 
   for (var helperArg in rest) {
     final typeParamIndex =
-        type.element2.typeParameters.indexOf(helperArg.element2);
+        type.element.typeParameters.indexOf(helperArg.element);
 
     // TODO: throw here if `typeParamIndex` is -1 ?
     final typeArg = type.typeArguments[typeParamIndex];
@@ -174,7 +174,7 @@ TypeParameterType _decodeHelper(
       type.normalParameterTypes.length == 1) {
     final funcReturnType = type.returnType;
 
-    if (param.name == fromJsonForName(funcReturnType.element2!.name!)) {
+    if (param.name == fromJsonForName(funcReturnType.element!.name!)) {
       final funcParamType = type.normalParameterTypes.single;
 
       if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
@@ -205,7 +205,7 @@ TypeParameterType _encodeHelper(
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 
-    if (param.name == toJsonForName(funcParamType.element2!.name!)) {
+    if (param.name == toJsonForName(funcParamType.element!.name!)) {
       if (funcParamType is TypeParameterType) {
         return funcParamType;
       }
@@ -245,7 +245,7 @@ InterfaceType? _instantiate(
   InterfaceType classType,
 ) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
-    final typeParamIndex = classType.element2.typeParameters.indexWhere(
+    final typeParamIndex = classType.element.typeParameters.indexWhere(
         // TODO: not 100% sure `nullabilitySuffix` is right
         (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg);
     if (typeParamIndex >= 0) {
@@ -261,7 +261,7 @@ InterfaceType? _instantiate(
     return null;
   }
 
-  return ctorParamType.element2.instantiate(
+  return ctorParamType.element.instantiate(
     typeArguments: argTypes.cast<DartType>(),
     // TODO: not 100% sure nullabilitySuffix is right... Works for now
     nullabilitySuffix: NullabilitySuffix.none,
@@ -273,7 +273,7 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
     return null;
   }
   final annotations = const TypeChecker.fromRuntime(JsonSerializable)
-      .annotationsOfExact(source.element2, throwOnUnresolved: false)
+      .annotationsOfExact(source.element, throwOnUnresolved: false)
       .toList();
 
   if (annotations.isEmpty) {
@@ -283,7 +283,7 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   return mergeConfig(
     config,
     ConstantReader(annotations.single),
-    classElement: source.element2 as ClassElement,
+    classElement: source.element as ClassElement,
   );
 }
 
