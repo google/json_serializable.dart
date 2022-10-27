@@ -1,3 +1,8 @@
+## 6.6.0-dev
+
+- Require Dart SDK `>=2.18.0`.
+- Require `analyzer: ^5.2.0`
+
 ## 6.5.4
 
 - Fixed handling of nullable fields with converters which return non-nullable
@@ -20,7 +25,7 @@
 ## 6.5.0
 
 - Allow constructors to be passed to `JsonKey` parameters that support
-  `Function` types. 
+  `Function` types.
 - Accept `Function` values for `JsonKey.defaultValue`. The provided
   `Function` will be invoked for the default value if the target JSON element is
   missing or `null`.

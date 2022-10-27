@@ -6,7 +6,7 @@ description: >-
 repository: https://github.com/google/json_serializable.dart/tree/master/json_annotation
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   meta: ^1.4.0

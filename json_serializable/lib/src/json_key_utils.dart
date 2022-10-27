@@ -63,7 +63,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element2!.name;
+      badType = dartObject.type!.element!.name;
     }
 
     if (badType != null) {
@@ -196,7 +196,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueName =
           enumValueForDartObject<String>(objectValue, enumValueNames, (n) => n);
 
-      return '${annotationType.element2!.name}.$enumValueName';
+      return '${annotationType.element!.name}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {
@@ -300,7 +300,7 @@ bool _includeIfNull(
 bool _interfaceTypesEqual(DartType a, DartType b) {
   if (a is InterfaceType && b is InterfaceType) {
     // Handle nullability case. Pretty sure this is fine for enums.
-    return a.element2 == b.element2;
+    return a.element == b.element;
   }
   return a == b;
 }

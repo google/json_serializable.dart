@@ -37,21 +37,21 @@ class _FieldSet implements Comparable<_FieldSet> {
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
     final checkerA = TypeChecker.fromStatic(
-      (a.enclosingElement3 as InterfaceElement).thisType,
+      (a.enclosingElement as InterfaceElement).thisType,
     );
 
-    if (!checkerA.isExactly(b.enclosingElement3)) {
+    if (!checkerA.isExactly(b.enclosingElement)) {
       // in this case, you want to prioritize the enclosingElement that is more
       // "super".
 
-      if (checkerA.isAssignableFrom(b.enclosingElement3)) {
+      if (checkerA.isAssignableFrom(b.enclosingElement)) {
         return -1;
       }
 
       final checkerB = TypeChecker.fromStatic(
-          (b.enclosingElement3 as InterfaceElement).thisType);
+          (b.enclosingElement as InterfaceElement).thisType);
 
-      if (checkerB.isAssignableFrom(a.enclosingElement3)) {
+      if (checkerB.isAssignableFrom(a.enclosingElement)) {
         return 1;
       }
     }
@@ -83,7 +83,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
 
   for (final v in manager.getInheritedConcreteMap2(element).values) {
     assert(v is! FieldElement);
-    if (_dartCoreObjectChecker.isExactly(v.enclosingElement3)) {
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement)) {
       continue;
     }
 
