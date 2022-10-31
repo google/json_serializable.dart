@@ -8,6 +8,7 @@
 
 - Update `JsonKey` documentation to align with new features in 
   `package:json_serializable`.
+- Require Dart SDK `>=2.18.0`.
 
 ## 4.7.0
 
