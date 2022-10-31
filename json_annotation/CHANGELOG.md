@@ -1,3 +1,9 @@
+## 4.7.1-dev
+
+- Update `JsonKey` documentation to align with new features in 
+  `package:json_serializable`.
+- Require Dart SDK `>=2.18.0`.
+
 ## 4.7.0
 
 - Added `JsonEnum.valueField` which allows specifying a field in an 

@@ -95,12 +95,15 @@ final _defaultInput = <String, Object?>{
 
 final _defaultOutput = {
   'value': _defaultValue,
+  'withDefault': _defaultValue,
 };
 
 final _nullableDefaultOutput = {
   'value': null,
+  'withDefault': _defaultValue,
 };
 
 final _nonDefaultJson = {
   'value': _altValue,
+  'withDefault': _altValue,
 };

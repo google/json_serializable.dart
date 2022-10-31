@@ -580,3 +580,31 @@ class Issue1038RegressionTest {
 
   Issue1038RegressionTest.ean(this.ean) : id = null;
 }
+
+@ShouldGenerate(
+  r'''
+TearOffFromJsonClass _$TearOffFromJsonClassFromJson(
+        Map<String, dynamic> json) =>
+    TearOffFromJsonClass(
+      TearOffValueClass(json['value'] as String),
+      TearOffValueClass.fromJson(json['factoryValue'] as String),
+    );
+''',
+)
+@JsonSerializable(createToJson: false)
+class TearOffFromJsonClass {
+  TearOffFromJsonClass(this.value, this.factoryValue);
+
+  @JsonKey(fromJson: TearOffValueClass.new)
+  final TearOffValueClass value;
+  @JsonKey(fromJson: TearOffValueClass.fromJson)
+  final TearOffValueClass factoryValue;
+}
+
+class TearOffValueClass {
+  const TearOffValueClass(this.value);
+
+  factory TearOffValueClass.fromJson(String value) => TearOffValueClass(value);
+
+  final String value;
+}

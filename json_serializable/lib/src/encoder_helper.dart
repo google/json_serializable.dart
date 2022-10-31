@@ -4,10 +4,10 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_helper/source_helper.dart';
 
 import 'constants.dart';
+import 'enum_utils.dart';
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
@@ -163,19 +163,32 @@ abstract class EncodeHelper implements HelperCore {
   bool _writeJsonValueNaive(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
 
-    return jsonKey.includeIfNull ||
-        (!field.type.isNullableType && !_fieldHasCustomEncoder(field));
-  }
+    if (jsonKey.includeIfNull) {
+      return true;
+    }
 
-  /// Returns `true` if [field] has a user-defined encoder.
-  ///
-  /// This can be either a `toJson` function in [JsonKey] or a [JsonConverter]
-  /// annotation.
-  bool _fieldHasCustomEncoder(FieldElement field) {
     final helperContext = getHelperContext(field);
-    return helperContext.serializeConvertData != null ||
-        const JsonConverterHelper()
-                .serialize(field.type, 'test', helperContext) !=
-            null;
+
+    final serializeConvertData = helperContext.serializeConvertData;
+    if (serializeConvertData != null) {
+      return !serializeConvertData.returnType.isNullableType;
+    }
+
+    final nullableEncodeConverter =
+        hasConverterNullEncode(field.type, helperContext);
+
+    if (nullableEncodeConverter != null) {
+      return !nullableEncodeConverter && !field.type.isNullableType;
+    }
+
+    // We can consider enums as kinda like having custom converters
+    // same rules apply. If `null` is in the set of encoded values, we
+    // should not write naive
+    final enumWithNullValue = enumFieldWithNullInEncodeMap(field.type);
+    if (enumWithNullValue != null) {
+      return !enumWithNullValue;
+    }
+
+    return !field.type.isNullableType;
   }
 }

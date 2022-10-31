@@ -60,10 +60,12 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     } else if (reader.isType) {
       badType = 'Type';
     } else if (dartObject.type is FunctionType) {
-      // TODO: Support calling function for the default value?
+      // Function types at the "root" are already handled. If they occur
+      // here, it's because the function is nested instead of a collection
+      // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element2!.name;
+      badType = dartObject.type!.element!.name;
     }
 
     if (badType != null) {
@@ -128,11 +130,32 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// [fieldName] is not an `enum` value.
   String? createAnnotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
-    late final DartType annotationType;
 
-    final enumFields = annotationValue.isNull
-        ? null
-        : iterateEnumFields(annotationType = annotationValue.objectValue.type!);
+    if (annotationValue.isNull) {
+      return null;
+    }
+
+    final objectValue = annotationValue.objectValue;
+    final annotationType = objectValue.type!;
+
+    if (annotationType is FunctionType) {
+      // TODO: we could be a LOT more careful here, checking the return type
+      // and the number of parameters. BUT! If any of those things are wrong
+      // the generated code will be invalid, so skipping until we're bored
+      // later
+
+      final functionValue = objectValue.toFunctionValue()!;
+
+      final invokeConst =
+          functionValue is ConstructorElement && functionValue.isConst
+              ? 'const '
+              : '';
+
+      return '$invokeConst${functionValue.qualifiedName}()';
+    }
+
+    final enumFields = iterateEnumFields(annotationType);
+
     if (enumFields != null) {
       if (mustBeEnum) {
         late DartType targetEnumType;
@@ -172,15 +195,12 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueNames =
           enumFields.map((p) => p.name).toList(growable: false);
 
-      final enumValueName = enumValueForDartObject<String>(
-          annotationValue.objectValue, enumValueNames, (n) => n);
+      final enumValueName =
+          enumValueForDartObject<String>(objectValue, enumValueNames, (n) => n);
 
-      return '${annotationType.element2!.name}'
-          '.$enumValueName';
+      return '${annotationType.element!.name}.$enumValueName';
     } else {
-      final defaultValueLiteral = annotationValue.isNull
-          ? null
-          : literalForObject(fieldName, annotationValue.objectValue, []);
+      final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {
         return null;
       }
@@ -285,7 +305,7 @@ bool _includeIfNull(
 bool _interfaceTypesEqual(DartType a, DartType b) {
   if (a is InterfaceType && b is InterfaceType) {
     // Handle nullability case. Pretty sure this is fine for enums.
-    return a.element2 == b.element2;
+    return a.element == b.element;
   }
   return a == b;
 }

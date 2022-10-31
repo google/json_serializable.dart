@@ -2,10 +2,10 @@ name: example
 publish_to: none
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  json_annotation: ^4.4.0
+  json_annotation: ^4.7.0
 
 dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.

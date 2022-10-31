@@ -10,8 +10,12 @@ part 'input.type_datetime.g.dart';
 class SimpleClass {
   final DateTime value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  DateTime withDefault;
+
   SimpleClass(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
@@ -24,8 +28,12 @@ class SimpleClass {
 class SimpleClassNullable {
   final DateTime? value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  DateTime? withDefault;
+
   SimpleClassNullable(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
@@ -33,3 +41,5 @@ class SimpleClassNullable {
 
   Map<String, Object?> toJson() => _$SimpleClassNullableToJson(this);
 }
+
+DateTime _defaultValueFunc() => DateTime.parse('2020-01-01T00:00:00.000');

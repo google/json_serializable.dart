@@ -247,3 +247,23 @@ class PrivateConstructor {
   bool operator ==(Object other) =>
       other is PrivateConstructor && id == other.id && value == other.value;
 }
+
+mixin RegressionTestIssue1210Mixin {
+  bool? get someProperty => null;
+
+  @override
+  int get hashCode => identityHashCode(this);
+}
+
+@JsonSerializable(
+  anyMap: true,
+)
+class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
+  const RegressionTestIssue1210(this.field);
+
+  factory RegressionTestIssue1210.fromJson(Map<String, dynamic> json) =>
+      _$RegressionTestIssue1210FromJson(json);
+  final String field;
+
+  Map<String, dynamic> toJson() => _$RegressionTestIssue1210ToJson(this);
+}

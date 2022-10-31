@@ -7,18 +7,52 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'json_literal_generator.dart';
 import 'utils.dart';
 
 String constMapName(DartType targetType) =>
-    '_\$${targetType.element2!.name}EnumMap';
+    '_\$${targetType.element!.name}EnumMap';
+
+/// If [targetType] is not an enum, return `null`.
+///
+/// Otherwise, returns `true` if [targetType] is nullable OR if one of the
+/// encoded values of the enum is `null`.
+bool? enumFieldWithNullInEncodeMap(DartType targetType) {
+  final enumMap = _enumMap(targetType);
+
+  if (enumMap == null) return null;
+
+  if (targetType.isNullableType) {
+    return true;
+  }
+
+  return enumMap.values.contains(null);
+}
 
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
-  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element2!);
+  final enumMap =
+      _enumMap(targetType, nullWithNoAnnotation: nullWithNoAnnotation);
+
+  if (enumMap == null) return null;
+
+  final items = enumMap.entries
+      .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
+          '${jsonLiteralAsDart(e.value)},')
+      .join();
+
+  return 'const ${constMapName(targetType)} = {\n$items\n};';
+}
+
+Map<FieldElement, Object?>? _enumMap(
+  DartType targetType, {
+  bool nullWithNoAnnotation = false,
+}) {
+  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element!);
   final jsonEnum = _fromAnnotation(annotation);
 
   final enumFields = iterateEnumFields(targetType);
@@ -27,7 +61,7 @@ String? enumValueMapFromType(
     return null;
   }
 
-  final enumMap = {
+  return {
     for (var field in enumFields)
       field: _generateEntry(
         field: field,
@@ -35,13 +69,6 @@ String? enumValueMapFromType(
         targetType: targetType,
       ),
   };
-
-  final items = enumMap.entries
-      .map((e) => '  ${targetType.element2!.name}.${e.key.name}: '
-          '${jsonLiteralAsDart(e.value)},')
-      .join();
-
-  return 'const ${constMapName(targetType)} = {\n$items\n};';
 }
 
 Object? _generateEntry({
@@ -57,7 +84,7 @@ Object? _generateEntry({
     if (valueField != null) {
       // TODO: fieldRename is pointless here!!! At least log a warning!
 
-      final fieldElementType = field.type.element2 as EnumElement;
+      final fieldElementType = field.type.element as EnumElement;
 
       final e = fieldElementType.getField(valueField);
 
@@ -66,7 +93,7 @@ Object? _generateEntry({
           '`JsonEnum.valueField` was set to "$valueField", but '
           'that is not a valid, instance field on '
           '`${typeToCode(targetType)}`.',
-          element: targetType.element2,
+          element: targetType.element,
         );
       }
 
@@ -78,7 +105,7 @@ Object? _generateEntry({
         throw InvalidGenerationSourceError(
           '`JsonEnum.valueField` was set to "$valueField", but '
           'that field does not have a type of String, int, or null.',
-          element: targetType.element2,
+          element: targetType.element,
         );
       }
     } else {
