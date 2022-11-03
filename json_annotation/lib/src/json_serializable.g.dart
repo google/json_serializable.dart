@@ -19,6 +19,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'constructor',
             'create_factory',
             'create_field_map',
+            'create_per_field_to_json',
             'create_to_json',
             'disallow_unrecognized_keys',
             'explicit_to_json',
@@ -47,6 +48,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           includeIfNull: $checkedConvert('include_if_null', (v) => v as bool?),
           genericArgumentFactories:
               $checkedConvert('generic_argument_factories', (v) => v as bool?),
+          createPerFieldToJson:
+              $checkedConvert('create_per_field_to_json', (v) => v as bool?),
         );
         return val;
       },
@@ -60,7 +63,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
         'fieldRename': 'field_rename',
         'ignoreUnannotated': 'ignore_unannotated',
         'includeIfNull': 'include_if_null',
-        'genericArgumentFactories': 'generic_argument_factories'
+        'genericArgumentFactories': 'generic_argument_factories',
+        'createPerFieldToJson': 'create_per_field_to_json'
       },
     );
 
@@ -71,6 +75,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'constructor': instance.constructor,
       'create_factory': instance.createFactory,
       'create_field_map': instance.createFieldMap,
+      'create_per_field_to_json': instance.createPerFieldToJson,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,

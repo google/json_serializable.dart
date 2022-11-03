@@ -1,3 +1,9 @@
+## 4.8.0-dev
+
+- Require Dart SDK `>=2.18.0`.
+- Added `JsonSerializable.createPerFieldToJson` which allows generating
+  a `_$ModelPerFieldToJson`, enabling partial encoding of a model.
+
 ## 4.7.1-dev
 
 - Update `JsonKey` documentation to align with new features in 

@@ -57,6 +57,8 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       createFactory: reader.read('createFactory').literalValue as bool?,
       createToJson: reader.read('createToJson').literalValue as bool?,
       createFieldMap: reader.read('createFieldMap').literalValue as bool?,
+      createPerFieldToJson:
+          reader.read('createPerFieldToJson').literalValue as bool?,
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool?,
       explicitToJson: reader.read('explicitToJson').literalValue as bool?,
@@ -103,6 +105,8 @@ ClassConfig mergeConfig(
     createFactory: annotation.createFactory ?? config.createFactory,
     createToJson: annotation.createToJson ?? config.createToJson,
     createFieldMap: annotation.createFieldMap ?? config.createFieldMap,
+    createPerFieldToJson:
+        annotation.createPerFieldToJson ?? config.createPerFieldToJson,
     disallowUnrecognizedKeys:
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,

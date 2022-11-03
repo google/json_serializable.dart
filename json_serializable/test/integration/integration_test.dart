@@ -7,6 +7,7 @@ import 'package:test/test.dart';
 
 import '../test_utils.dart';
 import 'converter_examples.dart';
+import 'create_per_field_to_json_example.dart';
 import 'field_map_example.dart';
 import 'json_enum_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
@@ -357,6 +358,48 @@ void main() {
     expect(
       privateModelFieldMap,
       {'fullName': 'full-name'},
+    );
+  });
+
+  test(r'_$ModelPerFieldToJson', () {
+    expect(ModelPerFieldToJson.firstName('foo'), 'foo');
+
+    expect(ModelPerFieldToJson.enumValue(EnumValue.first), '1');
+    expect(ModelPerFieldToJson.enumValue(EnumValue.second), 'second');
+
+    expect(ModelPerFieldToJson.nested(Nested('foo')), {'value': 'foo'});
+    expect(ModelPerFieldToJson.nested(null), null);
+    expect(
+      ModelPerFieldToJson.nestedExcludeIfNull(Nested('foo')),
+      {'value': 'foo'},
+    );
+    expect(ModelPerFieldToJson.nestedExcludeIfNull(null), null);
+    expect(
+      ModelPerFieldToJson.nestedGeneric(GenericFactory(42, {'key': 21})),
+      {
+        'value': 42,
+        'map': {'key': 21},
+      },
+    );
+  });
+
+  test(r'_$GenericFactoryPerFieldToJson', () {
+    expect(
+      GenericFactoryPerFieldToJson.value<int>(42, (value) => '$value'),
+      '42',
+    );
+    expect(
+      GenericFactoryPerFieldToJson.value<String>('42', int.tryParse),
+      42,
+    );
+
+    expect(
+      GenericFactoryPerFieldToJson.map<int>({'foo': 21}, (value) => '$value'),
+      {'foo': '21'},
+    );
+    expect(
+      GenericFactoryPerFieldToJson.map<String>({'key': '42'}, int.tryParse),
+      {'key': 42},
     );
   });
 
