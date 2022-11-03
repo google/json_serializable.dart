@@ -2,7 +2,7 @@
 
 - Require Dart SDK `>=2.18.0`.
 - Require `analyzer: ^5.2.0`
-- Require `json_annotation: '>=4.8.0-dev <4.9.0'`
+- Require `json_annotation: '>=4.8.0 <4.9.0'`
 
 ## 6.5.4
 

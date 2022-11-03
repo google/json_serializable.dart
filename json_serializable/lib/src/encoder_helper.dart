@@ -23,7 +23,7 @@ abstract class EncodeHelper implements HelperCore {
 
     for (final field in accessibleFieldSet) {
       buffer
-        ..writeln('// ignore: unused_element')
+        ..writeln('  // ignore: unused_element')
         ..write(
           'static Object? ${field.name}'
           '${genericClassArgumentsImpl(withConstraints: true)}'

@@ -28,20 +28,20 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
 
 // ignore: unused_element
 abstract class _$ModelPerFieldToJson {
-// ignore: unused_element
+  // ignore: unused_element
   static Object? firstName(String instance) => instance;
-// ignore: unused_element
+  // ignore: unused_element
   static Object? lastName(String instance) => instance;
-// ignore: unused_element
+  // ignore: unused_element
   static Object? enumValue(EnumValue? instance) => _$EnumValueEnumMap[instance];
-// ignore: unused_element
+  // ignore: unused_element
   static Object? nested(Nested? instance) => instance?.toJson();
-// ignore: unused_element
+  // ignore: unused_element
   static Object? nestedGeneric(GenericFactory<int>? instance) =>
       instance?.toJson(
         (value) => value,
       );
-// ignore: unused_element
+  // ignore: unused_element
   static Object? nestedExcludeIfNull(Nested? instance) => instance?.toJson();
 }
 
@@ -92,13 +92,13 @@ GenericFactory<T> _$GenericFactoryFromJson<T>(
 
 // ignore: unused_element
 abstract class _$GenericFactoryPerFieldToJson {
-// ignore: unused_element
+  // ignore: unused_element
   static Object? value<T>(
     T instance,
     Object? Function(T value) toJsonT,
   ) =>
       toJsonT(instance);
-// ignore: unused_element
+  // ignore: unused_element
   static Object? map<T>(
     Map<String, T> instance,
     Object? Function(T value) toJsonT,
@@ -117,7 +117,7 @@ Map<String, dynamic> _$GenericFactoryToJson<T>(
 
 // ignore: unused_element
 abstract class _$PrivateModelPerFieldToJson {
-// ignore: unused_element
+  // ignore: unused_element
   static Object? fullName(String instance) => instance;
 }
 
