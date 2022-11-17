@@ -38,6 +38,23 @@ enum MyStatusCode {
 
 Iterable<int> get myStatusCodeEnumValues => _$MyStatusCodeEnumMap.values;
 
+@JsonEnum(alwaysCreate: true, valueField: 'index')
+enum EnumValueFieldIndex {
+  success(200),
+  @JsonValue(701) // explicit value always takes precedence
+  weird(601),
+  oneMore(777);
+
+  static const tryingToBeConfusing = weird;
+
+  const EnumValueFieldIndex(this.value);
+
+  final int value;
+}
+
+Iterable<int> get enumValueFieldIndexValues =>
+    _$EnumValueFieldIndexEnumMap.values;
+
 @JsonSerializable(
   createToJson: false,
 )
