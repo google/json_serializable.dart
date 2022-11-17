@@ -467,4 +467,8 @@ void main() {
     final instance = Regression1229();
     expect(instance.toJson(), isEmpty);
   });
+
+  test('value field index fun', () {
+    expect(enumValueFieldIndexValues, [0, 701, 2]);
+  });
 }

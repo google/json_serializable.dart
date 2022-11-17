@@ -88,6 +88,13 @@ Object? _generateEntry({
 
       final e = fieldElementType.getField(valueField);
 
+      if (e == null && valueField == 'index') {
+        return fieldElementType.fields
+            .where((element) => element.isEnumConstant)
+            .toList(growable: false)
+            .indexOf(field);
+      }
+
       if (e == null || e.isStatic) {
         throw InvalidGenerationSourceError(
           '`JsonEnum.valueField` was set to "$valueField", but '

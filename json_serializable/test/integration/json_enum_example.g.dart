@@ -84,3 +84,9 @@ const _$MyStatusCodeEnumMap = {
   MyStatusCode.success: 200,
   MyStatusCode.weird: 701,
 };
+
+const _$EnumValueFieldIndexEnumMap = {
+  EnumValueFieldIndex.success: 0,
+  EnumValueFieldIndex.weird: 701,
+  EnumValueFieldIndex.oneMore: 2,
+};
