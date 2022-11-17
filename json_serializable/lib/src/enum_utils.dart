@@ -89,17 +89,10 @@ Object? _generateEntry({
       final e = fieldElementType.getField(valueField);
 
       if (e == null && valueField == 'index') {
-        final values = fieldElementType.getField('values')!;
-
-        final items = ConstantReader(values.computeConstantValue()).listValue;
-
-        return items
-            .singleWhere((element) {
-              final name = element.getField('_name')!.toStringValue()!;
-              return name == field.name;
-            })
-            .getField('index')!
-            .toIntValue()!;
+        return fieldElementType.fields
+            .where((element) => element.isEnumConstant)
+            .toList(growable: false)
+            .indexOf(field);
       }
 
       if (e == null || e.isStatic) {
