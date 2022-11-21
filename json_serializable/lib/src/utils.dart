@@ -32,13 +32,14 @@ Never throwUnsupported(FieldElement element, String message) =>
       element: element,
     );
 
-FieldRename? _fromDartObject(ConstantReader reader) => reader.isNull
-    ? null
-    : enumValueForDartObject(
-        reader.objectValue,
-        FieldRename.values,
-        (f) => f.toString().split('.')[1],
-      );
+T? readEnum<T extends Enum>(ConstantReader reader, List<T> values) =>
+    reader.isNull
+        ? null
+        : enumValueForDartObject<T>(
+            reader.objectValue,
+            values,
+            (f) => f.name,
+          );
 
 T enumValueForDartObject<T>(
   DartObject source,
@@ -62,7 +63,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       disallowUnrecognizedKeys:
           reader.read('disallowUnrecognizedKeys').literalValue as bool?,
       explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-      fieldRename: _fromDartObject(reader.read('fieldRename')),
+      fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
       genericArgumentFactories:
           reader.read('genericArgumentFactories').literalValue as bool?,
       ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
