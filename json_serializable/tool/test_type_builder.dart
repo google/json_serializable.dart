@@ -6,13 +6,10 @@ import 'dart:async';
 
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:json_serializable/src/type_helpers/map_helper.dart';
 
 import 'shared.dart';
 import 'test_type_data.dart';
-
-final _formatter = DartFormatter();
 
 const _trivialTypesToTest = {
   'BigInt': TestTypeData.defaultFunc(
@@ -128,7 +125,7 @@ class _TypeBuilder implements Builder {
 
       await buildStep.writeAsString(
         newId,
-        _formatter.format(entry.value.libContent(sourceContent, type)),
+        formatter.format(entry.value.libContent(sourceContent, type)),
       );
     }
   }

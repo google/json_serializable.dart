@@ -5,7 +5,10 @@
 import 'dart:io';
 
 import 'package:build/build.dart';
+import 'package:dart_style/dart_style.dart';
 import 'package:yaml/yaml.dart';
+
+final formatter = DartFormatter();
 
 // Until we have verification in pkg:build and friends
 // https://github.com/dart-lang/build/issues/590
