@@ -47,6 +47,7 @@ class JsonKey {
   ///
   /// If `null` (the default) or `false`, the field will be considered for
   /// serialization.
+  @Deprecated('Use `usage` with a value of `FieldUsage.none` instead')
   final bool? ignore;
 
   /// Whether the generator should include fields with `null` values in the
@@ -71,6 +72,9 @@ class JsonKey {
   ///
   /// If `null`, the field name is used.
   final String? name;
+
+  // TODO(kevmoo): document this puppy!
+  final FieldUsage? usage;
 
   /// Specialize how a value is read from the source JSON map.
   ///
@@ -125,8 +129,10 @@ class JsonKey {
     @Deprecated('Has no effect') bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
+    this.usage,
     this.fromJson,
-    this.ignore,
+    @Deprecated('Use `usage` with a value of `FieldUsage.none` instead')
+        this.ignore,
     this.includeIfNull,
     this.name,
     this.readValue,
@@ -140,5 +146,8 @@ class JsonKey {
   /// Read the documentation on [unknownEnumValue] for more details.
   static const Enum nullForUndefinedEnumValue = _NullAsDefault.value;
 }
+
+/// Defines how a field or property annotated with [JsonKey] should be treated.
+enum FieldUsage { both, toJson, fromJson, none }
 
 enum _NullAsDefault { value }

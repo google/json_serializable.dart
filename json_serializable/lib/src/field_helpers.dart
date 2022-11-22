@@ -69,10 +69,10 @@ class _FieldSet implements Comparable<_FieldSet> {
   }
 }
 
-/// Returns a [Set] of all instance [FieldElement] items for [element] and
+/// Returns a [List] of all instance [FieldElement] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
-Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
+List<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   final elementInstanceFields = Map.fromEntries(
@@ -104,7 +104,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
       .toList()
     ..sort();
 
-  return fields.map((fs) => fs.field).toList();
+  return fields.map((fs) => fs.field).toList(growable: false);
 }
 
 const _dartCoreObjectChecker = TypeChecker.fromRuntime(Object);

@@ -11,8 +11,6 @@ class KeyConfig {
 
   final bool disallowNullValue;
 
-  final bool ignore;
-
   final bool includeIfNull;
 
   final String name;
@@ -23,15 +21,17 @@ class KeyConfig {
 
   final String? readValueFunctionName;
 
+  final FieldUsage? usage;
+
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
-    required this.ignore,
     required this.includeIfNull,
     required this.name,
     required this.readValueFunctionName,
     required this.required,
     required this.unknownEnumValue,
+    required this.usage,
   });
 }
 

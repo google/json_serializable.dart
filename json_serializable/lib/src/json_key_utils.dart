@@ -34,7 +34,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      ignore: classAnnotation.ignoreUnannotated,
+      usage: classAnnotation.ignoreUnannotated ? FieldUsage.none : null,
     );
   }
 
@@ -236,18 +236,33 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         readValue.objectValue.toFunctionValue()!.qualifiedName;
   }
 
+  final ignore = obj.read('ignore').literalValue as bool?;
+  var usage = readEnum(obj.read('usage'), FieldUsage.values);
+
+  if (ignore != null) {
+    if (usage != null) {
+      throwUnsupported(
+        element,
+        'Cannot use both `ignore` and `usage` on the same field. '
+        'Since `ignore` is deprecated, you should only use `usage`.',
+      );
+    }
+    assert(usage == null);
+    usage = ignore ? FieldUsage.none : null;
+  }
+
   return _populateJsonKey(
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
-    ignore: obj.read('ignore').literalValue as bool?,
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
     required: obj.read('required').literalValue as bool?,
     unknownEnumValue:
         createAnnotationValue('unknownEnumValue', mustBeEnum: true),
+    usage: usage,
   );
 }
 
@@ -256,12 +271,12 @@ KeyConfig _populateJsonKey(
   FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
-  bool? ignore,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
   bool? required,
   String? unknownEnumValue,
+  FieldUsage? usage,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -275,13 +290,13 @@ KeyConfig _populateJsonKey(
   return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
-    ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
     name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),
     readValueFunctionName: readValueFunctionName,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
+    usage: usage,
   );
 }
 

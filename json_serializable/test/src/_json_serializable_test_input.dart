@@ -294,9 +294,11 @@ Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
 ''')
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
+  // ignore: deprecated_member_use
   @JsonKey(ignore: true)
   late int ignoredTrueField;
 
+  // ignore: deprecated_member_use
   @JsonKey(ignore: false)
   late int ignoredFalseField;
 
@@ -304,16 +306,30 @@ class IgnoredFieldClass {
 }
 
 @ShouldThrow(
-  'Cannot populate the required constructor argument: '
-  'ignoredTrueField. It is assigned to an ignored field.',
+  'Cannot populate the required constructor argument: ignoredTrueField. It is '
+  'assigned to a field not meant to be used in fromJson.',
   element: '',
 )
 @JsonSerializable()
 class IgnoredFieldCtorClass {
-  @JsonKey(ignore: true)
+  @JsonKey(usage: FieldUsage.none)
   int ignoredTrueField;
 
   IgnoredFieldCtorClass(this.ignoredTrueField);
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `ignoredTrueField` field. '
+  'Cannot use both `ignore` and `usage` on the same field. '
+  'Since `ignore` is deprecated, you should only use `usage`.',
+)
+@JsonSerializable()
+class IgnoreAndUsageFieldCtorClass {
+  // ignore: deprecated_member_use
+  @JsonKey(ignore: true, usage: FieldUsage.none)
+  int ignoredTrueField;
+
+  IgnoreAndUsageFieldCtorClass(this.ignoredTrueField);
 }
 
 @ShouldThrow(
