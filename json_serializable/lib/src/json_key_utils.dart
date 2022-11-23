@@ -34,7 +34,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      usage: classAnnotation.ignoreUnannotated ? FieldUsage.none : null,
+      includeFromJson: classAnnotation.ignoreUnannotated ? false : null,
+      includeToJson: classAnnotation.ignoreUnannotated ? false : null,
     );
   }
 
@@ -237,18 +238,26 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   }
 
   final ignore = obj.read('ignore').literalValue as bool?;
-  var usage = readEnum(obj.read('usage'), FieldUsage.values);
+  var includeFromJson = obj.read('includeFromJson').literalValue as bool?;
+  var includeToJson = obj.read('includeToJson').literalValue as bool?;
 
   if (ignore != null) {
-    if (usage != null) {
+    if (includeFromJson != null) {
       throwUnsupported(
         element,
-        'Cannot use both `ignore` and `usage` on the same field. '
-        'Since `ignore` is deprecated, you should only use `usage`.',
+        'Cannot use both `ignore` and `includeFromJson` on the same field. '
+        'Since `ignore` is deprecated, you should only use `includeFromJson`.',
       );
     }
-    assert(usage == null);
-    usage = ignore ? FieldUsage.none : null;
+    if (includeToJson != null) {
+      throwUnsupported(
+        element,
+        'Cannot use both `ignore` and `includeToJson` on the same field. '
+        'Since `ignore` is deprecated, you should only use `includeToJson`.',
+      );
+    }
+    assert(includeFromJson == null && includeToJson == null);
+    includeToJson = includeFromJson = !ignore;
   }
 
   return _populateJsonKey(
@@ -262,7 +271,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     required: obj.read('required').literalValue as bool?,
     unknownEnumValue:
         createAnnotationValue('unknownEnumValue', mustBeEnum: true),
-    usage: usage,
+    includeToJson: includeToJson,
+    includeFromJson: includeFromJson,
   );
 }
 
@@ -276,7 +286,8 @@ KeyConfig _populateJsonKey(
   String? readValueFunctionName,
   bool? required,
   String? unknownEnumValue,
-  FieldUsage? usage,
+  bool? includeToJson,
+  bool? includeFromJson,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -296,7 +307,8 @@ KeyConfig _populateJsonKey(
     readValueFunctionName: readValueFunctionName,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
-    usage: usage,
+    includeFromJson: includeFromJson,
+    includeToJson: includeToJson,
   );
 }
 

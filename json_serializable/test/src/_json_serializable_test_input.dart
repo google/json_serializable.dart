@@ -312,7 +312,7 @@ class IgnoredFieldClass {
 )
 @JsonSerializable()
 class IgnoredFieldCtorClass {
-  @JsonKey(usage: FieldUsage.none)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   int ignoredTrueField;
 
   IgnoredFieldCtorClass(this.ignoredTrueField);
@@ -320,16 +320,26 @@ class IgnoredFieldCtorClass {
 
 @ShouldThrow(
   'Error with `@JsonKey` on the `ignoredTrueField` field. '
-  'Cannot use both `ignore` and `usage` on the same field. '
-  'Since `ignore` is deprecated, you should only use `usage`.',
+  'Cannot use both `ignore` and `includeToJson` on the same field. '
+  'Since `ignore` is deprecated, you should only use `includeToJson`.',
 )
 @JsonSerializable()
-class IgnoreAndUsageFieldCtorClass {
+class IgnoreAndIncludeToJsonFieldCtorClass {
   // ignore: deprecated_member_use
-  @JsonKey(ignore: true, usage: FieldUsage.none)
-  int ignoredTrueField;
+  @JsonKey(ignore: true, includeToJson: true)
+  int? ignoredTrueField;
+}
 
-  IgnoreAndUsageFieldCtorClass(this.ignoredTrueField);
+@ShouldThrow(
+  'Error with `@JsonKey` on the `ignoredTrueField` field. '
+  'Cannot use both `ignore` and `includeFromJson` on the same field. '
+  'Since `ignore` is deprecated, you should only use `includeFromJson`.',
+)
+@JsonSerializable()
+class IgnoreAndIncludeFromJsonFieldCtorClass {
+  // ignore: deprecated_member_use
+  @JsonKey(ignore: true, includeFromJson: true)
+  int? ignoredTrueField;
 }
 
 @ShouldThrow(

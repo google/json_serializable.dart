@@ -5,8 +5,6 @@
 import 'dart:async';
 
 import 'package:build/build.dart';
-import 'package:json_annotation/json_annotation.dart';
-import 'package:source_helper/source_helper.dart';
 
 import 'shared.dart';
 
@@ -24,20 +22,23 @@ part 'field_matrix.field_matrix.g.dart';
 ''');
 
     for (var isPublic in [true, false]) {
-      for (var enumValue in [...FieldUsage.values, null]) {
-        final className = 'Usage${(enumValue?.name).toString().pascal}'
-            '${isPublic ? 'Public' : 'Private'}';
+      for (var includeToJson in [null, true, false]) {
+        for (var includeFromJson in [null, true, false]) {
+          final className = 'ToJson${includeToJson}FromJson$includeFromJson'
+              '${isPublic ? 'Public' : 'Private'}';
 
-        final fieldName = isPublic ? 'field' : '_field';
+          final fieldName = isPublic ? 'field' : '_field';
 
-        final bits = [
-          if (enumValue != null) 'usage: $enumValue,',
-          if (!isPublic) "name: 'field'",
-        ];
+          final bits = [
+            if (includeFromJson != null) 'includeFromJson: $includeFromJson,',
+            if (includeToJson != null) 'includeToJson: $includeToJson,',
+            if (!isPublic) "name: 'field'",
+          ];
 
-        final fieldAnnotation = bits.isEmpty ? '' : '@JsonKey(${bits.join()})';
+          final fieldAnnotation =
+              bits.isEmpty ? '' : '@JsonKey(${bits.join()})';
 
-        content.writeln('''
+          content.writeln('''
 @JsonSerializable()
 class $className {
   $className();
@@ -58,6 +59,7 @@ class $className {
   String toString() => '$className: $fieldName: \$$fieldName';
 }
 ''');
+        }
       }
     }
     await buildStep.writeAsString(output, formatter.format(content.toString()));

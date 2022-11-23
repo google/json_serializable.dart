@@ -3,195 +3,207 @@ import 'package:json_annotation/json_annotation.dart';
 part 'field_matrix.field_matrix.g.dart';
 
 @JsonSerializable()
-class UsageBothPublic {
-  UsageBothPublic();
+class ToJsonnullFromJsonnullPublic {
+  ToJsonnullFromJsonnullPublic();
+
+  int? aField;
+
+  int? field;
+
+  int? zField;
+
+  factory ToJsonnullFromJsonnullPublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsonnullPublicFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsonnullPublicToJson(this);
+
+  @override
+  String toString() => 'ToJsonnullFromJsonnullPublic: field: $field';
+}
+
+@JsonSerializable()
+class ToJsonnullFromJsontruePublic {
+  ToJsonnullFromJsontruePublic();
 
   int? aField;
 
   @JsonKey(
-    usage: FieldUsage.both,
+    includeFromJson: true,
   )
   int? field;
 
   int? zField;
 
-  factory UsageBothPublic.fromJson(Map<String, dynamic> json) =>
-      _$UsageBothPublicFromJson(json);
+  factory ToJsonnullFromJsontruePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsontruePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageBothPublicToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsontruePublicToJson(this);
 
   @override
-  String toString() => 'UsageBothPublic: field: $field';
+  String toString() => 'ToJsonnullFromJsontruePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageToJsonPublic {
-  UsageToJsonPublic();
+class ToJsonnullFromJsonfalsePublic {
+  ToJsonnullFromJsonfalsePublic();
 
   int? aField;
 
   @JsonKey(
-    usage: FieldUsage.toJson,
+    includeFromJson: false,
   )
   int? field;
 
   int? zField;
 
-  factory UsageToJsonPublic.fromJson(Map<String, dynamic> json) =>
-      _$UsageToJsonPublicFromJson(json);
+  factory ToJsonnullFromJsonfalsePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsonfalsePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageToJsonPublicToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsonfalsePublicToJson(this);
 
   @override
-  String toString() => 'UsageToJsonPublic: field: $field';
+  String toString() => 'ToJsonnullFromJsonfalsePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageFromJsonPublic {
-  UsageFromJsonPublic();
+class ToJsontrueFromJsonnullPublic {
+  ToJsontrueFromJsonnullPublic();
 
   int? aField;
 
   @JsonKey(
-    usage: FieldUsage.fromJson,
+    includeToJson: true,
   )
   int? field;
 
   int? zField;
 
-  factory UsageFromJsonPublic.fromJson(Map<String, dynamic> json) =>
-      _$UsageFromJsonPublicFromJson(json);
+  factory ToJsontrueFromJsonnullPublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsonnullPublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageFromJsonPublicToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsonnullPublicToJson(this);
 
   @override
-  String toString() => 'UsageFromJsonPublic: field: $field';
+  String toString() => 'ToJsontrueFromJsonnullPublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageNonePublic {
-  UsageNonePublic();
+class ToJsontrueFromJsontruePublic {
+  ToJsontrueFromJsontruePublic();
 
   int? aField;
 
   @JsonKey(
-    usage: FieldUsage.none,
+    includeFromJson: true,
+    includeToJson: true,
   )
   int? field;
 
   int? zField;
 
-  factory UsageNonePublic.fromJson(Map<String, dynamic> json) =>
-      _$UsageNonePublicFromJson(json);
+  factory ToJsontrueFromJsontruePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsontruePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageNonePublicToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsontruePublicToJson(this);
 
   @override
-  String toString() => 'UsageNonePublic: field: $field';
+  String toString() => 'ToJsontrueFromJsontruePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageNullPublic {
-  UsageNullPublic();
+class ToJsontrueFromJsonfalsePublic {
+  ToJsontrueFromJsonfalsePublic();
 
   int? aField;
 
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: true,
+  )
   int? field;
 
   int? zField;
 
-  factory UsageNullPublic.fromJson(Map<String, dynamic> json) =>
-      _$UsageNullPublicFromJson(json);
+  factory ToJsontrueFromJsonfalsePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsonfalsePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageNullPublicToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsonfalsePublicToJson(this);
 
   @override
-  String toString() => 'UsageNullPublic: field: $field';
+  String toString() => 'ToJsontrueFromJsonfalsePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageBothPrivate {
-  UsageBothPrivate();
+class ToJsonfalseFromJsonnullPublic {
+  ToJsonfalseFromJsonnullPublic();
 
   int? aField;
 
-  @JsonKey(usage: FieldUsage.both, name: 'field')
-  int? _field;
+  @JsonKey(
+    includeToJson: false,
+  )
+  int? field;
 
   int? zField;
 
-  factory UsageBothPrivate.fromJson(Map<String, dynamic> json) =>
-      _$UsageBothPrivateFromJson(json);
+  factory ToJsonfalseFromJsonnullPublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsonnullPublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageBothPrivateToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonfalseFromJsonnullPublicToJson(this);
 
   @override
-  String toString() => 'UsageBothPrivate: _field: $_field';
+  String toString() => 'ToJsonfalseFromJsonnullPublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageToJsonPrivate {
-  UsageToJsonPrivate();
+class ToJsonfalseFromJsontruePublic {
+  ToJsonfalseFromJsontruePublic();
 
   int? aField;
 
-  @JsonKey(usage: FieldUsage.toJson, name: 'field')
-  int? _field;
+  @JsonKey(
+    includeFromJson: true,
+    includeToJson: false,
+  )
+  int? field;
 
   int? zField;
 
-  factory UsageToJsonPrivate.fromJson(Map<String, dynamic> json) =>
-      _$UsageToJsonPrivateFromJson(json);
+  factory ToJsonfalseFromJsontruePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsontruePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageToJsonPrivateToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonfalseFromJsontruePublicToJson(this);
 
   @override
-  String toString() => 'UsageToJsonPrivate: _field: $_field';
+  String toString() => 'ToJsonfalseFromJsontruePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageFromJsonPrivate {
-  UsageFromJsonPrivate();
+class ToJsonfalseFromJsonfalsePublic {
+  ToJsonfalseFromJsonfalsePublic();
 
   int? aField;
 
-  @JsonKey(usage: FieldUsage.fromJson, name: 'field')
-  int? _field;
+  @JsonKey(
+    includeFromJson: false,
+    includeToJson: false,
+  )
+  int? field;
 
   int? zField;
 
-  factory UsageFromJsonPrivate.fromJson(Map<String, dynamic> json) =>
-      _$UsageFromJsonPrivateFromJson(json);
+  factory ToJsonfalseFromJsonfalsePublic.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsonfalsePublicFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageFromJsonPrivateToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonfalseFromJsonfalsePublicToJson(this);
 
   @override
-  String toString() => 'UsageFromJsonPrivate: _field: $_field';
+  String toString() => 'ToJsonfalseFromJsonfalsePublic: field: $field';
 }
 
 @JsonSerializable()
-class UsageNonePrivate {
-  UsageNonePrivate();
-
-  int? aField;
-
-  @JsonKey(usage: FieldUsage.none, name: 'field')
-  int? _field;
-
-  int? zField;
-
-  factory UsageNonePrivate.fromJson(Map<String, dynamic> json) =>
-      _$UsageNonePrivateFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UsageNonePrivateToJson(this);
-
-  @override
-  String toString() => 'UsageNonePrivate: _field: $_field';
-}
-
-@JsonSerializable()
-class UsageNullPrivate {
-  UsageNullPrivate();
+class ToJsonnullFromJsonnullPrivate {
+  ToJsonnullFromJsonnullPrivate();
 
   int? aField;
 
@@ -200,11 +212,172 @@ class UsageNullPrivate {
 
   int? zField;
 
-  factory UsageNullPrivate.fromJson(Map<String, dynamic> json) =>
-      _$UsageNullPrivateFromJson(json);
+  factory ToJsonnullFromJsonnullPrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsonnullPrivateFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UsageNullPrivateToJson(this);
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsonnullPrivateToJson(this);
 
   @override
-  String toString() => 'UsageNullPrivate: _field: $_field';
+  String toString() => 'ToJsonnullFromJsonnullPrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsonnullFromJsontruePrivate {
+  ToJsonnullFromJsontruePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: true, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsonnullFromJsontruePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsontruePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsontruePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsonnullFromJsontruePrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsonnullFromJsonfalsePrivate {
+  ToJsonnullFromJsonfalsePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: false, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsonnullFromJsonfalsePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonnullFromJsonfalsePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsonnullFromJsonfalsePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsonnullFromJsonfalsePrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsontrueFromJsonnullPrivate {
+  ToJsontrueFromJsonnullPrivate();
+
+  int? aField;
+
+  @JsonKey(includeToJson: true, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsontrueFromJsonnullPrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsonnullPrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsonnullPrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsontrueFromJsonnullPrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsontrueFromJsontruePrivate {
+  ToJsontrueFromJsontruePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: true, includeToJson: true, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsontrueFromJsontruePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsontruePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsontruePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsontrueFromJsontruePrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsontrueFromJsonfalsePrivate {
+  ToJsontrueFromJsonfalsePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: false, includeToJson: true, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsontrueFromJsonfalsePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsontrueFromJsonfalsePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsontrueFromJsonfalsePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsontrueFromJsonfalsePrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsonfalseFromJsonnullPrivate {
+  ToJsonfalseFromJsonnullPrivate();
+
+  int? aField;
+
+  @JsonKey(includeToJson: false, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsonfalseFromJsonnullPrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsonnullPrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsonfalseFromJsonnullPrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsonfalseFromJsonnullPrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsonfalseFromJsontruePrivate {
+  ToJsonfalseFromJsontruePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: true, includeToJson: false, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsonfalseFromJsontruePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsontruePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ToJsonfalseFromJsontruePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsonfalseFromJsontruePrivate: _field: $_field';
+}
+
+@JsonSerializable()
+class ToJsonfalseFromJsonfalsePrivate {
+  ToJsonfalseFromJsonfalsePrivate();
+
+  int? aField;
+
+  @JsonKey(includeFromJson: false, includeToJson: false, name: 'field')
+  int? _field;
+
+  int? zField;
+
+  factory ToJsonfalseFromJsonfalsePrivate.fromJson(Map<String, dynamic> json) =>
+      _$ToJsonfalseFromJsonfalsePrivateFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$ToJsonfalseFromJsonfalsePrivateToJson(this);
+
+  @override
+  String toString() => 'ToJsonfalseFromJsonfalsePrivate: _field: $_field';
 }

@@ -11,7 +11,11 @@ class KeyConfig {
 
   final bool disallowNullValue;
 
+  final bool? includeFromJson;
+
   final bool includeIfNull;
+
+  final bool? includeToJson;
 
   final String name;
 
@@ -21,17 +25,16 @@ class KeyConfig {
 
   final String? readValueFunctionName;
 
-  final FieldUsage? usage;
-
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
+    required this.includeFromJson,
     required this.includeIfNull,
+    required this.includeToJson,
     required this.name,
     required this.readValueFunctionName,
     required this.required,
     required this.unknownEnumValue,
-    required this.usage,
   });
 }
 

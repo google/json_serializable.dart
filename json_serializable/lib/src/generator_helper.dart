@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
@@ -143,15 +142,11 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 }
 
 extension on KeyConfig {
-  bool get explicitYesFromJson =>
-      usage == FieldUsage.both || usage == FieldUsage.fromJson;
+  bool get explicitYesFromJson => includeFromJson == true;
 
-  bool get explicitNoFromJson =>
-      usage == FieldUsage.none || usage == FieldUsage.toJson;
+  bool get explicitNoFromJson => includeFromJson == false;
 
-  bool get explicitYesToJson =>
-      usage == FieldUsage.both || usage == FieldUsage.toJson;
+  bool get explicitYesToJson => includeToJson == true;
 
-  bool get explicitNoToJson =>
-      usage == FieldUsage.none || usage == FieldUsage.fromJson;
+  bool get explicitNoToJson => includeFromJson == false;
 }
