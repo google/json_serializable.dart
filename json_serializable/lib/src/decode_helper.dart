@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -51,10 +52,13 @@ mixin DecodeHelper implements HelperCore {
 
     final fromJsonLines = <String>[];
 
-    String deserializeFun(String paramOrFieldName,
-            {ParameterElement? ctorParam}) =>
+    String deserializeFun(
+      String paramOrFieldName, {
+      ParameterElement? ctorParam,
+      bool forceNullable = false,
+    }) =>
         _deserializeForField(accessibleFields[paramOrFieldName]!,
-            ctorParam: ctorParam);
+            ctorParam: ctorParam, forceNullable: forceNullable);
 
     final data = _writeConstructorInvocation(
       element,
@@ -128,30 +132,26 @@ mixin DecodeHelper implements HelperCore {
     } else {
       fromJsonLines.addAll(checks);
 
-      final sectionBuffer = StringBuffer()..write('''
-  ${data.content}''');
+      final sectionBuffer = StringBuffer()
+        ..writeln('final v = ${data.content};');
       for (final field in data.fieldsToSet) {
         sectionBuffer
           ..writeln()
-          ..write('    ..$field = ')
-          ..write(deserializeFun(field));
+          ..write('''
+  final $field = ${deserializeFun(field, forceNullable: true)};
+  if ($field != null) {
+      v.$field = $field;
+  }
+          ''');
       }
-      sectionBuffer.writeln(';');
       fromJsonLines.add(sectionBuffer.toString());
     }
 
-    if (fromJsonLines.length == 1) {
-      buffer
-        ..write('=>')
-        ..write(fromJsonLines.single);
-    } else {
-      buffer
-        ..write('{')
-        ..writeAll(fromJsonLines.take(fromJsonLines.length - 1))
-        ..write('return ')
-        ..write(fromJsonLines.last)
-        ..write('}');
-    }
+    buffer
+      ..write('{')
+      ..writeAll(fromJsonLines)
+      ..write('return v;')
+      ..write('}');
 
     return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
   }
@@ -196,9 +196,15 @@ mixin DecodeHelper implements HelperCore {
     FieldElement field, {
     ParameterElement? ctorParam,
     bool checkedProperty = false,
+    bool forceNullable = false,
   }) {
     final jsonKeyName = safeNameAccess(field);
-    final targetType = ctorParam?.type ?? field.type;
+    var targetType = ctorParam?.type ?? field.type;
+    if (forceNullable && targetType is InterfaceType) {
+      targetType = targetType.element.instantiate(
+          typeArguments: targetType.typeArguments,
+          nullabilitySuffix: NullabilitySuffix.question);
+    }
     final contextHelper = getHelperContext(field);
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
