@@ -5,6 +5,8 @@
 import 'dart:async';
 
 import 'package:build/build.dart';
+import 'package:path/path.dart' as p;
+import 'package:source_helper/source_helper.dart';
 
 import 'shared.dart';
 
@@ -13,19 +15,26 @@ Builder builder([_]) => _FieldMatrixBuilder();
 class _FieldMatrixBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final inputBaseName = p.basenameWithoutExtension(buildStep.inputId.path);
+
     final output = buildStep.allowedOutputs.single;
 
     final content = StringBuffer('''
 import 'package:json_annotation/json_annotation.dart';
 
-part 'field_matrix.field_matrix.g.dart';
+part '$inputBaseName.field_matrix.g.dart';
 ''');
+
+    final classes = <String>{};
 
     for (var isPublic in [true, false]) {
       for (var includeToJson in [null, true, false]) {
         for (var includeFromJson in [null, true, false]) {
-          final className = 'ToJson${includeToJson}FromJson$includeFromJson'
+          final className = 'ToJson${includeToJson.toString().pascal}'
+              'FromJson${includeFromJson.toString().pascal}'
               '${isPublic ? 'Public' : 'Private'}';
+
+          classes.add(className);
 
           final fieldName = isPublic ? 'field' : '_field';
 
@@ -62,6 +71,13 @@ class $className {
         }
       }
     }
+
+    content.writeln('''
+const fromJsonFactories = <Object Function(Map<String, dynamic>)>{
+  ${classes.map((e) => '$e.fromJson,').join()}
+};
+''');
+
     await buildStep.writeAsString(output, formatter.format(content.toString()));
   }
 

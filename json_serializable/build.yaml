@@ -13,7 +13,7 @@ targets:
         generate_for:
         - example/*
         - test/default_value/*
-        - test/field_matrix.field_matrix.dart
+        - test/field_matrix_test.field_matrix.dart
         - test/generic_files/*
         - test/integration/*
         - test/kitchen_sink/*
@@ -23,7 +23,7 @@ targets:
 
       json_serializable|_field_matrix_builder:
         generate_for:
-        - test/field_matrix.dart
+        - test/field_matrix_test.dart
 
       json_serializable|_test_builder:
         generate_for:

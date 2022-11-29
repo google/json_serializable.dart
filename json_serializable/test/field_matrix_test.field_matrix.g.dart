@@ -2,260 +2,260 @@
 
 // ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
 
-part of 'field_matrix.field_matrix.dart';
+part of 'field_matrix_test.field_matrix.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ToJsonnullFromJsonnullPublic _$ToJsonnullFromJsonnullPublicFromJson(
+ToJsonNullFromJsonNullPublic _$ToJsonNullFromJsonNullPublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsonnullPublic()
+    ToJsonNullFromJsonNullPublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsonnullPublicToJson(
-        ToJsonnullFromJsonnullPublic instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonNullPublicToJson(
+        ToJsonNullFromJsonNullPublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsonnullFromJsontruePublic _$ToJsonnullFromJsontruePublicFromJson(
+ToJsonNullFromJsonTruePublic _$ToJsonNullFromJsonTruePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsontruePublic()
+    ToJsonNullFromJsonTruePublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsontruePublicToJson(
-        ToJsonnullFromJsontruePublic instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonTruePublicToJson(
+        ToJsonNullFromJsonTruePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsonnullFromJsonfalsePublic _$ToJsonnullFromJsonfalsePublicFromJson(
+ToJsonNullFromJsonFalsePublic _$ToJsonNullFromJsonFalsePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsonfalsePublic()
+    ToJsonNullFromJsonFalsePublic()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsonfalsePublicToJson(
-        ToJsonnullFromJsonfalsePublic instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonFalsePublicToJson(
+        ToJsonNullFromJsonFalsePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsonnullPublic _$ToJsontrueFromJsonnullPublicFromJson(
+ToJsonTrueFromJsonNullPublic _$ToJsonTrueFromJsonNullPublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsonnullPublic()
+    ToJsonTrueFromJsonNullPublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsonnullPublicToJson(
-        ToJsontrueFromJsonnullPublic instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonNullPublicToJson(
+        ToJsonTrueFromJsonNullPublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsontruePublic _$ToJsontrueFromJsontruePublicFromJson(
+ToJsonTrueFromJsonTruePublic _$ToJsonTrueFromJsonTruePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsontruePublic()
+    ToJsonTrueFromJsonTruePublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsontruePublicToJson(
-        ToJsontrueFromJsontruePublic instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonTruePublicToJson(
+        ToJsonTrueFromJsonTruePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsonfalsePublic _$ToJsontrueFromJsonfalsePublicFromJson(
+ToJsonTrueFromJsonFalsePublic _$ToJsonTrueFromJsonFalsePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsonfalsePublic()
+    ToJsonTrueFromJsonFalsePublic()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsonfalsePublicToJson(
-        ToJsontrueFromJsonfalsePublic instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonFalsePublicToJson(
+        ToJsonTrueFromJsonFalsePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsonnullPublic _$ToJsonfalseFromJsonnullPublicFromJson(
+ToJsonFalseFromJsonNullPublic _$ToJsonFalseFromJsonNullPublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsonnullPublic()
+    ToJsonFalseFromJsonNullPublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsonnullPublicToJson(
-        ToJsonfalseFromJsonnullPublic instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonNullPublicToJson(
+        ToJsonFalseFromJsonNullPublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsontruePublic _$ToJsonfalseFromJsontruePublicFromJson(
+ToJsonFalseFromJsonTruePublic _$ToJsonFalseFromJsonTruePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsontruePublic()
+    ToJsonFalseFromJsonTruePublic()
       ..aField = json['aField'] as int?
       ..field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsontruePublicToJson(
-        ToJsonfalseFromJsontruePublic instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonTruePublicToJson(
+        ToJsonFalseFromJsonTruePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance.field,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsonfalsePublic _$ToJsonfalseFromJsonfalsePublicFromJson(
+ToJsonFalseFromJsonFalsePublic _$ToJsonFalseFromJsonFalsePublicFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsonfalsePublic()
+    ToJsonFalseFromJsonFalsePublic()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsonfalsePublicToJson(
-        ToJsonfalseFromJsonfalsePublic instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonFalsePublicToJson(
+        ToJsonFalseFromJsonFalsePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsonnullFromJsonnullPrivate _$ToJsonnullFromJsonnullPrivateFromJson(
+ToJsonNullFromJsonNullPrivate _$ToJsonNullFromJsonNullPrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsonnullPrivate()
+    ToJsonNullFromJsonNullPrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsonnullPrivateToJson(
-        ToJsonnullFromJsonnullPrivate instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonNullPrivateToJson(
+        ToJsonNullFromJsonNullPrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsonnullFromJsontruePrivate _$ToJsonnullFromJsontruePrivateFromJson(
+ToJsonNullFromJsonTruePrivate _$ToJsonNullFromJsonTruePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsontruePrivate()
+    ToJsonNullFromJsonTruePrivate()
       ..aField = json['aField'] as int?
       .._field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsontruePrivateToJson(
-        ToJsonnullFromJsontruePrivate instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonTruePrivateToJson(
+        ToJsonNullFromJsonTruePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance._field,
       'zField': instance.zField,
     };
 
-ToJsonnullFromJsonfalsePrivate _$ToJsonnullFromJsonfalsePrivateFromJson(
+ToJsonNullFromJsonFalsePrivate _$ToJsonNullFromJsonFalsePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonnullFromJsonfalsePrivate()
+    ToJsonNullFromJsonFalsePrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonnullFromJsonfalsePrivateToJson(
-        ToJsonnullFromJsonfalsePrivate instance) =>
+Map<String, dynamic> _$ToJsonNullFromJsonFalsePrivateToJson(
+        ToJsonNullFromJsonFalsePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsonnullPrivate _$ToJsontrueFromJsonnullPrivateFromJson(
+ToJsonTrueFromJsonNullPrivate _$ToJsonTrueFromJsonNullPrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsonnullPrivate()
+    ToJsonTrueFromJsonNullPrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsonnullPrivateToJson(
-        ToJsontrueFromJsonnullPrivate instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonNullPrivateToJson(
+        ToJsonTrueFromJsonNullPrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance._field,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsontruePrivate _$ToJsontrueFromJsontruePrivateFromJson(
+ToJsonTrueFromJsonTruePrivate _$ToJsonTrueFromJsonTruePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsontruePrivate()
+    ToJsonTrueFromJsonTruePrivate()
       ..aField = json['aField'] as int?
       .._field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsontruePrivateToJson(
-        ToJsontrueFromJsontruePrivate instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonTruePrivateToJson(
+        ToJsonTrueFromJsonTruePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance._field,
       'zField': instance.zField,
     };
 
-ToJsontrueFromJsonfalsePrivate _$ToJsontrueFromJsonfalsePrivateFromJson(
+ToJsonTrueFromJsonFalsePrivate _$ToJsonTrueFromJsonFalsePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsontrueFromJsonfalsePrivate()
+    ToJsonTrueFromJsonFalsePrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsontrueFromJsonfalsePrivateToJson(
-        ToJsontrueFromJsonfalsePrivate instance) =>
+Map<String, dynamic> _$ToJsonTrueFromJsonFalsePrivateToJson(
+        ToJsonTrueFromJsonFalsePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsonnullPrivate _$ToJsonfalseFromJsonnullPrivateFromJson(
+ToJsonFalseFromJsonNullPrivate _$ToJsonFalseFromJsonNullPrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsonnullPrivate()
+    ToJsonFalseFromJsonNullPrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsonnullPrivateToJson(
-        ToJsonfalseFromJsonnullPrivate instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonNullPrivateToJson(
+        ToJsonFalseFromJsonNullPrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsontruePrivate _$ToJsonfalseFromJsontruePrivateFromJson(
+ToJsonFalseFromJsonTruePrivate _$ToJsonFalseFromJsonTruePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsontruePrivate()
+    ToJsonFalseFromJsonTruePrivate()
       ..aField = json['aField'] as int?
       .._field = json['field'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsontruePrivateToJson(
-        ToJsonfalseFromJsontruePrivate instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonTruePrivateToJson(
+        ToJsonFalseFromJsonTruePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'field': instance._field,
       'zField': instance.zField,
     };
 
-ToJsonfalseFromJsonfalsePrivate _$ToJsonfalseFromJsonfalsePrivateFromJson(
+ToJsonFalseFromJsonFalsePrivate _$ToJsonFalseFromJsonFalsePrivateFromJson(
         Map<String, dynamic> json) =>
-    ToJsonfalseFromJsonfalsePrivate()
+    ToJsonFalseFromJsonFalsePrivate()
       ..aField = json['aField'] as int?
       ..zField = json['zField'] as int?;
 
-Map<String, dynamic> _$ToJsonfalseFromJsonfalsePrivateToJson(
-        ToJsonfalseFromJsonfalsePrivate instance) =>
+Map<String, dynamic> _$ToJsonFalseFromJsonFalsePrivateToJson(
+        ToJsonFalseFromJsonFalsePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
       'zField': instance.zField,
