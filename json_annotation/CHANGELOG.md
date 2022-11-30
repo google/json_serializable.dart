@@ -1,5 +1,8 @@
 ## 4.8.0-dev
 
+- DEPRECATED `JsonKey.ignore`. Replaced by...
+- Added `JsonKey.includeFromJson` and `JsonKey.includeToJson` to allow 
+  fine-grained control of if a field is encoded/decoded.  
 - Added `JsonSerializable.createPerFieldToJson` which allows generating
   a `_$ModelPerFieldToJson`, enabling partial encoding of a model.
 - Update `JsonKey` documentation to align with new features in 

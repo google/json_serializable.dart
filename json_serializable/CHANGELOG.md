@@ -1,5 +1,6 @@
 ## 6.6.0-dev
 
+- Support for `JsonKey.includeFromJson` and `JsonKey.includeToJson`.
 - Support `JsonEnum.valueField` being set with `'index'`.
 - Require Dart SDK `>=2.18.0`.
 - Require `analyzer: ^5.2.0`
