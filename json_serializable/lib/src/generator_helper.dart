@@ -91,12 +91,15 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
           .map((e) => e.value)
           .toList();
 
+      // Need to add candidates BACK even if they are not used in the factory if
+      // they are forced to be used for toJSON
       for (var candidate in sortedFields.where((element) =>
           jsonKeyFor(element).explicitYesToJson &&
           !fieldsToUse.contains(element))) {
         fieldsToUse.add(candidate);
       }
 
+      // Need the fields to maintain the original source ordering
       fieldsToUse.sort(
           (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)));
 
