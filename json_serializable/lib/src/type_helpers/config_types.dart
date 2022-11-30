@@ -11,9 +11,11 @@ class KeyConfig {
 
   final bool disallowNullValue;
 
-  final bool ignore;
+  final bool? includeFromJson;
 
   final bool includeIfNull;
+
+  final bool? includeToJson;
 
   final String name;
 
@@ -26,8 +28,9 @@ class KeyConfig {
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
-    required this.ignore,
+    required this.includeFromJson,
     required this.includeIfNull,
+    required this.includeToJson,
     required this.name,
     required this.readValueFunctionName,
     required this.required,

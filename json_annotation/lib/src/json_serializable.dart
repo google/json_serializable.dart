@@ -193,7 +193,7 @@ class JsonSerializable {
   /// generated.
   ///
   /// It will have the same effect as if those fields had been annotated with
-  /// `@JsonKey(ignore: true)`.
+  /// [JsonKey.includeToJson] and [JsonKey.includeFromJson] set to `false`
   final bool? ignoreUnannotated;
 
   /// Whether the generator should include fields with `null` values in the
@@ -237,7 +237,7 @@ class JsonSerializable {
   /// @myCustomAnnotation
   /// class Another {...}
   /// ```
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final List<JsonConverter>? converters;
 
   /// Creates a new [JsonSerializable] instance.

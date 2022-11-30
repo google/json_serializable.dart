@@ -28,7 +28,7 @@ class Model {
   @JsonKey(includeIfNull: false)
   final Nested? nestedExcludeIfNull;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final String? ignoredName;
 
   String get fullName => '$firstName $lastName';

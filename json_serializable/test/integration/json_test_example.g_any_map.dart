@@ -70,7 +70,7 @@ class Order {
   )
   StatusCode? statusCode;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get platformValue => platform!.description;
 
   set platformValue(String value) {
@@ -80,7 +80,7 @@ class Order {
   // Ignored getter without value set in ctor
   int get price => items!.fold(0, (total, item) => item.price! + total);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool? shouldBeCached;
 
   Order.custom(this.category, [Iterable<Item>? items])

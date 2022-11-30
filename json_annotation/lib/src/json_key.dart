@@ -47,7 +47,26 @@ class JsonKey {
   ///
   /// If `null` (the default) or `false`, the field will be considered for
   /// serialization.
+  ///
+  /// This field is DEPRECATED use [includeFromJson] and [includeToJson]
+  /// instead.
+  @Deprecated(
+    'Use `includeFromJson` and `includeToJson` with a value of `false` '
+    'instead.',
+  )
   final bool? ignore;
+
+  /// Used to force a field to be included (or excluded) when decoding a object
+  /// from JSON.
+  ///
+  /// `null` (the default) means the field will be handled with the default
+  /// semantics that take into account if it's private or if it can be cleanly
+  /// round-tripped to-from JSON.
+  ///
+  /// `true` means the field should always be decoded, even if it's private.
+  ///
+  /// `false` means the field should never be decoded.
+  final bool? includeFromJson;
 
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
@@ -65,6 +84,18 @@ class JsonKey {
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
   final bool? includeIfNull;
+
+  /// Used to force a field to be included (or excluded) when encoding a object
+  /// to JSON.
+  ///
+  /// `null` (the default) means the field will be handled with the default
+  /// semantics that take into account if it's private or if it can be cleanly
+  /// round-tripped to-from JSON.
+  ///
+  /// `true` means the field should always be encoded, even if it's private.
+  ///
+  /// `false` means the field should never be encoded.
+  final bool? includeToJson;
 
   /// The key in a JSON map to use when reading and writing values corresponding
   /// to the annotated fields.
@@ -122,12 +153,19 @@ class JsonKey {
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey({
-    @Deprecated('Has no effect') bool? nullable,
+    @Deprecated('Has no effect')
+        bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
-    this.ignore,
+    @Deprecated(
+      'Use `includeFromJson` and `includeToJson` with a value of `false` '
+      'instead.',
+    )
+        this.ignore,
+    this.includeFromJson,
     this.includeIfNull,
+    this.includeToJson,
     this.name,
     this.readValue,
     this.required,
