@@ -20,7 +20,7 @@ Annotate your code with classes defined in
 
 - See [`lib/example.g.dart`][example_g] for the generated file.
 
-Run `pub run build_runner build` to generate files into your source directory.
+Run `dart run build_runner build` to generate files into your source directory.
 
 ```console
 > pub run build_runner build
@@ -32,7 +32,7 @@ Run `pub run build_runner build` to generate files into your source directory.
 [INFO] Build: Succeeded after 4687ms with 1 outputs
 ```
 
-_NOTE_: If you're using Flutter, replace `pub run` with
+_NOTE_: If you're using Flutter, replace `dart run` with
 `flutter pub run`.
 
 [example]: lib/example.dart
