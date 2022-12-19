@@ -39,5 +39,7 @@ dev_dependencies:
   yaml: ^3.0.0
 
 dependency_overrides:
+  checked_yaml:
+    path: ../checked_yaml
   json_annotation:
     path: ../json_annotation
