@@ -120,12 +120,12 @@ class ParsedYamlException implements Exception {
   final Object? innerError;
 
   ParsedYamlException(
-    this.message,
-    YamlNode yamlNode, {
+    String message,
+    YamlNode this.yamlNode, {
     this.innerError,
   }) :
-        // ignore: prefer_initializing_formals
-        yamlNode = yamlNode;
+        // TODO(kevmoo) remove when dart-lang/sdk#50756 is fixed!
+        message = message.replaceAll(" of ' in type cast'", ' in type cast');
 
   factory ParsedYamlException.fromYamlException(YamlException exception) =>
       _WrappedYamlException(exception);
