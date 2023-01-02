@@ -1,7 +1,8 @@
-## 2.0.2-dev
+## 2.0.2
 
 - Require `json_annotation` `^4.3.0`
 - Require Dart SDK `>=2.18`
+- Work-around for [dart-lang/sdk#50756](https://github.com/dart-lang/sdk/issues/50756).
 
 ## 2.0.1
 
