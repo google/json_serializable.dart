@@ -1,5 +1,5 @@
 #!/bin/bash
-# Created with package:mono_repo v6.4.2
+# Created with package:mono_repo v6.4.3
 
 # Support built in commands on windows out of the box.
 # When it is a flutter repo (check the pubspec.yaml for "sdk: flutter")
