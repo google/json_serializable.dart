@@ -1,4 +1,4 @@
-## 4.8.0-dev
+## 4.8.0
 
 - DEPRECATED `JsonKey.ignore`. Replaced by...
 - Added `JsonKey.includeFromJson` and `JsonKey.includeToJson` to allow 
