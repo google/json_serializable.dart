@@ -5,24 +5,29 @@ environment:
   sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
-  json_annotation: ^4.7.0
+  json_annotation: ^4.8.0
 
 dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.
   _json_serial_shared_test:
     path: ../shared_test
-  build_runner: ^2.0.0
+
+  # REQUIRED!
+  build_runner: ^2.3.3
 
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^3.0.0
 
-  json_serializable: ^6.0.0
+  # REQUIRED!
+  json_serializable: ^6.6.0
 
   # Not required to use `json_serializable`.
   lints: ^2.0.0
   path: ^1.8.0
   test: ^1.16.0
 
+# This section is used to verify changes to these packages. Do not include in
+# your code!
 dependency_overrides:
   json_annotation:
     path: ../json_annotation

@@ -5,11 +5,11 @@ dependencies to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  json_annotation: ^4.7.0
+  json_annotation: ^4.8.0
 
 dev_dependencies:
-  build_runner: ^2.0.0
-  json_serializable: ^6.0.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.0
 ```
 
 Annotate your code with classes defined in
@@ -23,7 +23,7 @@ Annotate your code with classes defined in
 Run `dart run build_runner build` to generate files into your source directory.
 
 ```console
-> pub run build_runner build
+> dart pub run build_runner build
 [INFO] ensureBuildScript: Generating build script completed, took 368ms
 [INFO] BuildDefinition: Reading cached asset graph completed, took 54ms
 [INFO] BuildDefinition: Checking for updates since last build completed, took 663ms
