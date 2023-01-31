@@ -9,9 +9,9 @@ import 'package:json_annotation/json_annotation.dart';
 import 'default_value_interface.dart' as dvi hide Greek;
 import 'default_value_interface.dart'
     show
-        Greek,
         ConstClass,
         ConstClassConverter,
+        Greek,
         constClassFromJson,
         constClassToJson,
         intDefaultValueFunction;

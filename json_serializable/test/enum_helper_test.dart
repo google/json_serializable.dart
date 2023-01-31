@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
+library test;
+
 import 'package:json_serializable/src/type_helpers/enum_helper.dart';
 import 'package:test/test.dart';
 
