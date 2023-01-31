@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
+library test;
+
 import 'dart:io';
 
 import 'package:_json_serial_shared_test/shared_test.dart';

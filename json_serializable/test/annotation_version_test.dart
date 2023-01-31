@@ -4,6 +4,8 @@
 
 @TestOn('vm')
 @Tags(['presubmit-only'])
+library test;
+
 import 'dart:io';
 
 import 'package:json_serializable/src/check_dependencies.dart';

@@ -4,7 +4,7 @@
 
 export 'src/shared_checkers.dart' show simpleJsonTypeChecker;
 export 'src/type_helper.dart'
-    show TypeHelperContext, TypeHelperContextWithConfig, TypeHelper;
+    show TypeHelper, TypeHelperContext, TypeHelperContextWithConfig;
 export 'src/type_helpers/big_int_helper.dart';
 export 'src/type_helpers/config_types.dart';
 export 'src/type_helpers/convert_helper.dart';
