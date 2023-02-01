@@ -40,16 +40,16 @@ const _expectedResult = {
     'without': {'aField': null, 'field': null, 'zField': null}
   },
   'ToJsonTrueFromJsonFalsePublic: field: null': {
+    'with': {'aField': null, 'field': null, 'zField': null},
+    'without': {'aField': null, 'field': null, 'zField': null}
+  },
+  'ToJsonFalseFromJsonNullPublic: field: 42': {
     'with': {'aField': null, 'zField': null},
     'without': {'aField': null, 'zField': null}
   },
-  'ToJsonFalseFromJsonNullPublic: field: 42': {
-    'with': {'aField': null, 'field': 42, 'zField': null},
-    'without': {'aField': null, 'field': null, 'zField': null}
-  },
   'ToJsonFalseFromJsonTruePublic: field: 42': {
-    'with': {'aField': null, 'field': 42, 'zField': null},
-    'without': {'aField': null, 'field': null, 'zField': null}
+    'with': {'aField': null, 'zField': null},
+    'without': {'aField': null, 'zField': null}
   },
   'ToJsonFalseFromJsonFalsePublic: field: null': {
     'with': {'aField': null, 'zField': null},
@@ -76,16 +76,16 @@ const _expectedResult = {
     'without': {'aField': null, 'field': null, 'zField': null}
   },
   'ToJsonTrueFromJsonFalsePrivate: _field: null': {
-    'with': {'aField': null, 'zField': null},
-    'without': {'aField': null, 'zField': null}
+    'with': {'aField': null, 'field': null, 'zField': null},
+    'without': {'aField': null, 'field': null, 'zField': null}
   },
   'ToJsonFalseFromJsonNullPrivate: _field: null': {
     'with': {'aField': null, 'zField': null},
     'without': {'aField': null, 'zField': null}
   },
   'ToJsonFalseFromJsonTruePrivate: _field: 42': {
-    'with': {'aField': null, 'field': 42, 'zField': null},
-    'without': {'aField': null, 'field': null, 'zField': null}
+    'with': {'aField': null, 'zField': null},
+    'without': {'aField': null, 'zField': null}
   },
   'ToJsonFalseFromJsonFalsePrivate: _field: null': {
     'with': {'aField': null, 'zField': null},

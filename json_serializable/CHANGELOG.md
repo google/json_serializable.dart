@@ -1,3 +1,7 @@
+## 6.6.1
+
+- Fix bug when `JsonKey.includeToJson` is `false`.
+
 ## 6.6.0
 
 - Support for `JsonKey.includeFromJson` and `JsonKey.includeToJson`.
