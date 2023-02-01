@@ -151,5 +151,5 @@ extension on KeyConfig {
 
   bool get explicitYesToJson => includeToJson == true;
 
-  bool get explicitNoToJson => includeFromJson == false;
+  bool get explicitNoToJson => includeToJson == false;
 }

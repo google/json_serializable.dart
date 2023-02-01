@@ -91,6 +91,7 @@ Map<String, dynamic> _$ToJsonTrueFromJsonFalsePublicToJson(
         ToJsonTrueFromJsonFalsePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
+      'field': instance.field,
       'zField': instance.zField,
     };
 
@@ -105,7 +106,6 @@ Map<String, dynamic> _$ToJsonFalseFromJsonNullPublicToJson(
         ToJsonFalseFromJsonNullPublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
-      'field': instance.field,
       'zField': instance.zField,
     };
 
@@ -120,7 +120,6 @@ Map<String, dynamic> _$ToJsonFalseFromJsonTruePublicToJson(
         ToJsonFalseFromJsonTruePublic instance) =>
     <String, dynamic>{
       'aField': instance.aField,
-      'field': instance.field,
       'zField': instance.zField,
     };
 
@@ -217,6 +216,7 @@ Map<String, dynamic> _$ToJsonTrueFromJsonFalsePrivateToJson(
         ToJsonTrueFromJsonFalsePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
+      'field': instance._field,
       'zField': instance.zField,
     };
 
@@ -244,7 +244,6 @@ Map<String, dynamic> _$ToJsonFalseFromJsonTruePrivateToJson(
         ToJsonFalseFromJsonTruePrivate instance) =>
     <String, dynamic>{
       'aField': instance.aField,
-      'field': instance._field,
       'zField': instance.zField,
     };
 
