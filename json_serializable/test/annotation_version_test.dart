@@ -4,6 +4,7 @@
 
 @TestOn('vm')
 @Tags(['presubmit-only'])
+@Timeout.factor(2)
 library test;
 
 import 'dart:io';
