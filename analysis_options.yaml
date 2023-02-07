@@ -1,4 +1,5 @@
-include: package:lints/recommended.yaml
+# See https://dart.dev/guides/language/analysis-options
+include: package:dart_flutter_team_lints/analysis_options.yaml
 
 analyzer:
   language:
@@ -6,9 +7,6 @@ analyzer:
 
 linter:
   rules:
-    - always_declare_return_types
-    - avoid_catching_errors
-    - avoid_dynamic_calls
     - avoid_private_typedef_functions
     - avoid_redundant_argument_values
     - avoid_returning_null
@@ -20,38 +18,24 @@ linter:
     - combinators_ordering
     - comment_references
     - dangling_library_doc_comments
-    - directives_ordering
     - implicit_call_tearoffs
     - join_return_with_assignment
     - library_annotations
-    - lines_longer_than_80_chars
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
     - no_runtimeType_toString
-    - omit_local_variable_types
-    - only_throw_errors
     - package_api_docs
-    - prefer_asserts_in_initializer_lists
     - prefer_const_constructors
     - prefer_const_declarations
     - prefer_expression_function_bodies
     - prefer_final_locals
     - prefer_relative_imports
-    - prefer_single_quotes
     - sort_child_properties_last
-    - sort_pub_dependencies
     - test_types_in_equals
-    - throw_in_finally
-    - type_annotate_public_apis
-    - unawaited_futures
-    - unnecessary_lambdas
     - unnecessary_library_directive
-    - unnecessary_parenthesis
-    - unnecessary_statements
     - unreachable_from_main
     - unsafe_html
     - use_full_hex_values_for_flutter_colors
-    - use_is_even_rather_than_modulo
     - use_string_buffers
     - use_string_in_part_of_directives
     - use_super_parameters

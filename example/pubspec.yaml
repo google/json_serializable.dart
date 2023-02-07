@@ -18,11 +18,13 @@ dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^3.0.0
 
+  # Not required to use `json_serializable`.
+  dart_flutter_team_lints: ^0.1.0
+
   # REQUIRED!
   json_serializable: ^6.6.0
 
   # Not required to use `json_serializable`.
-  lints: ^2.0.0
   path: ^1.8.0
   test: ^1.16.0
 
