@@ -1,3 +1,7 @@
+## 6.6.2-dev
+
+- Require Dart 2.19
+
 ## 6.6.1
 
 - Fix bug when `JsonKey.includeToJson` is `false`.

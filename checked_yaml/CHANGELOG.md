@@ -1,3 +1,7 @@
+## 2.0.3-dev
+
+- Require Dart 2.19
+
 ## 2.0.2
 
 - Require `json_annotation` `^4.3.0`
