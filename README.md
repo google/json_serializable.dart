@@ -38,8 +38,3 @@ An example showing how to set up and use `json_serializable` and
 `json_annotation`.
 
 [dart build system]: https://github.com/dart-lang/build
-
-## Publishing automation
-
-For information about our publishing automation and release process, see
-https://github.com/dart-lang/ecosystem/wiki/Publishing-automation.
