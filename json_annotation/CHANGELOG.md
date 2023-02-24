@@ -1,3 +1,7 @@
+## 4.8.1-dev
+
+- Require Dart 2.19
+
 ## 4.8.0
 
 - DEPRECATED `JsonKey.ignore`. Replaced by...

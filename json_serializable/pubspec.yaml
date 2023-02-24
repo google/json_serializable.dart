@@ -1,11 +1,11 @@
 name: json_serializable
-version: 6.6.1
+version: 6.6.2-dev
 description: >-
   Automatically generate code for converting to and from JSON by annotating
   Dart classes.
 repository: https://github.com/google/json_serializable.dart/tree/master/json_serializable
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.19.0 <3.0.0'
 
 dependencies:
   analyzer: ^5.2.0
@@ -29,7 +29,7 @@ dev_dependencies:
     path: ../shared_test
   build_runner: ^2.0.0
   build_verify: ^3.0.0
-  dart_flutter_team_lints: ^0.1.0
+  dart_flutter_team_lints: ^1.0.0
   dart_style: ^2.0.0
   logging: ^1.0.0
   source_gen_test: ^1.0.0
