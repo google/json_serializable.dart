@@ -88,7 +88,7 @@ class JsonSerializable {
   final bool? createFieldMap;
 
   /// If `true` (defaults to false), a private, static `_$ExamplePerFieldToJson`
-  /// abstract class will be geenrated in the part file.
+  /// abstract class will be generated in the part file.
   ///
   /// This abstract class will contain one static function per property,
   /// exposing a way to encode only this property instead of the entire object.
