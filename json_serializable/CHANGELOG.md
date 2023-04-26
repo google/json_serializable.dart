@@ -1,5 +1,6 @@
 ## 6.6.2-dev
 
+- Better handling of `Object?` or `dynamic` as `fromJson` constructor param.
 - Require Dart 2.19
 
 ## 6.6.1

@@ -11,7 +11,6 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
-import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -65,8 +64,6 @@ Json? $converterToJsonName<Json, Value>(
       return null;
     }
 
-    final asContent = asStatement(converter.jsonType);
-
     if (!converter.jsonType.isNullableType && targetType.isNullableType) {
       const converterFromJsonName = r'_$JsonConverterFromJson';
       context.addMember('''
@@ -88,7 +85,7 @@ Value? $converterFromJsonName<Json, Value>(
     return LambdaResult(
       expression,
       '${converter.accessString}.fromJson',
-      asContent: asContent,
+      asContent: converter.jsonType,
     );
   }
 }
