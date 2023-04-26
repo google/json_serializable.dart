@@ -101,6 +101,9 @@ Iterable<String> get mapKeyTypes =>
 final _iterableGenericArgs = ([
   ..._trivialTypesToTest.keys,
   ..._trivialTypesToTest.keys.map((e) => '$e?'),
+  'FromJsonDynamicParam',
+  'FromJsonNullableObjectParam',
+  'FromJsonObjectParam',
   'dynamic',
 ]..sort(compareAsciiLowerCase))
     .toSet();
