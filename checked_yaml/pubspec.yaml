@@ -5,6 +5,13 @@ description: >-
   Generate more helpful exceptions when decoding YAML documents using
   package:json_serializable and package:yaml.
 repository: https://github.com/google/json_serializable.dart/tree/master/checked_yaml
+topics:
+ - yaml
+ - json
+ - build-runner
+ - json-serializable
+ - codegen
+
 environment:
   sdk: '>=2.19.0 <3.0.0'
 

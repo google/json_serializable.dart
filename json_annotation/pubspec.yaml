@@ -4,6 +4,11 @@ description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
 repository: https://github.com/google/json_serializable.dart/tree/master/json_annotation
+topics:
+ - json
+ - build-runner
+ - json-serializable
+ - codegen
 
 environment:
   sdk: '>=2.19.0 <3.0.0'

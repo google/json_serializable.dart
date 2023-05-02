@@ -6,6 +6,11 @@ description: >-
 repository: https://github.com/google/json_serializable.dart/tree/master/json_serializable
 environment:
   sdk: '>=2.19.0 <3.0.0'
+topics:
+ - json
+ - build-runner
+ - json-serializable
+ - codegen
 
 dependencies:
   analyzer: ^5.2.0
