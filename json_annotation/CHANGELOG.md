@@ -1,6 +1,7 @@
-## 4.8.1-dev
+## 4.8.1
 
 - Require Dart 2.19
+- Add topics.
 
 ## 4.8.0
 
