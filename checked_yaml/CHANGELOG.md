@@ -1,6 +1,7 @@
-## 2.0.3-dev
+## 2.0.3
 
 - Require Dart 2.19
+- Add topics
 
 ## 2.0.2
 
