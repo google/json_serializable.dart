@@ -181,7 +181,7 @@ TypeParameterType _decodeHelper(
       final funcParamType = type.normalParameterTypes.single;
 
       if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
-          funcParamType.isDynamic) {
+          funcParamType is DynamicType) {
         return funcReturnType as TypeParameterType;
       }
     }
@@ -204,7 +204,7 @@ TypeParameterType _encodeHelper(
   final type = param.type;
 
   if (type is FunctionType &&
-      (type.returnType.isDartCoreObject || type.returnType.isDynamic) &&
+      (type.returnType.isDartCoreObject || type.returnType is DynamicType) &&
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 

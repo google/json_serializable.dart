@@ -118,24 +118,18 @@ void main() {
         config[entry.key] = entry.value;
 
         String lastLine;
-        switch (entry.key) {
-          case 'field_rename':
-            lastLine =
-                '`42` is not one of the supported values: none, kebab, snake, '
-                'pascal, screamingSnake';
-            break;
-          case 'constructor':
-            lastLine = "type 'int' is not a subtype of type 'String?' in type "
-                'cast';
-            break;
-          case 'create_to_json':
-            lastLine = "type 'int' is not a subtype of type 'bool?' in type "
-                'cast';
-            break;
-          default:
-            lastLine =
-                "type 'int' is not a subtype of type 'bool?' in type cast";
-        }
+        lastLine = switch (entry.key) {
+          'field_rename' =>
+            '`42` is not one of the supported values: none, kebab, snake, '
+                'pascal, screamingSnake',
+          'constructor' =>
+            "type 'int' is not a subtype of type 'String?' in type "
+                'cast',
+          'create_to_json' =>
+            "type 'int' is not a subtype of type 'bool?' in type "
+                'cast',
+          _ => "type 'int' is not a subtype of type 'bool?' in type cast"
+        };
 
         final matcher = isA<StateError>().having(
           (v) => v.message,
