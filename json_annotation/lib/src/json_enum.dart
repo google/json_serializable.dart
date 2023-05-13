@@ -36,15 +36,9 @@ class JsonEnum {
   /// for entries annotated with [JsonValue].
   final FieldRename fieldRename;
 
-  /// if `true`, enum comparison will be done using case-insensitive.
+  /// If `true`, enum comparison will be done using case-insensitive.
   ///
   /// The default, `false`, means enum comparison will be done using
   /// case-sensitive.
   final bool caseInsensitive;
-
-  factory JsonEnum.fromJson(Map<String, dynamic> json) {
-    final caseInsensitive = json['case_insensitive'] as bool?;
-    return // caseInsensitive == null ? null :
-      JsonEnum(caseInsensitive: caseInsensitive ?? false);
-  }
 }
