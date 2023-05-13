@@ -18,6 +18,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'checked',
             'constructor',
             'create_factory',
+            'create_field_map',
+            'create_per_field_to_json',
             'create_to_json',
             'disallow_unrecognized_keys',
             'explicit_to_json',
@@ -31,6 +33,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           anyMap: $checkedConvert('any_map', (v) => v as bool?),
           checked: $checkedConvert('checked', (v) => v as bool?),
           constructor: $checkedConvert('constructor', (v) => v as String?),
+          createFieldMap:
+              $checkedConvert('create_field_map', (v) => v as bool?),
           createFactory: $checkedConvert('create_factory', (v) => v as bool?),
           createToJson: $checkedConvert('create_to_json', (v) => v as bool?),
           disallowUnrecognizedKeys:
@@ -38,17 +42,20 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           explicitToJson:
               $checkedConvert('explicit_to_json', (v) => v as bool?),
           fieldRename: $checkedConvert('field_rename',
-              (v) => _$enumDecodeNullable(_$FieldRenameEnumMap, v)),
+              (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v)),
           ignoreUnannotated:
               $checkedConvert('ignore_unannotated', (v) => v as bool?),
           includeIfNull: $checkedConvert('include_if_null', (v) => v as bool?),
           genericArgumentFactories:
               $checkedConvert('generic_argument_factories', (v) => v as bool?),
+          createPerFieldToJson:
+              $checkedConvert('create_per_field_to_json', (v) => v as bool?),
         );
         return val;
       },
       fieldKeyMap: const {
         'anyMap': 'any_map',
+        'createFieldMap': 'create_field_map',
         'createFactory': 'create_factory',
         'createToJson': 'create_to_json',
         'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
@@ -56,7 +63,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
         'fieldRename': 'field_rename',
         'ignoreUnannotated': 'ignore_unannotated',
         'includeIfNull': 'include_if_null',
-        'genericArgumentFactories': 'generic_argument_factories'
+        'genericArgumentFactories': 'generic_argument_factories',
+        'createPerFieldToJson': 'create_per_field_to_json'
       },
     );
 
@@ -66,6 +74,8 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'checked': instance.checked,
       'constructor': instance.constructor,
       'create_factory': instance.createFactory,
+      'create_field_map': instance.createFieldMap,
+      'create_per_field_to_json': instance.createPerFieldToJson,
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
@@ -74,43 +84,6 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
-
-K? _$enumDecodeNullable<K, V>(
-  Map<K, V> enumValues,
-  dynamic source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    return null;
-  }
-  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
-}
 
 const _$FieldRenameEnumMap = {
   FieldRename.none: 'none',

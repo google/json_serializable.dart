@@ -294,9 +294,11 @@ Map<String, dynamic> _$IgnoredFieldClassToJson(IgnoredFieldClass instance) =>
 ''')
 @JsonSerializable(createFactory: false)
 class IgnoredFieldClass {
+  // ignore: deprecated_member_use
   @JsonKey(ignore: true)
   late int ignoredTrueField;
 
+  // ignore: deprecated_member_use
   @JsonKey(ignore: false)
   late int ignoredFalseField;
 
@@ -304,16 +306,40 @@ class IgnoredFieldClass {
 }
 
 @ShouldThrow(
-  'Cannot populate the required constructor argument: '
-  'ignoredTrueField. It is assigned to an ignored field.',
+  'Cannot populate the required constructor argument: ignoredTrueField. It is '
+  'assigned to a field not meant to be used in fromJson.',
   element: '',
 )
 @JsonSerializable()
 class IgnoredFieldCtorClass {
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   int ignoredTrueField;
 
   IgnoredFieldCtorClass(this.ignoredTrueField);
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `ignoredTrueField` field. '
+  'Cannot use both `ignore` and `includeToJson` on the same field. '
+  'Since `ignore` is deprecated, you should only use `includeToJson`.',
+)
+@JsonSerializable()
+class IgnoreAndIncludeToJsonFieldCtorClass {
+  // ignore: deprecated_member_use
+  @JsonKey(ignore: true, includeToJson: true)
+  int? ignoredTrueField;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `ignoredTrueField` field. '
+  'Cannot use both `ignore` and `includeFromJson` on the same field. '
+  'Since `ignore` is deprecated, you should only use `includeFromJson`.',
+)
+@JsonSerializable()
+class IgnoreAndIncludeFromJsonFieldCtorClass {
+  // ignore: deprecated_member_use
+  @JsonKey(ignore: true, includeFromJson: true)
+  int? ignoredTrueField;
 }
 
 @ShouldThrow(
@@ -578,4 +604,32 @@ class Issue1038RegressionTest {
   Issue1038RegressionTest.id(this.id) : ean = null;
 
   Issue1038RegressionTest.ean(this.ean) : id = null;
+}
+
+@ShouldGenerate(
+  r'''
+TearOffFromJsonClass _$TearOffFromJsonClassFromJson(
+        Map<String, dynamic> json) =>
+    TearOffFromJsonClass(
+      TearOffValueClass(json['value'] as String),
+      TearOffValueClass.fromJson(json['factoryValue'] as String),
+    );
+''',
+)
+@JsonSerializable(createToJson: false)
+class TearOffFromJsonClass {
+  TearOffFromJsonClass(this.value, this.factoryValue);
+
+  @JsonKey(fromJson: TearOffValueClass.new)
+  final TearOffValueClass value;
+  @JsonKey(fromJson: TearOffValueClass.fromJson)
+  final TearOffValueClass factoryValue;
+}
+
+class TearOffValueClass {
+  const TearOffValueClass(this.value);
+
+  factory TearOffValueClass.fromJson(String value) => TearOffValueClass(value);
+
+  final String value;
 }

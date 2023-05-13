@@ -29,7 +29,12 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(memberContent);
 
-    return '${constMapName(targetType)}[$expression]';
+    if (targetType.isNullableType ||
+        enumFieldWithNullInEncodeMap(targetType) == true) {
+      return '${constMapName(targetType)}[$expression]';
+    } else {
+      return '${constMapName(targetType)}[$expression]!';
+    }
   }
 
   @override

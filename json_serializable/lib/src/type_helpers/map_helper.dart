@@ -126,7 +126,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final toFromString = _forType(keyArg);
     if (toFromString != null) {
-      keyUsage = toFromString.deserialize(keyArg, keyUsage, false, true)!;
+      keyUsage =
+          toFromString.deserialize(keyArg, keyUsage, false, true).toString();
     }
 
     return '($expression $mapCast)$optionalQuestion.map( '
@@ -167,7 +168,7 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
   throw UnsupportedTypeError(
     keyArg,
     expression,
-    'Map keys must be one of: ${_allowedTypeNames.join(', ')}.',
+    'Map keys must be one of: ${allowedMapKeyTypes.join(', ')}.',
   );
 }
 
@@ -175,12 +176,13 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
 ///
 /// Used in [_checkSafeKeyType] to provide a helpful error with unsupported
 /// types.
-Iterable<String> get _allowedTypeNames => const [
+List<String> get allowedMapKeyTypes => [
       'Object',
       'dynamic',
       'enum',
       'String',
-    ].followedBy(_instances.map((i) => i.coreTypeName));
+      ..._instances.map((i) => i.coreTypeName)
+    ];
 
 extension on DartType {
   bool get isSimpleJsonTypeNotDouble =>

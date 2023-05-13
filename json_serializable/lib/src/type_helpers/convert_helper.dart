@@ -6,7 +6,6 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
-import '../shared_checkers.dart';
 import '../type_helper.dart';
 
 /// Information used by [ConvertHelper] when handling `JsonKey`-annotated
@@ -14,8 +13,9 @@ import '../type_helper.dart';
 class ConvertData {
   final String name;
   final DartType paramType;
+  final DartType returnType;
 
-  ConvertData(this.name, this.paramType);
+  ConvertData(this.name, this.paramType, this.returnType);
 }
 
 abstract class TypeHelperContextWithConvert extends TypeHelperContext {
@@ -56,7 +56,10 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
       return null;
     }
 
-    final asContent = asStatement(fromJsonData.paramType);
-    return LambdaResult(expression, fromJsonData.name, asContent: asContent);
+    return LambdaResult(
+      expression,
+      fromJsonData.name,
+      asContent: fromJsonData.paramType,
+    );
   }
 }

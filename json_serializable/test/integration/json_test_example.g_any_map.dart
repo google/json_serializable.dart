@@ -70,7 +70,7 @@ class Order {
   )
   StatusCode? statusCode;
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   String get platformValue => platform!.description;
 
   set platformValue(String value) {
@@ -80,7 +80,7 @@ class Order {
   // Ignored getter without value set in ctor
   int get price => items!.fold(0, (total, item) => item.price! + total);
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   bool? shouldBeCached;
 
   Order.custom(this.category, [Iterable<Item>? items])
@@ -113,7 +113,7 @@ class Item extends ItemCore {
   @JsonKey(fromJson: _fromJsonGeoPoint, toJson: _toJsonGeoPoint)
   GeoPoint? geoPoint;
 
-  Item([int? price]) : super(price);
+  Item([super.price]);
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
 
@@ -246,4 +246,24 @@ class PrivateConstructor {
   @override
   bool operator ==(Object other) =>
       other is PrivateConstructor && id == other.id && value == other.value;
+}
+
+mixin RegressionTestIssue1210Mixin {
+  bool? get someProperty => null;
+
+  @override
+  int get hashCode => identityHashCode(this);
+}
+
+@JsonSerializable(
+  anyMap: true,
+)
+class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
+  const RegressionTestIssue1210(this.field);
+
+  factory RegressionTestIssue1210.fromJson(Map<String, dynamic> json) =>
+      _$RegressionTestIssue1210FromJson(json);
+  final String field;
+
+  Map<String, dynamic> toJson() => _$RegressionTestIssue1210ToJson(this);
 }

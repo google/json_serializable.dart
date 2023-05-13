@@ -1,5 +1,30 @@
+## 4.8.1
+
+- Require Dart 2.19
+- Add topics.
+
+## 4.8.0
+
+- DEPRECATED `JsonKey.ignore`. Replaced by...
+- Added `JsonKey.includeFromJson` and `JsonKey.includeToJson` to allow 
+  fine-grained control of if a field is encoded/decoded.  
+- Added `JsonSerializable.createPerFieldToJson` which allows generating
+  a `_$ModelPerFieldToJson`, enabling partial encoding of a model.
+- Update `JsonKey` documentation to align with new features in 
+  `package:json_serializable`.
+- Require Dart SDK `>=2.18.0`.
+
+## 4.7.0
+
+- Added `JsonEnum.valueField` which allows specifying a field in an 
+  "enhanced enum" to use for serialization instead of specifying each value
+  individually with `JsonValue`.
+- Require Dart SDK 2.17
+
 ## 4.6.0
 
+- Added `JsonSerializable(createFieldMap: true)`.
+  ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
 - Added `JsonSerializable(converters: <JsonConverter>[])`
   ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
 

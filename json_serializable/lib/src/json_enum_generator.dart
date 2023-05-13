@@ -18,7 +18,7 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! ClassElement || !element.isEnum) {
+    if (element is! EnumElement) {
       throw InvalidGenerationSourceError(
         '`@JsonEnum` can only be used on enum elements.',
         element: element,

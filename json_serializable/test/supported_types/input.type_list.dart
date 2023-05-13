@@ -420,6 +420,102 @@ class SimpleClassNullableOfEnumTypeNullable {
 }
 
 @JsonSerializable()
+class SimpleClassOfFromJsonDynamicParam {
+  final List<FromJsonDynamicParam> value;
+
+  SimpleClassOfFromJsonDynamicParam(
+    this.value,
+  );
+
+  factory SimpleClassOfFromJsonDynamicParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassOfFromJsonDynamicParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassOfFromJsonDynamicParamToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfFromJsonDynamicParam {
+  final List<FromJsonDynamicParam>? value;
+
+  SimpleClassNullableOfFromJsonDynamicParam(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfFromJsonDynamicParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfFromJsonDynamicParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfFromJsonDynamicParamToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfFromJsonNullableObjectParam {
+  final List<FromJsonNullableObjectParam> value;
+
+  SimpleClassOfFromJsonNullableObjectParam(
+    this.value,
+  );
+
+  factory SimpleClassOfFromJsonNullableObjectParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassOfFromJsonNullableObjectParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassOfFromJsonNullableObjectParamToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfFromJsonNullableObjectParam {
+  final List<FromJsonNullableObjectParam>? value;
+
+  SimpleClassNullableOfFromJsonNullableObjectParam(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfFromJsonNullableObjectParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfFromJsonNullableObjectParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfFromJsonNullableObjectParamToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfFromJsonObjectParam {
+  final List<FromJsonObjectParam> value;
+
+  SimpleClassOfFromJsonObjectParam(
+    this.value,
+  );
+
+  factory SimpleClassOfFromJsonObjectParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassOfFromJsonObjectParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassOfFromJsonObjectParamToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfFromJsonObjectParam {
+  final List<FromJsonObjectParam>? value;
+
+  SimpleClassNullableOfFromJsonObjectParam(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfFromJsonObjectParam.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfFromJsonObjectParamFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfFromJsonObjectParamToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassOfInt {
   final List<int> value;
 

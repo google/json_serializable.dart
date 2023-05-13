@@ -12,6 +12,10 @@ import 'json_serializable.dart';
 class JsonKey {
   /// The value to use if the source JSON does not contain this key or if the
   /// value is `null`.
+  ///
+  /// Also supported: a top-level or static [Function] or a constructor with no
+  /// required parameters and a return type compatible with the field being
+  /// assigned.
   final Object? defaultValue;
 
   /// If `true`, generated code will throw a [DisallowedNullValueException] if
@@ -30,8 +34,9 @@ class JsonKey {
   /// A [Function] to use when decoding the associated JSON value to the
   /// annotated field.
   ///
-  /// Must be a top-level or static [Function] that takes one argument mapping
-  /// a JSON literal to a value compatible with the type of the annotated field.
+  /// Must be a top-level or static [Function] or a constructor that accepts one
+  /// positional argument mapping a JSON literal to a value compatible with the
+  /// type of the annotated field.
   ///
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [toJson] if you set [fromJson].
@@ -42,7 +47,26 @@ class JsonKey {
   ///
   /// If `null` (the default) or `false`, the field will be considered for
   /// serialization.
+  ///
+  /// This field is DEPRECATED use [includeFromJson] and [includeToJson]
+  /// instead.
+  @Deprecated(
+    'Use `includeFromJson` and `includeToJson` with a value of `false` '
+    'instead.',
+  )
   final bool? ignore;
+
+  /// Used to force a field to be included (or excluded) when decoding a object
+  /// from JSON.
+  ///
+  /// `null` (the default) means the field will be handled with the default
+  /// semantics that take into account if it's private or if it can be cleanly
+  /// round-tripped to-from JSON.
+  ///
+  /// `true` means the field should always be decoded, even if it's private.
+  ///
+  /// `false` means the field should never be decoded.
+  final bool? includeFromJson;
 
   /// Whether the generator should include fields with `null` values in the
   /// serialized output.
@@ -60,6 +84,18 @@ class JsonKey {
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
   final bool? includeIfNull;
+
+  /// Used to force a field to be included (or excluded) when encoding a object
+  /// to JSON.
+  ///
+  /// `null` (the default) means the field will be handled with the default
+  /// semantics that take into account if it's private or if it can be cleanly
+  /// round-tripped to-from JSON.
+  ///
+  /// `true` means the field should always be encoded, even if it's private.
+  ///
+  /// `false` means the field should never be encoded.
+  final bool? includeToJson;
 
   /// The key in a JSON map to use when reading and writing values corresponding
   /// to the annotated fields.
@@ -94,8 +130,9 @@ class JsonKey {
 
   /// A [Function] to use when encoding the annotated field to JSON.
   ///
-  /// Must be a top-level or static [Function] with one parameter compatible
-  /// with the field being serialized that returns a JSON-compatible value.
+  /// Must be a top-level or static [Function] or a constructor that accepts one
+  /// positional argument compatible with the field being serialized that
+  /// returns a JSON-compatible value.
   ///
   /// When creating a class that supports both `toJson` and `fromJson`
   /// (the default), you should also set [fromJson] if you set [toJson].
@@ -116,12 +153,19 @@ class JsonKey {
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey({
-    @Deprecated('Has no effect') bool? nullable,
+    @Deprecated('Has no effect')
+        bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
-    this.ignore,
+    @Deprecated(
+      'Use `includeFromJson` and `includeToJson` with a value of `false` '
+      'instead.',
+    )
+        this.ignore,
+    this.includeFromJson,
     this.includeIfNull,
+    this.includeToJson,
     this.name,
     this.readValue,
     this.required,

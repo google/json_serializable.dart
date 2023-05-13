@@ -16,8 +16,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
-      'value': _$EnumTypeEnumMap[instance.value],
-      'withDefault': _$EnumTypeEnumMap[instance.withDefault],
+      'value': _$EnumTypeEnumMap[instance.value]!,
+      'withDefault': _$EnumTypeEnumMap[instance.withDefault]!,
     };
 
 const _$EnumTypeEnumMap = {

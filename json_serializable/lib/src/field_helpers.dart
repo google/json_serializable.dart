@@ -36,8 +36,9 @@ class _FieldSet implements Comparable<_FieldSet> {
   int compareTo(_FieldSet other) => _sortByLocation(sortField, other.sortField);
 
   static int _sortByLocation(FieldElement a, FieldElement b) {
-    final checkerA =
-        TypeChecker.fromStatic((a.enclosingElement as ClassElement).thisType);
+    final checkerA = TypeChecker.fromStatic(
+      (a.enclosingElement as InterfaceElement).thisType,
+    );
 
     if (!checkerA.isExactly(b.enclosingElement)) {
       // in this case, you want to prioritize the enclosingElement that is more
@@ -47,8 +48,8 @@ class _FieldSet implements Comparable<_FieldSet> {
         return -1;
       }
 
-      final checkerB =
-          TypeChecker.fromStatic((b.enclosingElement as ClassElement).thisType);
+      final checkerB = TypeChecker.fromStatic(
+          (b.enclosingElement as InterfaceElement).thisType);
 
       if (checkerB.isAssignableFrom(a.enclosingElement)) {
         return 1;
@@ -57,21 +58,21 @@ class _FieldSet implements Comparable<_FieldSet> {
 
     /// Returns the offset of given field/property in its source file – with a
     /// preference for the getter if it's defined.
-    int _offsetFor(FieldElement e) {
+    int offsetFor(FieldElement e) {
       if (e.isSynthetic) {
         return (e.getter ?? e.setter)!.nameOffset;
       }
       return e.nameOffset;
     }
 
-    return _offsetFor(a).compareTo(_offsetFor(b));
+    return offsetFor(a).compareTo(offsetFor(b));
   }
 }
 
-/// Returns a [Set] of all instance [FieldElement] items for [element] and
+/// Returns a [List] of all instance [FieldElement] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
-Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
+List<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   final elementInstanceFields = Map.fromEntries(
@@ -103,7 +104,7 @@ Iterable<FieldElement> createSortedFieldSet(ClassElement element) {
       .toList()
     ..sort();
 
-  return fields.map((fs) => fs.field).toList();
+  return fields.map((fs) => fs.field).toList(growable: false);
 }
 
 const _dartCoreObjectChecker = TypeChecker.fromRuntime(Object);

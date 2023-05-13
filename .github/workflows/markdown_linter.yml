@@ -11,7 +11,7 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
   markdown_lint:
     runs-on: ubuntu-latest
@@ -19,9 +19,9 @@ jobs:
       matrix:
         node-version: [ 14.x ]
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@64ed1c7eab4cce3362f8c340dee64e5eaeef8f7c
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies

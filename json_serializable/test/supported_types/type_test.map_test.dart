@@ -3,10 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 // ignore_for_file: prefer_const_declarations
+@TestOn('vm')
+library test;
 
 import 'dart:convert';
 
-@TestOn('vm')
 import 'package:test/test.dart';
 
 import '../test_utils.dart';

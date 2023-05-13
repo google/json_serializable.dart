@@ -1,9 +1,82 @@
-## 6.3.0-dev
+## 6.6.2
 
-- Added support for using a `JsonConverter<MyClass, Object>` on properties
-  of type `MyClass?`. ([#822](https://github.com/google/json_serializable.dart/issues/822))
+- Better handling of `Object?` or `dynamic` as `fromJson` constructor param.
+- Require Dart 2.19
+
+## 6.6.1
+
+- Fix bug when `JsonKey.includeToJson` is `false`.
+
+## 6.6.0
+
+- Support for `JsonKey.includeFromJson` and `JsonKey.includeToJson`.
+- Support `JsonEnum.valueField` being set with `'index'`.
+- Support `JsonSerializable.createPerFieldToJson`.
+- Require Dart SDK `>=2.18.0`.
+- Require `analyzer: ^5.2.0`
+- Require `json_annotation: '>=4.8.0 <4.9.0'`
+
+## 6.5.4
+
+- Fixed handling of nullable fields with converters which return non-nullable
+  values.
+
+## 6.5.3
+
+- Fixed handling of nullable `enum` fields with `includeIfNull: false`.
+
+## 6.5.2
+
+- Better handling of `null` when encoding `enum` values or values with
+  conversions.
+
+## 6.5.1
+
+- Fixed `BigInt`, `DateTime`, and `Uri` support for `JsonKey.defaultValue` with
+  a function value.
+
+## 6.5.0
+
+- Allow constructors to be passed to `JsonKey` parameters that support
+  `Function` types.
+- Accept `Function` values for `JsonKey.defaultValue`. The provided
+  `Function` will be invoked for the default value if the target JSON element is
+  missing or `null`.
+
+## 6.4.1
+
+- Fixed a bug when an `@JsonSerializable` class uses a mixin with fields.
+- Added more documentation `@JsonEnum`.
+
+## 6.4.0
+
+- Add support for `JsonEnum.valueField` which allows specifying a field in an
+  "enhanced enum" to use for serialization instead of specifying each value
+  individually with `JsonValue
+- Require `json_annotation: '>=4.7.0 <4.8.0'`
+
+## 6.3.2
+
+- Require `analyzer: '>=4.6.0 <6.0.0'`
+- Require `sdk: '>=2.17.0 <3.0.0'`
+
+## 6.3.1
+
+- Fixed support for `Duration` fields with default values.
+  ([#1170](https://github.com/google/json_serializable.dart/issues/1170))
+
+## 6.3.0
+
+- Added support for generating `_$ExampleFieldMap`, which can be used by other
+  code-generators that needs to interact with JSON serialization.
+  ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
+- Added support for using a `JsonConverter<MyClass, Object>` on properties of
+  type `MyClass?`.
+  ([#822](https://github.com/google/json_serializable.dart/issues/822))
 - Added support for `JsonSerializable(converters: <JsonConverter>[])`
   ([#1072](https://github.com/google/json_serializable.dart/issues/1072))
+- Fix issue with serialization of non-nullable enumerations emitting a nullable
+  type ([#1146](https://github.com/google/json_serializable.dart/pull/1146))
 
 ## 6.2.0
 

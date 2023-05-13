@@ -3,6 +3,8 @@
 // BSD-style license that can be found in the LICENSE file.
 
 @TestOn('vm')
+library test;
+
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen_test/source_gen_test.dart';
@@ -29,26 +31,29 @@ Future<void> main() async {
   testAnnotatedElements(
     jsonEnumTestReader,
     const JsonEnumGenerator(),
-    expectedAnnotatedTests: {'UnsupportedClass'},
+    expectedAnnotatedTests: {
+      'EnumValueIssue1147',
+      'EnumValueNotAField',
+      'EnumValueNotSupportType',
+      'EnumValueWeirdField',
+      'UnsupportedClass',
+    },
   );
 }
 
 const _expectedAnnotatedTests = {
-  'annotatedMethod',
-  'UnsupportedEnum',
+  'BadEnumDefaultValue',
   'BadFromFuncReturnType',
   'BadNoArgs',
   'BadOneNamed',
   'BadToFuncReturnType',
   'BadTwoRequiredPositional',
-  'BadEnumDefaultValue',
-  '_BetterPrivateNames',
   'CtorDefaultValueAndJsonKeyDefaultValue',
-  'SameCtorAndJsonKeyDefaultValue',
   'DefaultDoubleConstants',
   'DefaultWithConstObject',
   'DefaultWithDisallowNullRequiredClass',
   'DefaultWithFunction',
+  'DefaultWithFunctionInList',
   'DefaultWithNestedEnum',
   'DefaultWithSymbol',
   'DefaultWithToJsonClass',
@@ -69,9 +74,11 @@ const _expectedAnnotatedTests = {
   'GeneralTestClass2',
   'GenericArgumentFactoriesFlagWithoutGenericType',
   'GenericClass',
+  'IgnoreAndIncludeFromJsonFieldCtorClass',
+  'IgnoreAndIncludeToJsonFieldCtorClass',
+  'IgnoreUnannotated',
   'IgnoredFieldClass',
   'IgnoredFieldCtorClass',
-  'IgnoreUnannotated',
   'IncludeIfNullDisallowNullClass',
   'IncludeIfNullOverride',
   'InvalidChildClassFromJson',
@@ -79,8 +86,8 @@ const _expectedAnnotatedTests = {
   'InvalidChildClassFromJson3',
   'InvalidFromFunc2Args',
   'InvalidToFunc2Args',
-  'Issue713',
   'Issue1038RegressionTest',
+  'Issue713',
   'JsonConvertOnField',
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
@@ -113,22 +120,24 @@ const _expectedAnnotatedTests = {
   'PropInMixinI448Regression',
   'Reproduce869NullableGenericType',
   'Reproduce869NullableGenericTypeWithDefault',
+  'SameCtorAndJsonKeyDefaultValue',
   'SetSupport',
-  'SubclassedJsonKey',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
   'SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides',
   'SubTypeWithAnnotatedFieldOverrideImplements',
-  'theAnswer',
+  'SubclassedJsonKey',
+  'TearOffFromJsonClass',
   'ToJsonNullableFalseIncludeIfNullFalse',
   'TypedConvertMethods',
   'UnknownEnumValue',
   'UnknownEnumValueListWrongEnumType',
   'UnknownEnumValueListWrongType',
-  'UnknownEnumValueWrongEnumType',
   'UnknownEnumValueNotEnumField',
+  'UnknownEnumValueWrongEnumType',
   'UnsupportedDateTimeField',
   'UnsupportedDurationField',
+  'UnsupportedEnum',
   'UnsupportedListField',
   'UnsupportedMapField',
   'UnsupportedSetField',
@@ -137,4 +146,7 @@ const _expectedAnnotatedTests = {
   'WithANonCtorGetter',
   'WithANonCtorGetterChecked',
   'WrongConstructorNameClass',
+  '_BetterPrivateNames',
+  'annotatedMethod',
+  'theAnswer',
 };

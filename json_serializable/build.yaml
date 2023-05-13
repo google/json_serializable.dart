@@ -13,11 +13,17 @@ targets:
         generate_for:
         - example/*
         - test/default_value/*
+        - test/field_matrix_test.field_matrix.dart
         - test/generic_files/*
         - test/integration/*
         - test/kitchen_sink/*
         - test/literal/*
         - test/supported_types/*
+        - tool/readme/*
+
+      json_serializable|_field_matrix_builder:
+        generate_for:
+        - test/field_matrix_test.dart
 
       json_serializable|_test_builder:
         generate_for:
@@ -91,6 +97,14 @@ builders:
       - .set_test.dart
       - .string_test.dart
       - .uri_test.dart
+    build_to: source
+    runs_before: ["json_serializable"]
+
+  _field_matrix_builder:
+    import: 'tool/field_matrix_builder.dart'
+    builder_factories: ['builder']
+    build_extensions:
+      .dart: [.field_matrix.dart]
     build_to: source
     runs_before: ["json_serializable"]
 

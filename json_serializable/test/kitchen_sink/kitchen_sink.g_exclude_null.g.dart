@@ -190,7 +190,7 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
   val['durationList'] = instance.durationList
       .map(const DurationMillisecondConverter().toJson)
       .toList();
-  writeNotNull('bigInt', const BigIntStringConverter().toJson(instance.bigInt));
+  val['bigInt'] = const BigIntStringConverter().toJson(instance.bigInt);
   val['bigIntMap'] = instance.bigIntMap
       .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)));
   writeNotNull(
@@ -247,19 +247,10 @@ JsonConverterGeneric<S, T, U> _$JsonConverterGenericFromJson<S, T, U>(
     );
 
 Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
-    JsonConverterGeneric<S, T, U> instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('item', GenericConverter<S>().toJson(instance.item));
-  val['itemList'] =
-      instance.itemList.map(GenericConverter<T>().toJson).toList();
-  val['itemMap'] = instance.itemMap
-      .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e)));
-  return val;
-}
+        JsonConverterGeneric<S, T, U> instance) =>
+    <String, dynamic>{
+      'item': GenericConverter<S>().toJson(instance.item),
+      'itemList': instance.itemList.map(GenericConverter<T>().toJson).toList(),
+      'itemMap': instance.itemMap
+          .map((k, e) => MapEntry(k, GenericConverter<U>().toJson(e))),
+    };

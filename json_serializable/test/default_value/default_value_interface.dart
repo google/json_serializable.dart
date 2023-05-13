@@ -27,6 +27,8 @@ abstract class DefaultValue {
 
   Map<String, List<String>> get fieldMapListString;
 
+  Duration get durationField;
+
   Greek get fieldEnum;
 
   ConstClass get constClass;
@@ -34,6 +36,12 @@ abstract class DefaultValue {
   ConstClass get valueFromConverter;
 
   ConstClass get valueFromFunction;
+
+  int get intDefaultValueFromFunction;
+
+  ConstClass get valueFromDefaultValueDefaultConstructor;
+
+  ConstClass get valueFromDefaultValueNamedConstructor;
 }
 
 enum Greek { alpha, beta, gamma, delta }
@@ -42,7 +50,9 @@ enum Greek { alpha, beta, gamma, delta }
 class ConstClass {
   final String field;
 
-  const ConstClass(this.field);
+  const ConstClass([this.field = 'default']);
+
+  ConstClass.easy() : field = 'easy';
 
   factory ConstClass.fromJson(Map<String, dynamic> json) => ConstClass(
         json['field'] as String,
@@ -66,3 +76,5 @@ class ConstClassConverter extends JsonConverter<ConstClass, String> {
   @override
   String toJson(ConstClass object) => object.field;
 }
+
+int intDefaultValueFunction() => 43;

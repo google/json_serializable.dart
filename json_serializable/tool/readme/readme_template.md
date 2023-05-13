@@ -24,11 +24,11 @@ To configure your project for the latest released version of
 Given a library `example.dart` with an `Person` class annotated with
 `ja:JsonSerializable`:
 
-<!-- REPLACE example.dart -->
+<!-- REPLACE example/example.dart -->
 
 Building creates the corresponding part `example.g.dart`:
 
-<!-- REPLACE example.g.dart -->
+<!-- REPLACE example/example.g.dart -->
 
 # Running the code generator
 
@@ -75,16 +75,14 @@ Annotate `enum` types with `ja:JsonEnum` (new in `json_annotation` 4.2.0) to:
 Annotate `enum` values with `ja:JsonValue` to specify the encoded value to map
 to target `enum` entries. Values can be of type `core:String` or `core:int`.
 
-<!-- TODO: hoist out to source code! -->
+<!-- REPLACE tool/readme/readme_examples.dart-simple_example -->
 
-```dart
-enum StatusCode {
-  @JsonValue(200)
-  success,
-  @JsonValue('500')
-  weird,
-}
-```
+If you are annotating an
+[enhanced enum](https://dart.dev/guides/language/language-tour#declaring-enhanced-enums),
+you can use `ja:JsonEnum.valueField` to specify the field to use for the
+serialized value.
+
+<!-- REPLACE tool/readme/readme_examples.dart-enhanced_example -->
 
 # Supported types
 
@@ -105,18 +103,26 @@ For `core:Map`, the key value must be one of
 If you want to use types that are not supported out-of-the-box or if you want to
 customize the encoding/decoding of any type, you have a few options.
 
-1. If you own/cotrol the desired type, add a `fromJson` constructor and/or a
+1. If you own/control the desired type, add a `fromJson` constructor and/or a
    `toJson()` function to the type. Note: while you can use `json_serializable`
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
+
+    <!-- REPLACE tool/readme/readme_examples.dart-to_from -->
+
 1. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
    custom conversions on the annotated field. The functions specified must be
    top-level or static. See the documentation of these properties for details.
+
+    <!-- REPLACE tool/readme/readme_examples.dart-json_key -->
+
 1. Create an implementation of `ja:JsonConverter` and annotate either the
    corresponding field or the containing class. `ja:JsonConverter` is convenient
    if you want to use the same conversion logic on many fields. It also allows
    you to support a type within collections. Check out
    [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
+
+    <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
 
 # Build configuration
 
@@ -137,6 +143,8 @@ targets:
           checked: false
           constructor: ""
           create_factory: true
+          create_field_map: false
+          create_per_field_to_json: false
           create_to_json: true
           disallow_unrecognized_keys: false
           explicit_to_json: false

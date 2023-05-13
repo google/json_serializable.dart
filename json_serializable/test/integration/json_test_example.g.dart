@@ -37,13 +37,13 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'lastName': instance.lastName,
       'middleName': instance.middleName,
       'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
-      r'$house': _$CategoryEnumMap[instance.house],
+      r'$house': _$CategoryEnumMap[instance.house]!,
       'order': instance.order,
       'customOrders': instance.customOrders,
       'houseMap':
-          instance.houseMap?.map((k, e) => MapEntry(k, _$CategoryEnumMap[e])),
+          instance.houseMap?.map((k, e) => MapEntry(k, _$CategoryEnumMap[e]!)),
       'categoryCounts': instance.categoryCounts
-          ?.map((k, e) => MapEntry(_$CategoryEnumMap[k], e)),
+          ?.map((k, e) => MapEntry(_$CategoryEnumMap[k]!, e)),
     };
 
 const _$CategoryEnumMap = {
@@ -212,4 +212,16 @@ Map<String, dynamic> _$PrivateConstructorToJson(PrivateConstructor instance) =>
     <String, dynamic>{
       'id': instance.id,
       'value': instance.value,
+    };
+
+RegressionTestIssue1210 _$RegressionTestIssue1210FromJson(
+        Map<String, dynamic> json) =>
+    RegressionTestIssue1210(
+      json['field'] as String,
+    );
+
+Map<String, dynamic> _$RegressionTestIssue1210ToJson(
+        RegressionTestIssue1210 instance) =>
+    <String, dynamic>{
+      'field': instance.field,
     };

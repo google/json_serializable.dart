@@ -25,6 +25,36 @@ enum DayType {
 
 Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;
 
+@JsonEnum(alwaysCreate: true, valueField: 'value')
+enum MyStatusCode {
+  success(200),
+  @JsonValue(701) // explicit value always takes precedence
+  weird(601);
+
+  const MyStatusCode(this.value);
+
+  final int value;
+}
+
+Iterable<int> get myStatusCodeEnumValues => _$MyStatusCodeEnumMap.values;
+
+@JsonEnum(alwaysCreate: true, valueField: 'index')
+enum EnumValueFieldIndex {
+  success(200),
+  @JsonValue(701) // explicit value always takes precedence
+  weird(601),
+  oneMore(777);
+
+  static const tryingToBeConfusing = weird;
+
+  const EnumValueFieldIndex(this.value);
+
+  final int value;
+}
+
+Iterable<int> get enumValueFieldIndexValues =>
+    _$EnumValueFieldIndexEnumMap.values;
+
 @JsonSerializable(
   createToJson: false,
 )
@@ -48,4 +78,46 @@ enum Issue559RegressionEnum {
   alpha,
   beta,
   gamma,
+}
+
+enum Issue1145RegressionEnum {
+  alpha,
+  beta,
+  gamma,
+}
+
+@JsonSerializable(
+  createFactory: false,
+)
+class Issue1145RegressionA {
+  Issue1145RegressionA({
+    required this.status,
+  });
+
+  Map<String, dynamic> toJson() => _$Issue1145RegressionAToJson(this);
+
+  final Map<Issue1145RegressionEnum, bool> status;
+}
+
+@JsonSerializable(
+  createFactory: false,
+)
+class Issue1145RegressionB {
+  Issue1145RegressionB({required this.status});
+
+  Map<String, dynamic> toJson() => _$Issue1145RegressionBToJson(this);
+
+  final List<Issue1145RegressionEnum?> status;
+}
+
+@JsonSerializable(includeIfNull: false)
+class Issue1226Regression {
+  Issue1226Regression({required this.durationType});
+
+  factory Issue1226Regression.fromJson(Map<String, dynamic> json) =>
+      _$Issue1226RegressionFromJson(json);
+
+  final Issue1145RegressionEnum? durationType;
+
+  Map<String, dynamic> toJson() => _$Issue1226RegressionToJson(this);
 }

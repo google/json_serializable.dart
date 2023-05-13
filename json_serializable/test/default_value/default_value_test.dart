@@ -24,10 +24,14 @@ const _defaultInstance = {
   'fieldMapListString': {
     'root': ['child']
   },
+  'durationField': 0,
   'fieldEnum': 'beta',
   'constClass': {'field': 'value'},
   'valueFromConverter': 'value',
   'valueFromFunction': 'value',
+  'intDefaultValueFromFunction': 43,
+  'valueFromDefaultValueDefaultConstructor': {'field': 'default'},
+  'valueFromDefaultValueNamedConstructor': {'field': 'easy'},
 };
 
 const _otherValues = {
@@ -44,10 +48,14 @@ const _otherValues = {
   'fieldMapListString': {
     'root2': ['alpha']
   },
+  'durationField': 1,
   'fieldEnum': 'delta',
   'constClass': {'field': 'otherValue'},
   'valueFromConverter': 'otherValue',
   'valueFromFunction': 'otherValue',
+  'intDefaultValueFromFunction': 44,
+  'valueFromDefaultValueDefaultConstructor': {'field': 'other'},
+  'valueFromDefaultValueNamedConstructor': {'field': 'other'},
 };
 
 void main() {

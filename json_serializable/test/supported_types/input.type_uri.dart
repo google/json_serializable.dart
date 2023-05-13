@@ -10,8 +10,12 @@ part 'input.type_uri.g.dart';
 class SimpleClass {
   final Uri value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  Uri withDefault;
+
   SimpleClass(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
@@ -24,8 +28,12 @@ class SimpleClass {
 class SimpleClassNullable {
   final Uri? value;
 
+  @JsonKey(defaultValue: _defaultValueFunc)
+  Uri? withDefault;
+
   SimpleClassNullable(
     this.value,
+    this.withDefault,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
@@ -33,3 +41,5 @@ class SimpleClassNullable {
 
   Map<String, Object?> toJson() => _$SimpleClassNullableToJson(this);
 }
+
+Uri _defaultValueFunc() => Uri.parse('https://example.com');

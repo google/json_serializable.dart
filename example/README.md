@@ -5,11 +5,11 @@ dependencies to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  json_annotation: ^4.4.0
+  json_annotation: ^4.8.0
 
 dev_dependencies:
-  build_runner: ^2.0.0
-  json_serializable: ^6.0.0
+  build_runner: ^2.3.3
+  json_serializable: ^6.6.0
 ```
 
 Annotate your code with classes defined in
@@ -20,10 +20,10 @@ Annotate your code with classes defined in
 
 - See [`lib/example.g.dart`][example_g] for the generated file.
 
-Run `pub run build_runner build` to generate files into your source directory.
+Run `dart run build_runner build` to generate files into your source directory.
 
 ```console
-> pub run build_runner build
+> dart pub run build_runner build
 [INFO] ensureBuildScript: Generating build script completed, took 368ms
 [INFO] BuildDefinition: Reading cached asset graph completed, took 54ms
 [INFO] BuildDefinition: Checking for updates since last build completed, took 663ms
@@ -32,8 +32,8 @@ Run `pub run build_runner build` to generate files into your source directory.
 [INFO] Build: Succeeded after 4687ms with 1 outputs
 ```
 
-_NOTE_: If you're using Flutter, replace `pub run` with
-`flutter packages pub run`.
+_NOTE_: If you're using Flutter, replace `dart run` with
+`flutter pub run`.
 
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart

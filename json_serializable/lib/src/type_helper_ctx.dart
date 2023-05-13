@@ -135,12 +135,11 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
         'positional parameter.');
   }
 
+  final returnType = executableElement.returnType;
   final argType = executableElement.parameters.first.type;
   if (isFrom) {
     final hasDefaultValue =
         !jsonKeyAnnotation(element).read('defaultValue').isNull;
-
-    final returnType = executableElement.returnType;
 
     if (returnType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
@@ -176,5 +175,5 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     }
   }
 
-  return ConvertData(executableElement.qualifiedName, argType);
+  return ConvertData(executableElement.qualifiedName, argType, returnType);
 }

@@ -36,9 +36,10 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      ignore: classAnnotation.ignoreUnannotated,
       caseInsensitive: enumObj.isNull ? null :
         enumObj.read('caseInsensitive').literalValue as bool?,
+      includeFromJson: classAnnotation.ignoreUnannotated ? false : null,
+      includeToJson: classAnnotation.ignoreUnannotated ? false : null,
     );
   }
 
@@ -62,7 +63,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     } else if (reader.isType) {
       badType = 'Type';
     } else if (dartObject.type is FunctionType) {
-      // TODO: Support calling function for the default value?
+      // Function types at the "root" are already handled. If they occur
+      // here, it's because the function is nested instead of a collection
+      // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
       badType = dartObject.type!.element!.name;
@@ -128,13 +131,34 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   /// If [mustBeEnum] is `true`, throws an [InvalidGenerationSourceError] if
   /// either the annotated field is not an `enum` or `List` or if the value in
   /// [fieldName] is not an `enum` value.
-  String? _annotationValue(String fieldName, {bool mustBeEnum = false}) {
+  String? createAnnotationValue(String fieldName, {bool mustBeEnum = false}) {
     final annotationValue = obj.read(fieldName);
-    late final DartType annotationType;
 
-    final enumFields = annotationValue.isNull
-        ? null
-        : iterateEnumFields(annotationType = annotationValue.objectValue.type!);
+    if (annotationValue.isNull) {
+      return null;
+    }
+
+    final objectValue = annotationValue.objectValue;
+    final annotationType = objectValue.type!;
+
+    if (annotationType is FunctionType) {
+      // TODO: we could be a LOT more careful here, checking the return type
+      // and the number of parameters. BUT! If any of those things are wrong
+      // the generated code will be invalid, so skipping until we're bored
+      // later
+
+      final functionValue = objectValue.toFunctionValue()!;
+
+      final invokeConst =
+          functionValue is ConstructorElement && functionValue.isConst
+              ? 'const '
+              : '';
+
+      return '$invokeConst${functionValue.qualifiedName}()';
+    }
+
+    final enumFields = iterateEnumFields(annotationType);
+
     if (enumFields != null) {
       if (mustBeEnum) {
         late DartType targetEnumType;
@@ -174,15 +198,12 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       final enumValueNames =
           enumFields.map((p) => p.name).toList(growable: false);
 
-      final enumValueName = enumValueForDartObject<String>(
-          annotationValue.objectValue, enumValueNames, (n) => n);
+      final enumValueName =
+          enumValueForDartObject<String>(objectValue, enumValueNames, (n) => n);
 
-      return '${annotationType.element!.name}'
-          '.$enumValueName';
+      return '${annotationType.element!.name}.$enumValueName';
     } else {
-      final defaultValueLiteral = annotationValue.isNull
-          ? null
-          : literalForObject(fieldName, annotationValue.objectValue, []);
+      final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {
         return null;
       }
@@ -196,7 +217,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     }
   }
 
-  final defaultValue = _annotationValue('defaultValue');
+  final defaultValue = createAnnotationValue('defaultValue');
   if (defaultValue != null && ctorParamDefault != null) {
     if (defaultValue == ctorParamDefault) {
       log.info(
@@ -220,17 +241,42 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         readValue.objectValue.toFunctionValue()!.qualifiedName;
   }
 
+  final ignore = obj.read('ignore').literalValue as bool?;
+  var includeFromJson = obj.read('includeFromJson').literalValue as bool?;
+  var includeToJson = obj.read('includeToJson').literalValue as bool?;
+
+  if (ignore != null) {
+    if (includeFromJson != null) {
+      throwUnsupported(
+        element,
+        'Cannot use both `ignore` and `includeFromJson` on the same field. '
+        'Since `ignore` is deprecated, you should only use `includeFromJson`.',
+      );
+    }
+    if (includeToJson != null) {
+      throwUnsupported(
+        element,
+        'Cannot use both `ignore` and `includeToJson` on the same field. '
+        'Since `ignore` is deprecated, you should only use `includeToJson`.',
+      );
+    }
+    assert(includeFromJson == null && includeToJson == null);
+    includeToJson = includeFromJson = !ignore;
+  }
+
   return _populateJsonKey(
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
-    ignore: obj.read('ignore').literalValue as bool?,
     includeIfNull: obj.read('includeIfNull').literalValue as bool?,
     name: obj.read('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
     required: obj.read('required').literalValue as bool?,
-    unknownEnumValue: _annotationValue('unknownEnumValue', mustBeEnum: true),
+    unknownEnumValue:
+        createAnnotationValue('unknownEnumValue', mustBeEnum: true),
+    includeToJson: includeToJson,
+    includeFromJson: includeFromJson,
   );
 }
 
@@ -239,13 +285,14 @@ KeyConfig _populateJsonKey(
   FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
-  bool? ignore,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
   bool? required,
   String? unknownEnumValue,
   bool? caseInsensitive,
+  bool? includeToJson,
+  bool? includeFromJson,
 }) {
   if (disallowNullValue == true) {
     if (includeIfNull == true) {
@@ -259,7 +306,6 @@ KeyConfig _populateJsonKey(
   return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
-    ignore: ignore ?? false,
     includeIfNull: _includeIfNull(
         includeIfNull, disallowNullValue, classAnnotation.includeIfNull),
     name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name),
@@ -267,6 +313,8 @@ KeyConfig _populateJsonKey(
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
     caseInsensitive: caseInsensitive,
+    includeFromJson: includeFromJson,
+    includeToJson: includeToJson,
   );
 }
 

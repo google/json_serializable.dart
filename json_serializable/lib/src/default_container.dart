@@ -9,7 +9,7 @@ import 'utils.dart';
 /// a default value available to replace it if `null`.
 class DefaultContainer {
   final String expression;
-  final String output;
+  final Object output;
 
   DefaultContainer(this.expression, this.output);
 
@@ -23,7 +23,7 @@ class DefaultContainer {
         return ifNullOrElse(
           value.expression,
           defaultValue ?? 'null',
-          value.output,
+          value.output.toString(),
         );
       }
       value = value.output;

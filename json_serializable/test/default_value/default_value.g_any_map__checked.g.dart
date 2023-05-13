@@ -51,6 +51,10 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
                   }),
           $checkedConvert('fieldEnum',
               (v) => $enumDecodeNullable(_$GreekEnumMap, v) ?? Greek.beta),
+          durationField: $checkedConvert(
+              'durationField',
+              (v) =>
+                  v == null ? Duration.zero : Duration(microseconds: v as int)),
           constClass: $checkedConvert(
               'constClass',
               (v) => v == null
@@ -66,6 +70,19 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
               (v) => v == null
                   ? const ConstClass('value')
                   : constClassFromJson(v as String)),
+          intDefaultValueFromFunction: $checkedConvert(
+              'intDefaultValueFromFunction',
+              (v) => v as int? ?? intDefaultValueFunction()),
+          valueFromDefaultValueDefaultConstructor: $checkedConvert(
+              'valueFromDefaultValueDefaultConstructor',
+              (v) => v == null
+                  ? const ConstClass()
+                  : ConstClass.fromJson(Map<String, dynamic>.from(v as Map))),
+          valueFromDefaultValueNamedConstructor: $checkedConvert(
+              'valueFromDefaultValueNamedConstructor',
+              (v) => v == null
+                  ? ConstClass.easy()
+                  : ConstClass.fromJson(Map<String, dynamic>.from(v as Map))),
         );
         return val;
       },
@@ -84,11 +101,17 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'fieldSetSimple': instance.fieldSetSimple.toList(),
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
-      'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
+      'durationField': instance.durationField.inMicroseconds,
+      'fieldEnum': _$GreekEnumMap[instance.fieldEnum]!,
       'constClass': instance.constClass,
       'valueFromConverter':
           const ConstClassConverter().toJson(instance.valueFromConverter),
       'valueFromFunction': constClassToJson(instance.valueFromFunction),
+      'intDefaultValueFromFunction': instance.intDefaultValueFromFunction,
+      'valueFromDefaultValueDefaultConstructor':
+          instance.valueFromDefaultValueDefaultConstructor,
+      'valueFromDefaultValueNamedConstructor':
+          instance.valueFromDefaultValueNamedConstructor,
     };
 
 const _$GreekEnumMap = {

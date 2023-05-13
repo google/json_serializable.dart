@@ -41,6 +41,9 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
               },
       fieldEnum:
           $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      durationField: json['durationField'] == null
+          ? const Duration()
+          : Duration(microseconds: json['durationField'] as int),
       constClass: json['constClass'] == null
           ? const ConstClass('value')
           : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
@@ -51,6 +54,20 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
       valueFromFunction: json['valueFromFunction'] == null
           ? const ConstClass('value')
           : constClassFromJson(json['valueFromFunction'] as String),
+      intDefaultValueFromFunction:
+          json['intDefaultValueFromFunction'] as int? ?? 43,
+      valueFromDefaultValueDefaultConstructor:
+          json['valueFromDefaultValueDefaultConstructor'] == null
+              ? const ConstClass()
+              : ConstClass.fromJson(
+                  json['valueFromDefaultValueDefaultConstructor']
+                      as Map<String, dynamic>),
+      valueFromDefaultValueNamedConstructor:
+          json['valueFromDefaultValueNamedConstructor'] == null
+              ? const ConstClass('easy')
+              : ConstClass.fromJson(
+                  json['valueFromDefaultValueNamedConstructor']
+                      as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$DefaultValueImplicitToJson(
@@ -67,11 +84,17 @@ Map<String, dynamic> _$DefaultValueImplicitToJson(
       'fieldSetSimple': instance.fieldSetSimple.toList(),
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
-      'fieldEnum': _$GreekEnumMap[instance.fieldEnum],
+      'durationField': instance.durationField.inMicroseconds,
+      'fieldEnum': _$GreekEnumMap[instance.fieldEnum]!,
       'constClass': instance.constClass,
       'valueFromConverter':
           const ConstClassConverter().toJson(instance.valueFromConverter),
       'valueFromFunction': constClassToJson(instance.valueFromFunction),
+      'intDefaultValueFromFunction': instance.intDefaultValueFromFunction,
+      'valueFromDefaultValueDefaultConstructor':
+          instance.valueFromDefaultValueDefaultConstructor,
+      'valueFromDefaultValueNamedConstructor':
+          instance.valueFromDefaultValueNamedConstructor,
     };
 
 const _$GreekEnumMap = {

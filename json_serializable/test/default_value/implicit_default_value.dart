@@ -34,6 +34,8 @@ class DefaultValueImplicit implements dvi.DefaultValue {
 
   final Map<String, List<String>> fieldMapListString;
 
+  final Duration durationField;
+
   final Greek fieldEnum;
 
   final ConstClass constClass;
@@ -43,6 +45,12 @@ class DefaultValueImplicit implements dvi.DefaultValue {
 
   @JsonKey(fromJson: constClassFromJson, toJson: constClassToJson)
   ConstClass valueFromFunction;
+
+  int intDefaultValueFromFunction;
+
+  ConstClass valueFromDefaultValueDefaultConstructor;
+
+  ConstClass valueFromDefaultValueNamedConstructor;
 
   DefaultValueImplicit({
     this.fieldBool = true,
@@ -59,9 +67,13 @@ class DefaultValueImplicit implements dvi.DefaultValue {
       'root': ['child']
     },
     this.fieldEnum = Greek.beta,
+    this.durationField = const Duration(),
     this.constClass = const ConstClass('value'),
     this.valueFromConverter = const ConstClass('value'),
     this.valueFromFunction = const ConstClass('value'),
+    this.intDefaultValueFromFunction = 43,
+    this.valueFromDefaultValueDefaultConstructor = const ConstClass(),
+    this.valueFromDefaultValueNamedConstructor = const ConstClass('easy'),
   });
 
   factory DefaultValueImplicit.fromJson(Map<String, dynamic> json) =>
