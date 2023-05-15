@@ -85,7 +85,15 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
           SimpleObject.fromJson(json['simpleObject'] as Map<String, dynamic>)
       ..strictKeysObject = StrictKeysObject.fromJson(
           json['strictKeysObject'] as Map<String, dynamic>)
-      ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int?;
+      ..validatedPropertyNo42 = json['validatedPropertyNo42'] as int?
+      ..recordField = _$recordConvertNullable(
+        json['recordField'],
+        ($jsonValue) => (
+          $jsonValue[r'$1'] as int,
+          $jsonValue[r'$2'] as String,
+          truth: $jsonValue['truth'] as bool,
+        ),
+      );
 
 Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   final val = <String, dynamic>{};
@@ -139,8 +147,23 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
   val['simpleObject'] = instance.simpleObject;
   val['strictKeysObject'] = instance.strictKeysObject;
   writeNotNull('validatedPropertyNo42', instance.validatedPropertyNo42);
+  writeNotNull(
+      'recordField',
+      instance.recordField == null
+          ? null
+          : {
+              r'$1': instance.recordField!.$1,
+              r'$2': instance.recordField!.$2,
+              'truth': instance.recordField!.truth,
+            });
   return val;
 }
+
+$Rec? _$recordConvertNullable<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    value == null ? null : convert(value as Map<String, dynamic>);
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(
         Map<String, dynamic> json) =>

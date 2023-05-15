@@ -120,8 +120,16 @@ abstract class KitchenSink {
 
   int? validatedPropertyNo42;
 
+  RecordSample? recordField;
+
   Map<String, dynamic> toJson();
 }
+
+typedef RecordSample = (
+  int,
+  String, {
+  bool truth,
+});
 
 // TODO: finish this...
 bool sinkEquals(KitchenSink a, Object other) =>
@@ -145,4 +153,5 @@ bool sinkEquals(KitchenSink a, Object other) =>
     deepEquals(a.crazyComplex, other.crazyComplex) &&
     // val
     a.writeNotNull == other.writeNotNull &&
-    a.string == other.string;
+    a.string == other.string &&
+    a.recordField == other.recordField;
