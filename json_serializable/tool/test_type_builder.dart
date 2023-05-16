@@ -111,6 +111,7 @@ final _iterableGenericArgs = ([
   'FromJsonNullableObjectParam',
   'FromJsonObjectParam',
   'dynamic',
+  recordType,
 ]..sort(compareAsciiLowerCase))
     .toSet();
 

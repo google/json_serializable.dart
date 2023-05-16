@@ -1039,6 +1039,93 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectNullableToJson(
             },
     };
 
+SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
+    SimpleClassOfRecord(
+      _$recordConvert(
+        json['value'],
+        ($jsonValue) => (
+          _$recordConvert(
+            $jsonValue[r'$1'],
+            ($jsonValue) => (
+              $jsonValue[r'$1'] as int,
+              $jsonValue[r'$2'] as String,
+              truth: $jsonValue['truth'] as bool,
+            ),
+          ),
+          named: _$recordConvert(
+            $jsonValue['named'],
+            ($jsonValue) => (
+              $jsonValue[r'$1'] as int,
+              $jsonValue[r'$2'] as String,
+              truth: $jsonValue['truth'] as bool,
+            ),
+          ),
+        ),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfRecordToJson(
+        SimpleClassOfRecord instance) =>
+    <String, dynamic>{
+      'value': {
+        r'$1': {
+          r'$1': instance.value.$1.$1,
+          r'$2': instance.value.$1.$2,
+          'truth': instance.value.$1.truth,
+        },
+        'named': {
+          r'$1': instance.value.named.$1,
+          r'$2': instance.value.named.$2,
+          'truth': instance.value.named.truth,
+        },
+      },
+    };
+
+SimpleClassNullableOfRecord _$SimpleClassNullableOfRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassNullableOfRecord(
+      _$recordConvertNullable(
+        json['value'],
+        ($jsonValue) => (
+          _$recordConvert(
+            $jsonValue[r'$1'],
+            ($jsonValue) => (
+              $jsonValue[r'$1'] as int,
+              $jsonValue[r'$2'] as String,
+              truth: $jsonValue['truth'] as bool,
+            ),
+          ),
+          named: _$recordConvert(
+            $jsonValue['named'],
+            ($jsonValue) => (
+              $jsonValue[r'$1'] as int,
+              $jsonValue[r'$2'] as String,
+              truth: $jsonValue['truth'] as bool,
+            ),
+          ),
+        ),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassNullableOfRecordToJson(
+        SimpleClassNullableOfRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value == null
+          ? null
+          : {
+              r'$1': {
+                r'$1': instance.value!.$1.$1,
+                r'$2': instance.value!.$1.$2,
+                'truth': instance.value!.$1.truth,
+              },
+              'named': {
+                r'$1': instance.value!.named.$1,
+                r'$2': instance.value!.named.$2,
+                'truth': instance.value!.named.truth,
+              },
+            },
+    };
+
 SimpleClassOfString _$SimpleClassOfStringFromJson(Map<String, dynamic> json) =>
     SimpleClassOfString(
       _$recordConvert(

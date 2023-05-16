@@ -88,12 +88,24 @@ class TestTypeData {
 
       final theName = 'SimpleClassOf$genericArgClassPart';
 
+      var genericArgFixed = genericArg;
+
+      if (genericArgFixed == recordType) {
+        genericArgFixed = '(int, String, {bool truth})';
+      }
+
+      genericArgFixed = genericArgFixed.replaceFirst(
+        ',$recordType',
+        ',(int, String, {bool truth})',
+      );
+
       final genericType =
-          type == recordType ? '${theName}TypeDef' : '$type<$genericArg>';
+          type == recordType ? '${theName}TypeDef' : '$type<$genericArgFixed>';
 
       if (type == recordType) {
         buffer.writeln(
-          'typedef $genericType = ($genericArg, {$genericArg named});',
+          'typedef $genericType = '
+          '($genericArgFixed, {$genericArgFixed named});',
         );
       }
 
