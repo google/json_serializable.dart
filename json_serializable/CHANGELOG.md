@@ -1,5 +1,6 @@
-## 6.7.0-dev
+## 6.7.0
 
+- Support `Record` types.
 - Require Dart 3.0
 - Require `analyzer: ^5.12.0`
 

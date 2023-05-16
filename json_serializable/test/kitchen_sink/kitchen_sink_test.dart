@@ -294,7 +294,11 @@ const _nonNullableFields = {
   'strictKeysObject'
 };
 
-const _encodedAsMapKeys = {'simpleObject', 'strictKeysObject'};
+const _encodedAsMapKeys = {
+  'simpleObject',
+  'strictKeysObject',
+  'recordField',
+};
 
 const _iterableMapKeys = {
   'bigIntMap',

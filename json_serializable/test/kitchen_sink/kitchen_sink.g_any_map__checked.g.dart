@@ -121,6 +121,16 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
             (v) => val.strictKeysObject = StrictKeysObject.fromJson(v as Map));
         $checkedConvert('validatedPropertyNo42',
             (v) => val.validatedPropertyNo42 = v as int?);
+        $checkedConvert(
+            'recordField',
+            (v) => val.recordField = _$recordConvertAnyNullable(
+                  v,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                ));
         return val;
       },
       fieldKeyMap: const {
@@ -175,7 +185,20 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'simpleObject': instance.simpleObject,
       'strictKeysObject': instance.strictKeysObject,
       'validatedPropertyNo42': instance.validatedPropertyNo42,
+      'recordField': instance.recordField == null
+          ? null
+          : {
+              r'$1': instance.recordField!.$1,
+              r'$2': instance.recordField!.$2,
+              'truth': instance.recordField!.truth,
+            },
     };
+
+$Rec? _$recordConvertAnyNullable<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    value == null ? null : convert(value as Map);
 
 JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
     $checkedCreate(

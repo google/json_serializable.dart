@@ -152,11 +152,11 @@ Out of the box, `json_serializable` supports many common types in the
 [dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
 library: 
 [`BigInt`], [`bool`], [`DateTime`], [`double`], [`Duration`], [`Enum`], [`int`],
-[`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Set`], [`String`],
-[`Uri`]
+[`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Record`], [`Set`],
+[`String`], [`Uri`]
 
 The collection types –
-[`Iterable`], [`List`], [`Map`], [`Set`]
+[`Iterable`], [`List`], [`Map`], [`Record`], [`Set`]
 – can contain values of all the above types.
 
 For [`Map`], the key value must be one of
@@ -313,6 +313,7 @@ targets:
 [`Map`]: https://api.dart.dev/stable/dart-core/Map-class.html
 [`num`]: https://api.dart.dev/stable/dart-core/num-class.html
 [`Object`]: https://api.dart.dev/stable/dart-core/Object-class.html
+[`Record`]: https://api.dart.dev/stable/dart-core/Record-class.html
 [`Set`]: https://api.dart.dev/stable/dart-core/Set-class.html
 [`String`]: https://api.dart.dev/stable/dart-core/String-class.html
 [`Uri`]: https://api.dart.dev/stable/dart-core/Uri-class.html

@@ -16,6 +16,7 @@ import 'type_helpers/iterable_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'type_helpers/json_helper.dart';
 import 'type_helpers/map_helper.dart';
+import 'type_helpers/record_helper.dart';
 import 'type_helpers/uri_helper.dart';
 import 'type_helpers/value_helper.dart';
 
@@ -24,6 +25,7 @@ class Settings {
     IterableHelper(),
     MapHelper(),
     EnumHelper(),
+    RecordHelper(),
     ValueHelper(),
   ];
 

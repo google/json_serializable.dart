@@ -40,7 +40,12 @@ const validValues = <String, dynamic>{
   trickyKeyName: 'string',
   'simpleObject': {'value': 42},
   'strictKeysObject': {'value': 10, 'custom_field': 'cool'},
-  'validatedPropertyNo42': 0
+  'validatedPropertyNo42': 0,
+  'recordField': {
+    '\$1': 0,
+    '\$2': 'string',
+    'truth': true,
+  },
 };
 
 const invalidValueTypes = {
@@ -77,7 +82,8 @@ const invalidValueTypes = {
     'value': 10,
     'invalid_key': true,
   },
-  'validatedPropertyNo42': true
+  'validatedPropertyNo42': true,
+  'recordField': true,
 };
 
 const disallowNullKeys = {

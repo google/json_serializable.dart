@@ -52,7 +52,9 @@ Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
-  final annotation = _jsonEnumChecker.firstAnnotationOf(targetType.element!);
+  final targetTypeElement = targetType.element;
+  if (targetTypeElement == null) return null;
+  final annotation = _jsonEnumChecker.firstAnnotationOf(targetTypeElement);
   final jsonEnum = _fromAnnotation(annotation);
 
   final enumFields = iterateEnumFields(targetType);
