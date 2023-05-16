@@ -690,6 +690,34 @@ class SimpleClassNullableOfObjectNullable {
 }
 
 @JsonSerializable()
+class SimpleClassOfRecord {
+  final Set<(int, String, {bool truth})> value;
+
+  SimpleClassOfRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfRecord {
+  final Set<(int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassNullableOfRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassNullableOfRecordToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassOfString {
   final Set<String> value;
 

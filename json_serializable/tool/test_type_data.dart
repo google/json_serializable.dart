@@ -83,17 +83,31 @@ class TestTypeData {
         ),
       );
 
+    const sampleRecordDefinition = '(int, String, {bool truth})';
+
     for (var genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);
 
       final theName = 'SimpleClassOf$genericArgClassPart';
 
+      var genericArgFixed = genericArg;
+
+      if (genericArgFixed == recordType) {
+        genericArgFixed = sampleRecordDefinition;
+      }
+
+      genericArgFixed = genericArgFixed.replaceFirst(
+        ',$recordType',
+        ',$sampleRecordDefinition',
+      );
+
       final genericType =
-          type == recordType ? '${theName}TypeDef' : '$type<$genericArg>';
+          type == recordType ? '${theName}TypeDef' : '$type<$genericArgFixed>';
 
       if (type == recordType) {
         buffer.writeln(
-          'typedef $genericType = ($genericArg, {$genericArg named});',
+          'typedef $genericType = '
+          '($genericArgFixed, {$genericArgFixed named});',
         );
       }
 

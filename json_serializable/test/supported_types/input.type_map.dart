@@ -5500,6 +5500,246 @@ class SimpleClassNullableOfUriToObjectNullable {
 }
 
 @JsonSerializable()
+class SimpleClassOfBigIntToRecord {
+  final Map<BigInt, (int, String, {bool truth})> value;
+
+  SimpleClassOfBigIntToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfBigIntToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfBigIntToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfBigIntToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfBigIntToRecord {
+  final Map<BigInt, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfBigIntToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfBigIntToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfBigIntToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfBigIntToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfDateTimeToRecord {
+  final Map<DateTime, (int, String, {bool truth})> value;
+
+  SimpleClassOfDateTimeToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfDateTimeToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfDateTimeToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfDateTimeToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfDateTimeToRecord {
+  final Map<DateTime, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfDateTimeToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfDateTimeToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfDateTimeToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfDateTimeToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfDynamicToRecord {
+  final Map<dynamic, (int, String, {bool truth})> value;
+
+  SimpleClassOfDynamicToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfDynamicToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfDynamicToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfDynamicToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfDynamicToRecord {
+  final Map<dynamic, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfDynamicToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfDynamicToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfDynamicToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfDynamicToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfEnumTypeToRecord {
+  final Map<EnumType, (int, String, {bool truth})> value;
+
+  SimpleClassOfEnumTypeToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfEnumTypeToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfEnumTypeToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfEnumTypeToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfEnumTypeToRecord {
+  final Map<EnumType, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfEnumTypeToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfEnumTypeToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfEnumTypeToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfEnumTypeToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfIntToRecord {
+  final Map<int, (int, String, {bool truth})> value;
+
+  SimpleClassOfIntToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfIntToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfIntToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfIntToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfIntToRecord {
+  final Map<int, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfIntToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfIntToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfIntToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfIntToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfObjectToRecord {
+  final Map<Object, (int, String, {bool truth})> value;
+
+  SimpleClassOfObjectToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfObjectToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfObjectToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfObjectToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfObjectToRecord {
+  final Map<Object, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfObjectToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfObjectToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfObjectToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfObjectToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfStringToRecord {
+  final Map<String, (int, String, {bool truth})> value;
+
+  SimpleClassOfStringToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfStringToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfStringToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfStringToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfStringToRecord {
+  final Map<String, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfStringToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfStringToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfStringToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfStringToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassOfUriToRecord {
+  final Map<Uri, (int, String, {bool truth})> value;
+
+  SimpleClassOfUriToRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfUriToRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfUriToRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfUriToRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfUriToRecord {
+  final Map<Uri, (int, String, {bool truth})>? value;
+
+  SimpleClassNullableOfUriToRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfUriToRecord.fromJson(
+          Map<String, Object?> json) =>
+      _$SimpleClassNullableOfUriToRecordFromJson(json);
+
+  Map<String, Object?> toJson() =>
+      _$SimpleClassNullableOfUriToRecordToJson(this);
+}
+
+@JsonSerializable()
 class SimpleClassOfBigIntToString {
   final Map<BigInt, String> value;
 

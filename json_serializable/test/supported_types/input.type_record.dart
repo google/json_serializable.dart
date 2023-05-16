@@ -736,6 +736,39 @@ class SimpleClassNullableOfObjectNullable {
       _$SimpleClassNullableOfObjectNullableToJson(this);
 }
 
+typedef SimpleClassOfRecordTypeDef = (
+  (int, String, {bool truth}), {
+  (int, String, {bool truth}) named
+});
+
+@JsonSerializable()
+class SimpleClassOfRecord {
+  final SimpleClassOfRecordTypeDef value;
+
+  SimpleClassOfRecord(
+    this.value,
+  );
+
+  factory SimpleClassOfRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassOfRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassOfRecordToJson(this);
+}
+
+@JsonSerializable()
+class SimpleClassNullableOfRecord {
+  final SimpleClassOfRecordTypeDef? value;
+
+  SimpleClassNullableOfRecord(
+    this.value,
+  );
+
+  factory SimpleClassNullableOfRecord.fromJson(Map<String, Object?> json) =>
+      _$SimpleClassNullableOfRecordFromJson(json);
+
+  Map<String, Object?> toJson() => _$SimpleClassNullableOfRecordToJson(this);
+}
+
 typedef SimpleClassOfStringTypeDef = (String, {String named});
 
 @JsonSerializable()
