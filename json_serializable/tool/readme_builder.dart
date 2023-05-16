@@ -59,16 +59,11 @@ class _ReadmeBuilder extends Builder {
         final memberName = match.group(3);
         final linkContent = '[`$className${memberName ?? ''}`]';
         String linkValue;
-        switch (context) {
-          case 'core':
-            linkValue = _coreTypeUri(className);
-            break;
-          case 'ja':
-            linkValue = jsonAnnotationUri(className, memberName?.substring(1));
-            break;
-          default:
-            linkValue = 'https://unknown.com/$context/$className';
-        }
+        linkValue = switch (context) {
+          'core' => _coreTypeUri(className),
+          'ja' => jsonAnnotationUri(className, memberName?.substring(1)),
+          _ => 'https://unknown.com/$context/$className'
+        };
         foundClasses[linkContent] = linkValue;
         return linkContent;
       }

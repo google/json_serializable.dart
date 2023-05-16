@@ -15,6 +15,7 @@ linter:
     - cancel_subscriptions
     - cascade_invocations
     - comment_references
+    - invalid_case_patterns
     - join_return_with_assignment
     - literal_only_boolean_expressions
     - missing_whitespace_between_adjacent_strings
@@ -27,6 +28,8 @@ linter:
     - prefer_relative_imports
     - sort_child_properties_last
     - test_types_in_equals
+    - type_literal_in_constant_pattern
+    - unnecessary_breaks
     - unsafe_html
     - use_full_hex_values_for_flutter_colors
     - use_string_buffers

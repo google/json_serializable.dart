@@ -207,7 +207,7 @@ String typeToCode(
   DartType type, {
   bool forceNullable = false,
 }) {
-  if (type.isDynamic) {
+  if (type is DynamicType) {
     return 'dynamic';
   } else if (type is InterfaceType) {
     return [

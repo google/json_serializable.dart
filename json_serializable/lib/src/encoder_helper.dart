@@ -13,7 +13,7 @@ import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
 
-abstract class EncodeHelper implements HelperCore {
+mixin EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
 
   String createPerFieldToJson(Set<FieldElement> accessibleFieldSet) {
