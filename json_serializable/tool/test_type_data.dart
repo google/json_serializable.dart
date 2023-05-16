@@ -83,6 +83,8 @@ class TestTypeData {
         ),
       );
 
+    const sampleRecordDefinition = '(int, String, {bool truth})';
+
     for (var genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);
 
@@ -91,12 +93,12 @@ class TestTypeData {
       var genericArgFixed = genericArg;
 
       if (genericArgFixed == recordType) {
-        genericArgFixed = '(int, String, {bool truth})';
+        genericArgFixed = sampleRecordDefinition;
       }
 
       genericArgFixed = genericArgFixed.replaceFirst(
         ',$recordType',
-        ',(int, String, {bool truth})',
+        ',$sampleRecordDefinition',
       );
 
       final genericType =
