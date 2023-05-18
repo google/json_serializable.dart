@@ -36,8 +36,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      caseInsensitive: enumObj.isNull ? null :
-        enumObj.read('caseInsensitive').literalValue as bool?,
+      caseInsensitive: enumObj.isNull
+          ? null
+          : enumObj.read('caseInsensitive').literalValue as bool?,
       includeFromJson: classAnnotation.ignoreUnannotated ? false : null,
       includeToJson: classAnnotation.ignoreUnannotated ? false : null,
     );

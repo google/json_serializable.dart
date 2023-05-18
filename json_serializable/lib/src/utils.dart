@@ -25,12 +25,12 @@ ConstantReader jsonKeyAnnotation(FieldElement element) =>
     ConstantReader(_jsonKeyAnnotation(element));
 
 DartObject? _jsonEnumAnnotation(Element? element) =>
-    (element != null && element is ClassElement) ?
-      _jsonEnumChecker.firstAnnotationOf(element)
-      : null;
+    (element != null && element is ClassElement)
+        ? _jsonEnumChecker.firstAnnotationOf(element)
+        : null;
 
 ConstantReader jsonEnumAnnotation(FieldElement element) =>
-  ConstantReader(_jsonEnumAnnotation(element.type.element));
+    ConstantReader(_jsonEnumAnnotation(element.type.element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
 bool hasJsonKeyAnnotation(FieldElement element) =>
