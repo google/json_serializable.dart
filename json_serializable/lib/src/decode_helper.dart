@@ -21,7 +21,7 @@ class CreateFactoryResult {
   CreateFactoryResult(this.output, this.usedFields);
 }
 
-abstract class DecodeHelper implements HelperCore {
+mixin DecodeHelper implements HelperCore {
   CreateFactoryResult createFactory(
     Map<String, FieldElement> accessibleFields,
     Map<String, String> unavailableReasons,

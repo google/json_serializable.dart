@@ -71,6 +71,7 @@ builders:
       - .type_map.dart
       - .type_num.dart
       - .type_object.dart
+      - .type_record.dart
       - .type_set.dart
       - .type_string.dart
       - .type_uri.dart

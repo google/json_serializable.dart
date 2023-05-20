@@ -1,3 +1,9 @@
+## 6.7.0
+
+- Support `Record` types.
+- Require Dart 3.0
+- Require `analyzer: ^5.12.0`
+
 ## 6.6.2
 
 - Better handling of `Object?` or `dynamic` as `fromJson` constructor param.

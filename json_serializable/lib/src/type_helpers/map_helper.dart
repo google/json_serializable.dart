@@ -68,7 +68,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     _checkSafeKeyType(expression, keyArg);
 
-    final valueArgIsAny = valueArg.isDynamic ||
+    final valueArgIsAny = valueArg is DynamicType ||
         (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
 
@@ -114,7 +114,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     if (keyArg.isEnum) {
       keyUsage = context.deserialize(keyArg, _keyParam).toString();
     } else if (context.config.anyMap &&
-        !(keyArg.isDartCoreObject || keyArg.isDynamic)) {
+        !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
       keyUsage = '$_keyParam as String';
     } else if (context.config.anyMap &&
         keyArg.isDartCoreObject &&
@@ -157,7 +157,7 @@ bool _isKeyStringable(DartType keyType) =>
 void _checkSafeKeyType(String expression, DartType keyArg) {
   // We're not going to handle converting key types at the moment
   // So the only safe types for key are dynamic/Object/String/enum
-  if (keyArg.isDynamic ||
+  if (keyArg is DynamicType ||
       (!keyArg.isNullableType &&
           (keyArg.isDartCoreObject ||
               coreStringTypeChecker.isExactlyType(keyArg) ||

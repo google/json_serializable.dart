@@ -2,6 +2,8 @@ import 'shared.dart';
 
 const customEnumType = 'EnumType';
 
+const recordType = 'Record';
+
 const _annotationImport =
     "import 'package:json_annotation/json_annotation.dart';";
 
@@ -56,13 +58,19 @@ class TestTypeData {
     final buffer =
         StringBuffer(Replacement.generate(split[0], headerReplacements));
 
+    if (type == recordType) {
+      buffer.writeln('typedef RecordTypeDef = ();');
+    }
+
     final simpleClassContent = '$classAnnotationSplit${split[1]}';
+
+    final simpleLiteral = type == recordType ? 'RecordTypeDef' : type;
 
     buffer
       ..write(
         Replacement.generate(
           simpleClassContent,
-          _libReplacements(type),
+          _libReplacements(simpleLiteral),
         ),
       )
       ..write(
@@ -71,21 +79,44 @@ class TestTypeData {
             'SimpleClass',
             'SimpleClassNullable',
           ),
-          _libReplacements('$type?'),
+          _libReplacements('$simpleLiteral?'),
         ),
       );
+
+    const sampleRecordDefinition = '(int, String, {bool truth})';
 
     for (var genericArg in genericArgs) {
       final genericArgClassPart = _genericClassPart(genericArg);
 
-      final genericType = '$type<$genericArg>';
+      final theName = 'SimpleClassOf$genericArgClassPart';
+
+      var genericArgFixed = genericArg;
+
+      if (genericArgFixed == recordType) {
+        genericArgFixed = sampleRecordDefinition;
+      }
+
+      genericArgFixed = genericArgFixed.replaceFirst(
+        ',$recordType',
+        ',$sampleRecordDefinition',
+      );
+
+      final genericType =
+          type == recordType ? '${theName}TypeDef' : '$type<$genericArgFixed>';
+
+      if (type == recordType) {
+        buffer.writeln(
+          'typedef $genericType = '
+          '($genericArgFixed, {$genericArgFixed named});',
+        );
+      }
 
       buffer
         ..write(
           Replacement.generate(
             simpleClassContent.replaceAll(
               'SimpleClass',
-              'SimpleClassOf$genericArgClassPart',
+              theName,
             ),
             _libReplacements(genericType),
           ),

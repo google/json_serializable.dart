@@ -21,7 +21,7 @@ class ValueHelper extends TypeHelper {
     TypeHelperContext context,
   ) {
     if (targetType.isDartCoreObject ||
-        targetType.isDynamic ||
+        targetType is DynamicType ||
         simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       return expression;
     }
@@ -39,7 +39,7 @@ class ValueHelper extends TypeHelper {
     if (targetType.isDartCoreObject && !targetType.isNullableType) {
       final question = defaultProvided ? '?' : '';
       return '$expression as Object$question';
-    } else if (targetType.isDartCoreObject || targetType.isDynamic) {
+    } else if (targetType.isDartCoreObject || targetType is DynamicType) {
       // just return it as-is. We'll hope it's safe.
       return expression;
     } else if (targetType.isDartCoreDouble) {

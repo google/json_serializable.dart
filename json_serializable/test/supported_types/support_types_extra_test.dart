@@ -74,4 +74,26 @@ void main() {
     );
     expect(loudEncode(object2), encoded);
   });
+
+  test('SimpleClassOfStringToRecord', () {
+    const value = {
+      'value': {
+        'key': {
+          r'$1': 1,
+          r'$2': 'string',
+          'truth': false,
+        }
+      }
+    };
+
+    final object = SimpleClassOfStringToRecord.fromJson(value);
+    final encoded = loudEncode(object);
+
+    expect(encoded, loudEncode(value));
+
+    final object2 = SimpleClassOfStringToRecord.fromJson(
+      jsonDecode(encoded) as Map<String, Object?>,
+    );
+    expect(loudEncode(object2), encoded);
+  });
 }

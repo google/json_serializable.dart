@@ -184,6 +184,8 @@ class KitchenSink implements k.KitchenSink {
     _validatedPropertyNo42 = value;
   }
 
+  k.RecordSample? recordField;
+
   bool operator ==(Object other) => k.sinkEquals(this, other);
 
   static Object? _trickyValueAccessor(Map json, String key) {

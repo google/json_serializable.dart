@@ -5281,6 +5281,446 @@ Map<String, dynamic> _$SimpleClassNullableOfUriToObjectNullableToJson(
       'value': instance.value?.map((k, e) => MapEntry(k.toString(), e)),
     };
 
+SimpleClassOfBigIntToRecord _$SimpleClassOfBigIntToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfBigIntToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            BigInt.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfBigIntToRecordToJson(
+        SimpleClassOfBigIntToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+$Rec _$recordConvert<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    convert(value as Map<String, dynamic>);
+
+SimpleClassNullableOfBigIntToRecord
+    _$SimpleClassNullableOfBigIntToRecordFromJson(Map<String, dynamic> json) =>
+        SimpleClassNullableOfBigIntToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                BigInt.parse(k),
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfBigIntToRecordToJson(
+        SimpleClassNullableOfBigIntToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfDateTimeToRecord _$SimpleClassOfDateTimeToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfDateTimeToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            DateTime.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfDateTimeToRecordToJson(
+        SimpleClassOfDateTimeToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k.toIso8601String(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfDateTimeToRecord
+    _$SimpleClassNullableOfDateTimeToRecordFromJson(
+            Map<String, dynamic> json) =>
+        SimpleClassNullableOfDateTimeToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                DateTime.parse(k),
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfDateTimeToRecordToJson(
+        SimpleClassNullableOfDateTimeToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k.toIso8601String(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfDynamicToRecord _$SimpleClassOfDynamicToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfDynamicToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfDynamicToRecordToJson(
+        SimpleClassOfDynamicToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfDynamicToRecord
+    _$SimpleClassNullableOfDynamicToRecordFromJson(Map<String, dynamic> json) =>
+        SimpleClassNullableOfDynamicToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                k,
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfDynamicToRecordToJson(
+        SimpleClassNullableOfDynamicToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfEnumTypeToRecord _$SimpleClassOfEnumTypeToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfEnumTypeToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            $enumDecode(_$EnumTypeEnumMap, k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfEnumTypeToRecordToJson(
+        SimpleClassOfEnumTypeToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfEnumTypeToRecord
+    _$SimpleClassNullableOfEnumTypeToRecordFromJson(
+            Map<String, dynamic> json) =>
+        SimpleClassNullableOfEnumTypeToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                $enumDecode(_$EnumTypeEnumMap, k),
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToRecordToJson(
+        SimpleClassNullableOfEnumTypeToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfIntToRecord _$SimpleClassOfIntToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfIntToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            int.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfIntToRecordToJson(
+        SimpleClassOfIntToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfIntToRecord _$SimpleClassNullableOfIntToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassNullableOfIntToRecord(
+      (json['value'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            int.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassNullableOfIntToRecordToJson(
+        SimpleClassNullableOfIntToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfObjectToRecord _$SimpleClassOfObjectToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfObjectToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfObjectToRecordToJson(
+        SimpleClassOfObjectToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfObjectToRecord
+    _$SimpleClassNullableOfObjectToRecordFromJson(Map<String, dynamic> json) =>
+        SimpleClassNullableOfObjectToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                k,
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfObjectToRecordToJson(
+        SimpleClassNullableOfObjectToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfStringToRecord _$SimpleClassOfStringToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfStringToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            k,
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfStringToRecordToJson(
+        SimpleClassOfStringToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfStringToRecord
+    _$SimpleClassNullableOfStringToRecordFromJson(Map<String, dynamic> json) =>
+        SimpleClassNullableOfStringToRecord(
+          (json['value'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+                k,
+                _$recordConvert(
+                  e,
+                  ($jsonValue) => (
+                    $jsonValue[r'$1'] as int,
+                    $jsonValue[r'$2'] as String,
+                    truth: $jsonValue['truth'] as bool,
+                  ),
+                )),
+          ),
+        );
+
+Map<String, dynamic> _$SimpleClassNullableOfStringToRecordToJson(
+        SimpleClassNullableOfStringToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k, {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassOfUriToRecord _$SimpleClassOfUriToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassOfUriToRecord(
+      (json['value'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+            Uri.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassOfUriToRecordToJson(
+        SimpleClassOfUriToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
+SimpleClassNullableOfUriToRecord _$SimpleClassNullableOfUriToRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassNullableOfUriToRecord(
+      (json['value'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            Uri.parse(k),
+            _$recordConvert(
+              e,
+              ($jsonValue) => (
+                $jsonValue[r'$1'] as int,
+                $jsonValue[r'$2'] as String,
+                truth: $jsonValue['truth'] as bool,
+              ),
+            )),
+      ),
+    );
+
+Map<String, dynamic> _$SimpleClassNullableOfUriToRecordToJson(
+        SimpleClassNullableOfUriToRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
+            r'$1': e.$1,
+            r'$2': e.$2,
+            'truth': e.truth,
+          })),
+    };
+
 SimpleClassOfBigIntToString _$SimpleClassOfBigIntToStringFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfBigIntToString(

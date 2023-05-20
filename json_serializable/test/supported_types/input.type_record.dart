@@ -5,18 +5,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'enum_type.dart';
 
-part 'input.type_list.g.dart';
+part 'input.type_record.g.dart';
+
+typedef RecordTypeDef = ();
 
 @JsonSerializable()
 class SimpleClass {
-  final List value;
-
-  @JsonKey(defaultValue: [42, true, false, null])
-  List withDefault;
+  final RecordTypeDef value;
 
   SimpleClass(
     this.value,
-    this.withDefault,
   );
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
@@ -27,14 +25,10 @@ class SimpleClass {
 
 @JsonSerializable()
 class SimpleClassNullable {
-  final List? value;
-
-  @JsonKey(defaultValue: [42, true, false, null])
-  List? withDefault;
+  final RecordTypeDef? value;
 
   SimpleClassNullable(
     this.value,
-    this.withDefault,
   );
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
@@ -43,9 +37,11 @@ class SimpleClassNullable {
   Map<String, Object?> toJson() => _$SimpleClassNullableToJson(this);
 }
 
+typedef SimpleClassOfBigIntTypeDef = (BigInt, {BigInt named});
+
 @JsonSerializable()
 class SimpleClassOfBigInt {
-  final List<BigInt> value;
+  final SimpleClassOfBigIntTypeDef value;
 
   SimpleClassOfBigInt(
     this.value,
@@ -59,7 +55,7 @@ class SimpleClassOfBigInt {
 
 @JsonSerializable()
 class SimpleClassNullableOfBigInt {
-  final List<BigInt>? value;
+  final SimpleClassOfBigIntTypeDef? value;
 
   SimpleClassNullableOfBigInt(
     this.value,
@@ -71,9 +67,11 @@ class SimpleClassNullableOfBigInt {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfBigIntToJson(this);
 }
 
+typedef SimpleClassOfBigIntNullableTypeDef = (BigInt?, {BigInt? named});
+
 @JsonSerializable()
 class SimpleClassOfBigIntNullable {
-  final List<BigInt?> value;
+  final SimpleClassOfBigIntNullableTypeDef value;
 
   SimpleClassOfBigIntNullable(
     this.value,
@@ -87,7 +85,7 @@ class SimpleClassOfBigIntNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfBigIntNullable {
-  final List<BigInt?>? value;
+  final SimpleClassOfBigIntNullableTypeDef? value;
 
   SimpleClassNullableOfBigIntNullable(
     this.value,
@@ -101,9 +99,11 @@ class SimpleClassNullableOfBigIntNullable {
       _$SimpleClassNullableOfBigIntNullableToJson(this);
 }
 
+typedef SimpleClassOfBoolTypeDef = (bool, {bool named});
+
 @JsonSerializable()
 class SimpleClassOfBool {
-  final List<bool> value;
+  final SimpleClassOfBoolTypeDef value;
 
   SimpleClassOfBool(
     this.value,
@@ -117,7 +117,7 @@ class SimpleClassOfBool {
 
 @JsonSerializable()
 class SimpleClassNullableOfBool {
-  final List<bool>? value;
+  final SimpleClassOfBoolTypeDef? value;
 
   SimpleClassNullableOfBool(
     this.value,
@@ -129,9 +129,11 @@ class SimpleClassNullableOfBool {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfBoolToJson(this);
 }
 
+typedef SimpleClassOfBoolNullableTypeDef = (bool?, {bool? named});
+
 @JsonSerializable()
 class SimpleClassOfBoolNullable {
-  final List<bool?> value;
+  final SimpleClassOfBoolNullableTypeDef value;
 
   SimpleClassOfBoolNullable(
     this.value,
@@ -145,7 +147,7 @@ class SimpleClassOfBoolNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfBoolNullable {
-  final List<bool?>? value;
+  final SimpleClassOfBoolNullableTypeDef? value;
 
   SimpleClassNullableOfBoolNullable(
     this.value,
@@ -159,9 +161,11 @@ class SimpleClassNullableOfBoolNullable {
       _$SimpleClassNullableOfBoolNullableToJson(this);
 }
 
+typedef SimpleClassOfDateTimeTypeDef = (DateTime, {DateTime named});
+
 @JsonSerializable()
 class SimpleClassOfDateTime {
-  final List<DateTime> value;
+  final SimpleClassOfDateTimeTypeDef value;
 
   SimpleClassOfDateTime(
     this.value,
@@ -175,7 +179,7 @@ class SimpleClassOfDateTime {
 
 @JsonSerializable()
 class SimpleClassNullableOfDateTime {
-  final List<DateTime>? value;
+  final SimpleClassOfDateTimeTypeDef? value;
 
   SimpleClassNullableOfDateTime(
     this.value,
@@ -187,9 +191,11 @@ class SimpleClassNullableOfDateTime {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfDateTimeToJson(this);
 }
 
+typedef SimpleClassOfDateTimeNullableTypeDef = (DateTime?, {DateTime? named});
+
 @JsonSerializable()
 class SimpleClassOfDateTimeNullable {
-  final List<DateTime?> value;
+  final SimpleClassOfDateTimeNullableTypeDef value;
 
   SimpleClassOfDateTimeNullable(
     this.value,
@@ -203,7 +209,7 @@ class SimpleClassOfDateTimeNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfDateTimeNullable {
-  final List<DateTime?>? value;
+  final SimpleClassOfDateTimeNullableTypeDef? value;
 
   SimpleClassNullableOfDateTimeNullable(
     this.value,
@@ -217,9 +223,11 @@ class SimpleClassNullableOfDateTimeNullable {
       _$SimpleClassNullableOfDateTimeNullableToJson(this);
 }
 
+typedef SimpleClassOfDoubleTypeDef = (double, {double named});
+
 @JsonSerializable()
 class SimpleClassOfDouble {
-  final List<double> value;
+  final SimpleClassOfDoubleTypeDef value;
 
   SimpleClassOfDouble(
     this.value,
@@ -233,7 +241,7 @@ class SimpleClassOfDouble {
 
 @JsonSerializable()
 class SimpleClassNullableOfDouble {
-  final List<double>? value;
+  final SimpleClassOfDoubleTypeDef? value;
 
   SimpleClassNullableOfDouble(
     this.value,
@@ -245,9 +253,11 @@ class SimpleClassNullableOfDouble {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfDoubleToJson(this);
 }
 
+typedef SimpleClassOfDoubleNullableTypeDef = (double?, {double? named});
+
 @JsonSerializable()
 class SimpleClassOfDoubleNullable {
-  final List<double?> value;
+  final SimpleClassOfDoubleNullableTypeDef value;
 
   SimpleClassOfDoubleNullable(
     this.value,
@@ -261,7 +271,7 @@ class SimpleClassOfDoubleNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfDoubleNullable {
-  final List<double?>? value;
+  final SimpleClassOfDoubleNullableTypeDef? value;
 
   SimpleClassNullableOfDoubleNullable(
     this.value,
@@ -275,9 +285,11 @@ class SimpleClassNullableOfDoubleNullable {
       _$SimpleClassNullableOfDoubleNullableToJson(this);
 }
 
+typedef SimpleClassOfDurationTypeDef = (Duration, {Duration named});
+
 @JsonSerializable()
 class SimpleClassOfDuration {
-  final List<Duration> value;
+  final SimpleClassOfDurationTypeDef value;
 
   SimpleClassOfDuration(
     this.value,
@@ -291,7 +303,7 @@ class SimpleClassOfDuration {
 
 @JsonSerializable()
 class SimpleClassNullableOfDuration {
-  final List<Duration>? value;
+  final SimpleClassOfDurationTypeDef? value;
 
   SimpleClassNullableOfDuration(
     this.value,
@@ -303,9 +315,11 @@ class SimpleClassNullableOfDuration {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfDurationToJson(this);
 }
 
+typedef SimpleClassOfDurationNullableTypeDef = (Duration?, {Duration? named});
+
 @JsonSerializable()
 class SimpleClassOfDurationNullable {
-  final List<Duration?> value;
+  final SimpleClassOfDurationNullableTypeDef value;
 
   SimpleClassOfDurationNullable(
     this.value,
@@ -319,7 +333,7 @@ class SimpleClassOfDurationNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfDurationNullable {
-  final List<Duration?>? value;
+  final SimpleClassOfDurationNullableTypeDef? value;
 
   SimpleClassNullableOfDurationNullable(
     this.value,
@@ -333,9 +347,11 @@ class SimpleClassNullableOfDurationNullable {
       _$SimpleClassNullableOfDurationNullableToJson(this);
 }
 
+typedef SimpleClassOfDynamicTypeDef = (dynamic, {dynamic named});
+
 @JsonSerializable()
 class SimpleClassOfDynamic {
-  final List<dynamic> value;
+  final SimpleClassOfDynamicTypeDef value;
 
   SimpleClassOfDynamic(
     this.value,
@@ -349,7 +365,7 @@ class SimpleClassOfDynamic {
 
 @JsonSerializable()
 class SimpleClassNullableOfDynamic {
-  final List<dynamic>? value;
+  final SimpleClassOfDynamicTypeDef? value;
 
   SimpleClassNullableOfDynamic(
     this.value,
@@ -361,9 +377,11 @@ class SimpleClassNullableOfDynamic {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfDynamicToJson(this);
 }
 
+typedef SimpleClassOfEnumTypeTypeDef = (EnumType, {EnumType named});
+
 @JsonSerializable()
 class SimpleClassOfEnumType {
-  final List<EnumType> value;
+  final SimpleClassOfEnumTypeTypeDef value;
 
   SimpleClassOfEnumType(
     this.value,
@@ -377,7 +395,7 @@ class SimpleClassOfEnumType {
 
 @JsonSerializable()
 class SimpleClassNullableOfEnumType {
-  final List<EnumType>? value;
+  final SimpleClassOfEnumTypeTypeDef? value;
 
   SimpleClassNullableOfEnumType(
     this.value,
@@ -389,9 +407,11 @@ class SimpleClassNullableOfEnumType {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfEnumTypeToJson(this);
 }
 
+typedef SimpleClassOfEnumTypeNullableTypeDef = (EnumType?, {EnumType? named});
+
 @JsonSerializable()
 class SimpleClassOfEnumTypeNullable {
-  final List<EnumType?> value;
+  final SimpleClassOfEnumTypeNullableTypeDef value;
 
   SimpleClassOfEnumTypeNullable(
     this.value,
@@ -405,7 +425,7 @@ class SimpleClassOfEnumTypeNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfEnumTypeNullable {
-  final List<EnumType?>? value;
+  final SimpleClassOfEnumTypeNullableTypeDef? value;
 
   SimpleClassNullableOfEnumTypeNullable(
     this.value,
@@ -419,9 +439,14 @@ class SimpleClassNullableOfEnumTypeNullable {
       _$SimpleClassNullableOfEnumTypeNullableToJson(this);
 }
 
+typedef SimpleClassOfFromJsonDynamicParamTypeDef = (
+  FromJsonDynamicParam, {
+  FromJsonDynamicParam named
+});
+
 @JsonSerializable()
 class SimpleClassOfFromJsonDynamicParam {
-  final List<FromJsonDynamicParam> value;
+  final SimpleClassOfFromJsonDynamicParamTypeDef value;
 
   SimpleClassOfFromJsonDynamicParam(
     this.value,
@@ -437,7 +462,7 @@ class SimpleClassOfFromJsonDynamicParam {
 
 @JsonSerializable()
 class SimpleClassNullableOfFromJsonDynamicParam {
-  final List<FromJsonDynamicParam>? value;
+  final SimpleClassOfFromJsonDynamicParamTypeDef? value;
 
   SimpleClassNullableOfFromJsonDynamicParam(
     this.value,
@@ -451,9 +476,14 @@ class SimpleClassNullableOfFromJsonDynamicParam {
       _$SimpleClassNullableOfFromJsonDynamicParamToJson(this);
 }
 
+typedef SimpleClassOfFromJsonNullableObjectParamTypeDef = (
+  FromJsonNullableObjectParam, {
+  FromJsonNullableObjectParam named
+});
+
 @JsonSerializable()
 class SimpleClassOfFromJsonNullableObjectParam {
-  final List<FromJsonNullableObjectParam> value;
+  final SimpleClassOfFromJsonNullableObjectParamTypeDef value;
 
   SimpleClassOfFromJsonNullableObjectParam(
     this.value,
@@ -469,7 +499,7 @@ class SimpleClassOfFromJsonNullableObjectParam {
 
 @JsonSerializable()
 class SimpleClassNullableOfFromJsonNullableObjectParam {
-  final List<FromJsonNullableObjectParam>? value;
+  final SimpleClassOfFromJsonNullableObjectParamTypeDef? value;
 
   SimpleClassNullableOfFromJsonNullableObjectParam(
     this.value,
@@ -483,9 +513,14 @@ class SimpleClassNullableOfFromJsonNullableObjectParam {
       _$SimpleClassNullableOfFromJsonNullableObjectParamToJson(this);
 }
 
+typedef SimpleClassOfFromJsonObjectParamTypeDef = (
+  FromJsonObjectParam, {
+  FromJsonObjectParam named
+});
+
 @JsonSerializable()
 class SimpleClassOfFromJsonObjectParam {
-  final List<FromJsonObjectParam> value;
+  final SimpleClassOfFromJsonObjectParamTypeDef value;
 
   SimpleClassOfFromJsonObjectParam(
     this.value,
@@ -501,7 +536,7 @@ class SimpleClassOfFromJsonObjectParam {
 
 @JsonSerializable()
 class SimpleClassNullableOfFromJsonObjectParam {
-  final List<FromJsonObjectParam>? value;
+  final SimpleClassOfFromJsonObjectParamTypeDef? value;
 
   SimpleClassNullableOfFromJsonObjectParam(
     this.value,
@@ -515,9 +550,11 @@ class SimpleClassNullableOfFromJsonObjectParam {
       _$SimpleClassNullableOfFromJsonObjectParamToJson(this);
 }
 
+typedef SimpleClassOfIntTypeDef = (int, {int named});
+
 @JsonSerializable()
 class SimpleClassOfInt {
-  final List<int> value;
+  final SimpleClassOfIntTypeDef value;
 
   SimpleClassOfInt(
     this.value,
@@ -531,7 +568,7 @@ class SimpleClassOfInt {
 
 @JsonSerializable()
 class SimpleClassNullableOfInt {
-  final List<int>? value;
+  final SimpleClassOfIntTypeDef? value;
 
   SimpleClassNullableOfInt(
     this.value,
@@ -543,9 +580,11 @@ class SimpleClassNullableOfInt {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfIntToJson(this);
 }
 
+typedef SimpleClassOfIntNullableTypeDef = (int?, {int? named});
+
 @JsonSerializable()
 class SimpleClassOfIntNullable {
-  final List<int?> value;
+  final SimpleClassOfIntNullableTypeDef value;
 
   SimpleClassOfIntNullable(
     this.value,
@@ -559,7 +598,7 @@ class SimpleClassOfIntNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfIntNullable {
-  final List<int?>? value;
+  final SimpleClassOfIntNullableTypeDef? value;
 
   SimpleClassNullableOfIntNullable(
     this.value,
@@ -573,9 +612,11 @@ class SimpleClassNullableOfIntNullable {
       _$SimpleClassNullableOfIntNullableToJson(this);
 }
 
+typedef SimpleClassOfNumTypeDef = (num, {num named});
+
 @JsonSerializable()
 class SimpleClassOfNum {
-  final List<num> value;
+  final SimpleClassOfNumTypeDef value;
 
   SimpleClassOfNum(
     this.value,
@@ -589,7 +630,7 @@ class SimpleClassOfNum {
 
 @JsonSerializable()
 class SimpleClassNullableOfNum {
-  final List<num>? value;
+  final SimpleClassOfNumTypeDef? value;
 
   SimpleClassNullableOfNum(
     this.value,
@@ -601,9 +642,11 @@ class SimpleClassNullableOfNum {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfNumToJson(this);
 }
 
+typedef SimpleClassOfNumNullableTypeDef = (num?, {num? named});
+
 @JsonSerializable()
 class SimpleClassOfNumNullable {
-  final List<num?> value;
+  final SimpleClassOfNumNullableTypeDef value;
 
   SimpleClassOfNumNullable(
     this.value,
@@ -617,7 +660,7 @@ class SimpleClassOfNumNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfNumNullable {
-  final List<num?>? value;
+  final SimpleClassOfNumNullableTypeDef? value;
 
   SimpleClassNullableOfNumNullable(
     this.value,
@@ -631,9 +674,11 @@ class SimpleClassNullableOfNumNullable {
       _$SimpleClassNullableOfNumNullableToJson(this);
 }
 
+typedef SimpleClassOfObjectTypeDef = (Object, {Object named});
+
 @JsonSerializable()
 class SimpleClassOfObject {
-  final List<Object> value;
+  final SimpleClassOfObjectTypeDef value;
 
   SimpleClassOfObject(
     this.value,
@@ -647,7 +692,7 @@ class SimpleClassOfObject {
 
 @JsonSerializable()
 class SimpleClassNullableOfObject {
-  final List<Object>? value;
+  final SimpleClassOfObjectTypeDef? value;
 
   SimpleClassNullableOfObject(
     this.value,
@@ -659,9 +704,11 @@ class SimpleClassNullableOfObject {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfObjectToJson(this);
 }
 
+typedef SimpleClassOfObjectNullableTypeDef = (Object?, {Object? named});
+
 @JsonSerializable()
 class SimpleClassOfObjectNullable {
-  final List<Object?> value;
+  final SimpleClassOfObjectNullableTypeDef value;
 
   SimpleClassOfObjectNullable(
     this.value,
@@ -675,7 +722,7 @@ class SimpleClassOfObjectNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfObjectNullable {
-  final List<Object?>? value;
+  final SimpleClassOfObjectNullableTypeDef? value;
 
   SimpleClassNullableOfObjectNullable(
     this.value,
@@ -689,9 +736,14 @@ class SimpleClassNullableOfObjectNullable {
       _$SimpleClassNullableOfObjectNullableToJson(this);
 }
 
+typedef SimpleClassOfRecordTypeDef = (
+  (int, String, {bool truth}), {
+  (int, String, {bool truth}) named
+});
+
 @JsonSerializable()
 class SimpleClassOfRecord {
-  final List<(int, String, {bool truth})> value;
+  final SimpleClassOfRecordTypeDef value;
 
   SimpleClassOfRecord(
     this.value,
@@ -705,7 +757,7 @@ class SimpleClassOfRecord {
 
 @JsonSerializable()
 class SimpleClassNullableOfRecord {
-  final List<(int, String, {bool truth})>? value;
+  final SimpleClassOfRecordTypeDef? value;
 
   SimpleClassNullableOfRecord(
     this.value,
@@ -717,9 +769,11 @@ class SimpleClassNullableOfRecord {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfRecordToJson(this);
 }
 
+typedef SimpleClassOfStringTypeDef = (String, {String named});
+
 @JsonSerializable()
 class SimpleClassOfString {
-  final List<String> value;
+  final SimpleClassOfStringTypeDef value;
 
   SimpleClassOfString(
     this.value,
@@ -733,7 +787,7 @@ class SimpleClassOfString {
 
 @JsonSerializable()
 class SimpleClassNullableOfString {
-  final List<String>? value;
+  final SimpleClassOfStringTypeDef? value;
 
   SimpleClassNullableOfString(
     this.value,
@@ -745,9 +799,11 @@ class SimpleClassNullableOfString {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfStringToJson(this);
 }
 
+typedef SimpleClassOfStringNullableTypeDef = (String?, {String? named});
+
 @JsonSerializable()
 class SimpleClassOfStringNullable {
-  final List<String?> value;
+  final SimpleClassOfStringNullableTypeDef value;
 
   SimpleClassOfStringNullable(
     this.value,
@@ -761,7 +817,7 @@ class SimpleClassOfStringNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfStringNullable {
-  final List<String?>? value;
+  final SimpleClassOfStringNullableTypeDef? value;
 
   SimpleClassNullableOfStringNullable(
     this.value,
@@ -775,9 +831,11 @@ class SimpleClassNullableOfStringNullable {
       _$SimpleClassNullableOfStringNullableToJson(this);
 }
 
+typedef SimpleClassOfUriTypeDef = (Uri, {Uri named});
+
 @JsonSerializable()
 class SimpleClassOfUri {
-  final List<Uri> value;
+  final SimpleClassOfUriTypeDef value;
 
   SimpleClassOfUri(
     this.value,
@@ -791,7 +849,7 @@ class SimpleClassOfUri {
 
 @JsonSerializable()
 class SimpleClassNullableOfUri {
-  final List<Uri>? value;
+  final SimpleClassOfUriTypeDef? value;
 
   SimpleClassNullableOfUri(
     this.value,
@@ -803,9 +861,11 @@ class SimpleClassNullableOfUri {
   Map<String, Object?> toJson() => _$SimpleClassNullableOfUriToJson(this);
 }
 
+typedef SimpleClassOfUriNullableTypeDef = (Uri?, {Uri? named});
+
 @JsonSerializable()
 class SimpleClassOfUriNullable {
-  final List<Uri?> value;
+  final SimpleClassOfUriNullableTypeDef value;
 
   SimpleClassOfUriNullable(
     this.value,
@@ -819,7 +879,7 @@ class SimpleClassOfUriNullable {
 
 @JsonSerializable()
 class SimpleClassNullableOfUriNullable {
-  final List<Uri?>? value;
+  final SimpleClassOfUriNullableTypeDef? value;
 
   SimpleClassNullableOfUriNullable(
     this.value,

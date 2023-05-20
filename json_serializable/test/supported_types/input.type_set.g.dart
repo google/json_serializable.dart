@@ -619,6 +619,65 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectNullableToJson(
       'value': instance.value?.toList(),
     };
 
+SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
+    SimpleClassOfRecord(
+      (json['value'] as List<dynamic>)
+          .map((e) => _$recordConvert(
+                e,
+                ($jsonValue) => (
+                  $jsonValue[r'$1'] as int,
+                  $jsonValue[r'$2'] as String,
+                  truth: $jsonValue['truth'] as bool,
+                ),
+              ))
+          .toSet(),
+    );
+
+Map<String, dynamic> _$SimpleClassOfRecordToJson(
+        SimpleClassOfRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value
+          .map((e) => {
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })
+          .toList(),
+    };
+
+$Rec _$recordConvert<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) =>
+    convert(value as Map<String, dynamic>);
+
+SimpleClassNullableOfRecord _$SimpleClassNullableOfRecordFromJson(
+        Map<String, dynamic> json) =>
+    SimpleClassNullableOfRecord(
+      (json['value'] as List<dynamic>?)
+          ?.map((e) => _$recordConvert(
+                e,
+                ($jsonValue) => (
+                  $jsonValue[r'$1'] as int,
+                  $jsonValue[r'$2'] as String,
+                  truth: $jsonValue['truth'] as bool,
+                ),
+              ))
+          .toSet(),
+    );
+
+Map<String, dynamic> _$SimpleClassNullableOfRecordToJson(
+        SimpleClassNullableOfRecord instance) =>
+    <String, dynamic>{
+      'value': instance.value
+          ?.map((e) => {
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })
+          .toList(),
+    };
+
 SimpleClassOfString _$SimpleClassOfStringFromJson(Map<String, dynamic> json) =>
     SimpleClassOfString(
       (json['value'] as List<dynamic>).map((e) => e as String).toSet(),

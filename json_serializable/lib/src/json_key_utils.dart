@@ -69,7 +69,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element!.name;
+      badType = dartObject.type!.element?.name;
     }
 
     if (badType != null) {

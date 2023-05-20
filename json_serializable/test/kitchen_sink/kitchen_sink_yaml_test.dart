@@ -74,23 +74,14 @@ Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
     );
 
     if (checkedAssignment) {
-      switch (expectedKey) {
-        case 'validatedPropertyNo42':
-          innerMatcher = isStateError;
-          break;
-        case 'no-42':
-          innerMatcher = isArgumentError;
-          break;
-        case 'strictKeysObject':
-          innerMatcher = _isAUnrecognizedKeysException('bob');
-          break;
-        case 'intIterable':
-        case 'datetime-iterable':
-          innerMatcher = isTypeError;
-          break;
-        default:
-          throw StateError('Not expected! - $expectedKey');
-      }
+      innerMatcher = switch (expectedKey) {
+        'validatedPropertyNo42' => isStateError,
+        'no-42' => isArgumentError,
+        'strictKeysObject' => _isAUnrecognizedKeysException('bob'),
+        'intIterable' => isTypeError,
+        'datetime-iterable' => isTypeError,
+        _ => throw StateError('Not expected! - $expectedKey')
+      };
     }
   }
 
