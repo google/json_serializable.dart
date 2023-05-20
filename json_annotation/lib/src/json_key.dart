@@ -149,6 +149,12 @@ class JsonKey {
   /// valid on a nullable enum field.
   final Enum? unknownEnumValue;
 
+  /// If true, enum will be parsed with case-insensitive.
+  /// Specifically, both values will be lower-cased and compared.
+  ///
+  /// Valid only on enum fields with a compatible enum value.
+  final bool caseInsensitive;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Only required when the default behavior is not desired.
@@ -171,6 +177,7 @@ class JsonKey {
     this.required,
     this.toJson,
     this.unknownEnumValue,
+    this.caseInsensitive = false,
   });
 
   /// Sentinel value for use with [unknownEnumValue].

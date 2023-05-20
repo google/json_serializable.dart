@@ -278,6 +278,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         createAnnotationValue('unknownEnumValue', mustBeEnum: true),
     includeToJson: includeToJson,
     includeFromJson: includeFromJson,
+    caseInsensitive: obj.read('caseInsensitive').literalValue as bool?,
   );
 }
 
