@@ -62,8 +62,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     disallowNullValues: const ['count'],
   );
   return Order.custom(
-    $enumDecodeNullable(_$CategoryEnumMap, json['category'],
-        comparator: $enumCompareCaseInsensitive),
+    $enumDecodeNullable(_$CategoryEnumMap, json['category']),
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>)),
   )

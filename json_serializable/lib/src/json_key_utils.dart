@@ -30,15 +30,10 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   final ctorParamDefault = classAnnotation.ctorParamDefaults[element.name];
 
   if (obj.isNull) {
-    final enumObj = jsonEnumAnnotation(element);
-
     return _populateJsonKey(
       classAnnotation,
       element,
       defaultValue: ctorParamDefault,
-      caseInsensitive: enumObj.isNull
-          ? null
-          : enumObj.read('caseInsensitive').literalValue as bool?,
       includeFromJson: classAnnotation.ignoreUnannotated ? false : null,
       includeToJson: classAnnotation.ignoreUnannotated ? false : null,
     );
@@ -278,7 +273,6 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         createAnnotationValue('unknownEnumValue', mustBeEnum: true),
     includeToJson: includeToJson,
     includeFromJson: includeFromJson,
-    caseInsensitive: obj.read('caseInsensitive').literalValue as bool?,
   );
 }
 
@@ -292,7 +286,6 @@ KeyConfig _populateJsonKey(
   String? readValueFunctionName,
   bool? required,
   String? unknownEnumValue,
-  bool? caseInsensitive,
   bool? includeToJson,
   bool? includeFromJson,
 }) {
@@ -314,7 +307,6 @@ KeyConfig _populateJsonKey(
     readValueFunctionName: readValueFunctionName,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
-    caseInsensitive: caseInsensitive,
     includeFromJson: includeFromJson,
     includeToJson: includeToJson,
   );

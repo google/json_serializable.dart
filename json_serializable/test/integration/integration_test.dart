@@ -91,12 +91,6 @@ void main() {
       roundTripOrder(order);
     });
 
-    test('case insensitive map', () {
-      final jsonOrder = {'category': 'CHaRmED'};
-      final order = Order.fromJson(jsonOrder);
-      expect(order.category, Category.charmed);
-    });
-
     test('required, but missing enum value fails', () {
       expect(
           () => Person.fromJson({
