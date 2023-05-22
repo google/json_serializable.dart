@@ -10,7 +10,7 @@ import 'converter_examples.dart';
 import 'create_per_field_to_json_example.dart';
 import 'field_map_example.dart';
 import 'json_enum_example.dart';
-import 'json_test_common.dart' show Category, Platform, StatusCode;
+import 'json_test_common.dart' show Category, Colors, Platform, StatusCode;
 import 'json_test_example.dart';
 
 Matcher _throwsArgumentError(matcher) =>

@@ -71,6 +71,9 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..duration = json['duration'] == null
         ? null
         : Duration(microseconds: json['duration'] as int)
+    ..color = $enumDecodeNullable(_$ColorsEnumMap, json['color'],
+        comparator: $enumCompareCaseInsensitive)
+    ..direction = $enumDecodeNullable(_$DirectionEnumMap, json['direction'])
     ..platform = json['platform'] == null
         ? null
         : Platform.fromJson(json['platform'] as String)
@@ -80,7 +83,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
     ..statusCode = $enumDecodeNullable(_$StatusCodeEnumMap, json['status_code'],
-            unknownValue: StatusCode.unknown) ??
+            unknownValue: StatusCode.unknown,
+            comparator: $enumCompareCaseInsensitive) ??
         StatusCode.success;
 }
 
@@ -97,6 +101,8 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   val['isRushed'] = instance.isRushed;
   val['duration'] = instance.duration?.inMicroseconds;
   val['category'] = _$CategoryEnumMap[instance.category];
+  val['color'] = _$ColorsEnumMap[instance.color];
+  val['direction'] = _$DirectionEnumMap[instance.direction];
   val['items'] = instance.items;
   val['platform'] = instance.platform;
   val['altPlatforms'] = instance.altPlatforms;
@@ -104,6 +110,20 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
   return val;
 }
+
+const _$ColorsEnumMap = {
+  Colors.red: 'red',
+  Colors.green: 'green',
+  Colors.yellow: 'yellow',
+  Colors.blue: 'blue',
+};
+
+const _$DirectionEnumMap = {
+  Direction.up: 'up',
+  Direction.down: 'down',
+  Direction.left: 'left',
+  Direction.right: 'right',
+};
 
 const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
