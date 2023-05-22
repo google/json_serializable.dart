@@ -19,19 +19,9 @@ enum Category {
   notDiscoveredYet
 }
 
-enum Colors {
-  red,
-  green,
-  yellow,
-  blue
-}
+enum Colors { red, green, yellow, blue }
 
-enum Direction {
-  up,
-  down,
-  left,
-  right
-}
+enum Direction { up, down, left, right }
 
 enum StatusCode {
   @JsonValue(200)

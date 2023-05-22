@@ -159,7 +159,8 @@ class JsonKey {
   ///
   /// Only required when the default behavior is not desired.
   const JsonKey({
-    @Deprecated('Has no effect') bool? nullable,
+    @Deprecated('Has no effect')
+        bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
@@ -167,7 +168,7 @@ class JsonKey {
       'Use `includeFromJson` and `includeToJson` with a value of `false` '
       'instead.',
     )
-    this.ignore,
+        this.ignore,
     this.includeFromJson,
     this.includeIfNull,
     this.includeToJson,

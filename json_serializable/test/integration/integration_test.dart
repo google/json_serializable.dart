@@ -100,7 +100,7 @@ void main() {
 
     test('case sensitive map throw', () {
       expect(
-              () => Order.fromJson({'direction': 'dOwN'}),
+        () => Order.fromJson({'direction': 'dOwN'}),
         _throwsArgumentError(
             '`dOwN` is not one of the supported values: up, down, left, right'),
       );
