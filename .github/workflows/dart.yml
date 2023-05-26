@@ -1,4 +1,4 @@
-# Created with package:mono_repo v6.5.4
+# Created with package:mono_repo v6.5.7
 name: Dart CI
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
         name: Checkout repository
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - name: mono_repo self validate
-        run: dart pub global activate mono_repo 6.5.4
+        run: dart pub global activate mono_repo 6.5.7
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
