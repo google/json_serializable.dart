@@ -35,10 +35,7 @@ Building creates the corresponding part `example.g.dart`:
 Once you have added the annotations to your code you then need to run the code
 generator to generate the missing `.g.dart` generated dart files.
 
-With a Dart package, run `dart run build_runner build` in the package directory.
-
-With a Flutter package, run `flutter pub run build_runner build` in your package
-directory.
+Run `dart run build_runner build` in the package directory.
 
 # Annotation values
 
