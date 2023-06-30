@@ -1,3 +1,7 @@
+## 6.7.1
+
+- Support the latest `package:analyzer`.
+
 ## 6.7.0
 
 - Support `Record` types.
