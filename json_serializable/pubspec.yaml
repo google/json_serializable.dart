@@ -24,7 +24,7 @@ dependencies:
   json_annotation: '>=4.8.1 <4.9.0'
   meta: ^1.3.0
   path: ^1.8.0
-  pub_semver: ^2.0.0
+  pub_semver: ^2.1.3
   pubspec_parse: ^1.0.0
   source_gen: ^1.3.2
   source_helper: ^1.3.0
@@ -32,7 +32,7 @@ dependencies:
 dev_dependencies:
   _json_serial_shared_test:
     path: ../shared_test
-  build_runner: ^2.0.0
+  build_runner: ^2.3.3
   build_verify: ^3.0.0
   dart_flutter_team_lints: ^1.0.0
   dart_style: ^2.0.0
