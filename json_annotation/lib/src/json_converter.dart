@@ -19,7 +19,9 @@
 ///
 /// @JsonSerializable()
 /// @MyJsonConverter()
-/// class Example {}
+/// class Example {
+///   final Value property;
+/// }
 /// ```
 ///
 /// or on a property:
@@ -36,7 +38,9 @@
 ///
 /// ```dart
 /// @JsonSerializable(converters: [MyJsonConverter()])
-/// class Example {}
+/// class Example {
+///   final Value property;
+/// }
 /// ```
 abstract class JsonConverter<T, S> {
   const JsonConverter();
