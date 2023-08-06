@@ -126,6 +126,38 @@ class JsonConverterDuplicateAnnotations {
   late Duration value;
 }
 
+@ShouldGenerate(r'''
+JsonConverterIssue1339 _$JsonConverterIssue1339FromJson(
+        Map<String, dynamic> json) =>
+    JsonConverterIssue1339()
+      ..value =
+          const _DurationMillisecondConverter().fromJson(json['value'] as int)
+      ..nullableValue = _$JsonConverterFromJson<int, Duration?>(
+          json['nullableValue'],
+          const _DurationMillisecondNullConverter().fromJson);
+
+Map<String, dynamic> _$JsonConverterIssue1339ToJson(
+        JsonConverterIssue1339 instance) =>
+    <String, dynamic>{
+      'value': const _DurationMillisecondConverter().toJson(instance.value),
+      'nullableValue': const _DurationMillisecondNullConverter()
+          .toJson(instance.nullableValue),
+    };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) =>
+    json == null ? null : fromJson(json as Json);
+''')
+@JsonSerializable()
+@_DurationMillisecondNullConverter()
+@_DurationMillisecondConverter()
+class JsonConverterIssue1339 {
+  late Duration value;
+  late Duration? nullableValue;
+}
+
 const _durationConverter = _DurationMillisecondConverter();
 
 class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
@@ -138,6 +170,19 @@ class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
 
   @override
   int toJson(Duration object) => throw UnimplementedError();
+}
+
+class _DurationMillisecondNullConverter
+    implements JsonConverter<Duration?, int> {
+  const _DurationMillisecondNullConverter();
+
+  const _DurationMillisecondNullConverter.named();
+
+  @override
+  Duration? fromJson(int json) => throw UnimplementedError();
+
+  @override
+  int toJson(Duration? object) => throw UnimplementedError();
 }
 
 @ShouldThrow(
