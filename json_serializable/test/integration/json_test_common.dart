@@ -51,16 +51,11 @@ class Platform {
 
   const Platform._(this.description);
 
-  factory Platform.fromJson(String value) {
-    switch (value) {
-      case 'foo':
-        return foo;
-      case 'undefined':
-        return undefined;
-      default:
-        throw ArgumentError.value(value, 'value', 'Not a supported value.');
-    }
-  }
+  factory Platform.fromJson(String value) => switch (value) {
+        'foo' => foo,
+        'undefined' => undefined,
+        _ => throw ArgumentError.value(value, 'value', 'Not a supported value.')
+      };
 
   String toJson() => description;
 }

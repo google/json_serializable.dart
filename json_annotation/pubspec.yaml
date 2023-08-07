@@ -1,5 +1,5 @@
 name: json_annotation
-version: 4.8.1
+version: 4.8.2-wip
 description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
@@ -11,7 +11,7 @@ topics:
  - codegen
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   meta: ^1.4.0
