@@ -176,8 +176,6 @@ class _DurationMillisecondNullConverter
     implements JsonConverter<Duration?, int> {
   const _DurationMillisecondNullConverter();
 
-  const _DurationMillisecondNullConverter.named();
-
   @override
   Duration? fromJson(int json) => throw UnimplementedError();
 
