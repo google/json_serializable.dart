@@ -40,16 +40,16 @@ jobs:
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
-    name: "analyzer_and_format; Dart 3.0.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart format --output=none --set-exit-if-changed .`, `dart analyze --fatal-infos .`"
+    name: "analyzer_and_format; Dart 3.0.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart analyze`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:format-analyze_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:analyze_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -65,12 +65,8 @@ jobs:
         run: dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: _test_yaml
-      - name: "_test_yaml; dart format --output=none --set-exit-if-changed ."
-        run: "dart format --output=none --set-exit-if-changed ."
-        if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
-        working-directory: _test_yaml
-      - name: "_test_yaml; dart analyze --fatal-infos ."
-        run: dart analyze --fatal-infos .
+      - name: _test_yaml; dart analyze
+        run: dart analyze
         if: "always() && steps._test_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: _test_yaml
       - id: checked_yaml_pub_upgrade
@@ -78,12 +74,8 @@ jobs:
         run: dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: checked_yaml
-      - name: "checked_yaml; dart format --output=none --set-exit-if-changed ."
-        run: "dart format --output=none --set-exit-if-changed ."
-        if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
-        working-directory: checked_yaml
-      - name: "checked_yaml; dart analyze --fatal-infos ."
-        run: dart analyze --fatal-infos .
+      - name: checked_yaml; dart analyze
+        run: dart analyze
         if: "always() && steps.checked_yaml_pub_upgrade.conclusion == 'success'"
         working-directory: checked_yaml
       - id: example_pub_upgrade
@@ -91,48 +83,10 @@ jobs:
         run: dart pub upgrade
         if: "always() && steps.checkout.conclusion == 'success'"
         working-directory: example
-      - name: "example; dart format --output=none --set-exit-if-changed ."
-        run: "dart format --output=none --set-exit-if-changed ."
+      - name: example; dart analyze
+        run: dart analyze
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
-      - name: "example; dart analyze --fatal-infos ."
-        run: dart analyze --fatal-infos .
-        if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
-        working-directory: example
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        run: dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart format --output=none --set-exit-if-changed ."
-        run: "dart format --output=none --set-exit-if-changed ."
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart analyze --fatal-infos ."
-        run: dart analyze --fatal-infos .
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-  job_003:
-    name: "analyzer_and_format; Dart 3.0.0; PKG: json_annotation; `dart analyze`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:json_annotation;commands:analyze_1"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:json_annotation
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@d6a63dab3335f427404425de0fbfed4686d93c4f
-        with:
-          sdk: "3.0.0"
-      - id: checkout
-        name: Checkout repository
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
       - id: json_annotation_pub_upgrade
         name: json_annotation; dart pub upgrade
         run: dart pub upgrade
@@ -142,7 +96,16 @@ jobs:
         run: dart analyze
         if: "always() && steps.json_annotation_pub_upgrade.conclusion == 'success'"
         working-directory: json_annotation
-  job_004:
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: json_serializable; dart analyze
+        run: dart analyze
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+  job_003:
     name: "analyzer_and_format; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart format --output=none --set-exit-if-changed .`, `dart analyze --fatal-infos .`"
     runs-on: ubuntu-latest
     steps:
@@ -228,7 +191,7 @@ jobs:
         run: dart analyze --fatal-infos .
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
-  job_005:
+  job_004:
     name: "unit_test; Dart 3.0.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
@@ -289,8 +252,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_006:
+  job_005:
     name: "unit_test; Dart 3.0.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -324,8 +286,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_007:
+  job_006:
     name: "unit_test; Dart 3.0.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -359,8 +320,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_008:
+  job_007:
     name: "unit_test; Dart 3.0.0; PKG: json_serializable; `dart test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -394,8 +354,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_009:
+  job_008:
     name: "unit_test; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
@@ -456,8 +415,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_010:
+  job_009:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -491,8 +449,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_011:
+  job_010:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -526,8 +483,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_012:
+  job_011:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -561,8 +517,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-      - job_004
-  job_013:
+  job_012:
     name: "ensure_build; Dart 3.0.0; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -622,8 +577,7 @@ jobs:
       - job_009
       - job_010
       - job_011
-      - job_012
-  job_014:
+  job_013:
     name: "ensure_build; Dart dev; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -683,4 +637,3 @@ jobs:
       - job_009
       - job_010
       - job_011
-      - job_012
