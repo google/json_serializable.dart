@@ -1,5 +1,5 @@
 name: checked_yaml
-version: 2.0.3
+version: 2.0.4-wip
 
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
@@ -13,7 +13,7 @@ topics:
  - codegen
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: ^3.0.0
 
 dependencies:
   json_annotation: ^4.3.0

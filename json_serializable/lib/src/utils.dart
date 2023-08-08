@@ -182,20 +182,14 @@ String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
 String encodedFieldName(
   FieldRename fieldRename,
   String declaredName,
-) {
-  switch (fieldRename) {
-    case FieldRename.none:
-      return declaredName;
-    case FieldRename.snake:
-      return declaredName.snake;
-    case FieldRename.screamingSnake:
-      return declaredName.snake.toUpperCase();
-    case FieldRename.kebab:
-      return declaredName.kebab;
-    case FieldRename.pascal:
-      return declaredName.pascal;
-  }
-}
+) =>
+    switch (fieldRename) {
+      FieldRename.none => declaredName,
+      FieldRename.snake => declaredName.snake,
+      FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
+      FieldRename.kebab => declaredName.kebab,
+      FieldRename.pascal => declaredName.pascal
+    };
 
 /// Return the Dart code presentation for the given [type].
 ///

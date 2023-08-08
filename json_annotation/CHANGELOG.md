@@ -1,3 +1,7 @@
+## 4.8.2-wip
+
+- Require Dart 3.0
+
 ## 4.8.1
 
 - Require Dart 2.19
