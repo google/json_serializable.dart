@@ -56,8 +56,21 @@ mixin DecodeHelper implements HelperCore {
         _deserializeForField(accessibleFields[paramOrFieldName]!,
             ctorParam: ctorParam);
 
+    var elementToInvoke = element;
+
+    if (config.realmCompatible) {
+      final posibleElements = element.enclosingElement.extensions;
+      for (var posibleElement in posibleElements) {
+        final posibleClass = posibleElement.extendedType.element;
+        if (posibleClass is ClassElement &&
+            posibleClass.name == element.name.replaceFirst('_', '')) {
+          elementToInvoke = posibleClass;
+        }
+      }
+    }
+
     final data = _writeConstructorInvocation(
-      element,
+      elementToInvoke,
       config.constructor,
       accessibleFields.keys,
       accessibleFields.values

@@ -1,9 +1,12 @@
 name: json_serializable
 version: 6.7.1
+
+publish_to: 'none'
+
 description: >-
   Automatically generate code for converting to and from JSON by annotating
   Dart classes.
-repository: https://github.com/google/json_serializable.dart/tree/master/json_serializable
+repository: https://github.com/martinale14/json_serializable.dart/tree/master/json_serializable
 environment:
   sdk: ^3.0.0
 topics:
@@ -21,7 +24,11 @@ dependencies:
 
   # Use a tight version constraint to ensure that a constraint on
   # `json_annotation` properly constrains all features it provides.
-  json_annotation: '>=4.8.1 <4.9.0'
+  json_annotation:
+    git:
+      url: https://github.com/martinale14/json_serializable.dart
+      ref: master
+      path: json_annotation
   meta: ^1.3.0
   path: ^1.8.0
   pub_semver: ^2.0.0
@@ -42,3 +49,10 @@ dev_dependencies:
   test_descriptor: ^2.0.0
   test_process: ^2.0.0
   yaml: ^3.0.0
+
+dependency_overrides:
+  json_annotation:
+      git:
+        url: https://github.com/martinale14/json_serializable.dart
+        ref: master
+        path: json_annotation

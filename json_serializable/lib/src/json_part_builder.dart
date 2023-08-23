@@ -23,7 +23,7 @@ Builder jsonPartBuilder({
 }) {
   final settings = Settings(config: config);
 
-  return SharedPartBuilder(
+  return PartBuilder(
     [
       _UnifiedGenerator([
         JsonSerializableGenerator.fromSettings(settings),
@@ -31,7 +31,7 @@ Builder jsonPartBuilder({
       ]),
       const JsonLiteralGenerator(),
     ],
-    'json_serializable',
+    '.m.dart',
     formatOutput: formatOutput,
   );
 }
