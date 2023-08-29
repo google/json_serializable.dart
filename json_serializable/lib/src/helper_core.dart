@@ -27,13 +27,13 @@ abstract class HelperCore {
   void addMember(String memberContent);
 
   @protected
-  String get targetClassReference => '$_targetClassReferenceName'
-      '${genericClassArgumentsImpl(withConstraints: false)}';
+  String get targetClassReferenceName =>
+      '${element.name}${genericClassArgumentsImpl(withConstraints: false)}';
 
   @protected
-  String get _targetClassReferenceName => config.realmCompatible
-      ? element.name.replaceFirst('_', '')
-      : element.name;
+  String get targetClassReference => config.realmCompatible
+      ? targetClassReferenceName.replaceFirst('_', '')
+      : targetClassReferenceName;
 
   @protected
   String nameAccess(FieldElement field) => jsonKeyFor(field).name;

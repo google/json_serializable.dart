@@ -120,7 +120,7 @@ builders:
   json_serializable:
     import: "package:json_serializable/builder.dart"
     builder_factories: ["jsonSerializable"]
-    build_extensions: {".dart": [".m.dart"]}
+    build_extensions: {".dart": ["json_serializable.g.part"]}
     auto_apply: dependents
-    build_to: source
+    build_to: cache
     applies_builders: ["source_gen|combining_builder"]
