@@ -341,6 +341,8 @@ _ConstructorData _writeConstructorInvocation(
       (e) => writableFields.contains(e.name),
     );
 
+    usedCtorParamsAndFields.addAll(writableFields);
+
     buffer
       ..writeln()
       ..writeAll(remainElements.map((fieldElement) {
