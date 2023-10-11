@@ -8,4 +8,4 @@ dependencies:
   test: ^1.6.0
 
 dev_dependencies:
-  dart_flutter_team_lints: ^1.0.0
+  dart_flutter_team_lints: ^2.0.0
