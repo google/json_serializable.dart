@@ -48,7 +48,7 @@ T enumValueForDartObject<T>(
 ) =>
     items[source.getField('index')!.toIntValue()!];
 
-/// Return an instance of [JsonSerializable] corresponding to a the provided
+/// Return an instance of [JsonSerializable] corresponding to the provided
 /// [reader].
 // #CHANGE WHEN UPDATING json_annotation
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
