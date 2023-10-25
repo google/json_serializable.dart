@@ -56,6 +56,7 @@ class ClassConfig {
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
+  final bool realmCompatible;
   final Map<String, String> ctorParamDefaults;
   final List<DartObject> converters;
 
@@ -73,6 +74,7 @@ class ClassConfig {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    required this.realmCompatible,
     this.converters = const [],
     this.ctorParamDefaults = const {},
   });
@@ -96,6 +98,8 @@ class ClassConfig {
             config.explicitToJson ?? ClassConfig.defaults.explicitToJson,
         includeIfNull:
             config.includeIfNull ?? ClassConfig.defaults.includeIfNull,
+        realmCompatible:
+            config.realmCompatible ?? ClassConfig.defaults.realmCompatible,
         genericArgumentFactories: config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
@@ -120,6 +124,7 @@ class ClassConfig {
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
+    realmCompatible: false,
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
@@ -133,6 +138,7 @@ class ClassConfig {
         ignoreUnannotated: ignoreUnannotated,
         explicitToJson: explicitToJson,
         includeIfNull: includeIfNull,
+        realmCompatible: realmCompatible,
         genericArgumentFactories: genericArgumentFactories,
         fieldRename: fieldRename,
         disallowUnrecognizedKeys: disallowUnrecognizedKeys,

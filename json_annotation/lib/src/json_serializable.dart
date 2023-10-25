@@ -206,6 +206,13 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+  /// Whether the generator should point to the realm generated class
+  /// `false` is the default
+  ///
+  /// If `true` the generator is going to point the generated methods to the
+  /// realm generated model
+  final bool? realmCompatible;
+
   /// A list of [JsonConverter] to apply to this class.
   ///
   /// Writing:
@@ -254,6 +261,7 @@ class JsonSerializable {
     this.fieldRename,
     this.ignoreUnannotated,
     this.includeIfNull,
+    this.realmCompatible,
     this.converters,
     this.genericArgumentFactories,
     this.createPerFieldToJson,
@@ -276,6 +284,7 @@ class JsonSerializable {
     fieldRename: FieldRename.none,
     ignoreUnannotated: false,
     includeIfNull: true,
+    realmCompatible: false,
     genericArgumentFactories: false,
   );
 
@@ -297,6 +306,7 @@ class JsonSerializable {
         fieldRename: fieldRename ?? defaults.fieldRename,
         ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
+        realmCompatible: realmCompatible ?? defaults.realmCompatible,
         genericArgumentFactories:
             genericArgumentFactories ?? defaults.genericArgumentFactories,
       );

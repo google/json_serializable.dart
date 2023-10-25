@@ -1,3 +1,7 @@
+## 6.7.2
+
+- Support generated model classes.
+
 ## 6.7.1
 
 - Support the latest `package:analyzer`.

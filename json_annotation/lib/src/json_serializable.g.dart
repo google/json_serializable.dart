@@ -26,7 +26,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'field_rename',
             'generic_argument_factories',
             'ignore_unannotated',
-            'include_if_null'
+            'include_if_null',
+            'realm_compatible'
           ],
         );
         final val = JsonSerializable(
@@ -46,6 +47,8 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
           ignoreUnannotated:
               $checkedConvert('ignore_unannotated', (v) => v as bool?),
           includeIfNull: $checkedConvert('include_if_null', (v) => v as bool?),
+          realmCompatible:
+              $checkedConvert('realm_compatible', (v) => v as bool?),
           genericArgumentFactories:
               $checkedConvert('generic_argument_factories', (v) => v as bool?),
           createPerFieldToJson:
@@ -63,6 +66,7 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
         'fieldRename': 'field_rename',
         'ignoreUnannotated': 'ignore_unannotated',
         'includeIfNull': 'include_if_null',
+        'realmCompatible': 'realm_compatible',
         'genericArgumentFactories': 'generic_argument_factories',
         'createPerFieldToJson': 'create_per_field_to_json'
       },
@@ -83,6 +87,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
+      'realm_compatible': instance.realmCompatible,
     };
 
 const _$FieldRenameEnumMap = {

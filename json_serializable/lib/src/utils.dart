@@ -68,6 +68,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
           reader.read('genericArgumentFactories').literalValue as bool?,
       ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
       includeIfNull: reader.read('includeIfNull').literalValue as bool?,
+      realmCompatible: reader.read('realmCompatible').literalValue as bool?,
     );
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
@@ -117,6 +118,7 @@ ClassConfig mergeConfig(
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
+    realmCompatible: annotation.realmCompatible ?? config.realmCompatible,
     ctorParamDefaults: paramDefaultValueMap,
     converters: converters.isNull ? const [] : converters.listValue,
   );

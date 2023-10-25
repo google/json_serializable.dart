@@ -66,6 +66,7 @@ mixin DecodeHelper implements HelperCore {
           .toList(),
       unavailableReasons,
       deserializeFun,
+      realmCompatible: config.realmCompatible,
     );
 
     final checks = _checkKeys(
@@ -266,8 +267,9 @@ _ConstructorData _writeConstructorInvocation(
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
   String Function(String paramOrFieldName, {ParameterElement ctorParam})
-      deserializeForField,
-) {
+      deserializeForField, {
+  bool realmCompatible = false,
+}) {
   final className = classElement.name;
 
   final ctor = constructorByName(classElement, constructorName);
@@ -304,14 +306,15 @@ _ConstructorData _writeConstructorInvocation(
   }
 
   // fields that aren't already set by the constructor and that aren't final
-  final remainingFieldsForInvocationBody =
-      writableFields.toSet().difference(usedCtorParamsAndFields);
+  final remainingFieldsForInvocationBody = realmCompatible
+      ? <String>{}
+      : writableFields.toSet().difference(usedCtorParamsAndFields);
 
   final constructorExtra = constructorName.isEmpty ? '' : '.$constructorName';
 
   final buffer = StringBuffer()
     ..write(
-      '$className'
+      '${realmCompatible ? className.replaceFirst('_', '') : className}'
       '${genericClassArguments(classElement, false)}'
       '$constructorExtra(',
     );
@@ -331,6 +334,25 @@ _ConstructorData _writeConstructorInvocation(
         final value =
             deserializeForField(paramElement.name, ctorParam: paramElement);
         return '      ${paramElement.name}: $value,\n';
+      }));
+  }
+  if (realmCompatible && writableFields.isNotEmpty) {
+    final remainElements = classElement.fields.where(
+      (e) => writableFields.contains(e.name),
+    );
+
+    usedCtorParamsAndFields.addAll(writableFields);
+
+    buffer
+      ..writeln()
+      ..writeAll(remainElements.map((fieldElement) {
+        final content = deserializeForField(fieldElement.name);
+
+        if (fieldElement.type.isNullableType) {
+          return '      ${fieldElement.name}: $content,\n';
+        } else {
+          return '      $content,\n';
+        }
       }));
   }
 
