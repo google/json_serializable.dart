@@ -24,6 +24,7 @@ void main() {
     }
 
     test('no type args', () {
+      // ignore: inference_failure_on_instance_creation
       roundTripGenericClass(GenericClass()
         ..fieldDynamic = 1
         ..fieldInt = 2

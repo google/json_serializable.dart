@@ -8,6 +8,8 @@ targets:
           - lines_longer_than_80_chars
           # Only for the JSON literal output file
           - text_direction_code_point_in_literal
+          # Too much work in generated code
+          - inference_failure_on_function_invocation
 
       json_serializable:
         generate_for:

@@ -21,8 +21,7 @@ class _TestBuilder implements Builder {
 
     final sourceContent = await buildStep.readAsString(buildStep.inputId);
 
-    final factories =
-        SplayTreeMap.from({'$_kitchenSinkBaseName.dart': 'normal'});
+    final factories = SplayTreeMap.of({'$_kitchenSinkBaseName.dart': 'normal'});
 
     for (var config in _fileConfigurationMap[baseName]!) {
       final extension = _configToExtension(config);

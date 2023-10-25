@@ -42,7 +42,7 @@ void _testBadValue(String key, Object? badValue, KitchenSinkFactory factory,
   for (final isJson in [true, false]) {
     test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
         () {
-      var copy = Map.from(validValues);
+      var copy = Map<dynamic, dynamic>.of(validValues);
       copy[key] = badValue;
 
       if (!isJson) {
@@ -88,7 +88,7 @@ Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
   return throwsA(innerMatcher);
 }
 
-Matcher _isAUnrecognizedKeysException(expectedMessage) =>
+Matcher _isAUnrecognizedKeysException(String expectedMessage) =>
     isA<UnrecognizedKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
 

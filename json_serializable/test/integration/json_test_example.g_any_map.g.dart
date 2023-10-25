@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation
 
 part of 'json_test_example.g_any_map.dart';
 

@@ -12,7 +12,7 @@ import 'kitchen_sink_interface.dart';
 import 'kitchen_sink_test_shared.dart';
 import 'strict_keys_object.dart';
 
-Matcher _isMissingKeyException(expectedMessage) =>
+Matcher _isMissingKeyException(String expectedMessage) =>
     isA<MissingRequiredKeysException>()
         .having((e) => e.message, 'message', expectedMessage);
 
@@ -99,17 +99,17 @@ void _nullableTests(KitchenSinkFactory factory) {
 
     expect(json, const {
       'duration': 0,
-      'durationList': [],
+      'durationList': <dynamic>[],
       'bigInt': '0',
-      'bigIntMap': {},
+      'bigIntMap': <String, dynamic>{},
       'nullableBigInt': '0',
-      'nullableBigIntMap': {},
+      'nullableBigIntMap': <String, dynamic>{},
       'numberSilly': 0,
-      'numberSillySet': [],
+      'numberSillySet': <dynamic>[],
       'dateTime': 0,
       'trivialString': '',
       'nullableNumberSilly': 0,
-      'nullableNumberSillySet': [],
+      'nullableNumberSillySet': <dynamic>[],
     });
 
     expect(json.keys, unorderedEquals(_jsonConverterValidValues.keys));
