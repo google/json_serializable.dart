@@ -251,6 +251,7 @@ class JsonConverterTestClass implements k.JsonConverterTestClass {
 @JsonSerializable(
   anyMap: true,
 )
+// ignore: inference_failure_on_instance_creation
 @GenericConverter()
 class JsonConverterGeneric<S, T, U> {
   S item;
