@@ -83,7 +83,7 @@ void main() {
       throwsTypeError,
     );
 
-    final collection2 = GenericCollection<Object>.fromJson(
+    final collection2 = GenericCollection<dynamic>.fromJson(
         jsonDecode(encoded) as Map<String, dynamic>);
 
     expect(collection2.results, [
