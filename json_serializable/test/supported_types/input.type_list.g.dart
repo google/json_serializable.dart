@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation, inference_failure_on_collection_literal
 
 part of 'input.type_list.dart';
 
@@ -635,7 +635,7 @@ Map<String, dynamic> _$SimpleClassOfRecordToJson(
         SimpleClassOfRecord instance) =>
     <String, dynamic>{
       'value': instance.value
-          .map((e) => {
+          .map((e) => <String, dynamic>{
                 r'$1': e.$1,
                 r'$2': e.$2,
                 'truth': e.truth,
@@ -668,7 +668,7 @@ Map<String, dynamic> _$SimpleClassNullableOfRecordToJson(
         SimpleClassNullableOfRecord instance) =>
     <String, dynamic>{
       'value': instance.value
-          ?.map((e) => {
+          ?.map((e) => <String, dynamic>{
                 r'$1': e.$1,
                 r'$2': e.$2,
                 'truth': e.truth,

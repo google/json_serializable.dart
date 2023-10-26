@@ -114,7 +114,7 @@ line 1, column 10: Unsupported value for "name". Cannot be empty.
   });
 }
 
-void _expectThrows(String yamlContent, matcher) => expect(
+void _expectThrows(String yamlContent, String matcher) => expect(
       () => _run(yamlContent),
       throwsA(
         isA<ParsedYamlException>().having(

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation, inference_failure_on_collection_literal
 
 part of 'input.type_map.dart';
 
@@ -5301,11 +5301,12 @@ SimpleClassOfBigIntToRecord _$SimpleClassOfBigIntToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfBigIntToRecordToJson(
         SimpleClassOfBigIntToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value':
+          instance.value.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 $Rec _$recordConvert<$Rec>(
@@ -5334,11 +5335,12 @@ SimpleClassNullableOfBigIntToRecord
 Map<String, dynamic> _$SimpleClassNullableOfBigIntToRecordToJson(
         SimpleClassNullableOfBigIntToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          ?.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassOfDateTimeToRecord _$SimpleClassOfDateTimeToRecordFromJson(
@@ -5361,11 +5363,12 @@ SimpleClassOfDateTimeToRecord _$SimpleClassOfDateTimeToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfDateTimeToRecordToJson(
         SimpleClassOfDateTimeToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k.toIso8601String(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          .map((k, e) => MapEntry(k.toIso8601String(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassNullableOfDateTimeToRecord
@@ -5389,11 +5392,12 @@ SimpleClassNullableOfDateTimeToRecord
 Map<String, dynamic> _$SimpleClassNullableOfDateTimeToRecordToJson(
         SimpleClassNullableOfDateTimeToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k.toIso8601String(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          ?.map((k, e) => MapEntry(k.toIso8601String(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassOfDynamicToRecord _$SimpleClassOfDynamicToRecordFromJson(
@@ -5416,7 +5420,7 @@ SimpleClassOfDynamicToRecord _$SimpleClassOfDynamicToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfDynamicToRecordToJson(
         SimpleClassOfDynamicToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k, {
+      'value': instance.value.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5443,7 +5447,7 @@ SimpleClassNullableOfDynamicToRecord
 Map<String, dynamic> _$SimpleClassNullableOfDynamicToRecordToJson(
         SimpleClassNullableOfDynamicToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k, {
+      'value': instance.value?.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5470,11 +5474,12 @@ SimpleClassOfEnumTypeToRecord _$SimpleClassOfEnumTypeToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfEnumTypeToRecordToJson(
         SimpleClassOfEnumTypeToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          .map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassNullableOfEnumTypeToRecord
@@ -5498,11 +5503,12 @@ SimpleClassNullableOfEnumTypeToRecord
 Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToRecordToJson(
         SimpleClassNullableOfEnumTypeToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          ?.map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassOfIntToRecord _$SimpleClassOfIntToRecordFromJson(
@@ -5525,11 +5531,12 @@ SimpleClassOfIntToRecord _$SimpleClassOfIntToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfIntToRecordToJson(
         SimpleClassOfIntToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value':
+          instance.value.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassNullableOfIntToRecord _$SimpleClassNullableOfIntToRecordFromJson(
@@ -5552,11 +5559,12 @@ SimpleClassNullableOfIntToRecord _$SimpleClassNullableOfIntToRecordFromJson(
 Map<String, dynamic> _$SimpleClassNullableOfIntToRecordToJson(
         SimpleClassNullableOfIntToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          ?.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassOfObjectToRecord _$SimpleClassOfObjectToRecordFromJson(
@@ -5579,7 +5587,7 @@ SimpleClassOfObjectToRecord _$SimpleClassOfObjectToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfObjectToRecordToJson(
         SimpleClassOfObjectToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k, {
+      'value': instance.value.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5606,7 +5614,7 @@ SimpleClassNullableOfObjectToRecord
 Map<String, dynamic> _$SimpleClassNullableOfObjectToRecordToJson(
         SimpleClassNullableOfObjectToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k, {
+      'value': instance.value?.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5633,7 +5641,7 @@ SimpleClassOfStringToRecord _$SimpleClassOfStringToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfStringToRecordToJson(
         SimpleClassOfStringToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k, {
+      'value': instance.value.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5660,7 +5668,7 @@ SimpleClassNullableOfStringToRecord
 Map<String, dynamic> _$SimpleClassNullableOfStringToRecordToJson(
         SimpleClassNullableOfStringToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k, {
+      'value': instance.value?.map((k, e) => MapEntry(k, <String, dynamic>{
             r'$1': e.$1,
             r'$2': e.$2,
             'truth': e.truth,
@@ -5687,11 +5695,12 @@ SimpleClassOfUriToRecord _$SimpleClassOfUriToRecordFromJson(
 Map<String, dynamic> _$SimpleClassOfUriToRecordToJson(
         SimpleClassOfUriToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value':
+          instance.value.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassNullableOfUriToRecord _$SimpleClassNullableOfUriToRecordFromJson(
@@ -5714,11 +5723,12 @@ SimpleClassNullableOfUriToRecord _$SimpleClassNullableOfUriToRecordFromJson(
 Map<String, dynamic> _$SimpleClassNullableOfUriToRecordToJson(
         SimpleClassNullableOfUriToRecord instance) =>
     <String, dynamic>{
-      'value': instance.value?.map((k, e) => MapEntry(k.toString(), {
-            r'$1': e.$1,
-            r'$2': e.$2,
-            'truth': e.truth,
-          })),
+      'value': instance.value
+          ?.map((k, e) => MapEntry(k.toString(), <String, dynamic>{
+                r'$1': e.$1,
+                r'$2': e.$2,
+                'truth': e.truth,
+              })),
     };
 
 SimpleClassOfBigIntToString _$SimpleClassOfBigIntToStringFromJson(

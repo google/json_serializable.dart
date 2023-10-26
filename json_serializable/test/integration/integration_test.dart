@@ -13,7 +13,7 @@ import 'json_enum_example.dart';
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 
-Matcher _throwsArgumentError(matcher) =>
+Matcher _throwsArgumentError(Object matcher) =>
     throwsA(isArgumentError.having((e) => e.message, 'message', matcher));
 
 void main() {

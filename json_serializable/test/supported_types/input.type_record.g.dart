@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation, inference_failure_on_collection_literal
 
 part of 'input.type_record.dart';
 
@@ -14,7 +14,7 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
-      'value': {},
+      'value': <String, dynamic>{},
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
@@ -25,7 +25,7 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>
     <String, dynamic>{
-      'value': instance.value == null ? null : {},
+      'value': instance.value == null ? null : <String, dynamic>{},
     };
 
 SimpleClassOfBigInt _$SimpleClassOfBigIntFromJson(Map<String, dynamic> json) =>
@@ -42,7 +42,7 @@ SimpleClassOfBigInt _$SimpleClassOfBigIntFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassOfBigIntToJson(
         SimpleClassOfBigInt instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1.toString(),
         'named': instance.value.named.toString(),
       },
@@ -71,7 +71,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBigIntToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1.toString(),
               'named': instance.value!.named.toString(),
             },
@@ -102,7 +102,7 @@ SimpleClassOfBigIntNullable _$SimpleClassOfBigIntNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfBigIntNullableToJson(
         SimpleClassOfBigIntNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1?.toString(),
         'named': instance.value.named?.toString(),
       },
@@ -129,7 +129,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBigIntNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1?.toString(),
               'named': instance.value!.named?.toString(),
             },
@@ -148,7 +148,7 @@ SimpleClassOfBool _$SimpleClassOfBoolFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SimpleClassOfBoolToJson(SimpleClassOfBool instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -171,7 +171,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBoolToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -192,7 +192,7 @@ SimpleClassOfBoolNullable _$SimpleClassOfBoolNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfBoolNullableToJson(
         SimpleClassOfBoolNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -215,7 +215,7 @@ Map<String, dynamic> _$SimpleClassNullableOfBoolNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -236,7 +236,7 @@ SimpleClassOfDateTime _$SimpleClassOfDateTimeFromJson(
 Map<String, dynamic> _$SimpleClassOfDateTimeToJson(
         SimpleClassOfDateTime instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1.toIso8601String(),
         'named': instance.value.named.toIso8601String(),
       },
@@ -259,7 +259,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1.toIso8601String(),
               'named': instance.value!.named.toIso8601String(),
             },
@@ -284,7 +284,7 @@ SimpleClassOfDateTimeNullable _$SimpleClassOfDateTimeNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfDateTimeNullableToJson(
         SimpleClassOfDateTimeNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1?.toIso8601String(),
         'named': instance.value.named?.toIso8601String(),
       },
@@ -312,7 +312,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDateTimeNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1?.toIso8601String(),
               'named': instance.value!.named?.toIso8601String(),
             },
@@ -332,7 +332,7 @@ SimpleClassOfDouble _$SimpleClassOfDoubleFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassOfDoubleToJson(
         SimpleClassOfDouble instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -355,7 +355,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDoubleToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -376,7 +376,7 @@ SimpleClassOfDoubleNullable _$SimpleClassOfDoubleNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfDoubleNullableToJson(
         SimpleClassOfDoubleNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -399,7 +399,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDoubleNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -420,7 +420,7 @@ SimpleClassOfDuration _$SimpleClassOfDurationFromJson(
 Map<String, dynamic> _$SimpleClassOfDurationToJson(
         SimpleClassOfDuration instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1.inMicroseconds,
         'named': instance.value.named.inMicroseconds,
       },
@@ -443,7 +443,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDurationToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1.inMicroseconds,
               'named': instance.value!.named.inMicroseconds,
             },
@@ -468,7 +468,7 @@ SimpleClassOfDurationNullable _$SimpleClassOfDurationNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfDurationNullableToJson(
         SimpleClassOfDurationNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1?.inMicroseconds,
         'named': instance.value.named?.inMicroseconds,
       },
@@ -496,7 +496,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDurationNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1?.inMicroseconds,
               'named': instance.value!.named?.inMicroseconds,
             },
@@ -517,7 +517,7 @@ SimpleClassOfDynamic _$SimpleClassOfDynamicFromJson(
 Map<String, dynamic> _$SimpleClassOfDynamicToJson(
         SimpleClassOfDynamic instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -540,7 +540,7 @@ Map<String, dynamic> _$SimpleClassNullableOfDynamicToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -561,7 +561,7 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
 Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
         SimpleClassOfEnumType instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': _$EnumTypeEnumMap[instance.value.$1]!,
         'named': _$EnumTypeEnumMap[instance.value.named]!,
       },
@@ -591,7 +591,7 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': _$EnumTypeEnumMap[instance.value!.$1]!,
               'named': _$EnumTypeEnumMap[instance.value!.named]!,
             },
@@ -612,7 +612,7 @@ SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfEnumTypeNullableToJson(
         SimpleClassOfEnumTypeNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': _$EnumTypeEnumMap[instance.value.$1],
         'named': _$EnumTypeEnumMap[instance.value.named],
       },
@@ -637,7 +637,7 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': _$EnumTypeEnumMap[instance.value!.$1],
               'named': _$EnumTypeEnumMap[instance.value!.named],
             },
@@ -658,7 +658,7 @@ SimpleClassOfFromJsonDynamicParam _$SimpleClassOfFromJsonDynamicParamFromJson(
 Map<String, dynamic> _$SimpleClassOfFromJsonDynamicParamToJson(
         SimpleClassOfFromJsonDynamicParam instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -682,7 +682,7 @@ Map<String, dynamic> _$SimpleClassNullableOfFromJsonDynamicParamToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -704,7 +704,7 @@ SimpleClassOfFromJsonNullableObjectParam
 Map<String, dynamic> _$SimpleClassOfFromJsonNullableObjectParamToJson(
         SimpleClassOfFromJsonNullableObjectParam instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -728,7 +728,7 @@ Map<String, dynamic> _$SimpleClassNullableOfFromJsonNullableObjectParamToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -749,7 +749,7 @@ SimpleClassOfFromJsonObjectParam _$SimpleClassOfFromJsonObjectParamFromJson(
 Map<String, dynamic> _$SimpleClassOfFromJsonObjectParamToJson(
         SimpleClassOfFromJsonObjectParam instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -774,7 +774,7 @@ Map<String, dynamic> _$SimpleClassNullableOfFromJsonObjectParamToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -793,7 +793,7 @@ SimpleClassOfInt _$SimpleClassOfIntFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SimpleClassOfIntToJson(SimpleClassOfInt instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -816,7 +816,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -837,7 +837,7 @@ SimpleClassOfIntNullable _$SimpleClassOfIntNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfIntNullableToJson(
         SimpleClassOfIntNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -860,7 +860,7 @@ Map<String, dynamic> _$SimpleClassNullableOfIntNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -879,7 +879,7 @@ SimpleClassOfNum _$SimpleClassOfNumFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SimpleClassOfNumToJson(SimpleClassOfNum instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -902,7 +902,7 @@ Map<String, dynamic> _$SimpleClassNullableOfNumToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -923,7 +923,7 @@ SimpleClassOfNumNullable _$SimpleClassOfNumNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfNumNullableToJson(
         SimpleClassOfNumNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -946,7 +946,7 @@ Map<String, dynamic> _$SimpleClassNullableOfNumNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -966,7 +966,7 @@ SimpleClassOfObject _$SimpleClassOfObjectFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassOfObjectToJson(
         SimpleClassOfObject instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -989,7 +989,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -1010,7 +1010,7 @@ SimpleClassOfObjectNullable _$SimpleClassOfObjectNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfObjectNullableToJson(
         SimpleClassOfObjectNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -1033,7 +1033,7 @@ Map<String, dynamic> _$SimpleClassNullableOfObjectNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -1067,13 +1067,13 @@ SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassOfRecordToJson(
         SimpleClassOfRecord instance) =>
     <String, dynamic>{
-      'value': {
-        r'$1': {
+      'value': <String, dynamic>{
+        r'$1': <String, dynamic>{
           r'$1': instance.value.$1.$1,
           r'$2': instance.value.$1.$2,
           'truth': instance.value.$1.truth,
         },
-        'named': {
+        'named': <String, dynamic>{
           r'$1': instance.value.named.$1,
           r'$2': instance.value.named.$2,
           'truth': instance.value.named.truth,
@@ -1112,13 +1112,13 @@ Map<String, dynamic> _$SimpleClassNullableOfRecordToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
-              r'$1': {
+          : <String, dynamic>{
+              r'$1': <String, dynamic>{
                 r'$1': instance.value!.$1.$1,
                 r'$2': instance.value!.$1.$2,
                 'truth': instance.value!.$1.truth,
               },
-              'named': {
+              'named': <String, dynamic>{
                 r'$1': instance.value!.named.$1,
                 r'$2': instance.value!.named.$2,
                 'truth': instance.value!.named.truth,
@@ -1140,7 +1140,7 @@ SimpleClassOfString _$SimpleClassOfStringFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassOfStringToJson(
         SimpleClassOfString instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -1163,7 +1163,7 @@ Map<String, dynamic> _$SimpleClassNullableOfStringToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -1184,7 +1184,7 @@ SimpleClassOfStringNullable _$SimpleClassOfStringNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfStringNullableToJson(
         SimpleClassOfStringNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1,
         'named': instance.value.named,
       },
@@ -1207,7 +1207,7 @@ Map<String, dynamic> _$SimpleClassNullableOfStringNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1,
               'named': instance.value!.named,
             },
@@ -1226,7 +1226,7 @@ SimpleClassOfUri _$SimpleClassOfUriFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SimpleClassOfUriToJson(SimpleClassOfUri instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1.toString(),
         'named': instance.value.named.toString(),
       },
@@ -1249,7 +1249,7 @@ Map<String, dynamic> _$SimpleClassNullableOfUriToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1.toString(),
               'named': instance.value!.named.toString(),
             },
@@ -1274,7 +1274,7 @@ SimpleClassOfUriNullable _$SimpleClassOfUriNullableFromJson(
 Map<String, dynamic> _$SimpleClassOfUriNullableToJson(
         SimpleClassOfUriNullable instance) =>
     <String, dynamic>{
-      'value': {
+      'value': <String, dynamic>{
         r'$1': instance.value.$1?.toString(),
         'named': instance.value.named?.toString(),
       },
@@ -1301,7 +1301,7 @@ Map<String, dynamic> _$SimpleClassNullableOfUriNullableToJson(
     <String, dynamic>{
       'value': instance.value == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.value!.$1?.toString(),
               'named': instance.value!.named?.toString(),
             },

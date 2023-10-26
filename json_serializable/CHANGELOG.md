@@ -1,3 +1,7 @@
+## 6.7.2-wip
+
+- Add type arguments to `Map` literals used for `Record` serialization.
+
 ## 6.7.1
 
 - Support the latest `package:analyzer`.
