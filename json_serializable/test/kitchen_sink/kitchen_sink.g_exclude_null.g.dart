@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation
+// ignore_for_file: lines_longer_than_80_chars, text_direction_code_point_in_literal, inference_failure_on_function_invocation, inference_failure_on_collection_literal
 
 part of 'kitchen_sink.g_exclude_null.dart';
 
@@ -151,7 +151,7 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
       'recordField',
       instance.recordField == null
           ? null
-          : {
+          : <String, dynamic>{
               r'$1': instance.recordField!.$1,
               r'$2': instance.recordField!.$2,
               'truth': instance.recordField!.truth,

@@ -90,7 +90,7 @@ $helperName(
       );
     }
 
-    final mapValue = '{${items.map((e) => '$e,').join()}}';
+    final mapValue = '<String, dynamic>{${items.map((e) => '$e,').join()}}';
 
     return targetType.isNullableType
         ? ifNullOrElse(

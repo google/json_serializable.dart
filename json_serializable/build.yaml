@@ -10,6 +10,8 @@ targets:
           - text_direction_code_point_in_literal
           # Too much work in generated code
           - inference_failure_on_function_invocation
+          # Need to update sourcegen_helper to generate List/Map with the right type params
+          - inference_failure_on_collection_literal
 
       json_serializable:
         generate_for:
