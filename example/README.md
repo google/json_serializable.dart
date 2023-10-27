@@ -32,9 +32,6 @@ Run `dart run build_runner build` to generate files into your source directory.
 [INFO] Build: Succeeded after 4687ms with 1 outputs
 ```
 
-_NOTE_: If you're using Flutter, replace `dart run` with
-`flutter pub run`.
-
 [example]: lib/example.dart
 [example_g]: lib/example.g.dart
 [json_annotation]: https://pub.dev/packages/json_annotation
