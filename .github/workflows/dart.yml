@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:stable"
@@ -29,7 +29,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: stable
       - id: checkout
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:analyze_1"
@@ -54,7 +54,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:format-analyze_0"
@@ -120,7 +120,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
@@ -196,7 +196,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
@@ -206,7 +206,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -257,7 +257,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:json_serializable;commands:test_3"
@@ -267,7 +267,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -291,7 +291,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:json_serializable;commands:test_1"
@@ -301,7 +301,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -325,7 +325,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:json_serializable;commands:test_2"
@@ -335,7 +335,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -359,7 +359,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
@@ -369,7 +369,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
@@ -420,7 +420,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_3"
@@ -430,7 +430,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
@@ -454,7 +454,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_1"
@@ -464,7 +464,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
@@ -488,7 +488,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_2"
@@ -498,7 +498,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
@@ -522,7 +522,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.0.0;packages:_test_yaml-checked_yaml-example;commands:test_1"
@@ -532,7 +532,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: "3.0.0"
       - id: checkout
@@ -582,7 +582,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
-        uses: actions/cache@704facf57e6136b1bc63b828d79edcd491f0ee84
+        uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c
         with:
           path: "~/.pub-cache/hosted"
           key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example;commands:test_1"
@@ -592,7 +592,7 @@ jobs:
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@b64355ae6ca0b5d484f0106a033dd1388965d06d
+        uses: dart-lang/setup-dart@ca7e6fee45ffbd82b555a7ebfc236d2c86439f5b
         with:
           sdk: dev
       - id: checkout
