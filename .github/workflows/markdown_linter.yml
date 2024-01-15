@@ -15,12 +15,6 @@ jobs:
       - uses: gaurav-nelson/github-action-markdown-link-check@v1
   markdown_lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 14.x ]
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - name: markdownlint-cli2-action
-        uses: DavidAnson/markdownlint-cli2-action@v9
-      - name: Run lint check
-        run: markdownlint-cli2-fix "**/*.md"
+      - uses: DavidAnson/markdownlint-cli2-action@v9
