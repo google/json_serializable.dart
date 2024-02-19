@@ -132,6 +132,10 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       yield createFieldMap(accessibleFieldSet);
     }
 
+    if (config.createJsonKeys) {
+      yield createJsonKeys(accessibleFieldSet);
+    }
+
     if (config.createPerFieldToJson) {
       yield createPerFieldToJson(accessibleFieldSet);
     }

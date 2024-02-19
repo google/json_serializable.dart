@@ -49,6 +49,7 @@ class ClassConfig {
   final bool createFactory;
   final bool createToJson;
   final bool createFieldMap;
+  final bool createJsonKeys;
   final bool createPerFieldToJson;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
@@ -66,6 +67,7 @@ class ClassConfig {
     required this.createFactory,
     required this.createToJson,
     required this.createFieldMap,
+    required this.createJsonKeys,
     required this.createPerFieldToJson,
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
@@ -85,6 +87,8 @@ class ClassConfig {
         constructor: config.constructor ?? ClassConfig.defaults.constructor,
         createFieldMap:
             config.createFieldMap ?? ClassConfig.defaults.createFieldMap,
+        createJsonKeys:
+            config.createJsonKeys ?? ClassConfig.defaults.createJsonKeys,
         createPerFieldToJson: config.createPerFieldToJson ??
             ClassConfig.defaults.createPerFieldToJson,
         createFactory:
@@ -113,6 +117,7 @@ class ClassConfig {
     createFactory: true,
     createToJson: true,
     createFieldMap: false,
+    createJsonKeys: false,
     createPerFieldToJson: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
@@ -129,6 +134,7 @@ class ClassConfig {
         createFactory: createFactory,
         createToJson: createToJson,
         createFieldMap: createFieldMap,
+        createJsonKeys: createJsonKeys,
         createPerFieldToJson: createPerFieldToJson,
         ignoreUnannotated: ignoreUnannotated,
         explicitToJson: explicitToJson,
