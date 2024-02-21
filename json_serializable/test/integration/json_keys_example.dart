@@ -39,6 +39,7 @@ class _PrivateModel {
 
   Map<String, Object?> toJson() => _$PrivateModelToJson(this);
 
-  // ignore: unused_field
   static const jsonKeys = _$PrivateModelJsonKeys();
 }
+
+const privateModelJsonKeys = _PrivateModel.jsonKeys;
