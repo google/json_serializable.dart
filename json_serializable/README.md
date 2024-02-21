@@ -1,23 +1,24 @@
 <!-- This content is generated. See tool/readme/readme_template.md -->
 [![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
-Provides [Dart Build System][Dart Build System] builders for handling JSON.
+Provides [Dart Build System] builders for handling JSON.
 
 The builders generate code when they find members annotated with classes defined
-in [package:json_annotation][package:json_annotation].
+in [package:json_annotation].
 
 - To generate to/from JSON code for a class, annotate it with
   [`JsonSerializable`]. You can provide arguments to [`JsonSerializable`] to
   configure the generated code. You can also customize individual fields by
   annotating them with [`JsonKey`] and providing custom arguments. See the
   table below for details on the [annotation values](#annotation-values).
+
 - To generate a Dart field with the contents of a file containing JSON, use the
   [`JsonLiteral`] annotation.
 
 ## Setup
 
 To configure your project for the latest released version of
-`json_serializable`, see the [example][example].
+`json_serializable`, see the [example].
 
 ## Example
 
@@ -84,8 +85,8 @@ code will be generated when you build. There are three ways to control how code
 is generated:
 
 1. Setting properties on [`JsonKey`] annotating the target field.
-2. Set properties on [`JsonSerializable`] annotating the target type.
-3. Add configuration to `build.yaml` – [see below](#build-configuration).
+1. Set properties on [`JsonSerializable`] annotating the target type.
+1. Add configuration to `build.yaml` – [see below](#build-configuration).
 
 Every [`JsonSerializable`] field is configurable via `build.yaml`. If you find
 you want all or most of your classes with the same configuration, it may be
@@ -105,7 +106,7 @@ Annotate `enum` types with [`JsonEnum`] (new in `json_annotation` 4.2.0) to:
 1. Specify the default rename logic for each enum value using `fieldRename`. For
    instance, use `fieldRename: FieldRename.kebab` to encode `enum` value
    `noGood` as `"no-good"`.
-2. Force the generation of the `enum` helpers, even if the `enum` is not
+1. Force the generation of the `enum` helpers, even if the `enum` is not
    referenced in code. This is an edge scenario, but useful for some.
 
 Annotate `enum` values with [`JsonValue`] to specify the encoded value to map
@@ -146,20 +147,16 @@ enum StatusCodeEnhanced {
 
 Out of the box, `json_serializable` supports many common types in the
 [dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
-library:
-
+library: 
 [`BigInt`], [`bool`], [`DateTime`], [`double`], [`Duration`], [`Enum`], [`int`],
 [`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Record`], [`Set`],
 [`String`], [`Uri`]
 
 The collection types –
-
 [`Iterable`], [`List`], [`Map`], [`Record`], [`Set`]
-
 – can contain values of all the above types.
 
 For [`Map`], the key value must be one of
-
 [`BigInt`], [`DateTime`], [`Enum`], [`int`], [`Object`], [`String`], [`Uri`]
 
 # Custom types and custom encoding
@@ -172,90 +169,92 @@ customize the encoding/decoding of any type, you have a few options.
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
 
-   ```dart
-   @JsonSerializable()
-   class Sample1 {
-     Sample1(this.value);
+    ```dart
+    @JsonSerializable()
+    class Sample1 {
+      Sample1(this.value);
 
-     factory Sample1.fromJson(Map<String, dynamic> json) =>
-         _$Sample1FromJson(json);
+      factory Sample1.fromJson(Map<String, dynamic> json) =>
+          _$Sample1FromJson(json);
 
-     // Sample2 is NOT annotated with @JsonSerializable(), but that's okay
-     // The class has a `fromJson` constructor and a `toJson` method, which is
-     // all that is required.
-     final Sample2 value;
+      // Sample2 is NOT annotated with @JsonSerializable(), but that's okay
+      // The class has a `fromJson` constructor and a `toJson` method, which is
+      // all that is required.
+      final Sample2 value;
 
-     Map<String, dynamic> toJson() => _$Sample1ToJson(this);
-   }
+      Map<String, dynamic> toJson() => _$Sample1ToJson(this);
+    }
 
-   class Sample2 {
-     Sample2(this.value);
+    class Sample2 {
+      Sample2(this.value);
 
-     // The convention is for `fromJson` to take a single parameter of type
-     // `Map<String, dynamic>` but any JSON-compatible type is allowed.
-     factory Sample2.fromJson(int value) => Sample2(value);
-     final int value;
+      // The convention is for `fromJson` to take a single parameter of type
+      // `Map<String, dynamic>` but any JSON-compatible type is allowed.
+      factory Sample2.fromJson(int value) => Sample2(value);
+      final int value;
 
-     // The convention is for `toJson` to take return a type of
-     // `Map<String, dynamic>` but any JSON-compatible type is allowed.
-     int toJson() => value;
-   }
-   ```
-2. Use the [`JsonKey.toJson`] and [`JsonKey.fromJson`] properties to specify
+      // The convention is for `toJson` to take return a type of
+      // `Map<String, dynamic>` but any JSON-compatible type is allowed.
+      int toJson() => value;
+    }
+    ```
+
+1. Use the [`JsonKey.toJson`] and [`JsonKey.fromJson`] properties to specify
    custom conversions on the annotated field. The functions specified must be
    top-level or static. See the documentation of these properties for details.
 
-   ```dart
-   @JsonSerializable()
-   class Sample3 {
-     Sample3(this.value);
+    ```dart
+    @JsonSerializable()
+    class Sample3 {
+      Sample3(this.value);
 
-     factory Sample3.fromJson(Map<String, dynamic> json) =>
-         _$Sample3FromJson(json);
+      factory Sample3.fromJson(Map<String, dynamic> json) =>
+          _$Sample3FromJson(json);
 
-     @JsonKey(
-       toJson: _toJson,
-       fromJson: _fromJson,
-     )
-     final DateTime value;
+      @JsonKey(
+        toJson: _toJson,
+        fromJson: _fromJson,
+      )
+      final DateTime value;
 
-     Map<String, dynamic> toJson() => _$Sample3ToJson(this);
+      Map<String, dynamic> toJson() => _$Sample3ToJson(this);
 
-     static int _toJson(DateTime value) => value.millisecondsSinceEpoch;
-     static DateTime _fromJson(int value) =>
-         DateTime.fromMillisecondsSinceEpoch(value);
-   }
-   ```
-3. Create an implementation of [`JsonConverter`] and annotate either the
+      static int _toJson(DateTime value) => value.millisecondsSinceEpoch;
+      static DateTime _fromJson(int value) =>
+          DateTime.fromMillisecondsSinceEpoch(value);
+    }
+    ```
+
+1. Create an implementation of [`JsonConverter`] and annotate either the
    corresponding field or the containing class. [`JsonConverter`] is convenient
    if you want to use the same conversion logic on many fields. It also allows
    you to support a type within collections. Check out
    [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
 
-   ```dart
-   @JsonSerializable()
-   class Sample4 {
-     Sample4(this.value);
+    ```dart
+    @JsonSerializable()
+    class Sample4 {
+      Sample4(this.value);
 
-     factory Sample4.fromJson(Map<String, dynamic> json) =>
-         _$Sample4FromJson(json);
+      factory Sample4.fromJson(Map<String, dynamic> json) =>
+          _$Sample4FromJson(json);
 
-     @EpochDateTimeConverter()
-     final DateTime value;
+      @EpochDateTimeConverter()
+      final DateTime value;
 
-     Map<String, dynamic> toJson() => _$Sample4ToJson(this);
-   }
+      Map<String, dynamic> toJson() => _$Sample4ToJson(this);
+    }
 
-   class EpochDateTimeConverter implements JsonConverter<DateTime, int> {
-     const EpochDateTimeConverter();
+    class EpochDateTimeConverter implements JsonConverter<DateTime, int> {
+      const EpochDateTimeConverter();
 
-     @override
-     DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
+      @override
+      DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
 
-     @override
-     int toJson(DateTime object) => object.millisecondsSinceEpoch;
-   }
-   ```
+      @override
+      int toJson(DateTime object) => object.millisecondsSinceEpoch;
+    }
+    ```
 
 # Build configuration
 
@@ -299,15 +298,15 @@ targets:
 [`Enum`]: https://api.dart.dev/stable/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/stable/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/stable/dart-core/Iterable-class.html
-[`JsonConverter`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
-[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum/valueField.html
-[`JsonEnum`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum-class.html
-[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
-[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
-[`JsonKey`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey-class.html
-[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonLiteral-class.html
-[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable-class.html
-[`JsonValue`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonValue-class.html
+[`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonConverter-class.html
+[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonEnum/valueField.html
+[`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonEnum-class.html
+[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonKey/fromJson.html
+[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonKey/toJson.html
+[`JsonKey`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonKey-class.html
+[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonLiteral-class.html
+[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonSerializable-class.html
+[`JsonValue`]: https://pub.dev/documentation/json_annotation/4.8.1/json_annotation/JsonValue-class.html
 [`List`]: https://api.dart.dev/stable/dart-core/List-class.html
 [`Map`]: https://api.dart.dev/stable/dart-core/Map-class.html
 [`num`]: https://api.dart.dev/stable/dart-core/num-class.html

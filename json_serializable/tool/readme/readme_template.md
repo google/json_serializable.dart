@@ -1,22 +1,23 @@
 [![Pub Package](https://img.shields.io/pub/v/json_serializable.svg)](https://pub.dev/packages/json_serializable)
 
-Provides [Dart Build System][Dart Build System] builders for handling JSON.
+Provides [Dart Build System] builders for handling JSON.
 
 The builders generate code when they find members annotated with classes defined
-in [package:json_annotation][package:json_annotation].
+in [package:json_annotation].
 
 - To generate to/from JSON code for a class, annotate it with
   `ja:JsonSerializable`. You can provide arguments to `ja:JsonSerializable` to
   configure the generated code. You can also customize individual fields by
   annotating them with `ja:JsonKey` and providing custom arguments. See the
   table below for details on the [annotation values](#annotation-values).
+
 - To generate a Dart field with the contents of a file containing JSON, use the
   `ja:JsonLiteral` annotation.
 
 ## Setup
 
 To configure your project for the latest released version of
-`json_serializable`, see the [example][example].
+`json_serializable`, see the [example].
 
 ## Example
 
@@ -44,8 +45,8 @@ code will be generated when you build. There are three ways to control how code
 is generated:
 
 1. Setting properties on `ja:JsonKey` annotating the target field.
-2. Set properties on `ja:JsonSerializable` annotating the target type.
-3. Add configuration to `build.yaml` – [see below](#build-configuration).
+1. Set properties on `ja:JsonSerializable` annotating the target type.
+1. Add configuration to `build.yaml` – [see below](#build-configuration).
 
 Every `ja:JsonSerializable` field is configurable via `build.yaml`. If you find
 you want all or most of your classes with the same configuration, it may be
@@ -65,7 +66,7 @@ Annotate `enum` types with `ja:JsonEnum` (new in `json_annotation` 4.2.0) to:
 1. Specify the default rename logic for each enum value using `fieldRename`. For
    instance, use `fieldRename: FieldRename.kebab` to encode `enum` value
    `noGood` as `"no-good"`.
-2. Force the generation of the `enum` helpers, even if the `enum` is not
+1. Force the generation of the `enum` helpers, even if the `enum` is not
    referenced in code. This is an edge scenario, but useful for some.
 
 Annotate `enum` values with `ja:JsonValue` to specify the encoded value to map
@@ -84,18 +85,14 @@ serialized value.
 
 Out of the box, `json_serializable` supports many common types in the
 [dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
-library:
-
+library: 
 <!-- REPLACE supported_types -->
 
 The collection types –
-
 <!-- REPLACE collection_types -->
-
 – can contain values of all the above types.
 
 For `core:Map`, the key value must be one of
-
 <!-- REPLACE map_key_types -->
 
 # Custom types and custom encoding
@@ -108,19 +105,21 @@ customize the encoding/decoding of any type, you have a few options.
    for these types, you don't have to! The generator code only looks for these
    methods. It doesn't care how they were created.
 
-   <!-- REPLACE tool/readme/readme_examples.dart-to_from -->
-2. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
+    <!-- REPLACE tool/readme/readme_examples.dart-to_from -->
+
+1. Use the `ja:JsonKey.toJson` and `ja:JsonKey.fromJson` properties to specify
    custom conversions on the annotated field. The functions specified must be
    top-level or static. See the documentation of these properties for details.
 
-   <!-- REPLACE tool/readme/readme_examples.dart-json_key -->
-3. Create an implementation of `ja:JsonConverter` and annotate either the
+    <!-- REPLACE tool/readme/readme_examples.dart-json_key -->
+
+1. Create an implementation of `ja:JsonConverter` and annotate either the
    corresponding field or the containing class. `ja:JsonConverter` is convenient
    if you want to use the same conversion logic on many fields. It also allows
    you to support a type within collections. Check out
    [these examples](https://github.com/google/json_serializable.dart/blob/master/example/lib/json_converter_example.dart).
 
-   <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
+    <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
 
 # Build configuration
 
