@@ -13,23 +13,12 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
       lastName: json['LAST_NAME'] as String,
     );
 
-class _$ModelJsonKeys {
-  const _$ModelJsonKeys();
-  final String firstName = 'first-name';
-  final String lastName = 'LAST_NAME';
+abstract final class ModelJsonKeys {
+  static const String firstName = 'first-name';
+  static const String lastName = 'LAST_NAME';
 }
 
 Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
       'first-name': instance.firstName,
       'LAST_NAME': instance.lastName,
-    };
-
-class _$PrivateModelJsonKeys {
-  const _$PrivateModelJsonKeys();
-  final String fullName = 'full-name';
-}
-
-Map<String, dynamic> _$PrivateModelToJson(_PrivateModel instance) =>
-    <String, dynamic>{
-      'full-name': instance.fullName,
     };

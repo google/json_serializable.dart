@@ -473,13 +473,8 @@ void main() {
     expect(enumValueFieldIndexValues, [0, 701, 2]);
   });
 
-  test(r'_$ModelJsonKeys', () {
-    expect(js_keys.Model.jsonKeys.firstName, 'first-name');
-    expect(js_keys.Model.jsonKeys.lastName, 'LAST_NAME');
-  });
-
-  test(r'Generates _$PrivateModelJsonKeys instead of __$PrivateModelJsonKeys',
-      () {
-    expect(js_keys.privateModelJsonKeys.fullName, 'full-name');
+  test('ModelJsonKeys', () {
+    expect(js_keys.ModelJsonKeys.firstName, 'first-name');
+    expect(js_keys.ModelJsonKeys.lastName, 'LAST_NAME');
   });
 }

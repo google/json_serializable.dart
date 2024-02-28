@@ -69,12 +69,13 @@ mixin EncodeHelper implements HelperCore {
     assert(config.createJsonKeys);
 
     final buffer = StringBuffer(
-      'class _\$${element.name.nonPrivate}JsonKeys {',
-    )..write('const _\$${element.name.nonPrivate}JsonKeys();');
+      'abstract final class _\$${element.name.nonPrivate}JsonKeys {',
+    );
+    // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
-        'final String ${field.name} = ${escapeDartString(nameAccess(field))};',
+        'static const String ${field.name} = ${escapeDartString(nameAccess(field))};',
       );
     }
 

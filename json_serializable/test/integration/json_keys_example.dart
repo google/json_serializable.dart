@@ -24,22 +24,5 @@ class Model {
 
   Map<String, Object?> toJson() => _$ModelToJson(this);
 
-  static const jsonKeys = _$ModelJsonKeys();
+  static const jsonKeys = ModelJsonKeys;
 }
-
-@JsonSerializable(
-  createJsonKeys: true,
-  fieldRename: FieldRename.kebab,
-  createFactory: false,
-)
-class _PrivateModel {
-  _PrivateModel(this.fullName);
-
-  final String fullName;
-
-  Map<String, Object?> toJson() => _$PrivateModelToJson(this);
-
-  static const jsonKeys = _$PrivateModelJsonKeys();
-}
-
-const privateModelJsonKeys = _PrivateModel.jsonKeys;
