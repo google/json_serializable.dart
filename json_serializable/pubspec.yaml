@@ -29,6 +29,10 @@ dependencies:
   source_gen: ^1.3.2
   source_helper: ^1.3.0
 
+dependency_overrides:
+  json_annotation:
+    path: ../json_annotation
+
 dev_dependencies:
   _json_serial_shared_test:
     path: ../shared_test
