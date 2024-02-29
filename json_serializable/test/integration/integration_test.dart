@@ -10,7 +10,7 @@ import 'converter_examples.dart';
 import 'create_per_field_to_json_example.dart';
 import 'field_map_example.dart';
 import 'json_enum_example.dart';
-import 'json_test_common.dart' show Category, Platform, StatusCode;
+import 'json_test_common.dart' show Category, Colors, Platform, StatusCode;
 import 'json_test_example.dart';
 
 Matcher _throwsArgumentError(Object matcher) =>
@@ -89,6 +89,21 @@ void main() {
         reason: 'success is the default on an unset value',
       );
       roundTripOrder(order);
+    });
+
+    test('case insensitive map', () {
+      final jsonOrder = {'category': 'CHaRmED', 'color': 'bLuE'};
+      final order = Order.fromJson(jsonOrder);
+      expect(order.category, Category.charmed);
+      expect(order.color, Colors.blue);
+    });
+
+    test('case sensitive map throw', () {
+      expect(
+        () => Order.fromJson({'direction': 'dOwN'}),
+        _throwsArgumentError(
+            '`dOwN` is not one of the supported values: up, down, left, right'),
+      );
     });
 
     test('required, but missing enum value fails', () {

@@ -23,6 +23,8 @@ class KeyConfig {
 
   final String? unknownEnumValue;
 
+  final bool? caseInsensitive;
+
   final String? readValueFunctionName;
 
   KeyConfig({
@@ -35,6 +37,7 @@ class KeyConfig {
     required this.readValueFunctionName,
     required this.required,
     required this.unknownEnumValue,
+    required this.caseInsensitive,
   });
 }
 

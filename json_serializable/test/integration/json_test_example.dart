@@ -55,6 +55,9 @@ class Order {
   Duration? duration;
 
   final Category? category;
+  @JsonKey(caseInsensitive: true)
+  Colors? color;
+  Direction? direction;
   final UnmodifiableListView<Item>? items;
   Platform? platform;
   Map<String, Platform>? altPlatforms;
