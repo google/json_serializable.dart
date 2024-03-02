@@ -13,7 +13,7 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
       lastName: json['LAST_NAME'] as String,
     );
 
-abstract final class ModelJsonKeys {
+abstract final class _$ModelJsonKeys {
   static const String firstName = 'first-name';
   static const String lastName = 'LAST_NAME';
 }

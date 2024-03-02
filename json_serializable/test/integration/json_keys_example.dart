@@ -23,6 +23,6 @@ class Model {
   String get fullName => '$firstName $lastName';
 
   Map<String, Object?> toJson() => _$ModelToJson(this);
-
-  static const jsonKeys = ModelJsonKeys;
 }
+
+typedef ModelJsonKeys = _$ModelJsonKeys;
