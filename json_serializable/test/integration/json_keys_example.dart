@@ -25,4 +25,8 @@ class Model {
   Map<String, Object?> toJson() => _$ModelToJson(this);
 }
 
+// TODO: use this once https://github.com/dart-lang/sdk/issues/54543 is fixed
 typedef ModelJsonKeys = _$ModelJsonKeys;
+
+// Work-around until https://github.com/dart-lang/sdk/issues/54543 is fixed
+Set<String> get keys => {_$ModelJsonKeys.firstName, _$ModelJsonKeys.lastName};

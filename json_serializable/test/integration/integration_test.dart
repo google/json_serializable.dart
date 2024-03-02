@@ -474,7 +474,6 @@ void main() {
   });
 
   test('ModelJsonKeys', () {
-    expect(js_keys.ModelJsonKeys.firstName, 'first-name');
-    expect(js_keys.ModelJsonKeys.lastName, 'LAST_NAME');
+    expect(js_keys.keys, {'first-name', 'LAST_NAME'});
   });
 }
