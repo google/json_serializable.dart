@@ -75,7 +75,8 @@ mixin EncodeHelper implements HelperCore {
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
-        'static const String ${field.name} = ${escapeDartString(nameAccess(field))};',
+        'static const String ${field.name} = '
+        '${escapeDartString(nameAccess(field))};',
       );
     }
 
