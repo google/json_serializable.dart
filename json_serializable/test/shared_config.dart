@@ -20,6 +20,7 @@ final generatorConfigNonDefaultJson =
   createFactory: false,
   createToJson: false,
   createFieldMap: true,
+  createJsonKeys: true,
   createPerFieldToJson: true,
   disallowUnrecognizedKeys: true,
   explicitToJson: true,

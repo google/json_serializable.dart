@@ -63,6 +63,28 @@ mixin EncodeHelper implements HelperCore {
     return buffer.toString();
   }
 
+  /// Generates an object containing metadatas related to the encoding,
+  /// destined to be used by other code-generators.
+  String createJsonKeys(Set<FieldElement> accessibleFieldSet) {
+    assert(config.createJsonKeys);
+
+    final buffer = StringBuffer(
+      'abstract final class _\$${element.name.nonPrivate}JsonKeys {',
+    );
+    // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
+
+    for (final field in accessibleFieldSet) {
+      buffer.writeln(
+        'static const String ${field.name} = '
+        '${escapeDartString(nameAccess(field))};',
+      );
+    }
+
+    buffer.write('}');
+
+    return buffer.toString();
+  }
+
   Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(config.createToJson);
 

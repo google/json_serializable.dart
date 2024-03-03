@@ -1,6 +1,8 @@
-## 6.7.2-wip
+## 6.8.0-wip
 
 - Add type arguments to `Map` literals used for `Record` serialization.
+- Added support for generating `ExampleJsonKeys`, exposing a secured way to access the json keys from the properties.
+  ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
 
 ## 6.7.1
 

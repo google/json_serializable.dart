@@ -1,6 +1,8 @@
-## 4.8.2-wip
+## 4.9.0-wip
 
 - Require Dart 3.0
+- Added `JsonSerializable(createJsonKeys: true)`.
+  ([#1401](https://github.com/google/json_serializable.dart/pull/1401))
 
 ## 4.8.1
 

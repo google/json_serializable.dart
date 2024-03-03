@@ -87,6 +87,21 @@ class JsonSerializable {
   /// such as [fieldRename].
   final bool? createFieldMap;
 
+  /// If `true` (defaults to false), a private class `_$ExampleJsonKeys`
+  /// constant is created in the generated part file.
+  ///
+  /// This class will contain every property, with the json key as value,
+  /// exposing a secured way to access the json key from the property.
+  ///
+  /// ```dart
+  /// @JsonSerializable(createJsonKeys: true)
+  /// class Example {
+  ///   // ...
+  ///   static const jsonKeys = _$PublicationImplJsonKeys();
+  /// }
+  /// ```
+  final bool? createJsonKeys;
+
   /// If `true` (defaults to false), a private, static `_$ExamplePerFieldToJson`
   /// abstract class will be generated in the part file.
   ///
@@ -247,6 +262,7 @@ class JsonSerializable {
     this.checked,
     this.constructor,
     this.createFieldMap,
+    this.createJsonKeys,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,

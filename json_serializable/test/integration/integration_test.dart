@@ -10,6 +10,7 @@ import 'converter_examples.dart';
 import 'create_per_field_to_json_example.dart';
 import 'field_map_example.dart';
 import 'json_enum_example.dart';
+import 'json_keys_example.dart' as js_keys;
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
 
@@ -470,5 +471,9 @@ void main() {
 
   test('value field index fun', () {
     expect(enumValueFieldIndexValues, [0, 701, 2]);
+  });
+
+  test('ModelJsonKeys', () {
+    expect(js_keys.keys, {'first-name', 'LAST_NAME'});
   });
 }
