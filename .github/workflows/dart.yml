@@ -34,7 +34,7 @@ jobs:
           sdk: stable
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - name: mono_repo self validate
         run: dart pub global activate mono_repo 6.5.7
       - name: mono_repo self validate
@@ -59,7 +59,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -125,7 +125,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -211,7 +211,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -272,7 +272,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -306,7 +306,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -340,7 +340,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -374,7 +374,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -435,7 +435,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -469,7 +469,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -503,7 +503,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -537,7 +537,7 @@ jobs:
           sdk: "3.0.0"
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -597,7 +597,7 @@ jobs:
           sdk: dev
       - id: checkout
         name: Checkout repository
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
