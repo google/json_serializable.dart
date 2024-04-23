@@ -46,6 +46,10 @@ class ValueHelper extends TypeHelper {
       final targetTypeNullable = defaultProvided || targetType.isNullableType;
       final question = targetTypeNullable ? '?' : '';
       return '($expression as num$question)$question.toDouble()';
+    } else if (targetType.isDartCoreInt) {
+      final targetTypeNullable = defaultProvided || targetType.isNullableType;
+      final question = targetTypeNullable ? '?' : '';
+      return '($expression as num$question)$question.toInt()';
     } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
       final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
       return '$expression as $typeCode';

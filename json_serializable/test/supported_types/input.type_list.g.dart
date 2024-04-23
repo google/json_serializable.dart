@@ -249,7 +249,7 @@ SimpleClassOfDuration _$SimpleClassOfDurationFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfDuration(
       (json['value'] as List<dynamic>)
-          .map((e) => Duration(microseconds: e as int))
+          .map((e) => Duration(microseconds: (e as num).toInt()))
           .toList(),
     );
 
@@ -263,7 +263,7 @@ SimpleClassNullableOfDuration _$SimpleClassNullableOfDurationFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfDuration(
       (json['value'] as List<dynamic>?)
-          ?.map((e) => Duration(microseconds: e as int))
+          ?.map((e) => Duration(microseconds: (e as num).toInt()))
           .toList(),
     );
 
@@ -277,7 +277,8 @@ SimpleClassOfDurationNullable _$SimpleClassOfDurationNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfDurationNullable(
       (json['value'] as List<dynamic>)
-          .map((e) => e == null ? null : Duration(microseconds: e as int))
+          .map((e) =>
+              e == null ? null : Duration(microseconds: (e as num).toInt()))
           .toList(),
     );
 
@@ -292,7 +293,8 @@ SimpleClassNullableOfDurationNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfDurationNullable(
           (json['value'] as List<dynamic>?)
-              ?.map((e) => e == null ? null : Duration(microseconds: e as int))
+              ?.map((e) =>
+                  e == null ? null : Duration(microseconds: (e as num).toInt()))
               .toList(),
         );
 
@@ -480,7 +482,7 @@ Map<String, dynamic> _$SimpleClassNullableOfFromJsonObjectParamToJson(
 
 SimpleClassOfInt _$SimpleClassOfIntFromJson(Map<String, dynamic> json) =>
     SimpleClassOfInt(
-      (json['value'] as List<dynamic>).map((e) => e as int).toList(),
+      (json['value'] as List<dynamic>).map((e) => (e as num).toInt()).toList(),
     );
 
 Map<String, dynamic> _$SimpleClassOfIntToJson(SimpleClassOfInt instance) =>
@@ -491,7 +493,9 @@ Map<String, dynamic> _$SimpleClassOfIntToJson(SimpleClassOfInt instance) =>
 SimpleClassNullableOfInt _$SimpleClassNullableOfIntFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfInt(
-      (json['value'] as List<dynamic>?)?.map((e) => e as int).toList(),
+      (json['value'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList(),
     );
 
 Map<String, dynamic> _$SimpleClassNullableOfIntToJson(
@@ -503,7 +507,9 @@ Map<String, dynamic> _$SimpleClassNullableOfIntToJson(
 SimpleClassOfIntNullable _$SimpleClassOfIntNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfIntNullable(
-      (json['value'] as List<dynamic>).map((e) => e as int?).toList(),
+      (json['value'] as List<dynamic>)
+          .map((e) => (e as num?)?.toInt())
+          .toList(),
     );
 
 Map<String, dynamic> _$SimpleClassOfIntNullableToJson(
@@ -515,7 +521,9 @@ Map<String, dynamic> _$SimpleClassOfIntNullableToJson(
 SimpleClassNullableOfIntNullable _$SimpleClassNullableOfIntNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfIntNullable(
-      (json['value'] as List<dynamic>?)?.map((e) => e as int?).toList(),
+      (json['value'] as List<dynamic>?)
+          ?.map((e) => (e as num?)?.toInt())
+          .toList(),
     );
 
 Map<String, dynamic> _$SimpleClassNullableOfIntNullableToJson(
@@ -623,7 +631,7 @@ SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
           .map((e) => _$recordConvert(
                 e,
                 ($jsonValue) => (
-                  $jsonValue[r'$1'] as int,
+                  ($jsonValue[r'$1'] as num).toInt(),
                   $jsonValue[r'$2'] as String,
                   truth: $jsonValue['truth'] as bool,
                 ),
@@ -656,7 +664,7 @@ SimpleClassNullableOfRecord _$SimpleClassNullableOfRecordFromJson(
           ?.map((e) => _$recordConvert(
                 e,
                 ($jsonValue) => (
-                  $jsonValue[r'$1'] as int,
+                  ($jsonValue[r'$1'] as num).toInt(),
                   $jsonValue[r'$2'] as String,
                   truth: $jsonValue['truth'] as bool,
                 ),

@@ -15,7 +15,7 @@ StrictKeysObject _$StrictKeysObjectFromJson(Map json) {
     requiredKeys: const ['value', 'custom_field'],
   );
   return StrictKeysObject(
-    json['value'] as int,
+    (json['value'] as num).toInt(),
     json['custom_field'] as String,
   );
 }

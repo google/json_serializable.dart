@@ -15,7 +15,7 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
         final val = DefaultValue(
           $checkedConvert('fieldBool', (v) => v as bool? ?? true),
           $checkedConvert('fieldString', (v) => v as String? ?? 'string'),
-          $checkedConvert('fieldInt', (v) => v as int? ?? 42),
+          $checkedConvert('fieldInt', (v) => (v as num?)?.toInt() ?? 42),
           $checkedConvert(
               'fieldDouble', (v) => (v as num?)?.toDouble() ?? 3.14),
           $checkedConvert('fieldListEmpty', (v) => v as List<dynamic>? ?? []),
@@ -25,7 +25,9 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
           $checkedConvert(
               'fieldListSimple',
               (v) =>
-                  (v as List<dynamic>?)?.map((e) => e as int).toList() ??
+                  (v as List<dynamic>?)
+                      ?.map((e) => (e as num).toInt())
+                      .toList() ??
                   [1, 2, 3]),
           $checkedConvert(
               'fieldSetSimple',
@@ -36,7 +38,7 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
               'fieldMapSimple',
               (v) =>
                   (v as Map?)?.map(
-                    (k, e) => MapEntry(k as String, e as int),
+                    (k, e) => MapEntry(k as String, (e as num).toInt()),
                   ) ??
                   {'answer': 42}),
           $checkedConvert(
@@ -53,8 +55,9 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
               (v) => $enumDecodeNullable(_$GreekEnumMap, v) ?? Greek.beta),
           durationField: $checkedConvert(
               'durationField',
-              (v) =>
-                  v == null ? Duration.zero : Duration(microseconds: v as int)),
+              (v) => v == null
+                  ? Duration.zero
+                  : Duration(microseconds: (v as num).toInt())),
           constClass: $checkedConvert(
               'constClass',
               (v) => v == null
@@ -72,7 +75,7 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
                   : constClassFromJson(v as String)),
           intDefaultValueFromFunction: $checkedConvert(
               'intDefaultValueFromFunction',
-              (v) => v as int? ?? intDefaultValueFunction()),
+              (v) => (v as num?)?.toInt() ?? intDefaultValueFunction()),
           valueFromDefaultValueDefaultConstructor: $checkedConvert(
               'valueFromDefaultValueDefaultConstructor',
               (v) => v == null

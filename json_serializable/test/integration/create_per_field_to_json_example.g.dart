@@ -23,7 +23,7 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
           ? null
           : GenericFactory<int>.fromJson(
               json['nestedGeneric'] as Map<String, dynamic>,
-              (value) => value as int),
+              (value) => (value as num).toInt()),
     );
 
 // ignore: unused_element

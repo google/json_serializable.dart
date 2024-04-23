@@ -8,13 +8,13 @@ part of 'generic_response_class_example.dart';
 
 BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
     BaseResponse<T>(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       msg: json['msg'] as String?,
       data: BaseResponse._dataFromJson(json['data'] as Object),
     );
 
 Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       title: json['title'] as String,
       author: json['author'] == null
           ? null
@@ -25,11 +25,11 @@ Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
     );
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       email: json['email'] as String?,
     );
 
 Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       content: json['content'] as String?,
     );

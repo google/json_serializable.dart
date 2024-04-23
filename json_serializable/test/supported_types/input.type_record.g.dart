@@ -411,8 +411,8 @@ SimpleClassOfDuration _$SimpleClassOfDurationFromJson(
       _$recordConvert(
         json['value'],
         ($jsonValue) => (
-          Duration(microseconds: $jsonValue[r'$1'] as int),
-          named: Duration(microseconds: $jsonValue['named'] as int),
+          Duration(microseconds: ($jsonValue[r'$1'] as num).toInt()),
+          named: Duration(microseconds: ($jsonValue['named'] as num).toInt()),
         ),
       ),
     );
@@ -432,8 +432,8 @@ SimpleClassNullableOfDuration _$SimpleClassNullableOfDurationFromJson(
       _$recordConvertNullable(
         json['value'],
         ($jsonValue) => (
-          Duration(microseconds: $jsonValue[r'$1'] as int),
-          named: Duration(microseconds: $jsonValue['named'] as int),
+          Duration(microseconds: ($jsonValue[r'$1'] as num).toInt()),
+          named: Duration(microseconds: ($jsonValue['named'] as num).toInt()),
         ),
       ),
     );
@@ -457,10 +457,10 @@ SimpleClassOfDurationNullable _$SimpleClassOfDurationNullableFromJson(
         ($jsonValue) => (
           $jsonValue[r'$1'] == null
               ? null
-              : Duration(microseconds: $jsonValue[r'$1'] as int),
+              : Duration(microseconds: ($jsonValue[r'$1'] as num).toInt()),
           named: $jsonValue['named'] == null
               ? null
-              : Duration(microseconds: $jsonValue['named'] as int),
+              : Duration(microseconds: ($jsonValue['named'] as num).toInt()),
         ),
       ),
     );
@@ -483,10 +483,11 @@ SimpleClassNullableOfDurationNullable
             ($jsonValue) => (
               $jsonValue[r'$1'] == null
                   ? null
-                  : Duration(microseconds: $jsonValue[r'$1'] as int),
+                  : Duration(microseconds: ($jsonValue[r'$1'] as num).toInt()),
               named: $jsonValue['named'] == null
                   ? null
-                  : Duration(microseconds: $jsonValue['named'] as int),
+                  : Duration(
+                      microseconds: ($jsonValue['named'] as num).toInt()),
             ),
           ),
         );
@@ -785,8 +786,8 @@ SimpleClassOfInt _$SimpleClassOfIntFromJson(Map<String, dynamic> json) =>
       _$recordConvert(
         json['value'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as int,
-          named: $jsonValue['named'] as int,
+          ($jsonValue[r'$1'] as num).toInt(),
+          named: ($jsonValue['named'] as num).toInt(),
         ),
       ),
     );
@@ -805,8 +806,8 @@ SimpleClassNullableOfInt _$SimpleClassNullableOfIntFromJson(
       _$recordConvertNullable(
         json['value'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as int,
-          named: $jsonValue['named'] as int,
+          ($jsonValue[r'$1'] as num).toInt(),
+          named: ($jsonValue['named'] as num).toInt(),
         ),
       ),
     );
@@ -828,8 +829,8 @@ SimpleClassOfIntNullable _$SimpleClassOfIntNullableFromJson(
       _$recordConvert(
         json['value'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as int?,
-          named: $jsonValue['named'] as int?,
+          ($jsonValue[r'$1'] as num?)?.toInt(),
+          named: ($jsonValue['named'] as num?)?.toInt(),
         ),
       ),
     );
@@ -849,8 +850,8 @@ SimpleClassNullableOfIntNullable _$SimpleClassNullableOfIntNullableFromJson(
       _$recordConvertNullable(
         json['value'],
         ($jsonValue) => (
-          $jsonValue[r'$1'] as int?,
-          named: $jsonValue['named'] as int?,
+          ($jsonValue[r'$1'] as num?)?.toInt(),
+          named: ($jsonValue['named'] as num?)?.toInt(),
         ),
       ),
     );
@@ -1047,7 +1048,7 @@ SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
           _$recordConvert(
             $jsonValue[r'$1'],
             ($jsonValue) => (
-              $jsonValue[r'$1'] as int,
+              ($jsonValue[r'$1'] as num).toInt(),
               $jsonValue[r'$2'] as String,
               truth: $jsonValue['truth'] as bool,
             ),
@@ -1055,7 +1056,7 @@ SimpleClassOfRecord _$SimpleClassOfRecordFromJson(Map<String, dynamic> json) =>
           named: _$recordConvert(
             $jsonValue['named'],
             ($jsonValue) => (
-              $jsonValue[r'$1'] as int,
+              ($jsonValue[r'$1'] as num).toInt(),
               $jsonValue[r'$2'] as String,
               truth: $jsonValue['truth'] as bool,
             ),
@@ -1090,7 +1091,7 @@ SimpleClassNullableOfRecord _$SimpleClassNullableOfRecordFromJson(
           _$recordConvert(
             $jsonValue[r'$1'],
             ($jsonValue) => (
-              $jsonValue[r'$1'] as int,
+              ($jsonValue[r'$1'] as num).toInt(),
               $jsonValue[r'$2'] as String,
               truth: $jsonValue['truth'] as bool,
             ),
@@ -1098,7 +1099,7 @@ SimpleClassNullableOfRecord _$SimpleClassNullableOfRecordFromJson(
           named: _$recordConvert(
             $jsonValue['named'],
             ($jsonValue) => (
-              $jsonValue[r'$1'] as int,
+              ($jsonValue[r'$1'] as num).toInt(),
               $jsonValue[r'$2'] as String,
               truth: $jsonValue['truth'] as bool,
             ),

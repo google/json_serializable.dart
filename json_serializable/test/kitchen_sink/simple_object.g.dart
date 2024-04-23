@@ -9,7 +9,7 @@ part of 'simple_object.dart';
 // **************************************************************************
 
 SimpleObject _$SimpleObjectFromJson(Map json) => SimpleObject(
-      json['value'] as int,
+      (json['value'] as num).toInt(),
     );
 
 Map<String, dynamic> _$SimpleObjectToJson(SimpleObject instance) =>

@@ -34,7 +34,7 @@ ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
       GenericClassWithHelpers<int, String>.fromJson(
           json['value'] as Map<String, dynamic>,
-          (value) => value as int,
+          (value) => (value as num).toInt(),
           (value) => value as String),
       GenericClassWithHelpers<double, BigInt>.fromJson(
           json['value2'] as Map<String, dynamic>,

@@ -9,7 +9,7 @@ part of 'readme_examples.dart';
 // **************************************************************************
 
 Sample1 _$Sample1FromJson(Map<String, dynamic> json) => Sample1(
-      Sample2.fromJson(json['value'] as int),
+      Sample2.fromJson((json['value'] as num).toInt()),
     );
 
 Map<String, dynamic> _$Sample1ToJson(Sample1 instance) => <String, dynamic>{
@@ -17,7 +17,7 @@ Map<String, dynamic> _$Sample1ToJson(Sample1 instance) => <String, dynamic>{
     };
 
 Sample3 _$Sample3FromJson(Map<String, dynamic> json) => Sample3(
-      Sample3._fromJson(json['value'] as int),
+      Sample3._fromJson((json['value'] as num).toInt()),
     );
 
 Map<String, dynamic> _$Sample3ToJson(Sample3 instance) => <String, dynamic>{
@@ -25,7 +25,7 @@ Map<String, dynamic> _$Sample3ToJson(Sample3 instance) => <String, dynamic>{
     };
 
 Sample4 _$Sample4FromJson(Map<String, dynamic> json) => Sample4(
-      const EpochDateTimeConverter().fromJson(json['value'] as int),
+      const EpochDateTimeConverter().fromJson((json['value'] as num).toInt()),
     );
 
 Map<String, dynamic> _$Sample4ToJson(Sample4 instance) => <String, dynamic>{

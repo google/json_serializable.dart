@@ -12,7 +12,7 @@ Issue1202RegressionClass _$Issue1202RegressionClassFromJson(
         Map<String, dynamic> json) =>
     Issue1202RegressionClass(
       value: $enumDecode(_$Issue1202RegressionEnumEnumMap, json['value']),
-      normalNullableValue: json['normalNullableValue'] as int?,
+      normalNullableValue: (json['normalNullableValue'] as num?)?.toInt(),
       notNullableValueWithNullableConverter:
           const _Issue1202RegressionConverter().fromJson(
               json['notNullableValueWithNullableConverter'] as String?),

@@ -29,7 +29,8 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
         (k, e) => MapEntry(k, $enumDecode(_$CategoryEnumMap, e)),
       )
       ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry($enumDecode(_$CategoryEnumMap, k), e as int),
+        (k, e) =>
+            MapEntry($enumDecode(_$CategoryEnumMap, k), (e as num).toInt()),
       );
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -66,11 +67,11 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>)),
   )
-    ..count = json['count'] as int?
+    ..count = (json['count'] as num?)?.toInt()
     ..isRushed = json['isRushed'] as bool?
     ..duration = json['duration'] == null
         ? null
-        : Duration(microseconds: json['duration'] as int)
+        : Duration(microseconds: (json['duration'] as num).toInt())
     ..platform = json['platform'] == null
         ? null
         : Platform.fromJson(json['platform'] as String)
@@ -113,13 +114,15 @@ const _$StatusCodeEnumMap = {
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item(
-      json['price'] as int?,
+      (json['price'] as num?)?.toInt(),
     )
-      ..itemNumber = json['item-number'] as int?
+      ..itemNumber = (json['item-number'] as num?)?.toInt()
       ..saleDates = (json['saleDates'] as List<dynamic>?)
           ?.map((e) => DateTime.parse(e as String))
           .toList()
-      ..rates = (json['rates'] as List<dynamic>?)?.map((e) => e as int).toList()
+      ..rates = (json['rates'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList()
       ..geoPoint = _fromJsonGeoPoint(json['geoPoint'] as Map<String, dynamic>?);
 
 Map<String, dynamic> _$ItemToJson(Item instance) {
@@ -142,7 +145,8 @@ Map<String, dynamic> _$ItemToJson(Item instance) {
 }
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) => Numbers()
-  ..ints = (json['ints'] as List<dynamic>?)?.map((e) => e as int).toList()
+  ..ints =
+      (json['ints'] as List<dynamic>?)?.map((e) => (e as num).toInt()).toList()
   ..nums = (json['nums'] as List<dynamic>?)?.map((e) => e as num).toList()
   ..doubles = (json['doubles'] as List<dynamic>?)
       ?.map((e) => (e as num).toDouble())
@@ -150,8 +154,8 @@ Numbers _$NumbersFromJson(Map<String, dynamic> json) => Numbers()
   ..nnDoubles = (json['nnDoubles'] as List<dynamic>?)
       ?.map((e) => (e as num).toDouble())
       .toList()
-  ..duration = durationFromInt(json['duration'] as int?)
-  ..date = dateTimeFromEpochUs(json['date'] as int?);
+  ..duration = durationFromInt((json['duration'] as num?)?.toInt())
+  ..date = dateTimeFromEpochUs((json['date'] as num?)?.toInt());
 
 Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
       'ints': instance.ints,
@@ -165,16 +169,16 @@ Map<String, dynamic> _$NumbersToJson(Numbers instance) => <String, dynamic>{
 MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) =>
     MapKeyVariety()
       ..intIntMap = (json['intIntMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(int.parse(k), e as int),
+        (k, e) => MapEntry(int.parse(k), (e as num).toInt()),
       )
       ..uriIntMap = (json['uriIntMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(Uri.parse(k), e as int),
+        (k, e) => MapEntry(Uri.parse(k), (e as num).toInt()),
       )
       ..dateTimeIntMap = (json['dateTimeIntMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(DateTime.parse(k), e as int),
+        (k, e) => MapEntry(DateTime.parse(k), (e as num).toInt()),
       )
       ..bigIntMap = (json['bigIntMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(BigInt.parse(k), e as int),
+        (k, e) => MapEntry(BigInt.parse(k), (e as num).toInt()),
       );
 
 Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
@@ -204,7 +208,7 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
 
 PrivateConstructor _$PrivateConstructorFromJson(Map<String, dynamic> json) =>
     PrivateConstructor._(
-      json['id'] as int,
+      (json['id'] as num).toInt(),
       json['value'] as String,
     );
 

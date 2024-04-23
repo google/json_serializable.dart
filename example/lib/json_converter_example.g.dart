@@ -8,7 +8,7 @@ part of 'json_converter_example.dart';
 
 DateTimeExample _$DateTimeExampleFromJson(Map<String, dynamic> json) =>
     DateTimeExample(
-      const _DateTimeEpochConverter().fromJson(json['when'] as int),
+      const _DateTimeEpochConverter().fromJson((json['when'] as num).toInt()),
     );
 
 Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
@@ -19,9 +19,9 @@ Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
 GenericCollection<T> _$GenericCollectionFromJson<T>(
         Map<String, dynamic> json) =>
     GenericCollection<T>(
-      page: json['page'] as int?,
-      totalResults: json['total_results'] as int?,
-      totalPages: json['total_pages'] as int?,
+      page: (json['page'] as num?)?.toInt(),
+      totalResults: (json['total_results'] as num?)?.toInt(),
+      totalPages: (json['total_pages'] as num?)?.toInt(),
       results: (json['results'] as List<dynamic>?)
           ?.map(_Converter<T>().fromJson)
           .toList(),
@@ -38,7 +38,7 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
 
 CustomResult _$CustomResultFromJson(Map<String, dynamic> json) => CustomResult(
       json['name'] as String,
-      json['size'] as int,
+      (json['size'] as num).toInt(),
     );
 
 Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
