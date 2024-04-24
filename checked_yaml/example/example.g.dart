@@ -17,7 +17,7 @@ Configuration _$ConfigurationFromJson(Map json) => $checkedCreate(
         );
         final val = Configuration(
           name: $checkedConvert('name', (v) => v as String),
-          count: $checkedConvert('count', (v) => v as int),
+          count: $checkedConvert('count', (v) => (v as num).toInt()),
         );
         return val;
       },
