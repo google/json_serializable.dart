@@ -13,7 +13,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = KitchenSink(
-          ctorValidatedNo42: $checkedConvert('no-42', (v) => v as int?),
+          ctorValidatedNo42:
+              $checkedConvert('no-42', (v) => (v as num?)?.toInt()),
           iterable: $checkedConvert(
             'iterable',
             (v) => v as List<dynamic>?,
@@ -24,7 +25,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
           objectIterable: $checkedConvert('objectIterable',
               (v) => (v as List<dynamic>?)?.map((e) => e as Object)),
           intIterable: $checkedConvert('intIterable',
-              (v) => (v as List<dynamic>?)?.map((e) => e as int)),
+              (v) => (v as List<dynamic>?)?.map((e) => (e as num).toInt())),
           dateTimeIterable: $checkedConvert(
               'datetime-iterable',
               (v) => (v as List<dynamic>?)
@@ -45,8 +46,8 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
                 (v as List<dynamic>).map((e) => e as Object).toSet());
         $checkedConvert(
             'intSet',
-            (v) =>
-                val.intSet = (v as List<dynamic>).map((e) => e as int).toSet());
+            (v) => val.intSet =
+                (v as List<dynamic>).map((e) => (e as num).toInt()).toSet());
         $checkedConvert(
             'dateTimeSet',
             (v) => val.dateTimeSet = (v as List<dynamic>)
@@ -62,7 +63,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
         $checkedConvert(
             'intList',
             (v) => val.intList =
-                (v as List<dynamic>).map((e) => e as int).toList());
+                (v as List<dynamic>).map((e) => (e as num).toInt()).toList());
         $checkedConvert(
             'dateTimeList',
             (v) => val.dateTimeList = (v as List<dynamic>)
@@ -120,13 +121,13 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
         $checkedConvert('strictKeysObject',
             (v) => val.strictKeysObject = StrictKeysObject.fromJson(v as Map));
         $checkedConvert('validatedPropertyNo42',
-            (v) => val.validatedPropertyNo42 = v as int?);
+            (v) => val.validatedPropertyNo42 = (v as num?)?.toInt());
         $checkedConvert(
             'recordField',
             (v) => val.recordField = _$recordConvertAnyNullable(
                   v,
                   ($jsonValue) => (
-                    $jsonValue[r'$1'] as int,
+                    ($jsonValue[r'$1'] as num).toInt(),
                     $jsonValue[r'$2'] as String,
                     truth: $jsonValue['truth'] as bool,
                   ),
@@ -206,13 +207,15 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
       json,
       ($checkedConvert) {
         final val = JsonConverterTestClass(
-          $checkedConvert('duration',
-              (v) => const DurationMillisecondConverter().fromJson(v as int?)),
+          $checkedConvert(
+              'duration',
+              (v) => const DurationMillisecondConverter()
+                  .fromJson((v as num?)?.toInt())),
           $checkedConvert(
               'durationList',
               (v) => (v as List<dynamic>)
-                  .map((e) =>
-                      const DurationMillisecondConverter().fromJson(e as int?))
+                  .map((e) => const DurationMillisecondConverter()
+                      .fromJson((e as num?)?.toInt()))
                   .toList()),
           $checkedConvert('bigInt',
               (v) => const BigIntStringConverter().fromJson(v as String)),
@@ -234,25 +237,31 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(Map json) =>
                         _$JsonConverterFromJson<String, BigInt>(
                             e, const BigIntStringConverter().fromJson)),
                   )),
-          $checkedConvert('numberSilly',
-              (v) => TrivialNumberConverter.instance.fromJson(v as int?)),
+          $checkedConvert(
+              'numberSilly',
+              (v) => TrivialNumberConverter.instance
+                  .fromJson((v as num?)?.toInt())),
           $checkedConvert(
               'numberSillySet',
               (v) => (v as List<dynamic>)
-                  .map((e) =>
-                      TrivialNumberConverter.instance.fromJson(e as int?))
+                  .map((e) => TrivialNumberConverter.instance
+                      .fromJson((e as num?)?.toInt()))
                   .toSet()),
-          $checkedConvert('dateTime',
-              (v) => const EpochDateTimeConverter().fromJson(v as int?)),
+          $checkedConvert(
+              'dateTime',
+              (v) => const EpochDateTimeConverter()
+                  .fromJson((v as num?)?.toInt())),
           $checkedConvert('trivialString',
               (v) => trivialStringConverter.fromJson(v as String?)),
-          $checkedConvert('nullableNumberSilly',
-              (v) => TrivialNumberConverter.instance.fromJson(v as int?)),
+          $checkedConvert(
+              'nullableNumberSilly',
+              (v) => TrivialNumberConverter.instance
+                  .fromJson((v as num?)?.toInt())),
           $checkedConvert(
               'nullableNumberSillySet',
               (v) => (v as List<dynamic>)
-                  .map((e) =>
-                      TrivialNumberConverter.instance.fromJson(e as int?))
+                  .map((e) => TrivialNumberConverter.instance
+                      .fromJson((e as num?)?.toInt()))
                   .toSet()),
         );
         return val;

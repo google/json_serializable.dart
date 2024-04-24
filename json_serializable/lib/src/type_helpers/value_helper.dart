@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:source_helper/source_helper.dart';
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
@@ -35,22 +34,7 @@ class ValueHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
     bool defaultProvided,
-  ) {
-    if (targetType.isDartCoreObject && !targetType.isNullableType) {
-      final question = defaultProvided ? '?' : '';
-      return '$expression as Object$question';
-    } else if (targetType.isDartCoreObject || targetType is DynamicType) {
-      // just return it as-is. We'll hope it's safe.
-      return expression;
-    } else if (targetType.isDartCoreDouble) {
-      final targetTypeNullable = defaultProvided || targetType.isNullableType;
-      final question = targetTypeNullable ? '?' : '';
-      return '($expression as num$question)$question.toDouble()';
-    } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
-      final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
-      return '$expression as $typeCode';
-    }
-
-    return null;
-  }
+  ) =>
+      defaultDecodeLogic(targetType, expression,
+          defaultProvided: defaultProvided);
 }

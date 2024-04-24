@@ -39,15 +39,16 @@ Map<String, dynamic> _$PersonToJson(Person instance) {
 }
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
-      Order._dateTimeFromEpochUs(json['date'] as int),
+      Order._dateTimeFromEpochUs((json['date'] as num).toInt()),
     )
-      ..count = json['count'] as int?
-      ..itemNumber = json['itemNumber'] as int?
+      ..count = (json['count'] as num?)?.toInt()
+      ..itemNumber = (json['itemNumber'] as num?)?.toInt()
       ..isRushed = json['isRushed'] as bool?
       ..item = json['item'] == null
           ? null
           : Item.fromJson(json['item'] as Map<String, dynamic>)
-      ..prepTime = Order._durationFromMilliseconds(json['prep-time'] as int?);
+      ..prepTime =
+          Order._durationFromMilliseconds((json['prep-time'] as num?)?.toInt());
 
 Map<String, dynamic> _$OrderToJson(Order instance) {
   final val = <String, dynamic>{};
@@ -68,8 +69,8 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
 }
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()
-  ..count = json['count'] as int?
-  ..itemNumber = json['itemNumber'] as int?
+  ..count = (json['count'] as num?)?.toInt()
+  ..itemNumber = (json['itemNumber'] as num?)?.toInt()
   ..isRushed = json['isRushed'] as bool?;
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{

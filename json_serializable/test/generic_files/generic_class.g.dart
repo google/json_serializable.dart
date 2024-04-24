@@ -38,15 +38,15 @@ GenericClassWithConverter<T, S>
         GenericClassWithConverter<T, S>()
           ..fieldObject = json['fieldObject']
           ..fieldDynamic = json['fieldDynamic']
-          ..fieldInt = json['fieldInt'] as int?
+          ..fieldInt = (json['fieldInt'] as num?)?.toInt()
           ..fieldT = _$JsonConverterFromJson<Map<String, dynamic>, T>(
               json['fieldT'], _SimpleConverter<T?>().fromJson)
           ..fieldS = _$JsonConverterFromJson<Map<String, dynamic>, S>(
               json['fieldS'], _SimpleConverter<S?>().fromJson)
           ..duration = const _DurationMillisecondConverter.named()
-              .fromJson(json['duration'] as int?)
+              .fromJson((json['duration'] as num?)?.toInt())
           ..listDuration = const _DurationListMillisecondConverter()
-              .fromJson(json['listDuration'] as int?);
+              .fromJson((json['listDuration'] as num?)?.toInt());
 
 Map<String, dynamic> _$GenericClassWithConverterToJson<T extends num, S>(
         GenericClassWithConverter<T, S> instance) =>

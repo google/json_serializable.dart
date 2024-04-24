@@ -181,7 +181,7 @@ class JsonSerializable {
   ///   T Function(Object json) fromJsonT,
   /// ) {
   ///   return Response<T>()
-  ///     ..status = json['status'] as int
+  ///     ..status = (json['status'] as num).toInt()
   ///     ..value = fromJsonT(json['value']);
   /// }
   ///

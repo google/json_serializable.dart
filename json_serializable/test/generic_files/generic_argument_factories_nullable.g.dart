@@ -56,7 +56,7 @@ ConcreteClassNullable _$ConcreteClassNullableFromJson(
     ConcreteClassNullable(
       GenericClassWithHelpersNullable<int, String>.fromJson(
           json['value'] as Map<String, dynamic>,
-          (value) => value as int,
+          (value) => (value as num).toInt(),
           (value) => value as String),
       GenericClassWithHelpersNullable<double, BigInt>.fromJson(
           json['value2'] as Map<String, dynamic>,

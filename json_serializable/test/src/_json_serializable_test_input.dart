@@ -55,12 +55,13 @@ GeneralTestClass1 _$GeneralTestClass1FromJson(Map<String, dynamic> json) =>
     GeneralTestClass1()
       ..firstName = json['firstName'] as String
       ..lastName = json['lastName'] as String
-      ..height = json['h'] as int
+      ..height = (json['h'] as num).toInt()
       ..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String)
       ..dynamicType = json['dynamicType']
       ..varType = json['varType']
-      ..listOfInts =
-          (json['listOfInts'] as List<dynamic>).map((e) => e as int).toList();
+      ..listOfInts = (json['listOfInts'] as List<dynamic>)
+          .map((e) => (e as num).toInt())
+          .toList();
 
 Map<String, dynamic> _$GeneralTestClass1ToJson(GeneralTestClass1 instance) =>
     <String, dynamic>{
@@ -89,7 +90,7 @@ class GeneralTestClass1 {
 @ShouldGenerate(r'''
 GeneralTestClass2 _$GeneralTestClass2FromJson(Map<String, dynamic> json) =>
     GeneralTestClass2(
-      json['height'] as int,
+      (json['height'] as num).toInt(),
       json['firstName'] as String,
       json['lastName'] as String?,
     )..dateOfBirth = DateTime.parse(json['dateOfBirth'] as String);
@@ -117,7 +118,7 @@ class GeneralTestClass2 {
 
 @ShouldGenerate(r'''
 FinalFields _$FinalFieldsFromJson(Map<String, dynamic> json) => FinalFields(
-      json['a'] as int,
+      (json['a'] as num).toInt(),
     );
 
 Map<String, dynamic> _$FinalFieldsToJson(FinalFields instance) =>
@@ -154,7 +155,7 @@ class FinalFieldsNotSetInCtor {
 
 @ShouldGenerate(r'''
 SetSupport _$SetSupportFromJson(Map<String, dynamic> json) => SetSupport(
-      (json['values'] as List<dynamic>).map((e) => e as int).toSet(),
+      (json['values'] as List<dynamic>).map((e) => (e as num).toInt()).toSet(),
     );
 
 Map<String, dynamic> _$SetSupportToJson(SetSupport instance) =>
@@ -455,8 +456,8 @@ mixin _PropInMixinI448RegressionMixin {
 PropInMixinI448Regression _$PropInMixinI448RegressionFromJson(
         Map<String, dynamic> json) =>
     PropInMixinI448Regression()
-      ..nullable = json['nullable'] as int
-      ..notNullable = json['notNullable'] as int;
+      ..nullable = (json['nullable'] as num).toInt()
+      ..notNullable = (json['notNullable'] as num).toInt();
 
 Map<String, dynamic> _$PropInMixinI448RegressionToJson(
         PropInMixinI448Regression instance) =>
@@ -474,7 +475,7 @@ class PropInMixinI448Regression with _PropInMixinI448RegressionMixin {
 @ShouldGenerate(
   r'''
 IgnoreUnannotated _$IgnoreUnannotatedFromJson(Map<String, dynamic> json) =>
-    IgnoreUnannotated()..annotated = json['annotated'] as int;
+    IgnoreUnannotated()..annotated = (json['annotated'] as num).toInt();
 
 Map<String, dynamic> _$IgnoreUnannotatedToJson(IgnoreUnannotated instance) =>
     <String, dynamic>{
@@ -493,7 +494,7 @@ class IgnoreUnannotated {
 @ShouldGenerate(
   r'''
 SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) =>
-    SubclassedJsonKey()..annotatedWithSubclass = json['bob'] as int;
+    SubclassedJsonKey()..annotatedWithSubclass = (json['bob'] as num).toInt();
 
 Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
     <String, dynamic>{

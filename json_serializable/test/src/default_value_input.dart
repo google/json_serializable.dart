@@ -137,7 +137,7 @@ DefaultWithDisallowNullRequiredClass
     disallowNullValues: const ['theField'],
   );
   return DefaultWithDisallowNullRequiredClass()
-    ..theField = json['theField'] as int? ?? 7;
+    ..theField = (json['theField'] as num?)?.toInt() ?? 7;
 }
 ''',
   expectedLogItems: [
@@ -159,7 +159,7 @@ CtorDefaultValueAndJsonKeyDefaultValue
     _$CtorDefaultValueAndJsonKeyDefaultValueFromJson(
             Map<String, dynamic> json) =>
         CtorDefaultValueAndJsonKeyDefaultValue(
-          json['theField'] as int? ?? 7,
+          (json['theField'] as num?)?.toInt() ?? 7,
         );
 ''',
   expectedLogItems: [
@@ -181,7 +181,7 @@ class CtorDefaultValueAndJsonKeyDefaultValue {
 SameCtorAndJsonKeyDefaultValue _$SameCtorAndJsonKeyDefaultValueFromJson(
         Map<String, dynamic> json) =>
     SameCtorAndJsonKeyDefaultValue(
-      json['theField'] as int? ?? 3,
+      (json['theField'] as num?)?.toInt() ?? 3,
     );
 ''',
   expectedLogItems: [

@@ -1,8 +1,11 @@
 ## 6.8.0-wip
 
 - Add type arguments to `Map` literals used for `Record` serialization.
-- Added support for generating `ExampleJsonKeys`, exposing a secured way to access the json keys from the properties.
+- Added support for generating `ExampleJsonKeys`, exposing a secured way to 
+  access the json keys from the properties.
   ([#1164](https://github.com/google/json_serializable.dart/pull/1164))
+- Handle decoding an `int` value from a `double` literal. 
+  This now matches the behavior of `double` values being encoded as `int`.
 
 ## 6.7.1
 

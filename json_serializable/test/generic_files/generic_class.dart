@@ -48,12 +48,15 @@ class GenericClass<T extends num, S> {
 @_DurationMillisecondConverter.named()
 @_DurationListMillisecondConverter()
 class GenericClassWithConverter<T extends num, S> {
+  // TODO: this annotation is a no-op. Need to figure out what to do about it!
   @_SimpleConverter()
   Object? fieldObject;
 
+  // TODO: this annotation is a no-op. Need to figure out what to do about it!
   @_SimpleConverter()
   dynamic fieldDynamic;
 
+  // TODO: this annotation is a no-op. Need to figure out what to do about it!
   @_SimpleConverter()
   int? fieldInt;
 

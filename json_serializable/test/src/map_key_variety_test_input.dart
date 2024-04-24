@@ -4,7 +4,7 @@ part of '_json_serializable_test_input.dart';
 MapKeyVariety _$MapKeyVarietyFromJson(Map<String, dynamic> json) =>
     MapKeyVariety()
       ..intIntMap = (json['intIntMap'] as Map<String, dynamic>).map(
-        (k, e) => MapEntry(int.parse(k), e as int),
+        (k, e) => MapEntry(int.parse(k), (e as num).toInt()),
       );
 
 Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>

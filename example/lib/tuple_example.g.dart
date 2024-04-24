@@ -28,11 +28,13 @@ Map<String, dynamic> _$TupleToJson<T, S>(
 
 ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
-      Tuple<int, DateTime>.fromJson(json['tuple1'] as Map<String, dynamic>,
-          (value) => value as int, (value) => DateTime.parse(value as String)),
+      Tuple<int, DateTime>.fromJson(
+          json['tuple1'] as Map<String, dynamic>,
+          (value) => (value as num).toInt(),
+          (value) => DateTime.parse(value as String)),
       Tuple<Duration, BigInt>.fromJson(
           json['tuple2'] as Map<String, dynamic>,
-          (value) => Duration(microseconds: value as int),
+          (value) => Duration(microseconds: (value as num).toInt()),
           (value) => BigInt.parse(value as String)),
     );
 

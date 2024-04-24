@@ -20,9 +20,8 @@ class LambdaResult {
   final String lambda;
   final DartType? asContent;
 
-  String get _asContent => asContent == null ? '' : _asStatement(asContent!);
-
-  String get _fullExpression => '$expression$_asContent';
+  String get _fullExpression =>
+      asContent != null ? _cast(expression, asContent!) : expression;
 
   LambdaResult(this.expression, this.lambda, {this.asContent});
 
@@ -35,29 +34,35 @@ class LambdaResult {
           : '($closureArg) => $subField';
 }
 
-String _asStatement(DartType type) {
-  if (type.isLikeDynamic) {
-    return '';
+String _cast(String expression, DartType targetType) {
+  if (targetType.isLikeDynamic) {
+    return expression;
   }
 
-  final nullableSuffix = type.isNullableType ? '?' : '';
+  final nullableSuffix = targetType.isNullableType ? '?' : '';
 
-  if (coreIterableTypeChecker.isAssignableFromType(type)) {
-    final itemType = coreIterableGenericType(type);
+  if (coreIterableTypeChecker.isAssignableFromType(targetType)) {
+    final itemType = coreIterableGenericType(targetType);
     if (itemType.isLikeDynamic) {
-      return ' as List$nullableSuffix';
+      return '$expression as List$nullableSuffix';
     }
   }
 
-  if (coreMapTypeChecker.isAssignableFromType(type)) {
-    final args = type.typeArgumentsOf(coreMapTypeChecker)!;
+  if (coreMapTypeChecker.isAssignableFromType(targetType)) {
+    final args = targetType.typeArgumentsOf(coreMapTypeChecker)!;
     assert(args.length == 2);
 
     if (args.every((e) => e.isLikeDynamic)) {
-      return ' as Map$nullableSuffix';
+      return '$expression as Map$nullableSuffix';
     }
   }
 
-  final typeCode = typeToCode(type);
-  return ' as $typeCode';
+  final defaultDecodeValue = defaultDecodeLogic(targetType, expression);
+
+  if (defaultDecodeValue != null) {
+    return defaultDecodeValue;
+  }
+
+  final typeCode = typeToCode(targetType);
+  return '$expression as $typeCode';
 }

@@ -258,18 +258,23 @@ void main() {
     test('support ints as doubles', () {
       final value = {
         'doubles': [0, 0.0],
-        'nnDoubles': [0, 0.0]
+        'nnDoubles': [0, 0.0],
+        'doubleAsString': 3,
       };
 
-      roundTripNumber(Numbers.fromJson(value));
+      final output = roundTripObject(Numbers.fromJson(value), Numbers.fromJson);
+      expect(output.doubleAsString, 3.0.toString());
     });
 
-    test('does not support doubles as ints', () {
+    test('support doubles as ints', () {
       final value = {
-        'ints': [3.14, 0],
+        'ints': [3, 3.0, 3.14, 0],
       };
 
-      expect(() => Numbers.fromJson(value), throwsTypeError);
+      final output = roundTripObject(Numbers.fromJson(value), Numbers.fromJson);
+
+      // NOTE: all of the double values are truncated
+      expect(output.ints, [3, 3, 3, 0]);
     });
   });
 

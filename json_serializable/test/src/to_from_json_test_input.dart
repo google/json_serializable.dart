@@ -122,7 +122,7 @@ class Reproduce869NullableGenericTypeWithDefault {
 }
 
 List<int>? _fromList(List? pairs) =>
-    pairs?.map((it) => it as int).toList(growable: false);
+    pairs?.map((it) => (it as num).toInt()).toList(growable: false);
 
 List<List>? _toList(List<int>? pairs) =>
     pairs?.map((it) => [it]).toList(growable: false);

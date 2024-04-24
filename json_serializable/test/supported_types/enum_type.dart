@@ -10,7 +10,7 @@ class FromJsonDynamicParam {
   final int value;
 
   factory FromJsonDynamicParam.fromJson(dynamic json) =>
-      FromJsonDynamicParam(value: json as int);
+      FromJsonDynamicParam(value: (json as num).toInt());
 
   dynamic toJson() => null;
 }
@@ -21,7 +21,7 @@ class FromJsonNullableObjectParam {
   final int value;
 
   factory FromJsonNullableObjectParam.fromJson(Object? json) =>
-      FromJsonNullableObjectParam(value: json as int);
+      FromJsonNullableObjectParam(value: (json as num).toInt());
 
   Object? toJson() => null;
 }
@@ -32,7 +32,7 @@ class FromJsonObjectParam {
   final int value;
 
   factory FromJsonObjectParam.fromJson(Object json) =>
-      FromJsonObjectParam(value: json as int);
+      FromJsonObjectParam(value: (json as num).toInt());
 
   dynamic toJson() => null;
 }

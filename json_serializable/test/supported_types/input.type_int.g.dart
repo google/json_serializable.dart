@@ -9,8 +9,8 @@ part of 'input.type_int.dart';
 // **************************************************************************
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
-      json['value'] as int,
-      json['withDefault'] as int? ?? 42,
+      (json['value'] as num).toInt(),
+      (json['withDefault'] as num?)?.toInt() ?? 42,
     );
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
@@ -21,8 +21,8 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
     SimpleClassNullable(
-      json['value'] as int?,
-      json['withDefault'] as int? ?? 42,
+      (json['value'] as num?)?.toInt(),
+      (json['withDefault'] as num?)?.toInt() ?? 42,
     );
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
