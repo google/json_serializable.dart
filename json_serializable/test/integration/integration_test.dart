@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:convert';
-
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
@@ -265,8 +263,7 @@ void main() {
       };
 
       final output = roundTripObject(Numbers.fromJson(value), Numbers.fromJson);
-      expect(output.doubleAsString, '3.0');
-      print(jsonEncode(output));
+      expect(output.doubleAsString, 3.0.toString());
     });
 
     test('support doubles as ints', () {
