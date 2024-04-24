@@ -57,9 +57,10 @@ String _cast(String expression, DartType targetType) {
     }
   }
 
-  if (targetType.isDartCoreInt) {
-    final question = targetType.isNullableType ? '?' : '';
-    return '($expression as num$question)$question.toInt()';
+  final defaultDecodeValue = defaultDecodeLogic(targetType, expression);
+
+  if (defaultDecodeValue != null) {
+    return defaultDecodeValue;
   }
 
   final typeCode = typeToCode(targetType);

@@ -161,6 +161,9 @@ class Numbers {
   @JsonKey(fromJson: durationFromInt, toJson: durationToInt)
   Duration? duration;
 
+  @JsonKey(fromJson: stringFromDouble, toJson: stringToDouble)
+  String? doubleAsString;
+
   @JsonKey(fromJson: dateTimeFromEpochUs, toJson: dateTimeToEpochUs)
   DateTime? date;
 

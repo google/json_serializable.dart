@@ -38,6 +38,11 @@ Duration? durationFromInt(int? ms) =>
 
 int? durationToInt(Duration? duration) => duration?.inMilliseconds;
 
+String? stringFromDouble(double? value) => value?.toString();
+
+double? stringToDouble(String? value) =>
+    value == null ? null : double.parse(value);
+
 DateTime? dateTimeFromEpochUs(int? us) =>
     us == null ? null : DateTime.fromMicrosecondsSinceEpoch(us);
 
