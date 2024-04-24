@@ -24,8 +24,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
         $checkedConvert(
             'weights',
             (v) => val.weights = (v as Map?)?.map(
-                  (k, e) =>
-                      MapEntry($enumDecode(_$AutoApplyEnumMap, k), e as int?),
+                  (k, e) => MapEntry(
+                      $enumDecode(_$AutoApplyEnumMap, k), (e as num?)?.toInt()),
                 ));
         return val;
       },
