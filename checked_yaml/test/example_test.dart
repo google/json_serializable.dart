@@ -33,7 +33,7 @@ line 1, column 1: Required keys are missing: name.
     _expectThrows(
       '{"name":"something"}',
       r'''
-line 1, column 1: Missing key "count". type 'Null' is not a subtype of type 'int' in type cast
+line 1, column 1: Missing key "count". type 'Null' is not a subtype of type 'num' in type cast
   ╷
 1 │ {"name":"something"}
   │ ^^^^^^^^^^^^^^^^^^^^
