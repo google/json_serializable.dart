@@ -1,4 +1,4 @@
-## 6.8.0-wip
+## 6.8.0
 
 - Add type arguments to `Map` literals used for `Record` serialization.
 - Add support for `JsonSerializable(createJsonKeys: true)`.
