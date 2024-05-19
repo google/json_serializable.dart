@@ -177,6 +177,12 @@ Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
       element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+
+  String toStringNonNullable() {
+    final val = getDisplayString();
+    if (val.endsWith('?')) return val.substring(0, val.length - 1);
+    return val;
+  }
 }
 
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
@@ -216,7 +222,7 @@ String typeToCode(
   }
 
   if (type is TypeParameterType) {
-    return type.getDisplayString(withNullability: false);
+    return type.toStringNonNullable();
   }
   throw UnimplementedError('(${type.runtimeType}) $type');
 }

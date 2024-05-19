@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:json_serializable/src/utils.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
@@ -75,11 +76,11 @@ Object? $_toJsonHelperName<T>(
 ''';
 
 String toJsonForType(TypeParameterType type) =>
-    toJsonForName(type.getDisplayString(withNullability: false));
+    toJsonForName(type.toStringNonNullable());
 
 String toJsonForName(String genericType) => 'toJson$genericType';
 
 String fromJsonForType(TypeParameterType type) =>
-    fromJsonForName(type.getDisplayString(withNullability: false));
+    fromJsonForName(type.toStringNonNullable());
 
 String fromJsonForName(String genericType) => 'fromJson$genericType';

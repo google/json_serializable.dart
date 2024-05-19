@@ -11,13 +11,13 @@ topics:
  - codegen
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.4.0
 
 dependencies:
   meta: ^1.4.0
 
 dev_dependencies:
-  dart_flutter_team_lints: ^2.0.0
+  dart_flutter_team_lints: ^3.0.0
 # When changing JsonSerializable class.
 #  build_runner: ^2.0.0
 #  json_serializable: any

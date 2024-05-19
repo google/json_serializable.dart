@@ -2,10 +2,10 @@ name: example
 publish_to: none
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.4.0
 
 dependencies:
-  json_annotation: ^4.8.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.
@@ -19,14 +19,14 @@ dev_dependencies:
   build_verify: ^3.0.0
 
   # Not required to use `json_serializable`.
-  dart_flutter_team_lints: ^2.0.0
+  dart_flutter_team_lints: ^3.0.0
 
   # REQUIRED!
-  json_serializable: ^6.6.0
+  json_serializable: ^6.8.0
 
   # Not required to use `json_serializable`.
   path: ^1.8.0
-  test: ^1.16.0
+  test: ^1.21.6
 
 # This section is used to verify changes to these packages. Do not include in
 # your code!
