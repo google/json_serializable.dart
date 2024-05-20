@@ -7,6 +7,7 @@ import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const GenericFactoryHelper();
@@ -75,11 +76,11 @@ Object? $_toJsonHelperName<T>(
 ''';
 
 String toJsonForType(TypeParameterType type) =>
-    toJsonForName(type.getDisplayString(withNullability: false));
+    toJsonForName(type.toStringNonNullable());
 
 String toJsonForName(String genericType) => 'toJson$genericType';
 
 String fromJsonForType(TypeParameterType type) =>
-    fromJsonForName(type.getDisplayString(withNullability: false));
+    fromJsonForName(type.toStringNonNullable());
 
 String fromJsonForName(String genericType) => 'fromJson$genericType';

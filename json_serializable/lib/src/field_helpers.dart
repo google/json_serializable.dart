@@ -88,8 +88,8 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
     }
 
     if (v is PropertyAccessorElement && v.isGetter) {
-      assert(v.variable is FieldElement);
-      final variable = v.variable as FieldElement;
+      assert(v.variable2 is FieldElement);
+      final variable = v.variable2 as FieldElement;
       assert(!inheritedFields.containsKey(variable.name));
       inheritedFields[variable.name] = variable;
     }

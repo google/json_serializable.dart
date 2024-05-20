@@ -94,7 +94,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
               // `toDouble` on input values
               valueArg.isSimpleJsonTypeNotDouble)) {
         // No mapping of the values or null check required!
-        final valueString = valueArg.getDisplayString(withNullability: true);
+        final valueString = valueArg.getDisplayString();
         return 'Map<String, $valueString>.from($expression as Map)';
       }
     }

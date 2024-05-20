@@ -176,9 +176,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
           throwUnsupported(
             element,
             '`$fieldName` has type '
-            '`${targetEnumType.getDisplayString(withNullability: false)}`, but '
+            '`${targetEnumType.toStringNonNullable()}`, but '
             'the provided unknownEnumValue is of type '
-            '`${annotationType.getDisplayString(withNullability: false)}`.',
+            '`${annotationType.toStringNonNullable()}`.',
           );
         }
       }

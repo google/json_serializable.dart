@@ -5,11 +5,11 @@ dependencies to your `pubspec.yaml`.
 
 ```yaml
 dependencies:
-  json_annotation: ^4.8.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   build_runner: ^2.3.3
-  json_serializable: ^6.6.0
+  json_serializable: ^6.8.0
 ```
 
 Annotate your code with classes defined in
