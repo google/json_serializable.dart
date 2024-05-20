@@ -1,3 +1,7 @@
+## 6.8.1-wip
+
+- Require Dart 3.4
+
 ## 6.8.0
 
 - Add type arguments to `Map` literals used for `Record` serialization.

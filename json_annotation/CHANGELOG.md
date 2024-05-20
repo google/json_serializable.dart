@@ -1,3 +1,7 @@
+## 4.9.1-wip
+
+- Require Dart 3.4
+
 ## 4.9.0
 
 - Require Dart 3.0
