@@ -10,3 +10,7 @@ updates:
     interval: monthly
   labels:
     - autosubmit
+  groups:
+    dependencies:
+      patterns:
+        - "*"
