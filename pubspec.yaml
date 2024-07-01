@@ -1,0 +1,15 @@
+name: json_serial_workspace     # Can be anything
+environment:
+  sdk: ^3.5.0-259.0.dev   # Must be ^3.5.0 or later for workspace to be allowed
+
+publish_to: none
+
+dev_dependencies:
+  dart_flutter_team_lints: ^3.1.0
+workspace:
+  - _test_yaml
+  - checked_yaml
+  - example
+  - json_annotation
+  - json_serializable
+  - shared_test
