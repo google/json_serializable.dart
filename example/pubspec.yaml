@@ -2,7 +2,9 @@ name: example
 publish_to: none
 
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.5.0-259.0.dev
+
+resolution: workspace
 
 dependencies:
   json_annotation: ^4.9.0
@@ -27,11 +29,3 @@ dev_dependencies:
   # Not required to use `json_serializable`.
   path: ^1.8.0
   test: ^1.21.6
-
-# This section is used to verify changes to these packages. Do not include in
-# your code!
-dependency_overrides:
-  json_annotation:
-    path: ../json_annotation
-  json_serializable:
-    path: ../json_serializable

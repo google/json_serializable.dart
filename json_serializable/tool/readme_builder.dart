@@ -154,13 +154,13 @@ extension on BuildStep {
   AssetId assetIdForInputPackage(String path) => AssetId(inputId.package, path);
 
   Future<String> jsonAnnotationVersion() async {
-    final lockFileAssetId = assetIdForInputPackage('pubspec.lock');
-    final lockFileContent = await readAsString(lockFileAssetId);
-    final lockFileYaml =
-        loadYaml(lockFileContent, sourceUrl: lockFileAssetId.uri) as YamlMap;
-    final pkgMap = lockFileYaml['packages'] as YamlMap;
-    final jsonAnnotationMap = pkgMap['json_annotation'] as YamlMap;
-    final jsonAnnotationVersionString = jsonAnnotationMap['version'] as String;
+    final jsonAnnotationPubspecAssetId =
+        AssetId('json_annotation', 'pubspec.yaml');
+    final jsonAnnotationPubspecContent =
+        await readAsString(jsonAnnotationPubspecAssetId);
+    final pubspecYaml = loadYaml(jsonAnnotationPubspecContent,
+        sourceUrl: jsonAnnotationPubspecAssetId.uri) as YamlMap;
+    final jsonAnnotationVersionString = pubspecYaml['version'] as String;
 
     final jsonAnnotationVersion =
         Version.parse(jsonAnnotationVersionString.trim());

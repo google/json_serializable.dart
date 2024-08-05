@@ -1,7 +1,9 @@
 name: _json_serial_shared_test
 publish_to: none
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.5.0-259.0.dev
+
+resolution: workspace
 
 dependencies:
   stack_trace: ^1.10.0
