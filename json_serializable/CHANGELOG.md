@@ -1,6 +1,6 @@
 ## 6.8.1-wip
 
-- Require Dart 3.4
+- Require Dart 3.5
 
 ## 6.8.0
 

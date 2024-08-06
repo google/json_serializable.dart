@@ -1,6 +1,6 @@
 name: json_serial_workspace     # Can be anything
 environment:
-  sdk: ^3.5.0-259.0.dev   # Must be ^3.5.0 or later for workspace to be allowed
+  sdk: ^3.5.0
 
 publish_to: none
 
