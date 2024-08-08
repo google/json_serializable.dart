@@ -5,7 +5,7 @@
 /// Name used for closure argument when generating calls to `map`.
 const closureArg = 'e';
 
-const localVal = 'val';
+const generatedLocalVarName = 'val';
 
 const converterOrKeyInstructions = r'''
 * Use `JsonConverter`

@@ -122,10 +122,13 @@ mixin EncodeHelper implements HelperCore {
       ..writeAll(fields.map((field) {
         final access = _fieldAccess(field);
 
+        final keyExpression = safeNameAccess(field);
+        final valueExpression = _serializeField(field, access);
+
         final keyValuePair = _canWriteJsonWithoutNullCheck(field)
-            ? '${safeNameAccess(field)}: ${_serializeField(field, access)}'
-            : 'if (${_serializeField(field, access)} case final $localVal?) '
-                '${safeNameAccess(field)}: $localVal';
+            ? '$keyExpression: $valueExpression'
+            : 'if ($valueExpression case final $generatedLocalVarName?) '
+                '$keyExpression: $generatedLocalVarName';
         return '        $keyValuePair,\n';
       }))
       ..writeln('};');
