@@ -25,7 +25,6 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.0.6
   build_verify: ^3.0.0
-  dart_flutter_team_lints: ^3.0.0
   json_serializable: ^6.0.0
   path: ^1.8.0
   test: ^1.17.10

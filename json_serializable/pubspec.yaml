@@ -36,7 +36,6 @@ dev_dependencies:
     path: ../shared_test
   build_runner: ^2.4.6
   build_verify: ^3.0.0
-  dart_flutter_team_lints: ^3.0.0
   dart_style: ^2.3.2
   logging: ^1.0.0
   source_gen_test: ^1.0.6
