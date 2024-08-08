@@ -103,28 +103,22 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$BuilderToJson(Builder instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('target', instance.target);
-  writeNotNull('import', instance.import);
-  writeNotNull('is_optional', instance.isOptional);
-  writeNotNull('configLocation', instance.configLocation?.toString());
-  writeNotNull('auto_apply', _$AutoApplyEnumMap[instance.autoApply]);
-  writeNotNull('build_to', _$BuildToEnumMap[instance.buildTo]);
-  writeNotNull('defaultEnumTest', _$AutoApplyEnumMap[instance.defaultEnumTest]);
-  val['builder_factories'] = instance.builderFactories;
-  writeNotNull('applies_builders', instance.appliesBuilders);
-  writeNotNull('required_inputs', instance.requiredInputs);
-  writeNotNull('build_extensions', instance.buildExtensions);
-  return val;
-}
+Map<String, dynamic> _$BuilderToJson(Builder instance) => <String, dynamic>{
+      if (instance.target case final val?) 'target': val,
+      if (instance.import case final val?) 'import': val,
+      if (instance.isOptional case final val?) 'is_optional': val,
+      if (instance.configLocation?.toString() case final val?)
+        'configLocation': val,
+      if (_$AutoApplyEnumMap[instance.autoApply] case final val?)
+        'auto_apply': val,
+      if (_$BuildToEnumMap[instance.buildTo] case final val?) 'build_to': val,
+      if (_$AutoApplyEnumMap[instance.defaultEnumTest] case final val?)
+        'defaultEnumTest': val,
+      'builder_factories': instance.builderFactories,
+      if (instance.appliesBuilders case final val?) 'applies_builders': val,
+      if (instance.requiredInputs case final val?) 'required_inputs': val,
+      if (instance.buildExtensions case final val?) 'build_extensions': val,
+    };
 
 const _$BuildToEnumMap = {
   BuildTo.cache: 'cache',

@@ -53,19 +53,13 @@ Issue1226Regression _$Issue1226RegressionFromJson(Map<String, dynamic> json) =>
           _$Issue1145RegressionEnumEnumMap, json['durationType']),
     );
 
-Map<String, dynamic> _$Issue1226RegressionToJson(Issue1226Regression instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'durationType', _$Issue1145RegressionEnumEnumMap[instance.durationType]);
-  return val;
-}
+Map<String, dynamic> _$Issue1226RegressionToJson(
+        Issue1226Regression instance) =>
+    <String, dynamic>{
+      if (_$Issue1145RegressionEnumEnumMap[instance.durationType]
+          case final val?)
+        'durationType': val,
+    };
 
 const _$StandAloneEnumEnumMap = {
   StandAloneEnum.alpha: 'a',

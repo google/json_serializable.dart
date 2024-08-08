@@ -175,18 +175,10 @@ String? _toStringNullOnEmpty(String input) => input.isEmpty ? null : input;
 @ShouldGenerate(
   r'''
 Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
-    ToJsonNullableFalseIncludeIfNullFalse instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('field', _toStringNullOnEmpty(instance.field));
-  return val;
-}
+        ToJsonNullableFalseIncludeIfNullFalse instance) =>
+    <String, dynamic>{
+      if (_toStringNullOnEmpty(instance.field) case final val?) 'field': val,
+    };
 ''',
 )
 @JsonSerializable(createFactory: false)

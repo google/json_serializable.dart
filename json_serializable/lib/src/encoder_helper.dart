@@ -99,16 +99,7 @@ mixin EncodeHelper implements HelperCore {
 
     buffer.write(') ');
 
-    final canWriteAllJsonValuesWithoutNullCheck =
-        accessibleFields.every(_canWriteJsonWithoutNullCheck);
-
-    if (canWriteAllJsonValuesWithoutNullCheck) {
-      // write simple `toJson` method that includes all keys...
-      _writeToJsonSimple(buffer, accessibleFields);
-    } else {
-      // At least one field should be excluded if null
-      _writeToJsonWithNullChecks(buffer, accessibleFields);
-    }
+    _writeToJsonSimple(buffer, accessibleFields);
 
     yield buffer.toString();
   }
@@ -130,75 +121,17 @@ mixin EncodeHelper implements HelperCore {
       ..writeln('=> <String, dynamic>{')
       ..writeAll(fields.map((field) {
         final access = _fieldAccess(field);
-        final value =
-            '${safeNameAccess(field)}: ${_serializeField(field, access)}';
-        return '        $value,\n';
+
+        final keyValuePair = _canWriteJsonWithoutNullCheck(field)
+            ? '${safeNameAccess(field)}: ${_serializeField(field, access)}'
+            : 'if (${_serializeField(field, access)} case final $localVal?) '
+                '${safeNameAccess(field)}: $localVal';
+        return '        $keyValuePair,\n';
       }))
       ..writeln('};');
   }
 
   static const _toJsonParamName = 'instance';
-
-  void _writeToJsonWithNullChecks(
-    StringBuffer buffer,
-    Iterable<FieldElement> fields,
-  ) {
-    buffer
-      ..writeln('{')
-      ..writeln('    final $generatedLocalVarName = <String, dynamic>{');
-
-    // Note that the map literal is left open above. As long as target fields
-    // don't need to be intercepted by the `only if null` logic, write them
-    // to the map literal directly. In theory, should allow more efficient
-    // serialization.
-    var directWrite = true;
-
-    for (final field in fields) {
-      var safeFieldAccess = _fieldAccess(field);
-      final safeJsonKeyString = safeNameAccess(field);
-
-      // If `fieldName` collides with one of the local helpers, prefix
-      // access with `this.`.
-      if (safeFieldAccess == generatedLocalVarName ||
-          safeFieldAccess == toJsonMapHelperName) {
-        safeFieldAccess = 'this.$safeFieldAccess';
-      }
-
-      final expression = _serializeField(field, safeFieldAccess);
-      if (_canWriteJsonWithoutNullCheck(field)) {
-        if (directWrite) {
-          buffer.writeln('      $safeJsonKeyString: $expression,');
-        } else {
-          buffer.writeln(
-              '    $generatedLocalVarName[$safeJsonKeyString] = $expression;');
-        }
-      } else {
-        if (directWrite) {
-          // close the still-open map literal
-          buffer
-            ..writeln('    };')
-            ..writeln()
-
-            // write the helper to be used by all following null-excluding
-            // fields
-            ..writeln('''
-    void $toJsonMapHelperName(String key, dynamic value) {
-      if (value != null) {
-        $generatedLocalVarName[key] = value;
-      }
-    }
-''');
-          directWrite = false;
-        }
-        buffer.writeln(
-            '    $toJsonMapHelperName($safeJsonKeyString, $expression);');
-      }
-    }
-
-    buffer
-      ..writeln('    return $generatedLocalVarName;')
-      ..writeln('  }');
-  }
 
   String _serializeField(FieldElement field, String accessExpression) {
     try {

@@ -8,22 +8,13 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) => SubType(
       ..superReadWriteField = (json['superReadWriteField'] as num?)?.toInt()
       ..subTypeReadWrite = (json['subTypeReadWrite'] as num).toInt();
 
-Map<String, dynamic> _$SubTypeToJson(SubType instance) {
-  final val = <String, dynamic>{
-    'super-final-field': instance.superFinalField,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('superReadWriteField', instance.superReadWriteField);
-  val['subTypeViaCtor'] = instance.subTypeViaCtor;
-  val['subTypeReadWrite'] = instance.subTypeReadWrite;
-  return val;
-}
+Map<String, dynamic> _$SubTypeToJson(SubType instance) => <String, dynamic>{
+      'super-final-field': instance.superFinalField,
+      if (instance.superReadWriteField case final val?)
+        'superReadWriteField': val,
+      'subTypeViaCtor': instance.subTypeViaCtor,
+      'subTypeReadWrite': instance.subTypeReadWrite,
+    };
 ''')
 @JsonSerializable()
 class SubType extends SuperType {
@@ -54,21 +45,13 @@ class SuperType {
 
 @ShouldGenerate(r'''
 Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
-    SubTypeWithAnnotatedFieldOverrideExtends instance) {
-  final val = <String, dynamic>{
-    'super-final-field': instance.superFinalField,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('superReadWriteField', instance.superReadWriteField);
-  val['priceHalf'] = instance.priceHalf;
-  return val;
-}
+        SubTypeWithAnnotatedFieldOverrideExtends instance) =>
+    <String, dynamic>{
+      'super-final-field': instance.superFinalField,
+      if (instance.superReadWriteField case final val?)
+        'superReadWriteField': val,
+      'priceHalf': instance.priceHalf,
+    };
 ''')
 @JsonSerializable(createFactory: false)
 class SubTypeWithAnnotatedFieldOverrideExtends extends SuperType {
