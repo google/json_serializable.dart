@@ -39,7 +39,7 @@ enum FieldRename {
 )
 @Target({TargetKind.classType})
 class JsonSerializable {
-  /// If `true`, [Map] types are *not* assumed to be [Map<String, dynamic>]
+  /// If `true`, [Map] types are *not* assumed to be [Map]`<String, dynamic>`
   /// – which is the default type of [Map] instances return by JSON decode in
   /// `dart:convert`.
   ///

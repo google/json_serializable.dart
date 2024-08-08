@@ -5,7 +5,7 @@ environment:
 publish_to: none
 
 dev_dependencies:
-  dart_flutter_team_lints: ^3.1.0
+  dart_flutter_team_lints: ^3.2.0
 workspace:
   - _test_yaml
   - checked_yaml

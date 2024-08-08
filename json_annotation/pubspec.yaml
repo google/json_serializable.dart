@@ -17,9 +17,3 @@ resolution: workspace
 
 dependencies:
   meta: ^1.4.0
-
-dev_dependencies:
-  dart_flutter_team_lints: ^3.0.0
-# When changing JsonSerializable class.
-#  build_runner: ^2.0.0
-#  json_serializable: any
