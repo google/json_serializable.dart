@@ -53,8 +53,8 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
       'nestedGeneric': instance.nestedGeneric?.toJson(
         (value) => value,
       ),
-      if (instance.nestedExcludeIfNull?.toJson() case final val?)
-        'nestedExcludeIfNull': val,
+      if (instance.nestedExcludeIfNull?.toJson() case final value?)
+        'nestedExcludeIfNull': value,
     };
 
 const _$EnumValueEnumMap = {

@@ -57,8 +57,8 @@ Map<String, dynamic> _$Issue1226RegressionToJson(
         Issue1226Regression instance) =>
     <String, dynamic>{
       if (_$Issue1145RegressionEnumEnumMap[instance.durationType]
-          case final val?)
-        'durationType': val,
+          case final value?)
+        'durationType': value,
     };
 
 const _$StandAloneEnumEnumMap = {

@@ -33,18 +33,18 @@ Map<String, dynamic> _$Issue1202RegressionClassToJson(
       'notNullableValueWithConverter':
           const _Issue1202RegressionNotNullConverter()
               .toJson(instance.notNullableValueWithConverter),
-      if (_$Issue1202RegressionEnumEnumMap[instance.value] case final val?)
-        'value': val,
-      if (instance.normalNullableValue case final val?)
-        'normalNullableValue': val,
+      if (_$Issue1202RegressionEnumEnumMap[instance.value] case final value?)
+        'value': value,
+      if (instance.normalNullableValue case final value?)
+        'normalNullableValue': value,
       if (const _Issue1202RegressionConverter()
               .toJson(instance.notNullableValueWithNullableConverter)
-          case final val?)
-        'notNullableValueWithNullableConverter': val,
+          case final value?)
+        'notNullableValueWithNullableConverter': value,
       if (Issue1202RegressionClass._toJsonNullable(
               instance.valueWithNullableFunctions)
-          case final val?)
-        'valueWithNullableFunctions': val,
+          case final value?)
+        'valueWithNullableFunctions': value,
     };
 
 const _$Issue1202RegressionEnumEnumMap = {
@@ -62,8 +62,8 @@ Map<String, dynamic> _$Regression1229ToJson(Regression1229 instance) =>
     <String, dynamic>{
       if (_$JsonConverterToJson<String, DateTime>(
               instance.date, const DateTimeConverter().toJson)
-          case final val?)
-        'date': val,
+          case final value?)
+        'date': value,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(
