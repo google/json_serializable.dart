@@ -97,9 +97,22 @@ mixin EncodeHelper implements HelperCore {
 
     if (config.genericArgumentFactories) _writeGenericArgumentFactories(buffer);
 
-    buffer.write(') ');
+    buffer
+      ..write(') ')
+      ..writeln('=> <String, dynamic>{')
+      ..writeAll(accessibleFields.map((field) {
+        final access = _fieldAccess(field);
 
-    _writeToJsonSimple(buffer, accessibleFields);
+        final keyExpression = safeNameAccess(field);
+        final valueExpression = _serializeField(field, access);
+
+        final keyValuePair = _canWriteJsonWithoutNullCheck(field)
+            ? '$keyExpression: $valueExpression'
+            : 'if ($valueExpression case final $generatedLocalVarName?) '
+                '$keyExpression: $generatedLocalVarName';
+        return '        $keyValuePair,\n';
+      }))
+      ..writeln('};');
 
     yield buffer.toString();
   }
@@ -114,24 +127,6 @@ mixin EncodeHelper implements HelperCore {
     if (element.typeParameters.isNotEmpty) {
       buffer.write(',');
     }
-  }
-
-  void _writeToJsonSimple(StringBuffer buffer, Iterable<FieldElement> fields) {
-    buffer
-      ..writeln('=> <String, dynamic>{')
-      ..writeAll(fields.map((field) {
-        final access = _fieldAccess(field);
-
-        final keyExpression = safeNameAccess(field);
-        final valueExpression = _serializeField(field, access);
-
-        final keyValuePair = _canWriteJsonWithoutNullCheck(field)
-            ? '$keyExpression: $valueExpression'
-            : 'if ($valueExpression case final $generatedLocalVarName?) '
-                '$keyExpression: $generatedLocalVarName';
-        return '        $keyValuePair,\n';
-      }))
-      ..writeln('};');
   }
 
   static const _toJsonParamName = 'instance';
