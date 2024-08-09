@@ -10,8 +10,12 @@ import 'package:test/test.dart';
 
 void main() {
   test('JsonSerializable', () {
-    final person = Person('Inigo', 'Montoya', DateTime(1560, 5, 5))
-      ..orders = [Order(DateTime.now())..item = (Item()..count = 42)];
+    final person = Person(
+      'Inigo',
+      'Montoya',
+      DateTime(1560, 5, 5),
+      middleName: 'Bob',
+    )..orders = [Order(DateTime.now())..item = (Item()..count = 42)];
 
     final personJson = loudEncode(person);
 

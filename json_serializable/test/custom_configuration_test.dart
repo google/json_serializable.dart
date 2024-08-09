@@ -214,7 +214,6 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     test('some', () async {
       final output = await runForElementNamed('IncludeIfNullAll');
       expect(output, isNot(contains(generatedLocalVarName)));
-      expect(output, isNot(contains(toJsonMapHelperName)));
     });
   });
 }

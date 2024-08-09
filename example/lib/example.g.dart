@@ -19,24 +19,14 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
           .toList(),
     );
 
-Map<String, dynamic> _$PersonToJson(Person instance) {
-  final val = <String, dynamic>{
-    'firstName': instance.firstName,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('middleName', instance.middleName);
-  val['lastName'] = instance.lastName;
-  val['date-of-birth'] = instance.dateOfBirth.toIso8601String();
-  val['last-order'] = instance.lastOrder?.toIso8601String();
-  val['orders'] = instance.orders;
-  return val;
-}
+Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      if (instance.middleName case final value?) 'middleName': value,
+      'lastName': instance.lastName,
+      'date-of-birth': instance.dateOfBirth.toIso8601String(),
+      'last-order': instance.lastOrder?.toIso8601String(),
+      'orders': instance.orders,
+    };
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       Order._dateTimeFromEpochUs((json['date'] as num).toInt()),
@@ -50,23 +40,16 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       ..prepTime =
           Order._durationFromMilliseconds((json['prep-time'] as num?)?.toInt());
 
-Map<String, dynamic> _$OrderToJson(Order instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('count', instance.count);
-  writeNotNull('itemNumber', instance.itemNumber);
-  writeNotNull('isRushed', instance.isRushed);
-  writeNotNull('item', instance.item);
-  writeNotNull('prep-time', Order._durationToMilliseconds(instance.prepTime));
-  writeNotNull('date', Order._dateTimeToEpochUs(instance.date));
-  return val;
-}
+Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
+      if (instance.count case final value?) 'count': value,
+      if (instance.itemNumber case final value?) 'itemNumber': value,
+      if (instance.isRushed case final value?) 'isRushed': value,
+      if (instance.item case final value?) 'item': value,
+      if (Order._durationToMilliseconds(instance.prepTime) case final value?)
+        'prep-time': value,
+      if (Order._dateTimeToEpochUs(instance.date) case final value?)
+        'date': value,
+    };
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()
   ..count = (json['count'] as num?)?.toInt()

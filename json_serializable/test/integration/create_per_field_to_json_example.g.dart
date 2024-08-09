@@ -45,26 +45,17 @@ abstract class _$ModelPerFieldToJson {
   static Object? nestedExcludeIfNull(Nested? instance) => instance?.toJson();
 }
 
-Map<String, dynamic> _$ModelToJson(Model instance) {
-  final val = <String, dynamic>{
-    'firstName': instance.firstName,
-    'lastName': instance.lastName,
-    'enumValue': _$EnumValueEnumMap[instance.enumValue],
-    'nested': instance.nested?.toJson(),
-    'nestedGeneric': instance.nestedGeneric?.toJson(
-      (value) => value,
-    ),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('nestedExcludeIfNull', instance.nestedExcludeIfNull?.toJson());
-  return val;
-}
+Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
+      'enumValue': _$EnumValueEnumMap[instance.enumValue],
+      'nested': instance.nested?.toJson(),
+      'nestedGeneric': instance.nestedGeneric?.toJson(
+        (value) => value,
+      ),
+      if (instance.nestedExcludeIfNull?.toJson() case final value?)
+        'nestedExcludeIfNull': value,
+    };
 
 const _$EnumValueEnumMap = {
   EnumValue.first: '1',

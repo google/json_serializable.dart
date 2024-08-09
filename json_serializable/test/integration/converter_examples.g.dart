@@ -26,33 +26,26 @@ Issue1202RegressionClass _$Issue1202RegressionClassFromJson(
     );
 
 Map<String, dynamic> _$Issue1202RegressionClassToJson(
-    Issue1202RegressionClass instance) {
-  final val = <String, dynamic>{
-    'valueWithFunctions':
-        Issue1202RegressionClass._toJson(instance.valueWithFunctions),
-    'notNullableValueWithConverter':
-        const _Issue1202RegressionNotNullConverter()
-            .toJson(instance.notNullableValueWithConverter),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('value', _$Issue1202RegressionEnumEnumMap[instance.value]);
-  writeNotNull('normalNullableValue', instance.normalNullableValue);
-  writeNotNull(
-      'notNullableValueWithNullableConverter',
-      const _Issue1202RegressionConverter()
-          .toJson(instance.notNullableValueWithNullableConverter));
-  writeNotNull(
-      'valueWithNullableFunctions',
-      Issue1202RegressionClass._toJsonNullable(
-          instance.valueWithNullableFunctions));
-  return val;
-}
+        Issue1202RegressionClass instance) =>
+    <String, dynamic>{
+      'valueWithFunctions':
+          Issue1202RegressionClass._toJson(instance.valueWithFunctions),
+      'notNullableValueWithConverter':
+          const _Issue1202RegressionNotNullConverter()
+              .toJson(instance.notNullableValueWithConverter),
+      if (_$Issue1202RegressionEnumEnumMap[instance.value] case final value?)
+        'value': value,
+      if (instance.normalNullableValue case final value?)
+        'normalNullableValue': value,
+      if (const _Issue1202RegressionConverter()
+              .toJson(instance.notNullableValueWithNullableConverter)
+          case final value?)
+        'notNullableValueWithNullableConverter': value,
+      if (Issue1202RegressionClass._toJsonNullable(
+              instance.valueWithNullableFunctions)
+          case final value?)
+        'valueWithNullableFunctions': value,
+    };
 
 const _$Issue1202RegressionEnumEnumMap = {
   Issue1202RegressionEnum.normalValue: 42,
@@ -65,21 +58,13 @@ Regression1229 _$Regression1229FromJson(Map<String, dynamic> json) =>
           json['date'], const DateTimeConverter().fromJson),
     );
 
-Map<String, dynamic> _$Regression1229ToJson(Regression1229 instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'date',
-      _$JsonConverterToJson<String, DateTime>(
-          instance.date, const DateTimeConverter().toJson));
-  return val;
-}
+Map<String, dynamic> _$Regression1229ToJson(Regression1229 instance) =>
+    <String, dynamic>{
+      if (_$JsonConverterToJson<String, DateTime>(
+              instance.date, const DateTimeConverter().toJson)
+          case final value?)
+        'date': value,
+    };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,

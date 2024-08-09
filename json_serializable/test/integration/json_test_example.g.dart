@@ -85,26 +85,17 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
         StatusCode.success;
 }
 
-Map<String, dynamic> _$OrderToJson(Order instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('count', instance.count);
-  val['isRushed'] = instance.isRushed;
-  val['duration'] = instance.duration?.inMicroseconds;
-  val['category'] = _$CategoryEnumMap[instance.category];
-  val['items'] = instance.items;
-  val['platform'] = instance.platform;
-  val['altPlatforms'] = instance.altPlatforms;
-  val['homepage'] = instance.homepage?.toString();
-  val['status_code'] = _$StatusCodeEnumMap[instance.statusCode];
-  return val;
-}
+Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
+      if (instance.count case final value?) 'count': value,
+      'isRushed': instance.isRushed,
+      'duration': instance.duration?.inMicroseconds,
+      'category': _$CategoryEnumMap[instance.category],
+      'items': instance.items,
+      'platform': instance.platform,
+      'altPlatforms': instance.altPlatforms,
+      'homepage': instance.homepage?.toString(),
+      'status_code': _$StatusCodeEnumMap[instance.statusCode],
+    };
 
 const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
@@ -125,24 +116,13 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
           .toList()
       ..geoPoint = _fromJsonGeoPoint(json['geoPoint'] as Map<String, dynamic>?);
 
-Map<String, dynamic> _$ItemToJson(Item instance) {
-  final val = <String, dynamic>{
-    'price': instance.price,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('item-number', instance.itemNumber);
-  val['saleDates'] =
-      instance.saleDates?.map((e) => e.toIso8601String()).toList();
-  val['rates'] = instance.rates;
-  val['geoPoint'] = _toJsonGeoPoint(instance.geoPoint);
-  return val;
-}
+Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
+      'price': instance.price,
+      if (instance.itemNumber case final value?) 'item-number': value,
+      'saleDates': instance.saleDates?.map((e) => e.toIso8601String()).toList(),
+      'rates': instance.rates,
+      'geoPoint': _toJsonGeoPoint(instance.geoPoint),
+    };
 
 Numbers _$NumbersFromJson(Map<String, dynamic> json) => Numbers()
   ..ints =

@@ -98,69 +98,63 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
         ),
       );
 
-Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('no-42', instance.ctorValidatedNo42);
-  writeNotNull('dateTime', instance.dateTime?.toIso8601String());
-  writeNotNull('bigInt', instance.bigInt?.toString());
-  writeNotNull('iterable', instance.iterable?.toList());
-  val['dynamicIterable'] = instance.dynamicIterable.toList();
-  val['objectIterable'] = instance.objectIterable.toList();
-  val['intIterable'] = instance.intIterable.toList();
-  val['set'] = instance.set.toList();
-  val['dynamicSet'] = instance.dynamicSet.toList();
-  val['objectSet'] = instance.objectSet.toList();
-  val['intSet'] = instance.intSet.toList();
-  val['dateTimeSet'] =
-      instance.dateTimeSet.map((e) => e.toIso8601String()).toList();
-  val['datetime-iterable'] =
-      instance.dateTimeIterable.map((e) => e.toIso8601String()).toList();
-  val['list'] = instance.list;
-  val['dynamicList'] = instance.dynamicList;
-  val['objectList'] = instance.objectList;
-  val['intList'] = instance.intList;
-  val['dateTimeList'] =
-      instance.dateTimeList.map((e) => e.toIso8601String()).toList();
-  val['nullableSimpleObjectList'] = instance.nullableSimpleObjectList;
-  val['map'] = instance.map;
-  val['stringStringMap'] = instance.stringStringMap;
-  val['dynamicIntMap'] = instance.dynamicIntMap;
-  val['objectDateTimeMap'] = instance.objectDateTimeMap
-      .map((k, e) => MapEntry(k, e.toIso8601String()));
-  val['nullableSimpleObjectMap'] = instance.nullableSimpleObjectMap;
-  val['crazyComplex'] = instance.crazyComplex
-      .map((e) => e?.map((k, e) => MapEntry(
-          k,
-          e?.map((k, e) => MapEntry(
+Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
+    <String, dynamic>{
+      if (instance.ctorValidatedNo42 case final value?) 'no-42': value,
+      if (instance.dateTime?.toIso8601String() case final value?)
+        'dateTime': value,
+      if (instance.bigInt?.toString() case final value?) 'bigInt': value,
+      if (instance.iterable?.toList() case final value?) 'iterable': value,
+      'dynamicIterable': instance.dynamicIterable.toList(),
+      'objectIterable': instance.objectIterable.toList(),
+      'intIterable': instance.intIterable.toList(),
+      'set': instance.set.toList(),
+      'dynamicSet': instance.dynamicSet.toList(),
+      'objectSet': instance.objectSet.toList(),
+      'intSet': instance.intSet.toList(),
+      'dateTimeSet':
+          instance.dateTimeSet.map((e) => e.toIso8601String()).toList(),
+      'datetime-iterable':
+          instance.dateTimeIterable.map((e) => e.toIso8601String()).toList(),
+      'list': instance.list,
+      'dynamicList': instance.dynamicList,
+      'objectList': instance.objectList,
+      'intList': instance.intList,
+      'dateTimeList':
+          instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'nullableSimpleObjectList': instance.nullableSimpleObjectList,
+      'map': instance.map,
+      'stringStringMap': instance.stringStringMap,
+      'dynamicIntMap': instance.dynamicIntMap,
+      'objectDateTimeMap': instance.objectDateTimeMap
+          .map((k, e) => MapEntry(k, e.toIso8601String())),
+      'nullableSimpleObjectMap': instance.nullableSimpleObjectMap,
+      'crazyComplex': instance.crazyComplex
+          .map((e) => e?.map((k, e) => MapEntry(
               k,
-              e
-                  ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
-                  .toList())))))
-      .toList();
-  val['val'] = instance.val;
-  writeNotNull('writeNotNull', instance.writeNotNull);
-  writeNotNull(r'$string', instance.string);
-  val['simpleObject'] = instance.simpleObject;
-  val['strictKeysObject'] = instance.strictKeysObject;
-  writeNotNull('validatedPropertyNo42', instance.validatedPropertyNo42);
-  writeNotNull(
-      'recordField',
-      instance.recordField == null
-          ? null
-          : <String, dynamic>{
-              r'$1': instance.recordField!.$1,
-              r'$2': instance.recordField!.$2,
-              'truth': instance.recordField!.truth,
-            });
-  return val;
-}
+              e?.map((k, e) => MapEntry(
+                  k,
+                  e
+                      ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
+                      .toList())))))
+          .toList(),
+      'val': instance.val,
+      if (instance.writeNotNull case final value?) 'writeNotNull': value,
+      if (instance.string case final value?) r'$string': value,
+      'simpleObject': instance.simpleObject,
+      'strictKeysObject': instance.strictKeysObject,
+      if (instance.validatedPropertyNo42 case final value?)
+        'validatedPropertyNo42': value,
+      if (instance.recordField == null
+              ? null
+              : <String, dynamic>{
+                  r'$1': instance.recordField!.$1,
+                  r'$2': instance.recordField!.$2,
+                  'truth': instance.recordField!.truth,
+                }
+          case final value?)
+        'recordField': value,
+    };
 
 $Rec? _$recordConvertNullable<$Rec>(
   Object? value,
@@ -208,50 +202,47 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
     );
 
 Map<String, dynamic> _$JsonConverterTestClassToJson(
-    JsonConverterTestClass instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('duration',
-      const DurationMillisecondConverter().toJson(instance.duration));
-  val['durationList'] = instance.durationList
-      .map(const DurationMillisecondConverter().toJson)
-      .toList();
-  val['bigInt'] = const BigIntStringConverter().toJson(instance.bigInt);
-  val['bigIntMap'] = instance.bigIntMap
-      .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)));
-  writeNotNull(
-      'nullableBigInt',
-      _$JsonConverterToJson<String, BigInt>(
-          instance.nullableBigInt, const BigIntStringConverter().toJson));
-  val['nullableBigIntMap'] = instance.nullableBigIntMap.map((k, e) => MapEntry(
-      k,
-      _$JsonConverterToJson<String, BigInt>(
-          e, const BigIntStringConverter().toJson)));
-  writeNotNull('numberSilly',
-      TrivialNumberConverter.instance.toJson(instance.numberSilly));
-  val['numberSillySet'] = instance.numberSillySet
-      .map(TrivialNumberConverter.instance.toJson)
-      .toList();
-  writeNotNull(
-      'dateTime', const EpochDateTimeConverter().toJson(instance.dateTime));
-  writeNotNull(
-      'trivialString', trivialStringConverter.toJson(instance.trivialString));
-  writeNotNull(
-      'nullableNumberSilly',
-      _$JsonConverterToJson<int?, TrivialNumber>(instance.nullableNumberSilly,
-          TrivialNumberConverter.instance.toJson));
-  val['nullableNumberSillySet'] = instance.nullableNumberSillySet
-      .map((e) => _$JsonConverterToJson<int?, TrivialNumber>(
-          e, TrivialNumberConverter.instance.toJson))
-      .toList();
-  return val;
-}
+        JsonConverterTestClass instance) =>
+    <String, dynamic>{
+      if (const DurationMillisecondConverter().toJson(instance.duration)
+          case final value?)
+        'duration': value,
+      'durationList': instance.durationList
+          .map(const DurationMillisecondConverter().toJson)
+          .toList(),
+      'bigInt': const BigIntStringConverter().toJson(instance.bigInt),
+      'bigIntMap': instance.bigIntMap
+          .map((k, e) => MapEntry(k, const BigIntStringConverter().toJson(e))),
+      if (_$JsonConverterToJson<String, BigInt>(
+              instance.nullableBigInt, const BigIntStringConverter().toJson)
+          case final value?)
+        'nullableBigInt': value,
+      'nullableBigIntMap': instance.nullableBigIntMap.map((k, e) => MapEntry(
+          k,
+          _$JsonConverterToJson<String, BigInt>(
+              e, const BigIntStringConverter().toJson))),
+      if (TrivialNumberConverter.instance.toJson(instance.numberSilly)
+          case final value?)
+        'numberSilly': value,
+      'numberSillySet': instance.numberSillySet
+          .map(TrivialNumberConverter.instance.toJson)
+          .toList(),
+      if (const EpochDateTimeConverter().toJson(instance.dateTime)
+          case final value?)
+        'dateTime': value,
+      if (trivialStringConverter.toJson(instance.trivialString)
+          case final value?)
+        'trivialString': value,
+      if (_$JsonConverterToJson<int?, TrivialNumber>(
+              instance.nullableNumberSilly,
+              TrivialNumberConverter.instance.toJson)
+          case final value?)
+        'nullableNumberSilly': value,
+      'nullableNumberSillySet': instance.nullableNumberSillySet
+          .map((e) => _$JsonConverterToJson<int?, TrivialNumber>(
+              e, TrivialNumberConverter.instance.toJson))
+          .toList(),
+    };
 
 Value? _$JsonConverterFromJson<Json, Value>(
   Object? json,
