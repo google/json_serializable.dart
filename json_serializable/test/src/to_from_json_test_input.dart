@@ -177,7 +177,8 @@ String? _toStringNullOnEmpty(String input) => input.isEmpty ? null : input;
 Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
         ToJsonNullableFalseIncludeIfNullFalse instance) =>
     <String, dynamic>{
-      if (_toStringNullOnEmpty(instance.field) case final value?) 'field': value,
+      if (_toStringNullOnEmpty(instance.field) case final value?)
+        'field': value,
     };
 ''',
 )
