@@ -218,7 +218,7 @@ Map<String, dynamic> _$IncludeIfNullOverrideToJson(
         IncludeIfNullOverride instance) =>
     <String, dynamic>{
       'number': instance.number,
-      if (instance.str case final val?) 'str': val,
+      if (instance.str case final value?) 'str': value,
     };
 ''',
 )
