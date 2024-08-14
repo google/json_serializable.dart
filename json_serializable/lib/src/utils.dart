@@ -246,6 +246,10 @@ String? defaultDecodeLogic(
     final targetTypeNullable = defaultProvided || targetType.isNullableType;
     final question = targetTypeNullable ? '?' : '';
     return '($expression as num$question)$question.toInt()';
+  } else if (targetType.isDartCoreBool) {
+    final targetTypeNullable = defaultProvided || targetType.isNullableType;
+    final question = targetTypeNullable ? '?' : '';
+    return '$expression as bool$question';
   } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
     final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
     return '$expression as $typeCode';
