@@ -1,6 +1,7 @@
 ## 6.9.0-wip
 
 - Use conditional map syntax to clean up `null` handling in `toJson` functions.
+- Require `analyzer: ^6.9.0`
 - Require Dart 3.5
 
 ## 6.8.0

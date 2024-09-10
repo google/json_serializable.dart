@@ -263,15 +263,15 @@ extension ExecutableElementExtension on ExecutableElement {
     }
 
     if (this is MethodElement) {
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     if (this is ConstructorElement) {
       // Ignore the default constructor.
       if (name.isEmpty) {
-        return '${enclosingElement.name}';
+        return '${enclosingElement3.name}';
       }
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     throw UnsupportedError(
