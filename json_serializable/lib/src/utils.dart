@@ -2,6 +2,10 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// TODO: Waiting until Dart 3.6 so we can pin a stable Dart SDK compatible w/ latest
+// analyzer
+// ignore_for_file: deprecated_member_use
+
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
