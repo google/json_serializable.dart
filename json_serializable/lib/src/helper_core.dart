@@ -75,7 +75,11 @@ $converterOrKeyInstructions
 * Set `JsonSerializable.genericArgumentFactories` to `true`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable/genericArgumentFactories.html''';
   } else if (field.type != error.type) {
-    message = '$message because of type `${typeToCode(error.type)}`';
+    try {
+      message = '$message because of type `${typeToCode(error.type)}`';
+    } catch (ex) {
+      message = '$message because of type is unimplemented/unsupported/undefined';
+    }
   } else {
     final element = error.type.element?.name;
     todo = '''
