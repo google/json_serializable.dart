@@ -103,7 +103,7 @@ const _templatePath = 'tool/readme/readme_template.md';
 const _readmePath = 'README.md';
 
 String _coreTypeUri(String type) =>
-    'https://api.dart.dev/stable/dart-core/$type-class.html';
+    'https://api.dart.dev/dart-core/$type-class.html';
 
 String _classCleanAndSort(Iterable<String> classes) {
   final initial = (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()

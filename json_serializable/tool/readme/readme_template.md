@@ -84,7 +84,7 @@ serialized value.
 # Supported types
 
 Out of the box, `json_serializable` supports many common types in the
-[dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
+[dart:core](https://api.dart.dev/dart-core/dart-core-library.html)
 library: 
 <!-- REPLACE supported_types -->
 
