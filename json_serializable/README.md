@@ -146,7 +146,7 @@ enum StatusCodeEnhanced {
 # Supported types
 
 Out of the box, `json_serializable` supports many common types in the
-[dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
+[dart:core](https://api.dart.dev/dart-core/dart-core-library.html)
 library: 
 [`BigInt`], [`bool`], [`DateTime`], [`double`], [`Duration`], [`Enum`], [`int`],
 [`Iterable`], [`List`], [`Map`], [`num`], [`Object`], [`Record`], [`Set`],
@@ -290,14 +290,14 @@ targets:
 [example]: https://github.com/google/json_serializable.dart/tree/master/example
 [dart build system]: https://github.com/dart-lang/build
 [package:json_annotation]: https://pub.dev/packages/json_annotation
-[`BigInt`]: https://api.dart.dev/stable/dart-core/BigInt-class.html
-[`bool`]: https://api.dart.dev/stable/dart-core/bool-class.html
-[`DateTime`]: https://api.dart.dev/stable/dart-core/DateTime-class.html
-[`double`]: https://api.dart.dev/stable/dart-core/double-class.html
-[`Duration`]: https://api.dart.dev/stable/dart-core/Duration-class.html
-[`Enum`]: https://api.dart.dev/stable/dart-core/Enum-class.html
-[`int`]: https://api.dart.dev/stable/dart-core/int-class.html
-[`Iterable`]: https://api.dart.dev/stable/dart-core/Iterable-class.html
+[`BigInt`]: https://api.dart.dev/dart-core/BigInt-class.html
+[`bool`]: https://api.dart.dev/dart-core/bool-class.html
+[`DateTime`]: https://api.dart.dev/dart-core/DateTime-class.html
+[`double`]: https://api.dart.dev/dart-core/double-class.html
+[`Duration`]: https://api.dart.dev/dart-core/Duration-class.html
+[`Enum`]: https://api.dart.dev/dart-core/Enum-class.html
+[`int`]: https://api.dart.dev/dart-core/int-class.html
+[`Iterable`]: https://api.dart.dev/dart-core/Iterable-class.html
 [`JsonConverter`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
 [`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum/valueField.html
 [`JsonEnum`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum-class.html
@@ -307,11 +307,11 @@ targets:
 [`JsonLiteral`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonLiteral-class.html
 [`JsonSerializable`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable-class.html
 [`JsonValue`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonValue-class.html
-[`List`]: https://api.dart.dev/stable/dart-core/List-class.html
-[`Map`]: https://api.dart.dev/stable/dart-core/Map-class.html
-[`num`]: https://api.dart.dev/stable/dart-core/num-class.html
-[`Object`]: https://api.dart.dev/stable/dart-core/Object-class.html
-[`Record`]: https://api.dart.dev/stable/dart-core/Record-class.html
-[`Set`]: https://api.dart.dev/stable/dart-core/Set-class.html
-[`String`]: https://api.dart.dev/stable/dart-core/String-class.html
-[`Uri`]: https://api.dart.dev/stable/dart-core/Uri-class.html
+[`List`]: https://api.dart.dev/dart-core/List-class.html
+[`Map`]: https://api.dart.dev/dart-core/Map-class.html
+[`num`]: https://api.dart.dev/dart-core/num-class.html
+[`Object`]: https://api.dart.dev/dart-core/Object-class.html
+[`Record`]: https://api.dart.dev/dart-core/Record-class.html
+[`Set`]: https://api.dart.dev/dart-core/Set-class.html
+[`String`]: https://api.dart.dev/dart-core/String-class.html
+[`Uri`]: https://api.dart.dev/dart-core/Uri-class.html
