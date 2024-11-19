@@ -1,6 +1,7 @@
-## 6.9.0-wip
+## 6.9.0
 
 - Use conditional map syntax to clean up `null` handling in `toJson` functions.
+- Fix core Dart type links in docs.
 - Require Dart 3.5
 
 ## 6.8.0
