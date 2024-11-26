@@ -126,7 +126,7 @@ enum EnumWithAliases {
   @JsonValue('1')
   one,
 
-  @JsonValue('2', aliases: ['two', 'deux'])
+  @JsonValue('2', aliases: {'two', 'deux'})
   two,
 
   @JsonValue('3')
