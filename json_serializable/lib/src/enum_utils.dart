@@ -240,8 +240,8 @@ extension on ConstantReader {
   bool get validValueType => isString || isNull || isInt;
 
   bool get validAliasesType =>
-      isList &&
-      listValue.every((element) =>
+      isSet &&
+      setValue.every((element) =>
           (element.type?.isDartCoreString ?? false) ||
           (element.type?.isDartCoreInt ?? false));
 }
