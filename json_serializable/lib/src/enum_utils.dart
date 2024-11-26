@@ -66,7 +66,8 @@ String? enumMapsFromType(
 
   final decodeMap = decodeItems == null
       ? null
-      : 'const ${constDecodeMapName(targetType)} = {\n$decodeItems\n};';
+      : '// ignore: unused_element\n'
+          'const ${constDecodeMapName(targetType)} = {\n$decodeItems\n};';
 
   return valuesMap == null && decodeMap == null
       ? null
