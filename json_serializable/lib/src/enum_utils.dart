@@ -121,7 +121,7 @@ Map<Object?, FieldElement>? _enumAliases(
         jsonEnum: jsonEnum,
         targetType: targetType,
       ): field,
-      for (final alias in _generateAlias(field: field, targetType: targetType))
+      for (final alias in _generateAliases(field: field, targetType: targetType))
         alias: field,
     },
   };
@@ -192,7 +192,7 @@ Object? _generateEntry({
   }
 }
 
-List<Object?> _generateAlias({
+List<Object?> _generateAliases({
   required FieldElement field,
   required DartType targetType,
 }) {
@@ -208,7 +208,7 @@ List<Object?> _generateAlias({
 
     if (valueReader.validAliasesType) {
       return [
-        for (final value in valueReader.listValue)
+        for (final value in valueReader.setValue)
           ConstantReader(value).literalValue,
       ];
     } else {

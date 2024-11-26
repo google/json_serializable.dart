@@ -12,7 +12,7 @@ class JsonValue {
   /// Optional values that can be used when deserializing.
   ///
   /// The elements of [aliases] must be either [String] or [int].
-  final List<Object?> aliases;
+  final Set<Object?> aliases;
 
-  const JsonValue(this.value, {this.aliases = const []});
+  const JsonValue(this.value, {this.aliases = const {}});
 }
