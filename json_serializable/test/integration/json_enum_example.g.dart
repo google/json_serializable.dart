@@ -27,6 +27,7 @@ const _$Issue559RegressionEnumEnumMap = {
   Issue559RegressionEnum.gamma: 'gamma',
 };
 
+// ignore: unused_element
 const _$Issue559RegressionEnumEnumDecodeMap = {
   'alpha': Issue559RegressionEnum.alpha,
   'beta': Issue559RegressionEnum.beta,
@@ -46,6 +47,7 @@ const _$Issue1145RegressionEnumEnumMap = {
   Issue1145RegressionEnum.gamma: 'gamma',
 };
 
+// ignore: unused_element
 const _$Issue1145RegressionEnumEnumDecodeMap = {
   'alpha': Issue1145RegressionEnum.alpha,
   'beta': Issue1145RegressionEnum.beta,
@@ -91,6 +93,7 @@ const _$EnumWithAliasesEnumMap = {
   EnumWithAliases.three: '3',
 };
 
+// ignore: unused_element
 const _$EnumWithAliasesEnumDecodeMap = {
   '1': EnumWithAliases.one,
   '2': EnumWithAliases.two,
@@ -106,6 +109,7 @@ const _$StandAloneEnumEnumMap = {
   StandAloneEnum.delta: 'd',
 };
 
+// ignore: unused_element
 const _$StandAloneEnumEnumDecodeMap = {
   'a': StandAloneEnum.alpha,
   'b': StandAloneEnum.beta,
@@ -119,6 +123,7 @@ const _$DayTypeEnumMap = {
   DayType.veryBad: 'very-bad',
 };
 
+// ignore: unused_element
 const _$DayTypeEnumDecodeMap = {
   'no-good': DayType.noGood,
   'rotten': DayType.rotten,
@@ -130,6 +135,7 @@ const _$MyStatusCodeEnumMap = {
   MyStatusCode.weird: 701,
 };
 
+// ignore: unused_element
 const _$MyStatusCodeEnumDecodeMap = {
   200: MyStatusCode.success,
   701: MyStatusCode.weird,
@@ -141,6 +147,7 @@ const _$EnumValueFieldIndexEnumMap = {
   EnumValueFieldIndex.oneMore: 2,
 };
 
+// ignore: unused_element
 const _$EnumValueFieldIndexEnumDecodeMap = {
   0: EnumValueFieldIndex.success,
   701: EnumValueFieldIndex.weird,

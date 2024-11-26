@@ -101,6 +101,7 @@ const _$GreekEnumMap = {
   Greek.delta: 'delta',
 };
 
+// ignore: unused_element
 const _$GreekEnumDecodeMap = {
   'alpha': Greek.alpha,
   'beta': Greek.beta,

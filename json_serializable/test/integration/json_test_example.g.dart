@@ -58,6 +58,7 @@ const _$CategoryEnumMap = {
   Category.notDiscoveredYet: 'not_discovered_yet',
 };
 
+// ignore: unused_element
 const _$CategoryEnumDecodeMap = {
   'top': Category.top,
   'bottom': Category.bottom,
@@ -116,6 +117,7 @@ const _$StatusCodeEnumMap = {
   StatusCode.unknown: 'unknown',
 };
 
+// ignore: unused_element
 const _$StatusCodeEnumDecodeMap = {
   200: StatusCode.success,
   404: StatusCode.notFound,

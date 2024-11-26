@@ -63,6 +63,7 @@ const _$EnumValueEnumMap = {
   EnumValue.second: 'second',
 };
 
+// ignore: unused_element
 const _$EnumValueEnumDecodeMap = {
   '1': EnumValue.first,
   'second': EnumValue.second,

@@ -53,6 +53,7 @@ const _$Issue1202RegressionEnumEnumMap = {
   Issue1202RegressionEnum.nullValue: null,
 };
 
+// ignore: unused_element
 const _$Issue1202RegressionEnumEnumDecodeMap = {
   42: Issue1202RegressionEnum.normalValue,
   null: Issue1202RegressionEnum.nullValue,

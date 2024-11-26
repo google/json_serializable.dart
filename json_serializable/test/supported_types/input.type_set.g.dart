@@ -351,6 +351,7 @@ const _$EnumTypeEnumMap = {
   EnumType.delta: 'delta',
 };
 
+// ignore: unused_element
 const _$EnumTypeEnumDecodeMap = {
   'alpha': EnumType.alpha,
   'beta': EnumType.beta,

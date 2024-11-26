@@ -45,6 +45,7 @@ const _$AutoApplyEnumMap = {
   AutoApply.rootPackage: 'root_package',
 };
 
+// ignore: unused_element
 const _$AutoApplyEnumDecodeMap = {
   'none': AutoApply.none,
   'dependents': AutoApply.dependents,
@@ -140,6 +141,7 @@ const _$BuildToEnumMap = {
   BuildTo.source: 'source',
 };
 
+// ignore: unused_element
 const _$BuildToEnumDecodeMap = {
   'cache': BuildTo.cache,
   'source': BuildTo.source,
