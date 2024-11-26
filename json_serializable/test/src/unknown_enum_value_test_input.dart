@@ -11,6 +11,7 @@ UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
               unknownValue: UnknownEnumValueItems.vUnknown) ??
           UnknownEnumValueItems.vNull;
 
+// ignore: unused_element
 const _$UnknownEnumValueItemsEnumMap = {
   UnknownEnumValueItems.v0: 'v0',
   UnknownEnumValueItems.v1: 'v1',

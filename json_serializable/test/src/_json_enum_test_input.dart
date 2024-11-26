@@ -6,6 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
 @ShouldGenerate(r'''
+// ignore: unused_element
 const _$EnumValueIssue1147EnumMap = {
   EnumValueIssue1147.success: 200,
   EnumValueIssue1147.weird: 601,
