@@ -121,3 +121,26 @@ class Issue1226Regression {
 
   Map<String, dynamic> toJson() => _$Issue1226RegressionToJson(this);
 }
+
+enum EnumWithAliases {
+  @JsonValue('1')
+  one,
+
+  @JsonValue('2', aliases: ['two', 'deux'])
+  two,
+
+  @JsonValue('3')
+  three;
+}
+
+@JsonSerializable()
+class EnumWithAliasesData {
+  final EnumWithAliases value;
+    
+  EnumWithAliasesData(this.value);
+
+  factory EnumWithAliasesData.fromJson(Map<String, dynamic> json) =>
+      _$EnumWithAliasesDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$EnumWithAliasesDataToJson(this);
+}

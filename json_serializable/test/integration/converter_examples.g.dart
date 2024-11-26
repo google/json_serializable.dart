@@ -11,7 +11,8 @@ part of 'converter_examples.dart';
 Issue1202RegressionClass _$Issue1202RegressionClassFromJson(
         Map<String, dynamic> json) =>
     Issue1202RegressionClass(
-      value: $enumDecode(_$Issue1202RegressionEnumEnumMap, json['value']),
+      value: $enumDecodeWithDecodeMap(
+          _$Issue1202RegressionEnumEnumDecodeMap, json['value']),
       normalNullableValue: (json['normalNullableValue'] as num?)?.toInt(),
       notNullableValueWithNullableConverter:
           const _Issue1202RegressionConverter().fromJson(
@@ -50,6 +51,11 @@ Map<String, dynamic> _$Issue1202RegressionClassToJson(
 const _$Issue1202RegressionEnumEnumMap = {
   Issue1202RegressionEnum.normalValue: 42,
   Issue1202RegressionEnum.nullValue: null,
+};
+
+const _$Issue1202RegressionEnumEnumDecodeMap = {
+  42: Issue1202RegressionEnum.normalValue,
+  null: Issue1202RegressionEnum.nullValue,
 };
 
 Regression1229 _$Regression1229FromJson(Map<String, dynamic> json) =>

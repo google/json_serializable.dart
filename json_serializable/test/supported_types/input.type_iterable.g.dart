@@ -308,7 +308,7 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumType(
       (json['value'] as List<dynamic>)
-          .map((e) => $enumDecode(_$EnumTypeEnumMap, e)),
+          .map((e) => $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, e)),
     );
 
 Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
@@ -324,11 +324,18 @@ const _$EnumTypeEnumMap = {
   EnumType.delta: 'delta',
 };
 
+const _$EnumTypeEnumDecodeMap = {
+  'alpha': EnumType.alpha,
+  'beta': EnumType.beta,
+  'gamma': EnumType.gamma,
+  'delta': EnumType.delta,
+};
+
 SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumType(
       (json['value'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$EnumTypeEnumMap, e)),
+          ?.map((e) => $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, e)),
     );
 
 Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
@@ -340,8 +347,8 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
 SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeNullable(
-      (json['value'] as List<dynamic>)
-          .map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e)),
+      (json['value'] as List<dynamic>).map(
+          (e) => $enumDecodeNullableWithDecodeMap(_$EnumTypeEnumDecodeMap, e)),
     );
 
 Map<String, dynamic> _$SimpleClassOfEnumTypeNullableToJson(
@@ -354,8 +361,8 @@ SimpleClassNullableOfEnumTypeNullable
     _$SimpleClassNullableOfEnumTypeNullableFromJson(
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeNullable(
-          (json['value'] as List<dynamic>?)
-              ?.map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e)),
+          (json['value'] as List<dynamic>?)?.map((e) =>
+              $enumDecodeNullableWithDecodeMap(_$EnumTypeEnumDecodeMap, e)),
         );
 
 Map<String, dynamic> _$SimpleClassNullableOfEnumTypeNullableToJson(

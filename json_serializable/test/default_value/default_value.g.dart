@@ -35,7 +35,9 @@ DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) => DefaultValue(
           {
             'root': ['child']
           },
-      $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      $enumDecodeNullableWithDecodeMap(
+              _$GreekEnumDecodeMap, json['fieldEnum']) ??
+          Greek.beta,
       durationField: json['durationField'] == null
           ? Duration.zero
           : Duration(microseconds: (json['durationField'] as num).toInt()),
@@ -97,4 +99,11 @@ const _$GreekEnumMap = {
   Greek.beta: 'beta',
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
+};
+
+const _$GreekEnumDecodeMap = {
+  'alpha': Greek.alpha,
+  'beta': Greek.beta,
+  'gamma': Greek.gamma,
+  'delta': Greek.delta,
 };

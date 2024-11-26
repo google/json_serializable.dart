@@ -51,8 +51,11 @@ DefaultValue _$DefaultValueFromJson(Map json) => $checkedCreate(
                   {
                     'root': ['child']
                   }),
-          $checkedConvert('fieldEnum',
-              (v) => $enumDecodeNullable(_$GreekEnumMap, v) ?? Greek.beta),
+          $checkedConvert(
+              'fieldEnum',
+              (v) =>
+                  $enumDecodeNullableWithDecodeMap(_$GreekEnumDecodeMap, v) ??
+                  Greek.beta),
           durationField: $checkedConvert(
               'durationField',
               (v) => v == null
@@ -122,4 +125,11 @@ const _$GreekEnumMap = {
   Greek.beta: 'beta',
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
+};
+
+const _$GreekEnumDecodeMap = {
+  'alpha': Greek.alpha,
+  'beta': Greek.beta,
+  'gamma': Greek.gamma,
+  'delta': Greek.delta,
 };

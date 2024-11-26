@@ -25,7 +25,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
             'weights',
             (v) => val.weights = (v as Map?)?.map(
                   (k, e) => MapEntry(
-                      $enumDecode(_$AutoApplyEnumMap, k), (e as num?)?.toInt()),
+                      $enumDecodeWithDecodeMap(_$AutoApplyEnumDecodeMap, k),
+                      (e as num?)?.toInt()),
                 ));
         return val;
       },
@@ -42,6 +43,13 @@ const _$AutoApplyEnumMap = {
   AutoApply.dependents: 'dependents',
   AutoApply.allPackages: 'all_packages',
   AutoApply.rootPackage: 'root_package',
+};
+
+const _$AutoApplyEnumDecodeMap = {
+  'none': AutoApply.none,
+  'dependents': AutoApply.dependents,
+  'all_packages': AutoApply.allPackages,
+  'root_package': AutoApply.rootPackage,
 };
 
 Builder _$BuilderFromJson(Map json) => $checkedCreate(
@@ -70,11 +78,17 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
           target: $checkedConvert('target', (v) => v as String?),
           isOptional: $checkedConvert('is_optional', (v) => v as bool?),
           autoApply: $checkedConvert(
-              'auto_apply', (v) => $enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              'auto_apply',
+              (v) => $enumDecodeNullableWithDecodeMap(
+                  _$AutoApplyEnumDecodeMap, v)),
           buildTo: $checkedConvert(
-              'build_to', (v) => $enumDecodeNullable(_$BuildToEnumMap, v)),
-          defaultEnumTest: $checkedConvert('defaultEnumTest',
-              (v) => $enumDecodeNullable(_$AutoApplyEnumMap, v)),
+              'build_to',
+              (v) =>
+                  $enumDecodeNullableWithDecodeMap(_$BuildToEnumDecodeMap, v)),
+          defaultEnumTest: $checkedConvert(
+              'defaultEnumTest',
+              (v) => $enumDecodeNullableWithDecodeMap(
+                  _$AutoApplyEnumDecodeMap, v)),
           builderFactories: $checkedConvert('builder_factories',
               (v) => (v as List<dynamic>).map((e) => e as String).toList()),
           appliesBuilders: $checkedConvert('applies_builders',
@@ -124,4 +138,9 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) => <String, dynamic>{
 const _$BuildToEnumMap = {
   BuildTo.cache: 'cache',
   BuildTo.source: 'source',
+};
+
+const _$BuildToEnumDecodeMap = {
+  'cache': BuildTo.cache,
+  'source': BuildTo.source,
 };

@@ -31,22 +31,52 @@ import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
-class Person {
-  /// The generated code assumes these values exist in JSON.
-  final String firstName, lastName;
+class A {
+  final StatusCode? statusCode;
+  final StatusCode2 statusCode2;
+  final StatusCode3 statusCode3;
 
-  /// The generated code below handles if the corresponding JSON value doesn't
-  /// exist or is empty.
-  final DateTime? dateOfBirth;
+  A(this.statusCode, this.statusCode2, this.statusCode3);
 
-  Person({required this.firstName, required this.lastName, this.dateOfBirth});
+  factory A.fromJson(Map<String, dynamic> json) => _$AFromJson(json);
 
-  /// Connect the generated [_$PersonFromJson] function to the `fromJson`
-  /// factory.
-  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  Map<String, dynamic> toJson() => _$AToJson(this);
+}
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$PersonToJson(this);
+enum StatusCode {
+  @JsonValue(200, aliases: [201, 202])
+  success,
+  @JsonValue(301)
+  movedPermanently,
+  @JsonValue(302)
+  found,
+  @JsonValue(500)
+  internalServerError,
+}
+
+@JsonEnum(valueField: 'code')
+enum StatusCode2 {
+  success(200),
+  movedPermanently(301),
+  found(302),
+  internalServerError(500);
+
+  const StatusCode2(this.code);
+
+  final int code;
+}
+
+@JsonEnum(valueField: 'code')
+enum StatusCode3 {
+  success(200),
+  movedPermanently(301),
+  @JsonValue(1000)
+  found(302),
+  internalServerError(500);
+
+  const StatusCode3(this.code);
+
+  final int code;
 }
 ```
 
@@ -55,19 +85,62 @@ Building creates the corresponding part `example.g.dart`:
 ```dart
 part of 'example.dart';
 
-Person _$PersonFromJson(Map<String, dynamic> json) => Person(
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      dateOfBirth: json['dateOfBirth'] == null
-          ? null
-          : DateTime.parse(json['dateOfBirth'] as String),
+A _$AFromJson(Map<String, dynamic> json) => A(
+      $enumDecodeNullableWithDecodeMap(
+          _$StatusCodeEnumDecodeMap, json['statusCode']),
+      $enumDecodeWithDecodeMap(_$StatusCode2EnumDecodeMap, json['statusCode2']),
+      $enumDecodeWithDecodeMap(_$StatusCode3EnumDecodeMap, json['statusCode3']),
     );
 
-Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+Map<String, dynamic> _$AToJson(A instance) => <String, dynamic>{
+      'statusCode': _$StatusCodeEnumMap[instance.statusCode],
+      'statusCode2': _$StatusCode2EnumMap[instance.statusCode2]!,
+      'statusCode3': _$StatusCode3EnumMap[instance.statusCode3]!,
     };
+
+const _$StatusCodeEnumMap = {
+  StatusCode.success: 200,
+  StatusCode.movedPermanently: 301,
+  StatusCode.found: 302,
+  StatusCode.internalServerError: 500,
+};
+
+const _$StatusCodeEnumDecodeMap = {
+  200: StatusCode.success,
+  201: StatusCode.success,
+  202: StatusCode.success,
+  301: StatusCode.movedPermanently,
+  302: StatusCode.found,
+  500: StatusCode.internalServerError,
+};
+
+const _$StatusCode2EnumMap = {
+  StatusCode2.success: 200,
+  StatusCode2.movedPermanently: 301,
+  StatusCode2.found: 302,
+  StatusCode2.internalServerError: 500,
+};
+
+const _$StatusCode2EnumDecodeMap = {
+  200: StatusCode2.success,
+  301: StatusCode2.movedPermanently,
+  302: StatusCode2.found,
+  500: StatusCode2.internalServerError,
+};
+
+const _$StatusCode3EnumMap = {
+  StatusCode3.success: 200,
+  StatusCode3.movedPermanently: 301,
+  StatusCode3.found: 1000,
+  StatusCode3.internalServerError: 500,
+};
+
+const _$StatusCode3EnumDecodeMap = {
+  200: StatusCode3.success,
+  301: StatusCode3.movedPermanently,
+  1000: StatusCode3.found,
+  500: StatusCode3.internalServerError,
+};
 ```
 
 # Running the code generator

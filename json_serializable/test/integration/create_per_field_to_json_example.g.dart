@@ -11,7 +11,8 @@ part of 'create_per_field_to_json_example.dart';
 Model _$ModelFromJson(Map<String, dynamic> json) => Model(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      enumValue: $enumDecodeNullable(_$EnumValueEnumMap, json['enumValue']),
+      enumValue: $enumDecodeNullableWithDecodeMap(
+          _$EnumValueEnumDecodeMap, json['enumValue']),
       nested: json['nested'] == null
           ? null
           : Nested.fromJson(json['nested'] as Map<String, dynamic>),
@@ -60,6 +61,11 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
 const _$EnumValueEnumMap = {
   EnumValue.first: '1',
   EnumValue.second: 'second',
+};
+
+const _$EnumValueEnumDecodeMap = {
+  '1': EnumValue.first,
+  'second': EnumValue.second,
 };
 
 Nested _$NestedFromJson(Map<String, dynamic> json) => Nested(

@@ -10,6 +10,11 @@ const _$EnumValueIssue1147EnumMap = {
   EnumValueIssue1147.success: 200,
   EnumValueIssue1147.weird: 601,
 };
+
+const _$EnumValueIssue1147EnumDecodeMap = {
+  200: EnumValueIssue1147.success,
+  601: EnumValueIssue1147.weird,
+};
 ''')
 @JsonEnum(alwaysCreate: true, valueField: 'statusCodeNumber')
 enum EnumValueIssue1147 {

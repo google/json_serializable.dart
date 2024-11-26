@@ -15,7 +15,8 @@ Issue559Regression _$Issue559RegressionFromJson(Map<String, dynamic> json) {
     disallowNullValues: const ['status'],
   );
   return Issue559Regression(
-    status: $enumDecodeNullable(_$Issue559RegressionEnumEnumMap, json['status'],
+    status: $enumDecodeNullableWithDecodeMap(
+        _$Issue559RegressionEnumEnumDecodeMap, json['status'],
         unknownValue: JsonKey.nullForUndefinedEnumValue),
   );
 }
@@ -24,6 +25,12 @@ const _$Issue559RegressionEnumEnumMap = {
   Issue559RegressionEnum.alpha: 'alpha',
   Issue559RegressionEnum.beta: 'beta',
   Issue559RegressionEnum.gamma: 'gamma',
+};
+
+const _$Issue559RegressionEnumEnumDecodeMap = {
+  'alpha': Issue559RegressionEnum.alpha,
+  'beta': Issue559RegressionEnum.beta,
+  'gamma': Issue559RegressionEnum.gamma,
 };
 
 Map<String, dynamic> _$Issue1145RegressionAToJson(
@@ -39,6 +46,12 @@ const _$Issue1145RegressionEnumEnumMap = {
   Issue1145RegressionEnum.gamma: 'gamma',
 };
 
+const _$Issue1145RegressionEnumEnumDecodeMap = {
+  'alpha': Issue1145RegressionEnum.alpha,
+  'beta': Issue1145RegressionEnum.beta,
+  'gamma': Issue1145RegressionEnum.gamma,
+};
+
 Map<String, dynamic> _$Issue1145RegressionBToJson(
         Issue1145RegressionB instance) =>
     <String, dynamic>{
@@ -49,8 +62,8 @@ Map<String, dynamic> _$Issue1145RegressionBToJson(
 
 Issue1226Regression _$Issue1226RegressionFromJson(Map<String, dynamic> json) =>
     Issue1226Regression(
-      durationType: $enumDecodeNullable(
-          _$Issue1145RegressionEnumEnumMap, json['durationType']),
+      durationType: $enumDecodeNullableWithDecodeMap(
+          _$Issue1145RegressionEnumEnumDecodeMap, json['durationType']),
     );
 
 Map<String, dynamic> _$Issue1226RegressionToJson(
@@ -61,11 +74,43 @@ Map<String, dynamic> _$Issue1226RegressionToJson(
         'durationType': value,
     };
 
+EnumWithAliasesData _$EnumWithAliasesDataFromJson(Map<String, dynamic> json) =>
+    EnumWithAliasesData(
+      $enumDecodeWithDecodeMap(_$EnumWithAliasesEnumDecodeMap, json['value']),
+    );
+
+Map<String, dynamic> _$EnumWithAliasesDataToJson(
+        EnumWithAliasesData instance) =>
+    <String, dynamic>{
+      'value': _$EnumWithAliasesEnumMap[instance.value]!,
+    };
+
+const _$EnumWithAliasesEnumMap = {
+  EnumWithAliases.one: '1',
+  EnumWithAliases.two: '2',
+  EnumWithAliases.three: '3',
+};
+
+const _$EnumWithAliasesEnumDecodeMap = {
+  '1': EnumWithAliases.one,
+  '2': EnumWithAliases.two,
+  'two': EnumWithAliases.two,
+  'deux': EnumWithAliases.two,
+  '3': EnumWithAliases.three,
+};
+
 const _$StandAloneEnumEnumMap = {
   StandAloneEnum.alpha: 'a',
   StandAloneEnum.beta: 'b',
   StandAloneEnum.gamma: 'g',
   StandAloneEnum.delta: 'd',
+};
+
+const _$StandAloneEnumEnumDecodeMap = {
+  'a': StandAloneEnum.alpha,
+  'b': StandAloneEnum.beta,
+  'g': StandAloneEnum.gamma,
+  'd': StandAloneEnum.delta,
 };
 
 const _$DayTypeEnumMap = {
@@ -74,13 +119,30 @@ const _$DayTypeEnumMap = {
   DayType.veryBad: 'very-bad',
 };
 
+const _$DayTypeEnumDecodeMap = {
+  'no-good': DayType.noGood,
+  'rotten': DayType.rotten,
+  'very-bad': DayType.veryBad,
+};
+
 const _$MyStatusCodeEnumMap = {
   MyStatusCode.success: 200,
   MyStatusCode.weird: 701,
+};
+
+const _$MyStatusCodeEnumDecodeMap = {
+  200: MyStatusCode.success,
+  701: MyStatusCode.weird,
 };
 
 const _$EnumValueFieldIndexEnumMap = {
   EnumValueFieldIndex.success: 0,
   EnumValueFieldIndex.weird: 701,
   EnumValueFieldIndex.oneMore: 2,
+};
+
+const _$EnumValueFieldIndexEnumDecodeMap = {
+  0: EnumValueFieldIndex.success,
+  701: EnumValueFieldIndex.weird,
+  2: EnumValueFieldIndex.oneMore,
 };

@@ -39,8 +39,9 @@ DefaultValueImplicit _$DefaultValueImplicitFromJson(
               const {
                 'root': ['child']
               },
-      fieldEnum:
-          $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+      fieldEnum: $enumDecodeNullableWithDecodeMap(
+              _$GreekEnumDecodeMap, json['fieldEnum']) ??
+          Greek.beta,
       durationField: json['durationField'] == null
           ? const Duration()
           : Duration(microseconds: (json['durationField'] as num).toInt()),
@@ -102,4 +103,11 @@ const _$GreekEnumMap = {
   Greek.beta: 'beta',
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
+};
+
+const _$GreekEnumDecodeMap = {
+  'alpha': Greek.alpha,
+  'beta': Greek.beta,
+  'gamma': Greek.gamma,
+  'delta': Greek.delta,
 };

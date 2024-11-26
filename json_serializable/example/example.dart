@@ -7,20 +7,50 @@ import 'package:json_annotation/json_annotation.dart';
 part 'example.g.dart';
 
 @JsonSerializable()
-class Person {
-  /// The generated code assumes these values exist in JSON.
-  final String firstName, lastName;
+class A {
+  final StatusCode? statusCode;
+  final StatusCode2 statusCode2;
+  final StatusCode3 statusCode3;
 
-  /// The generated code below handles if the corresponding JSON value doesn't
-  /// exist or is empty.
-  final DateTime? dateOfBirth;
+  A(this.statusCode, this.statusCode2, this.statusCode3);
 
-  Person({required this.firstName, required this.lastName, this.dateOfBirth});
+  factory A.fromJson(Map<String, dynamic> json) => _$AFromJson(json);
 
-  /// Connect the generated [_$PersonFromJson] function to the `fromJson`
-  /// factory.
-  factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
+  Map<String, dynamic> toJson() => _$AToJson(this);
+}
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$PersonToJson(this);
+enum StatusCode {
+  @JsonValue(200, aliases: [201, 202])
+  success,
+  @JsonValue(301)
+  movedPermanently,
+  @JsonValue(302)
+  found,
+  @JsonValue(500)
+  internalServerError,
+}
+
+@JsonEnum(valueField: 'code')
+enum StatusCode2 {
+  success(200),
+  movedPermanently(301),
+  found(302),
+  internalServerError(500);
+
+  const StatusCode2(this.code);
+
+  final int code;
+}
+
+@JsonEnum(valueField: 'code')
+enum StatusCode3 {
+  success(200),
+  movedPermanently(301),
+  @JsonValue(1000)
+  found(302),
+  internalServerError(500);
+
+  const StatusCode3(this.code);
+
+  final int code;
 }

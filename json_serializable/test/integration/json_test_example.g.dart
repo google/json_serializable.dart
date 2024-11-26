@@ -11,7 +11,7 @@ part of 'json_test_example.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => Person(
       json['firstName'] as String,
       json['lastName'] as String,
-      $enumDecode(_$CategoryEnumMap, json[r'$house']),
+      $enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, json[r'$house']),
       middleName: json['middleName'] as String?,
       dateOfBirth: json['dateOfBirth'] == null
           ? null
@@ -26,11 +26,12 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
               .map((e) => Order.fromJson(e as Map<String, dynamic>))
               .toList())
       ..houseMap = (json['houseMap'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(k, $enumDecode(_$CategoryEnumMap, e)),
+        (k, e) =>
+            MapEntry(k, $enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, e)),
       )
       ..categoryCounts = (json['categoryCounts'] as Map<String, dynamic>?)?.map(
-        (k, e) =>
-            MapEntry($enumDecode(_$CategoryEnumMap, k), (e as num).toInt()),
+        (k, e) => MapEntry($enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, k),
+            (e as num).toInt()),
       );
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -57,13 +58,23 @@ const _$CategoryEnumMap = {
   Category.notDiscoveredYet: 'not_discovered_yet',
 };
 
+const _$CategoryEnumDecodeMap = {
+  'top': Category.top,
+  'bottom': Category.bottom,
+  'strange': Category.strange,
+  'charmed': Category.charmed,
+  'up': Category.up,
+  'down': Category.down,
+  'not_discovered_yet': Category.notDiscoveredYet,
+};
+
 Order _$OrderFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
     disallowNullValues: const ['count'],
   );
   return Order.custom(
-    $enumDecodeNullable(_$CategoryEnumMap, json['category']),
+    $enumDecodeNullableWithDecodeMap(_$CategoryEnumDecodeMap, json['category']),
     (json['items'] as List<dynamic>?)
         ?.map((e) => Item.fromJson(e as Map<String, dynamic>)),
   )
@@ -80,7 +91,8 @@ Order _$OrderFromJson(Map<String, dynamic> json) {
     )
     ..homepage =
         json['homepage'] == null ? null : Uri.parse(json['homepage'] as String)
-    ..statusCode = $enumDecodeNullable(_$StatusCodeEnumMap, json['status_code'],
+    ..statusCode = $enumDecodeNullableWithDecodeMap(
+            _$StatusCodeEnumDecodeMap, json['status_code'],
             unknownValue: StatusCode.unknown) ??
         StatusCode.success;
 }
@@ -102,6 +114,13 @@ const _$StatusCodeEnumMap = {
   StatusCode.notFound: 404,
   StatusCode.weird: '500',
   StatusCode.unknown: 'unknown',
+};
+
+const _$StatusCodeEnumDecodeMap = {
+  200: StatusCode.success,
+  404: StatusCode.notFound,
+  '500': StatusCode.weird,
+  'unknown': StatusCode.unknown,
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item(
@@ -175,17 +194,18 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
 
 UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
     UnknownEnumValue()
-      ..enumValue = $enumDecode(_$CategoryEnumMap, json['enumValue'],
+      ..enumValue = $enumDecodeWithDecodeMap(
+          _$CategoryEnumDecodeMap, json['enumValue'],
           unknownValue: Category.notDiscoveredYet)
       ..enumIterable = (json['enumIterable'] as List<dynamic>).map((e) =>
-          $enumDecode(_$CategoryEnumMap, e,
+          $enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, e,
               unknownValue: Category.notDiscoveredYet))
       ..enumList = (json['enumList'] as List<dynamic>)
-          .map((e) => $enumDecode(_$CategoryEnumMap, e,
+          .map((e) => $enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, e,
               unknownValue: Category.notDiscoveredYet))
           .toList()
       ..enumSet = (json['enumSet'] as List<dynamic>)
-          .map((e) => $enumDecode(_$CategoryEnumMap, e,
+          .map((e) => $enumDecodeWithDecodeMap(_$CategoryEnumDecodeMap, e,
               unknownValue: Category.notDiscoveredYet))
           .toSet();
 

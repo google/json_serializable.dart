@@ -332,7 +332,7 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumType(
       (json['value'] as List<dynamic>)
-          .map((e) => $enumDecode(_$EnumTypeEnumMap, e))
+          .map((e) => $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, e))
           .toList(),
     );
 
@@ -349,11 +349,18 @@ const _$EnumTypeEnumMap = {
   EnumType.delta: 'delta',
 };
 
+const _$EnumTypeEnumDecodeMap = {
+  'alpha': EnumType.alpha,
+  'beta': EnumType.beta,
+  'gamma': EnumType.gamma,
+  'delta': EnumType.delta,
+};
+
 SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
         Map<String, dynamic> json) =>
     SimpleClassNullableOfEnumType(
       (json['value'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$EnumTypeEnumMap, e))
+          ?.map((e) => $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, e))
           .toList(),
     );
 
@@ -367,7 +374,8 @@ SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
         Map<String, dynamic> json) =>
     SimpleClassOfEnumTypeNullable(
       (json['value'] as List<dynamic>)
-          .map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e))
+          .map((e) =>
+              $enumDecodeNullableWithDecodeMap(_$EnumTypeEnumDecodeMap, e))
           .toList(),
     );
 
@@ -382,7 +390,8 @@ SimpleClassNullableOfEnumTypeNullable
             Map<String, dynamic> json) =>
         SimpleClassNullableOfEnumTypeNullable(
           (json['value'] as List<dynamic>?)
-              ?.map((e) => $enumDecodeNullable(_$EnumTypeEnumMap, e))
+              ?.map((e) =>
+                  $enumDecodeNullableWithDecodeMap(_$EnumTypeEnumDecodeMap, e))
               .toList(),
         );
 
