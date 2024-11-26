@@ -121,7 +121,7 @@ Map<Object?, FieldElement>? _enumAliases(
         jsonEnum: jsonEnum,
         targetType: targetType,
       ): field,
-      for (final alias in _generateAliases(field: field, targetType: targetType))
+      for (var alias in _generateAliases(field: field, targetType: targetType))
         alias: field,
     },
   };
