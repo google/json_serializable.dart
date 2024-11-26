@@ -58,6 +58,7 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
         'nestedExcludeIfNull': value,
     };
 
+// ignore: unused_element
 const _$EnumValueEnumMap = {
   EnumValue.first: '1',
   EnumValue.second: 'second',

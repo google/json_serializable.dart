@@ -21,6 +21,7 @@ Issue559Regression _$Issue559RegressionFromJson(Map<String, dynamic> json) {
   );
 }
 
+// ignore: unused_element
 const _$Issue559RegressionEnumEnumMap = {
   Issue559RegressionEnum.alpha: 'alpha',
   Issue559RegressionEnum.beta: 'beta',
@@ -41,6 +42,7 @@ Map<String, dynamic> _$Issue1145RegressionAToJson(
           .map((k, e) => MapEntry(_$Issue1145RegressionEnumEnumMap[k]!, e)),
     };
 
+// ignore: unused_element
 const _$Issue1145RegressionEnumEnumMap = {
   Issue1145RegressionEnum.alpha: 'alpha',
   Issue1145RegressionEnum.beta: 'beta',
@@ -87,6 +89,7 @@ Map<String, dynamic> _$EnumWithAliasesDataToJson(
       'value': _$EnumWithAliasesEnumMap[instance.value]!,
     };
 
+// ignore: unused_element
 const _$EnumWithAliasesEnumMap = {
   EnumWithAliases.one: '1',
   EnumWithAliases.two: '2',
@@ -102,6 +105,7 @@ const _$EnumWithAliasesEnumDecodeMap = {
   '3': EnumWithAliases.three,
 };
 
+// ignore: unused_element
 const _$StandAloneEnumEnumMap = {
   StandAloneEnum.alpha: 'a',
   StandAloneEnum.beta: 'b',
@@ -117,6 +121,7 @@ const _$StandAloneEnumEnumDecodeMap = {
   'd': StandAloneEnum.delta,
 };
 
+// ignore: unused_element
 const _$DayTypeEnumMap = {
   DayType.noGood: 'no-good',
   DayType.rotten: 'rotten',
@@ -130,6 +135,7 @@ const _$DayTypeEnumDecodeMap = {
   'very-bad': DayType.veryBad,
 };
 
+// ignore: unused_element
 const _$MyStatusCodeEnumMap = {
   MyStatusCode.success: 200,
   MyStatusCode.weird: 701,
@@ -141,6 +147,7 @@ const _$MyStatusCodeEnumDecodeMap = {
   701: MyStatusCode.weird,
 };
 
+// ignore: unused_element
 const _$EnumValueFieldIndexEnumMap = {
   EnumValueFieldIndex.success: 0,
   EnumValueFieldIndex.weird: 701,

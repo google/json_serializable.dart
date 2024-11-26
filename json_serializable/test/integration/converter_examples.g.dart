@@ -48,6 +48,7 @@ Map<String, dynamic> _$Issue1202RegressionClassToJson(
         'valueWithNullableFunctions': value,
     };
 
+// ignore: unused_element
 const _$Issue1202RegressionEnumEnumMap = {
   Issue1202RegressionEnum.normalValue: 42,
   Issue1202RegressionEnum.nullValue: null,

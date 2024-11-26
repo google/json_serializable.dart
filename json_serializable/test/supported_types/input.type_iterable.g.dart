@@ -317,6 +317,7 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
       'value': instance.value.map((e) => _$EnumTypeEnumMap[e]!).toList(),
     };
 
+// ignore: unused_element
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
   EnumType.beta: 'beta',

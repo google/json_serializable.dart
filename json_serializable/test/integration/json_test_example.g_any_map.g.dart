@@ -48,6 +48,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
           ?.map((k, e) => MapEntry(_$CategoryEnumMap[k]!, e)),
     };
 
+// ignore: unused_element
 const _$CategoryEnumMap = {
   Category.top: 'top',
   Category.bottom: 'bottom',
@@ -110,6 +111,7 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       'status_code': _$StatusCodeEnumMap[instance.statusCode],
     };
 
+// ignore: unused_element
 const _$StatusCodeEnumMap = {
   StatusCode.success: 200,
   StatusCode.notFound: 404,

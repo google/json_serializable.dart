@@ -569,6 +569,7 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
       },
     };
 
+// ignore: unused_element
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
   EnumType.beta: 'beta',

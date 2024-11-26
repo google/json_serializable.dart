@@ -21,6 +21,7 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'withDefault': _$EnumTypeEnumMap[instance.withDefault]!,
     };
 
+// ignore: unused_element
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
   EnumType.beta: 'beta',

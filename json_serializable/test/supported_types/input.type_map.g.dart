@@ -137,6 +137,7 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToBigIntToJson(
           .map((k, e) => MapEntry(_$EnumTypeEnumMap[k]!, e.toString())),
     };
 
+// ignore: unused_element
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
   EnumType.beta: 'beta',

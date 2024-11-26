@@ -38,6 +38,7 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
           instance.weights?.map((k, e) => MapEntry(_$AutoApplyEnumMap[k]!, e)),
     };
 
+// ignore: unused_element
 const _$AutoApplyEnumMap = {
   AutoApply.none: 'none',
   AutoApply.dependents: 'dependents',
@@ -136,6 +137,7 @@ Map<String, dynamic> _$BuilderToJson(Builder instance) => <String, dynamic>{
       if (instance.buildExtensions case final value?) 'build_extensions': value,
     };
 
+// ignore: unused_element
 const _$BuildToEnumMap = {
   BuildTo.cache: 'cache',
   BuildTo.source: 'source',

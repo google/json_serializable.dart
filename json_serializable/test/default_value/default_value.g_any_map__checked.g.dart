@@ -120,6 +120,7 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
           instance.valueFromDefaultValueNamedConstructor,
     };
 
+// ignore: unused_element
 const _$GreekEnumMap = {
   Greek.alpha: 'alpha',
   Greek.beta: 'beta',
