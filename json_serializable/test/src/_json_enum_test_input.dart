@@ -11,6 +11,7 @@ const _$EnumValueIssue1147EnumMap = {
   EnumValueIssue1147.weird: 601,
 };
 
+// ignore: unused_element
 const _$EnumValueIssue1147EnumDecodeMap = {
   200: EnumValueIssue1147.success,
   601: EnumValueIssue1147.weird,

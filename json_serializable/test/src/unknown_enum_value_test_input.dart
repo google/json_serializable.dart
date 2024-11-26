@@ -19,6 +19,7 @@ const _$UnknownEnumValueItemsEnumMap = {
   UnknownEnumValueItems.vNull: 'vNull',
 };
 
+// ignore: unused_element
 const _$UnknownEnumValueItemsEnumDecodeMap = {
   'v0': UnknownEnumValueItems.v0,
   'v1': UnknownEnumValueItems.v1,
