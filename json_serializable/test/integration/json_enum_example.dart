@@ -136,7 +136,7 @@ enum EnumWithAliases {
 @JsonSerializable()
 class EnumWithAliasesData {
   final EnumWithAliases value;
-    
+
   EnumWithAliasesData(this.value);
 
   factory EnumWithAliasesData.fromJson(Map<String, dynamic> json) =>
