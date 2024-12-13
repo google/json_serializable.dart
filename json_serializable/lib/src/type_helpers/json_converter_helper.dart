@@ -202,6 +202,14 @@ _JsonConvertData? _typeConverterFrom(
     return null;
   }
 
+  if (targetType.isNullableType && matchingAnnotations.length == 2) {
+    final indexOfNonNullableConverter = matchingAnnotations
+        .indexWhere((element) => !element.fieldType.isNullableType);
+    if (indexOfNonNullableConverter >= 0) {
+      matchingAnnotations.removeAt(indexOfNonNullableConverter);
+    }
+  }
+
   if (matchingAnnotations.length > 1) {
     final targetTypeCode = typeToCode(targetType);
     throw InvalidGenerationSourceError(
