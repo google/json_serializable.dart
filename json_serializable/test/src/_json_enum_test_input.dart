@@ -5,6 +5,16 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
+@ShouldThrow(
+  'The `JsonValue` annotation on `EnumAliasNotSupportType.one` aliases should '
+  'all be of type String or int.',
+)
+@JsonEnum(alwaysCreate: true)
+enum EnumAliasNotSupportType {
+  @JsonValue('one', aliases: {#one})
+  one,
+}
+
 @ShouldGenerate(r'''
 // ignore: unused_element
 const _$EnumValueIssue1147EnumMap = {

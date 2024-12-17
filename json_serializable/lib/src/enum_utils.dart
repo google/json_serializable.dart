@@ -216,7 +216,7 @@ List<Object?> _generateAliases({
       final targetTypeCode = typeToCode(targetType);
       throw InvalidGenerationSourceError(
         'The `JsonValue` annotation on `$targetTypeCode.${field.name}` aliases '
-        'should all be of type String, or int.',
+        'should all be of type String or int.',
         element: field,
       );
     }
