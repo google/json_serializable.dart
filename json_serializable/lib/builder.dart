@@ -39,11 +39,6 @@ Builder jsonSerializable(BuilderOptions options) {
       lines.add(e.innerError.toString());
     }
 
-    throw StateError(
-      lines
-          .join('\n')
-          // TODO(kevmoo) remove when dart-lang/sdk#50756 is fixed!
-          .replaceAll(" of ' in type cast'", ' in type cast'),
-    );
+    throw StateError(lines.join('\n'));
   }
 }

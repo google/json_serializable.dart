@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+// @dart=3.6
+
 // ignore_for_file: inference_failure_on_instance_creation
 
 part of '_json_serializable_test_input.dart';

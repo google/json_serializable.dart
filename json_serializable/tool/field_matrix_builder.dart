@@ -15,6 +15,8 @@ Builder builder([_]) => _FieldMatrixBuilder();
 class _FieldMatrixBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final formatter = await buildStep.formatter();
+
     final inputBaseName = p.basenameWithoutExtension(buildStep.inputId.path);
 
     final output = buildStep.allowedOutputs.single;

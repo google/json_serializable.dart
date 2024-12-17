@@ -1,3 +1,8 @@
+## 6.9.1
+
+- Support the latest `package:analyzer` and `package:source_gen`.
+- Require Dart 3.6
+
 ## 6.9.0
 
 - Use conditional map syntax to clean up `null` handling in `toJson` functions.

@@ -125,6 +125,8 @@ class _TypeBuilder implements Builder {
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final formatter = await buildStep.formatter();
+
     final inputId = buildStep.inputId;
 
     final sourceContent = await buildStep.readAsString(inputId);
