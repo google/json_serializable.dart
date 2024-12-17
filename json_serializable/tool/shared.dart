@@ -8,8 +8,6 @@ import 'package:build/build.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:yaml/yaml.dart';
 
-final formatter = DartFormatter();
-
 // Until we have verification in pkg:build and friends
 // https://github.com/dart-lang/build/issues/590
 Builder validate(String builderName, Builder builder) {
@@ -71,4 +69,9 @@ class Replacement {
 
     return outputContent.replaceAll(',)', ',\n)');
   }
+}
+
+extension BuildStepExtension on BuildStep {
+  Future<DartFormatter> formatter() async => DartFormatter(
+      languageVersion: (await inputLibrary).languageVersion.effective);
 }

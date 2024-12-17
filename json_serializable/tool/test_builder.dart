@@ -17,6 +17,8 @@ class _TestBuilder implements Builder {
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final formatter = await buildStep.formatter();
+
     final baseName = p.basenameWithoutExtension(buildStep.inputId.path);
 
     final sourceContent = await buildStep.readAsString(buildStep.inputId);

@@ -2,10 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// TODO: Waiting until Dart 3.6 so we can pin a stable Dart SDK compatible w/ latest
-// analyzer
-// ignore_for_file: deprecated_member_use
-
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -267,15 +263,15 @@ extension ExecutableElementExtension on ExecutableElement {
     }
 
     if (this is MethodElement) {
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     if (this is ConstructorElement) {
       // Ignore the default constructor.
       if (name.isEmpty) {
-        return '${enclosingElement.name}';
+        return '${enclosingElement3.name}';
       }
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement3.name}.$name';
     }
 
     throw UnsupportedError(

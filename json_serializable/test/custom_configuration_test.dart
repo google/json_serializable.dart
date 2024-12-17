@@ -142,11 +142,11 @@ void _registerTests(JsonSerializable generator) {
 
       const expected = r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
-        TrivialNestedNullable instance) =>
-    <String, dynamic>{
-      'child': instance.child?.toJson(),
-      'otherField': instance.otherField,
-    };
+  TrivialNestedNullable instance,
+) => <String, dynamic>{
+  'child': instance.child?.toJson(),
+  'otherField': instance.otherField,
+};
 ''';
 
       expect(output, expected);
@@ -157,11 +157,11 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
 
       const expected = r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
-        TrivialNestedNonNullable instance) =>
-    <String, dynamic>{
-      'child': instance.child.toJson(),
-      'otherField': instance.otherField,
-    };
+  TrivialNestedNonNullable instance,
+) => <String, dynamic>{
+  'child': instance.child.toJson(),
+  'otherField': instance.otherField,
+};
 ''';
 
       expect(output, expected);

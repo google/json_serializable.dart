@@ -11,7 +11,7 @@ topics:
  - codegen
 
 environment:
-  sdk: ^3.5.0
+  sdk: ^3.6.0
 
 resolution: workspace
 

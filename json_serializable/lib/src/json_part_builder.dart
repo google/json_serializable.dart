@@ -3,7 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:build/build.dart';
+import 'package:dart_style/dart_style.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'check_dependencies.dart';
@@ -18,7 +20,7 @@ import 'settings.dart';
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
 Builder jsonPartBuilder({
-  String Function(String code)? formatOutput,
+  String Function(String code, Version languageVersion)? formatOutput,
   JsonSerializable? config,
 }) {
   final settings = Settings(config: config);
@@ -32,7 +34,7 @@ Builder jsonPartBuilder({
       const JsonLiteralGenerator(),
     ],
     'json_serializable',
-    formatOutput: formatOutput,
+    formatOutput: formatOutput ?? defaultFormatOutput,
   );
 }
 
@@ -99,3 +101,6 @@ Iterable<String> _normalizeGeneratorOutput(Object? value) {
 ArgumentError _argError(Object value) => ArgumentError(
     'Must be a String or be an Iterable containing String values. '
     'Found `${Error.safeToString(value)}` (${value.runtimeType}).');
+
+String defaultFormatOutput(String code, Version languageVersion) =>
+    DartFormatter(languageVersion: languageVersion).format(code);
