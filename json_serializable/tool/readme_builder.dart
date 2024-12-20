@@ -13,7 +13,7 @@ import 'package:yaml/yaml.dart';
 import 'test_type_builder.dart';
 import 'test_type_data.dart';
 
-Builder readmeBuilder([_]) => _ReadmeBuilder();
+Builder readmeBuilder([BuilderOptions? _]) => _ReadmeBuilder();
 
 class _ReadmeBuilder extends Builder {
   @override

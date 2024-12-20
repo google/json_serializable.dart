@@ -44,7 +44,7 @@ class FromJsonOptionalParameters {
 }
 
 class ChildWithFromJson {
-  //ignore: avoid_unused_constructor_parameters
+  //ignore: avoid_unused_constructor_parameters, strict_top_level_inference
   ChildWithFromJson.fromJson(json, {initValue = false});
 }
 
