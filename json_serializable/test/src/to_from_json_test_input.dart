@@ -4,6 +4,8 @@
 
 // @dart=3.6
 
+// ignore_for_file: strict_top_level_inference
+
 part of '_json_serializable_test_input.dart';
 
 int _toInt(bool input) => 42;

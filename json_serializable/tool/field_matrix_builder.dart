@@ -10,7 +10,7 @@ import 'package:source_helper/source_helper.dart';
 
 import 'shared.dart';
 
-Builder builder([_]) => _FieldMatrixBuilder();
+Builder builder([BuilderOptions? _]) => _FieldMatrixBuilder();
 
 class _FieldMatrixBuilder extends Builder {
   @override

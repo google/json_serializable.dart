@@ -118,7 +118,8 @@ final _iterableGenericArgs = ([
 const _defaultCollectionExpressions = '42, true, false, null';
 const _altCollectionExpressions = '43, false';
 
-Builder typeBuilder([_]) => validate('_type_builder', const _TypeBuilder());
+Builder typeBuilder([BuilderOptions? _]) =>
+    validate('_type_builder', const _TypeBuilder());
 
 class _TypeBuilder implements Builder {
   const _TypeBuilder();
@@ -147,7 +148,7 @@ class _TypeBuilder implements Builder {
       {'.dart': _allTypes.keys.map(toTypeExtension).toSet().toList()..sort()};
 }
 
-Builder typeTestBuilder([_]) =>
+Builder typeTestBuilder([BuilderOptions? _]) =>
     validate('_type_test_builder', const _TypeTestBuilder());
 
 class _TypeTestBuilder implements Builder {
