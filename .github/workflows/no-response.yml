@@ -25,12 +25,12 @@ jobs:
           days-before-stale: -1
           # Close needs-info issues and PRs after 14 days of inactivity.
           days-before-close: 14
-          stale-issue-label: "needs-info"
+          stale-issue-label: "State: needs info"
           close-issue-message: >
             Without additional information we're not able to resolve this issue.
             Feel free to add more info or respond to any questions above and we
             can reopen the case. Thanks for your contribution!
-          stale-pr-label: "needs-info"
+          stale-pr-label: "State: needs info"
           close-pr-message: >
             Without additional information we're not able to resolve this PR.
             Feel free to add more info or respond to any questions above.
