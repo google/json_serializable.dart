@@ -10,7 +10,8 @@ import 'package:path/path.dart' as p;
 
 import 'shared.dart';
 
-Builder testBuilder([_]) => validate('_test_builder', const _TestBuilder());
+Builder testBuilder([BuilderOptions? _]) =>
+    validate('_test_builder', const _TestBuilder());
 
 class _TestBuilder implements Builder {
   const _TestBuilder();
