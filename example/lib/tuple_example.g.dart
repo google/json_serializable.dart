@@ -42,7 +42,7 @@ Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
     <String, dynamic>{
       'tuple1': instance.tuple1.toJson(
         (value) => value,
-        (value) => value.toIso8601String(),
+        (value) => value.toUtc().toIso8601String(),
       ),
       'tuple2': instance.tuple2.toJson(
         (value) => value.inMicroseconds,

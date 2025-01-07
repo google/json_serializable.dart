@@ -17,8 +17,8 @@ SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
-      'value': instance.value.toIso8601String(),
-      'withDefault': instance.withDefault.toIso8601String(),
+      'value': instance.value.toUtc().toIso8601String(),
+      'withDefault': instance.withDefault.toUtc().toIso8601String(),
     };
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
@@ -32,6 +32,6 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassNullableToJson(
         SimpleClassNullable instance) =>
     <String, dynamic>{
-      'value': instance.value?.toIso8601String(),
-      'withDefault': instance.withDefault?.toIso8601String(),
+      'value': instance.value?.toUtc().toIso8601String(),
+      'withDefault': instance.withDefault?.toUtc().toIso8601String(),
     };

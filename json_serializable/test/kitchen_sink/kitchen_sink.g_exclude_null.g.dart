@@ -101,7 +101,7 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) => KitchenSink(
 Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
     <String, dynamic>{
       if (instance.ctorValidatedNo42 case final value?) 'no-42': value,
-      if (instance.dateTime?.toIso8601String() case final value?)
+      if (instance.dateTime?.toUtc().toIso8601String() case final value?)
         'dateTime': value,
       if (instance.bigInt?.toString() case final value?) 'bigInt': value,
       if (instance.iterable?.toList() case final value?) 'iterable': value,
@@ -113,21 +113,23 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
       'objectSet': instance.objectSet.toList(),
       'intSet': instance.intSet.toList(),
       'dateTimeSet':
-          instance.dateTimeSet.map((e) => e.toIso8601String()).toList(),
-      'datetime-iterable':
-          instance.dateTimeIterable.map((e) => e.toIso8601String()).toList(),
+          instance.dateTimeSet.map((e) => e.toUtc().toIso8601String()).toList(),
+      'datetime-iterable': instance.dateTimeIterable
+          .map((e) => e.toUtc().toIso8601String())
+          .toList(),
       'list': instance.list,
       'dynamicList': instance.dynamicList,
       'objectList': instance.objectList,
       'intList': instance.intList,
-      'dateTimeList':
-          instance.dateTimeList.map((e) => e.toIso8601String()).toList(),
+      'dateTimeList': instance.dateTimeList
+          .map((e) => e.toUtc().toIso8601String())
+          .toList(),
       'nullableSimpleObjectList': instance.nullableSimpleObjectList,
       'map': instance.map,
       'stringStringMap': instance.stringStringMap,
       'dynamicIntMap': instance.dynamicIntMap,
       'objectDateTimeMap': instance.objectDateTimeMap
-          .map((k, e) => MapEntry(k, e.toIso8601String())),
+          .map((k, e) => MapEntry(k, e.toUtc().toIso8601String())),
       'nullableSimpleObjectMap': instance.nullableSimpleObjectMap,
       'crazyComplex': instance.crazyComplex
           .map((e) => e?.map((k, e) => MapEntry(
@@ -135,7 +137,8 @@ Map<String, dynamic> _$KitchenSinkToJson(KitchenSink instance) =>
               e?.map((k, e) => MapEntry(
                   k,
                   e
-                      ?.map((e) => e?.map((e) => e.toIso8601String()).toList())
+                      ?.map((e) =>
+                          e?.map((e) => e.toUtc().toIso8601String()).toList())
                       .toList())))))
           .toList(),
       'val': instance.val,

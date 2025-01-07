@@ -37,7 +37,7 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'middleName': instance.middleName,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+      'dateOfBirth': instance.dateOfBirth?.toUtc().toIso8601String(),
       r'$house': _$CategoryEnumMap[instance.house]!,
       'order': instance.order,
       'customOrders': instance.customOrders,
@@ -119,7 +119,8 @@ Item _$ItemFromJson(Map<String, dynamic> json) => Item(
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
       'price': instance.price,
       if (instance.itemNumber case final value?) 'item-number': value,
-      'saleDates': instance.saleDates?.map((e) => e.toIso8601String()).toList(),
+      'saleDates':
+          instance.saleDates?.map((e) => e.toUtc().toIso8601String()).toList(),
       'rates': instance.rates,
       'geoPoint': _toJsonGeoPoint(instance.geoPoint),
     };
@@ -169,7 +170,7 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
       'intIntMap': instance.intIntMap?.map((k, e) => MapEntry(k.toString(), e)),
       'uriIntMap': instance.uriIntMap?.map((k, e) => MapEntry(k.toString(), e)),
       'dateTimeIntMap': instance.dateTimeIntMap
-          ?.map((k, e) => MapEntry(k.toIso8601String(), e)),
+          ?.map((k, e) => MapEntry(k.toUtc().toIso8601String(), e)),
       'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
     };
 

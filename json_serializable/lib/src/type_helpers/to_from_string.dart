@@ -15,7 +15,7 @@ final bigIntString = ToFromStringHelper(
 
 final dateTimeString = ToFromStringHelper(
   'DateTime.parse',
-  'toIso8601String()',
+  'toUtc().toIso8601String()',
   'DateTime',
 );
 
