@@ -36,18 +36,16 @@ void main() {
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},
-        warningMessages: [
-          'The language version ($sdkLowerBound) of this package '
-              '($_testPkgName) does not match the required range '
-              '`$supportLanguageConstraint`.'
-        ],
+        warningMessage: 'The language version ($sdkLowerBound) of this package '
+            '($_testPkgName) does not match the required range '
+            '`$supportLanguageConstraint`.',
       );
     });
 
     test('is at least the required `$supportLanguageConstraint`', () async {
       await _structurePackage(
         dependencies: {'json_annotation': _annotationLowerBound},
-        warningMessages: [],
+        warningMessage: null,
       );
     });
   });
@@ -55,7 +53,7 @@ void main() {
   test(
     'missing dependency in production code',
     () => _structurePackage(
-      warningMessages: [_missingProductionDep],
+      warningMessage: _missingProductionDep,
     ),
   );
 
@@ -63,10 +61,9 @@ void main() {
     'missing dependency in example code',
     () => _structurePackage(
       sourceDirectory: 'example',
-      warningMessages: [
-        'You are missing a required dependency on json_annotation with a '
-            'lower bound of at least "$_annotationLowerBound".'
-      ],
+      warningMessage:
+          'You are missing a required dependency on json_annotation with a '
+          'lower bound of at least "$_annotationLowerBound".',
     ),
   );
 
@@ -74,7 +71,7 @@ void main() {
     'dev dependency with a production usage',
     () => _structurePackage(
       devDependencies: {'json_annotation': _annotationLowerBound},
-      warningMessages: [_missingProductionDep],
+      warningMessage: _missingProductionDep,
     ),
   );
 
@@ -82,10 +79,9 @@ void main() {
     'dependency with `null` constraint',
     () => _structurePackage(
       dependencies: {'json_annotation': null},
-      warningMessages: [
-        'The version constraint "any" on json_annotation allows versions '
-            'before $_annotationLowerBound which is not allowed.'
-      ],
+      warningMessage:
+          'The version constraint "any" on json_annotation allows versions '
+          'before $_annotationLowerBound which is not allowed.',
     ),
   );
 
@@ -93,10 +89,9 @@ void main() {
     'dependency with "any" constraint',
     () => _structurePackage(
       dependencies: {'json_annotation': 'any'},
-      warningMessages: [
-        'The version constraint "any" on json_annotation allows versions '
-            'before $_annotationLowerBound which is not allowed.'
-      ],
+      warningMessage:
+          'The version constraint "any" on json_annotation allows versions '
+          'before $_annotationLowerBound which is not allowed.',
     ),
   );
 
@@ -104,10 +99,9 @@ void main() {
     'dependency with too low version range',
     () => _structurePackage(
       dependencies: {'json_annotation': '^4.0.0'},
-      warningMessages: [
-        'The version constraint "^4.0.0" on json_annotation allows versions '
-            'before $_annotationLowerBound which is not allowed.'
-      ],
+      warningMessage:
+          'The version constraint "^4.0.0" on json_annotation allows versions '
+          'before $_annotationLowerBound which is not allowed.',
     ),
   );
 }
@@ -140,7 +134,7 @@ const _testPkgName = '_test_pkg';
 
 Future<void> _structurePackage({
   String sourceDirectory = 'lib',
-  required List<String> warningMessages,
+  required String? warningMessage,
   Map<String, dynamic> environment = const {'sdk': supportLanguageConstraint},
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
@@ -200,16 +194,17 @@ class SomeClass{}
   }
 
   final output = lines.toString();
+  final expectedWarningCount = warningMessage == null ? 0 : 1;
   final warningCount = '[WARNING]'.allMatches(output).length;
   expect(
     warningCount,
-    warningMessages.length,
+    expectedWarningCount,
     reason:
         'Expected the number of output warnings ($warningCount) to match the '
-        'number of expected warnings (${warningMessages.length}.',
+        'number of expected warnings ($expectedWarningCount.',
   );
 
-  for (var warningMessage in warningMessages) {
+  if (warningMessage != null) {
     expect(output, contains('''
 [WARNING] json_serializable on $sourceDirectory/sample.dart:
 $warningMessage'''));
