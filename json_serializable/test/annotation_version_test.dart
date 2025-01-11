@@ -36,7 +36,7 @@ void main() {
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},
-        warningMessage: 'The language version ($sdkLowerBound) of this package '
+        message: 'The language version ($sdkLowerBound) of this package '
             '($_testPkgName) does not match the required range '
             '`$supportLanguageConstraint`.',
       );
@@ -45,7 +45,7 @@ void main() {
     test('is at least the required `$supportLanguageConstraint`', () async {
       await _structurePackage(
         dependencies: {'json_annotation': _annotationLowerBound},
-        warningMessage: null,
+        message: null,
       );
     });
   });
@@ -53,7 +53,7 @@ void main() {
   test(
     'missing dependency in production code',
     () => _structurePackage(
-      warningMessage: _missingProductionDep,
+      message: _missingProductionDep,
     ),
   );
 
@@ -61,7 +61,7 @@ void main() {
     'missing dependency in example code',
     () => _structurePackage(
       sourceDirectory: 'example',
-      warningMessage:
+      message:
           'You are missing a required dependency on json_annotation with a '
           'lower bound of at least "$_annotationLowerBound".',
     ),
@@ -71,7 +71,7 @@ void main() {
     'dev dependency with a production usage',
     () => _structurePackage(
       devDependencies: {'json_annotation': _annotationLowerBound},
-      warningMessage: _missingProductionDep,
+      message: _missingProductionDep,
     ),
   );
 
@@ -79,7 +79,7 @@ void main() {
     'dependency with `null` constraint',
     () => _structurePackage(
       dependencies: {'json_annotation': null},
-      warningMessage:
+      message:
           'The version constraint "any" on json_annotation allows versions '
           'before $_annotationLowerBound which is not allowed.',
     ),
@@ -89,7 +89,7 @@ void main() {
     'dependency with "any" constraint',
     () => _structurePackage(
       dependencies: {'json_annotation': 'any'},
-      warningMessage:
+      message:
           'The version constraint "any" on json_annotation allows versions '
           'before $_annotationLowerBound which is not allowed.',
     ),
@@ -99,7 +99,7 @@ void main() {
     'dependency with too low version range',
     () => _structurePackage(
       dependencies: {'json_annotation': '^4.0.0'},
-      warningMessage:
+      message:
           'The version constraint "^4.0.0" on json_annotation allows versions '
           'before $_annotationLowerBound which is not allowed.',
     ),
@@ -134,7 +134,7 @@ const _testPkgName = '_test_pkg';
 
 Future<void> _structurePackage({
   String sourceDirectory = 'lib',
-  required String? warningMessage,
+  required String? message,
   Map<String, dynamic> environment = const {'sdk': supportLanguageConstraint},
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
@@ -194,7 +194,7 @@ class SomeClass{}
   }
 
   final output = lines.toString();
-  final expectedWarningCount = warningMessage == null ? 0 : 1;
+  final expectedWarningCount = message == null ? 0 : 1;
   final warningCount = '[WARNING]'.allMatches(output).length;
   expect(
     warningCount,
@@ -204,10 +204,10 @@ class SomeClass{}
         'number of expected warnings ($expectedWarningCount.',
   );
 
-  if (warningMessage != null) {
+  if (message != null) {
     expect(output, contains('''
 [WARNING] json_serializable on $sourceDirectory/sample.dart:
-$warningMessage'''));
+$message'''));
   }
 
   await proc.shouldExit(0);
