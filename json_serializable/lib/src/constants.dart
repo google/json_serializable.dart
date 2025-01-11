@@ -13,3 +13,7 @@ const converterOrKeyInstructions = r'''
 * Use `JsonKey` fields `fromJson` and `toJson`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
+
+/// This package generates code that uses case statements, which were introduced
+/// in Dart 3.0.
+const supportLanguageConstraint = '^3.0.0';

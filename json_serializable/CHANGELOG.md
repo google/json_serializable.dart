@@ -1,3 +1,8 @@
+## 6.9.3
+
+- Error out if the target package does not have a language version of `3.0` or 
+  greater.
+
 ## 6.9.2
 
 - Support the latest `package:analyzer`.
