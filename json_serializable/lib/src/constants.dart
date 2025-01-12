@@ -16,4 +16,4 @@ const converterOrKeyInstructions = r'''
 
 /// This package generates code that uses case statements, which were introduced
 /// in Dart 3.0.
-const supportLanguageConstraint = '^3.0.0';
+const supportedLanguageConstraint = '^3.0.0';

@@ -36,13 +36,18 @@ void main() {
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},
-        message: 'The language version ($sdkLowerBound) of this package '
-            '($_testPkgName) does not match the required range '
-            '`$supportLanguageConstraint`.',
+        message: '''
+The language version ($sdkLowerBound) of this package ($_testPkgName) does not match the required range `$supportedLanguageConstraint`.
+
+Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
+
+environment:
+  sdk: $supportedLanguageConstraint
+''',
       );
     });
 
-    test('is at least the required `$supportLanguageConstraint`', () async {
+    test('is at least the required `$supportedLanguageConstraint`', () async {
       await _structurePackage(
         dependencies: {'json_annotation': _annotationLowerBound},
         message: null,
@@ -135,7 +140,7 @@ const _testPkgName = '_test_pkg';
 Future<void> _structurePackage({
   String sourceDirectory = 'lib',
   required String? message,
-  Map<String, dynamic> environment = const {'sdk': supportLanguageConstraint},
+  Map<String, dynamic> environment = const {'sdk': supportedLanguageConstraint},
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
 }) async {

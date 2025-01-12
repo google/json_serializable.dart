@@ -13,7 +13,7 @@ import 'constants.dart';
 const _productionDirectories = {'lib', 'bin'};
 const _annotationPkgName = 'json_annotation';
 final _supportLanguageRange =
-    VersionConstraint.parse(supportLanguageConstraint);
+    VersionConstraint.parse(supportedLanguageConstraint);
 final requiredJsonAnnotationMinVersion = Version.parse('4.9.0');
 
 Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
@@ -52,23 +52,25 @@ Future<void> _validatePubspec(bool production, BuildStep buildStep) async {
   //
   // Ensure the current package language version is at least the minimum.
   //
-
   final currentPackageName = pubspec.name;
-
   final packageConfig = await buildStep.packageConfig;
-
   final thisPackage = packageConfig[currentPackageName]!;
 
-  // build_runner will error out without an SDK version - so this "should" be
-  // fine.
+  // build_runner will error out without an SDK version - so assuming
+  // `languageVersion` is not null.
   final thisPackageVersion = thisPackage.languageVersion!;
 
   final thisPackageVer = Version.parse('$thisPackageVersion.0');
   if (!_supportLanguageRange.allows(thisPackageVer)) {
     log.warning(
-      'The language version ($thisPackageVer) of this package '
-      '($currentPackageName) does not match the required range '
-      '`$supportLanguageConstraint`.',
+      '''
+The language version ($thisPackageVer) of this package ($currentPackageName) does not match the required range `$supportedLanguageConstraint`.
+
+Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
+
+environment:
+  sdk: $supportedLanguageConstraint
+''',
     );
   }
 }
