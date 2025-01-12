@@ -47,12 +47,13 @@ environment:
       );
     });
 
-    test('is at least the required `$supportedLanguageConstraint`', () async {
-      await _structurePackage(
+    test(
+      'is at least the required `$supportedLanguageConstraint`',
+      () async => await _structurePackage(
         dependencies: {'json_annotation': _annotationLowerBound},
         message: null,
-      );
-    });
+      ),
+    );
   });
 
   test(
