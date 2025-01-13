@@ -207,7 +207,7 @@ class SomeClass{}
     expectedWarningCount,
     reason:
         'Expected the number of output warnings ($warningCount) to match the '
-        'number of expected warnings ($expectedWarningCount.',
+        'number of expected warnings ($expectedWarningCount).',
   );
 
   if (message != null) {
