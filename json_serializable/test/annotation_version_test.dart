@@ -10,6 +10,7 @@ library;
 import 'dart:io';
 
 import 'package:json_serializable/src/check_dependencies.dart';
+import 'package:json_serializable/src/constants.dart';
 import 'package:path/path.dart' as p;
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
@@ -20,7 +21,7 @@ import 'package:test_process/test_process.dart';
 import 'test_utils.dart';
 
 void main() {
-  test('validate pubspec constraint', () {
+  test('validate pubspec constraint', () async {
     final annotationConstraint =
         _jsonSerialPubspec.dependencies['json_annotation'] as HostedDependency;
     final versionRange = annotationConstraint.version as VersionRange;
@@ -29,10 +30,35 @@ void main() {
     expect(versionRange.min, requiredJsonAnnotationMinVersion);
   });
 
+  group('language version', () {
+    test('is less than required', () async {
+      const sdkLowerBound = '2.12.0';
+      await _structurePackage(
+        environment: const {'sdk': '^$sdkLowerBound'},
+        dependencies: {'json_annotation': _annotationLowerBound},
+        message: '''
+The language version ($sdkLowerBound) of this package ($_testPkgName) does not match the required range `$supportedLanguageConstraint`.
+
+Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
+
+environment:
+  sdk: $supportedLanguageConstraint
+''',
+      );
+    });
+
+    test(
+      'is at least the required `$supportedLanguageConstraint`',
+      () async => await _structurePackage(
+        dependencies: {'json_annotation': _annotationLowerBound},
+        message: null,
+      ),
+    );
+  });
+
   test(
     'missing dependency in production code',
     () => _structurePackage(
-      sourceDirectory: 'lib',
       message: _missingProductionDep,
     ),
   );
@@ -50,7 +76,6 @@ void main() {
   test(
     'dev dependency with a production usage',
     () => _structurePackage(
-      sourceDirectory: 'lib',
       devDependencies: {'json_annotation': _annotationLowerBound},
       message: _missingProductionDep,
     ),
@@ -59,7 +84,6 @@ void main() {
   test(
     'dependency with `null` constraint',
     () => _structurePackage(
-      sourceDirectory: 'lib',
       dependencies: {'json_annotation': null},
       message:
           'The version constraint "any" on json_annotation allows versions '
@@ -70,7 +94,6 @@ void main() {
   test(
     'dependency with "any" constraint',
     () => _structurePackage(
-      sourceDirectory: 'lib',
       dependencies: {'json_annotation': 'any'},
       message:
           'The version constraint "any" on json_annotation allows versions '
@@ -81,7 +104,6 @@ void main() {
   test(
     'dependency with too low version range',
     () => _structurePackage(
-      sourceDirectory: 'lib',
       dependencies: {'json_annotation': '^4.0.0'},
       message:
           'The version constraint "^4.0.0" on json_annotation allows versions '
@@ -114,16 +136,19 @@ final _missingProductionDep =
     '"dependencies" section of your pubspec with a lower bound of at least '
     '"$_annotationLowerBound".';
 
+const _testPkgName = '_test_pkg';
+
 Future<void> _structurePackage({
-  required String sourceDirectory,
-  required String message,
+  String sourceDirectory = 'lib',
+  required String? message,
+  Map<String, dynamic> environment = const {'sdk': supportedLanguageConstraint},
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
 }) async {
   final pubspec = loudEncode(
     {
-      'name': '_test_pkg',
-      'environment': {'sdk': '>=2.14.0 <3.0.0'},
+      'name': _testPkgName,
+      'environment': environment,
       'dependencies': dependencies,
       'dev_dependencies': {
         ...devDependencies,
@@ -162,9 +187,8 @@ class SomeClass{}
       )
     ],
   ).create();
-
   final proc = await TestProcess.start(
-    'dart',
+    Platform.resolvedExecutable,
     ['run', 'build_runner', 'build'],
     workingDirectory: d.sandbox,
   );
@@ -175,9 +199,22 @@ class SomeClass{}
     print(line);
   }
 
-  expect(lines.toString(), contains('''
+  final output = lines.toString();
+  final expectedWarningCount = message == null ? 0 : 1;
+  final warningCount = '[WARNING]'.allMatches(output).length;
+  expect(
+    warningCount,
+    expectedWarningCount,
+    reason:
+        'Expected the number of output warnings ($warningCount) to match the '
+        'number of expected warnings ($expectedWarningCount).',
+  );
+
+  if (message != null) {
+    expect(output, contains('''
 [WARNING] json_serializable on $sourceDirectory/sample.dart:
 $message'''));
+  }
 
   await proc.shouldExit(0);
 }
