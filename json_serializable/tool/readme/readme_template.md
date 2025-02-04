@@ -152,6 +152,18 @@ targets:
           include_if_null: true
 ```
 
+To exclude generated files from coverage, you can further configure `build.yaml`.
+
+```yaml
+targets:
+  $default:
+    builders:
+      source_gen:combining_builder:
+        options:
+          preamble: |
+            // coverage:ignore-file
+```
+
 [example]: https://github.com/google/json_serializable.dart/tree/master/example
 [dart build system]: https://github.com/dart-lang/build
 [package:json_annotation]: https://pub.dev/packages/json_annotation
