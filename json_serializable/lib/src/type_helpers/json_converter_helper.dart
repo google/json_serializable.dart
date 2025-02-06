@@ -214,7 +214,6 @@ _JsonConvertData? _typeConverterFrom(
 
   final annotationElement = match.elementAnnotation?.element;
   if (annotationElement is PropertyAccessorElement) {
-    // ignore: deprecated_member_use
     final enclosing = annotationElement.enclosingElement3;
 
     var accessString = annotationElement.name;
