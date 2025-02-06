@@ -131,7 +131,6 @@ ConstructorElement? _constructorByNameOrNull(
 ) {
   try {
     return constructorByName(classElement, name);
-    // ignore: avoid_catching_errors
   } on InvalidGenerationSourceError {
     return null;
   }

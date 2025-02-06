@@ -26,3 +26,4 @@ linter:
     - unnecessary_breaks
     - use_full_hex_values_for_flutter_colors
     - use_string_buffers
+    - unnecessary_ignore

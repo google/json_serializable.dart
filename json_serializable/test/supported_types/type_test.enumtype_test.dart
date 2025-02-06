@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: prefer_const_declarations
 @TestOn('vm')
 library;
 
@@ -87,8 +86,8 @@ void main() {
   }); // end nullable group
 }
 
-final _defaultValue = 'alpha';
-final _altValue = 'beta';
+const _defaultValue = 'alpha';
+const _altValue = 'beta';
 
 final _defaultInput = <String, Object?>{
   'value': _defaultValue,
