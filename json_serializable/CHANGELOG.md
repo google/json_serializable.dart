@@ -1,3 +1,7 @@
+## 6.9.4
+
+- Fix extra line being generated when targetting Dart 3.7 package.
+
 ## 6.9.3
 
 - Error out if the target package does not have a language version of `3.0` or 
