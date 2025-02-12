@@ -317,27 +317,18 @@ _ConstructorData _writeConstructorInvocation(
       '$className'
       '${genericClassArguments(classElement, false)}'
       '$constructorExtra(',
-    );
-  if (constructorArguments.isNotEmpty) {
-    buffer
-      ..writeln()
-      ..writeAll(constructorArguments.map((paramElement) {
-        final content =
-            deserializeForField(paramElement.name, ctorParam: paramElement);
-        return '      $content,\n';
-      }));
-  }
-  if (namedConstructorArguments.isNotEmpty) {
-    buffer
-      ..writeln()
-      ..writeAll(namedConstructorArguments.map((paramElement) {
-        final value =
-            deserializeForField(paramElement.name, ctorParam: paramElement);
-        return '      ${paramElement.name}: $value,\n';
-      }));
-  }
-
-  buffer.write(')');
+    )
+    ..writeAll(constructorArguments.map((paramElement) {
+      final content =
+          deserializeForField(paramElement.name, ctorParam: paramElement);
+      return '      $content,\n';
+    }))
+    ..writeAll(namedConstructorArguments.map((paramElement) {
+      final value =
+          deserializeForField(paramElement.name, ctorParam: paramElement);
+      return '      ${paramElement.name}: $value,\n';
+    }))
+    ..write(')');
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
 
