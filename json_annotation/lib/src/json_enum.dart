@@ -13,6 +13,7 @@ class JsonEnum {
   const JsonEnum({
     this.alwaysCreate = false,
     this.fieldRename = FieldRename.none,
+    this.caseInsensitive = false,
     this.valueField,
   });
 
@@ -35,6 +36,12 @@ class JsonEnum {
   /// Note: the value for [JsonValue.value] takes precedence over this option
   /// for entries annotated with [JsonValue].
   final FieldRename fieldRename;
+
+  /// If `true`, enum comparison will be done using case-insensitive.
+  ///
+  /// The default, `false`, means enum comparison will be done using
+  /// case-sensitive.
+  final bool caseInsensitive;
 
   /// Specifies the field within an "enhanced enum" to use as the value
   /// to use for serialization.
