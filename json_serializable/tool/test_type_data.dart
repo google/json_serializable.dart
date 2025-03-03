@@ -242,12 +242,12 @@ class TestTypeData {
 
     yield Replacement(
       '''
-final _defaultValue = 42;
-final _altValue = 43;
+const _defaultValue = 42;
+const _altValue = 43;
 ''',
       '''
-final _defaultValue = $jsonExpression;
-final _altValue = $altJsonExpression;
+const _defaultValue = $jsonExpression;
+const _altValue = $altJsonExpression;
 ''',
     );
 
