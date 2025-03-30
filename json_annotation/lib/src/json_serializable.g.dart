@@ -26,6 +26,8 @@ JsonSerializable _$JsonSerializableFromJson(
         'disallow_unrecognized_keys',
         'explicit_to_json',
         'field_rename',
+        'union_rename',
+        'union_discriminator',
         'generic_argument_factories',
         'ignore_unannotated',
         'include_if_null',
@@ -47,6 +49,14 @@ JsonSerializable _$JsonSerializableFromJson(
       fieldRename: $checkedConvert(
         'field_rename',
         (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
+      ),
+      unionRename: $checkedConvert(
+        'union_rename',
+        (v) => $enumDecodeNullable(_$UnionRenameEnumMap, v),
+      ),
+      unionDiscriminator: $checkedConvert(
+        'union_discriminator',
+        (v) => v as String?,
       ),
       ignoreUnannotated: $checkedConvert(
         'ignore_unannotated',
@@ -73,6 +83,8 @@ JsonSerializable _$JsonSerializableFromJson(
     'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
     'explicitToJson': 'explicit_to_json',
     'fieldRename': 'field_rename',
+    'unionRename': 'union_rename',
+    'unionDiscriminator': 'union_discriminator',
     'ignoreUnannotated': 'ignore_unannotated',
     'includeIfNull': 'include_if_null',
     'genericArgumentFactories': 'generic_argument_factories',
@@ -93,6 +105,8 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
       'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
+      'union_rename': _$UnionRenameEnumMap[instance.unionRename],
+      'union_discriminator': instance.unionDiscriminator,
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
@@ -104,4 +118,12 @@ const _$FieldRenameEnumMap = {
   FieldRename.snake: 'snake',
   FieldRename.pascal: 'pascal',
   FieldRename.screamingSnake: 'screamingSnake',
+};
+
+const _$UnionRenameEnumMap = {
+  UnionRename.none: 'none',
+  UnionRename.kebab: 'kebab',
+  UnionRename.snake: 'snake',
+  UnionRename.pascal: 'pascal',
+  UnionRename.screamingSnake: 'screamingSnake',
 };

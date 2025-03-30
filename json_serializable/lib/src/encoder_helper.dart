@@ -11,6 +11,7 @@ import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
+import 'utils.dart';
 
 mixin EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement2 field) =>
@@ -73,7 +74,6 @@ mixin EncodeHelper implements HelperCore {
     final buffer = StringBuffer(
       'abstract final class _\$${element.name3!.nonPrivate}JsonKeys {',
     );
-    // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
@@ -90,6 +90,25 @@ mixin EncodeHelper implements HelperCore {
   Iterable<String> createToJson(Set<FieldElement2> accessibleFields) sync* {
     assert(config.createToJson);
 
+    final expressionBody = element.isSealed
+        ? _createSealedFunctionExpressionBody()
+        : _createFieldMapFunctionExpressionBody(accessibleFields);
+
+    yield _createToJsonFunctionSignature(expressionBody);
+  }
+
+  /// Creates the function signature around [functionExpressionBody]
+  /// that will be used to serialize the class.
+  ///
+  /// For example:
+  ///
+  /// ```dart
+  /// '''
+  /// Map<String, dynamic> _$ExampleClassToJson(ExampleClass instance) =>
+  ///       /* expression body here */;
+  /// '''
+  /// ```
+  String _createToJsonFunctionSignature(String functionExpressionBody) {
     final buffer = StringBuffer();
 
     final functionName =
@@ -101,25 +120,84 @@ mixin EncodeHelper implements HelperCore {
 
     if (config.genericArgumentFactories) _writeGenericArgumentFactories(buffer);
 
-    buffer
-      ..write(') ')
-      ..writeln('=> <String, dynamic>{')
-      ..writeAll(
-        accessibleFields.map((field) {
-          final access = _fieldAccess(field);
+    buffer.write(') => $functionExpressionBody;');
 
-          final keyExpression = safeNameAccess(field);
-          final valueExpression = _serializeField(field, access);
+    return buffer.toString();
+  }
 
-          final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
+  /// Creates expression body for a function that serializes a union class.
+  ///
+  /// For example:
+  /// ```dart
+  /// '''
+  /// switch (instance) {
+  ///   final FirstSubtype instance => {
+  ///       'type': 'FirstSubtype',
+  ///       ..._$FirstSubtypeToJson(instance),
+  ///     },
+  ///   final SecondSubtype instance => {
+  ///       'type': 'SecondSubtype',
+  ///       ..._$SecondSubtypeToJson(instance),
+  ///     },
+  /// }
+  /// '''
+  /// ```
+  String _createSealedFunctionExpressionBody() {
+    final implementations = sealedClassImplementations(element);
 
-          final keyValuePair = '$keyExpression: $maybeQuestion$valueExpression';
-          return '        $keyValuePair,\n';
-        }),
-      )
-      ..writeln('};');
+    final discriminator = config.unionDiscriminator;
 
-    yield buffer.toString();
+    String buildSingleImpl(ClassElement2 impl) {
+      final originalName = impl.name3!;
+
+      final unionName = encodedUnionName(config.unionRename, originalName);
+
+      return '''
+  final $originalName instance => {
+    '$discriminator': '$unionName',
+    ...${classPrefix(impl)}ToJson(instance),
+  },
+''';
+    }
+
+    final buffer = StringBuffer()
+      ..writeln('switch (instance) {')
+      ..writeAll(implementations.map(buildSingleImpl))
+      ..writeln('}');
+
+    return buffer.toString();
+  }
+
+  /// Creates expression body for a function that serializes a class.
+  ///
+  /// For example:
+  /// ```dart
+  /// '''
+  /// <String, dynamic>{
+  ///   'exampleField': instance.exampleField,
+  /// }
+  /// '''
+  /// ```
+  String _createFieldMapFunctionExpressionBody(
+    Set<FieldElement2> accessibleFields,
+  ) {
+    String buildSingleField(FieldElement2 field) {
+      final access = _fieldAccess(field);
+
+      final keyExpression = safeNameAccess(field);
+      final valueExpression = _serializeField(field, access);
+
+      final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
+
+      return '$keyExpression: $maybeQuestion$valueExpression,';
+    }
+
+    final buffer = StringBuffer()
+      ..writeln('<String, dynamic>{')
+      ..writeAll(accessibleFields.map(buildSingleField))
+      ..writeln('}');
+
+    return buffer.toString();
   }
 
   void _writeGenericArgumentFactories(StringBuffer buffer) {
