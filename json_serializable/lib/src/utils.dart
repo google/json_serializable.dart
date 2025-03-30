@@ -61,6 +61,8 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
   fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  unionRename: readEnum(reader.read('unionRename'), UnionRename.values),
+  unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
@@ -114,6 +116,9 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
+    unionRename: annotation.unionRename ?? config.unionRename,
+    unionDiscriminator:
+        annotation.unionDiscriminator ?? config.unionDiscriminator,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&
@@ -162,6 +167,20 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
   return ctor;
 }
 
+Iterable<ClassElement> sealedClassImplementations(
+  ClassElement maybeSealedClass,
+) {
+  if (maybeSealedClass case final sc when sc.isSealed) {
+    return LibraryReader(sc.library)
+        .annotatedWith(const TypeChecker.fromRuntime(JsonSerializable))
+        .map((e) => e.element)
+        .whereType<ClassElement>()
+        .where((e) => e.allSupertypes.contains(sc.thisType));
+  }
+
+  return [];
+}
+
 /// If [targetType] is an enum, returns the [FieldElement] instances associated
 /// with its values.
 ///
@@ -195,6 +214,17 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
       FieldRename.kebab => declaredName.kebab,
       FieldRename.pascal => declaredName.pascal,
     };
+
+String encodedUnionName(UnionRename unionRename, String declaredName) =>
+    switch (unionRename) {
+      UnionRename.none => declaredName,
+      UnionRename.snake => declaredName.snake,
+      UnionRename.screamingSnake => declaredName.snake.toUpperCase(),
+      UnionRename.kebab => declaredName.kebab,
+      UnionRename.pascal => declaredName.pascal,
+    };
+
+String classPrefix(ClassElement element) => '_\$${element.name.nonPrivate}';
 
 /// Return the Dart code presentation for the given [type].
 ///

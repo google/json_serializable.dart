@@ -31,6 +31,26 @@ enum FieldRename {
   screamingSnake,
 }
 
+/// Values for the automatic class renaming behavior for [JsonSerializable]
+/// with sealed classes.
+enum UnionRename {
+  /// Use the union class name without changes.
+  none,
+
+  /// Encodes union class named `KebabCase` with a JSON key `kebab-case`.
+  kebab,
+
+  /// Encodes union class named `SnakeCase` with a JSON key `snake_case`.
+  snake,
+
+  /// Encodes union class named `PascalCase` with a JSON key `PascalCase`.
+  pascal,
+
+  /// Encodes union class named `ScreamingSnakeCase` with a JSON key
+  /// `SCREAMING_SNAKE_CASE`
+  screamingSnake,
+}
+
 /// An annotation used to specify a class to generate code for.
 @JsonSerializable(
   checked: true,
@@ -162,6 +182,20 @@ class JsonSerializable {
   /// fields annotated with [JsonKey].
   final FieldRename? fieldRename;
 
+  /// Defines the automatic naming strategy when converting class names
+  /// to union type names.
+  ///
+  /// With a value [UnionRename.none] (the default), the name of the class is
+  /// used without modification.
+  ///
+  /// See [UnionRename] for details on the other options.
+  final UnionRename? unionRename;
+
+  /// The discriminator key used to identify the union type.
+  ///
+  /// Defaults to `type`.
+  final String? unionDiscriminator;
+
   /// When `true` on classes with type parameters (generic types), extra
   /// "helper" parameters will be generated for `fromJson` and/or `toJson` to
   /// support serializing values of those types.
@@ -271,6 +305,8 @@ class JsonSerializable {
     this.disallowUnrecognizedKeys,
     this.explicitToJson,
     this.fieldRename,
+    this.unionRename,
+    this.unionDiscriminator,
     this.ignoreUnannotated,
     this.includeIfNull,
     this.converters,
@@ -293,6 +329,8 @@ class JsonSerializable {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
+    unionRename: UnionRename.none,
+    unionDiscriminator: 'type',
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
@@ -314,6 +352,8 @@ class JsonSerializable {
         disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
     explicitToJson: explicitToJson ?? defaults.explicitToJson,
     fieldRename: fieldRename ?? defaults.fieldRename,
+    unionRename: unionRename ?? defaults.unionRename,
+    unionDiscriminator: unionDiscriminator ?? defaults.unionDiscriminator,
     ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
     includeIfNull: includeIfNull ?? defaults.includeIfNull,
     genericArgumentFactories:

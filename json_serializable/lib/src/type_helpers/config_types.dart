@@ -54,6 +54,8 @@ class ClassConfig {
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
+  final UnionRename unionRename;
+  final String unionDiscriminator;
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
@@ -72,6 +74,8 @@ class ClassConfig {
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
+    required this.unionRename,
+    required this.unionDiscriminator,
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
@@ -105,6 +109,10 @@ class ClassConfig {
             config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
+        unionRename: config.unionRename ?? ClassConfig.defaults.unionRename,
+        unionDiscriminator:
+            config.unionDiscriminator ??
+            ClassConfig.defaults.unionDiscriminator,
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
@@ -125,6 +133,8 @@ class ClassConfig {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
+    unionRename: UnionRename.none,
+    unionDiscriminator: 'type',
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
@@ -144,6 +154,8 @@ class ClassConfig {
     includeIfNull: includeIfNull,
     genericArgumentFactories: genericArgumentFactories,
     fieldRename: fieldRename,
+    unionRename: unionRename,
+    unionDiscriminator: unionDiscriminator,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
     // TODO typeConverters = []
   );
