@@ -143,6 +143,8 @@ mixin EncodeHelper implements HelperCore {
   /// '''
   /// ```
   String _createSealedFunctionExpressionBody() {
+    assert(element.isSealed);
+
     final implementations = sealedClassImplementations(element);
 
     final discriminator = config.unionDiscriminator;
