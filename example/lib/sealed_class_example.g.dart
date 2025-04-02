@@ -10,7 +10,7 @@ MySealedClass _$MySealedClassFromJson(Map<String, dynamic> json) =>
     switch (json['runtimeType']) {
       'first_subtype' => _$FirstSubtypeFromJson(json),
       'second_subtype' => _$SecondSubtypeFromJson(json),
-      _ => throw UnrerecognizedUnionTypeException(
+      _ => throw UnrecognizedUnionTypeException(
           '${json['runtimeType']}',
           MySealedClass,
           json,
