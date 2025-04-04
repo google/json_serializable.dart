@@ -103,10 +103,8 @@ mixin EncodeHelper implements HelperCore {
   /// For example:
   ///
   /// ```dart
-  /// '''
   /// Map<String, dynamic> _$ExampleClassToJson(ExampleClass instance) =>
   ///       /* expression body here */;
-  /// '''
   /// ```
   String _createToJsonFunctionSignature(String functionExpressionBody) {
     final buffer = StringBuffer();
@@ -129,7 +127,6 @@ mixin EncodeHelper implements HelperCore {
   ///
   /// For example:
   /// ```dart
-  /// '''
   /// switch (instance) {
   ///   final FirstSubtype instance => {
   ///       'type': 'FirstSubtype',
@@ -140,7 +137,6 @@ mixin EncodeHelper implements HelperCore {
   ///       ..._$SecondSubtypeToJson(instance),
   ///     },
   /// }
-  /// '''
   /// ```
   String _createSealedFunctionExpressionBody() {
     assert(element.isSealed);
@@ -174,11 +170,9 @@ mixin EncodeHelper implements HelperCore {
   ///
   /// For example:
   /// ```dart
-  /// '''
   /// <String, dynamic>{
   ///   'exampleField': instance.exampleField,
   /// }
-  /// '''
   /// ```
   String _createFieldMapFunctionExpressionBody(
     Set<FieldElement2> accessibleFields,

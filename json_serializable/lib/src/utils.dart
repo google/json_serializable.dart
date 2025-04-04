@@ -178,7 +178,7 @@ Iterable<ClassElement2> sealedClassImplementations(
         .where((e) => e.allSupertypes.contains(sc.thisType));
   }
 
-  return [];
+  return const Iterable<ClassElement2>.empty();
 }
 
 /// If [targetType] is an enum, returns the [FieldElement2] instances associated
