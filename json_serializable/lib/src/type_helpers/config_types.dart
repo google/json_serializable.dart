@@ -54,13 +54,13 @@ class ClassConfig {
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
-  final UnionRename unionRename;
-  final String unionDiscriminator;
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
   final Map<String, String> ctorParamDefaults;
   final List<DartObject> converters;
+  final String unionDiscriminator;
+  final UnionRename unionRename;
 
   const ClassConfig({
     required this.anyMap,
@@ -74,11 +74,11 @@ class ClassConfig {
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
-    required this.unionRename,
-    required this.unionDiscriminator,
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    required this.unionDiscriminator,
+    required this.unionRename,
     this.converters = const [],
     this.ctorParamDefaults = const {},
   });
@@ -109,13 +109,13 @@ class ClassConfig {
             config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
-        unionRename: config.unionRename ?? ClassConfig.defaults.unionRename,
-        unionDiscriminator:
-            config.unionDiscriminator ??
-            ClassConfig.defaults.unionDiscriminator,
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
+        unionDiscriminator:
+            config.unionDiscriminator ??
+            ClassConfig.defaults.unionDiscriminator,
+        unionRename: config.unionRename ?? ClassConfig.defaults.unionRename,
         // TODO typeConverters = []
       );
 
@@ -133,11 +133,11 @@ class ClassConfig {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
-    unionRename: UnionRename.none,
-    unionDiscriminator: 'type',
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
+    unionDiscriminator: 'type',
+    unionRename: UnionRename.none,
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
@@ -154,9 +154,9 @@ class ClassConfig {
     includeIfNull: includeIfNull,
     genericArgumentFactories: genericArgumentFactories,
     fieldRename: fieldRename,
-    unionRename: unionRename,
-    unionDiscriminator: unionDiscriminator,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+    unionDiscriminator: unionDiscriminator,
+    unionRename: unionRename,
     // TODO typeConverters = []
   );
 }
