@@ -61,12 +61,12 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
   fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
-  unionRename: readEnum(reader.read('unionRename'), UnionRename.values),
-  unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
   includeIfNull: reader.read('includeIfNull').literalValue as bool?,
+  unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
+  unionRename: readEnum(reader.read('unionRename'), UnionRename.values),
 );
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
@@ -116,9 +116,6 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
-    unionRename: annotation.unionRename ?? config.unionRename,
-    unionDiscriminator:
-        annotation.unionDiscriminator ?? config.unionDiscriminator,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&
@@ -127,6 +124,9 @@ ClassConfig mergeConfig(
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     ctorParamDefaults: paramDefaultValueMap,
     converters: converters.isNull ? const [] : converters.listValue,
+    unionDiscriminator:
+        annotation.unionDiscriminator ?? config.unionDiscriminator,
+    unionRename: annotation.unionRename ?? config.unionRename,
   );
 }
 

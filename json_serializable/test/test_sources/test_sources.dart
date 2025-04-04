@@ -24,6 +24,8 @@ class ConfigurationImplicitDefaults {
   ignoreUnannotated: false,
   includeIfNull: true,
   genericArgumentFactories: false,
+  unionDiscriminator: 'type',
+  unionRename: UnionRename.none,
 )
 class ConfigurationExplicitDefaults {
   int? field;

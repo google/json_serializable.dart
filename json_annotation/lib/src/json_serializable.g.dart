@@ -26,11 +26,11 @@ JsonSerializable _$JsonSerializableFromJson(
         'disallow_unrecognized_keys',
         'explicit_to_json',
         'field_rename',
-        'union_rename',
-        'union_discriminator',
         'generic_argument_factories',
         'ignore_unannotated',
         'include_if_null',
+        'union_discriminator',
+        'union_rename',
       ],
     );
     final val = JsonSerializable(
@@ -50,14 +50,6 @@ JsonSerializable _$JsonSerializableFromJson(
         'field_rename',
         (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
       ),
-      unionRename: $checkedConvert(
-        'union_rename',
-        (v) => $enumDecodeNullable(_$UnionRenameEnumMap, v),
-      ),
-      unionDiscriminator: $checkedConvert(
-        'union_discriminator',
-        (v) => v as String?,
-      ),
       ignoreUnannotated: $checkedConvert(
         'ignore_unannotated',
         (v) => v as bool?,
@@ -71,6 +63,14 @@ JsonSerializable _$JsonSerializableFromJson(
         'create_per_field_to_json',
         (v) => v as bool?,
       ),
+      unionDiscriminator: $checkedConvert(
+        'union_discriminator',
+        (v) => v as String?,
+      ),
+      unionRename: $checkedConvert(
+        'union_rename',
+        (v) => $enumDecodeNullable(_$UnionRenameEnumMap, v),
+      ),
     );
     return val;
   },
@@ -83,12 +83,12 @@ JsonSerializable _$JsonSerializableFromJson(
     'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
     'explicitToJson': 'explicit_to_json',
     'fieldRename': 'field_rename',
-    'unionRename': 'union_rename',
-    'unionDiscriminator': 'union_discriminator',
     'ignoreUnannotated': 'ignore_unannotated',
     'includeIfNull': 'include_if_null',
     'genericArgumentFactories': 'generic_argument_factories',
     'createPerFieldToJson': 'create_per_field_to_json',
+    'unionDiscriminator': 'union_discriminator',
+    'unionRename': 'union_rename',
   },
 );
 
@@ -105,11 +105,11 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
       'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
-      'union_rename': _$UnionRenameEnumMap[instance.unionRename],
-      'union_discriminator': instance.unionDiscriminator,
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
+      'union_discriminator': instance.unionDiscriminator,
+      'union_rename': _$UnionRenameEnumMap[instance.unionRename],
     };
 
 const _$FieldRenameEnumMap = {
