@@ -2,8 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'dart:core';
-
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
@@ -79,22 +77,18 @@ mixin DecodeHelper implements HelperCore {
   /// If [functionBodyParts] has only one element, expression body is used.
   ///
   /// ```dart
-  /// '''
   /// ExampleClass _$ExampleClassFromJson(Map<String, dynamic> json) =>
   ///       /* only body part here */
-  /// '''
   /// ```
   ///
   /// If [functionBodyParts] has more than one element, block body is used.
   ///
   /// ```dart
-  /// '''
   /// ExampleClass _$ExampleClassFromJson(Map<String, dynamic> json) {
   ///      /* first body parts here */
   ///
   ///     return /* last body part here */;
   /// }
-  /// '''
   /// ```
   String _createFromJsonFunctionSignature(Iterable<String> functionBodyParts) {
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
@@ -138,13 +132,11 @@ mixin DecodeHelper implements HelperCore {
   ///
   /// For example:
   /// ```dart
-  /// '''
   /// switch (json['type']) {
   ///   'FirstSubtype' => _$FirstSubtypeFromJson(json),
   ///   'SecondSubtype' => _$SecondSubtypeFromJson(json),
   ///   _ => throw Exception('Unknown type: ${json['type']}'),
   /// };
-  /// '''
   /// ```
   String _createSealedFunctionExpressionBody() {
     assert(element.isSealed);
@@ -178,7 +170,6 @@ _ => throw UnrecognizedUnionTypeException(
   ///
   /// For example:
   /// ```dart
-  /// '''
   /// $checkedCreate(
   ///   'FirstSubtype',
   ///   json,
@@ -194,7 +185,6 @@ _ => throw UnrecognizedUnionTypeException(
   ///     return val;
   ///   },
   /// );
-  /// '''
   /// ```
   String _createCheckedFunctionExpressionBody(
     _ConstructorData data,
@@ -261,21 +251,17 @@ _ => throw UnrecognizedUnionTypeException(
   ///
   /// ```dart
   /// [
-  ///   '''
   ///   ExampleClass(
   ///    json['exampleField'] as String,
   ///   )
-  ///   '''
   /// ]
   /// /* OR with fields to set */
   /// [
-  ///  '''
   ///  ExampleClass(
   ///   json['exampleField'] as String,
   ///  )
   ///  ..field1 = json['field1'] as String
-  ///  ..field2 = json['field2'] as String;
-  ///  '''
+  ///  ..field2 = json['field2'] as String
   /// ]
   /// ```
   ///
@@ -283,17 +269,13 @@ _ => throw UnrecognizedUnionTypeException(
   /// constructor invocation.
   /// ```dart
   /// [
-  ///   '''
   ///   $checkKeys(
   ///    json,
   ///    allowedKeys: const ['exampleField', 'field1', 'field2'],
-  ///   )
-  ///   ''',
-  ///   '''
+  ///   ),
   ///   ExampleClass(
   ///    json['exampleField'] as String,
   ///   )
-  ///   '''
   /// ]
   /// ```
   ///
