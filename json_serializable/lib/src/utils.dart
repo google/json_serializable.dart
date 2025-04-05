@@ -9,10 +9,12 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'settings.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
+const _jsonSerializableChecker = TypeChecker.fromRuntime(JsonSerializable);
 
 DartObject? _jsonKeyAnnotation(FieldElement2 element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
@@ -167,18 +169,61 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
   return ctor;
 }
 
+/// Given a [ClassElement2] that is a sealed class, returns all the
+/// direct subclasses of the given sealed class, excluding any
+/// indirect subclasses (ie. subclasses of subclasses).
+///
+/// Otherwise, returns an empty iterable.
 Iterable<ClassElement2> sealedClassImplementations(
-  ClassElement2 maybeSealedClass,
+  ClassElement2 maybeSealedSuperClass,
 ) {
-  if (maybeSealedClass case final sc when sc.isSealed) {
-    return LibraryReader(sc.library2)
-        .annotatedWith(const TypeChecker.fromRuntime(JsonSerializable))
-        .map((e) => e.element)
-        .whereType<ClassElement2>()
-        .where((e) => e.allSupertypes.contains(sc.thisType));
+  if (maybeSealedSuperClass case final sc when sc.isSealed) {
+    return LibraryReader(
+      sc.library2,
+    ).allElements.whereType<ClassElement2>().where(
+      (e) => e.interfaces.contains(sc.thisType) || e.supertype?.element3 == sc,
+    );
   }
 
   return const Iterable<ClassElement2>.empty();
+}
+
+/// Given a [ClassElement2] that is a subclass of sealed classes, returns
+/// all of the sealed superclasses, including all indirect superclasses
+/// (ie. superclasses of superclasses)
+///
+/// Otherwise, returns an empty iterable.
+Iterable<ClassElement2> sealedSuperClasses(
+  ClassElement2 maybeSealedImplementation,
+) => maybeSealedImplementation.allSupertypes
+    .map((type) => type.element3)
+    .whereType<ClassElement2>()
+    .where((element) => element.isSealed);
+
+/// Given a [ClassElement2] that is annotated with `@JsonSerializable`, returns
+/// the annotation config merged with build runner config and defaults.
+///
+/// Otherwise, returns `null`.
+ClassConfig? jsonSerializableConfig(
+  ClassElement2 maybeAnnotatedElement,
+  Settings generator,
+) {
+  final maybeSuperAnnotation = _jsonSerializableChecker.firstAnnotationOfExact(
+    maybeAnnotatedElement,
+    throwOnUnresolved: false,
+  );
+
+  if (maybeSuperAnnotation case final superAnnotation?) {
+    final annotationReader = ConstantReader(superAnnotation);
+
+    return mergeConfig(
+      generator.config,
+      annotationReader,
+      classElement: maybeAnnotatedElement,
+    );
+  }
+
+  return null;
 }
 
 /// If [targetType] is an enum, returns the [FieldElement2] instances associated
