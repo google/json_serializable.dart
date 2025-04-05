@@ -38,7 +38,7 @@ abstract class HelperCore {
       escapeDartString(nameAccess(field));
 
   @protected
-  String get prefix => '_\$${element.name.nonPrivate}';
+  String get prefix => classPrefix(element);
 
   /// Returns a [String] representing the type arguments that exist on
   /// [element].

@@ -38,6 +38,12 @@ void main() {
         unorderedEquals(generatorConfigDefaultJson.keys));
 
     for (var entry in generatorConfigDefaultJson.entries) {
+      expect(
+        generatorConfigNonDefaultJson[entry.key],
+        isNotNull,
+        reason: 'should have explicitly set non default value',
+      );
+
       expect(generatorConfigNonDefaultJson,
           containsPair(entry.key, isNot(entry.value)),
           reason: 'should have values that are different than the defaults');
@@ -81,7 +87,7 @@ void main() {
     expect(
       configMap.keys,
       unorderedEquals(generatorConfigDefaultJson.keys),
-      reason: 'All supported keys are documented. '
+      reason: 'All supported keys are not documented. '
           'Did you forget to change README.md?',
     );
 
@@ -122,6 +128,12 @@ void main() {
           'field_rename' =>
             '`42` is not one of the supported values: none, kebab, snake, '
                 'pascal, screamingSnake',
+          'union_rename' =>
+            '`42` is not one of the supported values: none, kebab, snake, '
+                'pascal, screamingSnake',
+          'union_discriminator' =>
+            "type 'int' is not a subtype of type 'String?' in type "
+                'cast',
           'constructor' =>
             "type 'int' is not a subtype of type 'String?' in type "
                 'cast',
@@ -162,4 +174,6 @@ const _invalidConfig = {
   'generic_argument_factories': 42,
   'ignore_unannotated': 42,
   'include_if_null': 42,
+  'union_discriminator': 42,
+  'union_rename': 42,
 };

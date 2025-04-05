@@ -285,6 +285,8 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
+          union_discriminator: type
+          union_rename: none
 ```
 
 To exclude generated files from coverage, you can further configure `build.yaml`.

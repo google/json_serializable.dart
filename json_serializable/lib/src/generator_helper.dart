@@ -51,6 +51,55 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       );
     }
 
+    final sealedSuperClassesOrEmpty = sealedSuperClasses(element);
+
+    final sealedDiscriminators = sealedSuperClassesOrEmpty
+        .map((sealedClass) => jsonSerializableConfig(sealedClass, _generator))
+        .map((config) => config?.unionDiscriminator);
+
+    if ((sealedSuperClassesOrEmpty.isNotEmpty || element.isSealed) &&
+        config.genericArgumentFactories) {
+      throw InvalidGenerationSourceError(
+        'The class `${element.displayName}` is annotated '
+        'with `JsonSerializable` field `genericArgumentFactories: true`. '
+        '`genericArgumentFactories: true` is not supported for classes '
+        'that are sealed or have sealed superclasses.',
+        todo: 'Remove the `genericArgumentFactories` option or '
+            'remove the `sealed` keyword from the class.',
+        element: element,
+      );
+    }
+
+    if (element.isSealed) {
+      if (sealedDiscriminators.contains(config.unionDiscriminator)) {
+        throw InvalidGenerationSource(
+          'Nested sealed classes cannot have the same discriminator.',
+          todo: 'Rename one of the discriminators with `unionDiscriminator` '
+              'field in `@JsonSerializable`.',
+        );
+      }
+      sealedClassImplementations(element).forEach((impl) {
+        final annotationConfig = jsonSerializableConfig(impl, _generator);
+
+        if (annotationConfig == null) {
+          throw InvalidGenerationSourceError(
+            'The class `${element.displayName}` is sealed but its '
+            'implementation `${impl.displayName}` is not annotated with '
+            '`JsonSerializable`.',
+            todo: 'Add `@JsonSerializable` annotation to ${impl.displayName}.',
+          );
+        }
+
+        if (annotationConfig.createToJson != config.createToJson) {
+          throw InvalidGenerationSourceError(
+            'The class `${element.displayName}` is sealed but its '
+            'implementation `${impl.displayName}` has a different '
+            '`createToJson` option than the base class.',
+          );
+        }
+      });
+    }
+
     final sortedFields = createSortedFieldSet(element);
 
     // Used to keep track of why a field is ignored. Useful for providing
@@ -118,6 +167,16 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         <String>{},
         (Set<String> set, fe) {
           final jsonKey = nameAccess(fe);
+
+          if (sealedDiscriminators.contains(jsonKey)) {
+            throw InvalidGenerationSourceError(
+              'The JSON key "$jsonKey" is conflicting with the discriminator '
+              'of sealed superclass ',
+              todo: 'Rename the field or the discriminator.',
+              element: fe,
+            );
+          }
+
           if (!set.add(jsonKey)) {
             throw InvalidGenerationSourceError(
               'More than one field has the JSON key for name "$jsonKey".',

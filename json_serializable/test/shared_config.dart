@@ -28,4 +28,6 @@ final generatorConfigNonDefaultJson =
   ignoreUnannotated: true,
   includeIfNull: false,
   genericArgumentFactories: true,
+  unionDiscriminator: 'runtimeType',
+  unionRename: UnionRename.kebab,
 ).toJson());
