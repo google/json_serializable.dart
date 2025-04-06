@@ -807,17 +807,3 @@ class SubFourMultipleImpl
 
   SubFourMultipleImpl(this.subFourField);
 }
-
-
-
-
-/// 
-/// 
-/// Happy cases:
-/// - Simple with two subclasses
-/// - Simple with changed discriminator
-/// - Simple with union rename
-/// - Simple with changed discriminator and union rename
-/// - Complex nested
-/// - Complex many implementations
-/// 
