@@ -13,6 +13,7 @@ import 'json_enum_example.dart';
 import 'json_keys_example.dart' as js_keys;
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
+import 'sealed_class_examples.dart';
 
 Matcher _throwsArgumentError(Object matcher) =>
     throwsA(isArgumentError.having((e) => e.message, 'message', matcher));
@@ -462,6 +463,58 @@ void main() {
         'notNullableValueWithConverter': '42',
         'normalNullableValue': 42,
       });
+    });
+  });
+
+  group('SimpleSealedBase', () {
+    void roundTripSimpleSealed(SimpleSealedBase p) {
+      roundTripObject(p, SimpleSealedBase.fromJson);
+    }
+
+    test('SimpleSealedImplOne', () {
+      roundTripSimpleSealed(
+        SimpleSealedImplOne(
+          testFieldOne: 'test field one',
+          commonField: 'common field',
+        ),
+      );
+    });
+
+    test('SimpleSealedImplTwo', () {
+      roundTripSimpleSealed(
+        SimpleSealedImplTwo(
+          testFieldTwo: 'test field two',
+          commonField: 'common field',
+        ),
+      );
+    });
+  });
+
+  group('SealedWithDiscriminatorAndRenameBase', () {
+    void roundTripSimpleSealedWithDiscriminatorAndRename(
+        SealedWithDiscriminatorAndRenameBase p) {
+      roundTripObject(
+        p,
+        SealedWithDiscriminatorAndRenameBase.fromJson,
+      );
+    }
+
+    test('SealedWithDiscriminatorAndRenameImplOne', () {
+      roundTripSimpleSealedWithDiscriminatorAndRename(
+        SealedWithDiscriminatorAndRenameImplOne(
+          42,
+          42,
+        ),
+      );
+    });
+
+    test('SealedWithDiscriminatorAndRenameImplTwo', () {
+      roundTripSimpleSealedWithDiscriminatorAndRename(
+        SealedWithDiscriminatorAndRenameImplTwo(
+          42,
+          42,
+        ),
+      );
     });
   });
 
