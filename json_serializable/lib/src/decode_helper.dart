@@ -153,7 +153,7 @@ mixin DecodeHelper implements HelperCore {
   String _createSealedFunctionExpressionBody() {
     assert(element.isSealed);
 
-    final implementations = sealedClassImplementations(element);
+    final implementations = sealedSubClasses(element);
 
     final discriminator = config.unionDiscriminator;
 
