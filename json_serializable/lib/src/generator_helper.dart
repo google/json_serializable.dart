@@ -56,11 +56,12 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       ),
     );
 
-    if (sealedSupersAndConfigs.isNotEmpty &&
-        sealedSupersAndConfigs.any((e) => e.config == null)) {
+    if (sealedSupersAndConfigs.firstWhereOrNull((e) => e.config == null)
+        case final notAnnotated? when sealedSupersAndConfigs.isNotEmpty) {
       throw InvalidGenerationSourceError(
         'The class `${element.displayName}` is annotated '
-        'with `JsonSerializable` but its superclass is not annotated '
+        'with `JsonSerializable` but its sealed superclass '
+        '`${notAnnotated.classElement.displayName}` is not annotated '
         'with `JsonSerializable`.',
         todo: 'Add `@JsonSerializable` annotation to the sealed class.',
         element: element,
@@ -87,11 +88,12 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         case final conflictingSuper? when element.isSealed) {
       throw InvalidGenerationSource(
         'The classes `${conflictingSuper.classElement.displayName}` and '
-        '${element.displayName} are nested sealed classes, but they have '
-        'the same discriminator ${config.unionDiscriminator}.',
+        '`${element.displayName}` are nested sealed classes, but they have '
+        'the same discriminator `${config.unionDiscriminator}`.',
         todo:
             'Rename one of the discriminators with `unionDiscriminator` '
             'field of `@JsonSerializable`.',
+        element: element,
       );
     }
 
@@ -190,12 +192,13 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       ..fold(<String>{}, (Set<String> set, fe) {
         final jsonKey = nameAccess(fe);
 
-        if (sealedSupersAndConfigs.any(
-          (e) => e.config?.unionDiscriminator == jsonKey,
-        )) {
+        if (sealedSupersAndConfigs.firstWhereOrNull(
+              (e) => e.config?.unionDiscriminator == jsonKey,
+            )
+            case final conflict?) {
           throw InvalidGenerationSourceError(
-            'The JSON key "$jsonKey" is conflicting with the discriminator '
-            'of sealed superclass ',
+            'The JSON key `$jsonKey` is conflicting with the discriminator '
+            'of sealed superclass `${conflict.classElement.displayName}`',
             todo: 'Rename the field or the discriminator.',
             element: fe,
           );
