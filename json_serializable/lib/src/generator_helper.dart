@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
@@ -48,13 +49,25 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       );
     }
 
-    final sealedSuperClassesOrEmpty = sealedSuperClasses(element);
+    final sealedSupersAndConfigs = sealedSuperClasses(element).map(
+      (superClass) => (
+        classElement: superClass,
+        config: jsonSerializableConfig(superClass, _generator),
+      ),
+    );
 
-    final sealedDiscriminators = sealedSuperClassesOrEmpty
-        .map((sealedClass) => jsonSerializableConfig(sealedClass, _generator))
-        .map((config) => config?.unionDiscriminator);
+    if (sealedSupersAndConfigs.isNotEmpty &&
+        sealedSupersAndConfigs.any((e) => e.config == null)) {
+      throw InvalidGenerationSourceError(
+        'The class `${element.displayName}` is annotated '
+        'with `JsonSerializable` but its superclass is not annotated '
+        'with `JsonSerializable`.',
+        todo: 'Add `@JsonSerializable` annotation to the sealed class.',
+        element: element,
+      );
+    }
 
-    if ((sealedSuperClassesOrEmpty.isNotEmpty || element.isSealed) &&
+    if ((sealedSupersAndConfigs.isNotEmpty || element.isSealed) &&
         config.genericArgumentFactories) {
       throw InvalidGenerationSourceError(
         'The class `${element.displayName}` is annotated '
@@ -68,32 +81,43 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       );
     }
 
+    if (sealedSupersAndConfigs.firstWhereOrNull(
+          (e) => e.config?.unionDiscriminator == config.unionDiscriminator,
+        )
+        case final conflictingSuper? when element.isSealed) {
+      throw InvalidGenerationSource(
+        'The classes `${conflictingSuper.classElement.displayName}` and '
+        '${element.displayName} are nested sealed classes, but they have '
+        'the same discriminator ${config.unionDiscriminator}.',
+        todo:
+            'Rename one of the discriminators with `unionDiscriminator` '
+            'field of `@JsonSerializable`.',
+      );
+    }
+
+    if (sealedSupersAndConfigs.firstWhereOrNull(
+          (e) => e.config?.createToJson != config.createToJson,
+        )
+        case final diffSuper?) {
+      throw InvalidGenerationSourceError(
+        'The class `${diffSuper.classElement.displayName}` is sealed but its '
+        'subclass `${element.displayName}` has a different '
+        '`createToJson` option than the base class.',
+        element: element,
+      );
+    }
+
     if (element.isSealed) {
-      if (sealedDiscriminators.contains(config.unionDiscriminator)) {
-        throw InvalidGenerationSource(
-          'Nested sealed classes cannot have the same discriminator.',
-          todo:
-              'Rename one of the discriminators with `unionDiscriminator` '
-              'field in `@JsonSerializable`.',
-        );
-      }
-      sealedClassImplementations(element).forEach((impl) {
-        final annotationConfig = jsonSerializableConfig(impl, _generator);
+      sealedSubClasses(element).forEach((sub) {
+        final annotationConfig = jsonSerializableConfig(sub, _generator);
 
         if (annotationConfig == null) {
           throw InvalidGenerationSourceError(
             'The class `${element.displayName}` is sealed but its '
-            'implementation `${impl.displayName}` is not annotated with '
+            'subclass `${sub.displayName}` is not annotated with '
             '`JsonSerializable`.',
-            todo: 'Add `@JsonSerializable` annotation to ${impl.displayName}.',
-          );
-        }
-
-        if (annotationConfig.createToJson != config.createToJson) {
-          throw InvalidGenerationSourceError(
-            'The class `${element.displayName}` is sealed but its '
-            'implementation `${impl.displayName}` has a different '
-            '`createToJson` option than the base class.',
+            todo: 'Add `@JsonSerializable` annotation to ${sub.displayName}.',
+            element: sub,
           );
         }
       });
@@ -166,7 +190,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       ..fold(<String>{}, (Set<String> set, fe) {
         final jsonKey = nameAccess(fe);
 
-        if (sealedDiscriminators.contains(jsonKey)) {
+        if (sealedSupersAndConfigs.any(
+          (e) => e.config?.unionDiscriminator == jsonKey,
+        )) {
           throw InvalidGenerationSourceError(
             'The JSON key "$jsonKey" is conflicting with the discriminator '
             'of sealed superclass ',

@@ -174,7 +174,7 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
 /// indirect subclasses (ie. subclasses of subclasses).
 ///
 /// Otherwise, returns an empty iterable.
-Iterable<ClassElement2> sealedClassImplementations(
+Iterable<ClassElement2> sealedSubClasses(
   ClassElement2 maybeSealedSuperClass,
 ) {
   if (maybeSealedSuperClass case final sc when sc.isSealed) {
