@@ -1,3 +1,8 @@
+## 4.10.0
+
+- Add `JsonSerializable.unionRename`
+- Add `JsonSerializable.unionDiscriminator`
+
 ## 4.9.1-wip
 
 - Require Dart 3.8

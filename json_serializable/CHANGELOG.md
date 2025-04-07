@@ -1,5 +1,10 @@
 ## 6.10.0
 
+- Add support for deserializing union json to sealed class
+- Add support for serializing sealed class to union json
+
+## 6.9.6-wip
+
 - Required `analyzer: ^7.4.0`.
 - Switch to analyzer element2 model and `build: ^3.0.0-dev`.
 - Move `package:collection` to a dev dependency.
