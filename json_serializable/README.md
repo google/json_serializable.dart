@@ -258,14 +258,14 @@ customize the encoding/decoding of any type, you have a few options.
 
 # Sealed classes
 
-As of [`json_serializable`] version 6.10.0 and [`json_annotation`]
+As of `json_serializable` version 6.10.0 and `json_annotation`
 version 4.10.0, sealed classes can be serialized to json unions and json unions
 can be deserialized to sealed classes.
 
 To achieve this, both the sealed class and its subclasses should be annotated
-with `JsonSerializable`. Only the sealed class should have `fromJson` factory
-and `toJson` functions. To customize the sealed class behavior, use the fields
-`unionRename` and `unionDiscriminator` in `JsonSerializable` or adjust the
+with [`JsonSerializable`]. Only the sealed class should have `fromJson` factory
+or `toJson` function. To customize the sealed class behavior, use the fields
+`unionRename` and `unionDiscriminator` in [`JsonSerializable`] or adjust the
 default behavior by changing the corresponding fields in `build.yaml`. For
 more complex examples, please see [example]:
 
@@ -359,8 +359,6 @@ targets:
 [`Enum`]: https://api.dart.dev/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/dart-core/Iterable-class.html
-[`json_annotation`]: https://unknown.com/package/json_annotation
-[`json_serializable`]: https://unknown.com/package/json_serializable
 [`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.10.0/json_annotation/JsonConverter-class.html
 [`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/4.10.0/json_annotation/JsonEnum/valueField.html
 [`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.10.0/json_annotation/JsonEnum-class.html
