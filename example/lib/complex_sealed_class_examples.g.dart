@@ -6,116 +6,50 @@ part of 'complex_sealed_class_examples.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BaseBaseBaseType _$BaseBaseBaseTypeFromJson(Map<String, dynamic> json) =>
-    switch (json['base_base_base_type']) {
-      'BaseBase' => _$BaseBaseFromJson(json),
+Organization _$OrganizationFromJson(Map<String, dynamic> json) =>
+    switch (json['organization']) {
+      'Department' => _$DepartmentFromJson(json),
       _ => throw UnrecognizedUnionTypeException(
-          '${json['base_base_base_type']}',
-          BaseBaseBaseType,
+          '${json['organization']}',
+          Organization,
           json,
         ),
     };
 
-Map<String, dynamic> _$BaseBaseBaseTypeToJson(BaseBaseBaseType instance) =>
+Map<String, dynamic> _$OrganizationToJson(Organization instance) =>
     switch (instance) {
-      final BaseBase instance => {
-          'base_base_base_type': 'BaseBase',
-          ..._$BaseBaseToJson(instance),
+      final Department instance => {
+          'organization': 'Department',
+          ..._$DepartmentToJson(instance),
         },
     };
 
-BaseBase _$BaseBaseFromJson(Map<String, dynamic> json) =>
-    switch (json['base_base_type']) {
-      'Base' => _$BaseFromJson(json),
-      'BaseBaseImpl' => _$BaseBaseImplFromJson(json),
+Department _$DepartmentFromJson(Map<String, dynamic> json) =>
+    switch (json['department']) {
+      'Team' => _$TeamFromJson(json),
       _ => throw UnrecognizedUnionTypeException(
-          '${json['base_base_type']}',
-          BaseBase,
+          '${json['department']}',
+          Department,
           json,
         ),
     };
 
-Map<String, dynamic> _$BaseBaseToJson(BaseBase instance) => switch (instance) {
-      final Base instance => {
-          'base_base_type': 'Base',
-          ..._$BaseToJson(instance),
-        },
-      final BaseBaseImpl instance => {
-          'base_base_type': 'BaseBaseImpl',
-          ..._$BaseBaseImplToJson(instance),
+Map<String, dynamic> _$DepartmentToJson(Department instance) =>
+    switch (instance) {
+      final Team instance => {
+          'department': 'Team',
+          ..._$TeamToJson(instance),
         },
     };
 
-Base _$BaseFromJson(Map<String, dynamic> json) => switch (json['base_type']) {
-      'FirstBaseImpl' => _$FirstBaseImplFromJson(json),
-      'SecondBaseImpl' => _$SecondBaseImplFromJson(json),
-      _ => throw UnrecognizedUnionTypeException(
-          '${json['base_type']}',
-          Base,
-          json,
-        ),
-    };
-
-Map<String, dynamic> _$BaseToJson(Base instance) => switch (instance) {
-      final FirstBaseImpl instance => {
-          'base_type': 'FirstBaseImpl',
-          ..._$FirstBaseImplToJson(instance),
-        },
-      final SecondBaseImpl instance => {
-          'base_type': 'SecondBaseImpl',
-          ..._$SecondBaseImplToJson(instance),
-        },
-    };
-
-FirstBaseImpl _$FirstBaseImplFromJson(Map<String, dynamic> json) =>
-    FirstBaseImpl(
-      json['value'] as String,
+Team _$TeamFromJson(Map<String, dynamic> json) => Team(
+      teamLead: json['teamLead'] as String,
+      departmentHead: json['departmentHead'] as String,
+      name: json['name'] as String,
     );
 
-Map<String, dynamic> _$FirstBaseImplToJson(FirstBaseImpl instance) =>
-    <String, dynamic>{
-      'value': instance.value,
+Map<String, dynamic> _$TeamToJson(Team instance) => <String, dynamic>{
+      'name': instance.name,
+      'departmentHead': instance.departmentHead,
+      'teamLead': instance.teamLead,
     };
-
-SecondBaseImpl _$SecondBaseImplFromJson(Map<String, dynamic> json) =>
-    SecondBaseImpl(
-      json['value'] as String,
-    );
-
-Map<String, dynamic> _$SecondBaseImplToJson(SecondBaseImpl instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-    };
-
-BaseBaseImpl _$BaseBaseImplFromJson(Map<String, dynamic> json) => BaseBaseImpl(
-      json['value'] as String,
-    );
-
-Map<String, dynamic> _$BaseBaseImplToJson(BaseBaseImpl instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-    };
-
-SecondBase _$SecondBaseFromJson(Map<String, dynamic> json) =>
-    switch (json['type']) {
-      'ImplAll' => _$ImplAllFromJson(json),
-      _ => throw UnrecognizedUnionTypeException(
-          '${json['type']}',
-          SecondBase,
-          json,
-        ),
-    };
-
-ThirdBase _$ThirdBaseFromJson(Map<String, dynamic> json) =>
-    switch (json['type']) {
-      'ImplAll' => _$ImplAllFromJson(json),
-      _ => throw UnrecognizedUnionTypeException(
-          '${json['type']}',
-          ThirdBase,
-          json,
-        ),
-    };
-
-ImplAll _$ImplAllFromJson(Map<String, dynamic> json) => ImplAll(
-      json['value'] as String,
-    );
