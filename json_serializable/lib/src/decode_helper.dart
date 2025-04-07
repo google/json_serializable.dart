@@ -285,7 +285,6 @@ _ => throw UnrecognizedUnionTypeException(
   ///   )
   /// ]
   /// ```
-  ///
   List<String> _createDefaultFunctionBody(
     _ConstructorData data,
     List<String> checks,
