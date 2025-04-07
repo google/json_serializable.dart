@@ -121,6 +121,21 @@ customize the encoding/decoding of any type, you have a few options.
 
     <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
 
+# Sealed classes
+
+As of `package:json_serializable` version 6.10.0 and `package:json_annotation`
+version 4.10.0, sealed classes can be serialized to json unions and json unions
+can be deserialized to sealed classes.
+
+To achieve this, both the sealed class and its subclasses should be annotated
+with `JsonSerializable`. Only the sealed class should have `fromJson` factory
+or `toJson` function. To customize the sealed class behavior, use the fields
+`unionRename` and `unionDiscriminator` in `JsonSerializable` or adjust the
+default behavior by changing the corresponding fields in `build.yaml`. For
+more complex examples, please see [example]:
+
+<!-- REPLACE example/sealed_example.dart -->
+
 # Build configuration
 
 Aside from setting arguments on the associated annotation classes, you can also
