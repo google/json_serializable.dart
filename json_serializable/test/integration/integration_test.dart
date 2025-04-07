@@ -87,7 +87,7 @@ void main() {
       );
     });
 
-    test('ssube', () {
+    test('simple', () {
       roundTripOrder(
         Order.custom(Category.top, <Item>[
             Item(24)
@@ -256,7 +256,7 @@ void main() {
       roundTripObject(p, Numbers.fromJson);
     }
 
-    test('ssube', () {
+    test('simple', () {
       roundTripNumber(
         Numbers()
           ..nums = [0, 0.0]
