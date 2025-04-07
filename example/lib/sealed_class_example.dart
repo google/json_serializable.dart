@@ -3,36 +3,36 @@ import 'package:json_annotation/json_annotation.dart';
 part 'sealed_class_example.g.dart';
 
 @JsonSerializable(
-  unionDiscriminator: 'runtimeType',
+  unionDiscriminator: 'vehicle_type',
   unionRename: UnionRename.snake,
 )
-sealed class MySealedClass {
-  MySealedClass(this.value);
+sealed class Vehicle {
+  final String vehicleID;
 
-  factory MySealedClass.fromJson(Map<String, dynamic> json) =>
-      _$MySealedClassFromJson(json);
+  Vehicle({required this.vehicleID});
 
-  String value;
+  factory Vehicle.fromJson(Map<String, dynamic> json) =>
+      _$VehicleFromJson(json);
 
-  Map<String, dynamic> toJson() => _$MySealedClassToJson(this);
+  Map<String, dynamic> toJson() => _$VehicleToJson(this);
 }
 
 @JsonSerializable()
-class FirstSubtype extends MySealedClass {
-  final String someAttribute;
+class Car extends Vehicle {
+  final int numberOfDoors;
 
-  FirstSubtype(
-    this.someAttribute,
-    super.value,
-  );
+  Car({
+    required this.numberOfDoors,
+    required super.vehicleID,
+  });
 }
 
 @JsonSerializable()
-class SecondSubtype extends MySealedClass {
-  final String someOtherAttribute;
+class Bicycle extends Vehicle {
+  final bool hasBell;
 
-  SecondSubtype(
-    this.someOtherAttribute,
-    super.value,
-  );
+  Bicycle({
+    required this.hasBell,
+    required super.vehicleID,
+  });
 }

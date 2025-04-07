@@ -6,48 +6,44 @@ part of 'sealed_class_example.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-MySealedClass _$MySealedClassFromJson(Map<String, dynamic> json) =>
-    switch (json['runtimeType']) {
-      'first_subtype' => _$FirstSubtypeFromJson(json),
-      'second_subtype' => _$SecondSubtypeFromJson(json),
+Vehicle _$VehicleFromJson(Map<String, dynamic> json) =>
+    switch (json['vehicle_type']) {
+      'car' => _$CarFromJson(json),
+      'bicycle' => _$BicycleFromJson(json),
       _ => throw UnrecognizedUnionTypeException(
-          '${json['runtimeType']}',
-          MySealedClass,
+          '${json['vehicle_type']}',
+          Vehicle,
           json,
         ),
     };
 
-Map<String, dynamic> _$MySealedClassToJson(MySealedClass instance) =>
-    switch (instance) {
-      final FirstSubtype instance => {
-          'runtimeType': 'first_subtype',
-          ..._$FirstSubtypeToJson(instance),
+Map<String, dynamic> _$VehicleToJson(Vehicle instance) => switch (instance) {
+      final Car instance => {
+          'vehicle_type': 'car',
+          ..._$CarToJson(instance),
         },
-      final SecondSubtype instance => {
-          'runtimeType': 'second_subtype',
-          ..._$SecondSubtypeToJson(instance),
+      final Bicycle instance => {
+          'vehicle_type': 'bicycle',
+          ..._$BicycleToJson(instance),
         },
     };
 
-FirstSubtype _$FirstSubtypeFromJson(Map<String, dynamic> json) => FirstSubtype(
-      json['someAttribute'] as String,
-      json['value'] as String,
+Car _$CarFromJson(Map<String, dynamic> json) => Car(
+      numberOfDoors: (json['numberOfDoors'] as num).toInt(),
+      vehicleID: json['vehicleID'] as String,
     );
 
-Map<String, dynamic> _$FirstSubtypeToJson(FirstSubtype instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-      'someAttribute': instance.someAttribute,
+Map<String, dynamic> _$CarToJson(Car instance) => <String, dynamic>{
+      'vehicleID': instance.vehicleID,
+      'numberOfDoors': instance.numberOfDoors,
     };
 
-SecondSubtype _$SecondSubtypeFromJson(Map<String, dynamic> json) =>
-    SecondSubtype(
-      json['someOtherAttribute'] as String,
-      json['value'] as String,
+Bicycle _$BicycleFromJson(Map<String, dynamic> json) => Bicycle(
+      hasBell: json['hasBell'] as bool,
+      vehicleID: json['vehicleID'] as String,
     );
 
-Map<String, dynamic> _$SecondSubtypeToJson(SecondSubtype instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-      'someOtherAttribute': instance.someOtherAttribute,
+Map<String, dynamic> _$BicycleToJson(Bicycle instance) => <String, dynamic>{
+      'vehicleID': instance.vehicleID,
+      'hasBell': instance.hasBell,
     };

@@ -3,77 +3,41 @@ import 'package:json_annotation/json_annotation.dart';
 part 'complex_sealed_class_examples.g.dart';
 
 @JsonSerializable(
-  unionDiscriminator: 'base_base_base_type',
+  unionDiscriminator: 'organization',
 )
-sealed class BaseBaseBaseType {
-  BaseBaseBaseType();
+sealed class Organization {
+  final String name;
 
-  factory BaseBaseBaseType.fromJson(Map<String, dynamic> json) =>
-      _$BaseBaseBaseTypeFromJson(json);
+  Organization({required this.name});
 
-  Map<String, dynamic> toJson() => _$BaseBaseBaseTypeToJson(this);
+  factory Organization.fromJson(Map<String, dynamic> json) =>
+      _$OrganizationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 }
 
 @JsonSerializable(
-  unionDiscriminator: 'base_base_type',
+  unionDiscriminator: 'department',
 )
-sealed class BaseBase extends BaseBaseBaseType {
-  BaseBase();
-}
+sealed class Department extends Organization {
+  final String departmentHead;
 
-@JsonSerializable(
-  unionDiscriminator: 'base_type',
-)
-sealed class Base extends BaseBase {
-  Base();
+  Department({
+    required this.departmentHead,
+    required super.name,
+  });
+
+  factory Department.fromJson(Map<String, dynamic> json) =>
+      _$DepartmentFromJson(json);
 }
 
 @JsonSerializable()
-class FirstBaseImpl extends Base {
-  FirstBaseImpl(this.value);
+class Team extends Department {
+  final String teamLead;
 
-  String value;
-}
-
-@JsonSerializable()
-class SecondBaseImpl extends Base {
-  SecondBaseImpl(this.value);
-
-  String value;
-}
-
-@JsonSerializable()
-class BaseBaseImpl extends BaseBase {
-  BaseBaseImpl(this.value);
-
-  String value;
-}
-
-@JsonSerializable(
-  createToJson: false,
-)
-sealed class SecondBase {
-  SecondBase();
-
-  factory SecondBase.fromJson(Map<String, dynamic> json) =>
-      _$SecondBaseFromJson(json);
-}
-
-@JsonSerializable(
-  createToJson: false,
-)
-sealed class ThirdBase {
-  ThirdBase();
-
-  factory ThirdBase.fromJson(Map<String, dynamic> json) =>
-      _$ThirdBaseFromJson(json);
-}
-
-@JsonSerializable(
-  createToJson: false,
-)
-class ImplAll implements SecondBase, ThirdBase {
-  ImplAll(this.value);
-
-  String value;
+  Team({
+    required this.teamLead,
+    required super.departmentHead,
+    required super.name,
+  });
 }

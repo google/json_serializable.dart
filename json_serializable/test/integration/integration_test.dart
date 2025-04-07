@@ -87,7 +87,7 @@ void main() {
       );
     });
 
-    test('simple', () {
+    test('ssube', () {
       roundTripOrder(
         Order.custom(Category.top, <Item>[
             Item(24)
@@ -256,7 +256,7 @@ void main() {
       roundTripObject(p, Numbers.fromJson);
     }
 
-    test('simple', () {
+    test('ssube', () {
       roundTripNumber(
         Numbers()
           ..nums = [0, 0.0]
@@ -466,55 +466,85 @@ void main() {
     });
   });
 
-  group('SimpleSealedBase', () {
-    void roundTripSimpleSealed(SimpleSealedBase p) {
-      roundTripObject(p, SimpleSealedBase.fromJson);
+  group('Vehicle', () {
+    void roundTripVehicle(Vehicle v) {
+      roundTripObject(v, Vehicle.fromJson);
     }
 
-    test('SimpleSealedImplOne', () {
-      roundTripSimpleSealed(
-        SimpleSealedImplOne(
-          testFieldOne: 'test field one',
-          commonField: 'common field',
-        ),
-      );
+    test('Car', () {
+      roundTripVehicle(Car(numberOfDoors: 4, vehicleID: 'vehicle-123'));
     });
 
-    test('SimpleSealedImplTwo', () {
-      roundTripSimpleSealed(
-        SimpleSealedImplTwo(
-          testFieldTwo: 'test field two',
-          commonField: 'common field',
-        ),
+    test('Bicycle', () {
+      roundTripVehicle(Bicycle(hasBell: true, vehicleID: 'vehicle-456'));
+    });
+  });
+
+  group('Delivery', () {
+    void roundTripDelivery(Delivery d) {
+      roundTripObject(d, Delivery.fromJson);
+    }
+
+    test('DroneDelivery', () {
+      roundTripDelivery(DroneDelivery(droneModel: 1, deliveryID: 789));
+    });
+
+    test('TruckDelivery', () {
+      roundTripDelivery(
+        TruckDelivery(weightCapacity: 3000.0, deliveryID: 1011),
       );
     });
   });
 
-  group('SealedWithDiscriminatorAndRenameBase', () {
-    void roundTripSimpleSealedWithDiscriminatorAndRename(
-        SealedWithDiscriminatorAndRenameBase p) {
-      roundTripObject(
-        p,
-        SealedWithDiscriminatorAndRenameBase.fromJson,
-      );
+  group('Container', () {
+    void roundTripContainer(Container c) {
+      roundTripObject(c, Container.fromJson);
     }
 
-    test('SealedWithDiscriminatorAndRenameImplOne', () {
-      roundTripSimpleSealedWithDiscriminatorAndRename(
-        SealedWithDiscriminatorAndRenameImplOne(
-          42,
-          42,
+    test('Box with nested items', () {
+      roundTripContainer(
+        Box(
+          containerID: 'box-321',
+          items: [
+            Product(name: 'Product-X', itemID: 'item-654'),
+            Equipment(
+              label: 'Type-Y',
+              itemID: 'item-987',
+              nestedContainer: Parcel(
+                containerID: 'nested-parcel-222',
+                items: [Product(name: 'Product-Y', itemID: 'item-876')],
+              ),
+            ),
+          ],
         ),
       );
     });
 
-    test('SealedWithDiscriminatorAndRenameImplTwo', () {
-      roundTripSimpleSealedWithDiscriminatorAndRename(
-        SealedWithDiscriminatorAndRenameImplTwo(
-          42,
-          42,
-        ),
-      );
+    test('Parcel without items', () {
+      roundTripContainer(Parcel(containerID: 'parcel-111'));
+    });
+  });
+
+  group('Transportable and Trackable', () {
+    void roundTripTransportable(Transportable t) {
+      roundTripObject(t, Transportable.fromJson);
+    }
+
+    void roundTripTrackable(Trackable t) {
+      roundTripObject(t, Trackable.fromJson);
+    }
+
+    test('Ship', () {
+      roundTripTransportable(Ship(cargoCapacity: 5000.0));
+    });
+
+    test('GPSDevice', () {
+      roundTripTrackable(GPSDevice(serialNumber: 'gps-12345'));
+    });
+
+    test('Package', () {
+      roundTripTransportable(Package(label: 'Package-123', weight: 2.5));
+      roundTripTrackable(Package(label: 'Package-123', weight: 2.5));
     });
   });
 
