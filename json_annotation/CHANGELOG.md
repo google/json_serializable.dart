@@ -1,4 +1,4 @@
-## 4.10.0
+## 4.10.0-wip
 
 - Add `JsonSerializable.unionRename`
 - Add `JsonSerializable.unionDiscriminator`
