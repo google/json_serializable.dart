@@ -31,6 +31,26 @@ enum FieldRename {
   screamingSnake,
 }
 
+/// Values for the automatic class renaming behavior for [JsonSerializable]
+/// with sealed classes.
+enum UnionRename {
+  /// Use the union class name without changes.
+  none,
+
+  /// Encodes union class named `KebabCase` with a JSON key `kebab-case`.
+  kebab,
+
+  /// Encodes union class named `SnakeCase` with a JSON key `snake_case`.
+  snake,
+
+  /// Encodes union class named `PascalCase` with a JSON key `PascalCase`.
+  pascal,
+
+  /// Encodes union class named `ScreamingSnakeCase` with a JSON key
+  /// `SCREAMING_SNAKE_CASE`
+  screamingSnake,
+}
+
 /// An annotation used to specify a class to generate code for.
 @JsonSerializable(
   checked: true,
@@ -224,6 +244,20 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+  /// The discriminator key used to identify the union type.
+  ///
+  /// Defaults to `type`.
+  final String? unionDiscriminator;
+
+  /// Defines the automatic naming strategy when converting class names
+  /// to union type names.
+  ///
+  /// With a value [UnionRename.none] (the default), the name of the class is
+  /// used without modification.
+  ///
+  /// See [UnionRename] for details on the other options.
+  final UnionRename? unionRename;
+
   /// A list of [JsonConverter] to apply to this class.
   ///
   /// Writing:
@@ -276,6 +310,8 @@ class JsonSerializable {
     this.converters,
     this.genericArgumentFactories,
     this.createPerFieldToJson,
+    this.unionDiscriminator,
+    this.unionRename,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -296,6 +332,8 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
+    unionDiscriminator: 'type',
+    unionRename: UnionRename.none,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -318,6 +356,8 @@ class JsonSerializable {
         includeIfNull: includeIfNull ?? defaults.includeIfNull,
         genericArgumentFactories:
             genericArgumentFactories ?? defaults.genericArgumentFactories,
+        unionDiscriminator: unionDiscriminator ?? defaults.unionDiscriminator,
+        unionRename: unionRename ?? defaults.unionRename,
       );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

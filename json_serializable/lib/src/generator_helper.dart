@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
@@ -49,6 +50,80 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         'parameters. For classes without type parameters, the option is '
         'ignored.',
       );
+    }
+
+    final sealedSupersAndConfigs = sealedSuperClasses(element).map(
+      (superClass) => (
+        classElement: superClass,
+        config: jsonSerializableConfig(superClass, _generator),
+      ),
+    );
+
+    if (sealedSupersAndConfigs.firstWhereOrNull((e) => e.config == null)
+        case final notAnnotated? when sealedSupersAndConfigs.isNotEmpty) {
+      throw InvalidGenerationSourceError(
+        'The class `${element.displayName}` is annotated '
+        'with `JsonSerializable` but its sealed superclass '
+        '`${notAnnotated.classElement.displayName}` is not annotated '
+        'with `JsonSerializable`.',
+        todo: 'Add `@JsonSerializable` annotation to the sealed class.',
+        element: element,
+      );
+    }
+
+    if ((sealedSupersAndConfigs.isNotEmpty || element.isSealed) &&
+        config.genericArgumentFactories) {
+      throw InvalidGenerationSourceError(
+        'The class `${element.displayName}` is annotated '
+        'with `JsonSerializable` field `genericArgumentFactories: true`. '
+        '`genericArgumentFactories: true` is not supported for classes '
+        'that are sealed or have sealed superclasses.',
+        todo: 'Remove the `genericArgumentFactories` option or '
+            'remove the `sealed` keyword from the class.',
+        element: element,
+      );
+    }
+
+    if (sealedSupersAndConfigs.firstWhereOrNull(
+      (e) => e.config?.unionDiscriminator == config.unionDiscriminator,
+    )
+        case final conflictingSuper? when element.isSealed) {
+      throw InvalidGenerationSource(
+        'The classes `${conflictingSuper.classElement.displayName}` and '
+        '`${element.displayName}` are nested sealed classes, but they have '
+        'the same discriminator `${config.unionDiscriminator}`.',
+        todo: 'Rename one of the discriminators with `unionDiscriminator` '
+            'field of `@JsonSerializable`.',
+        element: element,
+      );
+    }
+
+    if (sealedSupersAndConfigs.firstWhereOrNull(
+      (e) => e.config?.createToJson != config.createToJson,
+    )
+        case final diffSuper?) {
+      throw InvalidGenerationSourceError(
+        'The class `${diffSuper.classElement.displayName}` is sealed but its '
+        'subclass `${element.displayName}` has a different '
+        '`createToJson` option than the base class.',
+        element: element,
+      );
+    }
+
+    if (element.isSealed) {
+      sealedSubClasses(element).forEach((sub) {
+        final annotationConfig = jsonSerializableConfig(sub, _generator);
+
+        if (annotationConfig == null) {
+          throw InvalidGenerationSourceError(
+            'The class `${element.displayName}` is sealed but its '
+            'subclass `${sub.displayName}` is not annotated with '
+            '`JsonSerializable`.',
+            todo: 'Add `@JsonSerializable` annotation to ${sub.displayName}.',
+            element: sub,
+          );
+        }
+      });
     }
 
     final sortedFields = createSortedFieldSet(element);
@@ -118,6 +193,18 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
         <String>{},
         (Set<String> set, fe) {
           final jsonKey = nameAccess(fe);
+
+          if (sealedSupersAndConfigs.firstWhereOrNull(
+                  (e) => e.config?.unionDiscriminator == jsonKey)
+              case final conflict?) {
+            throw InvalidGenerationSourceError(
+              'The JSON key `$jsonKey` is conflicting with the discriminator '
+              'of sealed superclass `${conflict.classElement.displayName}`',
+              todo: 'Rename the field or the discriminator.',
+              element: fe,
+            );
+          }
+
           if (!set.add(jsonKey)) {
             throw InvalidGenerationSourceError(
               'More than one field has the JSON key for name "$jsonKey".',

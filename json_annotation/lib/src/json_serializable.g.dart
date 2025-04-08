@@ -27,7 +27,9 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
             'field_rename',
             'generic_argument_factories',
             'ignore_unannotated',
-            'include_if_null'
+            'include_if_null',
+            'union_discriminator',
+            'union_rename'
           ],
         );
         final val = JsonSerializable(
@@ -53,6 +55,10 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
               $checkedConvert('generic_argument_factories', (v) => v as bool?),
           createPerFieldToJson:
               $checkedConvert('create_per_field_to_json', (v) => v as bool?),
+          unionDiscriminator:
+              $checkedConvert('union_discriminator', (v) => v as String?),
+          unionRename: $checkedConvert('union_rename',
+              (v) => $enumDecodeNullable(_$UnionRenameEnumMap, v)),
         );
         return val;
       },
@@ -68,7 +74,9 @@ JsonSerializable _$JsonSerializableFromJson(Map<String, dynamic> json) =>
         'ignoreUnannotated': 'ignore_unannotated',
         'includeIfNull': 'include_if_null',
         'genericArgumentFactories': 'generic_argument_factories',
-        'createPerFieldToJson': 'create_per_field_to_json'
+        'createPerFieldToJson': 'create_per_field_to_json',
+        'unionDiscriminator': 'union_discriminator',
+        'unionRename': 'union_rename'
       },
     );
 
@@ -88,6 +96,8 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
+      'union_discriminator': instance.unionDiscriminator,
+      'union_rename': _$UnionRenameEnumMap[instance.unionRename],
     };
 
 const _$FieldRenameEnumMap = {
@@ -96,4 +106,12 @@ const _$FieldRenameEnumMap = {
   FieldRename.snake: 'snake',
   FieldRename.pascal: 'pascal',
   FieldRename.screamingSnake: 'screamingSnake',
+};
+
+const _$UnionRenameEnumMap = {
+  UnionRename.none: 'none',
+  UnionRename.kebab: 'kebab',
+  UnionRename.snake: 'snake',
+  UnionRename.pascal: 'pascal',
+  UnionRename.screamingSnake: 'screamingSnake',
 };
