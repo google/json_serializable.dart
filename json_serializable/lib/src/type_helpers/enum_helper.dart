@@ -21,7 +21,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    final memberContent = enumValueMapFromType(targetType);
+    final memberContent = enumMapsFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -44,7 +44,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    final memberContent = enumValueMapFromType(targetType);
+    final memberContent = enumMapsFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -64,15 +64,15 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
-      functionName = r'$enumDecodeNullable';
+      functionName = r'$enumDecodeNullableWithDecodeMap';
     } else {
-      functionName = r'$enumDecode';
+      functionName = r'$enumDecodeWithDecodeMap';
     }
 
     context.addMember(memberContent);
 
     final args = [
-      constMapName(targetType),
+      constDecodeMapName(targetType),
       expression,
       if (jsonKey.unknownEnumValue != null)
         'unknownValue: ${jsonKey.unknownEnumValue}',

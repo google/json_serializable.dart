@@ -5,10 +5,27 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
+@ShouldThrow(
+  'The `JsonValue` annotation on `EnumAliasNotSupportType.one` aliases should '
+  'all be of type String or int.',
+)
+@JsonEnum(alwaysCreate: true)
+enum EnumAliasNotSupportType {
+  @JsonValue('one', aliases: {#one})
+  one,
+}
+
 @ShouldGenerate(r'''
+// ignore: unused_element
 const _$EnumValueIssue1147EnumMap = {
   EnumValueIssue1147.success: 200,
   EnumValueIssue1147.weird: 601,
+};
+
+// ignore: unused_element
+const _$EnumValueIssue1147EnumDecodeMap = {
+  200: EnumValueIssue1147.success,
+  601: EnumValueIssue1147.weird,
 };
 ''')
 @JsonEnum(alwaysCreate: true, valueField: 'statusCodeNumber')
