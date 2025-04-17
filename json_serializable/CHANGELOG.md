@@ -1,3 +1,7 @@
+## 6.9.6-wip
+
+- Move `package:collection` to a dev dependency.
+
 ## 6.9.5
 
 - Support the `analyzer: '>=6.9.0 <8.0.0'`.

@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
-import 'package:collection/collection.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
@@ -147,7 +146,7 @@ final _instances = [
 ];
 
 ToFromStringHelper? _forType(DartType type) =>
-    _instances.singleWhereOrNull((i) => i.matches(type));
+    _instances.where((i) => i.matches(type)).singleOrNull;
 
 /// Returns `true` if [keyType] can be automatically converted to/from String –
 /// and is therefor usable as a key in a [Map].

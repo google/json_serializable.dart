@@ -4,7 +4,6 @@
 
 // ignore_for_file: inference_failure_on_instance_creation
 
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../test_utils.dart';
@@ -146,7 +145,7 @@ class Issue980ParentClass {
       other is Issue980ParentClass && deepEquals(list, other.list);
 
   @override
-  int get hashCode => const DeepCollectionEquality().hash(list);
+  int get hashCode => deepHash(list);
 }
 
 @JsonSerializable(genericArgumentFactories: true)
