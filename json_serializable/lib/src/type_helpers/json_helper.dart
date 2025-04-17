@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -79,7 +78,8 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final classElement = targetType.element;
 
     final fromJsonCtor = classElement.constructors
-        .singleWhereOrNull((ce) => ce.name == 'fromJson');
+        .where((ce) => ce.name == 'fromJson')
+        .singleOrNull;
 
     var output = expression;
     if (fromJsonCtor != null) {
@@ -291,4 +291,5 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
 
 MethodElement? _toJsonMethod(DartType type) => type.typeImplementations
     .map((dt) => dt is InterfaceType ? dt.getMethod('toJson') : null)
-    .firstWhereOrNull((me) => me != null);
+    .where((me) => me != null)
+    .firstOrNull;

@@ -5,7 +5,6 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -280,10 +279,11 @@ _ConverterMatch? _compatibleMatch(
 ) {
   final converterClassElement = constantValue.type!.element as ClassElement;
 
-  final jsonConverterSuper =
-      converterClassElement.allSupertypes.singleWhereOrNull(
-    (e) => _jsonConverterChecker.isExactly(e.element),
-  );
+  final jsonConverterSuper = converterClassElement.allSupertypes
+      .where(
+        (e) => _jsonConverterChecker.isExactly(e.element),
+      )
+      .singleOrNull;
 
   if (jsonConverterSuper == null) {
     return null;
