@@ -61,7 +61,6 @@ mixin DecodeHelper implements HelperCore {
       config.constructor,
       accessibleFields.keys,
       accessibleFields.values
-          // ignore: deprecated_member_use
           .where((fe) => element.lookUpSetter(fe.name, element.library) != null)
           .map((fe) => fe.name)
           .toList(),
