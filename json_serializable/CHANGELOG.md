@@ -1,6 +1,11 @@
+## 6.9.5
+
+- Support the `analyzer: '>=6.9.0 <8.0.0'`.
+- Fixed use of deprecated analyzer APIs.
+
 ## 6.9.4
 
-- Fix extra line being generated when targetting Dart 3.7 package.
+- Fix extra line being generated when targeting Dart 3.7 package.
 
 ## 6.9.3
 
