@@ -3,6 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/element/element.dart' // ignore: implementation_imports
+    show
+        InterfaceElementImpl;
 import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
     show
         InheritanceManager3;
@@ -81,15 +84,18 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
   final inheritedFields = <String, FieldElement>{};
   final manager = InheritanceManager3();
 
-  for (final v in manager.getInheritedConcreteMap2(element).values) {
+  for (final v in manager
+      .getInheritedConcreteMap2(element as InterfaceElementImpl)
+      .values) {
     assert(v is! FieldElement);
     if (_dartCoreObjectChecker.isExactly(v.enclosingElement3)) {
       continue;
     }
 
-    if (v is PropertyAccessorElement && v.isGetter) {
-      assert(v.variable2 is FieldElement);
-      final variable = v.variable2 as FieldElement;
+    if (v is PropertyAccessorElement &&
+        (v as PropertyAccessorElement).isGetter) {
+      assert((v as PropertyAccessorElement).variable2 is FieldElement);
+      final variable = (v as PropertyAccessorElement).variable2 as FieldElement;
       assert(!inheritedFields.containsKey(variable.name));
       inheritedFields[variable.name] = variable;
     }
