@@ -23,8 +23,8 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
       'firstName': instance.firstName,
       if (instance.middleName case final value?) 'middleName': value,
       'lastName': instance.lastName,
-      'date-of-birth': instance.dateOfBirth.toIso8601String(),
-      'last-order': instance.lastOrder?.toIso8601String(),
+      'date-of-birth': instance.dateOfBirth.toUtc().toIso8601String(),
+      'last-order': instance.lastOrder?.toUtc().toIso8601String(),
       'orders': instance.orders,
     };
 
