@@ -113,20 +113,22 @@ class _JsonConvertData {
 
   _JsonConvertData.className(
     String className,
+    String? arguments,
     String accessor,
     this.jsonType,
     this.fieldType,
-  )   : accessString = 'const $className${_withAccessor(accessor)}()',
+  )   : accessString = 'const $className${_withAccessor(accessor)}(${arguments ?? ''})',
         isGeneric = false;
 
   _JsonConvertData.genericClass(
     String className,
+    String? arguments,
     String genericTypeArg,
     String accessor,
     this.jsonType,
     this.fieldType,
   )   : accessString =
-            '$className<$genericTypeArg>${_withAccessor(accessor)}()',
+            '$className<$genericTypeArg>${_withAccessor(accessor)}(${arguments ?? ''})',
         isGeneric = true;
 
   _JsonConvertData.propertyAccess(
@@ -229,18 +231,13 @@ _JsonConvertData? _typeConverterFrom(
   }
 
   final reviver = ConstantReader(match.annotation).revive();
-
-  if (reviver.namedArguments.isNotEmpty ||
-      reviver.positionalArguments.isNotEmpty) {
-    throw InvalidGenerationSourceError(
-      'Generators with constructor arguments are not supported.',
-      element: match.elementAnnotation?.element,
-    );
-  }
+  // Support generators with constructor arguments
+  String? arguments = _argsFromRevivable(reviver);
 
   if (match.genericTypeArg != null) {
     return _JsonConvertData.genericClass(
       match.annotation.type!.element!.name!,
+      arguments,
       match.genericTypeArg!,
       reviver.accessor,
       match.jsonType,
@@ -250,10 +247,71 @@ _JsonConvertData? _typeConverterFrom(
 
   return _JsonConvertData.className(
     match.annotation.type!.element!.name!,
+    arguments,
     reviver.accessor,
     match.jsonType,
     match.fieldType,
   );
+}
+
+String? _argsFromRevivable(Revivable reviver) {
+  String? arguments, positionalArguments, namedArguments;
+  if (reviver.positionalArguments.isNotEmpty) {
+    positionalArguments = reviver.positionalArguments.map((DartObject arg) => _argumentValueFromDartObject(arg)).join(', ');
+  }
+  if (reviver.namedArguments.isNotEmpty) {
+    namedArguments = reviver.namedArguments.keys
+        .map((String key) {
+      dynamic arg = _argumentValueFromDartObject(reviver.namedArguments[key]);
+      if (null != arg) return '$key: $arg';
+      return null;
+    })
+        .where(_isNotEmpty)
+        .join(', ');
+  }
+  arguments = <String?>[positionalArguments, namedArguments].where(_isNotEmpty).join(', ');
+  return arguments;
+}
+
+bool _isNotEmpty(dynamic element) => null != element;
+
+dynamic _argumentValueFromDartObject(DartObject? obj) {
+  try {
+    if (null != obj) {
+      if (obj.type?.isDartCoreString == true) {
+        return '\'${obj.toStringValue()}\'';
+      } else if (obj.type?.isDartCoreInt == true) {
+        return obj.toIntValue();
+      } else if (obj.type?.isDartCoreDouble == true) {
+        return obj.toDoubleValue();
+      } else if (obj.type?.isDartCoreBool == true) {
+        return obj.toBoolValue();
+      } else if (obj.type?.isDartCoreIterable == true || obj.type?.isDartCoreList == true) {
+        return obj.toListValue();
+      } else if (obj.type?.isDartCoreMap == true) {
+        return obj.toMapValue();
+      } else if (obj.type?.isDartCoreSet == true) {
+        return obj.toSetValue();
+      } else if (obj.type?.isDartCoreSymbol == true) {
+        return obj.toSymbolValue();
+      } else {
+        ExecutableElement? executable = obj.toFunctionValue();
+        if (null != executable) {
+          return executable.displayName;
+        } else if (null != obj.type) {
+          String? typeDisplayString = obj.type?.getDisplayString(withNullability: false);
+          if (null != typeDisplayString && typeDisplayString != 'Null') {
+            final reviver = ConstantReader(obj).revive();
+            String? arguments = _argsFromRevivable(reviver);
+            return '$typeDisplayString(${arguments ?? ''})';
+          }
+        }
+      }
+    }
+  } catch (e) {
+    print(e);
+  }
+  return null;
 }
 
 class _ConverterMatch {
