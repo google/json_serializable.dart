@@ -481,4 +481,37 @@ void main() {
   test('ModelJsonKeys', () {
     expect(js_keys.keys, {'first-name', 'LAST_NAME'});
   });
+
+  group('JsonValue aliases', () {
+    test('should decode any one of the aliases values', () {
+      const jsonData = {'value': '2'};
+      expect(
+        EnumWithAliasesData.fromJson(jsonData).value,
+        EnumWithAliases.two,
+      );
+
+      const jsonData2 = {'value': 'two'};
+      expect(
+        EnumWithAliasesData.fromJson(jsonData2).value,
+        EnumWithAliases.two,
+      );
+
+      const jsonData3 = {'value': 'deux'};
+      expect(
+        EnumWithAliasesData.fromJson(jsonData3).value,
+        EnumWithAliases.two,
+      );
+
+      const jsonInvalidData = {'value': 'modmao'};
+      expect(
+        () => EnumWithAliasesData.fromJson(jsonInvalidData),
+        throwsA(isA<ArgumentError>()),
+      );
+    });
+
+    test('should encode to the non-alias value', () {
+      final jsonData = EnumWithAliasesData(EnumWithAliases.two).toJson();
+      expect(jsonData, {'value': '2'});
+    });
+  });
 }
