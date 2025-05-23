@@ -34,7 +34,7 @@ bool? enumFieldWithNullInEncodeMap(DartType targetType) {
   return enumMap.values.contains(null);
 }
 
-String? enumMapsFromType(
+String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {

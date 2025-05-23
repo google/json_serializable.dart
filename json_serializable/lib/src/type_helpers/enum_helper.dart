@@ -21,7 +21,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     String expression,
     TypeHelperContextWithConfig context,
   ) {
-    final memberContent = enumMapsFromType(targetType);
+    final memberContent = enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
@@ -44,7 +44,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    final memberContent = enumMapsFromType(targetType);
+    final memberContent = enumValueMapFromType(targetType);
 
     if (memberContent == null) {
       return null;
