@@ -48,7 +48,7 @@ String? enumMapsFromType(
       ? null
       : [
           for (final MapEntry(:key, :value) in enumMap.entries)
-            '  ${targetType.element!.name}.${key.name}: '
+            '  ${targetType.element3!.name3}.${key.name}: '
                 '${jsonLiteralAsDart(value)},',
         ].join();
 
