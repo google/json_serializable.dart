@@ -1,6 +1,7 @@
 ## 6.9.6-wip
 
 - Move `package:collection` to a dev dependency.
+- Require Dart 3.8
 
 ## 6.9.5
 
