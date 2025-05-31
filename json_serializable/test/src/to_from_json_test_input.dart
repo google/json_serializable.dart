@@ -166,9 +166,7 @@ String? _toStringNullOnEmpty(String input) => input.isEmpty ? null : input;
 @ShouldGenerate(r'''
 Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
   ToJsonNullableFalseIncludeIfNullFalse instance,
-) => <String, dynamic>{
-  if (_toStringNullOnEmpty(instance.field) case final value?) 'field': value,
-};
+) => <String, dynamic>{'field': ?_toStringNullOnEmpty(instance.field)};
 ''')
 @JsonSerializable(createFactory: false)
 class ToJsonNullableFalseIncludeIfNullFalse {

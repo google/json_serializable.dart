@@ -13,8 +13,7 @@ SubType _$SubTypeFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SubTypeToJson(SubType instance) => <String, dynamic>{
   'super-final-field': instance.superFinalField,
-  if (instance.superReadWriteField case final value?)
-    'superReadWriteField': value,
+  'superReadWriteField': ?instance.superReadWriteField,
   'subTypeViaCtor': instance.subTypeViaCtor,
   'subTypeReadWrite': instance.subTypeReadWrite,
 };
@@ -51,8 +50,7 @@ Map<String, dynamic> _$SubTypeWithAnnotatedFieldOverrideExtendsToJson(
   SubTypeWithAnnotatedFieldOverrideExtends instance,
 ) => <String, dynamic>{
   'super-final-field': instance.superFinalField,
-  if (instance.superReadWriteField case final value?)
-    'superReadWriteField': value,
+  'superReadWriteField': ?instance.superReadWriteField,
   'priceHalf': instance.priceHalf,
 };
 ''')

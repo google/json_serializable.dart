@@ -21,7 +21,7 @@ Person _$PersonFromJson(Map<String, dynamic> json) => Person(
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'firstName': instance.firstName,
-  if (instance.middleName case final value?) 'middleName': value,
+  'middleName': ?instance.middleName,
   'lastName': instance.lastName,
   'date-of-birth': instance.dateOfBirth.toIso8601String(),
   'last-order': instance.lastOrder?.toIso8601String(),
@@ -41,13 +41,12 @@ Order _$OrderFromJson(Map<String, dynamic> json) =>
       );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
-  if (instance.count case final value?) 'count': value,
-  if (instance.itemNumber case final value?) 'itemNumber': value,
-  if (instance.isRushed case final value?) 'isRushed': value,
-  if (instance.item case final value?) 'item': value,
-  if (Order._durationToMilliseconds(instance.prepTime) case final value?)
-    'prep-time': value,
-  if (Order._dateTimeToEpochUs(instance.date) case final value?) 'date': value,
+  'count': ?instance.count,
+  'itemNumber': ?instance.itemNumber,
+  'isRushed': ?instance.isRushed,
+  'item': ?instance.item,
+  'prep-time': ?Order._durationToMilliseconds(instance.prepTime),
+  'date': ?Order._dateTimeToEpochUs(instance.date),
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()

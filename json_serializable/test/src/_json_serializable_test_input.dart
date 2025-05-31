@@ -199,10 +199,7 @@ class NoDeserializeBadKey {
 @ShouldGenerate(r'''
 Map<String, dynamic> _$IncludeIfNullOverrideToJson(
   IncludeIfNullOverride instance,
-) => <String, dynamic>{
-  'number': instance.number,
-  if (instance.str case final value?) 'str': value,
-};
+) => <String, dynamic>{'number': instance.number, 'str': ?instance.str};
 ''')
 @JsonSerializable(createFactory: false, includeIfNull: false)
 class IncludeIfNullOverride {

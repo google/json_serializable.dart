@@ -118,10 +118,10 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$KitchenSinkToJson(
   KitchenSink instance,
 ) => <String, dynamic>{
-  if (instance.ctorValidatedNo42 case final value?) 'no-42': value,
-  if (instance.dateTime?.toIso8601String() case final value?) 'dateTime': value,
-  if (instance.bigInt?.toString() case final value?) 'bigInt': value,
-  if (instance.iterable?.toList() case final value?) 'iterable': value,
+  'no-42': ?instance.ctorValidatedNo42,
+  'dateTime': ?instance.dateTime?.toIso8601String(),
+  'bigInt': ?instance.bigInt?.toString(),
+  'iterable': ?instance.iterable?.toList(),
   'dynamicIterable': instance.dynamicIterable.toList(),
   'objectIterable': instance.objectIterable.toList(),
   'intIterable': instance.intIterable.toList(),
@@ -166,21 +166,18 @@ Map<String, dynamic> _$KitchenSinkToJson(
       )
       .toList(),
   'val': instance.val,
-  if (instance.writeNotNull case final value?) 'writeNotNull': value,
-  if (instance.string case final value?) r'$string': value,
+  'writeNotNull': ?instance.writeNotNull,
+  r'$string': ?instance.string,
   'simpleObject': instance.simpleObject,
   'strictKeysObject': instance.strictKeysObject,
-  if (instance.validatedPropertyNo42 case final value?)
-    'validatedPropertyNo42': value,
-  if (instance.recordField == null
-          ? null
-          : <String, dynamic>{
-              r'$1': instance.recordField!.$1,
-              r'$2': instance.recordField!.$2,
-              'truth': instance.recordField!.truth,
-            }
-      case final value?)
-    'recordField': value,
+  'validatedPropertyNo42': ?instance.validatedPropertyNo42,
+  'recordField': ?instance.recordField == null
+      ? null
+      : <String, dynamic>{
+          r'$1': instance.recordField!.$1,
+          r'$2': instance.recordField!.$2,
+          'truth': instance.recordField!.truth,
+        },
 };
 
 $Rec? _$recordConvertNullable<$Rec>(
@@ -240,9 +237,7 @@ JsonConverterTestClass _$JsonConverterTestClassFromJson(
 Map<String, dynamic> _$JsonConverterTestClassToJson(
   JsonConverterTestClass instance,
 ) => <String, dynamic>{
-  if (const DurationMillisecondConverter().toJson(instance.duration)
-      case final value?)
-    'duration': value,
+  'duration': ?const DurationMillisecondConverter().toJson(instance.duration),
   'durationList': instance.durationList
       .map(const DurationMillisecondConverter().toJson)
       .toList(),
@@ -250,12 +245,10 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
   'bigIntMap': instance.bigIntMap.map(
     (k, e) => MapEntry(k, const BigIntStringConverter().toJson(e)),
   ),
-  if (_$JsonConverterToJson<String, BigInt>(
-        instance.nullableBigInt,
-        const BigIntStringConverter().toJson,
-      )
-      case final value?)
-    'nullableBigInt': value,
+  'nullableBigInt': ?_$JsonConverterToJson<String, BigInt>(
+    instance.nullableBigInt,
+    const BigIntStringConverter().toJson,
+  ),
   'nullableBigIntMap': instance.nullableBigIntMap.map(
     (k, e) => MapEntry(
       k,
@@ -265,23 +258,16 @@ Map<String, dynamic> _$JsonConverterTestClassToJson(
       ),
     ),
   ),
-  if (TrivialNumberConverter.instance.toJson(instance.numberSilly)
-      case final value?)
-    'numberSilly': value,
+  'numberSilly': ?TrivialNumberConverter.instance.toJson(instance.numberSilly),
   'numberSillySet': instance.numberSillySet
       .map(TrivialNumberConverter.instance.toJson)
       .toList(),
-  if (const EpochDateTimeConverter().toJson(instance.dateTime)
-      case final value?)
-    'dateTime': value,
-  if (trivialStringConverter.toJson(instance.trivialString) case final value?)
-    'trivialString': value,
-  if (_$JsonConverterToJson<int?, TrivialNumber>(
-        instance.nullableNumberSilly,
-        TrivialNumberConverter.instance.toJson,
-      )
-      case final value?)
-    'nullableNumberSilly': value,
+  'dateTime': ?const EpochDateTimeConverter().toJson(instance.dateTime),
+  'trivialString': ?trivialStringConverter.toJson(instance.trivialString),
+  'nullableNumberSilly': ?_$JsonConverterToJson<int?, TrivialNumber>(
+    instance.nullableNumberSilly,
+    TrivialNumberConverter.instance.toJson,
+  ),
   'nullableNumberSillySet': instance.nullableNumberSillySet
       .map(
         (e) => _$JsonConverterToJson<int?, TrivialNumber>(
