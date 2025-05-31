@@ -1,4 +1,4 @@
-// @dart=3.6
+// @dart=3.8
 
 part of '_json_serializable_test_input.dart';
 
@@ -64,11 +64,11 @@ class FieldNamerSnake {
 
 @ShouldGenerate(r'''
 Map<String, dynamic> _$FieldNamerScreamingSnakeToJson(
-        FieldNamerScreamingSnake instance) =>
-    <String, dynamic>{
-      'THE_FIELD': instance.theField,
-      'nameOverride': instance.nameOverride,
-    };
+  FieldNamerScreamingSnake instance,
+) => <String, dynamic>{
+  'THE_FIELD': instance.theField,
+  'nameOverride': instance.nameOverride,
+};
 ''')
 @JsonSerializable(fieldRename: FieldRename.screamingSnake, createFactory: false)
 class FieldNamerScreamingSnake {

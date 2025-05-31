@@ -27,8 +27,13 @@ class Person {
   Map<String, Category>? houseMap;
   Map<Category, int>? categoryCounts;
 
-  Person(this.firstName, this.lastName, this.house,
-      {this.middleName, this.dateOfBirth});
+  Person(
+    this.firstName,
+    this.lastName,
+    this.house, {
+    this.middleName,
+    this.dateOfBirth,
+  });
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
@@ -82,8 +87,9 @@ class Order {
   bool? shouldBeCached;
 
   Order.custom(this.category, [Iterable<Item>? items])
-      : items = UnmodifiableListView<Item>(
-            List<Item>.unmodifiable(items ?? const <Item>[]));
+    : items = UnmodifiableListView<Item>(
+        List<Item>.unmodifiable(items ?? const <Item>[]),
+      );
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 

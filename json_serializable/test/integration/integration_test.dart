@@ -24,13 +24,27 @@ void main() {
     }
 
     test('now', () {
-      roundTripPerson(Person('a', 'b', Category.charmed,
-          middleName: 'c', dateOfBirth: DateTime.now()));
+      roundTripPerson(
+        Person(
+          'a',
+          'b',
+          Category.charmed,
+          middleName: 'c',
+          dateOfBirth: DateTime.now(),
+        ),
+      );
     });
 
     test('now toUtc', () {
-      roundTripPerson(Person('a', 'b', Category.bottom,
-          middleName: 'c', dateOfBirth: DateTime.now().toUtc()));
+      roundTripPerson(
+        Person(
+          'a',
+          'b',
+          Category.bottom,
+          middleName: 'c',
+          dateOfBirth: DateTime.now().toUtc(),
+        ),
+      );
     });
 
     test('empty json', () {
@@ -59,25 +73,30 @@ void main() {
 
     test('null', () {
       roundTripOrder(
-          Order.custom(Category.charmed)..statusCode = StatusCode.success);
+        Order.custom(Category.charmed)..statusCode = StatusCode.success,
+      );
     });
 
     test('empty', () {
-      roundTripOrder(Order.custom(Category.strange, const [])
-        ..statusCode = StatusCode.success
-        ..count = 0
-        ..isRushed = false);
+      roundTripOrder(
+        Order.custom(Category.strange, const [])
+          ..statusCode = StatusCode.success
+          ..count = 0
+          ..isRushed = false,
+      );
     });
 
     test('simple', () {
-      roundTripOrder(Order.custom(Category.top, <Item>[
-        Item(24)
-          ..itemNumber = 42
-          ..saleDates = [DateTime.now()]
-      ])
-        ..statusCode = StatusCode.success
-        ..count = 42
-        ..isRushed = true);
+      roundTripOrder(
+        Order.custom(Category.top, <Item>[
+            Item(24)
+              ..itemNumber = 42
+              ..saleDates = [DateTime.now()],
+          ])
+          ..statusCode = StatusCode.success
+          ..count = 42
+          ..isRushed = true,
+      );
     });
 
     test('almost empty json', () {
@@ -94,29 +113,29 @@ void main() {
 
     test('required, but missing enum value fails', () {
       expect(
-          () => Person.fromJson({
-                'firstName': 'a',
-                'lastName': 'b',
-              }),
-          _throwsArgumentError('A value must be provided. Supported values: '
-              'top, bottom, strange, charmed, up, down, not_discovered_yet'));
+        () => Person.fromJson({'firstName': 'a', 'lastName': 'b'}),
+        _throwsArgumentError(
+          'A value must be provided. Supported values: '
+          'top, bottom, strange, charmed, up, down, not_discovered_yet',
+        ),
+      );
     });
 
     test('mismatched enum value fails', () {
       expect(
-          () => Order.fromJson({'category': 'weird'}),
-          _throwsArgumentError('`weird` is not one of the supported values: '
-              'top, bottom, strange, charmed, up, down, not_discovered_yet'));
+        () => Order.fromJson({'category': 'weird'}),
+        _throwsArgumentError(
+          '`weird` is not one of the supported values: '
+          'top, bottom, strange, charmed, up, down, not_discovered_yet',
+        ),
+      );
     });
 
     test('platform', () {
       final order = Order.custom(Category.charmed)
         ..statusCode = StatusCode.success
         ..platform = Platform.undefined
-        ..altPlatforms = {
-          'u': Platform.undefined,
-          'f': Platform.foo,
-        };
+        ..altPlatforms = {'u': Platform.undefined, 'f': Platform.foo};
 
       roundTripOrder(order);
     });
@@ -125,35 +144,35 @@ void main() {
       final order = Order.custom(Category.charmed)
         ..platform = Platform.undefined
         ..statusCode = StatusCode.success
-        ..altPlatforms = {
-          'u': Platform.undefined,
-          'f': Platform.foo,
-        }
+        ..altPlatforms = {'u': Platform.undefined, 'f': Platform.foo}
         ..homepage = Uri.parse('https://dart.dev');
 
       roundTripOrder(order);
     });
 
     test('statusCode', () {
-      final order = Order.fromJson(
-        {'category': 'not_discovered_yet', 'status_code': 404},
-      );
+      final order = Order.fromJson({
+        'category': 'not_discovered_yet',
+        'status_code': 404,
+      });
       expect(order.statusCode, StatusCode.notFound);
       roundTripOrder(order);
     });
 
     test('statusCode "500" - weird', () {
-      final order = Order.fromJson(
-        {'category': 'not_discovered_yet', 'status_code': '500'},
-      );
+      final order = Order.fromJson({
+        'category': 'not_discovered_yet',
+        'status_code': '500',
+      });
       expect(order.statusCode, StatusCode.weird);
       roundTripOrder(order);
     });
 
     test('statusCode `500` - unknown', () {
-      final order = Order.fromJson(
-        {'category': 'not_discovered_yet', 'status_code': 500},
-      );
+      final order = Order.fromJson({
+        'category': 'not_discovered_yet',
+        'status_code': 500,
+      });
       expect(order.statusCode, StatusCode.unknown);
       roundTripOrder(order);
     });
@@ -179,15 +198,18 @@ void main() {
         'duration': 190473023012,
       });
       expect(
-          order.duration,
-          equals(const Duration(
+        order.duration,
+        equals(
+          const Duration(
             days: 2,
             hours: 4,
             minutes: 54,
             seconds: 33,
             milliseconds: 23,
             microseconds: 12,
-          )));
+          ),
+        ),
+      );
       roundTripOrder(order);
     });
   });
@@ -204,12 +226,7 @@ void main() {
 
       expect(
         item.toJson().keys,
-        orderedEquals([
-          'price',
-          'saleDates',
-          'rates',
-          'geoPoint',
-        ]),
+        orderedEquals(['price', 'saleDates', 'rates', 'geoPoint']),
         reason: 'Omits null `itemNumber`',
       );
     });
@@ -239,13 +256,15 @@ void main() {
     }
 
     test('simple', () {
-      roundTripNumber(Numbers()
-        ..nums = [0, 0.0]
-        ..doubles = [0.0]
-        ..nnDoubles = [0.0]
-        ..ints = [0]
-        ..duration = const Duration(seconds: 1)
-        ..date = DateTime.now());
+      roundTripNumber(
+        Numbers()
+          ..nums = [0, 0.0]
+          ..doubles = [0.0]
+          ..nnDoubles = [0.0]
+          ..ints = [0]
+          ..duration = const Duration(seconds: 1)
+          ..date = DateTime.now(),
+      );
     });
 
     test('custom DateTime', () {
@@ -313,17 +332,16 @@ void main() {
     expect(dayTypeEnumValues, ['no-good', 'rotten', 'very-bad']);
   });
 
-  test(
-      'serializing a non-nullable enum as a key in a map should produce a '
+  test('serializing a non-nullable enum as a key in a map should produce a '
       'non-nullable string key', () {
-    final cls =
-        Issue1145RegressionA(status: {Issue1145RegressionEnum.gamma: true});
+    final cls = Issue1145RegressionA(
+      status: {Issue1145RegressionEnum.gamma: true},
+    );
     // Due to issue 1145 this resulted in Map<String?, dynamic>
     expect(cls.toJson()['status'], const TypeMatcher<Map<String, dynamic>>());
   });
 
-  test(
-      'serializing a nullable enum in a list should produce a list with'
+  test('serializing a nullable enum in a list should produce a list with'
       ' nullable entries', () {
     final cls = Issue1145RegressionB(status: [Issue1145RegressionEnum.gamma]);
     // Issue 1145 should not have affected nullable enums
@@ -343,29 +361,19 @@ void main() {
       Issue559Regression.fromJson({'status': 'gamma'}).status,
       Issue559RegressionEnum.gamma,
     );
-    expect(
-      Issue559Regression.fromJson({'status': 'bob'}).status,
-      isNull,
-    );
+    expect(Issue559Regression.fromJson({'status': 'bob'}).status, isNull);
   });
 
   test(r'_$ModelFieldMap', () {
-    expect(
-      modelFieldMap,
-      {
-        'firstName': 'first-name',
-        'lastName': 'LAST_NAME',
-      },
-    );
+    expect(modelFieldMap, {'firstName': 'first-name', 'lastName': 'LAST_NAME'});
   });
 
-  test(r'Generates _$PrivateModelFieldMap instead of __$PrivateModelFieldMap',
-      () {
-    expect(
-      privateModelFieldMap,
-      {'fullName': 'full-name'},
-    );
-  });
+  test(
+    r'Generates _$PrivateModelFieldMap instead of __$PrivateModelFieldMap',
+    () {
+      expect(privateModelFieldMap, {'fullName': 'full-name'});
+    },
+  );
 
   test(r'_$ModelPerFieldToJson', () {
     expect(ModelPerFieldToJson.firstName('foo'), 'foo');
@@ -375,18 +383,14 @@ void main() {
 
     expect(ModelPerFieldToJson.nested(Nested('foo')), {'value': 'foo'});
     expect(ModelPerFieldToJson.nested(null), null);
-    expect(
-      ModelPerFieldToJson.nestedExcludeIfNull(Nested('foo')),
-      {'value': 'foo'},
-    );
+    expect(ModelPerFieldToJson.nestedExcludeIfNull(Nested('foo')), {
+      'value': 'foo',
+    });
     expect(ModelPerFieldToJson.nestedExcludeIfNull(null), null);
-    expect(
-      ModelPerFieldToJson.nestedGeneric(GenericFactory(42, {'key': 21})),
-      {
-        'value': 42,
-        'map': {'key': 21},
-      },
-    );
+    expect(ModelPerFieldToJson.nestedGeneric(GenericFactory(42, {'key': 21})), {
+      'value': 42,
+      'map': {'key': 21},
+    });
   });
 
   test(r'_$GenericFactoryPerFieldToJson', () {
@@ -394,10 +398,7 @@ void main() {
       GenericFactoryPerFieldToJson.value<int>(42, (value) => '$value'),
       '42',
     );
-    expect(
-      GenericFactoryPerFieldToJson.value<String>('42', int.tryParse),
-      42,
-    );
+    expect(GenericFactoryPerFieldToJson.value<String>('42', int.tryParse), 42);
 
     expect(
       GenericFactoryPerFieldToJson.map<int>({'foo': 21}, (value) => '$value'),

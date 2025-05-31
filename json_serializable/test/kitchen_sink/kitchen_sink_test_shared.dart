@@ -24,7 +24,7 @@ const validValues = <String, dynamic>{
   'dateTimeList': ['2018-05-10T14:20:58.927'],
   'nullableSimpleObjectList': [
     {'value': 42},
-    null
+    null,
   ],
   'map': <String, dynamic>{'key': true},
   'stringStringMap': <String, dynamic>{'key': 'vaule'},
@@ -41,11 +41,7 @@ const validValues = <String, dynamic>{
   'simpleObject': {'value': 42},
   'strictKeysObject': {'value': 10, 'custom_field': 'cool'},
   'validatedPropertyNo42': 0,
-  'recordField': {
-    '\$1': 0,
-    '\$2': 'string',
-    'truth': true,
-  },
+  'recordField': {'\$1': 0, '\$2': 'string', 'truth': true},
 };
 
 const invalidValueTypes = {
@@ -78,10 +74,7 @@ const invalidValueTypes = {
   _toJsonMapHelperName: 42,
   trickyKeyName: true,
   'simpleObject': 42,
-  'strictKeysObject': {
-    'value': 10,
-    'invalid_key': true,
-  },
+  'strictKeysObject': {'value': 10, 'invalid_key': true},
   'validatedPropertyNo42': true,
   'recordField': true,
 };

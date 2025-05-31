@@ -14,10 +14,7 @@ class SimpleClass {
   @JsonKey(defaultValue: {'a': 1})
   Map withDefault;
 
-  SimpleClass(
-    this.value,
-    this.withDefault,
-  );
+  SimpleClass(this.value, this.withDefault);
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);
@@ -32,10 +29,7 @@ class SimpleClassNullable {
   @JsonKey(defaultValue: {'a': 1})
   Map? withDefault;
 
-  SimpleClassNullable(
-    this.value,
-    this.withDefault,
-  );
+  SimpleClassNullable(this.value, this.withDefault);
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableFromJson(json);
@@ -47,9 +41,7 @@ class SimpleClassNullable {
 class SimpleClassOfBigIntToBigInt {
   final Map<BigInt, BigInt> value;
 
-  SimpleClassOfBigIntToBigInt(
-    this.value,
-  );
+  SimpleClassOfBigIntToBigInt(this.value);
 
   factory SimpleClassOfBigIntToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToBigIntFromJson(json);
@@ -61,13 +53,11 @@ class SimpleClassOfBigIntToBigInt {
 class SimpleClassNullableOfBigIntToBigInt {
   final Map<BigInt, BigInt>? value;
 
-  SimpleClassNullableOfBigIntToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToBigInt(this.value);
 
   factory SimpleClassNullableOfBigIntToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToBigIntToJson(this);
@@ -77,9 +67,7 @@ class SimpleClassNullableOfBigIntToBigInt {
 class SimpleClassOfDateTimeToBigInt {
   final Map<DateTime, BigInt> value;
 
-  SimpleClassOfDateTimeToBigInt(
-    this.value,
-  );
+  SimpleClassOfDateTimeToBigInt(this.value);
 
   factory SimpleClassOfDateTimeToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToBigIntFromJson(json);
@@ -91,13 +79,11 @@ class SimpleClassOfDateTimeToBigInt {
 class SimpleClassNullableOfDateTimeToBigInt {
   final Map<DateTime, BigInt>? value;
 
-  SimpleClassNullableOfDateTimeToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToBigInt(this.value);
 
   factory SimpleClassNullableOfDateTimeToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToBigIntToJson(this);
@@ -107,9 +93,7 @@ class SimpleClassNullableOfDateTimeToBigInt {
 class SimpleClassOfDynamicToBigInt {
   final Map<dynamic, BigInt> value;
 
-  SimpleClassOfDynamicToBigInt(
-    this.value,
-  );
+  SimpleClassOfDynamicToBigInt(this.value);
 
   factory SimpleClassOfDynamicToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToBigIntFromJson(json);
@@ -121,13 +105,11 @@ class SimpleClassOfDynamicToBigInt {
 class SimpleClassNullableOfDynamicToBigInt {
   final Map<dynamic, BigInt>? value;
 
-  SimpleClassNullableOfDynamicToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToBigInt(this.value);
 
   factory SimpleClassNullableOfDynamicToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToBigIntToJson(this);
@@ -137,9 +119,7 @@ class SimpleClassNullableOfDynamicToBigInt {
 class SimpleClassOfEnumTypeToBigInt {
   final Map<EnumType, BigInt> value;
 
-  SimpleClassOfEnumTypeToBigInt(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToBigInt(this.value);
 
   factory SimpleClassOfEnumTypeToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToBigIntFromJson(json);
@@ -151,13 +131,11 @@ class SimpleClassOfEnumTypeToBigInt {
 class SimpleClassNullableOfEnumTypeToBigInt {
   final Map<EnumType, BigInt>? value;
 
-  SimpleClassNullableOfEnumTypeToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToBigInt(this.value);
 
   factory SimpleClassNullableOfEnumTypeToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToBigIntToJson(this);
@@ -167,9 +145,7 @@ class SimpleClassNullableOfEnumTypeToBigInt {
 class SimpleClassOfIntToBigInt {
   final Map<int, BigInt> value;
 
-  SimpleClassOfIntToBigInt(
-    this.value,
-  );
+  SimpleClassOfIntToBigInt(this.value);
 
   factory SimpleClassOfIntToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToBigIntFromJson(json);
@@ -181,13 +157,11 @@ class SimpleClassOfIntToBigInt {
 class SimpleClassNullableOfIntToBigInt {
   final Map<int, BigInt>? value;
 
-  SimpleClassNullableOfIntToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfIntToBigInt(this.value);
 
   factory SimpleClassNullableOfIntToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToBigIntToJson(this);
@@ -197,9 +171,7 @@ class SimpleClassNullableOfIntToBigInt {
 class SimpleClassOfObjectToBigInt {
   final Map<Object, BigInt> value;
 
-  SimpleClassOfObjectToBigInt(
-    this.value,
-  );
+  SimpleClassOfObjectToBigInt(this.value);
 
   factory SimpleClassOfObjectToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToBigIntFromJson(json);
@@ -211,13 +183,11 @@ class SimpleClassOfObjectToBigInt {
 class SimpleClassNullableOfObjectToBigInt {
   final Map<Object, BigInt>? value;
 
-  SimpleClassNullableOfObjectToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToBigInt(this.value);
 
   factory SimpleClassNullableOfObjectToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToBigIntToJson(this);
@@ -227,9 +197,7 @@ class SimpleClassNullableOfObjectToBigInt {
 class SimpleClassOfStringToBigInt {
   final Map<String, BigInt> value;
 
-  SimpleClassOfStringToBigInt(
-    this.value,
-  );
+  SimpleClassOfStringToBigInt(this.value);
 
   factory SimpleClassOfStringToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToBigIntFromJson(json);
@@ -241,13 +209,11 @@ class SimpleClassOfStringToBigInt {
 class SimpleClassNullableOfStringToBigInt {
   final Map<String, BigInt>? value;
 
-  SimpleClassNullableOfStringToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfStringToBigInt(this.value);
 
   factory SimpleClassNullableOfStringToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToBigIntToJson(this);
@@ -257,9 +223,7 @@ class SimpleClassNullableOfStringToBigInt {
 class SimpleClassOfUriToBigInt {
   final Map<Uri, BigInt> value;
 
-  SimpleClassOfUriToBigInt(
-    this.value,
-  );
+  SimpleClassOfUriToBigInt(this.value);
 
   factory SimpleClassOfUriToBigInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToBigIntFromJson(json);
@@ -271,13 +235,11 @@ class SimpleClassOfUriToBigInt {
 class SimpleClassNullableOfUriToBigInt {
   final Map<Uri, BigInt>? value;
 
-  SimpleClassNullableOfUriToBigInt(
-    this.value,
-  );
+  SimpleClassNullableOfUriToBigInt(this.value);
 
   factory SimpleClassNullableOfUriToBigInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToBigIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToBigIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToBigIntToJson(this);
@@ -287,13 +249,11 @@ class SimpleClassNullableOfUriToBigInt {
 class SimpleClassOfBigIntToBigIntNullable {
   final Map<BigInt, BigInt?> value;
 
-  SimpleClassOfBigIntToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToBigIntNullable(this.value);
 
   factory SimpleClassOfBigIntToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToBigIntNullableToJson(this);
@@ -303,13 +263,11 @@ class SimpleClassOfBigIntToBigIntNullable {
 class SimpleClassNullableOfBigIntToBigIntNullable {
   final Map<BigInt, BigInt?>? value;
 
-  SimpleClassNullableOfBigIntToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToBigIntNullableToJson(this);
@@ -319,13 +277,11 @@ class SimpleClassNullableOfBigIntToBigIntNullable {
 class SimpleClassOfDateTimeToBigIntNullable {
   final Map<DateTime, BigInt?> value;
 
-  SimpleClassOfDateTimeToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToBigIntNullable(this.value);
 
   factory SimpleClassOfDateTimeToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToBigIntNullableToJson(this);
@@ -335,13 +291,11 @@ class SimpleClassOfDateTimeToBigIntNullable {
 class SimpleClassNullableOfDateTimeToBigIntNullable {
   final Map<DateTime, BigInt?>? value;
 
-  SimpleClassNullableOfDateTimeToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToBigIntNullableToJson(this);
@@ -351,13 +305,11 @@ class SimpleClassNullableOfDateTimeToBigIntNullable {
 class SimpleClassOfDynamicToBigIntNullable {
   final Map<dynamic, BigInt?> value;
 
-  SimpleClassOfDynamicToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToBigIntNullable(this.value);
 
   factory SimpleClassOfDynamicToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToBigIntNullableToJson(this);
@@ -367,13 +319,11 @@ class SimpleClassOfDynamicToBigIntNullable {
 class SimpleClassNullableOfDynamicToBigIntNullable {
   final Map<dynamic, BigInt?>? value;
 
-  SimpleClassNullableOfDynamicToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToBigIntNullableToJson(this);
@@ -383,13 +333,11 @@ class SimpleClassNullableOfDynamicToBigIntNullable {
 class SimpleClassOfEnumTypeToBigIntNullable {
   final Map<EnumType, BigInt?> value;
 
-  SimpleClassOfEnumTypeToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToBigIntNullable(this.value);
 
   factory SimpleClassOfEnumTypeToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToBigIntNullableToJson(this);
@@ -399,13 +347,11 @@ class SimpleClassOfEnumTypeToBigIntNullable {
 class SimpleClassNullableOfEnumTypeToBigIntNullable {
   final Map<EnumType, BigInt?>? value;
 
-  SimpleClassNullableOfEnumTypeToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToBigIntNullableToJson(this);
@@ -415,13 +361,11 @@ class SimpleClassNullableOfEnumTypeToBigIntNullable {
 class SimpleClassOfIntToBigIntNullable {
   final Map<int, BigInt?> value;
 
-  SimpleClassOfIntToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfIntToBigIntNullable(this.value);
 
   factory SimpleClassOfIntToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToBigIntNullableToJson(this);
@@ -431,13 +375,11 @@ class SimpleClassOfIntToBigIntNullable {
 class SimpleClassNullableOfIntToBigIntNullable {
   final Map<int, BigInt?>? value;
 
-  SimpleClassNullableOfIntToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfIntToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToBigIntNullableToJson(this);
@@ -447,13 +389,11 @@ class SimpleClassNullableOfIntToBigIntNullable {
 class SimpleClassOfObjectToBigIntNullable {
   final Map<Object, BigInt?> value;
 
-  SimpleClassOfObjectToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToBigIntNullable(this.value);
 
   factory SimpleClassOfObjectToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToBigIntNullableToJson(this);
@@ -463,13 +403,11 @@ class SimpleClassOfObjectToBigIntNullable {
 class SimpleClassNullableOfObjectToBigIntNullable {
   final Map<Object, BigInt?>? value;
 
-  SimpleClassNullableOfObjectToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfObjectToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToBigIntNullableToJson(this);
@@ -479,13 +417,11 @@ class SimpleClassNullableOfObjectToBigIntNullable {
 class SimpleClassOfStringToBigIntNullable {
   final Map<String, BigInt?> value;
 
-  SimpleClassOfStringToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfStringToBigIntNullable(this.value);
 
   factory SimpleClassOfStringToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToBigIntNullableToJson(this);
@@ -495,13 +431,11 @@ class SimpleClassOfStringToBigIntNullable {
 class SimpleClassNullableOfStringToBigIntNullable {
   final Map<String, BigInt?>? value;
 
-  SimpleClassNullableOfStringToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfStringToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToBigIntNullableToJson(this);
@@ -511,13 +445,11 @@ class SimpleClassNullableOfStringToBigIntNullable {
 class SimpleClassOfUriToBigIntNullable {
   final Map<Uri, BigInt?> value;
 
-  SimpleClassOfUriToBigIntNullable(
-    this.value,
-  );
+  SimpleClassOfUriToBigIntNullable(this.value);
 
   factory SimpleClassOfUriToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToBigIntNullableToJson(this);
@@ -527,13 +459,11 @@ class SimpleClassOfUriToBigIntNullable {
 class SimpleClassNullableOfUriToBigIntNullable {
   final Map<Uri, BigInt?>? value;
 
-  SimpleClassNullableOfUriToBigIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToBigIntNullable(this.value);
 
   factory SimpleClassNullableOfUriToBigIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToBigIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToBigIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToBigIntNullableToJson(this);
@@ -543,9 +473,7 @@ class SimpleClassNullableOfUriToBigIntNullable {
 class SimpleClassOfBigIntToBool {
   final Map<BigInt, bool> value;
 
-  SimpleClassOfBigIntToBool(
-    this.value,
-  );
+  SimpleClassOfBigIntToBool(this.value);
 
   factory SimpleClassOfBigIntToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToBoolFromJson(json);
@@ -557,13 +485,11 @@ class SimpleClassOfBigIntToBool {
 class SimpleClassNullableOfBigIntToBool {
   final Map<BigInt, bool>? value;
 
-  SimpleClassNullableOfBigIntToBool(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToBool(this.value);
 
   factory SimpleClassNullableOfBigIntToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToBoolToJson(this);
@@ -573,9 +499,7 @@ class SimpleClassNullableOfBigIntToBool {
 class SimpleClassOfDateTimeToBool {
   final Map<DateTime, bool> value;
 
-  SimpleClassOfDateTimeToBool(
-    this.value,
-  );
+  SimpleClassOfDateTimeToBool(this.value);
 
   factory SimpleClassOfDateTimeToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToBoolFromJson(json);
@@ -587,13 +511,11 @@ class SimpleClassOfDateTimeToBool {
 class SimpleClassNullableOfDateTimeToBool {
   final Map<DateTime, bool>? value;
 
-  SimpleClassNullableOfDateTimeToBool(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToBool(this.value);
 
   factory SimpleClassNullableOfDateTimeToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToBoolToJson(this);
@@ -603,9 +525,7 @@ class SimpleClassNullableOfDateTimeToBool {
 class SimpleClassOfDynamicToBool {
   final Map<dynamic, bool> value;
 
-  SimpleClassOfDynamicToBool(
-    this.value,
-  );
+  SimpleClassOfDynamicToBool(this.value);
 
   factory SimpleClassOfDynamicToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToBoolFromJson(json);
@@ -617,13 +537,11 @@ class SimpleClassOfDynamicToBool {
 class SimpleClassNullableOfDynamicToBool {
   final Map<dynamic, bool>? value;
 
-  SimpleClassNullableOfDynamicToBool(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToBool(this.value);
 
   factory SimpleClassNullableOfDynamicToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToBoolToJson(this);
@@ -633,9 +551,7 @@ class SimpleClassNullableOfDynamicToBool {
 class SimpleClassOfEnumTypeToBool {
   final Map<EnumType, bool> value;
 
-  SimpleClassOfEnumTypeToBool(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToBool(this.value);
 
   factory SimpleClassOfEnumTypeToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToBoolFromJson(json);
@@ -647,13 +563,11 @@ class SimpleClassOfEnumTypeToBool {
 class SimpleClassNullableOfEnumTypeToBool {
   final Map<EnumType, bool>? value;
 
-  SimpleClassNullableOfEnumTypeToBool(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToBool(this.value);
 
   factory SimpleClassNullableOfEnumTypeToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToBoolToJson(this);
@@ -663,9 +577,7 @@ class SimpleClassNullableOfEnumTypeToBool {
 class SimpleClassOfIntToBool {
   final Map<int, bool> value;
 
-  SimpleClassOfIntToBool(
-    this.value,
-  );
+  SimpleClassOfIntToBool(this.value);
 
   factory SimpleClassOfIntToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToBoolFromJson(json);
@@ -677,9 +589,7 @@ class SimpleClassOfIntToBool {
 class SimpleClassNullableOfIntToBool {
   final Map<int, bool>? value;
 
-  SimpleClassNullableOfIntToBool(
-    this.value,
-  );
+  SimpleClassNullableOfIntToBool(this.value);
 
   factory SimpleClassNullableOfIntToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfIntToBoolFromJson(json);
@@ -691,9 +601,7 @@ class SimpleClassNullableOfIntToBool {
 class SimpleClassOfObjectToBool {
   final Map<Object, bool> value;
 
-  SimpleClassOfObjectToBool(
-    this.value,
-  );
+  SimpleClassOfObjectToBool(this.value);
 
   factory SimpleClassOfObjectToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToBoolFromJson(json);
@@ -705,13 +613,11 @@ class SimpleClassOfObjectToBool {
 class SimpleClassNullableOfObjectToBool {
   final Map<Object, bool>? value;
 
-  SimpleClassNullableOfObjectToBool(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToBool(this.value);
 
   factory SimpleClassNullableOfObjectToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToBoolToJson(this);
@@ -721,9 +627,7 @@ class SimpleClassNullableOfObjectToBool {
 class SimpleClassOfStringToBool {
   final Map<String, bool> value;
 
-  SimpleClassOfStringToBool(
-    this.value,
-  );
+  SimpleClassOfStringToBool(this.value);
 
   factory SimpleClassOfStringToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToBoolFromJson(json);
@@ -735,13 +639,11 @@ class SimpleClassOfStringToBool {
 class SimpleClassNullableOfStringToBool {
   final Map<String, bool>? value;
 
-  SimpleClassNullableOfStringToBool(
-    this.value,
-  );
+  SimpleClassNullableOfStringToBool(this.value);
 
   factory SimpleClassNullableOfStringToBool.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToBoolFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToBoolFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToBoolToJson(this);
@@ -751,9 +653,7 @@ class SimpleClassNullableOfStringToBool {
 class SimpleClassOfUriToBool {
   final Map<Uri, bool> value;
 
-  SimpleClassOfUriToBool(
-    this.value,
-  );
+  SimpleClassOfUriToBool(this.value);
 
   factory SimpleClassOfUriToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToBoolFromJson(json);
@@ -765,9 +665,7 @@ class SimpleClassOfUriToBool {
 class SimpleClassNullableOfUriToBool {
   final Map<Uri, bool>? value;
 
-  SimpleClassNullableOfUriToBool(
-    this.value,
-  );
+  SimpleClassNullableOfUriToBool(this.value);
 
   factory SimpleClassNullableOfUriToBool.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfUriToBoolFromJson(json);
@@ -779,13 +677,11 @@ class SimpleClassNullableOfUriToBool {
 class SimpleClassOfBigIntToBoolNullable {
   final Map<BigInt, bool?> value;
 
-  SimpleClassOfBigIntToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToBoolNullable(this.value);
 
   factory SimpleClassOfBigIntToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToBoolNullableToJson(this);
@@ -795,13 +691,11 @@ class SimpleClassOfBigIntToBoolNullable {
 class SimpleClassNullableOfBigIntToBoolNullable {
   final Map<BigInt, bool?>? value;
 
-  SimpleClassNullableOfBigIntToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToBoolNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToBoolNullableToJson(this);
@@ -811,13 +705,11 @@ class SimpleClassNullableOfBigIntToBoolNullable {
 class SimpleClassOfDateTimeToBoolNullable {
   final Map<DateTime, bool?> value;
 
-  SimpleClassOfDateTimeToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToBoolNullable(this.value);
 
   factory SimpleClassOfDateTimeToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToBoolNullableToJson(this);
@@ -827,13 +719,11 @@ class SimpleClassOfDateTimeToBoolNullable {
 class SimpleClassNullableOfDateTimeToBoolNullable {
   final Map<DateTime, bool?>? value;
 
-  SimpleClassNullableOfDateTimeToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToBoolNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToBoolNullableToJson(this);
@@ -843,13 +733,11 @@ class SimpleClassNullableOfDateTimeToBoolNullable {
 class SimpleClassOfDynamicToBoolNullable {
   final Map<dynamic, bool?> value;
 
-  SimpleClassOfDynamicToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToBoolNullable(this.value);
 
   factory SimpleClassOfDynamicToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToBoolNullableToJson(this);
@@ -859,13 +747,11 @@ class SimpleClassOfDynamicToBoolNullable {
 class SimpleClassNullableOfDynamicToBoolNullable {
   final Map<dynamic, bool?>? value;
 
-  SimpleClassNullableOfDynamicToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToBoolNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToBoolNullableToJson(this);
@@ -875,13 +761,11 @@ class SimpleClassNullableOfDynamicToBoolNullable {
 class SimpleClassOfEnumTypeToBoolNullable {
   final Map<EnumType, bool?> value;
 
-  SimpleClassOfEnumTypeToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToBoolNullable(this.value);
 
   factory SimpleClassOfEnumTypeToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToBoolNullableToJson(this);
@@ -891,13 +775,11 @@ class SimpleClassOfEnumTypeToBoolNullable {
 class SimpleClassNullableOfEnumTypeToBoolNullable {
   final Map<EnumType, bool?>? value;
 
-  SimpleClassNullableOfEnumTypeToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToBoolNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToBoolNullableToJson(this);
@@ -907,9 +789,7 @@ class SimpleClassNullableOfEnumTypeToBoolNullable {
 class SimpleClassOfIntToBoolNullable {
   final Map<int, bool?> value;
 
-  SimpleClassOfIntToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfIntToBoolNullable(this.value);
 
   factory SimpleClassOfIntToBoolNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToBoolNullableFromJson(json);
@@ -921,13 +801,11 @@ class SimpleClassOfIntToBoolNullable {
 class SimpleClassNullableOfIntToBoolNullable {
   final Map<int, bool?>? value;
 
-  SimpleClassNullableOfIntToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToBoolNullable(this.value);
 
   factory SimpleClassNullableOfIntToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToBoolNullableToJson(this);
@@ -937,13 +815,11 @@ class SimpleClassNullableOfIntToBoolNullable {
 class SimpleClassOfObjectToBoolNullable {
   final Map<Object, bool?> value;
 
-  SimpleClassOfObjectToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToBoolNullable(this.value);
 
   factory SimpleClassOfObjectToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToBoolNullableToJson(this);
@@ -953,13 +829,11 @@ class SimpleClassOfObjectToBoolNullable {
 class SimpleClassNullableOfObjectToBoolNullable {
   final Map<Object, bool?>? value;
 
-  SimpleClassNullableOfObjectToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToBoolNullable(this.value);
 
   factory SimpleClassNullableOfObjectToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToBoolNullableToJson(this);
@@ -969,13 +843,11 @@ class SimpleClassNullableOfObjectToBoolNullable {
 class SimpleClassOfStringToBoolNullable {
   final Map<String, bool?> value;
 
-  SimpleClassOfStringToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfStringToBoolNullable(this.value);
 
   factory SimpleClassOfStringToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToBoolNullableToJson(this);
@@ -985,13 +857,11 @@ class SimpleClassOfStringToBoolNullable {
 class SimpleClassNullableOfStringToBoolNullable {
   final Map<String, bool?>? value;
 
-  SimpleClassNullableOfStringToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToBoolNullable(this.value);
 
   factory SimpleClassNullableOfStringToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToBoolNullableToJson(this);
@@ -1001,9 +871,7 @@ class SimpleClassNullableOfStringToBoolNullable {
 class SimpleClassOfUriToBoolNullable {
   final Map<Uri, bool?> value;
 
-  SimpleClassOfUriToBoolNullable(
-    this.value,
-  );
+  SimpleClassOfUriToBoolNullable(this.value);
 
   factory SimpleClassOfUriToBoolNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToBoolNullableFromJson(json);
@@ -1015,13 +883,11 @@ class SimpleClassOfUriToBoolNullable {
 class SimpleClassNullableOfUriToBoolNullable {
   final Map<Uri, bool?>? value;
 
-  SimpleClassNullableOfUriToBoolNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToBoolNullable(this.value);
 
   factory SimpleClassNullableOfUriToBoolNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToBoolNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToBoolNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToBoolNullableToJson(this);
@@ -1031,9 +897,7 @@ class SimpleClassNullableOfUriToBoolNullable {
 class SimpleClassOfBigIntToDateTime {
   final Map<BigInt, DateTime> value;
 
-  SimpleClassOfBigIntToDateTime(
-    this.value,
-  );
+  SimpleClassOfBigIntToDateTime(this.value);
 
   factory SimpleClassOfBigIntToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToDateTimeFromJson(json);
@@ -1045,13 +909,11 @@ class SimpleClassOfBigIntToDateTime {
 class SimpleClassNullableOfBigIntToDateTime {
   final Map<BigInt, DateTime>? value;
 
-  SimpleClassNullableOfBigIntToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDateTime(this.value);
 
   factory SimpleClassNullableOfBigIntToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDateTimeToJson(this);
@@ -1061,9 +923,7 @@ class SimpleClassNullableOfBigIntToDateTime {
 class SimpleClassOfDateTimeToDateTime {
   final Map<DateTime, DateTime> value;
 
-  SimpleClassOfDateTimeToDateTime(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDateTime(this.value);
 
   factory SimpleClassOfDateTimeToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToDateTimeFromJson(json);
@@ -1076,13 +936,11 @@ class SimpleClassOfDateTimeToDateTime {
 class SimpleClassNullableOfDateTimeToDateTime {
   final Map<DateTime, DateTime>? value;
 
-  SimpleClassNullableOfDateTimeToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDateTime(this.value);
 
   factory SimpleClassNullableOfDateTimeToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDateTimeToJson(this);
@@ -1092,9 +950,7 @@ class SimpleClassNullableOfDateTimeToDateTime {
 class SimpleClassOfDynamicToDateTime {
   final Map<dynamic, DateTime> value;
 
-  SimpleClassOfDynamicToDateTime(
-    this.value,
-  );
+  SimpleClassOfDynamicToDateTime(this.value);
 
   factory SimpleClassOfDynamicToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToDateTimeFromJson(json);
@@ -1106,13 +962,11 @@ class SimpleClassOfDynamicToDateTime {
 class SimpleClassNullableOfDynamicToDateTime {
   final Map<dynamic, DateTime>? value;
 
-  SimpleClassNullableOfDynamicToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDateTime(this.value);
 
   factory SimpleClassNullableOfDynamicToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDateTimeToJson(this);
@@ -1122,9 +976,7 @@ class SimpleClassNullableOfDynamicToDateTime {
 class SimpleClassOfEnumTypeToDateTime {
   final Map<EnumType, DateTime> value;
 
-  SimpleClassOfEnumTypeToDateTime(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDateTime(this.value);
 
   factory SimpleClassOfEnumTypeToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToDateTimeFromJson(json);
@@ -1137,13 +989,11 @@ class SimpleClassOfEnumTypeToDateTime {
 class SimpleClassNullableOfEnumTypeToDateTime {
   final Map<EnumType, DateTime>? value;
 
-  SimpleClassNullableOfEnumTypeToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDateTime(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDateTimeToJson(this);
@@ -1153,9 +1003,7 @@ class SimpleClassNullableOfEnumTypeToDateTime {
 class SimpleClassOfIntToDateTime {
   final Map<int, DateTime> value;
 
-  SimpleClassOfIntToDateTime(
-    this.value,
-  );
+  SimpleClassOfIntToDateTime(this.value);
 
   factory SimpleClassOfIntToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToDateTimeFromJson(json);
@@ -1167,13 +1015,11 @@ class SimpleClassOfIntToDateTime {
 class SimpleClassNullableOfIntToDateTime {
   final Map<int, DateTime>? value;
 
-  SimpleClassNullableOfIntToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDateTime(this.value);
 
   factory SimpleClassNullableOfIntToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDateTimeToJson(this);
@@ -1183,9 +1029,7 @@ class SimpleClassNullableOfIntToDateTime {
 class SimpleClassOfObjectToDateTime {
   final Map<Object, DateTime> value;
 
-  SimpleClassOfObjectToDateTime(
-    this.value,
-  );
+  SimpleClassOfObjectToDateTime(this.value);
 
   factory SimpleClassOfObjectToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToDateTimeFromJson(json);
@@ -1197,13 +1041,11 @@ class SimpleClassOfObjectToDateTime {
 class SimpleClassNullableOfObjectToDateTime {
   final Map<Object, DateTime>? value;
 
-  SimpleClassNullableOfObjectToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDateTime(this.value);
 
   factory SimpleClassNullableOfObjectToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDateTimeToJson(this);
@@ -1213,9 +1055,7 @@ class SimpleClassNullableOfObjectToDateTime {
 class SimpleClassOfStringToDateTime {
   final Map<String, DateTime> value;
 
-  SimpleClassOfStringToDateTime(
-    this.value,
-  );
+  SimpleClassOfStringToDateTime(this.value);
 
   factory SimpleClassOfStringToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToDateTimeFromJson(json);
@@ -1227,13 +1067,11 @@ class SimpleClassOfStringToDateTime {
 class SimpleClassNullableOfStringToDateTime {
   final Map<String, DateTime>? value;
 
-  SimpleClassNullableOfStringToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDateTime(this.value);
 
   factory SimpleClassNullableOfStringToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDateTimeToJson(this);
@@ -1243,9 +1081,7 @@ class SimpleClassNullableOfStringToDateTime {
 class SimpleClassOfUriToDateTime {
   final Map<Uri, DateTime> value;
 
-  SimpleClassOfUriToDateTime(
-    this.value,
-  );
+  SimpleClassOfUriToDateTime(this.value);
 
   factory SimpleClassOfUriToDateTime.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToDateTimeFromJson(json);
@@ -1257,13 +1093,11 @@ class SimpleClassOfUriToDateTime {
 class SimpleClassNullableOfUriToDateTime {
   final Map<Uri, DateTime>? value;
 
-  SimpleClassNullableOfUriToDateTime(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDateTime(this.value);
 
   factory SimpleClassNullableOfUriToDateTime.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDateTimeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDateTimeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDateTimeToJson(this);
@@ -1273,13 +1107,11 @@ class SimpleClassNullableOfUriToDateTime {
 class SimpleClassOfBigIntToDateTimeNullable {
   final Map<BigInt, DateTime?> value;
 
-  SimpleClassOfBigIntToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToDateTimeNullable(this.value);
 
   factory SimpleClassOfBigIntToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToDateTimeNullableToJson(this);
@@ -1289,13 +1121,11 @@ class SimpleClassOfBigIntToDateTimeNullable {
 class SimpleClassNullableOfBigIntToDateTimeNullable {
   final Map<BigInt, DateTime?>? value;
 
-  SimpleClassNullableOfBigIntToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDateTimeNullableToJson(this);
@@ -1305,13 +1135,11 @@ class SimpleClassNullableOfBigIntToDateTimeNullable {
 class SimpleClassOfDateTimeToDateTimeNullable {
   final Map<DateTime, DateTime?> value;
 
-  SimpleClassOfDateTimeToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDateTimeNullable(this.value);
 
   factory SimpleClassOfDateTimeToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToDateTimeNullableToJson(this);
@@ -1321,13 +1149,11 @@ class SimpleClassOfDateTimeToDateTimeNullable {
 class SimpleClassNullableOfDateTimeToDateTimeNullable {
   final Map<DateTime, DateTime?>? value;
 
-  SimpleClassNullableOfDateTimeToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDateTimeNullableToJson(this);
@@ -1337,13 +1163,11 @@ class SimpleClassNullableOfDateTimeToDateTimeNullable {
 class SimpleClassOfDynamicToDateTimeNullable {
   final Map<dynamic, DateTime?> value;
 
-  SimpleClassOfDynamicToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToDateTimeNullable(this.value);
 
   factory SimpleClassOfDynamicToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToDateTimeNullableToJson(this);
@@ -1353,13 +1177,11 @@ class SimpleClassOfDynamicToDateTimeNullable {
 class SimpleClassNullableOfDynamicToDateTimeNullable {
   final Map<dynamic, DateTime?>? value;
 
-  SimpleClassNullableOfDynamicToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDateTimeNullableToJson(this);
@@ -1369,13 +1191,11 @@ class SimpleClassNullableOfDynamicToDateTimeNullable {
 class SimpleClassOfEnumTypeToDateTimeNullable {
   final Map<EnumType, DateTime?> value;
 
-  SimpleClassOfEnumTypeToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDateTimeNullable(this.value);
 
   factory SimpleClassOfEnumTypeToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToDateTimeNullableToJson(this);
@@ -1385,13 +1205,11 @@ class SimpleClassOfEnumTypeToDateTimeNullable {
 class SimpleClassNullableOfEnumTypeToDateTimeNullable {
   final Map<EnumType, DateTime?>? value;
 
-  SimpleClassNullableOfEnumTypeToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDateTimeNullableToJson(this);
@@ -1401,13 +1219,11 @@ class SimpleClassNullableOfEnumTypeToDateTimeNullable {
 class SimpleClassOfIntToDateTimeNullable {
   final Map<int, DateTime?> value;
 
-  SimpleClassOfIntToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfIntToDateTimeNullable(this.value);
 
   factory SimpleClassOfIntToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToDateTimeNullableToJson(this);
@@ -1417,13 +1233,11 @@ class SimpleClassOfIntToDateTimeNullable {
 class SimpleClassNullableOfIntToDateTimeNullable {
   final Map<int, DateTime?>? value;
 
-  SimpleClassNullableOfIntToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfIntToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDateTimeNullableToJson(this);
@@ -1433,13 +1247,11 @@ class SimpleClassNullableOfIntToDateTimeNullable {
 class SimpleClassOfObjectToDateTimeNullable {
   final Map<Object, DateTime?> value;
 
-  SimpleClassOfObjectToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToDateTimeNullable(this.value);
 
   factory SimpleClassOfObjectToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToDateTimeNullableToJson(this);
@@ -1449,13 +1261,11 @@ class SimpleClassOfObjectToDateTimeNullable {
 class SimpleClassNullableOfObjectToDateTimeNullable {
   final Map<Object, DateTime?>? value;
 
-  SimpleClassNullableOfObjectToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfObjectToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDateTimeNullableToJson(this);
@@ -1465,13 +1275,11 @@ class SimpleClassNullableOfObjectToDateTimeNullable {
 class SimpleClassOfStringToDateTimeNullable {
   final Map<String, DateTime?> value;
 
-  SimpleClassOfStringToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfStringToDateTimeNullable(this.value);
 
   factory SimpleClassOfStringToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToDateTimeNullableToJson(this);
@@ -1481,13 +1289,11 @@ class SimpleClassOfStringToDateTimeNullable {
 class SimpleClassNullableOfStringToDateTimeNullable {
   final Map<String, DateTime?>? value;
 
-  SimpleClassNullableOfStringToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfStringToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDateTimeNullableToJson(this);
@@ -1497,13 +1303,11 @@ class SimpleClassNullableOfStringToDateTimeNullable {
 class SimpleClassOfUriToDateTimeNullable {
   final Map<Uri, DateTime?> value;
 
-  SimpleClassOfUriToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassOfUriToDateTimeNullable(this.value);
 
   factory SimpleClassOfUriToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToDateTimeNullableToJson(this);
@@ -1513,13 +1317,11 @@ class SimpleClassOfUriToDateTimeNullable {
 class SimpleClassNullableOfUriToDateTimeNullable {
   final Map<Uri, DateTime?>? value;
 
-  SimpleClassNullableOfUriToDateTimeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDateTimeNullable(this.value);
 
   factory SimpleClassNullableOfUriToDateTimeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDateTimeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDateTimeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDateTimeNullableToJson(this);
@@ -1529,9 +1331,7 @@ class SimpleClassNullableOfUriToDateTimeNullable {
 class SimpleClassOfBigIntToDouble {
   final Map<BigInt, double> value;
 
-  SimpleClassOfBigIntToDouble(
-    this.value,
-  );
+  SimpleClassOfBigIntToDouble(this.value);
 
   factory SimpleClassOfBigIntToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToDoubleFromJson(json);
@@ -1543,13 +1343,11 @@ class SimpleClassOfBigIntToDouble {
 class SimpleClassNullableOfBigIntToDouble {
   final Map<BigInt, double>? value;
 
-  SimpleClassNullableOfBigIntToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDouble(this.value);
 
   factory SimpleClassNullableOfBigIntToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDoubleToJson(this);
@@ -1559,9 +1357,7 @@ class SimpleClassNullableOfBigIntToDouble {
 class SimpleClassOfDateTimeToDouble {
   final Map<DateTime, double> value;
 
-  SimpleClassOfDateTimeToDouble(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDouble(this.value);
 
   factory SimpleClassOfDateTimeToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToDoubleFromJson(json);
@@ -1573,13 +1369,11 @@ class SimpleClassOfDateTimeToDouble {
 class SimpleClassNullableOfDateTimeToDouble {
   final Map<DateTime, double>? value;
 
-  SimpleClassNullableOfDateTimeToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDouble(this.value);
 
   factory SimpleClassNullableOfDateTimeToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDoubleToJson(this);
@@ -1589,9 +1383,7 @@ class SimpleClassNullableOfDateTimeToDouble {
 class SimpleClassOfDynamicToDouble {
   final Map<dynamic, double> value;
 
-  SimpleClassOfDynamicToDouble(
-    this.value,
-  );
+  SimpleClassOfDynamicToDouble(this.value);
 
   factory SimpleClassOfDynamicToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToDoubleFromJson(json);
@@ -1603,13 +1395,11 @@ class SimpleClassOfDynamicToDouble {
 class SimpleClassNullableOfDynamicToDouble {
   final Map<dynamic, double>? value;
 
-  SimpleClassNullableOfDynamicToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDouble(this.value);
 
   factory SimpleClassNullableOfDynamicToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDoubleToJson(this);
@@ -1619,9 +1409,7 @@ class SimpleClassNullableOfDynamicToDouble {
 class SimpleClassOfEnumTypeToDouble {
   final Map<EnumType, double> value;
 
-  SimpleClassOfEnumTypeToDouble(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDouble(this.value);
 
   factory SimpleClassOfEnumTypeToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToDoubleFromJson(json);
@@ -1633,13 +1421,11 @@ class SimpleClassOfEnumTypeToDouble {
 class SimpleClassNullableOfEnumTypeToDouble {
   final Map<EnumType, double>? value;
 
-  SimpleClassNullableOfEnumTypeToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDouble(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDoubleToJson(this);
@@ -1649,9 +1435,7 @@ class SimpleClassNullableOfEnumTypeToDouble {
 class SimpleClassOfIntToDouble {
   final Map<int, double> value;
 
-  SimpleClassOfIntToDouble(
-    this.value,
-  );
+  SimpleClassOfIntToDouble(this.value);
 
   factory SimpleClassOfIntToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToDoubleFromJson(json);
@@ -1663,13 +1447,11 @@ class SimpleClassOfIntToDouble {
 class SimpleClassNullableOfIntToDouble {
   final Map<int, double>? value;
 
-  SimpleClassNullableOfIntToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDouble(this.value);
 
   factory SimpleClassNullableOfIntToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDoubleToJson(this);
@@ -1679,9 +1461,7 @@ class SimpleClassNullableOfIntToDouble {
 class SimpleClassOfObjectToDouble {
   final Map<Object, double> value;
 
-  SimpleClassOfObjectToDouble(
-    this.value,
-  );
+  SimpleClassOfObjectToDouble(this.value);
 
   factory SimpleClassOfObjectToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToDoubleFromJson(json);
@@ -1693,13 +1473,11 @@ class SimpleClassOfObjectToDouble {
 class SimpleClassNullableOfObjectToDouble {
   final Map<Object, double>? value;
 
-  SimpleClassNullableOfObjectToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDouble(this.value);
 
   factory SimpleClassNullableOfObjectToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDoubleToJson(this);
@@ -1709,9 +1487,7 @@ class SimpleClassNullableOfObjectToDouble {
 class SimpleClassOfStringToDouble {
   final Map<String, double> value;
 
-  SimpleClassOfStringToDouble(
-    this.value,
-  );
+  SimpleClassOfStringToDouble(this.value);
 
   factory SimpleClassOfStringToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToDoubleFromJson(json);
@@ -1723,13 +1499,11 @@ class SimpleClassOfStringToDouble {
 class SimpleClassNullableOfStringToDouble {
   final Map<String, double>? value;
 
-  SimpleClassNullableOfStringToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDouble(this.value);
 
   factory SimpleClassNullableOfStringToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDoubleToJson(this);
@@ -1739,9 +1513,7 @@ class SimpleClassNullableOfStringToDouble {
 class SimpleClassOfUriToDouble {
   final Map<Uri, double> value;
 
-  SimpleClassOfUriToDouble(
-    this.value,
-  );
+  SimpleClassOfUriToDouble(this.value);
 
   factory SimpleClassOfUriToDouble.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToDoubleFromJson(json);
@@ -1753,13 +1525,11 @@ class SimpleClassOfUriToDouble {
 class SimpleClassNullableOfUriToDouble {
   final Map<Uri, double>? value;
 
-  SimpleClassNullableOfUriToDouble(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDouble(this.value);
 
   factory SimpleClassNullableOfUriToDouble.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDoubleFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDoubleFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDoubleToJson(this);
@@ -1769,13 +1539,11 @@ class SimpleClassNullableOfUriToDouble {
 class SimpleClassOfBigIntToDoubleNullable {
   final Map<BigInt, double?> value;
 
-  SimpleClassOfBigIntToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToDoubleNullable(this.value);
 
   factory SimpleClassOfBigIntToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToDoubleNullableToJson(this);
@@ -1785,13 +1553,11 @@ class SimpleClassOfBigIntToDoubleNullable {
 class SimpleClassNullableOfBigIntToDoubleNullable {
   final Map<BigInt, double?>? value;
 
-  SimpleClassNullableOfBigIntToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDoubleNullableToJson(this);
@@ -1801,13 +1567,11 @@ class SimpleClassNullableOfBigIntToDoubleNullable {
 class SimpleClassOfDateTimeToDoubleNullable {
   final Map<DateTime, double?> value;
 
-  SimpleClassOfDateTimeToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDoubleNullable(this.value);
 
   factory SimpleClassOfDateTimeToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToDoubleNullableToJson(this);
@@ -1817,13 +1581,11 @@ class SimpleClassOfDateTimeToDoubleNullable {
 class SimpleClassNullableOfDateTimeToDoubleNullable {
   final Map<DateTime, double?>? value;
 
-  SimpleClassNullableOfDateTimeToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDoubleNullableToJson(this);
@@ -1833,13 +1595,11 @@ class SimpleClassNullableOfDateTimeToDoubleNullable {
 class SimpleClassOfDynamicToDoubleNullable {
   final Map<dynamic, double?> value;
 
-  SimpleClassOfDynamicToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToDoubleNullable(this.value);
 
   factory SimpleClassOfDynamicToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToDoubleNullableToJson(this);
@@ -1849,13 +1609,11 @@ class SimpleClassOfDynamicToDoubleNullable {
 class SimpleClassNullableOfDynamicToDoubleNullable {
   final Map<dynamic, double?>? value;
 
-  SimpleClassNullableOfDynamicToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDoubleNullableToJson(this);
@@ -1865,13 +1623,11 @@ class SimpleClassNullableOfDynamicToDoubleNullable {
 class SimpleClassOfEnumTypeToDoubleNullable {
   final Map<EnumType, double?> value;
 
-  SimpleClassOfEnumTypeToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDoubleNullable(this.value);
 
   factory SimpleClassOfEnumTypeToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToDoubleNullableToJson(this);
@@ -1881,13 +1637,11 @@ class SimpleClassOfEnumTypeToDoubleNullable {
 class SimpleClassNullableOfEnumTypeToDoubleNullable {
   final Map<EnumType, double?>? value;
 
-  SimpleClassNullableOfEnumTypeToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDoubleNullableToJson(this);
@@ -1897,13 +1651,11 @@ class SimpleClassNullableOfEnumTypeToDoubleNullable {
 class SimpleClassOfIntToDoubleNullable {
   final Map<int, double?> value;
 
-  SimpleClassOfIntToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfIntToDoubleNullable(this.value);
 
   factory SimpleClassOfIntToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToDoubleNullableToJson(this);
@@ -1913,13 +1665,11 @@ class SimpleClassOfIntToDoubleNullable {
 class SimpleClassNullableOfIntToDoubleNullable {
   final Map<int, double?>? value;
 
-  SimpleClassNullableOfIntToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfIntToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDoubleNullableToJson(this);
@@ -1929,13 +1679,11 @@ class SimpleClassNullableOfIntToDoubleNullable {
 class SimpleClassOfObjectToDoubleNullable {
   final Map<Object, double?> value;
 
-  SimpleClassOfObjectToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToDoubleNullable(this.value);
 
   factory SimpleClassOfObjectToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToDoubleNullableToJson(this);
@@ -1945,13 +1693,11 @@ class SimpleClassOfObjectToDoubleNullable {
 class SimpleClassNullableOfObjectToDoubleNullable {
   final Map<Object, double?>? value;
 
-  SimpleClassNullableOfObjectToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfObjectToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDoubleNullableToJson(this);
@@ -1961,13 +1707,11 @@ class SimpleClassNullableOfObjectToDoubleNullable {
 class SimpleClassOfStringToDoubleNullable {
   final Map<String, double?> value;
 
-  SimpleClassOfStringToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfStringToDoubleNullable(this.value);
 
   factory SimpleClassOfStringToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToDoubleNullableToJson(this);
@@ -1977,13 +1721,11 @@ class SimpleClassOfStringToDoubleNullable {
 class SimpleClassNullableOfStringToDoubleNullable {
   final Map<String, double?>? value;
 
-  SimpleClassNullableOfStringToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfStringToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDoubleNullableToJson(this);
@@ -1993,13 +1735,11 @@ class SimpleClassNullableOfStringToDoubleNullable {
 class SimpleClassOfUriToDoubleNullable {
   final Map<Uri, double?> value;
 
-  SimpleClassOfUriToDoubleNullable(
-    this.value,
-  );
+  SimpleClassOfUriToDoubleNullable(this.value);
 
   factory SimpleClassOfUriToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToDoubleNullableToJson(this);
@@ -2009,13 +1749,11 @@ class SimpleClassOfUriToDoubleNullable {
 class SimpleClassNullableOfUriToDoubleNullable {
   final Map<Uri, double?>? value;
 
-  SimpleClassNullableOfUriToDoubleNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDoubleNullable(this.value);
 
   factory SimpleClassNullableOfUriToDoubleNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDoubleNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDoubleNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDoubleNullableToJson(this);
@@ -2025,9 +1763,7 @@ class SimpleClassNullableOfUriToDoubleNullable {
 class SimpleClassOfBigIntToDuration {
   final Map<BigInt, Duration> value;
 
-  SimpleClassOfBigIntToDuration(
-    this.value,
-  );
+  SimpleClassOfBigIntToDuration(this.value);
 
   factory SimpleClassOfBigIntToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToDurationFromJson(json);
@@ -2039,13 +1775,11 @@ class SimpleClassOfBigIntToDuration {
 class SimpleClassNullableOfBigIntToDuration {
   final Map<BigInt, Duration>? value;
 
-  SimpleClassNullableOfBigIntToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDuration(this.value);
 
   factory SimpleClassNullableOfBigIntToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDurationToJson(this);
@@ -2055,9 +1789,7 @@ class SimpleClassNullableOfBigIntToDuration {
 class SimpleClassOfDateTimeToDuration {
   final Map<DateTime, Duration> value;
 
-  SimpleClassOfDateTimeToDuration(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDuration(this.value);
 
   factory SimpleClassOfDateTimeToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToDurationFromJson(json);
@@ -2070,13 +1802,11 @@ class SimpleClassOfDateTimeToDuration {
 class SimpleClassNullableOfDateTimeToDuration {
   final Map<DateTime, Duration>? value;
 
-  SimpleClassNullableOfDateTimeToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDuration(this.value);
 
   factory SimpleClassNullableOfDateTimeToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDurationToJson(this);
@@ -2086,9 +1816,7 @@ class SimpleClassNullableOfDateTimeToDuration {
 class SimpleClassOfDynamicToDuration {
   final Map<dynamic, Duration> value;
 
-  SimpleClassOfDynamicToDuration(
-    this.value,
-  );
+  SimpleClassOfDynamicToDuration(this.value);
 
   factory SimpleClassOfDynamicToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToDurationFromJson(json);
@@ -2100,13 +1828,11 @@ class SimpleClassOfDynamicToDuration {
 class SimpleClassNullableOfDynamicToDuration {
   final Map<dynamic, Duration>? value;
 
-  SimpleClassNullableOfDynamicToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDuration(this.value);
 
   factory SimpleClassNullableOfDynamicToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDurationToJson(this);
@@ -2116,9 +1842,7 @@ class SimpleClassNullableOfDynamicToDuration {
 class SimpleClassOfEnumTypeToDuration {
   final Map<EnumType, Duration> value;
 
-  SimpleClassOfEnumTypeToDuration(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDuration(this.value);
 
   factory SimpleClassOfEnumTypeToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToDurationFromJson(json);
@@ -2131,13 +1855,11 @@ class SimpleClassOfEnumTypeToDuration {
 class SimpleClassNullableOfEnumTypeToDuration {
   final Map<EnumType, Duration>? value;
 
-  SimpleClassNullableOfEnumTypeToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDuration(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDurationToJson(this);
@@ -2147,9 +1869,7 @@ class SimpleClassNullableOfEnumTypeToDuration {
 class SimpleClassOfIntToDuration {
   final Map<int, Duration> value;
 
-  SimpleClassOfIntToDuration(
-    this.value,
-  );
+  SimpleClassOfIntToDuration(this.value);
 
   factory SimpleClassOfIntToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToDurationFromJson(json);
@@ -2161,13 +1881,11 @@ class SimpleClassOfIntToDuration {
 class SimpleClassNullableOfIntToDuration {
   final Map<int, Duration>? value;
 
-  SimpleClassNullableOfIntToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDuration(this.value);
 
   factory SimpleClassNullableOfIntToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDurationToJson(this);
@@ -2177,9 +1895,7 @@ class SimpleClassNullableOfIntToDuration {
 class SimpleClassOfObjectToDuration {
   final Map<Object, Duration> value;
 
-  SimpleClassOfObjectToDuration(
-    this.value,
-  );
+  SimpleClassOfObjectToDuration(this.value);
 
   factory SimpleClassOfObjectToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToDurationFromJson(json);
@@ -2191,13 +1907,11 @@ class SimpleClassOfObjectToDuration {
 class SimpleClassNullableOfObjectToDuration {
   final Map<Object, Duration>? value;
 
-  SimpleClassNullableOfObjectToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDuration(this.value);
 
   factory SimpleClassNullableOfObjectToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDurationToJson(this);
@@ -2207,9 +1921,7 @@ class SimpleClassNullableOfObjectToDuration {
 class SimpleClassOfStringToDuration {
   final Map<String, Duration> value;
 
-  SimpleClassOfStringToDuration(
-    this.value,
-  );
+  SimpleClassOfStringToDuration(this.value);
 
   factory SimpleClassOfStringToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToDurationFromJson(json);
@@ -2221,13 +1933,11 @@ class SimpleClassOfStringToDuration {
 class SimpleClassNullableOfStringToDuration {
   final Map<String, Duration>? value;
 
-  SimpleClassNullableOfStringToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDuration(this.value);
 
   factory SimpleClassNullableOfStringToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDurationToJson(this);
@@ -2237,9 +1947,7 @@ class SimpleClassNullableOfStringToDuration {
 class SimpleClassOfUriToDuration {
   final Map<Uri, Duration> value;
 
-  SimpleClassOfUriToDuration(
-    this.value,
-  );
+  SimpleClassOfUriToDuration(this.value);
 
   factory SimpleClassOfUriToDuration.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToDurationFromJson(json);
@@ -2251,13 +1959,11 @@ class SimpleClassOfUriToDuration {
 class SimpleClassNullableOfUriToDuration {
   final Map<Uri, Duration>? value;
 
-  SimpleClassNullableOfUriToDuration(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDuration(this.value);
 
   factory SimpleClassNullableOfUriToDuration.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDurationFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDurationFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDurationToJson(this);
@@ -2267,13 +1973,11 @@ class SimpleClassNullableOfUriToDuration {
 class SimpleClassOfBigIntToDurationNullable {
   final Map<BigInt, Duration?> value;
 
-  SimpleClassOfBigIntToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToDurationNullable(this.value);
 
   factory SimpleClassOfBigIntToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToDurationNullableToJson(this);
@@ -2283,13 +1987,11 @@ class SimpleClassOfBigIntToDurationNullable {
 class SimpleClassNullableOfBigIntToDurationNullable {
   final Map<BigInt, Duration?>? value;
 
-  SimpleClassNullableOfBigIntToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDurationNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDurationNullableToJson(this);
@@ -2299,13 +2001,11 @@ class SimpleClassNullableOfBigIntToDurationNullable {
 class SimpleClassOfDateTimeToDurationNullable {
   final Map<DateTime, Duration?> value;
 
-  SimpleClassOfDateTimeToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDurationNullable(this.value);
 
   factory SimpleClassOfDateTimeToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToDurationNullableToJson(this);
@@ -2315,13 +2015,11 @@ class SimpleClassOfDateTimeToDurationNullable {
 class SimpleClassNullableOfDateTimeToDurationNullable {
   final Map<DateTime, Duration?>? value;
 
-  SimpleClassNullableOfDateTimeToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDurationNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDurationNullableToJson(this);
@@ -2331,13 +2029,11 @@ class SimpleClassNullableOfDateTimeToDurationNullable {
 class SimpleClassOfDynamicToDurationNullable {
   final Map<dynamic, Duration?> value;
 
-  SimpleClassOfDynamicToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToDurationNullable(this.value);
 
   factory SimpleClassOfDynamicToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToDurationNullableToJson(this);
@@ -2347,13 +2043,11 @@ class SimpleClassOfDynamicToDurationNullable {
 class SimpleClassNullableOfDynamicToDurationNullable {
   final Map<dynamic, Duration?>? value;
 
-  SimpleClassNullableOfDynamicToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDurationNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDurationNullableToJson(this);
@@ -2363,13 +2057,11 @@ class SimpleClassNullableOfDynamicToDurationNullable {
 class SimpleClassOfEnumTypeToDurationNullable {
   final Map<EnumType, Duration?> value;
 
-  SimpleClassOfEnumTypeToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDurationNullable(this.value);
 
   factory SimpleClassOfEnumTypeToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToDurationNullableToJson(this);
@@ -2379,13 +2071,11 @@ class SimpleClassOfEnumTypeToDurationNullable {
 class SimpleClassNullableOfEnumTypeToDurationNullable {
   final Map<EnumType, Duration?>? value;
 
-  SimpleClassNullableOfEnumTypeToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDurationNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDurationNullableToJson(this);
@@ -2395,13 +2085,11 @@ class SimpleClassNullableOfEnumTypeToDurationNullable {
 class SimpleClassOfIntToDurationNullable {
   final Map<int, Duration?> value;
 
-  SimpleClassOfIntToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfIntToDurationNullable(this.value);
 
   factory SimpleClassOfIntToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToDurationNullableToJson(this);
@@ -2411,13 +2099,11 @@ class SimpleClassOfIntToDurationNullable {
 class SimpleClassNullableOfIntToDurationNullable {
   final Map<int, Duration?>? value;
 
-  SimpleClassNullableOfIntToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDurationNullable(this.value);
 
   factory SimpleClassNullableOfIntToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDurationNullableToJson(this);
@@ -2427,13 +2113,11 @@ class SimpleClassNullableOfIntToDurationNullable {
 class SimpleClassOfObjectToDurationNullable {
   final Map<Object, Duration?> value;
 
-  SimpleClassOfObjectToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToDurationNullable(this.value);
 
   factory SimpleClassOfObjectToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToDurationNullableToJson(this);
@@ -2443,13 +2127,11 @@ class SimpleClassOfObjectToDurationNullable {
 class SimpleClassNullableOfObjectToDurationNullable {
   final Map<Object, Duration?>? value;
 
-  SimpleClassNullableOfObjectToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDurationNullable(this.value);
 
   factory SimpleClassNullableOfObjectToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDurationNullableToJson(this);
@@ -2459,13 +2141,11 @@ class SimpleClassNullableOfObjectToDurationNullable {
 class SimpleClassOfStringToDurationNullable {
   final Map<String, Duration?> value;
 
-  SimpleClassOfStringToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfStringToDurationNullable(this.value);
 
   factory SimpleClassOfStringToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToDurationNullableToJson(this);
@@ -2475,13 +2155,11 @@ class SimpleClassOfStringToDurationNullable {
 class SimpleClassNullableOfStringToDurationNullable {
   final Map<String, Duration?>? value;
 
-  SimpleClassNullableOfStringToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDurationNullable(this.value);
 
   factory SimpleClassNullableOfStringToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDurationNullableToJson(this);
@@ -2491,13 +2169,11 @@ class SimpleClassNullableOfStringToDurationNullable {
 class SimpleClassOfUriToDurationNullable {
   final Map<Uri, Duration?> value;
 
-  SimpleClassOfUriToDurationNullable(
-    this.value,
-  );
+  SimpleClassOfUriToDurationNullable(this.value);
 
   factory SimpleClassOfUriToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToDurationNullableToJson(this);
@@ -2507,13 +2183,11 @@ class SimpleClassOfUriToDurationNullable {
 class SimpleClassNullableOfUriToDurationNullable {
   final Map<Uri, Duration?>? value;
 
-  SimpleClassNullableOfUriToDurationNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDurationNullable(this.value);
 
   factory SimpleClassNullableOfUriToDurationNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDurationNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDurationNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDurationNullableToJson(this);
@@ -2523,9 +2197,7 @@ class SimpleClassNullableOfUriToDurationNullable {
 class SimpleClassOfBigIntToDynamic {
   final Map<BigInt, dynamic> value;
 
-  SimpleClassOfBigIntToDynamic(
-    this.value,
-  );
+  SimpleClassOfBigIntToDynamic(this.value);
 
   factory SimpleClassOfBigIntToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToDynamicFromJson(json);
@@ -2537,13 +2209,11 @@ class SimpleClassOfBigIntToDynamic {
 class SimpleClassNullableOfBigIntToDynamic {
   final Map<BigInt, dynamic>? value;
 
-  SimpleClassNullableOfBigIntToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToDynamic(this.value);
 
   factory SimpleClassNullableOfBigIntToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToDynamicToJson(this);
@@ -2553,9 +2223,7 @@ class SimpleClassNullableOfBigIntToDynamic {
 class SimpleClassOfDateTimeToDynamic {
   final Map<DateTime, dynamic> value;
 
-  SimpleClassOfDateTimeToDynamic(
-    this.value,
-  );
+  SimpleClassOfDateTimeToDynamic(this.value);
 
   factory SimpleClassOfDateTimeToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToDynamicFromJson(json);
@@ -2567,13 +2235,11 @@ class SimpleClassOfDateTimeToDynamic {
 class SimpleClassNullableOfDateTimeToDynamic {
   final Map<DateTime, dynamic>? value;
 
-  SimpleClassNullableOfDateTimeToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToDynamic(this.value);
 
   factory SimpleClassNullableOfDateTimeToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToDynamicToJson(this);
@@ -2583,9 +2249,7 @@ class SimpleClassNullableOfDateTimeToDynamic {
 class SimpleClassOfDynamicToDynamic {
   final Map<dynamic, dynamic> value;
 
-  SimpleClassOfDynamicToDynamic(
-    this.value,
-  );
+  SimpleClassOfDynamicToDynamic(this.value);
 
   factory SimpleClassOfDynamicToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToDynamicFromJson(json);
@@ -2597,13 +2261,11 @@ class SimpleClassOfDynamicToDynamic {
 class SimpleClassNullableOfDynamicToDynamic {
   final Map<dynamic, dynamic>? value;
 
-  SimpleClassNullableOfDynamicToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToDynamic(this.value);
 
   factory SimpleClassNullableOfDynamicToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToDynamicToJson(this);
@@ -2613,9 +2275,7 @@ class SimpleClassNullableOfDynamicToDynamic {
 class SimpleClassOfEnumTypeToDynamic {
   final Map<EnumType, dynamic> value;
 
-  SimpleClassOfEnumTypeToDynamic(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToDynamic(this.value);
 
   factory SimpleClassOfEnumTypeToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToDynamicFromJson(json);
@@ -2627,13 +2287,11 @@ class SimpleClassOfEnumTypeToDynamic {
 class SimpleClassNullableOfEnumTypeToDynamic {
   final Map<EnumType, dynamic>? value;
 
-  SimpleClassNullableOfEnumTypeToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToDynamic(this.value);
 
   factory SimpleClassNullableOfEnumTypeToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToDynamicToJson(this);
@@ -2643,9 +2301,7 @@ class SimpleClassNullableOfEnumTypeToDynamic {
 class SimpleClassOfIntToDynamic {
   final Map<int, dynamic> value;
 
-  SimpleClassOfIntToDynamic(
-    this.value,
-  );
+  SimpleClassOfIntToDynamic(this.value);
 
   factory SimpleClassOfIntToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToDynamicFromJson(json);
@@ -2657,13 +2313,11 @@ class SimpleClassOfIntToDynamic {
 class SimpleClassNullableOfIntToDynamic {
   final Map<int, dynamic>? value;
 
-  SimpleClassNullableOfIntToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfIntToDynamic(this.value);
 
   factory SimpleClassNullableOfIntToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToDynamicToJson(this);
@@ -2673,9 +2327,7 @@ class SimpleClassNullableOfIntToDynamic {
 class SimpleClassOfObjectToDynamic {
   final Map<Object, dynamic> value;
 
-  SimpleClassOfObjectToDynamic(
-    this.value,
-  );
+  SimpleClassOfObjectToDynamic(this.value);
 
   factory SimpleClassOfObjectToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToDynamicFromJson(json);
@@ -2687,13 +2339,11 @@ class SimpleClassOfObjectToDynamic {
 class SimpleClassNullableOfObjectToDynamic {
   final Map<Object, dynamic>? value;
 
-  SimpleClassNullableOfObjectToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToDynamic(this.value);
 
   factory SimpleClassNullableOfObjectToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToDynamicToJson(this);
@@ -2703,9 +2353,7 @@ class SimpleClassNullableOfObjectToDynamic {
 class SimpleClassOfStringToDynamic {
   final Map<String, dynamic> value;
 
-  SimpleClassOfStringToDynamic(
-    this.value,
-  );
+  SimpleClassOfStringToDynamic(this.value);
 
   factory SimpleClassOfStringToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToDynamicFromJson(json);
@@ -2717,13 +2365,11 @@ class SimpleClassOfStringToDynamic {
 class SimpleClassNullableOfStringToDynamic {
   final Map<String, dynamic>? value;
 
-  SimpleClassNullableOfStringToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfStringToDynamic(this.value);
 
   factory SimpleClassNullableOfStringToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToDynamicToJson(this);
@@ -2733,9 +2379,7 @@ class SimpleClassNullableOfStringToDynamic {
 class SimpleClassOfUriToDynamic {
   final Map<Uri, dynamic> value;
 
-  SimpleClassOfUriToDynamic(
-    this.value,
-  );
+  SimpleClassOfUriToDynamic(this.value);
 
   factory SimpleClassOfUriToDynamic.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToDynamicFromJson(json);
@@ -2747,13 +2391,11 @@ class SimpleClassOfUriToDynamic {
 class SimpleClassNullableOfUriToDynamic {
   final Map<Uri, dynamic>? value;
 
-  SimpleClassNullableOfUriToDynamic(
-    this.value,
-  );
+  SimpleClassNullableOfUriToDynamic(this.value);
 
   factory SimpleClassNullableOfUriToDynamic.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToDynamicFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToDynamicFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToDynamicToJson(this);
@@ -2763,9 +2405,7 @@ class SimpleClassNullableOfUriToDynamic {
 class SimpleClassOfBigIntToEnumType {
   final Map<BigInt, EnumType> value;
 
-  SimpleClassOfBigIntToEnumType(
-    this.value,
-  );
+  SimpleClassOfBigIntToEnumType(this.value);
 
   factory SimpleClassOfBigIntToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToEnumTypeFromJson(json);
@@ -2777,13 +2417,11 @@ class SimpleClassOfBigIntToEnumType {
 class SimpleClassNullableOfBigIntToEnumType {
   final Map<BigInt, EnumType>? value;
 
-  SimpleClassNullableOfBigIntToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToEnumType(this.value);
 
   factory SimpleClassNullableOfBigIntToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToEnumTypeToJson(this);
@@ -2793,9 +2431,7 @@ class SimpleClassNullableOfBigIntToEnumType {
 class SimpleClassOfDateTimeToEnumType {
   final Map<DateTime, EnumType> value;
 
-  SimpleClassOfDateTimeToEnumType(
-    this.value,
-  );
+  SimpleClassOfDateTimeToEnumType(this.value);
 
   factory SimpleClassOfDateTimeToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToEnumTypeFromJson(json);
@@ -2808,13 +2444,11 @@ class SimpleClassOfDateTimeToEnumType {
 class SimpleClassNullableOfDateTimeToEnumType {
   final Map<DateTime, EnumType>? value;
 
-  SimpleClassNullableOfDateTimeToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToEnumType(this.value);
 
   factory SimpleClassNullableOfDateTimeToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToEnumTypeToJson(this);
@@ -2824,9 +2458,7 @@ class SimpleClassNullableOfDateTimeToEnumType {
 class SimpleClassOfDynamicToEnumType {
   final Map<dynamic, EnumType> value;
 
-  SimpleClassOfDynamicToEnumType(
-    this.value,
-  );
+  SimpleClassOfDynamicToEnumType(this.value);
 
   factory SimpleClassOfDynamicToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToEnumTypeFromJson(json);
@@ -2838,13 +2470,11 @@ class SimpleClassOfDynamicToEnumType {
 class SimpleClassNullableOfDynamicToEnumType {
   final Map<dynamic, EnumType>? value;
 
-  SimpleClassNullableOfDynamicToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToEnumType(this.value);
 
   factory SimpleClassNullableOfDynamicToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToEnumTypeToJson(this);
@@ -2854,9 +2484,7 @@ class SimpleClassNullableOfDynamicToEnumType {
 class SimpleClassOfEnumTypeToEnumType {
   final Map<EnumType, EnumType> value;
 
-  SimpleClassOfEnumTypeToEnumType(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToEnumType(this.value);
 
   factory SimpleClassOfEnumTypeToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToEnumTypeFromJson(json);
@@ -2869,13 +2497,11 @@ class SimpleClassOfEnumTypeToEnumType {
 class SimpleClassNullableOfEnumTypeToEnumType {
   final Map<EnumType, EnumType>? value;
 
-  SimpleClassNullableOfEnumTypeToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToEnumType(this.value);
 
   factory SimpleClassNullableOfEnumTypeToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToEnumTypeToJson(this);
@@ -2885,9 +2511,7 @@ class SimpleClassNullableOfEnumTypeToEnumType {
 class SimpleClassOfIntToEnumType {
   final Map<int, EnumType> value;
 
-  SimpleClassOfIntToEnumType(
-    this.value,
-  );
+  SimpleClassOfIntToEnumType(this.value);
 
   factory SimpleClassOfIntToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToEnumTypeFromJson(json);
@@ -2899,13 +2523,11 @@ class SimpleClassOfIntToEnumType {
 class SimpleClassNullableOfIntToEnumType {
   final Map<int, EnumType>? value;
 
-  SimpleClassNullableOfIntToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfIntToEnumType(this.value);
 
   factory SimpleClassNullableOfIntToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToEnumTypeToJson(this);
@@ -2915,9 +2537,7 @@ class SimpleClassNullableOfIntToEnumType {
 class SimpleClassOfObjectToEnumType {
   final Map<Object, EnumType> value;
 
-  SimpleClassOfObjectToEnumType(
-    this.value,
-  );
+  SimpleClassOfObjectToEnumType(this.value);
 
   factory SimpleClassOfObjectToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToEnumTypeFromJson(json);
@@ -2929,13 +2549,11 @@ class SimpleClassOfObjectToEnumType {
 class SimpleClassNullableOfObjectToEnumType {
   final Map<Object, EnumType>? value;
 
-  SimpleClassNullableOfObjectToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToEnumType(this.value);
 
   factory SimpleClassNullableOfObjectToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToEnumTypeToJson(this);
@@ -2945,9 +2563,7 @@ class SimpleClassNullableOfObjectToEnumType {
 class SimpleClassOfStringToEnumType {
   final Map<String, EnumType> value;
 
-  SimpleClassOfStringToEnumType(
-    this.value,
-  );
+  SimpleClassOfStringToEnumType(this.value);
 
   factory SimpleClassOfStringToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToEnumTypeFromJson(json);
@@ -2959,13 +2575,11 @@ class SimpleClassOfStringToEnumType {
 class SimpleClassNullableOfStringToEnumType {
   final Map<String, EnumType>? value;
 
-  SimpleClassNullableOfStringToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfStringToEnumType(this.value);
 
   factory SimpleClassNullableOfStringToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToEnumTypeToJson(this);
@@ -2975,9 +2589,7 @@ class SimpleClassNullableOfStringToEnumType {
 class SimpleClassOfUriToEnumType {
   final Map<Uri, EnumType> value;
 
-  SimpleClassOfUriToEnumType(
-    this.value,
-  );
+  SimpleClassOfUriToEnumType(this.value);
 
   factory SimpleClassOfUriToEnumType.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToEnumTypeFromJson(json);
@@ -2989,13 +2601,11 @@ class SimpleClassOfUriToEnumType {
 class SimpleClassNullableOfUriToEnumType {
   final Map<Uri, EnumType>? value;
 
-  SimpleClassNullableOfUriToEnumType(
-    this.value,
-  );
+  SimpleClassNullableOfUriToEnumType(this.value);
 
   factory SimpleClassNullableOfUriToEnumType.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToEnumTypeFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToEnumTypeFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToEnumTypeToJson(this);
@@ -3005,13 +2615,11 @@ class SimpleClassNullableOfUriToEnumType {
 class SimpleClassOfBigIntToEnumTypeNullable {
   final Map<BigInt, EnumType?> value;
 
-  SimpleClassOfBigIntToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToEnumTypeNullable(this.value);
 
   factory SimpleClassOfBigIntToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToEnumTypeNullableToJson(this);
@@ -3021,13 +2629,11 @@ class SimpleClassOfBigIntToEnumTypeNullable {
 class SimpleClassNullableOfBigIntToEnumTypeNullable {
   final Map<BigInt, EnumType?>? value;
 
-  SimpleClassNullableOfBigIntToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToEnumTypeNullableToJson(this);
@@ -3037,13 +2643,11 @@ class SimpleClassNullableOfBigIntToEnumTypeNullable {
 class SimpleClassOfDateTimeToEnumTypeNullable {
   final Map<DateTime, EnumType?> value;
 
-  SimpleClassOfDateTimeToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToEnumTypeNullable(this.value);
 
   factory SimpleClassOfDateTimeToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToEnumTypeNullableToJson(this);
@@ -3053,13 +2657,11 @@ class SimpleClassOfDateTimeToEnumTypeNullable {
 class SimpleClassNullableOfDateTimeToEnumTypeNullable {
   final Map<DateTime, EnumType?>? value;
 
-  SimpleClassNullableOfDateTimeToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToEnumTypeNullableToJson(this);
@@ -3069,13 +2671,11 @@ class SimpleClassNullableOfDateTimeToEnumTypeNullable {
 class SimpleClassOfDynamicToEnumTypeNullable {
   final Map<dynamic, EnumType?> value;
 
-  SimpleClassOfDynamicToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToEnumTypeNullable(this.value);
 
   factory SimpleClassOfDynamicToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToEnumTypeNullableToJson(this);
@@ -3085,13 +2685,11 @@ class SimpleClassOfDynamicToEnumTypeNullable {
 class SimpleClassNullableOfDynamicToEnumTypeNullable {
   final Map<dynamic, EnumType?>? value;
 
-  SimpleClassNullableOfDynamicToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToEnumTypeNullableToJson(this);
@@ -3101,13 +2699,11 @@ class SimpleClassNullableOfDynamicToEnumTypeNullable {
 class SimpleClassOfEnumTypeToEnumTypeNullable {
   final Map<EnumType, EnumType?> value;
 
-  SimpleClassOfEnumTypeToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToEnumTypeNullable(this.value);
 
   factory SimpleClassOfEnumTypeToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToEnumTypeNullableToJson(this);
@@ -3117,13 +2713,11 @@ class SimpleClassOfEnumTypeToEnumTypeNullable {
 class SimpleClassNullableOfEnumTypeToEnumTypeNullable {
   final Map<EnumType, EnumType?>? value;
 
-  SimpleClassNullableOfEnumTypeToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToEnumTypeNullableToJson(this);
@@ -3133,13 +2727,11 @@ class SimpleClassNullableOfEnumTypeToEnumTypeNullable {
 class SimpleClassOfIntToEnumTypeNullable {
   final Map<int, EnumType?> value;
 
-  SimpleClassOfIntToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfIntToEnumTypeNullable(this.value);
 
   factory SimpleClassOfIntToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToEnumTypeNullableToJson(this);
@@ -3149,13 +2741,11 @@ class SimpleClassOfIntToEnumTypeNullable {
 class SimpleClassNullableOfIntToEnumTypeNullable {
   final Map<int, EnumType?>? value;
 
-  SimpleClassNullableOfIntToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfIntToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToEnumTypeNullableToJson(this);
@@ -3165,13 +2755,11 @@ class SimpleClassNullableOfIntToEnumTypeNullable {
 class SimpleClassOfObjectToEnumTypeNullable {
   final Map<Object, EnumType?> value;
 
-  SimpleClassOfObjectToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToEnumTypeNullable(this.value);
 
   factory SimpleClassOfObjectToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToEnumTypeNullableToJson(this);
@@ -3181,13 +2769,11 @@ class SimpleClassOfObjectToEnumTypeNullable {
 class SimpleClassNullableOfObjectToEnumTypeNullable {
   final Map<Object, EnumType?>? value;
 
-  SimpleClassNullableOfObjectToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfObjectToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToEnumTypeNullableToJson(this);
@@ -3197,13 +2783,11 @@ class SimpleClassNullableOfObjectToEnumTypeNullable {
 class SimpleClassOfStringToEnumTypeNullable {
   final Map<String, EnumType?> value;
 
-  SimpleClassOfStringToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfStringToEnumTypeNullable(this.value);
 
   factory SimpleClassOfStringToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToEnumTypeNullableToJson(this);
@@ -3213,13 +2797,11 @@ class SimpleClassOfStringToEnumTypeNullable {
 class SimpleClassNullableOfStringToEnumTypeNullable {
   final Map<String, EnumType?>? value;
 
-  SimpleClassNullableOfStringToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfStringToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToEnumTypeNullableToJson(this);
@@ -3229,13 +2811,11 @@ class SimpleClassNullableOfStringToEnumTypeNullable {
 class SimpleClassOfUriToEnumTypeNullable {
   final Map<Uri, EnumType?> value;
 
-  SimpleClassOfUriToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassOfUriToEnumTypeNullable(this.value);
 
   factory SimpleClassOfUriToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToEnumTypeNullableToJson(this);
@@ -3245,13 +2825,11 @@ class SimpleClassOfUriToEnumTypeNullable {
 class SimpleClassNullableOfUriToEnumTypeNullable {
   final Map<Uri, EnumType?>? value;
 
-  SimpleClassNullableOfUriToEnumTypeNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToEnumTypeNullable(this.value);
 
   factory SimpleClassNullableOfUriToEnumTypeNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToEnumTypeNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToEnumTypeNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToEnumTypeNullableToJson(this);
@@ -3261,13 +2839,11 @@ class SimpleClassNullableOfUriToEnumTypeNullable {
 class SimpleClassOfBigIntToFromJsonDynamicParam {
   final Map<BigInt, FromJsonDynamicParam> value;
 
-  SimpleClassOfBigIntToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfBigIntToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfBigIntToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToFromJsonDynamicParamToJson(this);
@@ -3277,13 +2853,11 @@ class SimpleClassOfBigIntToFromJsonDynamicParam {
 class SimpleClassNullableOfBigIntToFromJsonDynamicParam {
   final Map<BigInt, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfBigIntToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfBigIntToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToFromJsonDynamicParamToJson(this);
@@ -3293,13 +2867,11 @@ class SimpleClassNullableOfBigIntToFromJsonDynamicParam {
 class SimpleClassOfDateTimeToFromJsonDynamicParam {
   final Map<DateTime, FromJsonDynamicParam> value;
 
-  SimpleClassOfDateTimeToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfDateTimeToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfDateTimeToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToFromJsonDynamicParamToJson(this);
@@ -3309,13 +2881,11 @@ class SimpleClassOfDateTimeToFromJsonDynamicParam {
 class SimpleClassNullableOfDateTimeToFromJsonDynamicParam {
   final Map<DateTime, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfDateTimeToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfDateTimeToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToFromJsonDynamicParamToJson(this);
@@ -3325,13 +2895,11 @@ class SimpleClassNullableOfDateTimeToFromJsonDynamicParam {
 class SimpleClassOfDynamicToFromJsonDynamicParam {
   final Map<dynamic, FromJsonDynamicParam> value;
 
-  SimpleClassOfDynamicToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfDynamicToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfDynamicToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToFromJsonDynamicParamToJson(this);
@@ -3341,13 +2909,11 @@ class SimpleClassOfDynamicToFromJsonDynamicParam {
 class SimpleClassNullableOfDynamicToFromJsonDynamicParam {
   final Map<dynamic, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfDynamicToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfDynamicToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToFromJsonDynamicParamToJson(this);
@@ -3357,13 +2923,11 @@ class SimpleClassNullableOfDynamicToFromJsonDynamicParam {
 class SimpleClassOfEnumTypeToFromJsonDynamicParam {
   final Map<EnumType, FromJsonDynamicParam> value;
 
-  SimpleClassOfEnumTypeToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfEnumTypeToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToFromJsonDynamicParamToJson(this);
@@ -3373,13 +2937,11 @@ class SimpleClassOfEnumTypeToFromJsonDynamicParam {
 class SimpleClassNullableOfEnumTypeToFromJsonDynamicParam {
   final Map<EnumType, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfEnumTypeToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfEnumTypeToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToFromJsonDynamicParamToJson(this);
@@ -3389,13 +2951,11 @@ class SimpleClassNullableOfEnumTypeToFromJsonDynamicParam {
 class SimpleClassOfIntToFromJsonDynamicParam {
   final Map<int, FromJsonDynamicParam> value;
 
-  SimpleClassOfIntToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfIntToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfIntToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToFromJsonDynamicParamToJson(this);
@@ -3405,13 +2965,11 @@ class SimpleClassOfIntToFromJsonDynamicParam {
 class SimpleClassNullableOfIntToFromJsonDynamicParam {
   final Map<int, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfIntToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfIntToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfIntToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToFromJsonDynamicParamToJson(this);
@@ -3421,13 +2979,11 @@ class SimpleClassNullableOfIntToFromJsonDynamicParam {
 class SimpleClassOfObjectToFromJsonDynamicParam {
   final Map<Object, FromJsonDynamicParam> value;
 
-  SimpleClassOfObjectToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfObjectToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfObjectToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToFromJsonDynamicParamToJson(this);
@@ -3437,13 +2993,11 @@ class SimpleClassOfObjectToFromJsonDynamicParam {
 class SimpleClassNullableOfObjectToFromJsonDynamicParam {
   final Map<Object, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfObjectToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfObjectToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToFromJsonDynamicParamToJson(this);
@@ -3453,13 +3007,11 @@ class SimpleClassNullableOfObjectToFromJsonDynamicParam {
 class SimpleClassOfStringToFromJsonDynamicParam {
   final Map<String, FromJsonDynamicParam> value;
 
-  SimpleClassOfStringToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfStringToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfStringToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToFromJsonDynamicParamToJson(this);
@@ -3469,13 +3021,11 @@ class SimpleClassOfStringToFromJsonDynamicParam {
 class SimpleClassNullableOfStringToFromJsonDynamicParam {
   final Map<String, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfStringToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfStringToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfStringToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToFromJsonDynamicParamToJson(this);
@@ -3485,13 +3035,11 @@ class SimpleClassNullableOfStringToFromJsonDynamicParam {
 class SimpleClassOfUriToFromJsonDynamicParam {
   final Map<Uri, FromJsonDynamicParam> value;
 
-  SimpleClassOfUriToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassOfUriToFromJsonDynamicParam(this.value);
 
   factory SimpleClassOfUriToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToFromJsonDynamicParamToJson(this);
@@ -3501,13 +3049,11 @@ class SimpleClassOfUriToFromJsonDynamicParam {
 class SimpleClassNullableOfUriToFromJsonDynamicParam {
   final Map<Uri, FromJsonDynamicParam>? value;
 
-  SimpleClassNullableOfUriToFromJsonDynamicParam(
-    this.value,
-  );
+  SimpleClassNullableOfUriToFromJsonDynamicParam(this.value);
 
   factory SimpleClassNullableOfUriToFromJsonDynamicParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToFromJsonDynamicParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToFromJsonDynamicParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToFromJsonDynamicParamToJson(this);
@@ -3517,13 +3063,11 @@ class SimpleClassNullableOfUriToFromJsonDynamicParam {
 class SimpleClassOfBigIntToFromJsonNullableObjectParam {
   final Map<BigInt, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfBigIntToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfBigIntToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfBigIntToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToFromJsonNullableObjectParamToJson(this);
@@ -3533,13 +3077,11 @@ class SimpleClassOfBigIntToFromJsonNullableObjectParam {
 class SimpleClassNullableOfBigIntToFromJsonNullableObjectParam {
   final Map<BigInt, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfBigIntToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfBigIntToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToFromJsonNullableObjectParamToJson(this);
@@ -3549,13 +3091,11 @@ class SimpleClassNullableOfBigIntToFromJsonNullableObjectParam {
 class SimpleClassOfDateTimeToFromJsonNullableObjectParam {
   final Map<DateTime, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfDateTimeToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfDateTimeToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfDateTimeToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToFromJsonNullableObjectParamToJson(this);
@@ -3565,14 +3105,13 @@ class SimpleClassOfDateTimeToFromJsonNullableObjectParam {
 class SimpleClassNullableOfDateTimeToFromJsonNullableObjectParam {
   final Map<DateTime, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfDateTimeToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfDateTimeToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToFromJsonNullableObjectParamFromJson(
-          json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToFromJsonNullableObjectParamFromJson(
+    json,
+  );
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToFromJsonNullableObjectParamToJson(this);
@@ -3582,13 +3121,11 @@ class SimpleClassNullableOfDateTimeToFromJsonNullableObjectParam {
 class SimpleClassOfDynamicToFromJsonNullableObjectParam {
   final Map<dynamic, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfDynamicToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfDynamicToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfDynamicToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToFromJsonNullableObjectParamToJson(this);
@@ -3598,12 +3135,11 @@ class SimpleClassOfDynamicToFromJsonNullableObjectParam {
 class SimpleClassNullableOfDynamicToFromJsonNullableObjectParam {
   final Map<dynamic, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfDynamicToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfDynamicToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
+    Map<String, Object?> json,
+  ) =>
       _$SimpleClassNullableOfDynamicToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
@@ -3614,13 +3150,11 @@ class SimpleClassNullableOfDynamicToFromJsonNullableObjectParam {
 class SimpleClassOfEnumTypeToFromJsonNullableObjectParam {
   final Map<EnumType, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfEnumTypeToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfEnumTypeToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToFromJsonNullableObjectParamToJson(this);
@@ -3630,14 +3164,13 @@ class SimpleClassOfEnumTypeToFromJsonNullableObjectParam {
 class SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParam {
   final Map<EnumType, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParamFromJson(
-          json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParamFromJson(
+    json,
+  );
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParamToJson(this);
@@ -3647,13 +3180,11 @@ class SimpleClassNullableOfEnumTypeToFromJsonNullableObjectParam {
 class SimpleClassOfIntToFromJsonNullableObjectParam {
   final Map<int, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfIntToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfIntToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfIntToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToFromJsonNullableObjectParamToJson(this);
@@ -3663,13 +3194,11 @@ class SimpleClassOfIntToFromJsonNullableObjectParam {
 class SimpleClassNullableOfIntToFromJsonNullableObjectParam {
   final Map<int, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfIntToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfIntToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfIntToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToFromJsonNullableObjectParamToJson(this);
@@ -3679,13 +3208,11 @@ class SimpleClassNullableOfIntToFromJsonNullableObjectParam {
 class SimpleClassOfObjectToFromJsonNullableObjectParam {
   final Map<Object, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfObjectToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfObjectToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfObjectToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToFromJsonNullableObjectParamToJson(this);
@@ -3695,13 +3222,11 @@ class SimpleClassOfObjectToFromJsonNullableObjectParam {
 class SimpleClassNullableOfObjectToFromJsonNullableObjectParam {
   final Map<Object, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfObjectToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfObjectToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToFromJsonNullableObjectParamToJson(this);
@@ -3711,13 +3236,11 @@ class SimpleClassNullableOfObjectToFromJsonNullableObjectParam {
 class SimpleClassOfStringToFromJsonNullableObjectParam {
   final Map<String, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfStringToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfStringToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfStringToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToFromJsonNullableObjectParamToJson(this);
@@ -3727,13 +3250,11 @@ class SimpleClassOfStringToFromJsonNullableObjectParam {
 class SimpleClassNullableOfStringToFromJsonNullableObjectParam {
   final Map<String, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfStringToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfStringToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfStringToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToFromJsonNullableObjectParamToJson(this);
@@ -3743,13 +3264,11 @@ class SimpleClassNullableOfStringToFromJsonNullableObjectParam {
 class SimpleClassOfUriToFromJsonNullableObjectParam {
   final Map<Uri, FromJsonNullableObjectParam> value;
 
-  SimpleClassOfUriToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassOfUriToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassOfUriToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToFromJsonNullableObjectParamToJson(this);
@@ -3759,13 +3278,11 @@ class SimpleClassOfUriToFromJsonNullableObjectParam {
 class SimpleClassNullableOfUriToFromJsonNullableObjectParam {
   final Map<Uri, FromJsonNullableObjectParam>? value;
 
-  SimpleClassNullableOfUriToFromJsonNullableObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfUriToFromJsonNullableObjectParam(this.value);
 
   factory SimpleClassNullableOfUriToFromJsonNullableObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToFromJsonNullableObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToFromJsonNullableObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToFromJsonNullableObjectParamToJson(this);
@@ -3775,13 +3292,11 @@ class SimpleClassNullableOfUriToFromJsonNullableObjectParam {
 class SimpleClassOfBigIntToFromJsonObjectParam {
   final Map<BigInt, FromJsonObjectParam> value;
 
-  SimpleClassOfBigIntToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfBigIntToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfBigIntToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToFromJsonObjectParamToJson(this);
@@ -3791,13 +3306,11 @@ class SimpleClassOfBigIntToFromJsonObjectParam {
 class SimpleClassNullableOfBigIntToFromJsonObjectParam {
   final Map<BigInt, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfBigIntToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfBigIntToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToFromJsonObjectParamToJson(this);
@@ -3807,13 +3320,11 @@ class SimpleClassNullableOfBigIntToFromJsonObjectParam {
 class SimpleClassOfDateTimeToFromJsonObjectParam {
   final Map<DateTime, FromJsonObjectParam> value;
 
-  SimpleClassOfDateTimeToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfDateTimeToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfDateTimeToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToFromJsonObjectParamToJson(this);
@@ -3823,13 +3334,11 @@ class SimpleClassOfDateTimeToFromJsonObjectParam {
 class SimpleClassNullableOfDateTimeToFromJsonObjectParam {
   final Map<DateTime, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfDateTimeToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfDateTimeToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToFromJsonObjectParamToJson(this);
@@ -3839,13 +3348,11 @@ class SimpleClassNullableOfDateTimeToFromJsonObjectParam {
 class SimpleClassOfDynamicToFromJsonObjectParam {
   final Map<dynamic, FromJsonObjectParam> value;
 
-  SimpleClassOfDynamicToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfDynamicToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfDynamicToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToFromJsonObjectParamToJson(this);
@@ -3855,13 +3362,11 @@ class SimpleClassOfDynamicToFromJsonObjectParam {
 class SimpleClassNullableOfDynamicToFromJsonObjectParam {
   final Map<dynamic, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfDynamicToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfDynamicToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToFromJsonObjectParamToJson(this);
@@ -3871,13 +3376,11 @@ class SimpleClassNullableOfDynamicToFromJsonObjectParam {
 class SimpleClassOfEnumTypeToFromJsonObjectParam {
   final Map<EnumType, FromJsonObjectParam> value;
 
-  SimpleClassOfEnumTypeToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfEnumTypeToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToFromJsonObjectParamToJson(this);
@@ -3887,13 +3390,11 @@ class SimpleClassOfEnumTypeToFromJsonObjectParam {
 class SimpleClassNullableOfEnumTypeToFromJsonObjectParam {
   final Map<EnumType, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfEnumTypeToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfEnumTypeToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToFromJsonObjectParamToJson(this);
@@ -3903,13 +3404,11 @@ class SimpleClassNullableOfEnumTypeToFromJsonObjectParam {
 class SimpleClassOfIntToFromJsonObjectParam {
   final Map<int, FromJsonObjectParam> value;
 
-  SimpleClassOfIntToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfIntToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfIntToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToFromJsonObjectParamToJson(this);
@@ -3919,13 +3418,11 @@ class SimpleClassOfIntToFromJsonObjectParam {
 class SimpleClassNullableOfIntToFromJsonObjectParam {
   final Map<int, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfIntToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfIntToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfIntToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToFromJsonObjectParamToJson(this);
@@ -3935,13 +3432,11 @@ class SimpleClassNullableOfIntToFromJsonObjectParam {
 class SimpleClassOfObjectToFromJsonObjectParam {
   final Map<Object, FromJsonObjectParam> value;
 
-  SimpleClassOfObjectToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfObjectToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfObjectToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToFromJsonObjectParamToJson(this);
@@ -3951,13 +3446,11 @@ class SimpleClassOfObjectToFromJsonObjectParam {
 class SimpleClassNullableOfObjectToFromJsonObjectParam {
   final Map<Object, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfObjectToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfObjectToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToFromJsonObjectParamToJson(this);
@@ -3967,13 +3460,11 @@ class SimpleClassNullableOfObjectToFromJsonObjectParam {
 class SimpleClassOfStringToFromJsonObjectParam {
   final Map<String, FromJsonObjectParam> value;
 
-  SimpleClassOfStringToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfStringToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfStringToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToFromJsonObjectParamToJson(this);
@@ -3983,13 +3474,11 @@ class SimpleClassOfStringToFromJsonObjectParam {
 class SimpleClassNullableOfStringToFromJsonObjectParam {
   final Map<String, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfStringToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfStringToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfStringToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToFromJsonObjectParamToJson(this);
@@ -3999,13 +3488,11 @@ class SimpleClassNullableOfStringToFromJsonObjectParam {
 class SimpleClassOfUriToFromJsonObjectParam {
   final Map<Uri, FromJsonObjectParam> value;
 
-  SimpleClassOfUriToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassOfUriToFromJsonObjectParam(this.value);
 
   factory SimpleClassOfUriToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToFromJsonObjectParamToJson(this);
@@ -4015,13 +3502,11 @@ class SimpleClassOfUriToFromJsonObjectParam {
 class SimpleClassNullableOfUriToFromJsonObjectParam {
   final Map<Uri, FromJsonObjectParam>? value;
 
-  SimpleClassNullableOfUriToFromJsonObjectParam(
-    this.value,
-  );
+  SimpleClassNullableOfUriToFromJsonObjectParam(this.value);
 
   factory SimpleClassNullableOfUriToFromJsonObjectParam.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToFromJsonObjectParamFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToFromJsonObjectParamFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToFromJsonObjectParamToJson(this);
@@ -4031,9 +3516,7 @@ class SimpleClassNullableOfUriToFromJsonObjectParam {
 class SimpleClassOfBigIntToInt {
   final Map<BigInt, int> value;
 
-  SimpleClassOfBigIntToInt(
-    this.value,
-  );
+  SimpleClassOfBigIntToInt(this.value);
 
   factory SimpleClassOfBigIntToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToIntFromJson(json);
@@ -4045,13 +3528,11 @@ class SimpleClassOfBigIntToInt {
 class SimpleClassNullableOfBigIntToInt {
   final Map<BigInt, int>? value;
 
-  SimpleClassNullableOfBigIntToInt(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToInt(this.value);
 
   factory SimpleClassNullableOfBigIntToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToIntToJson(this);
@@ -4061,9 +3542,7 @@ class SimpleClassNullableOfBigIntToInt {
 class SimpleClassOfDateTimeToInt {
   final Map<DateTime, int> value;
 
-  SimpleClassOfDateTimeToInt(
-    this.value,
-  );
+  SimpleClassOfDateTimeToInt(this.value);
 
   factory SimpleClassOfDateTimeToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToIntFromJson(json);
@@ -4075,13 +3554,11 @@ class SimpleClassOfDateTimeToInt {
 class SimpleClassNullableOfDateTimeToInt {
   final Map<DateTime, int>? value;
 
-  SimpleClassNullableOfDateTimeToInt(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToInt(this.value);
 
   factory SimpleClassNullableOfDateTimeToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToIntToJson(this);
@@ -4091,9 +3568,7 @@ class SimpleClassNullableOfDateTimeToInt {
 class SimpleClassOfDynamicToInt {
   final Map<dynamic, int> value;
 
-  SimpleClassOfDynamicToInt(
-    this.value,
-  );
+  SimpleClassOfDynamicToInt(this.value);
 
   factory SimpleClassOfDynamicToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToIntFromJson(json);
@@ -4105,13 +3580,11 @@ class SimpleClassOfDynamicToInt {
 class SimpleClassNullableOfDynamicToInt {
   final Map<dynamic, int>? value;
 
-  SimpleClassNullableOfDynamicToInt(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToInt(this.value);
 
   factory SimpleClassNullableOfDynamicToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToIntToJson(this);
@@ -4121,9 +3594,7 @@ class SimpleClassNullableOfDynamicToInt {
 class SimpleClassOfEnumTypeToInt {
   final Map<EnumType, int> value;
 
-  SimpleClassOfEnumTypeToInt(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToInt(this.value);
 
   factory SimpleClassOfEnumTypeToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToIntFromJson(json);
@@ -4135,13 +3606,11 @@ class SimpleClassOfEnumTypeToInt {
 class SimpleClassNullableOfEnumTypeToInt {
   final Map<EnumType, int>? value;
 
-  SimpleClassNullableOfEnumTypeToInt(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToInt(this.value);
 
   factory SimpleClassNullableOfEnumTypeToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToIntToJson(this);
@@ -4151,9 +3620,7 @@ class SimpleClassNullableOfEnumTypeToInt {
 class SimpleClassOfIntToInt {
   final Map<int, int> value;
 
-  SimpleClassOfIntToInt(
-    this.value,
-  );
+  SimpleClassOfIntToInt(this.value);
 
   factory SimpleClassOfIntToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToIntFromJson(json);
@@ -4165,9 +3632,7 @@ class SimpleClassOfIntToInt {
 class SimpleClassNullableOfIntToInt {
   final Map<int, int>? value;
 
-  SimpleClassNullableOfIntToInt(
-    this.value,
-  );
+  SimpleClassNullableOfIntToInt(this.value);
 
   factory SimpleClassNullableOfIntToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfIntToIntFromJson(json);
@@ -4179,9 +3644,7 @@ class SimpleClassNullableOfIntToInt {
 class SimpleClassOfObjectToInt {
   final Map<Object, int> value;
 
-  SimpleClassOfObjectToInt(
-    this.value,
-  );
+  SimpleClassOfObjectToInt(this.value);
 
   factory SimpleClassOfObjectToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToIntFromJson(json);
@@ -4193,13 +3656,11 @@ class SimpleClassOfObjectToInt {
 class SimpleClassNullableOfObjectToInt {
   final Map<Object, int>? value;
 
-  SimpleClassNullableOfObjectToInt(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToInt(this.value);
 
   factory SimpleClassNullableOfObjectToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToIntToJson(this);
@@ -4209,9 +3670,7 @@ class SimpleClassNullableOfObjectToInt {
 class SimpleClassOfStringToInt {
   final Map<String, int> value;
 
-  SimpleClassOfStringToInt(
-    this.value,
-  );
+  SimpleClassOfStringToInt(this.value);
 
   factory SimpleClassOfStringToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToIntFromJson(json);
@@ -4223,13 +3682,11 @@ class SimpleClassOfStringToInt {
 class SimpleClassNullableOfStringToInt {
   final Map<String, int>? value;
 
-  SimpleClassNullableOfStringToInt(
-    this.value,
-  );
+  SimpleClassNullableOfStringToInt(this.value);
 
   factory SimpleClassNullableOfStringToInt.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToIntFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToIntFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToIntToJson(this);
@@ -4239,9 +3696,7 @@ class SimpleClassNullableOfStringToInt {
 class SimpleClassOfUriToInt {
   final Map<Uri, int> value;
 
-  SimpleClassOfUriToInt(
-    this.value,
-  );
+  SimpleClassOfUriToInt(this.value);
 
   factory SimpleClassOfUriToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToIntFromJson(json);
@@ -4253,9 +3708,7 @@ class SimpleClassOfUriToInt {
 class SimpleClassNullableOfUriToInt {
   final Map<Uri, int>? value;
 
-  SimpleClassNullableOfUriToInt(
-    this.value,
-  );
+  SimpleClassNullableOfUriToInt(this.value);
 
   factory SimpleClassNullableOfUriToInt.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfUriToIntFromJson(json);
@@ -4267,13 +3720,11 @@ class SimpleClassNullableOfUriToInt {
 class SimpleClassOfBigIntToIntNullable {
   final Map<BigInt, int?> value;
 
-  SimpleClassOfBigIntToIntNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToIntNullable(this.value);
 
   factory SimpleClassOfBigIntToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToIntNullableToJson(this);
@@ -4283,13 +3734,11 @@ class SimpleClassOfBigIntToIntNullable {
 class SimpleClassNullableOfBigIntToIntNullable {
   final Map<BigInt, int?>? value;
 
-  SimpleClassNullableOfBigIntToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToIntNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToIntNullableToJson(this);
@@ -4299,13 +3748,11 @@ class SimpleClassNullableOfBigIntToIntNullable {
 class SimpleClassOfDateTimeToIntNullable {
   final Map<DateTime, int?> value;
 
-  SimpleClassOfDateTimeToIntNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToIntNullable(this.value);
 
   factory SimpleClassOfDateTimeToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToIntNullableToJson(this);
@@ -4315,13 +3762,11 @@ class SimpleClassOfDateTimeToIntNullable {
 class SimpleClassNullableOfDateTimeToIntNullable {
   final Map<DateTime, int?>? value;
 
-  SimpleClassNullableOfDateTimeToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToIntNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToIntNullableToJson(this);
@@ -4331,13 +3776,11 @@ class SimpleClassNullableOfDateTimeToIntNullable {
 class SimpleClassOfDynamicToIntNullable {
   final Map<dynamic, int?> value;
 
-  SimpleClassOfDynamicToIntNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToIntNullable(this.value);
 
   factory SimpleClassOfDynamicToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToIntNullableToJson(this);
@@ -4347,13 +3790,11 @@ class SimpleClassOfDynamicToIntNullable {
 class SimpleClassNullableOfDynamicToIntNullable {
   final Map<dynamic, int?>? value;
 
-  SimpleClassNullableOfDynamicToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToIntNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToIntNullableToJson(this);
@@ -4363,13 +3804,11 @@ class SimpleClassNullableOfDynamicToIntNullable {
 class SimpleClassOfEnumTypeToIntNullable {
   final Map<EnumType, int?> value;
 
-  SimpleClassOfEnumTypeToIntNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToIntNullable(this.value);
 
   factory SimpleClassOfEnumTypeToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToIntNullableToJson(this);
@@ -4379,13 +3818,11 @@ class SimpleClassOfEnumTypeToIntNullable {
 class SimpleClassNullableOfEnumTypeToIntNullable {
   final Map<EnumType, int?>? value;
 
-  SimpleClassNullableOfEnumTypeToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToIntNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToIntNullableToJson(this);
@@ -4395,9 +3832,7 @@ class SimpleClassNullableOfEnumTypeToIntNullable {
 class SimpleClassOfIntToIntNullable {
   final Map<int, int?> value;
 
-  SimpleClassOfIntToIntNullable(
-    this.value,
-  );
+  SimpleClassOfIntToIntNullable(this.value);
 
   factory SimpleClassOfIntToIntNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToIntNullableFromJson(json);
@@ -4409,13 +3844,11 @@ class SimpleClassOfIntToIntNullable {
 class SimpleClassNullableOfIntToIntNullable {
   final Map<int, int?>? value;
 
-  SimpleClassNullableOfIntToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToIntNullable(this.value);
 
   factory SimpleClassNullableOfIntToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToIntNullableToJson(this);
@@ -4425,13 +3858,11 @@ class SimpleClassNullableOfIntToIntNullable {
 class SimpleClassOfObjectToIntNullable {
   final Map<Object, int?> value;
 
-  SimpleClassOfObjectToIntNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToIntNullable(this.value);
 
   factory SimpleClassOfObjectToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToIntNullableToJson(this);
@@ -4441,13 +3872,11 @@ class SimpleClassOfObjectToIntNullable {
 class SimpleClassNullableOfObjectToIntNullable {
   final Map<Object, int?>? value;
 
-  SimpleClassNullableOfObjectToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToIntNullable(this.value);
 
   factory SimpleClassNullableOfObjectToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToIntNullableToJson(this);
@@ -4457,13 +3886,11 @@ class SimpleClassNullableOfObjectToIntNullable {
 class SimpleClassOfStringToIntNullable {
   final Map<String, int?> value;
 
-  SimpleClassOfStringToIntNullable(
-    this.value,
-  );
+  SimpleClassOfStringToIntNullable(this.value);
 
   factory SimpleClassOfStringToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToIntNullableToJson(this);
@@ -4473,13 +3900,11 @@ class SimpleClassOfStringToIntNullable {
 class SimpleClassNullableOfStringToIntNullable {
   final Map<String, int?>? value;
 
-  SimpleClassNullableOfStringToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToIntNullable(this.value);
 
   factory SimpleClassNullableOfStringToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToIntNullableToJson(this);
@@ -4489,9 +3914,7 @@ class SimpleClassNullableOfStringToIntNullable {
 class SimpleClassOfUriToIntNullable {
   final Map<Uri, int?> value;
 
-  SimpleClassOfUriToIntNullable(
-    this.value,
-  );
+  SimpleClassOfUriToIntNullable(this.value);
 
   factory SimpleClassOfUriToIntNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToIntNullableFromJson(json);
@@ -4503,13 +3926,11 @@ class SimpleClassOfUriToIntNullable {
 class SimpleClassNullableOfUriToIntNullable {
   final Map<Uri, int?>? value;
 
-  SimpleClassNullableOfUriToIntNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToIntNullable(this.value);
 
   factory SimpleClassNullableOfUriToIntNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToIntNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToIntNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToIntNullableToJson(this);
@@ -4519,9 +3940,7 @@ class SimpleClassNullableOfUriToIntNullable {
 class SimpleClassOfBigIntToNum {
   final Map<BigInt, num> value;
 
-  SimpleClassOfBigIntToNum(
-    this.value,
-  );
+  SimpleClassOfBigIntToNum(this.value);
 
   factory SimpleClassOfBigIntToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToNumFromJson(json);
@@ -4533,13 +3952,11 @@ class SimpleClassOfBigIntToNum {
 class SimpleClassNullableOfBigIntToNum {
   final Map<BigInt, num>? value;
 
-  SimpleClassNullableOfBigIntToNum(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToNum(this.value);
 
   factory SimpleClassNullableOfBigIntToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToNumToJson(this);
@@ -4549,9 +3966,7 @@ class SimpleClassNullableOfBigIntToNum {
 class SimpleClassOfDateTimeToNum {
   final Map<DateTime, num> value;
 
-  SimpleClassOfDateTimeToNum(
-    this.value,
-  );
+  SimpleClassOfDateTimeToNum(this.value);
 
   factory SimpleClassOfDateTimeToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToNumFromJson(json);
@@ -4563,13 +3978,11 @@ class SimpleClassOfDateTimeToNum {
 class SimpleClassNullableOfDateTimeToNum {
   final Map<DateTime, num>? value;
 
-  SimpleClassNullableOfDateTimeToNum(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToNum(this.value);
 
   factory SimpleClassNullableOfDateTimeToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToNumToJson(this);
@@ -4579,9 +3992,7 @@ class SimpleClassNullableOfDateTimeToNum {
 class SimpleClassOfDynamicToNum {
   final Map<dynamic, num> value;
 
-  SimpleClassOfDynamicToNum(
-    this.value,
-  );
+  SimpleClassOfDynamicToNum(this.value);
 
   factory SimpleClassOfDynamicToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToNumFromJson(json);
@@ -4593,13 +4004,11 @@ class SimpleClassOfDynamicToNum {
 class SimpleClassNullableOfDynamicToNum {
   final Map<dynamic, num>? value;
 
-  SimpleClassNullableOfDynamicToNum(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToNum(this.value);
 
   factory SimpleClassNullableOfDynamicToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToNumToJson(this);
@@ -4609,9 +4018,7 @@ class SimpleClassNullableOfDynamicToNum {
 class SimpleClassOfEnumTypeToNum {
   final Map<EnumType, num> value;
 
-  SimpleClassOfEnumTypeToNum(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToNum(this.value);
 
   factory SimpleClassOfEnumTypeToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToNumFromJson(json);
@@ -4623,13 +4030,11 @@ class SimpleClassOfEnumTypeToNum {
 class SimpleClassNullableOfEnumTypeToNum {
   final Map<EnumType, num>? value;
 
-  SimpleClassNullableOfEnumTypeToNum(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToNum(this.value);
 
   factory SimpleClassNullableOfEnumTypeToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToNumToJson(this);
@@ -4639,9 +4044,7 @@ class SimpleClassNullableOfEnumTypeToNum {
 class SimpleClassOfIntToNum {
   final Map<int, num> value;
 
-  SimpleClassOfIntToNum(
-    this.value,
-  );
+  SimpleClassOfIntToNum(this.value);
 
   factory SimpleClassOfIntToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToNumFromJson(json);
@@ -4653,9 +4056,7 @@ class SimpleClassOfIntToNum {
 class SimpleClassNullableOfIntToNum {
   final Map<int, num>? value;
 
-  SimpleClassNullableOfIntToNum(
-    this.value,
-  );
+  SimpleClassNullableOfIntToNum(this.value);
 
   factory SimpleClassNullableOfIntToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfIntToNumFromJson(json);
@@ -4667,9 +4068,7 @@ class SimpleClassNullableOfIntToNum {
 class SimpleClassOfObjectToNum {
   final Map<Object, num> value;
 
-  SimpleClassOfObjectToNum(
-    this.value,
-  );
+  SimpleClassOfObjectToNum(this.value);
 
   factory SimpleClassOfObjectToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToNumFromJson(json);
@@ -4681,13 +4080,11 @@ class SimpleClassOfObjectToNum {
 class SimpleClassNullableOfObjectToNum {
   final Map<Object, num>? value;
 
-  SimpleClassNullableOfObjectToNum(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToNum(this.value);
 
   factory SimpleClassNullableOfObjectToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToNumToJson(this);
@@ -4697,9 +4094,7 @@ class SimpleClassNullableOfObjectToNum {
 class SimpleClassOfStringToNum {
   final Map<String, num> value;
 
-  SimpleClassOfStringToNum(
-    this.value,
-  );
+  SimpleClassOfStringToNum(this.value);
 
   factory SimpleClassOfStringToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToNumFromJson(json);
@@ -4711,13 +4106,11 @@ class SimpleClassOfStringToNum {
 class SimpleClassNullableOfStringToNum {
   final Map<String, num>? value;
 
-  SimpleClassNullableOfStringToNum(
-    this.value,
-  );
+  SimpleClassNullableOfStringToNum(this.value);
 
   factory SimpleClassNullableOfStringToNum.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToNumFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToNumFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToNumToJson(this);
@@ -4727,9 +4120,7 @@ class SimpleClassNullableOfStringToNum {
 class SimpleClassOfUriToNum {
   final Map<Uri, num> value;
 
-  SimpleClassOfUriToNum(
-    this.value,
-  );
+  SimpleClassOfUriToNum(this.value);
 
   factory SimpleClassOfUriToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToNumFromJson(json);
@@ -4741,9 +4132,7 @@ class SimpleClassOfUriToNum {
 class SimpleClassNullableOfUriToNum {
   final Map<Uri, num>? value;
 
-  SimpleClassNullableOfUriToNum(
-    this.value,
-  );
+  SimpleClassNullableOfUriToNum(this.value);
 
   factory SimpleClassNullableOfUriToNum.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfUriToNumFromJson(json);
@@ -4755,13 +4144,11 @@ class SimpleClassNullableOfUriToNum {
 class SimpleClassOfBigIntToNumNullable {
   final Map<BigInt, num?> value;
 
-  SimpleClassOfBigIntToNumNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToNumNullable(this.value);
 
   factory SimpleClassOfBigIntToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToNumNullableToJson(this);
@@ -4771,13 +4158,11 @@ class SimpleClassOfBigIntToNumNullable {
 class SimpleClassNullableOfBigIntToNumNullable {
   final Map<BigInt, num?>? value;
 
-  SimpleClassNullableOfBigIntToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToNumNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToNumNullableToJson(this);
@@ -4787,13 +4172,11 @@ class SimpleClassNullableOfBigIntToNumNullable {
 class SimpleClassOfDateTimeToNumNullable {
   final Map<DateTime, num?> value;
 
-  SimpleClassOfDateTimeToNumNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToNumNullable(this.value);
 
   factory SimpleClassOfDateTimeToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToNumNullableToJson(this);
@@ -4803,13 +4186,11 @@ class SimpleClassOfDateTimeToNumNullable {
 class SimpleClassNullableOfDateTimeToNumNullable {
   final Map<DateTime, num?>? value;
 
-  SimpleClassNullableOfDateTimeToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToNumNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToNumNullableToJson(this);
@@ -4819,13 +4200,11 @@ class SimpleClassNullableOfDateTimeToNumNullable {
 class SimpleClassOfDynamicToNumNullable {
   final Map<dynamic, num?> value;
 
-  SimpleClassOfDynamicToNumNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToNumNullable(this.value);
 
   factory SimpleClassOfDynamicToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToNumNullableToJson(this);
@@ -4835,13 +4214,11 @@ class SimpleClassOfDynamicToNumNullable {
 class SimpleClassNullableOfDynamicToNumNullable {
   final Map<dynamic, num?>? value;
 
-  SimpleClassNullableOfDynamicToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToNumNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToNumNullableToJson(this);
@@ -4851,13 +4228,11 @@ class SimpleClassNullableOfDynamicToNumNullable {
 class SimpleClassOfEnumTypeToNumNullable {
   final Map<EnumType, num?> value;
 
-  SimpleClassOfEnumTypeToNumNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToNumNullable(this.value);
 
   factory SimpleClassOfEnumTypeToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToNumNullableToJson(this);
@@ -4867,13 +4242,11 @@ class SimpleClassOfEnumTypeToNumNullable {
 class SimpleClassNullableOfEnumTypeToNumNullable {
   final Map<EnumType, num?>? value;
 
-  SimpleClassNullableOfEnumTypeToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToNumNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToNumNullableToJson(this);
@@ -4883,9 +4256,7 @@ class SimpleClassNullableOfEnumTypeToNumNullable {
 class SimpleClassOfIntToNumNullable {
   final Map<int, num?> value;
 
-  SimpleClassOfIntToNumNullable(
-    this.value,
-  );
+  SimpleClassOfIntToNumNullable(this.value);
 
   factory SimpleClassOfIntToNumNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToNumNullableFromJson(json);
@@ -4897,13 +4268,11 @@ class SimpleClassOfIntToNumNullable {
 class SimpleClassNullableOfIntToNumNullable {
   final Map<int, num?>? value;
 
-  SimpleClassNullableOfIntToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToNumNullable(this.value);
 
   factory SimpleClassNullableOfIntToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToNumNullableToJson(this);
@@ -4913,13 +4282,11 @@ class SimpleClassNullableOfIntToNumNullable {
 class SimpleClassOfObjectToNumNullable {
   final Map<Object, num?> value;
 
-  SimpleClassOfObjectToNumNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToNumNullable(this.value);
 
   factory SimpleClassOfObjectToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToNumNullableToJson(this);
@@ -4929,13 +4296,11 @@ class SimpleClassOfObjectToNumNullable {
 class SimpleClassNullableOfObjectToNumNullable {
   final Map<Object, num?>? value;
 
-  SimpleClassNullableOfObjectToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToNumNullable(this.value);
 
   factory SimpleClassNullableOfObjectToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToNumNullableToJson(this);
@@ -4945,13 +4310,11 @@ class SimpleClassNullableOfObjectToNumNullable {
 class SimpleClassOfStringToNumNullable {
   final Map<String, num?> value;
 
-  SimpleClassOfStringToNumNullable(
-    this.value,
-  );
+  SimpleClassOfStringToNumNullable(this.value);
 
   factory SimpleClassOfStringToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToNumNullableToJson(this);
@@ -4961,13 +4324,11 @@ class SimpleClassOfStringToNumNullable {
 class SimpleClassNullableOfStringToNumNullable {
   final Map<String, num?>? value;
 
-  SimpleClassNullableOfStringToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToNumNullable(this.value);
 
   factory SimpleClassNullableOfStringToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToNumNullableToJson(this);
@@ -4977,9 +4338,7 @@ class SimpleClassNullableOfStringToNumNullable {
 class SimpleClassOfUriToNumNullable {
   final Map<Uri, num?> value;
 
-  SimpleClassOfUriToNumNullable(
-    this.value,
-  );
+  SimpleClassOfUriToNumNullable(this.value);
 
   factory SimpleClassOfUriToNumNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToNumNullableFromJson(json);
@@ -4991,13 +4350,11 @@ class SimpleClassOfUriToNumNullable {
 class SimpleClassNullableOfUriToNumNullable {
   final Map<Uri, num?>? value;
 
-  SimpleClassNullableOfUriToNumNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToNumNullable(this.value);
 
   factory SimpleClassNullableOfUriToNumNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToNumNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToNumNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToNumNullableToJson(this);
@@ -5007,9 +4364,7 @@ class SimpleClassNullableOfUriToNumNullable {
 class SimpleClassOfBigIntToObject {
   final Map<BigInt, Object> value;
 
-  SimpleClassOfBigIntToObject(
-    this.value,
-  );
+  SimpleClassOfBigIntToObject(this.value);
 
   factory SimpleClassOfBigIntToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToObjectFromJson(json);
@@ -5021,13 +4376,11 @@ class SimpleClassOfBigIntToObject {
 class SimpleClassNullableOfBigIntToObject {
   final Map<BigInt, Object>? value;
 
-  SimpleClassNullableOfBigIntToObject(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToObject(this.value);
 
   factory SimpleClassNullableOfBigIntToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToObjectToJson(this);
@@ -5037,9 +4390,7 @@ class SimpleClassNullableOfBigIntToObject {
 class SimpleClassOfDateTimeToObject {
   final Map<DateTime, Object> value;
 
-  SimpleClassOfDateTimeToObject(
-    this.value,
-  );
+  SimpleClassOfDateTimeToObject(this.value);
 
   factory SimpleClassOfDateTimeToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToObjectFromJson(json);
@@ -5051,13 +4402,11 @@ class SimpleClassOfDateTimeToObject {
 class SimpleClassNullableOfDateTimeToObject {
   final Map<DateTime, Object>? value;
 
-  SimpleClassNullableOfDateTimeToObject(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToObject(this.value);
 
   factory SimpleClassNullableOfDateTimeToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToObjectToJson(this);
@@ -5067,9 +4416,7 @@ class SimpleClassNullableOfDateTimeToObject {
 class SimpleClassOfDynamicToObject {
   final Map<dynamic, Object> value;
 
-  SimpleClassOfDynamicToObject(
-    this.value,
-  );
+  SimpleClassOfDynamicToObject(this.value);
 
   factory SimpleClassOfDynamicToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToObjectFromJson(json);
@@ -5081,13 +4428,11 @@ class SimpleClassOfDynamicToObject {
 class SimpleClassNullableOfDynamicToObject {
   final Map<dynamic, Object>? value;
 
-  SimpleClassNullableOfDynamicToObject(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToObject(this.value);
 
   factory SimpleClassNullableOfDynamicToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToObjectToJson(this);
@@ -5097,9 +4442,7 @@ class SimpleClassNullableOfDynamicToObject {
 class SimpleClassOfEnumTypeToObject {
   final Map<EnumType, Object> value;
 
-  SimpleClassOfEnumTypeToObject(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToObject(this.value);
 
   factory SimpleClassOfEnumTypeToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToObjectFromJson(json);
@@ -5111,13 +4454,11 @@ class SimpleClassOfEnumTypeToObject {
 class SimpleClassNullableOfEnumTypeToObject {
   final Map<EnumType, Object>? value;
 
-  SimpleClassNullableOfEnumTypeToObject(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToObject(this.value);
 
   factory SimpleClassNullableOfEnumTypeToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToObjectToJson(this);
@@ -5127,9 +4468,7 @@ class SimpleClassNullableOfEnumTypeToObject {
 class SimpleClassOfIntToObject {
   final Map<int, Object> value;
 
-  SimpleClassOfIntToObject(
-    this.value,
-  );
+  SimpleClassOfIntToObject(this.value);
 
   factory SimpleClassOfIntToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToObjectFromJson(json);
@@ -5141,13 +4480,11 @@ class SimpleClassOfIntToObject {
 class SimpleClassNullableOfIntToObject {
   final Map<int, Object>? value;
 
-  SimpleClassNullableOfIntToObject(
-    this.value,
-  );
+  SimpleClassNullableOfIntToObject(this.value);
 
   factory SimpleClassNullableOfIntToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToObjectToJson(this);
@@ -5157,9 +4494,7 @@ class SimpleClassNullableOfIntToObject {
 class SimpleClassOfObjectToObject {
   final Map<Object, Object> value;
 
-  SimpleClassOfObjectToObject(
-    this.value,
-  );
+  SimpleClassOfObjectToObject(this.value);
 
   factory SimpleClassOfObjectToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToObjectFromJson(json);
@@ -5171,13 +4506,11 @@ class SimpleClassOfObjectToObject {
 class SimpleClassNullableOfObjectToObject {
   final Map<Object, Object>? value;
 
-  SimpleClassNullableOfObjectToObject(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToObject(this.value);
 
   factory SimpleClassNullableOfObjectToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToObjectToJson(this);
@@ -5187,9 +4520,7 @@ class SimpleClassNullableOfObjectToObject {
 class SimpleClassOfStringToObject {
   final Map<String, Object> value;
 
-  SimpleClassOfStringToObject(
-    this.value,
-  );
+  SimpleClassOfStringToObject(this.value);
 
   factory SimpleClassOfStringToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToObjectFromJson(json);
@@ -5201,13 +4532,11 @@ class SimpleClassOfStringToObject {
 class SimpleClassNullableOfStringToObject {
   final Map<String, Object>? value;
 
-  SimpleClassNullableOfStringToObject(
-    this.value,
-  );
+  SimpleClassNullableOfStringToObject(this.value);
 
   factory SimpleClassNullableOfStringToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToObjectToJson(this);
@@ -5217,9 +4546,7 @@ class SimpleClassNullableOfStringToObject {
 class SimpleClassOfUriToObject {
   final Map<Uri, Object> value;
 
-  SimpleClassOfUriToObject(
-    this.value,
-  );
+  SimpleClassOfUriToObject(this.value);
 
   factory SimpleClassOfUriToObject.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToObjectFromJson(json);
@@ -5231,13 +4558,11 @@ class SimpleClassOfUriToObject {
 class SimpleClassNullableOfUriToObject {
   final Map<Uri, Object>? value;
 
-  SimpleClassNullableOfUriToObject(
-    this.value,
-  );
+  SimpleClassNullableOfUriToObject(this.value);
 
   factory SimpleClassNullableOfUriToObject.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToObjectFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToObjectFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToObjectToJson(this);
@@ -5247,13 +4572,11 @@ class SimpleClassNullableOfUriToObject {
 class SimpleClassOfBigIntToObjectNullable {
   final Map<BigInt, Object?> value;
 
-  SimpleClassOfBigIntToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToObjectNullable(this.value);
 
   factory SimpleClassOfBigIntToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToObjectNullableToJson(this);
@@ -5263,13 +4586,11 @@ class SimpleClassOfBigIntToObjectNullable {
 class SimpleClassNullableOfBigIntToObjectNullable {
   final Map<BigInt, Object?>? value;
 
-  SimpleClassNullableOfBigIntToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToObjectNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToObjectNullableToJson(this);
@@ -5279,13 +4600,11 @@ class SimpleClassNullableOfBigIntToObjectNullable {
 class SimpleClassOfDateTimeToObjectNullable {
   final Map<DateTime, Object?> value;
 
-  SimpleClassOfDateTimeToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToObjectNullable(this.value);
 
   factory SimpleClassOfDateTimeToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToObjectNullableToJson(this);
@@ -5295,13 +4614,11 @@ class SimpleClassOfDateTimeToObjectNullable {
 class SimpleClassNullableOfDateTimeToObjectNullable {
   final Map<DateTime, Object?>? value;
 
-  SimpleClassNullableOfDateTimeToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToObjectNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToObjectNullableToJson(this);
@@ -5311,13 +4628,11 @@ class SimpleClassNullableOfDateTimeToObjectNullable {
 class SimpleClassOfDynamicToObjectNullable {
   final Map<dynamic, Object?> value;
 
-  SimpleClassOfDynamicToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToObjectNullable(this.value);
 
   factory SimpleClassOfDynamicToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToObjectNullableToJson(this);
@@ -5327,13 +4642,11 @@ class SimpleClassOfDynamicToObjectNullable {
 class SimpleClassNullableOfDynamicToObjectNullable {
   final Map<dynamic, Object?>? value;
 
-  SimpleClassNullableOfDynamicToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToObjectNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToObjectNullableToJson(this);
@@ -5343,13 +4656,11 @@ class SimpleClassNullableOfDynamicToObjectNullable {
 class SimpleClassOfEnumTypeToObjectNullable {
   final Map<EnumType, Object?> value;
 
-  SimpleClassOfEnumTypeToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToObjectNullable(this.value);
 
   factory SimpleClassOfEnumTypeToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToObjectNullableToJson(this);
@@ -5359,13 +4670,11 @@ class SimpleClassOfEnumTypeToObjectNullable {
 class SimpleClassNullableOfEnumTypeToObjectNullable {
   final Map<EnumType, Object?>? value;
 
-  SimpleClassNullableOfEnumTypeToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToObjectNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToObjectNullableToJson(this);
@@ -5375,13 +4684,11 @@ class SimpleClassNullableOfEnumTypeToObjectNullable {
 class SimpleClassOfIntToObjectNullable {
   final Map<int, Object?> value;
 
-  SimpleClassOfIntToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfIntToObjectNullable(this.value);
 
   factory SimpleClassOfIntToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToObjectNullableToJson(this);
@@ -5391,13 +4698,11 @@ class SimpleClassOfIntToObjectNullable {
 class SimpleClassNullableOfIntToObjectNullable {
   final Map<int, Object?>? value;
 
-  SimpleClassNullableOfIntToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToObjectNullable(this.value);
 
   factory SimpleClassNullableOfIntToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToObjectNullableToJson(this);
@@ -5407,13 +4712,11 @@ class SimpleClassNullableOfIntToObjectNullable {
 class SimpleClassOfObjectToObjectNullable {
   final Map<Object, Object?> value;
 
-  SimpleClassOfObjectToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToObjectNullable(this.value);
 
   factory SimpleClassOfObjectToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToObjectNullableToJson(this);
@@ -5423,13 +4726,11 @@ class SimpleClassOfObjectToObjectNullable {
 class SimpleClassNullableOfObjectToObjectNullable {
   final Map<Object, Object?>? value;
 
-  SimpleClassNullableOfObjectToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToObjectNullable(this.value);
 
   factory SimpleClassNullableOfObjectToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToObjectNullableToJson(this);
@@ -5439,13 +4740,11 @@ class SimpleClassNullableOfObjectToObjectNullable {
 class SimpleClassOfStringToObjectNullable {
   final Map<String, Object?> value;
 
-  SimpleClassOfStringToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfStringToObjectNullable(this.value);
 
   factory SimpleClassOfStringToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToObjectNullableToJson(this);
@@ -5455,13 +4754,11 @@ class SimpleClassOfStringToObjectNullable {
 class SimpleClassNullableOfStringToObjectNullable {
   final Map<String, Object?>? value;
 
-  SimpleClassNullableOfStringToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToObjectNullable(this.value);
 
   factory SimpleClassNullableOfStringToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToObjectNullableToJson(this);
@@ -5471,13 +4768,11 @@ class SimpleClassNullableOfStringToObjectNullable {
 class SimpleClassOfUriToObjectNullable {
   final Map<Uri, Object?> value;
 
-  SimpleClassOfUriToObjectNullable(
-    this.value,
-  );
+  SimpleClassOfUriToObjectNullable(this.value);
 
   factory SimpleClassOfUriToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToObjectNullableToJson(this);
@@ -5487,13 +4782,11 @@ class SimpleClassOfUriToObjectNullable {
 class SimpleClassNullableOfUriToObjectNullable {
   final Map<Uri, Object?>? value;
 
-  SimpleClassNullableOfUriToObjectNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToObjectNullable(this.value);
 
   factory SimpleClassNullableOfUriToObjectNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToObjectNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToObjectNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToObjectNullableToJson(this);
@@ -5503,9 +4796,7 @@ class SimpleClassNullableOfUriToObjectNullable {
 class SimpleClassOfBigIntToRecord {
   final Map<BigInt, (int, String, {bool truth})> value;
 
-  SimpleClassOfBigIntToRecord(
-    this.value,
-  );
+  SimpleClassOfBigIntToRecord(this.value);
 
   factory SimpleClassOfBigIntToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToRecordFromJson(json);
@@ -5517,13 +4808,11 @@ class SimpleClassOfBigIntToRecord {
 class SimpleClassNullableOfBigIntToRecord {
   final Map<BigInt, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfBigIntToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToRecord(this.value);
 
   factory SimpleClassNullableOfBigIntToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToRecordToJson(this);
@@ -5533,9 +4822,7 @@ class SimpleClassNullableOfBigIntToRecord {
 class SimpleClassOfDateTimeToRecord {
   final Map<DateTime, (int, String, {bool truth})> value;
 
-  SimpleClassOfDateTimeToRecord(
-    this.value,
-  );
+  SimpleClassOfDateTimeToRecord(this.value);
 
   factory SimpleClassOfDateTimeToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToRecordFromJson(json);
@@ -5547,13 +4834,11 @@ class SimpleClassOfDateTimeToRecord {
 class SimpleClassNullableOfDateTimeToRecord {
   final Map<DateTime, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfDateTimeToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToRecord(this.value);
 
   factory SimpleClassNullableOfDateTimeToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToRecordToJson(this);
@@ -5563,9 +4848,7 @@ class SimpleClassNullableOfDateTimeToRecord {
 class SimpleClassOfDynamicToRecord {
   final Map<dynamic, (int, String, {bool truth})> value;
 
-  SimpleClassOfDynamicToRecord(
-    this.value,
-  );
+  SimpleClassOfDynamicToRecord(this.value);
 
   factory SimpleClassOfDynamicToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToRecordFromJson(json);
@@ -5577,13 +4860,11 @@ class SimpleClassOfDynamicToRecord {
 class SimpleClassNullableOfDynamicToRecord {
   final Map<dynamic, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfDynamicToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToRecord(this.value);
 
   factory SimpleClassNullableOfDynamicToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToRecordToJson(this);
@@ -5593,9 +4874,7 @@ class SimpleClassNullableOfDynamicToRecord {
 class SimpleClassOfEnumTypeToRecord {
   final Map<EnumType, (int, String, {bool truth})> value;
 
-  SimpleClassOfEnumTypeToRecord(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToRecord(this.value);
 
   factory SimpleClassOfEnumTypeToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToRecordFromJson(json);
@@ -5607,13 +4886,11 @@ class SimpleClassOfEnumTypeToRecord {
 class SimpleClassNullableOfEnumTypeToRecord {
   final Map<EnumType, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfEnumTypeToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToRecord(this.value);
 
   factory SimpleClassNullableOfEnumTypeToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToRecordToJson(this);
@@ -5623,9 +4900,7 @@ class SimpleClassNullableOfEnumTypeToRecord {
 class SimpleClassOfIntToRecord {
   final Map<int, (int, String, {bool truth})> value;
 
-  SimpleClassOfIntToRecord(
-    this.value,
-  );
+  SimpleClassOfIntToRecord(this.value);
 
   factory SimpleClassOfIntToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToRecordFromJson(json);
@@ -5637,13 +4912,11 @@ class SimpleClassOfIntToRecord {
 class SimpleClassNullableOfIntToRecord {
   final Map<int, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfIntToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfIntToRecord(this.value);
 
   factory SimpleClassNullableOfIntToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToRecordToJson(this);
@@ -5653,9 +4926,7 @@ class SimpleClassNullableOfIntToRecord {
 class SimpleClassOfObjectToRecord {
   final Map<Object, (int, String, {bool truth})> value;
 
-  SimpleClassOfObjectToRecord(
-    this.value,
-  );
+  SimpleClassOfObjectToRecord(this.value);
 
   factory SimpleClassOfObjectToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToRecordFromJson(json);
@@ -5667,13 +4938,11 @@ class SimpleClassOfObjectToRecord {
 class SimpleClassNullableOfObjectToRecord {
   final Map<Object, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfObjectToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToRecord(this.value);
 
   factory SimpleClassNullableOfObjectToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToRecordToJson(this);
@@ -5683,9 +4952,7 @@ class SimpleClassNullableOfObjectToRecord {
 class SimpleClassOfStringToRecord {
   final Map<String, (int, String, {bool truth})> value;
 
-  SimpleClassOfStringToRecord(
-    this.value,
-  );
+  SimpleClassOfStringToRecord(this.value);
 
   factory SimpleClassOfStringToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToRecordFromJson(json);
@@ -5697,13 +4964,11 @@ class SimpleClassOfStringToRecord {
 class SimpleClassNullableOfStringToRecord {
   final Map<String, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfStringToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfStringToRecord(this.value);
 
   factory SimpleClassNullableOfStringToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToRecordToJson(this);
@@ -5713,9 +4978,7 @@ class SimpleClassNullableOfStringToRecord {
 class SimpleClassOfUriToRecord {
   final Map<Uri, (int, String, {bool truth})> value;
 
-  SimpleClassOfUriToRecord(
-    this.value,
-  );
+  SimpleClassOfUriToRecord(this.value);
 
   factory SimpleClassOfUriToRecord.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToRecordFromJson(json);
@@ -5727,13 +4990,11 @@ class SimpleClassOfUriToRecord {
 class SimpleClassNullableOfUriToRecord {
   final Map<Uri, (int, String, {bool truth})>? value;
 
-  SimpleClassNullableOfUriToRecord(
-    this.value,
-  );
+  SimpleClassNullableOfUriToRecord(this.value);
 
   factory SimpleClassNullableOfUriToRecord.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToRecordFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToRecordFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToRecordToJson(this);
@@ -5743,9 +5004,7 @@ class SimpleClassNullableOfUriToRecord {
 class SimpleClassOfBigIntToString {
   final Map<BigInt, String> value;
 
-  SimpleClassOfBigIntToString(
-    this.value,
-  );
+  SimpleClassOfBigIntToString(this.value);
 
   factory SimpleClassOfBigIntToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToStringFromJson(json);
@@ -5757,13 +5016,11 @@ class SimpleClassOfBigIntToString {
 class SimpleClassNullableOfBigIntToString {
   final Map<BigInt, String>? value;
 
-  SimpleClassNullableOfBigIntToString(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToString(this.value);
 
   factory SimpleClassNullableOfBigIntToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToStringToJson(this);
@@ -5773,9 +5030,7 @@ class SimpleClassNullableOfBigIntToString {
 class SimpleClassOfDateTimeToString {
   final Map<DateTime, String> value;
 
-  SimpleClassOfDateTimeToString(
-    this.value,
-  );
+  SimpleClassOfDateTimeToString(this.value);
 
   factory SimpleClassOfDateTimeToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToStringFromJson(json);
@@ -5787,13 +5042,11 @@ class SimpleClassOfDateTimeToString {
 class SimpleClassNullableOfDateTimeToString {
   final Map<DateTime, String>? value;
 
-  SimpleClassNullableOfDateTimeToString(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToString(this.value);
 
   factory SimpleClassNullableOfDateTimeToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToStringToJson(this);
@@ -5803,9 +5056,7 @@ class SimpleClassNullableOfDateTimeToString {
 class SimpleClassOfDynamicToString {
   final Map<dynamic, String> value;
 
-  SimpleClassOfDynamicToString(
-    this.value,
-  );
+  SimpleClassOfDynamicToString(this.value);
 
   factory SimpleClassOfDynamicToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToStringFromJson(json);
@@ -5817,13 +5068,11 @@ class SimpleClassOfDynamicToString {
 class SimpleClassNullableOfDynamicToString {
   final Map<dynamic, String>? value;
 
-  SimpleClassNullableOfDynamicToString(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToString(this.value);
 
   factory SimpleClassNullableOfDynamicToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToStringToJson(this);
@@ -5833,9 +5082,7 @@ class SimpleClassNullableOfDynamicToString {
 class SimpleClassOfEnumTypeToString {
   final Map<EnumType, String> value;
 
-  SimpleClassOfEnumTypeToString(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToString(this.value);
 
   factory SimpleClassOfEnumTypeToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToStringFromJson(json);
@@ -5847,13 +5094,11 @@ class SimpleClassOfEnumTypeToString {
 class SimpleClassNullableOfEnumTypeToString {
   final Map<EnumType, String>? value;
 
-  SimpleClassNullableOfEnumTypeToString(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToString(this.value);
 
   factory SimpleClassNullableOfEnumTypeToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToStringToJson(this);
@@ -5863,9 +5108,7 @@ class SimpleClassNullableOfEnumTypeToString {
 class SimpleClassOfIntToString {
   final Map<int, String> value;
 
-  SimpleClassOfIntToString(
-    this.value,
-  );
+  SimpleClassOfIntToString(this.value);
 
   factory SimpleClassOfIntToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToStringFromJson(json);
@@ -5877,13 +5120,11 @@ class SimpleClassOfIntToString {
 class SimpleClassNullableOfIntToString {
   final Map<int, String>? value;
 
-  SimpleClassNullableOfIntToString(
-    this.value,
-  );
+  SimpleClassNullableOfIntToString(this.value);
 
   factory SimpleClassNullableOfIntToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToStringToJson(this);
@@ -5893,9 +5134,7 @@ class SimpleClassNullableOfIntToString {
 class SimpleClassOfObjectToString {
   final Map<Object, String> value;
 
-  SimpleClassOfObjectToString(
-    this.value,
-  );
+  SimpleClassOfObjectToString(this.value);
 
   factory SimpleClassOfObjectToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToStringFromJson(json);
@@ -5907,13 +5146,11 @@ class SimpleClassOfObjectToString {
 class SimpleClassNullableOfObjectToString {
   final Map<Object, String>? value;
 
-  SimpleClassNullableOfObjectToString(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToString(this.value);
 
   factory SimpleClassNullableOfObjectToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToStringToJson(this);
@@ -5923,9 +5160,7 @@ class SimpleClassNullableOfObjectToString {
 class SimpleClassOfStringToString {
   final Map<String, String> value;
 
-  SimpleClassOfStringToString(
-    this.value,
-  );
+  SimpleClassOfStringToString(this.value);
 
   factory SimpleClassOfStringToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToStringFromJson(json);
@@ -5937,13 +5172,11 @@ class SimpleClassOfStringToString {
 class SimpleClassNullableOfStringToString {
   final Map<String, String>? value;
 
-  SimpleClassNullableOfStringToString(
-    this.value,
-  );
+  SimpleClassNullableOfStringToString(this.value);
 
   factory SimpleClassNullableOfStringToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToStringToJson(this);
@@ -5953,9 +5186,7 @@ class SimpleClassNullableOfStringToString {
 class SimpleClassOfUriToString {
   final Map<Uri, String> value;
 
-  SimpleClassOfUriToString(
-    this.value,
-  );
+  SimpleClassOfUriToString(this.value);
 
   factory SimpleClassOfUriToString.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToStringFromJson(json);
@@ -5967,13 +5198,11 @@ class SimpleClassOfUriToString {
 class SimpleClassNullableOfUriToString {
   final Map<Uri, String>? value;
 
-  SimpleClassNullableOfUriToString(
-    this.value,
-  );
+  SimpleClassNullableOfUriToString(this.value);
 
   factory SimpleClassNullableOfUriToString.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToStringFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToStringFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToStringToJson(this);
@@ -5983,13 +5212,11 @@ class SimpleClassNullableOfUriToString {
 class SimpleClassOfBigIntToStringNullable {
   final Map<BigInt, String?> value;
 
-  SimpleClassOfBigIntToStringNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToStringNullable(this.value);
 
   factory SimpleClassOfBigIntToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToStringNullableToJson(this);
@@ -5999,13 +5226,11 @@ class SimpleClassOfBigIntToStringNullable {
 class SimpleClassNullableOfBigIntToStringNullable {
   final Map<BigInt, String?>? value;
 
-  SimpleClassNullableOfBigIntToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToStringNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToStringNullableToJson(this);
@@ -6015,13 +5240,11 @@ class SimpleClassNullableOfBigIntToStringNullable {
 class SimpleClassOfDateTimeToStringNullable {
   final Map<DateTime, String?> value;
 
-  SimpleClassOfDateTimeToStringNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToStringNullable(this.value);
 
   factory SimpleClassOfDateTimeToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToStringNullableToJson(this);
@@ -6031,13 +5254,11 @@ class SimpleClassOfDateTimeToStringNullable {
 class SimpleClassNullableOfDateTimeToStringNullable {
   final Map<DateTime, String?>? value;
 
-  SimpleClassNullableOfDateTimeToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToStringNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToStringNullableToJson(this);
@@ -6047,13 +5268,11 @@ class SimpleClassNullableOfDateTimeToStringNullable {
 class SimpleClassOfDynamicToStringNullable {
   final Map<dynamic, String?> value;
 
-  SimpleClassOfDynamicToStringNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToStringNullable(this.value);
 
   factory SimpleClassOfDynamicToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToStringNullableToJson(this);
@@ -6063,13 +5282,11 @@ class SimpleClassOfDynamicToStringNullable {
 class SimpleClassNullableOfDynamicToStringNullable {
   final Map<dynamic, String?>? value;
 
-  SimpleClassNullableOfDynamicToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToStringNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToStringNullableToJson(this);
@@ -6079,13 +5296,11 @@ class SimpleClassNullableOfDynamicToStringNullable {
 class SimpleClassOfEnumTypeToStringNullable {
   final Map<EnumType, String?> value;
 
-  SimpleClassOfEnumTypeToStringNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToStringNullable(this.value);
 
   factory SimpleClassOfEnumTypeToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToStringNullableToJson(this);
@@ -6095,13 +5310,11 @@ class SimpleClassOfEnumTypeToStringNullable {
 class SimpleClassNullableOfEnumTypeToStringNullable {
   final Map<EnumType, String?>? value;
 
-  SimpleClassNullableOfEnumTypeToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToStringNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToStringNullableToJson(this);
@@ -6111,13 +5324,11 @@ class SimpleClassNullableOfEnumTypeToStringNullable {
 class SimpleClassOfIntToStringNullable {
   final Map<int, String?> value;
 
-  SimpleClassOfIntToStringNullable(
-    this.value,
-  );
+  SimpleClassOfIntToStringNullable(this.value);
 
   factory SimpleClassOfIntToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfIntToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfIntToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfIntToStringNullableToJson(this);
@@ -6127,13 +5338,11 @@ class SimpleClassOfIntToStringNullable {
 class SimpleClassNullableOfIntToStringNullable {
   final Map<int, String?>? value;
 
-  SimpleClassNullableOfIntToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToStringNullable(this.value);
 
   factory SimpleClassNullableOfIntToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToStringNullableToJson(this);
@@ -6143,13 +5352,11 @@ class SimpleClassNullableOfIntToStringNullable {
 class SimpleClassOfObjectToStringNullable {
   final Map<Object, String?> value;
 
-  SimpleClassOfObjectToStringNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToStringNullable(this.value);
 
   factory SimpleClassOfObjectToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToStringNullableToJson(this);
@@ -6159,13 +5366,11 @@ class SimpleClassOfObjectToStringNullable {
 class SimpleClassNullableOfObjectToStringNullable {
   final Map<Object, String?>? value;
 
-  SimpleClassNullableOfObjectToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToStringNullable(this.value);
 
   factory SimpleClassNullableOfObjectToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToStringNullableToJson(this);
@@ -6175,13 +5380,11 @@ class SimpleClassNullableOfObjectToStringNullable {
 class SimpleClassOfStringToStringNullable {
   final Map<String, String?> value;
 
-  SimpleClassOfStringToStringNullable(
-    this.value,
-  );
+  SimpleClassOfStringToStringNullable(this.value);
 
   factory SimpleClassOfStringToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToStringNullableToJson(this);
@@ -6191,13 +5394,11 @@ class SimpleClassOfStringToStringNullable {
 class SimpleClassNullableOfStringToStringNullable {
   final Map<String, String?>? value;
 
-  SimpleClassNullableOfStringToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToStringNullable(this.value);
 
   factory SimpleClassNullableOfStringToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToStringNullableToJson(this);
@@ -6207,13 +5408,11 @@ class SimpleClassNullableOfStringToStringNullable {
 class SimpleClassOfUriToStringNullable {
   final Map<Uri, String?> value;
 
-  SimpleClassOfUriToStringNullable(
-    this.value,
-  );
+  SimpleClassOfUriToStringNullable(this.value);
 
   factory SimpleClassOfUriToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfUriToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfUriToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfUriToStringNullableToJson(this);
@@ -6223,13 +5422,11 @@ class SimpleClassOfUriToStringNullable {
 class SimpleClassNullableOfUriToStringNullable {
   final Map<Uri, String?>? value;
 
-  SimpleClassNullableOfUriToStringNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToStringNullable(this.value);
 
   factory SimpleClassNullableOfUriToStringNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToStringNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToStringNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToStringNullableToJson(this);
@@ -6239,9 +5436,7 @@ class SimpleClassNullableOfUriToStringNullable {
 class SimpleClassOfBigIntToUri {
   final Map<BigInt, Uri> value;
 
-  SimpleClassOfBigIntToUri(
-    this.value,
-  );
+  SimpleClassOfBigIntToUri(this.value);
 
   factory SimpleClassOfBigIntToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfBigIntToUriFromJson(json);
@@ -6253,13 +5448,11 @@ class SimpleClassOfBigIntToUri {
 class SimpleClassNullableOfBigIntToUri {
   final Map<BigInt, Uri>? value;
 
-  SimpleClassNullableOfBigIntToUri(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToUri(this.value);
 
   factory SimpleClassNullableOfBigIntToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToUriToJson(this);
@@ -6269,9 +5462,7 @@ class SimpleClassNullableOfBigIntToUri {
 class SimpleClassOfDateTimeToUri {
   final Map<DateTime, Uri> value;
 
-  SimpleClassOfDateTimeToUri(
-    this.value,
-  );
+  SimpleClassOfDateTimeToUri(this.value);
 
   factory SimpleClassOfDateTimeToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDateTimeToUriFromJson(json);
@@ -6283,13 +5474,11 @@ class SimpleClassOfDateTimeToUri {
 class SimpleClassNullableOfDateTimeToUri {
   final Map<DateTime, Uri>? value;
 
-  SimpleClassNullableOfDateTimeToUri(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToUri(this.value);
 
   factory SimpleClassNullableOfDateTimeToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToUriToJson(this);
@@ -6299,9 +5488,7 @@ class SimpleClassNullableOfDateTimeToUri {
 class SimpleClassOfDynamicToUri {
   final Map<dynamic, Uri> value;
 
-  SimpleClassOfDynamicToUri(
-    this.value,
-  );
+  SimpleClassOfDynamicToUri(this.value);
 
   factory SimpleClassOfDynamicToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfDynamicToUriFromJson(json);
@@ -6313,13 +5500,11 @@ class SimpleClassOfDynamicToUri {
 class SimpleClassNullableOfDynamicToUri {
   final Map<dynamic, Uri>? value;
 
-  SimpleClassNullableOfDynamicToUri(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToUri(this.value);
 
   factory SimpleClassNullableOfDynamicToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToUriToJson(this);
@@ -6329,9 +5514,7 @@ class SimpleClassNullableOfDynamicToUri {
 class SimpleClassOfEnumTypeToUri {
   final Map<EnumType, Uri> value;
 
-  SimpleClassOfEnumTypeToUri(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToUri(this.value);
 
   factory SimpleClassOfEnumTypeToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfEnumTypeToUriFromJson(json);
@@ -6343,13 +5526,11 @@ class SimpleClassOfEnumTypeToUri {
 class SimpleClassNullableOfEnumTypeToUri {
   final Map<EnumType, Uri>? value;
 
-  SimpleClassNullableOfEnumTypeToUri(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToUri(this.value);
 
   factory SimpleClassNullableOfEnumTypeToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToUriToJson(this);
@@ -6359,9 +5540,7 @@ class SimpleClassNullableOfEnumTypeToUri {
 class SimpleClassOfIntToUri {
   final Map<int, Uri> value;
 
-  SimpleClassOfIntToUri(
-    this.value,
-  );
+  SimpleClassOfIntToUri(this.value);
 
   factory SimpleClassOfIntToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToUriFromJson(json);
@@ -6373,9 +5552,7 @@ class SimpleClassOfIntToUri {
 class SimpleClassNullableOfIntToUri {
   final Map<int, Uri>? value;
 
-  SimpleClassNullableOfIntToUri(
-    this.value,
-  );
+  SimpleClassNullableOfIntToUri(this.value);
 
   factory SimpleClassNullableOfIntToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfIntToUriFromJson(json);
@@ -6387,9 +5564,7 @@ class SimpleClassNullableOfIntToUri {
 class SimpleClassOfObjectToUri {
   final Map<Object, Uri> value;
 
-  SimpleClassOfObjectToUri(
-    this.value,
-  );
+  SimpleClassOfObjectToUri(this.value);
 
   factory SimpleClassOfObjectToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfObjectToUriFromJson(json);
@@ -6401,13 +5576,11 @@ class SimpleClassOfObjectToUri {
 class SimpleClassNullableOfObjectToUri {
   final Map<Object, Uri>? value;
 
-  SimpleClassNullableOfObjectToUri(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToUri(this.value);
 
   factory SimpleClassNullableOfObjectToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToUriToJson(this);
@@ -6417,9 +5590,7 @@ class SimpleClassNullableOfObjectToUri {
 class SimpleClassOfStringToUri {
   final Map<String, Uri> value;
 
-  SimpleClassOfStringToUri(
-    this.value,
-  );
+  SimpleClassOfStringToUri(this.value);
 
   factory SimpleClassOfStringToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfStringToUriFromJson(json);
@@ -6431,13 +5602,11 @@ class SimpleClassOfStringToUri {
 class SimpleClassNullableOfStringToUri {
   final Map<String, Uri>? value;
 
-  SimpleClassNullableOfStringToUri(
-    this.value,
-  );
+  SimpleClassNullableOfStringToUri(this.value);
 
   factory SimpleClassNullableOfStringToUri.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToUriFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToUriFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToUriToJson(this);
@@ -6447,9 +5616,7 @@ class SimpleClassNullableOfStringToUri {
 class SimpleClassOfUriToUri {
   final Map<Uri, Uri> value;
 
-  SimpleClassOfUriToUri(
-    this.value,
-  );
+  SimpleClassOfUriToUri(this.value);
 
   factory SimpleClassOfUriToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToUriFromJson(json);
@@ -6461,9 +5628,7 @@ class SimpleClassOfUriToUri {
 class SimpleClassNullableOfUriToUri {
   final Map<Uri, Uri>? value;
 
-  SimpleClassNullableOfUriToUri(
-    this.value,
-  );
+  SimpleClassNullableOfUriToUri(this.value);
 
   factory SimpleClassNullableOfUriToUri.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableOfUriToUriFromJson(json);
@@ -6475,13 +5640,11 @@ class SimpleClassNullableOfUriToUri {
 class SimpleClassOfBigIntToUriNullable {
   final Map<BigInt, Uri?> value;
 
-  SimpleClassOfBigIntToUriNullable(
-    this.value,
-  );
+  SimpleClassOfBigIntToUriNullable(this.value);
 
   factory SimpleClassOfBigIntToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfBigIntToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfBigIntToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfBigIntToUriNullableToJson(this);
@@ -6491,13 +5654,11 @@ class SimpleClassOfBigIntToUriNullable {
 class SimpleClassNullableOfBigIntToUriNullable {
   final Map<BigInt, Uri?>? value;
 
-  SimpleClassNullableOfBigIntToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfBigIntToUriNullable(this.value);
 
   factory SimpleClassNullableOfBigIntToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfBigIntToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfBigIntToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfBigIntToUriNullableToJson(this);
@@ -6507,13 +5668,11 @@ class SimpleClassNullableOfBigIntToUriNullable {
 class SimpleClassOfDateTimeToUriNullable {
   final Map<DateTime, Uri?> value;
 
-  SimpleClassOfDateTimeToUriNullable(
-    this.value,
-  );
+  SimpleClassOfDateTimeToUriNullable(this.value);
 
   factory SimpleClassOfDateTimeToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDateTimeToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDateTimeToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDateTimeToUriNullableToJson(this);
@@ -6523,13 +5682,11 @@ class SimpleClassOfDateTimeToUriNullable {
 class SimpleClassNullableOfDateTimeToUriNullable {
   final Map<DateTime, Uri?>? value;
 
-  SimpleClassNullableOfDateTimeToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDateTimeToUriNullable(this.value);
 
   factory SimpleClassNullableOfDateTimeToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDateTimeToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDateTimeToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDateTimeToUriNullableToJson(this);
@@ -6539,13 +5696,11 @@ class SimpleClassNullableOfDateTimeToUriNullable {
 class SimpleClassOfDynamicToUriNullable {
   final Map<dynamic, Uri?> value;
 
-  SimpleClassOfDynamicToUriNullable(
-    this.value,
-  );
+  SimpleClassOfDynamicToUriNullable(this.value);
 
   factory SimpleClassOfDynamicToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfDynamicToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfDynamicToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfDynamicToUriNullableToJson(this);
@@ -6555,13 +5710,11 @@ class SimpleClassOfDynamicToUriNullable {
 class SimpleClassNullableOfDynamicToUriNullable {
   final Map<dynamic, Uri?>? value;
 
-  SimpleClassNullableOfDynamicToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfDynamicToUriNullable(this.value);
 
   factory SimpleClassNullableOfDynamicToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfDynamicToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfDynamicToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfDynamicToUriNullableToJson(this);
@@ -6571,13 +5724,11 @@ class SimpleClassNullableOfDynamicToUriNullable {
 class SimpleClassOfEnumTypeToUriNullable {
   final Map<EnumType, Uri?> value;
 
-  SimpleClassOfEnumTypeToUriNullable(
-    this.value,
-  );
+  SimpleClassOfEnumTypeToUriNullable(this.value);
 
   factory SimpleClassOfEnumTypeToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfEnumTypeToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfEnumTypeToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfEnumTypeToUriNullableToJson(this);
@@ -6587,13 +5738,11 @@ class SimpleClassOfEnumTypeToUriNullable {
 class SimpleClassNullableOfEnumTypeToUriNullable {
   final Map<EnumType, Uri?>? value;
 
-  SimpleClassNullableOfEnumTypeToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfEnumTypeToUriNullable(this.value);
 
   factory SimpleClassNullableOfEnumTypeToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfEnumTypeToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfEnumTypeToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfEnumTypeToUriNullableToJson(this);
@@ -6603,9 +5752,7 @@ class SimpleClassNullableOfEnumTypeToUriNullable {
 class SimpleClassOfIntToUriNullable {
   final Map<int, Uri?> value;
 
-  SimpleClassOfIntToUriNullable(
-    this.value,
-  );
+  SimpleClassOfIntToUriNullable(this.value);
 
   factory SimpleClassOfIntToUriNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfIntToUriNullableFromJson(json);
@@ -6617,13 +5764,11 @@ class SimpleClassOfIntToUriNullable {
 class SimpleClassNullableOfIntToUriNullable {
   final Map<int, Uri?>? value;
 
-  SimpleClassNullableOfIntToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfIntToUriNullable(this.value);
 
   factory SimpleClassNullableOfIntToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfIntToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfIntToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfIntToUriNullableToJson(this);
@@ -6633,13 +5778,11 @@ class SimpleClassNullableOfIntToUriNullable {
 class SimpleClassOfObjectToUriNullable {
   final Map<Object, Uri?> value;
 
-  SimpleClassOfObjectToUriNullable(
-    this.value,
-  );
+  SimpleClassOfObjectToUriNullable(this.value);
 
   factory SimpleClassOfObjectToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfObjectToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfObjectToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfObjectToUriNullableToJson(this);
@@ -6649,13 +5792,11 @@ class SimpleClassOfObjectToUriNullable {
 class SimpleClassNullableOfObjectToUriNullable {
   final Map<Object, Uri?>? value;
 
-  SimpleClassNullableOfObjectToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfObjectToUriNullable(this.value);
 
   factory SimpleClassNullableOfObjectToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfObjectToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfObjectToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfObjectToUriNullableToJson(this);
@@ -6665,13 +5806,11 @@ class SimpleClassNullableOfObjectToUriNullable {
 class SimpleClassOfStringToUriNullable {
   final Map<String, Uri?> value;
 
-  SimpleClassOfStringToUriNullable(
-    this.value,
-  );
+  SimpleClassOfStringToUriNullable(this.value);
 
   factory SimpleClassOfStringToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassOfStringToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassOfStringToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassOfStringToUriNullableToJson(this);
@@ -6681,13 +5820,11 @@ class SimpleClassOfStringToUriNullable {
 class SimpleClassNullableOfStringToUriNullable {
   final Map<String, Uri?>? value;
 
-  SimpleClassNullableOfStringToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfStringToUriNullable(this.value);
 
   factory SimpleClassNullableOfStringToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfStringToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfStringToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfStringToUriNullableToJson(this);
@@ -6697,9 +5834,7 @@ class SimpleClassNullableOfStringToUriNullable {
 class SimpleClassOfUriToUriNullable {
   final Map<Uri, Uri?> value;
 
-  SimpleClassOfUriToUriNullable(
-    this.value,
-  );
+  SimpleClassOfUriToUriNullable(this.value);
 
   factory SimpleClassOfUriToUriNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassOfUriToUriNullableFromJson(json);
@@ -6711,13 +5846,11 @@ class SimpleClassOfUriToUriNullable {
 class SimpleClassNullableOfUriToUriNullable {
   final Map<Uri, Uri?>? value;
 
-  SimpleClassNullableOfUriToUriNullable(
-    this.value,
-  );
+  SimpleClassNullableOfUriToUriNullable(this.value);
 
   factory SimpleClassNullableOfUriToUriNullable.fromJson(
-          Map<String, Object?> json) =>
-      _$SimpleClassNullableOfUriToUriNullableFromJson(json);
+    Map<String, Object?> json,
+  ) => _$SimpleClassNullableOfUriToUriNullableFromJson(json);
 
   Map<String, Object?> toJson() =>
       _$SimpleClassNullableOfUriToUriNullableToJson(this);

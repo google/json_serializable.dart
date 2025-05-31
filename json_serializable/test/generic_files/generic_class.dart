@@ -34,13 +34,17 @@ class GenericClass<T extends num, S> {
 
   Map<String, dynamic> toJson() => _$GenericClassToJson(this);
 
-  static T _dataFromJson<T, S, U>(Map<String, dynamic> input,
-          [S? other1, U? other2]) =>
-      input['value'] as T;
+  static T _dataFromJson<T, S, U>(
+    Map<String, dynamic> input, [
+    S? other1,
+    U? other2,
+  ]) => input['value'] as T;
 
-  static Map<String, dynamic> _dataToJson<T, S, U>(T input,
-          [S? other1, U? other2]) =>
-      {'value': input};
+  static Map<String, dynamic> _dataToJson<T, S, U>(
+    T input, [
+    S? other1,
+    U? other2,
+  ]) => {'value': input};
 }
 
 @JsonSerializable()
@@ -153,8 +157,9 @@ class Issue1047ParentClass<T> {
   Issue1047ParentClass({required this.edges});
 
   factory Issue1047ParentClass.fromJson(
-          Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>
-      _$Issue1047ParentClassFromJson<T>(json, fromJsonT);
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) => _$Issue1047ParentClassFromJson<T>(json, fromJsonT);
 
   final List<Issue1047Class<T>> edges;
 
@@ -164,15 +169,12 @@ class Issue1047ParentClass<T> {
 
 @JsonSerializable(genericArgumentFactories: true)
 class Issue1047Class<T> {
-  Issue1047Class({
-    required this.node,
-  });
+  Issue1047Class({required this.node});
 
   factory Issue1047Class.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
-  ) =>
-      _$Issue1047ClassFromJson<T>(json, fromJsonT);
+  ) => _$Issue1047ClassFromJson<T>(json, fromJsonT);
 
   final T node;
 

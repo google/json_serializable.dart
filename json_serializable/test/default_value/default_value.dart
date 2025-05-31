@@ -55,9 +55,11 @@ class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: {'answer': 42})
   Map<String, int> fieldMapSimple;
 
-  @JsonKey(defaultValue: {
-    'root': ['child']
-  })
+  @JsonKey(
+    defaultValue: {
+      'root': ['child'],
+    },
+  )
   Map<String, List<String>> fieldMapListString;
 
   Duration durationField;

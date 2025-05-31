@@ -22,10 +22,11 @@ class Config {
 }
 
 @JsonSerializable(
-    includeIfNull: false,
-    disallowUnrecognizedKeys: true,
-    checked: true,
-    anyMap: true)
+  includeIfNull: false,
+  disallowUnrecognizedKeys: true,
+  checked: true,
+  anyMap: true,
+)
 class Builder {
   final String? target;
 
@@ -71,8 +72,11 @@ class Builder {
     this.configLocation,
   }) {
     if (builderFactories.isEmpty) {
-      throw ArgumentError.value(builderFactories, 'builderFactories',
-          'Must have at least one value.');
+      throw ArgumentError.value(
+        builderFactories,
+        'builderFactories',
+        'Must have at least one value.',
+      );
     }
   }
 
@@ -82,11 +86,6 @@ class Builder {
 }
 
 @JsonEnum(fieldRename: FieldRename.snake)
-enum AutoApply {
-  none,
-  dependents,
-  allPackages,
-  rootPackage,
-}
+enum AutoApply { none, dependents, allPackages, rootPackage }
 
 enum BuildTo { cache, source }

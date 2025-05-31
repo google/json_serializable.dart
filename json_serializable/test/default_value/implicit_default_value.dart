@@ -64,7 +64,7 @@ class DefaultValueImplicit implements dvi.DefaultValue {
     this.fieldSetSimple = const {'entry1', 'entry2'},
     this.fieldMapSimple = const {'answer': 42},
     this.fieldMapListString = const {
-      'root': ['child']
+      'root': ['child'],
     },
     this.fieldEnum = Greek.beta,
     this.durationField = const Duration(),

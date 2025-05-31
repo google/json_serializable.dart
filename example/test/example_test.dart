@@ -19,8 +19,9 @@ void main() {
 
     final personJson = loudEncode(person);
 
-    final person2 =
-        Person.fromJson(json.decode(personJson) as Map<String, dynamic>);
+    final person2 = Person.fromJson(
+      json.decode(personJson) as Map<String, dynamic>,
+    );
 
     expect(person.firstName, person2.firstName);
     expect(person.lastName, person2.lastName);

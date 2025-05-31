@@ -9,11 +9,11 @@ part of 'input.type_bigint.dart';
 // **************************************************************************
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
-      BigInt.parse(json['value'] as String),
-      json['withDefault'] == null
-          ? _defaultValueFunc()
-          : BigInt.parse(json['withDefault'] as String),
-    );
+  BigInt.parse(json['value'] as String),
+  json['withDefault'] == null
+      ? _defaultValueFunc()
+      : BigInt.parse(json['withDefault'] as String),
+);
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
@@ -30,8 +30,8 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
-        SimpleClassNullable instance) =>
-    <String, dynamic>{
-      'value': instance.value?.toString(),
-      'withDefault': instance.withDefault?.toString(),
-    };
+  SimpleClassNullable instance,
+) => <String, dynamic>{
+  'value': instance.value?.toString(),
+  'withDefault': instance.withDefault?.toString(),
+};

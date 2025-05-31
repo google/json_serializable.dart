@@ -35,14 +35,19 @@ String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
-  final enumMap =
-      _enumMap(targetType, nullWithNoAnnotation: nullWithNoAnnotation);
+  final enumMap = _enumMap(
+    targetType,
+    nullWithNoAnnotation: nullWithNoAnnotation,
+  );
 
   if (enumMap == null) return null;
 
   final items = enumMap.entries
-      .map((e) => '  ${targetType.element!.name}.${e.key.name}: '
-          '${jsonLiteralAsDart(e.value)},')
+      .map(
+        (e) =>
+            '  ${targetType.element!.name}.${e.key.name}: '
+            '${jsonLiteralAsDart(e.value)},',
+      )
       .join();
 
   return 'const ${constMapName(targetType)} = {\n$items\n};';
@@ -78,8 +83,9 @@ Object? _generateEntry({
   required JsonEnum jsonEnum,
   required DartType targetType,
 }) {
-  final annotation =
-      const TypeChecker.fromRuntime(JsonValue).firstAnnotationOfExact(field);
+  final annotation = const TypeChecker.fromRuntime(
+    JsonValue,
+  ).firstAnnotationOfExact(field);
 
   if (annotation == null) {
     final valueField = jsonEnum.valueField;

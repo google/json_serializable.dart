@@ -12,20 +12,21 @@ final generatorConfigDefaultJson = Map<String, dynamic>.unmodifiable(
 );
 
 // #CHANGE WHEN UPDATING json_annotation
-final generatorConfigNonDefaultJson =
-    Map<String, dynamic>.unmodifiable(const JsonSerializable(
-  anyMap: true,
-  checked: true,
-  constructor: 'something',
-  createFactory: false,
-  createToJson: false,
-  createFieldMap: true,
-  createJsonKeys: true,
-  createPerFieldToJson: true,
-  disallowUnrecognizedKeys: true,
-  explicitToJson: true,
-  fieldRename: FieldRename.kebab,
-  ignoreUnannotated: true,
-  includeIfNull: false,
-  genericArgumentFactories: true,
-).toJson());
+final generatorConfigNonDefaultJson = Map<String, dynamic>.unmodifiable(
+  const JsonSerializable(
+    anyMap: true,
+    checked: true,
+    constructor: 'something',
+    createFactory: false,
+    createToJson: false,
+    createFieldMap: true,
+    createJsonKeys: true,
+    createPerFieldToJson: true,
+    disallowUnrecognizedKeys: true,
+    explicitToJson: true,
+    fieldRename: FieldRename.kebab,
+    ignoreUnannotated: true,
+    includeIfNull: false,
+    genericArgumentFactories: true,
+  ).toJson(),
+);

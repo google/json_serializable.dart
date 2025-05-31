@@ -30,8 +30,8 @@ class LambdaResult {
 
   static String process(Object subField) =>
       (subField is LambdaResult && closureArg == subField._fullExpression)
-          ? subField.lambda
-          : '($closureArg) => $subField';
+      ? subField.lambda
+      : '($closureArg) => $subField';
 }
 
 String _cast(String expression, DartType targetType) {

@@ -89,7 +89,8 @@ class ClassConfig {
             config.createFieldMap ?? ClassConfig.defaults.createFieldMap,
         createJsonKeys:
             config.createJsonKeys ?? ClassConfig.defaults.createJsonKeys,
-        createPerFieldToJson: config.createPerFieldToJson ??
+        createPerFieldToJson:
+            config.createPerFieldToJson ??
             ClassConfig.defaults.createPerFieldToJson,
         createFactory:
             config.createFactory ?? ClassConfig.defaults.createFactory,
@@ -100,10 +101,12 @@ class ClassConfig {
             config.explicitToJson ?? ClassConfig.defaults.explicitToJson,
         includeIfNull:
             config.includeIfNull ?? ClassConfig.defaults.includeIfNull,
-        genericArgumentFactories: config.genericArgumentFactories ??
+        genericArgumentFactories:
+            config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
-        disallowUnrecognizedKeys: config.disallowUnrecognizedKeys ??
+        disallowUnrecognizedKeys:
+            config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
         // TODO typeConverters = []
       );
@@ -128,20 +131,20 @@ class ClassConfig {
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
-        checked: checked,
-        anyMap: anyMap,
-        constructor: constructor,
-        createFactory: createFactory,
-        createToJson: createToJson,
-        createFieldMap: createFieldMap,
-        createJsonKeys: createJsonKeys,
-        createPerFieldToJson: createPerFieldToJson,
-        ignoreUnannotated: ignoreUnannotated,
-        explicitToJson: explicitToJson,
-        includeIfNull: includeIfNull,
-        genericArgumentFactories: genericArgumentFactories,
-        fieldRename: fieldRename,
-        disallowUnrecognizedKeys: disallowUnrecognizedKeys,
-        // TODO typeConverters = []
-      );
+    checked: checked,
+    anyMap: anyMap,
+    constructor: constructor,
+    createFactory: createFactory,
+    createToJson: createToJson,
+    createFieldMap: createFieldMap,
+    createJsonKeys: createJsonKeys,
+    createPerFieldToJson: createPerFieldToJson,
+    ignoreUnannotated: ignoreUnannotated,
+    explicitToJson: explicitToJson,
+    includeIfNull: includeIfNull,
+    genericArgumentFactories: genericArgumentFactories,
+    fieldRename: fieldRename,
+    disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+    // TODO typeConverters = []
+  );
 }

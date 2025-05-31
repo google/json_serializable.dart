@@ -17,12 +17,11 @@ class DateTimeHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
-  ) =>
-      dateTimeString.serialize(
-        targetType,
-        expression,
-        targetType.isNullableType,
-      );
+  ) => dateTimeString.serialize(
+    targetType,
+    expression,
+    targetType.isNullableType,
+  );
 
   @override
   DefaultContainer? deserialize(
@@ -30,11 +29,10 @@ class DateTimeHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
     bool defaultProvided,
-  ) =>
-      dateTimeString.deserialize(
-        targetType,
-        expression,
-        targetType.isNullableType,
-        false,
-      );
+  ) => dateTimeString.deserialize(
+    targetType,
+    expression,
+    targetType.isNullableType,
+    false,
+  );
 }

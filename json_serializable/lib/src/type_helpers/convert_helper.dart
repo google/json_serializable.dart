@@ -39,8 +39,10 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
       return null;
     }
 
-    assert(toJsonData.paramType is TypeParameterType ||
-        targetType.isAssignableTo(toJsonData.paramType));
+    assert(
+      toJsonData.paramType is TypeParameterType ||
+          targetType.isAssignableTo(toJsonData.paramType),
+    );
     return LambdaResult(expression, toJsonData.name);
   }
 

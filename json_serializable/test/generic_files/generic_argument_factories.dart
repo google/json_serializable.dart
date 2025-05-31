@@ -14,24 +14,18 @@ class GenericClassWithHelpers<T, S> {
 
   final Set<S> someSet;
 
-  GenericClassWithHelpers(
-    this.value,
-    this.list,
-    this.someSet,
-  );
+  GenericClassWithHelpers(this.value, this.list, this.someSet);
 
   factory GenericClassWithHelpers.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericClassWithHelpersFromJson(json, fromJsonT, fromJsonS);
+  ) => _$GenericClassWithHelpersFromJson(json, fromJsonT, fromJsonS);
 
   Map<String, dynamic> toJson(
     Object? Function(T value) toJsonT,
     Object? Function(S value) toJsonS,
-  ) =>
-      _$GenericClassWithHelpersToJson(this, toJsonT, toJsonS);
+  ) => _$GenericClassWithHelpersToJson(this, toJsonT, toJsonS);
 }
 
 @JsonSerializable()

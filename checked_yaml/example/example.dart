@@ -9,11 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable(
-  anyMap: true,
-  checked: true,
-  disallowUnrecognizedKeys: true,
-)
+@JsonSerializable(anyMap: true, checked: true, disallowUnrecognizedKeys: true)
 class Configuration {
   @JsonKey(required: true)
   final String name;

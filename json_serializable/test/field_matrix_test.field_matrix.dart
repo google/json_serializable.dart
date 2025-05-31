@@ -27,9 +27,7 @@ class ToJsonNullFromJsonTruePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: true,
-  )
+  @JsonKey(includeFromJson: true)
   int? field;
 
   int? zField;
@@ -49,9 +47,7 @@ class ToJsonNullFromJsonFalsePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: false,
-  )
+  @JsonKey(includeFromJson: false)
   int? field;
 
   int? zField;
@@ -71,9 +67,7 @@ class ToJsonTrueFromJsonNullPublic {
 
   int? aField;
 
-  @JsonKey(
-    includeToJson: true,
-  )
+  @JsonKey(includeToJson: true)
   int? field;
 
   int? zField;
@@ -93,10 +87,7 @@ class ToJsonTrueFromJsonTruePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: true,
-    includeToJson: true,
-  )
+  @JsonKey(includeFromJson: true, includeToJson: true)
   int? field;
 
   int? zField;
@@ -116,10 +107,7 @@ class ToJsonTrueFromJsonFalsePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: false,
-    includeToJson: true,
-  )
+  @JsonKey(includeFromJson: false, includeToJson: true)
   int? field;
 
   int? zField;
@@ -139,9 +127,7 @@ class ToJsonFalseFromJsonNullPublic {
 
   int? aField;
 
-  @JsonKey(
-    includeToJson: false,
-  )
+  @JsonKey(includeToJson: false)
   int? field;
 
   int? zField;
@@ -161,10 +147,7 @@ class ToJsonFalseFromJsonTruePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: true,
-    includeToJson: false,
-  )
+  @JsonKey(includeFromJson: true, includeToJson: false)
   int? field;
 
   int? zField;
@@ -184,10 +167,7 @@ class ToJsonFalseFromJsonFalsePublic {
 
   int? aField;
 
-  @JsonKey(
-    includeFromJson: false,
-    includeToJson: false,
-  )
+  @JsonKey(includeFromJson: false, includeToJson: false)
   int? field;
 
   int? zField;

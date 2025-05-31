@@ -1,27 +1,25 @@
-// @dart=3.6
+// @dart=3.8
 
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 WithANonCtorGetterChecked _$WithANonCtorGetterCheckedFromJson(
-        Map<String, dynamic> json) =>
-    $checkedCreate(
-      'WithANonCtorGetterChecked',
-      json,
-      ($checkedConvert) {
-        $checkKeys(
-          json,
-          allowedKeys: const ['items'],
-          requiredKeys: const ['items'],
-          disallowNullValues: const ['items'],
-        );
-        final val = WithANonCtorGetterChecked(
-          $checkedConvert('items',
-              (v) => (v as List<dynamic>).map((e) => e as String).toList()),
-        );
-        return val;
-      },
-    );
+  Map<String, dynamic> json,
+) => $checkedCreate('WithANonCtorGetterChecked', json, ($checkedConvert) {
+  $checkKeys(
+    json,
+    allowedKeys: const ['items'],
+    requiredKeys: const ['items'],
+    disallowNullValues: const ['items'],
+  );
+  final val = WithANonCtorGetterChecked(
+    $checkedConvert(
+      'items',
+      (v) => (v as List<dynamic>).map((e) => e as String).toList(),
+    ),
+  );
+  return val;
+});
 ''')
 @JsonSerializable(
   disallowUnrecognizedKeys: true,

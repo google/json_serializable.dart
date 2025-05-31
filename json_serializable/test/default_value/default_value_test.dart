@@ -22,7 +22,7 @@ const _defaultInstance = {
   'fieldSetSimple': ['entry1', 'entry2'],
   'fieldMapSimple': <String, dynamic>{'answer': 42},
   'fieldMapListString': {
-    'root': ['child']
+    'root': ['child'],
   },
   'durationField': 0,
   'fieldEnum': 'beta',
@@ -46,7 +46,7 @@ const _otherValues = {
   'fieldSetSimple': ['entry3'],
   'fieldMapSimple': <String, dynamic>{},
   'fieldMapListString': {
-    'root2': ['alpha']
+    'root2': ['alpha'],
   },
   'durationField': 1,
   'fieldEnum': 'delta',

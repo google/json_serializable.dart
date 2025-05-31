@@ -12,10 +12,7 @@ import 'input.type_map.dart';
 void main() {
   test('SimpleClassOfStringToDouble', () {
     const value = {
-      'value': {
-        'double': 1.0,
-        'int': 1,
-      }
+      'value': {'double': 1.0, 'int': 1},
     };
 
     final object = SimpleClassOfStringToDouble.fromJson(value);
@@ -28,7 +25,7 @@ void main() {
           'double': 1.0,
           // Note! Encoded as a double on output!
           'int': 1.0,
-        }
+        },
       }),
     );
 
@@ -40,9 +37,7 @@ void main() {
 
   test('SimpleClassOfStringToInt', () {
     const value = {
-      'value': {
-        'int': 1,
-      }
+      'value': {'int': 1},
     };
 
     final object = SimpleClassOfStringToInt.fromJson(value);
@@ -58,10 +53,7 @@ void main() {
 
   test('SimpleClassOfStringToNum', () {
     const value = {
-      'value': {
-        'double': 1.0,
-        'int': 1,
-      }
+      'value': {'double': 1.0, 'int': 1},
     };
 
     final object = SimpleClassOfStringToNum.fromJson(value);
@@ -78,12 +70,8 @@ void main() {
   test('SimpleClassOfStringToRecord', () {
     const value = {
       'value': {
-        'key': {
-          r'$1': 1,
-          r'$2': 'string',
-          'truth': false,
-        }
-      }
+        'key': {r'$1': 1, r'$2': 'string', 'truth': false},
+      },
     };
 
     final object = SimpleClassOfStringToRecord.fromJson(value);
