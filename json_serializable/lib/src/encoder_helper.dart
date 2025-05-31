@@ -92,26 +92,30 @@ mixin EncodeHelper implements HelperCore {
 
     final functionName =
         '${prefix}ToJson${genericClassArgumentsImpl(withConstraints: true)}';
-    buffer.write('Map<String, dynamic> '
-        '$functionName($targetClassReference $_toJsonParamName');
+    buffer.write(
+      'Map<String, dynamic> '
+      '$functionName($targetClassReference $_toJsonParamName',
+    );
 
     if (config.genericArgumentFactories) _writeGenericArgumentFactories(buffer);
 
     buffer
       ..write(') ')
       ..writeln('=> <String, dynamic>{')
-      ..writeAll(accessibleFields.map((field) {
-        final access = _fieldAccess(field);
+      ..writeAll(
+        accessibleFields.map((field) {
+          final access = _fieldAccess(field);
 
-        final keyExpression = safeNameAccess(field);
-        final valueExpression = _serializeField(field, access);
+          final keyExpression = safeNameAccess(field);
+          final valueExpression = _serializeField(field, access);
 
-        final keyValuePair = _canWriteJsonWithoutNullCheck(field)
-            ? '$keyExpression: $valueExpression'
-            : 'if ($valueExpression case final $generatedLocalVarName?) '
-                '$keyExpression: $generatedLocalVarName';
-        return '        $keyValuePair,\n';
-      }))
+          final keyValuePair = _canWriteJsonWithoutNullCheck(field)
+              ? '$keyExpression: $valueExpression'
+              : 'if ($valueExpression case final $generatedLocalVarName?) '
+                    '$keyExpression: $generatedLocalVarName';
+          return '        $keyValuePair,\n';
+        }),
+      )
       ..writeln('};');
 
     yield buffer.toString();
@@ -133,9 +137,9 @@ mixin EncodeHelper implements HelperCore {
 
   String _serializeField(FieldElement field, String accessExpression) {
     try {
-      return getHelperContext(field)
-          .serialize(field.type, accessExpression)
-          .toString();
+      return getHelperContext(
+        field,
+      ).serialize(field.type, accessExpression).toString();
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);
@@ -158,8 +162,10 @@ mixin EncodeHelper implements HelperCore {
       return !serializeConvertData.returnType.isNullableType;
     }
 
-    final nullableEncodeConverter =
-        hasConverterNullEncode(field.type, helperContext);
+    final nullableEncodeConverter = hasConverterNullEncode(
+      field.type,
+      helperContext,
+    );
 
     if (nullableEncodeConverter != null) {
       return !nullableEncodeConverter && !field.type.isNullableType;

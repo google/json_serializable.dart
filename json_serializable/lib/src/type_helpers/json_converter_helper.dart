@@ -116,8 +116,8 @@ class _JsonConvertData {
     String accessor,
     this.jsonType,
     this.fieldType,
-  )   : accessString = 'const $className${_withAccessor(accessor)}()',
-        isGeneric = false;
+  ) : accessString = 'const $className${_withAccessor(accessor)}()',
+      isGeneric = false;
 
   _JsonConvertData.genericClass(
     String className,
@@ -125,9 +125,8 @@ class _JsonConvertData {
     String accessor,
     this.jsonType,
     this.fieldType,
-  )   : accessString =
-            '$className<$genericTypeArg>${_withAccessor(accessor)}()',
-        isGeneric = true;
+  ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()',
+      isGeneric = true;
 
   _JsonConvertData.propertyAccess(
     this.accessString,
@@ -175,8 +174,9 @@ _JsonConvertData? _typeConverter(
   var matchingAnnotations = converterMatches(ctx.fieldElement.metadata);
 
   if (matchingAnnotations.isEmpty) {
-    matchingAnnotations =
-        converterMatches(ctx.fieldElement.getter?.metadata ?? []);
+    matchingAnnotations = converterMatches(
+      ctx.fieldElement.getter?.metadata ?? [],
+    );
 
     if (matchingAnnotations.isEmpty) {
       matchingAnnotations = converterMatches(ctx.classElement.metadata);
@@ -280,9 +280,7 @@ _ConverterMatch? _compatibleMatch(
   final converterClassElement = constantValue.type!.element as ClassElement;
 
   final jsonConverterSuper = converterClassElement.allSupertypes
-      .where(
-        (e) => _jsonConverterChecker.isExactly(e.element),
-      )
+      .where((e) => _jsonConverterChecker.isExactly(e.element))
       .singleOrNull;
 
   if (jsonConverterSuper == null) {
@@ -310,10 +308,11 @@ _ConverterMatch? _compatibleMatch(
     assert(converterClassElement.typeParameters.isNotEmpty);
     if (converterClassElement.typeParameters.length > 1) {
       throw InvalidGenerationSourceError(
-          '`JsonConverter` implementations can have no more than one type '
-          'argument. `${converterClassElement.name}` has '
-          '${converterClassElement.typeParameters.length}.',
-          element: converterClassElement);
+        '`JsonConverter` implementations can have no more than one type '
+        'argument. `${converterClassElement.name}` has '
+        '${converterClassElement.typeParameters.length}.',
+        element: converterClassElement,
+      );
     }
 
     return _ConverterMatch(

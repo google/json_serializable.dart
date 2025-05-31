@@ -43,9 +43,10 @@ class Order {
   Item? item;
 
   @JsonKey(
-      name: 'prep-time',
-      fromJson: _durationFromMilliseconds,
-      toJson: _durationToMilliseconds)
+    name: 'prep-time',
+    fromJson: _durationFromMilliseconds,
+    toJson: _durationToMilliseconds,
+  )
   Duration? prepTime;
 
   @JsonKey(fromJson: _dateTimeFromEpochUs, toJson: _dateTimeToEpochUs)

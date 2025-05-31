@@ -23,5 +23,5 @@ DartType coreIterableGenericType(DartType type) =>
 const simpleJsonTypeChecker = TypeChecker.any([
   coreStringTypeChecker,
   TypeChecker.fromUrl('dart:core#bool'),
-  TypeChecker.fromUrl('dart:core#num')
+  TypeChecker.fromUrl('dart:core#num'),
 ]);

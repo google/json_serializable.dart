@@ -17,11 +17,7 @@ enum StandAloneEnum {
 Iterable<String> get standAloneEnumValues => _$StandAloneEnumEnumMap.values;
 
 @JsonEnum(alwaysCreate: true, fieldRename: FieldRename.kebab)
-enum DayType {
-  noGood,
-  rotten,
-  veryBad,
-}
+enum DayType { noGood, rotten, veryBad }
 
 Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;
 
@@ -55,13 +51,9 @@ enum EnumValueFieldIndex {
 Iterable<int> get enumValueFieldIndexValues =>
     _$EnumValueFieldIndexEnumMap.values;
 
-@JsonSerializable(
-  createToJson: false,
-)
+@JsonSerializable(createToJson: false)
 class Issue559Regression {
-  Issue559Regression({
-    required this.status,
-  });
+  Issue559Regression({required this.status});
 
   factory Issue559Regression.fromJson(Map<String, dynamic> json) =>
       _$Issue559RegressionFromJson(json);
@@ -74,34 +66,20 @@ class Issue559Regression {
   final Issue559RegressionEnum? status;
 }
 
-enum Issue559RegressionEnum {
-  alpha,
-  beta,
-  gamma,
-}
+enum Issue559RegressionEnum { alpha, beta, gamma }
 
-enum Issue1145RegressionEnum {
-  alpha,
-  beta,
-  gamma,
-}
+enum Issue1145RegressionEnum { alpha, beta, gamma }
 
-@JsonSerializable(
-  createFactory: false,
-)
+@JsonSerializable(createFactory: false)
 class Issue1145RegressionA {
-  Issue1145RegressionA({
-    required this.status,
-  });
+  Issue1145RegressionA({required this.status});
 
   Map<String, dynamic> toJson() => _$Issue1145RegressionAToJson(this);
 
   final Map<Issue1145RegressionEnum, bool> status;
 }
 
-@JsonSerializable(
-  createFactory: false,
-)
+@JsonSerializable(createFactory: false)
 class Issue1145RegressionB {
   Issue1145RegressionB({required this.status});
 

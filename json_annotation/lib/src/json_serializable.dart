@@ -305,20 +305,20 @@ class JsonSerializable {
   /// [defaults].
   @Deprecated('Was only ever included to support builder infrastructure.')
   JsonSerializable withDefaults() => JsonSerializable(
-        anyMap: anyMap ?? defaults.anyMap,
-        checked: checked ?? defaults.checked,
-        constructor: constructor ?? defaults.constructor,
-        createFactory: createFactory ?? defaults.createFactory,
-        createToJson: createToJson ?? defaults.createToJson,
-        disallowUnrecognizedKeys:
-            disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
-        explicitToJson: explicitToJson ?? defaults.explicitToJson,
-        fieldRename: fieldRename ?? defaults.fieldRename,
-        ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
-        includeIfNull: includeIfNull ?? defaults.includeIfNull,
-        genericArgumentFactories:
-            genericArgumentFactories ?? defaults.genericArgumentFactories,
-      );
+    anyMap: anyMap ?? defaults.anyMap,
+    checked: checked ?? defaults.checked,
+    constructor: constructor ?? defaults.constructor,
+    createFactory: createFactory ?? defaults.createFactory,
+    createToJson: createToJson ?? defaults.createToJson,
+    disallowUnrecognizedKeys:
+        disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
+    explicitToJson: explicitToJson ?? defaults.explicitToJson,
+    fieldRename: fieldRename ?? defaults.fieldRename,
+    ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
+    includeIfNull: includeIfNull ?? defaults.includeIfNull,
+    genericArgumentFactories:
+        genericArgumentFactories ?? defaults.genericArgumentFactories,
+  );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);
 }

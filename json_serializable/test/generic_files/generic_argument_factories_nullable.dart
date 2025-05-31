@@ -14,24 +14,18 @@ class GenericClassWithHelpersNullable<T, S> {
 
   final Set<S?>? someSet;
 
-  GenericClassWithHelpersNullable({
-    this.value,
-    this.list,
-    this.someSet,
-  });
+  GenericClassWithHelpersNullable({this.value, this.list, this.someSet});
 
   factory GenericClassWithHelpersNullable.fromJson(
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$GenericClassWithHelpersNullableFromJson(json, fromJsonT, fromJsonS);
+  ) => _$GenericClassWithHelpersNullableFromJson(json, fromJsonT, fromJsonS);
 
   Map<String, dynamic> toJson(
     Object? Function(T value) toJsonT,
     Object? Function(S value) toJsonS,
-  ) =>
-      _$GenericClassWithHelpersNullableToJson(this, toJsonT, toJsonS);
+  ) => _$GenericClassWithHelpersNullableToJson(this, toJsonT, toJsonS);
 }
 
 @JsonSerializable()

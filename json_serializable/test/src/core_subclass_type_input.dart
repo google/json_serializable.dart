@@ -1,38 +1,29 @@
-// @dart=3.6
+// @dart=3.8
 
 part of '_json_serializable_test_input.dart';
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `mapView`.
 To support the type `MapView` you can:
-$converterOrKeyInstructions''',
-  element: 'mapView',
-)
+$converterOrKeyInstructions''', element: 'mapView')
 @JsonSerializable(createToJson: false)
 class UnsupportedMapField {
   late MapView mapView;
 }
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `listView`.
 To support the type `UnmodifiableListView` you can:
-$converterOrKeyInstructions''',
-  element: 'listView',
-)
+$converterOrKeyInstructions''', element: 'listView')
 @JsonSerializable(createToJson: false)
 class UnsupportedListField {
   late UnmodifiableListView listView;
 }
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `customSet`.
 To support the type `CustomSet` you can:
-$converterOrKeyInstructions''',
-  element: 'customSet',
-)
+$converterOrKeyInstructions''', element: 'customSet')
 @JsonSerializable(createToJson: false)
 class UnsupportedSetField {
   late CustomSet customSet;
@@ -40,13 +31,10 @@ class UnsupportedSetField {
 
 abstract class CustomSet implements Set {}
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `customDuration`.
 To support the type `CustomDuration` you can:
-$converterOrKeyInstructions''',
-  element: 'customDuration',
-)
+$converterOrKeyInstructions''', element: 'customDuration')
 @JsonSerializable(createToJson: false)
 class UnsupportedDurationField {
   late CustomDuration customDuration;
@@ -54,13 +42,10 @@ class UnsupportedDurationField {
 
 abstract class CustomDuration implements Duration {}
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `customUri`.
 To support the type `CustomUri` you can:
-$converterOrKeyInstructions''',
-  element: 'customUri',
-)
+$converterOrKeyInstructions''', element: 'customUri')
 @JsonSerializable(createToJson: false)
 class UnsupportedUriField {
   CustomUri? customUri;
@@ -68,13 +53,10 @@ class UnsupportedUriField {
 
 abstract class CustomUri implements Uri {}
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `customDateTime`.
 To support the type `CustomDateTime` you can:
-$converterOrKeyInstructions''',
-  element: 'customDateTime',
-)
+$converterOrKeyInstructions''', element: 'customDateTime')
 @JsonSerializable(createToJson: false)
 class UnsupportedDateTimeField {
   late CustomDateTime customDateTime;

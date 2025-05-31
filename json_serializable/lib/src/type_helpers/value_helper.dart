@@ -34,7 +34,9 @@ class ValueHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
     bool defaultProvided,
-  ) =>
-      defaultDecodeLogic(targetType, expression,
-          defaultProvided: defaultProvided);
+  ) => defaultDecodeLogic(
+    targetType,
+    expression,
+    defaultProvided: defaultProvided,
+  );
 }

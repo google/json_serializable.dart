@@ -7,11 +7,7 @@ import 'package:source_gen/source_gen.dart';
 
 import '../default_container.dart';
 
-final bigIntString = ToFromStringHelper(
-  'BigInt.parse',
-  'toString()',
-  'BigInt',
-);
+final bigIntString = ToFromStringHelper('BigInt.parse', 'toString()', 'BigInt');
 
 final dateTimeString = ToFromStringHelper(
   'DateTime.parse',
@@ -19,11 +15,7 @@ final dateTimeString = ToFromStringHelper(
   'DateTime',
 );
 
-final uriString = ToFromStringHelper(
-  'Uri.parse',
-  'toString()',
-  'Uri',
-);
+final uriString = ToFromStringHelper('Uri.parse', 'toString()', 'Uri');
 
 /// Package-internal helper that unifies implementations of [Type]s that convert
 /// trivially to-from [String].
@@ -44,15 +36,11 @@ class ToFromStringHelper {
   final TypeChecker _checker;
 
   ToFromStringHelper(this._parse, this._toString, this.coreTypeName)
-      : _checker = TypeChecker.fromUrl('dart:core#$coreTypeName');
+    : _checker = TypeChecker.fromUrl('dart:core#$coreTypeName');
 
   bool matches(DartType type) => _checker.isExactlyType(type);
 
-  String? serialize(
-    DartType type,
-    String expression,
-    bool nullable,
-  ) {
+  String? serialize(DartType type, String expression, bool nullable) {
     if (!matches(type)) {
       return null;
     }
@@ -78,9 +66,6 @@ class ToFromStringHelper {
 
     final output = '$_parse($parseParam)';
 
-    return DefaultContainer(
-      expression,
-      output,
-    );
+    return DefaultContainer(expression, output);
   }
 }

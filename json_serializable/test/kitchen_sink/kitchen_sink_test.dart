@@ -13,8 +13,11 @@ import 'kitchen_sink_test_shared.dart';
 import 'strict_keys_object.dart';
 
 Matcher _isMissingKeyException(String expectedMessage) =>
-    isA<MissingRequiredKeysException>()
-        .having((e) => e.message, 'message', expectedMessage);
+    isA<MissingRequiredKeysException>().having(
+      (e) => e.message,
+      'message',
+      expectedMessage,
+    );
 
 void main() {
   test('valid values covers all keys', () {
@@ -34,9 +37,13 @@ void main() {
 
   test('required keys', () {
     expect(
-        () => StrictKeysObject.fromJson({}),
-        throwsA(_isMissingKeyException(
-            'Required keys are missing: value, custom_field.')));
+      () => StrictKeysObject.fromJson({}),
+      throwsA(
+        _isMissingKeyException(
+          'Required keys are missing: value, custom_field.',
+        ),
+      ),
+    );
   });
 
   for (var factory in factories) {
@@ -163,10 +170,10 @@ void _nullableTests(KitchenSinkFactory factory) {
             'items': [
               null,
               [],
-              [DateTime.now()]
-            ]
-          }
-        }
+              [DateTime.now()],
+            ],
+          },
+        },
       ];
     roundTripSink(item);
   });
@@ -178,10 +185,10 @@ void _sharedTests(KitchenSinkFactory factory) {
 
     final aliasName = factory.fromJson(
       <String, dynamic>{
-        ...validValues,
-        'theIterable': validValues['iterable'],
-        'STRING': validValues[trickyKeyName]
-      }
+          ...validValues,
+          'theIterable': validValues['iterable'],
+          'STRING': validValues[trickyKeyName],
+        }
         ..remove('iterable')
         ..remove(trickyKeyName),
     );
@@ -225,27 +232,29 @@ void _sharedTests(KitchenSinkFactory factory) {
             'empty': [],
             'items': [
               [],
-              [DateTime.now()]
-            ]
-          }
-        }
+              [DateTime.now()],
+            ],
+          },
+        },
       ];
     roundTripObject(item, factory.fromJson);
   });
 
   test('round trip valid, empty values', () {
-    final values = Map.fromEntries(validValues.entries.map((e) {
-      var value = e.value;
-      if (_iterableMapKeys.contains(e.key)) {
-        if (value is List) {
-          value = [];
-        } else {
-          assert(value is Map);
-          value = <String, dynamic>{};
+    final values = Map.fromEntries(
+      validValues.entries.map((e) {
+        var value = e.value;
+        if (_iterableMapKeys.contains(e.key)) {
+          if (value is List) {
+            value = [];
+          } else {
+            assert(value is Map);
+            value = <String, dynamic>{};
+          }
         }
-      }
-      return MapEntry(e.key, value);
-    }));
+        return MapEntry(e.key, value);
+      }),
+    );
 
     final validInstance = factory.fromJson(values);
 
@@ -291,14 +300,10 @@ const _nonNullableFields = {
   'crazyComplex',
   'val',
   'simpleObject',
-  'strictKeysObject'
+  'strictKeysObject',
 };
 
-const _encodedAsMapKeys = {
-  'simpleObject',
-  'strictKeysObject',
-  'recordField',
-};
+const _encodedAsMapKeys = {'simpleObject', 'strictKeysObject', 'recordField'};
 
 const _iterableMapKeys = {
   'bigIntMap',

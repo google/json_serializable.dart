@@ -23,10 +23,7 @@ const _intValue = 42;
 dvi.DefaultValue fromJson(Map<String, dynamic> json) =>
     _$DefaultValueFromJson(json);
 
-@JsonSerializable(
-  checked: true,
-  anyMap: true,
-)
+@JsonSerializable(checked: true, anyMap: true)
 class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: true)
   bool fieldBool;
@@ -58,9 +55,11 @@ class DefaultValue implements dvi.DefaultValue {
   @JsonKey(defaultValue: {'answer': 42})
   Map<String, int> fieldMapSimple;
 
-  @JsonKey(defaultValue: {
-    'root': ['child']
-  })
+  @JsonKey(
+    defaultValue: {
+      'root': ['child'],
+    },
+  )
   Map<String, List<String>> fieldMapListString;
 
   Duration durationField;

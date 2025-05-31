@@ -125,11 +125,7 @@ abstract class KitchenSink {
   Map<String, dynamic> toJson();
 }
 
-typedef RecordSample = (
-  int,
-  String, {
-  bool truth,
-});
+typedef RecordSample = (int, String, {bool truth});
 
 // TODO: finish this...
 bool sinkEquals(KitchenSink a, Object other) =>

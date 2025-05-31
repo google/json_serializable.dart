@@ -154,8 +154,9 @@ List<String> _helperParams(
   final args = <String>[];
 
   for (var helperArg in rest) {
-    final typeParamIndex =
-        type.element.typeParameters.indexOf(helperArg.element);
+    final typeParamIndex = type.element.typeParameters.indexOf(
+      helperArg.element,
+    );
 
     // TODO: throw here if `typeParamIndex` is -1 ?
     final typeArg = type.typeArguments[typeParamIndex];
@@ -166,10 +167,7 @@ List<String> _helperParams(
   return args;
 }
 
-TypeParameterType _decodeHelper(
-  ParameterElement param,
-  Element targetElement,
-) {
+TypeParameterType _decodeHelper(ParameterElement param, Element targetElement) {
   final type = param.type;
 
   if (type is FunctionType &&
@@ -197,10 +195,7 @@ TypeParameterType _decodeHelper(
   );
 }
 
-TypeParameterType _encodeHelper(
-  ParameterElement param,
-  Element targetElement,
-) {
+TypeParameterType _encodeHelper(ParameterElement param, Element targetElement) {
   final type = param.type;
 
   if (type is FunctionType &&
@@ -249,8 +244,9 @@ InterfaceType? _instantiate(
 ) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
     final typeParamIndex = classType.element.typeParameters.indexWhere(
-        // TODO: not 100% sure `nullabilitySuffix` is right
-        (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg);
+      // TODO: not 100% sure `nullabilitySuffix` is right
+      (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg,
+    );
     if (typeParamIndex >= 0) {
       return classType.typeArguments[typeParamIndex];
     } else {
@@ -274,9 +270,9 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   if (source.isEnum) {
     return null;
   }
-  final annotations = const TypeChecker.fromRuntime(JsonSerializable)
-      .annotationsOfExact(source.element, throwOnUnresolved: false)
-      .toList();
+  final annotations = const TypeChecker.fromRuntime(
+    JsonSerializable,
+  ).annotationsOfExact(source.element, throwOnUnresolved: false).toList();
 
   if (annotations.isEmpty) {
     return null;

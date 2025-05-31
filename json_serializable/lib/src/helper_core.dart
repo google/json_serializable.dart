@@ -65,11 +65,13 @@ InvalidGenerationSourceError createInvalidGenerationError(
 
   String? todo;
   if (error.type is TypeParameterType) {
-    message = '$message because of type '
+    message =
+        '$message because of type '
         '`${error.type.toStringNonNullable()}` '
         '(type parameter)';
 
-    todo = '''
+    todo =
+        '''
 To support type parameters (generic types) you can:
 $converterOrKeyInstructions
 * Set `JsonSerializable.genericArgumentFactories` to `true`
@@ -78,17 +80,14 @@ $converterOrKeyInstructions
     message = '$message because of type `${typeToCode(error.type)}`';
   } else {
     final element = error.type.element?.name;
-    todo = '''
+    todo =
+        '''
 To support the type `${element ?? error.type}` you can:
 $converterOrKeyInstructions''';
   }
 
   return InvalidGenerationSourceError(
-    [
-      '$message.',
-      if (error.reason != null) error.reason,
-      if (todo != null) todo,
-    ].join('\n'),
+    ['$message.', if (error.reason != null) error.reason, ?todo].join('\n'),
     element: field,
   );
 }
@@ -119,13 +118,15 @@ String genericClassArguments(ClassElement element, bool? withConstraints) {
   if (withConstraints == null || element.typeParameters.isEmpty) {
     return '';
   }
-  final values = element.typeParameters.map((t) {
-    if (withConstraints && t.bound != null) {
-      final boundCode = typeToCode(t.bound!);
-      return '${t.name} extends $boundCode';
-    } else {
-      return t.name;
-    }
-  }).join(', ');
+  final values = element.typeParameters
+      .map((t) {
+        if (withConstraints && t.bound != null) {
+          final boundCode = typeToCode(t.bound!);
+          return '${t.name} extends $boundCode';
+        } else {
+          return t.name;
+        }
+      })
+      .join(', ');
   return '<$values>';
 }

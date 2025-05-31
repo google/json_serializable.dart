@@ -23,9 +23,7 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var index = 1;
     for (var field in targetType.positionalFields) {
       final indexer = escapeDartString('\$$index');
-      items.add(
-        context.deserialize(field.type, '$paramName[$indexer]')!,
-      );
+      items.add(context.deserialize(field.type, '$paramName[$indexer]')!);
       index++;
     }
     for (var field in targetType.namedFields) {
@@ -42,7 +40,9 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(
       _recordConvertImpl(
-          nullable: targetType.isNullableType, anyMap: context.config.anyMap),
+        nullable: targetType.isNullableType,
+        anyMap: context.config.anyMap,
+      ),
     );
 
     final recordLiteral = '(${items.map((e) => '$e,').join()})';
@@ -82,22 +82,17 @@ $helperName(
     }
     for (var field in targetType.namedFields) {
       final indexer = escapeDartString(field.name);
-      items.add(
-        '$indexer:${context.serialize(
-          field.type,
-          '$expression$maybeBang.${field.name}',
-        )!}',
-      );
+      final key = context.serialize(
+        field.type,
+        '$expression$maybeBang.${field.name}',
+      )!;
+      items.add('$indexer:$key');
     }
 
     final mapValue = '<String, dynamic>{${items.map((e) => '$e,').join()}}';
 
     return targetType.isNullableType
-        ? ifNullOrElse(
-            expression,
-            'null',
-            mapValue,
-          )
+        ? ifNullOrElse(expression, 'null', mapValue)
         : mapValue;
   }
 }

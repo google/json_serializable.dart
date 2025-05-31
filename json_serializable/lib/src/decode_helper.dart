@@ -30,9 +30,11 @@ mixin DecodeHelper implements HelperCore {
     final buffer = StringBuffer();
 
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
-    buffer.write('$targetClassReference '
-        '${prefix}FromJson${genericClassArgumentsImpl(withConstraints: true)}'
-        '($mapType json');
+    buffer.write(
+      '$targetClassReference '
+      '${prefix}FromJson${genericClassArgumentsImpl(withConstraints: true)}'
+      '($mapType json',
+    );
 
     if (config.genericArgumentFactories) {
       for (var arg in element.typeParameters) {
@@ -51,10 +53,13 @@ mixin DecodeHelper implements HelperCore {
 
     final fromJsonLines = <String>[];
 
-    String deserializeFun(String paramOrFieldName,
-            {ParameterElement? ctorParam}) =>
-        _deserializeForField(accessibleFields[paramOrFieldName]!,
-            ctorParam: ctorParam);
+    String deserializeFun(
+      String paramOrFieldName, {
+      ParameterElement? ctorParam,
+    }) => _deserializeForField(
+      accessibleFields[paramOrFieldName]!,
+      ctorParam: ctorParam,
+    );
 
     final data = _writeConstructorInvocation(
       element,
@@ -69,8 +74,9 @@ mixin DecodeHelper implements HelperCore {
     );
 
     final checks = _checkKeys(
-      accessibleFields.values
-          .where((fe) => data.usedCtorParamsAndFields.contains(fe.name)),
+      accessibleFields.values.where(
+        (fe) => data.usedCtorParamsAndFields.contains(fe.name),
+      ),
     ).toList();
 
     if (config.checked) {
@@ -94,9 +100,7 @@ mixin DecodeHelper implements HelperCore {
           ..write('''
     \$checkedConvert($safeName, (v) => ''')
           ..write('val.$fieldName = ')
-          ..write(
-            _deserializeForField(fieldValue, checkedProperty: true),
-          );
+          ..write(_deserializeForField(fieldValue, checkedProperty: true));
 
         final readValueFunc = jsonKeyFor(fieldValue).readValueFunctionName;
         if (readValueFunc != null) {
@@ -109,9 +113,11 @@ mixin DecodeHelper implements HelperCore {
       sectionBuffer.write('''\n    return val;
   }''');
 
-      final fieldKeyMap = Map.fromEntries(data.usedCtorParamsAndFields
-          .map((k) => MapEntry(k, nameAccess(accessibleFields[k]!)))
-          .where((me) => me.key != me.value));
+      final fieldKeyMap = Map.fromEntries(
+        data.usedCtorParamsAndFields
+            .map((k) => MapEntry(k, nameAccess(accessibleFields[k]!)))
+            .where((me) => me.key != me.value),
+      );
 
       String fieldKeyMapArg;
       if (fieldKeyMap.isEmpty) {
@@ -128,7 +134,8 @@ mixin DecodeHelper implements HelperCore {
     } else {
       fromJsonLines.addAll(checks);
 
-      final sectionBuffer = StringBuffer()..write('''
+      final sectionBuffer = StringBuffer()
+        ..write('''
   ${data.content}''');
       for (final field in data.fieldsToSet) {
         sectionBuffer
@@ -168,8 +175,9 @@ mixin DecodeHelper implements HelperCore {
       args.add('allowedKeys: $allowKeysLiteral');
     }
 
-    final requiredKeys =
-        accessibleFields.where((fe) => jsonKeyFor(fe).required).toList();
+    final requiredKeys = accessibleFields
+        .where((fe) => jsonKeyFor(fe).required)
+        .toList();
     if (requiredKeys.isNotEmpty) {
       final requiredKeyLiteral = constantList(requiredKeys);
 
@@ -205,11 +213,7 @@ mixin DecodeHelper implements HelperCore {
     final readValueFunc = jsonKey.readValueFunctionName;
 
     String deserialize(String expression) => contextHelper
-        .deserialize(
-          targetType,
-          expression,
-          defaultValue: defaultValue,
-        )
+        .deserialize(targetType, expression, defaultValue: defaultValue)
         .toString();
 
     String value;
@@ -217,8 +221,9 @@ mixin DecodeHelper implements HelperCore {
       if (config.checked) {
         value = deserialize('v');
         if (!checkedProperty) {
-          final readValueBit =
-              readValueFunc == null ? '' : ',readValue: $readValueFunc,';
+          final readValueBit = readValueFunc == null
+              ? ''
+              : ',readValue: $readValueFunc,';
           value = '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
         }
       } else {
@@ -240,9 +245,11 @@ mixin DecodeHelper implements HelperCore {
 
     if (defaultValue != null) {
       if (jsonKey.disallowNullValue && jsonKey.required) {
-        log.warning('The `defaultValue` on field `${field.name}` will have no '
-            'effect because both `disallowNullValue` and `required` are set to '
-            '`true`.');
+        log.warning(
+          'The `defaultValue` on field `${field.name}` will have no '
+          'effect because both `disallowNullValue` and `required` are set to '
+          '`true`.',
+        );
       }
     }
     return value;
@@ -266,7 +273,7 @@ _ConstructorData _writeConstructorInvocation(
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
   String Function(String paramOrFieldName, {ParameterElement ctorParam})
-      deserializeForField,
+  deserializeForField,
 ) {
   final className = classElement.name;
 
@@ -279,7 +286,8 @@ _ConstructorData _writeConstructorInvocation(
   for (final arg in ctor.parameters) {
     if (!availableConstructorParameters.contains(arg.name)) {
       if (arg.isRequired) {
-        var msg = 'Cannot populate the required constructor '
+        var msg =
+            'Cannot populate the required constructor '
             'argument: ${arg.name}.';
 
         final additionalInfo = unavailableReasons[arg.name];
@@ -304,8 +312,9 @@ _ConstructorData _writeConstructorInvocation(
   }
 
   // fields that aren't already set by the constructor and that aren't final
-  final remainingFieldsForInvocationBody =
-      writableFields.toSet().difference(usedCtorParamsAndFields);
+  final remainingFieldsForInvocationBody = writableFields.toSet().difference(
+    usedCtorParamsAndFields,
+  );
 
   final constructorExtra = constructorName.isEmpty ? '' : '.$constructorName';
 
@@ -315,16 +324,24 @@ _ConstructorData _writeConstructorInvocation(
       '${genericClassArguments(classElement, false)}'
       '$constructorExtra(',
     )
-    ..writeAll(constructorArguments.map((paramElement) {
-      final content =
-          deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      $content,\n';
-    }))
-    ..writeAll(namedConstructorArguments.map((paramElement) {
-      final value =
-          deserializeForField(paramElement.name, ctorParam: paramElement);
-      return '      ${paramElement.name}: $value,\n';
-    }))
+    ..writeAll(
+      constructorArguments.map((paramElement) {
+        final content = deserializeForField(
+          paramElement.name,
+          ctorParam: paramElement,
+        );
+        return '      $content,\n';
+      }),
+    )
+    ..writeAll(
+      namedConstructorArguments.map((paramElement) {
+        final value = deserializeForField(
+          paramElement.name,
+          ctorParam: paramElement,
+        );
+        return '      ${paramElement.name}: $value,\n';
+      }),
+    )
     ..write(')');
 
   usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);

@@ -39,12 +39,17 @@ Future<void> main() async {
 
   group('configuration', () {
     Future<void> runWithConfigAndLogger(
-        JsonSerializable? config, String className) async {
+      JsonSerializable? config,
+      String className,
+    ) async {
       await generateForElement(
-          JsonSerializableGenerator(
-              config: config, typeHelpers: const [_ConfigLogger()]),
-          _libraryReader,
-          className);
+        JsonSerializableGenerator(
+          config: config,
+          typeHelpers: const [_ConfigLogger()],
+        ),
+        _libraryReader,
+        className,
+      );
     }
 
     setUp(_ConfigLogger.configurations.clear);
@@ -60,46 +65,59 @@ Future<void> main() async {
 
           test(testDescription, () async {
             await runWithConfigAndLogger(
-                nullConfig ? null : const JsonSerializable(), className);
+              nullConfig ? null : const JsonSerializable(),
+              className,
+            );
 
             expect(_ConfigLogger.configurations, hasLength(2));
             expect(
               _ConfigLogger.configurations.first.toJson(),
               _ConfigLogger.configurations.last.toJson(),
             );
-            expect(_ConfigLogger.configurations.first.toJson(),
-                generatorConfigDefaultJson);
+            expect(
+              _ConfigLogger.configurations.first.toJson(),
+              generatorConfigDefaultJson,
+            );
           });
         }
       }
     });
 
     test(
-        'values in config override unconfigured (default) values in annotation',
-        () async {
-      await runWithConfigAndLogger(
+      'values in config override unconfigured (default) values in annotation',
+      () async {
+        await runWithConfigAndLogger(
           JsonSerializable.fromJson(generatorConfigNonDefaultJson),
-          'ConfigurationImplicitDefaults');
+          'ConfigurationImplicitDefaults',
+        );
 
-      expect(_ConfigLogger.configurations, isEmpty,
-          reason: 'all generation is disabled');
+        expect(
+          _ConfigLogger.configurations,
+          isEmpty,
+          reason: 'all generation is disabled',
+        );
 
-      // Create a configuration with just `create_to_json` set to true so we
-      // can validate the configuration that is run with
-      final configMap =
-          Map<String, dynamic>.from(generatorConfigNonDefaultJson);
-      configMap['create_to_json'] = true;
+        // Create a configuration with just `create_to_json` set to true so we
+        // can validate the configuration that is run with
+        final configMap = Map<String, dynamic>.from(
+          generatorConfigNonDefaultJson,
+        );
+        configMap['create_to_json'] = true;
 
-      await runWithConfigAndLogger(JsonSerializable.fromJson(configMap),
-          'ConfigurationImplicitDefaults');
-    });
+        await runWithConfigAndLogger(
+          JsonSerializable.fromJson(configMap),
+          'ConfigurationImplicitDefaults',
+        );
+      },
+    );
 
     test(
       'explicit values in annotation override corresponding settings in config',
       () async {
         await runWithConfigAndLogger(
-            JsonSerializable.fromJson(generatorConfigNonDefaultJson),
-            'ConfigurationExplicitDefaults');
+          JsonSerializable.fromJson(generatorConfigNonDefaultJson),
+          'ConfigurationExplicitDefaults',
+        );
 
         expect(_ConfigLogger.configurations, hasLength(2));
         expect(
@@ -110,8 +128,9 @@ Future<void> main() async {
         // The effective configuration should be non-Default configuration, but
         // with all fields set from JsonSerializable as the defaults
 
-        final expected =
-            Map<String, dynamic>.from(generatorConfigNonDefaultJson);
+        final expected = Map<String, dynamic>.from(
+          generatorConfigNonDefaultJson,
+        );
         for (var jsonSerialKey in jsonSerializableFields) {
           expected[jsonSerialKey] = generatorConfigDefaultJson[jsonSerialKey];
         }
@@ -138,7 +157,9 @@ void _registerTests(JsonSerializable generator) {
   group('explicit toJson', () {
     test('nullable', () async {
       final output = await _runForElementNamed(
-          const JsonSerializable(), 'TrivialNestedNullable');
+        const JsonSerializable(),
+        'TrivialNestedNullable',
+      );
 
       const expected = r'''
 Map<String, dynamic> _$TrivialNestedNullableToJson(
@@ -153,7 +174,9 @@ Map<String, dynamic> _$TrivialNestedNullableToJson(
     });
     test('non-nullable', () async {
       final output = await _runForElementNamed(
-          const JsonSerializable(), 'TrivialNestedNonNullable');
+        const JsonSerializable(),
+        'TrivialNestedNonNullable',
+      );
 
       const expected = r'''
 Map<String, dynamic> _$TrivialNestedNonNullableToJson(
@@ -169,25 +192,32 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
   });
 
   group('valid inputs', () {
-    test('class with fromJson() constructor with optional parameters',
-        () async {
-      final output = await runForElementNamed('FromJsonOptionalParameters');
+    test(
+      'class with fromJson() constructor with optional parameters',
+      () async {
+        final output = await runForElementNamed('FromJsonOptionalParameters');
 
-      expect(output, contains('ChildWithFromJson.fromJson'));
-    });
+        expect(output, contains('ChildWithFromJson.fromJson'));
+      },
+    );
 
     test('class with child json-able object', () async {
       final output = await runForElementNamed('ParentObject');
 
       expect(
-          output,
-          contains("ChildObject.fromJson(json['child'] "
-              'as Map<String, dynamic>)'));
+        output,
+        contains(
+          "ChildObject.fromJson(json['child'] "
+          'as Map<String, dynamic>)',
+        ),
+      );
     });
 
     test('class with child json-able object - anyMap', () async {
       final output = await _runForElementNamed(
-          const JsonSerializable(anyMap: true), 'ParentObject');
+        const JsonSerializable(anyMap: true),
+        'ParentObject',
+      );
 
       expect(output, contains("ChildObject.fromJson(json['child'] as Map)"));
     });
@@ -200,8 +230,9 @@ Map<String, dynamic> _$TrivialNestedNonNullableToJson(
     });
 
     test('class with child list of dynamic objects is left alone', () async {
-      final output =
-          await runForElementNamed('ParentObjectWithDynamicChildren');
+      final output = await runForElementNamed(
+        'ParentObjectWithDynamicChildren',
+      );
 
       expect(
         output,
@@ -235,8 +266,11 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  Object? serialize(DartType targetType, String expression,
-      TypeHelperContextWithConfig context) {
+  Object? serialize(
+    DartType targetType,
+    String expression,
+    TypeHelperContextWithConfig context,
+  ) {
     configurations.add(context.config.toJsonSerializable());
     return null;
   }

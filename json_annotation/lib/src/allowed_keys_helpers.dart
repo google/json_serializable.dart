@@ -14,16 +14,19 @@ void $checkKeys(
   List<String>? disallowNullValues,
 }) {
   if (allowedKeys != null) {
-    final invalidKeys =
-        map.keys.cast<String>().where((k) => !allowedKeys.contains(k)).toList();
+    final invalidKeys = map.keys
+        .cast<String>()
+        .where((k) => !allowedKeys.contains(k))
+        .toList();
     if (invalidKeys.isNotEmpty) {
       throw UnrecognizedKeysException(invalidKeys, map, allowedKeys);
     }
   }
 
   if (requiredKeys != null) {
-    final missingKeys =
-        requiredKeys.where((k) => !map.keys.contains(k)).toList();
+    final missingKeys = requiredKeys
+        .where((k) => !map.keys.contains(k))
+        .toList();
     if (missingKeys.isNotEmpty) {
       throw MissingRequiredKeysException(missingKeys, map);
     }
@@ -73,7 +76,7 @@ class UnrecognizedKeysException extends BadKeyException {
       '[${allowedKeys.join(', ')}]';
 
   UnrecognizedKeysException(this.unrecognizedKeys, Map map, this.allowedKeys)
-      : super._(map);
+    : super._(map);
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was
@@ -86,8 +89,8 @@ class MissingRequiredKeysException extends BadKeyException {
   String get message => 'Required keys are missing: ${missingKeys.join(', ')}.';
 
   MissingRequiredKeysException(this.missingKeys, Map map)
-      : assert(missingKeys.isNotEmpty),
-        super._(map);
+    : assert(missingKeys.isNotEmpty),
+      super._(map);
 }
 
 /// Exception thrown if there are keys with disallowed `null` values in a JSON
@@ -98,6 +101,7 @@ class DisallowedNullValueException extends BadKeyException {
   DisallowedNullValueException(this.keysWithNullValues, Map map) : super._(map);
 
   @override
-  String get message => 'These keys had `null` values, '
+  String get message =>
+      'These keys had `null` values, '
       'which is not allowed: $keysWithNullValues';
 }

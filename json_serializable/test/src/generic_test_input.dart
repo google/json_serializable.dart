@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=3.6
+// @dart=3.8
 
 part of '_json_serializable_test_input.dart';
 
@@ -22,23 +22,23 @@ class Issue713<TResult> {
 
 @ShouldGenerate(r'''
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
-        Map<String, dynamic> json) =>
-    GenericClass<T, S>()
-      ..fieldObject = _dataFromJson(json['fieldObject'])
-      ..fieldDynamic = _dataFromJson(json['fieldDynamic'])
-      ..fieldInt = _dataFromJson(json['fieldInt'])
-      ..fieldT = _dataFromJson(json['fieldT'])
-      ..fieldS = _dataFromJson(json['fieldS']);
+  Map<String, dynamic> json,
+) => GenericClass<T, S>()
+  ..fieldObject = _dataFromJson(json['fieldObject'])
+  ..fieldDynamic = _dataFromJson(json['fieldDynamic'])
+  ..fieldInt = _dataFromJson(json['fieldInt'])
+  ..fieldT = _dataFromJson(json['fieldT'])
+  ..fieldS = _dataFromJson(json['fieldS']);
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
-        GenericClass<T, S> instance) =>
-    <String, dynamic>{
-      'fieldObject': _dataToJson(instance.fieldObject),
-      'fieldDynamic': _dataToJson(instance.fieldDynamic),
-      'fieldInt': _dataToJson(instance.fieldInt),
-      'fieldT': _dataToJson(instance.fieldT),
-      'fieldS': _dataToJson(instance.fieldS),
-    };
+  GenericClass<T, S> instance,
+) => <String, dynamic>{
+  'fieldObject': _dataToJson(instance.fieldObject),
+  'fieldDynamic': _dataToJson(instance.fieldDynamic),
+  'fieldInt': _dataToJson(instance.fieldInt),
+  'fieldT': _dataToJson(instance.fieldT),
+  'fieldS': _dataToJson(instance.fieldS),
+};
 ''')
 @JsonSerializable()
 class GenericClass<T extends num, S> {
@@ -67,13 +67,13 @@ Object _dataToJson<T extends num>(T input) => throw UnimplementedError();
 @ShouldGenerate(
   r'''
 GenericArgumentFactoriesFlagWithoutGenericType
-    _$GenericArgumentFactoriesFlagWithoutGenericTypeFromJson(
-            Map<String, dynamic> json) =>
-        GenericArgumentFactoriesFlagWithoutGenericType();
+_$GenericArgumentFactoriesFlagWithoutGenericTypeFromJson(
+  Map<String, dynamic> json,
+) => GenericArgumentFactoriesFlagWithoutGenericType();
 
 Map<String, dynamic> _$GenericArgumentFactoriesFlagWithoutGenericTypeToJson(
-        GenericArgumentFactoriesFlagWithoutGenericType instance) =>
-    <String, dynamic>{};
+  GenericArgumentFactoriesFlagWithoutGenericType instance,
+) => <String, dynamic>{};
 ''',
   expectedLogItems: [
     'The class `GenericArgumentFactoriesFlagWithoutGenericType` is annotated '

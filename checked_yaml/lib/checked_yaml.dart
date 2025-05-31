@@ -66,14 +66,13 @@ ParsedYamlException toParsedYamlException(
         ? innerError.unrecognizedKeys.first
         : exception.key;
 
-    final node = yamlMap.nodes.keys.singleWhere(
-        (k) => (k as YamlScalar).value == key,
-        orElse: () => yamlMap) as YamlNode;
-    return ParsedYamlException(
-      exception.message!,
-      node,
-      innerError: exception,
-    );
+    final node =
+        yamlMap.nodes.keys.singleWhere(
+              (k) => (k as YamlScalar).value == key,
+              orElse: () => yamlMap,
+            )
+            as YamlNode;
+    return ParsedYamlException(exception.message!, node, innerError: exception);
   } else {
     if (exception.key == null) {
       return ParsedYamlException(
@@ -119,13 +118,9 @@ class ParsedYamlException implements Exception {
   /// contains the source error object.
   final Object? innerError;
 
-  ParsedYamlException(
-    String message,
-    YamlNode this.yamlNode, {
-    this.innerError,
-  }) :
-        // TODO(kevmoo) remove when dart-lang/sdk#50756 is fixed!
-        message = message.replaceAll(" of ' in type cast'", ' in type cast');
+  ParsedYamlException(String message, YamlNode this.yamlNode, {this.innerError})
+    : // TODO(kevmoo) remove when dart-lang/sdk#50756 is fixed!
+      message = message.replaceAll(" of ' in type cast'", ' in type cast');
 
   factory ParsedYamlException.fromYamlException(YamlException exception) =>
       _WrappedYamlException(exception);

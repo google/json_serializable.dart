@@ -29,8 +29,11 @@ void main() {
   });
 
   test('naughty strings', () {
-    final dataFilePath =
-        p.join('test', 'literal', 'big-list-of-naughty-strings.json');
+    final dataFilePath = p.join(
+      'test',
+      'literal',
+      'big-list-of-naughty-strings.json',
+    );
     final dataFile = File(dataFilePath);
 
     final dataString = loudEncode(json.decode(dataFile.readAsStringSync()));

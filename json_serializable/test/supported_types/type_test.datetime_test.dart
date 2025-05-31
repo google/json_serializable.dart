@@ -27,10 +27,7 @@ void main() {
     });
 
     test('round trip null', () {
-      expect(
-        () => loudEncode(SimpleClass.fromJson({})),
-        throwsTypeError,
-      );
+      expect(() => loudEncode(SimpleClass.fromJson({})), throwsTypeError);
     });
 
     test('round trip alternate values', () {
@@ -89,21 +86,10 @@ void main() {
 const _defaultValue = '2020-01-01T00:00:00.000';
 const _altValue = '2018-01-01T00:00:00.000';
 
-final _defaultInput = <String, Object?>{
-  'value': _defaultValue,
-};
+final _defaultInput = <String, Object?>{'value': _defaultValue};
 
-final _defaultOutput = {
-  'value': _defaultValue,
-  'withDefault': _defaultValue,
-};
+final _defaultOutput = {'value': _defaultValue, 'withDefault': _defaultValue};
 
-final _nullableDefaultOutput = {
-  'value': null,
-  'withDefault': _defaultValue,
-};
+final _nullableDefaultOutput = {'value': null, 'withDefault': _defaultValue};
 
-final _nonDefaultJson = {
-  'value': _altValue,
-  'withDefault': _altValue,
-};
+final _nonDefaultJson = {'value': _altValue, 'withDefault': _altValue};

@@ -23,12 +23,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     ClassElement element,
     ConstantReader annotation,
   ) : super(
-            element,
-            mergeConfig(
-              _generator.config,
-              annotation,
-              classElement: element,
-            ));
+        element,
+        mergeConfig(_generator.config, annotation, classElement: element),
+      );
 
   @override
   void addMember(String memberContent) {
@@ -93,40 +90,37 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
       // Need to add candidates BACK even if they are not used in the factory if
       // they are forced to be used for toJSON
-      for (var candidate in sortedFields.where((element) =>
-          jsonKeyFor(element).explicitYesToJson &&
-          !fieldsToUse.contains(element))) {
+      for (var candidate in sortedFields.where(
+        (element) =>
+            jsonKeyFor(element).explicitYesToJson &&
+            !fieldsToUse.contains(element),
+      )) {
         fieldsToUse.add(candidate);
       }
 
       // Need the fields to maintain the original source ordering
       fieldsToUse.sort(
-          (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)));
+        (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)),
+      );
 
       accessibleFieldSet = fieldsToUse.toSet();
     }
 
     accessibleFieldSet
-      ..removeWhere(
-        (element) => jsonKeyFor(element).explicitNoToJson,
-      )
-
+      ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson)
       // Check for duplicate JSON keys due to colliding annotations.
       // We do this now, since we have a final field list after any pruning done
       // by `_writeCtor`.
-      ..fold(
-        <String>{},
-        (Set<String> set, fe) {
-          final jsonKey = nameAccess(fe);
-          if (!set.add(jsonKey)) {
-            throw InvalidGenerationSourceError(
-              'More than one field has the JSON key for name "$jsonKey".',
-              element: fe,
-            );
-          }
-          return set;
-        },
-      );
+      ..fold(<String>{}, (Set<String> set, fe) {
+        final jsonKey = nameAccess(fe);
+        if (!set.add(jsonKey)) {
+          throw InvalidGenerationSourceError(
+            'More than one field has the JSON key for name "$jsonKey".',
+            element: fe,
+          );
+        }
+        return set;
+      });
 
     if (config.createFieldMap) {
       yield createFieldMap(accessibleFieldSet);

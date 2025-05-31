@@ -12,46 +12,44 @@ GenericClassWithHelpers<T, S> _$GenericClassWithHelpersFromJson<T, S>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
   S Function(Object? json) fromJsonS,
-) =>
-    GenericClassWithHelpers<T, S>(
-      fromJsonT(json['value']),
-      (json['list'] as List<dynamic>).map(fromJsonT).toList(),
-      (json['someSet'] as List<dynamic>).map(fromJsonS).toSet(),
-    );
+) => GenericClassWithHelpers<T, S>(
+  fromJsonT(json['value']),
+  (json['list'] as List<dynamic>).map(fromJsonT).toList(),
+  (json['someSet'] as List<dynamic>).map(fromJsonS).toSet(),
+);
 
 Map<String, dynamic> _$GenericClassWithHelpersToJson<T, S>(
   GenericClassWithHelpers<T, S> instance,
   Object? Function(T value) toJsonT,
   Object? Function(S value) toJsonS,
-) =>
-    <String, dynamic>{
-      'value': toJsonT(instance.value),
-      'list': instance.list.map(toJsonT).toList(),
-      'someSet': instance.someSet.map(toJsonS).toList(),
-    };
+) => <String, dynamic>{
+  'value': toJsonT(instance.value),
+  'list': instance.list.map(toJsonT).toList(),
+  'someSet': instance.someSet.map(toJsonS).toList(),
+};
 
 ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
       GenericClassWithHelpers<int, String>.fromJson(
-          json['value'] as Map<String, dynamic>,
-          (value) => (value as num).toInt(),
-          (value) => value as String),
+        json['value'] as Map<String, dynamic>,
+        (value) => (value as num).toInt(),
+        (value) => value as String,
+      ),
       GenericClassWithHelpers<double, BigInt>.fromJson(
-          json['value2'] as Map<String, dynamic>,
-          (value) => (value as num).toDouble(),
-          (value) => BigInt.parse(value as String)),
+        json['value2'] as Map<String, dynamic>,
+        (value) => (value as num).toDouble(),
+        (value) => BigInt.parse(value as String),
+      ),
       GenericClassWithHelpers<double?, BigInt?>.fromJson(
-          json['value3'] as Map<String, dynamic>,
-          (value) => (value as num?)?.toDouble(),
-          (value) => value == null ? null : BigInt.parse(value as String)),
+        json['value3'] as Map<String, dynamic>,
+        (value) => (value as num?)?.toDouble(),
+        (value) => value == null ? null : BigInt.parse(value as String),
+      ),
     );
 
 Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
     <String, dynamic>{
-      'value': instance.value.toJson(
-        (value) => value,
-        (value) => value,
-      ),
+      'value': instance.value.toJson((value) => value, (value) => value),
       'value2': instance.value2.toJson(
         (value) => value,
         (value) => value.toString(),

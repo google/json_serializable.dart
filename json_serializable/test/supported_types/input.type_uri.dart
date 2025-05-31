@@ -13,10 +13,7 @@ class SimpleClass {
   @JsonKey(defaultValue: _defaultValueFunc)
   Uri withDefault;
 
-  SimpleClass(
-    this.value,
-    this.withDefault,
-  );
+  SimpleClass(this.value, this.withDefault);
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);
@@ -31,10 +28,7 @@ class SimpleClassNullable {
   @JsonKey(defaultValue: _defaultValueFunc)
   Uri? withDefault;
 
-  SimpleClassNullable(
-    this.value,
-    this.withDefault,
-  );
+  SimpleClassNullable(this.value, this.withDefault);
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableFromJson(json);

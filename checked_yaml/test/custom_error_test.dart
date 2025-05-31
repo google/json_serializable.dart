@@ -6,17 +6,14 @@ import 'package:yaml/yaml.dart';
 void main() {
   test('bob', () {
     expect(
-      () => checkedYamlDecode(
-        '{"innerMap": {}}',
-        (m) {
-          throw CheckedFromJsonException(
-            m!['innerMap'] as YamlMap,
-            null,
-            'nothing',
-            null,
-          );
-        },
-      ),
+      () => checkedYamlDecode('{"innerMap": {}}', (m) {
+        throw CheckedFromJsonException(
+          m!['innerMap'] as YamlMap,
+          null,
+          'nothing',
+          null,
+        );
+      }),
       throwsA(
         isA<ParsedYamlException>()
             .having(

@@ -36,7 +36,8 @@ void main() {
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},
-        message: '''
+        message:
+            '''
 The language version ($sdkLowerBound) of this package ($_testPkgName) does not match the required range `$supportedLanguageConstraint`.
 
 Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
@@ -58,9 +59,7 @@ environment:
 
   test(
     'missing dependency in production code',
-    () => _structurePackage(
-      message: _missingProductionDep,
-    ),
+    () => _structurePackage(message: _missingProductionDep),
   );
 
   test(
@@ -126,7 +125,7 @@ String _fixPath(String path) {
 final _jsonSerialPathDependencyOverrides = {
   for (var entry in _jsonSerialPubspec.dependencyOverrides.entries)
     if (entry.value is PathDependency)
-      entry.key: {'path': _fixPath((entry.value as PathDependency).path)}
+      entry.key: {'path': _fixPath((entry.value as PathDependency).path)},
 };
 
 final _annotationLowerBound = requiredJsonAnnotationMinVersion.toString();
@@ -145,53 +144,42 @@ Future<void> _structurePackage({
   Map<String, dynamic> dependencies = const {},
   Map<String, dynamic> devDependencies = const {},
 }) async {
-  final pubspec = loudEncode(
-    {
-      'name': _testPkgName,
-      'environment': environment,
-      'dependencies': dependencies,
-      'dev_dependencies': {
-        ...devDependencies,
-        'build_runner': 'any',
-        'json_serializable': {'path': p.current},
-      },
-      'dependency_overrides': _jsonSerialPathDependencyOverrides,
+  final pubspec = loudEncode({
+    'name': _testPkgName,
+    'environment': environment,
+    'dependencies': dependencies,
+    'dev_dependencies': {
+      ...devDependencies,
+      'build_runner': 'any',
+      'json_serializable': {'path': p.current},
     },
-  );
+    'dependency_overrides': _jsonSerialPathDependencyOverrides,
+  });
 
   await d.file('pubspec.yaml', pubspec).create();
 
   /// A file in the lib directory without JsonSerializable should do nothing!
-  await d.dir(
-    'lib',
-    [
-      d.file('no_op.dart', '''
+  await d.dir('lib', [
+    d.file('no_op.dart', '''
 class NoOp {}
-''')
-    ],
-  ).create();
+'''),
+  ]).create();
 
-  await d.dir(
-    sourceDirectory,
-    [
-      d.file(
-        'sample.dart',
-        '''
+  await d.dir(sourceDirectory, [
+    d.file('sample.dart', '''
 import 'package:json_annotation/json_annotation.dart';
 
 part 'sample.g.dart';
 
 @JsonSerializable()
 class SomeClass{}
-''',
-      )
-    ],
-  ).create();
-  final proc = await TestProcess.start(
-    Platform.resolvedExecutable,
-    ['run', 'build_runner', 'build'],
-    workingDirectory: d.sandbox,
-  );
+'''),
+  ]).create();
+  final proc = await TestProcess.start(Platform.resolvedExecutable, [
+    'run',
+    'build_runner',
+    'build',
+  ], workingDirectory: d.sandbox);
 
   final lines = StringBuffer();
   await for (var line in proc.stdoutStream()) {
@@ -211,9 +199,12 @@ class SomeClass{}
   );
 
   if (message != null) {
-    expect(output, contains('''
+    expect(
+      output,
+      contains('''
 [WARNING] json_serializable on $sourceDirectory/sample.dart:
-$message'''));
+$message'''),
+    );
   }
 
   await proc.shouldExit(0);

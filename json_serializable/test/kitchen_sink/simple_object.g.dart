@@ -8,11 +8,8 @@ part of 'simple_object.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SimpleObject _$SimpleObjectFromJson(Map json) => SimpleObject(
-      (json['value'] as num).toInt(),
-    );
+SimpleObject _$SimpleObjectFromJson(Map json) =>
+    SimpleObject((json['value'] as num).toInt());
 
 Map<String, dynamic> _$SimpleObjectToJson(SimpleObject instance) =>
-    <String, dynamic>{
-      'value': instance.value,
-    };
+    <String, dynamic>{'value': instance.value};

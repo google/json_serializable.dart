@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=3.6
+// @dart=3.8
 
 // ignore_for_file: inference_failure_on_instance_creation
 
@@ -10,25 +10,27 @@ part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(r'''
 JsonConverterNamedCtor<E> _$JsonConverterNamedCtorFromJson<E>(
-        Map<String, dynamic> json) =>
-    JsonConverterNamedCtor<E>()
-      ..value = const _DurationMillisecondConverter.named()
-          .fromJson((json['value'] as num).toInt())
-      ..genericValue = _GenericConverter<E>.named()
-          .fromJson((json['genericValue'] as num).toInt())
-      ..keyAnnotationFirst = JsonConverterNamedCtor._fromJson(
-          (json['keyAnnotationFirst'] as num).toInt());
+  Map<String, dynamic> json,
+) => JsonConverterNamedCtor<E>()
+  ..value = const _DurationMillisecondConverter.named().fromJson(
+    (json['value'] as num).toInt(),
+  )
+  ..genericValue = _GenericConverter<E>.named().fromJson(
+    (json['genericValue'] as num).toInt(),
+  )
+  ..keyAnnotationFirst = JsonConverterNamedCtor._fromJson(
+    (json['keyAnnotationFirst'] as num).toInt(),
+  );
 
 Map<String, dynamic> _$JsonConverterNamedCtorToJson<E>(
-        JsonConverterNamedCtor<E> instance) =>
-    <String, dynamic>{
-      'value':
-          const _DurationMillisecondConverter.named().toJson(instance.value),
-      'genericValue':
-          _GenericConverter<E>.named().toJson(instance.genericValue),
-      'keyAnnotationFirst':
-          JsonConverterNamedCtor._toJson(instance.keyAnnotationFirst),
-    };
+  JsonConverterNamedCtor<E> instance,
+) => <String, dynamic>{
+  'value': const _DurationMillisecondConverter.named().toJson(instance.value),
+  'genericValue': _GenericConverter<E>.named().toJson(instance.genericValue),
+  'keyAnnotationFirst': JsonConverterNamedCtor._toJson(
+    instance.keyAnnotationFirst,
+  ),
+};
 ''')
 @JsonSerializable()
 @_DurationMillisecondConverter.named()
@@ -48,28 +50,34 @@ class JsonConverterNamedCtor<E> {
 
 @ShouldGenerate(r'''
 JsonConvertOnField<E> _$JsonConvertOnFieldFromJson<E>(
-        Map<String, dynamic> json) =>
-    JsonConvertOnField<E>()
-      ..annotatedField = const _DurationMillisecondConverter()
-          .fromJson((json['annotatedField'] as num).toInt())
-      ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
-          .fromJson((json['annotatedWithNamedCtor'] as num).toInt())
-      ..classAnnotatedWithField = _durationConverter
-          .fromJson((json['classAnnotatedWithField'] as num).toInt())
-      ..genericValue = _GenericConverter<E>()
-          .fromJson((json['genericValue'] as num).toInt());
+  Map<String, dynamic> json,
+) => JsonConvertOnField<E>()
+  ..annotatedField = const _DurationMillisecondConverter().fromJson(
+    (json['annotatedField'] as num).toInt(),
+  )
+  ..annotatedWithNamedCtor = const _DurationMillisecondConverter.named()
+      .fromJson((json['annotatedWithNamedCtor'] as num).toInt())
+  ..classAnnotatedWithField = _durationConverter.fromJson(
+    (json['classAnnotatedWithField'] as num).toInt(),
+  )
+  ..genericValue = _GenericConverter<E>().fromJson(
+    (json['genericValue'] as num).toInt(),
+  );
 
 Map<String, dynamic> _$JsonConvertOnFieldToJson<E>(
-        JsonConvertOnField<E> instance) =>
-    <String, dynamic>{
-      'annotatedField':
-          const _DurationMillisecondConverter().toJson(instance.annotatedField),
-      'annotatedWithNamedCtor': const _DurationMillisecondConverter.named()
-          .toJson(instance.annotatedWithNamedCtor),
-      'classAnnotatedWithField':
-          _durationConverter.toJson(instance.classAnnotatedWithField),
-      'genericValue': _GenericConverter<E>().toJson(instance.genericValue),
-    };
+  JsonConvertOnField<E> instance,
+) => <String, dynamic>{
+  'annotatedField': const _DurationMillisecondConverter().toJson(
+    instance.annotatedField,
+  ),
+  'annotatedWithNamedCtor': const _DurationMillisecondConverter.named().toJson(
+    instance.annotatedWithNamedCtor,
+  ),
+  'classAnnotatedWithField': _durationConverter.toJson(
+    instance.classAnnotatedWithField,
+  ),
+  'genericValue': _GenericConverter<E>().toJson(instance.genericValue),
+};
 ''')
 @JsonSerializable()
 @_durationConverter
@@ -168,11 +176,12 @@ class _ConverterWithCtorParams implements JsonConverter<Duration, int> {
 
 @ShouldGenerate(r'''
 Map<String, dynamic> _$JsonConverterOnGetterToJson(
-        JsonConverterOnGetter instance) =>
-    <String, dynamic>{
-      'annotatedGetter':
-          const _NeedsConversionConverter().toJson(instance.annotatedGetter),
-    };
+  JsonConverterOnGetter instance,
+) => <String, dynamic>{
+  'annotatedGetter': const _NeedsConversionConverter().toJson(
+    instance.annotatedGetter,
+  ),
+};
 ''')
 @JsonSerializable(createFactory: false)
 class JsonConverterOnGetter {
@@ -193,12 +202,10 @@ class _NeedsConversionConverter implements JsonConverter<NeedsConversion, int> {
   int toJson(NeedsConversion object) => 0;
 }
 
-@ShouldThrow(
-  '''
+@ShouldThrow('''
 Could not generate `fromJson` code for `value`.
 To support the type `NeedsConversion` you can:
-$converterOrKeyInstructions''',
-)
+$converterOrKeyInstructions''')
 @_NullableConverter()
 @JsonSerializable()
 class JsonConverterNullableToNonNullable {
