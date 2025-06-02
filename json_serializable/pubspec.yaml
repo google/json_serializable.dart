@@ -5,7 +5,7 @@ description: >-
   Dart classes.
 repository: https://github.com/google/json_serializable.dart/tree/master/json_serializable
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.8.0
 topics:
  - json
  - build-runner

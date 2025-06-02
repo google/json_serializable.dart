@@ -35,22 +35,28 @@ void _anyMapTests(KitchenSinkFactory factory) {
   });
 }
 
-void _testBadValue(String key, Object? badValue, KitchenSinkFactory factory,
-    bool checkedAssignment) {
+void _testBadValue(
+  String key,
+  Object? badValue,
+  KitchenSinkFactory factory,
+  bool checkedAssignment,
+) {
   final matcher = _getMatcher(factory.checked, key, checkedAssignment);
 
   for (final isJson in [true, false]) {
-    test('`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
-        () {
-      var copy = Map<dynamic, dynamic>.of(validValues);
-      copy[key] = badValue;
+    test(
+      '`$key` fails with value `$badValue`- ${isJson ? 'json' : 'yaml'}',
+      () {
+        var copy = Map<dynamic, dynamic>.of(validValues);
+        copy[key] = badValue;
 
-      if (!isJson) {
-        copy = loadYaml(loudEncode(copy)) as YamlMap;
-      }
+        if (!isJson) {
+          copy = loadYaml(loudEncode(copy)) as YamlMap;
+        }
 
-      expect(() => factory.fromJson(copy), matcher);
-    });
+        expect(() => factory.fromJson(copy), matcher);
+      },
+    );
   }
 }
 
@@ -80,7 +86,7 @@ Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
         'strictKeysObject' => _isAUnrecognizedKeysException('bob'),
         'intIterable' => isTypeError,
         'datetime-iterable' => isTypeError,
-        _ => throw StateError('Not expected! - $expectedKey')
+        _ => throw StateError('Not expected! - $expectedKey'),
       };
     }
   }
@@ -89,8 +95,11 @@ Matcher _getMatcher(bool checked, String? expectedKey, bool checkedAssignment) {
 }
 
 Matcher _isAUnrecognizedKeysException(String expectedMessage) =>
-    isA<UnrecognizedKeysException>()
-        .having((e) => e.message, 'message', expectedMessage);
+    isA<UnrecognizedKeysException>().having(
+      (e) => e.message,
+      'message',
+      expectedMessage,
+    );
 
 /// Invalid values that are found after the property set or ctor call
 const _invalidCheckedValues = {

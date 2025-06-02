@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// @dart=3.6
+// @dart=3.8
 
 // ignore_for_file: strict_top_level_inference
 
@@ -40,20 +40,19 @@ class InvalidFromFunc2Args {
   late String field;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 ValidToFromFuncClassStatic _$ValidToFromFuncClassStaticFromJson(
-        Map<String, dynamic> json) =>
+  Map<String, dynamic> json,
+) =>
     ValidToFromFuncClassStatic()
       ..field = ValidToFromFuncClassStatic._staticFunc(json['field'] as String);
 
 Map<String, dynamic> _$ValidToFromFuncClassStaticToJson(
-        ValidToFromFuncClassStatic instance) =>
-    <String, dynamic>{
-      'field': ValidToFromFuncClassStatic._staticFunc(instance.field),
-    };
-''',
-)
+  ValidToFromFuncClassStatic instance,
+) => <String, dynamic>{
+  'field': ValidToFromFuncClassStatic._staticFunc(instance.field),
+};
+''')
 @JsonSerializable()
 class ValidToFromFuncClassStatic {
   static String _staticFunc(String param) => throw UnimplementedError();
@@ -88,26 +87,23 @@ class Reproduce869NullableGenericType {
   late final List<int> values;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 Reproduce869NullableGenericTypeWithDefault
-    _$Reproduce869NullableGenericTypeWithDefaultFromJson(
-            Map<String, dynamic> json) =>
-        Reproduce869NullableGenericTypeWithDefault()
-          ..values =
-              json['values'] == null ? [] : _fromList(json['values'] as List?)
-          ..valuesNullable = json['valuesNullable'] == null
-              ? []
-              : _fromList(json['valuesNullable'] as List?);
+_$Reproduce869NullableGenericTypeWithDefaultFromJson(
+  Map<String, dynamic> json,
+) => Reproduce869NullableGenericTypeWithDefault()
+  ..values = json['values'] == null ? [] : _fromList(json['values'] as List?)
+  ..valuesNullable = json['valuesNullable'] == null
+      ? []
+      : _fromList(json['valuesNullable'] as List?);
 
 Map<String, dynamic> _$Reproduce869NullableGenericTypeWithDefaultToJson(
-        Reproduce869NullableGenericTypeWithDefault instance) =>
-    <String, dynamic>{
-      'values': _toList(instance.values),
-      'valuesNullable': _toList(instance.valuesNullable),
-    };
-''',
-)
+  Reproduce869NullableGenericTypeWithDefault instance,
+) => <String, dynamic>{
+  'values': _toList(instance.values),
+  'valuesNullable': _toList(instance.valuesNullable),
+};
+''')
 @JsonSerializable()
 class Reproduce869NullableGenericTypeWithDefault {
   @JsonKey(
@@ -142,20 +138,14 @@ class InvalidToFunc2Args {
   late String field;
 }
 
-@ShouldGenerate(
-  "_toStringFromObject(json['field'])",
-  contains: true,
-)
+@ShouldGenerate("_toStringFromObject(json['field'])", contains: true)
 @JsonSerializable()
 class ObjectConvertMethods {
   @JsonKey(fromJson: _toStringFromObject, toJson: _toObject)
   late String field;
 }
 
-@ShouldGenerate(
-  "_toDynamic(json['field'])",
-  contains: true,
-)
+@ShouldGenerate("_toDynamic(json['field'])", contains: true)
 @JsonSerializable()
 class DynamicConvertMethods {
   @JsonKey(fromJson: _toDynamic, toJson: _toDynamic)
@@ -164,10 +154,7 @@ class DynamicConvertMethods {
 
 String _toString(String input) => 'null';
 
-@ShouldGenerate(
-  "_toString(json['field'] as String)",
-  contains: true,
-)
+@ShouldGenerate("_toString(json['field'] as String)", contains: true)
 @JsonSerializable()
 class TypedConvertMethods {
   @JsonKey(fromJson: _toString, toJson: _toString)
@@ -176,16 +163,13 @@ class TypedConvertMethods {
 
 String? _toStringNullOnEmpty(String input) => input.isEmpty ? null : input;
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 Map<String, dynamic> _$ToJsonNullableFalseIncludeIfNullFalseToJson(
-        ToJsonNullableFalseIncludeIfNullFalse instance) =>
-    <String, dynamic>{
-      if (_toStringNullOnEmpty(instance.field) case final value?)
-        'field': value,
-    };
-''',
-)
+  ToJsonNullableFalseIncludeIfNullFalse instance,
+) => <String, dynamic>{
+  if (_toStringNullOnEmpty(instance.field) case final value?) 'field': value,
+};
+''')
 @JsonSerializable(createFactory: false)
 class ToJsonNullableFalseIncludeIfNullFalse {
   @JsonKey(toJson: _toStringNullOnEmpty, includeIfNull: false)
@@ -198,16 +182,14 @@ String _fromDynamicList(List input) => 'null';
 
 String _fromDynamicIterable(Iterable input) => 'null';
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 FromDynamicCollection _$FromDynamicCollectionFromJson(
-        Map<String, dynamic> json) =>
-    FromDynamicCollection()
-      ..mapField = _fromDynamicMap(json['mapField'] as Map)
-      ..listField = _fromDynamicList(json['listField'] as List)
-      ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
-''',
-)
+  Map<String, dynamic> json,
+) => FromDynamicCollection()
+  ..mapField = _fromDynamicMap(json['mapField'] as Map)
+  ..listField = _fromDynamicList(json['listField'] as List)
+  ..iterableField = _fromDynamicIterable(json['iterableField'] as List);
+''')
 @JsonSerializable(createToJson: false)
 class FromDynamicCollection {
   @JsonKey(fromJson: _fromDynamicMap)
@@ -224,17 +206,16 @@ String _fromNullableDynamicList(List? input) => 'null';
 
 String _fromNullableDynamicIterable(Iterable? input) => 'null';
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 FromNullableDynamicCollection _$FromNullableDynamicCollectionFromJson(
-        Map<String, dynamic> json) =>
-    FromNullableDynamicCollection()
-      ..mapField = _fromNullableDynamicMap(json['mapField'] as Map?)
-      ..listField = _fromNullableDynamicList(json['listField'] as List?)
-      ..iterableField =
-          _fromNullableDynamicIterable(json['iterableField'] as List?);
-''',
-)
+  Map<String, dynamic> json,
+) => FromNullableDynamicCollection()
+  ..mapField = _fromNullableDynamicMap(json['mapField'] as Map?)
+  ..listField = _fromNullableDynamicList(json['listField'] as List?)
+  ..iterableField = _fromNullableDynamicIterable(
+    json['iterableField'] as List?,
+  );
+''')
 @JsonSerializable(createToJson: false)
 class FromNullableDynamicCollection {
   @JsonKey(fromJson: _fromNullableDynamicMap)
@@ -311,19 +292,13 @@ class OkayOnlyOptionalPositional {
   String? field;
 }
 
-@ShouldGenerate(
-  r'''
+@ShouldGenerate(r'''
 _BetterPrivateNames _$BetterPrivateNamesFromJson(Map<String, dynamic> json) =>
-    _BetterPrivateNames(
-      name: json['name'] as String,
-    );
+    _BetterPrivateNames(name: json['name'] as String);
 
 Map<String, dynamic> _$BetterPrivateNamesToJson(_BetterPrivateNames instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-    };
-''',
-)
+    <String, dynamic>{'name': instance.name};
+''')
 @JsonSerializable(createFactory: true, createToJson: true)
 // ignore: unused_element
 class _BetterPrivateNames {

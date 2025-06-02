@@ -16,11 +16,11 @@ void main() {
   for (var input in const <Map<String, Object?>>{
     {'value': {}},
     {
-      'value': {'key': 'value'}
+      'value': {'key': 'value'},
     },
     {
       // Regression case for https://github.com/google/json_serializable.dart/issues/864
-      'value': {'key': null}
+      'value': {'key': null},
     },
   }) {
     test(input, () {

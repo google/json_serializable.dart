@@ -36,7 +36,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final subFieldValue = context.serialize(valueType, closureArg);
     final subKeyValue =
         _forType(keyType)?.serialize(keyType, _keyParam, false) ??
-            context.serialize(keyType, _keyParam);
+        context.serialize(keyType, _keyParam);
 
     if (closureArg == subFieldValue && _keyParam == subKeyValue) {
       return expression;
@@ -67,7 +67,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     _checkSafeKeyType(expression, keyArg);
 
-    final valueArgIsAny = valueArg is DynamicType ||
+    final valueArgIsAny =
+        valueArg is DynamicType ||
         (valueArg.isDartCoreObject && valueArg.isNullableType);
     final isKeyStringable = _isKeyStringable(keyArg);
 
@@ -125,8 +126,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final toFromString = _forType(keyArg);
     if (toFromString != null) {
-      keyUsage =
-          toFromString.deserialize(keyArg, keyUsage, false, true).toString();
+      keyUsage = toFromString
+          .deserialize(keyArg, keyUsage, false, true)
+          .toString();
     }
 
     return '($expression $mapCast)$optionalQuestion.map( '
@@ -138,12 +140,7 @@ final _intString = ToFromStringHelper('int.parse', 'toString()', 'int');
 
 /// [ToFromStringHelper] instances representing non-String types that can
 /// be used as [Map] keys.
-final _instances = [
-  bigIntString,
-  dateTimeString,
-  _intString,
-  uriString,
-];
+final _instances = [bigIntString, dateTimeString, _intString, uriString];
 
 ToFromStringHelper? _forType(DartType type) =>
     _instances.where((i) => i.matches(type)).singleOrNull;
@@ -176,12 +173,12 @@ void _checkSafeKeyType(String expression, DartType keyArg) {
 /// Used in [_checkSafeKeyType] to provide a helpful error with unsupported
 /// types.
 List<String> get allowedMapKeyTypes => [
-      'Object',
-      'dynamic',
-      'enum',
-      'String',
-      ..._instances.map((i) => i.coreTypeName)
-    ];
+  'Object',
+  'dynamic',
+  'enum',
+  'String',
+  ..._instances.map((i) => i.coreTypeName),
+];
 
 extension on DartType {
   bool get isSimpleJsonTypeNotDouble =>

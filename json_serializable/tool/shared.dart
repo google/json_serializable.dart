@@ -11,10 +11,12 @@ import 'package:yaml/yaml.dart';
 // Until we have verification in pkg:build and friends
 // https://github.com/dart-lang/build/issues/590
 Builder validate(String builderName, Builder builder) {
-  var buildYaml = loadYaml(
-    File('build.yaml').readAsStringSync(),
-    sourceUrl: Uri.parse('build.yaml'),
-  ) as YamlMap;
+  var buildYaml =
+      loadYaml(
+            File('build.yaml').readAsStringSync(),
+            sourceUrl: Uri.parse('build.yaml'),
+          )
+          as YamlMap;
 
   for (var key in ['builders', builderName, 'build_extensions']) {
     buildYaml = buildYaml[key] as YamlMap;
@@ -50,8 +52,8 @@ class Replacement {
   const Replacement(this.existing, this.replacement);
 
   const Replacement.addJsonSerializableKey(String key, bool value)
-      : existing = '@JsonSerializable(',
-        replacement = '@JsonSerializable(\n  $key: $value,';
+    : existing = '@JsonSerializable(',
+      replacement = '@JsonSerializable(\n  $key: $value,';
 
   static String generate(
     String inputContent,
@@ -73,5 +75,6 @@ class Replacement {
 
 extension BuildStepExtension on BuildStep {
   Future<DartFormatter> formatter() async => DartFormatter(
-      languageVersion: (await inputLibrary).languageVersion.effective);
+    languageVersion: (await inputLibrary).languageVersion.effective,
+  );
 }

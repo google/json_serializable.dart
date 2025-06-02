@@ -9,10 +9,9 @@ part of 'input.type_enumtype.dart';
 // **************************************************************************
 
 SimpleClass _$SimpleClassFromJson(Map<String, dynamic> json) => SimpleClass(
-      $enumDecode(_$EnumTypeEnumMap, json['value']),
-      $enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ??
-          EnumType.alpha,
-    );
+  $enumDecode(_$EnumTypeEnumMap, json['value']),
+  $enumDecodeNullable(_$EnumTypeEnumMap, json['withDefault']) ?? EnumType.alpha,
+);
 
 Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{
@@ -35,8 +34,8 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
-        SimpleClassNullable instance) =>
-    <String, dynamic>{
-      'value': _$EnumTypeEnumMap[instance.value],
-      'withDefault': _$EnumTypeEnumMap[instance.withDefault],
-    };
+  SimpleClassNullable instance,
+) => <String, dynamic>{
+  'value': _$EnumTypeEnumMap[instance.value],
+  'withDefault': _$EnumTypeEnumMap[instance.withDefault],
+};

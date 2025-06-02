@@ -13,10 +13,7 @@ class SimpleClass {
   @JsonKey(defaultValue: 42)
   dynamic withDefault;
 
-  SimpleClass(
-    this.value,
-    this.withDefault,
-  );
+  SimpleClass(this.value, this.withDefault);
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);

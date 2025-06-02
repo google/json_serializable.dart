@@ -2,10 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'create_per_field_to_json_example.g.dart';
 
-@JsonSerializable(
-  createPerFieldToJson: true,
-  explicitToJson: true,
-)
+@JsonSerializable(createPerFieldToJson: true, explicitToJson: true)
 class Model {
   Model({
     required this.firstName,
@@ -56,21 +53,14 @@ class Nested {
   Map<String, Object?> toJson() => _$NestedToJson(this);
 }
 
-@JsonSerializable(
-  createPerFieldToJson: true,
-  genericArgumentFactories: true,
-)
+@JsonSerializable(createPerFieldToJson: true, genericArgumentFactories: true)
 class GenericFactory<T> {
-  GenericFactory(
-    this.value,
-    this.map,
-  );
+  GenericFactory(this.value, this.map);
 
   factory GenericFactory.fromJson(
     Map<String, Object?> json,
     T Function(Object? json) fromJsonT,
-  ) =>
-      _$GenericFactoryFromJson(json, fromJsonT);
+  ) => _$GenericFactoryFromJson(json, fromJsonT);
 
   final T value;
   final Map<String, T> map;

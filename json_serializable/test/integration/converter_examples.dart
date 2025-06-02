@@ -110,9 +110,7 @@ class Regression1229 {
   @JsonKey(includeIfNull: false)
   final DateTime? date;
 
-  Regression1229({
-    this.date,
-  });
+  Regression1229({this.date});
 
   factory Regression1229.fromJson(Map<String, dynamic> json) =>
       _$Regression1229FromJson(json);

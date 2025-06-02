@@ -1,4 +1,4 @@
-// @dart=3.6
+// @dart=3.8
 
 part of '_json_serializable_test_input.dart';
 
@@ -19,21 +19,17 @@ class MapKeyVariety {
   late Map<int, int> intIntMap;
 }
 
-@ShouldThrow(
-  r'''
+@ShouldThrow(r'''
 Could not generate `fromJson` code for `value` because of type `Object?`.
-Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-)
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''')
 @JsonSerializable()
 class MapKeyNoNullableObject {
   late Map<Object?, int> value;
 }
 
-@ShouldThrow(
-  r'''
+@ShouldThrow(r'''
 Could not generate `fromJson` code for `value` because of type `String?`.
-Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''',
-)
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''')
 @JsonSerializable()
 class MapKeyNoNullableString {
   late Map<String?, int> value;

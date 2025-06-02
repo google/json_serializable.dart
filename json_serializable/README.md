@@ -56,18 +56,18 @@ Building creates the corresponding part `example.g.dart`:
 part of 'example.dart';
 
 Person _$PersonFromJson(Map<String, dynamic> json) => Person(
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      dateOfBirth: json['dateOfBirth'] == null
-          ? null
-          : DateTime.parse(json['dateOfBirth'] as String),
-    );
+  firstName: json['firstName'] as String,
+  lastName: json['lastName'] as String,
+  dateOfBirth: json['dateOfBirth'] == null
+      ? null
+      : DateTime.parse(json['dateOfBirth'] as String),
+);
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
-    };
+  'firstName': instance.firstName,
+  'lastName': instance.lastName,
+  'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+};
 ```
 
 # Running the code generator
@@ -211,10 +211,7 @@ customize the encoding/decoding of any type, you have a few options.
       factory Sample3.fromJson(Map<String, dynamic> json) =>
           _$Sample3FromJson(json);
 
-      @JsonKey(
-        toJson: _toJson,
-        fromJson: _fromJson,
-      )
+      @JsonKey(toJson: _toJson, fromJson: _fromJson)
       final DateTime value;
 
       Map<String, dynamic> toJson() => _$Sample3ToJson(this);

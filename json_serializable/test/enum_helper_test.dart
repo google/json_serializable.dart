@@ -16,7 +16,7 @@ void main() {
         'HELLO',
         'hi_to',
         '_private',
-        'weird_'
+        'weird_',
       ]) {
         test(expression, () {
           expect(simpleExpression.hasMatch(expression), isTrue);

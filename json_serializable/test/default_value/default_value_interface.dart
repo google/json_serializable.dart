@@ -54,13 +54,10 @@ class ConstClass {
 
   ConstClass.easy() : field = 'easy';
 
-  factory ConstClass.fromJson(Map<String, dynamic> json) => ConstClass(
-        json['field'] as String,
-      );
+  factory ConstClass.fromJson(Map<String, dynamic> json) =>
+      ConstClass(json['field'] as String);
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'field': field,
-      };
+  Map<String, dynamic> toJson() => <String, dynamic>{'field': field};
 }
 
 ConstClass constClassFromJson(String json) => ConstClass(json);

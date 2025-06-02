@@ -10,32 +10,29 @@ Tuple<T, S> _$TupleFromJson<T, S>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
   S Function(Object? json) fromJsonS,
-) =>
-    Tuple<T, S>(
-      fromJsonT(json['value1']),
-      fromJsonS(json['value2']),
-    );
+) => Tuple<T, S>(fromJsonT(json['value1']), fromJsonS(json['value2']));
 
 Map<String, dynamic> _$TupleToJson<T, S>(
   Tuple<T, S> instance,
   Object? Function(T value) toJsonT,
   Object? Function(S value) toJsonS,
-) =>
-    <String, dynamic>{
-      'value1': toJsonT(instance.value1),
-      'value2': toJsonS(instance.value2),
-    };
+) => <String, dynamic>{
+  'value1': toJsonT(instance.value1),
+  'value2': toJsonS(instance.value2),
+};
 
 ConcreteClass _$ConcreteClassFromJson(Map<String, dynamic> json) =>
     ConcreteClass(
       Tuple<int, DateTime>.fromJson(
-          json['tuple1'] as Map<String, dynamic>,
-          (value) => (value as num).toInt(),
-          (value) => DateTime.parse(value as String)),
+        json['tuple1'] as Map<String, dynamic>,
+        (value) => (value as num).toInt(),
+        (value) => DateTime.parse(value as String),
+      ),
       Tuple<Duration, BigInt>.fromJson(
-          json['tuple2'] as Map<String, dynamic>,
-          (value) => Duration(microseconds: (value as num).toInt()),
-          (value) => BigInt.parse(value as String)),
+        json['tuple2'] as Map<String, dynamic>,
+        (value) => Duration(microseconds: (value as num).toInt()),
+        (value) => BigInt.parse(value as String),
+      ),
     );
 
 Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>

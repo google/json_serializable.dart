@@ -35,42 +35,37 @@ Never throwUnsupported(FieldElement element, String message) =>
 
 T? readEnum<T extends Enum>(ConstantReader reader, List<T> values) =>
     reader.isNull
-        ? null
-        : enumValueForDartObject<T>(
-            reader.objectValue,
-            values,
-            (f) => f.name,
-          );
+    ? null
+    : enumValueForDartObject<T>(reader.objectValue, values, (f) => f.name);
 
 T enumValueForDartObject<T>(
   DartObject source,
   List<T> items,
   String Function(T) name,
-) =>
-    items[source.getField('index')!.toIntValue()!];
+) => items[source.getField('index')!.toIntValue()!];
 
 /// Return an instance of [JsonSerializable] corresponding to the provided
 /// [reader].
 // #CHANGE WHEN UPDATING json_annotation
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
-      anyMap: reader.read('anyMap').literalValue as bool?,
-      checked: reader.read('checked').literalValue as bool?,
-      constructor: reader.read('constructor').literalValue as String?,
-      createFactory: reader.read('createFactory').literalValue as bool?,
-      createToJson: reader.read('createToJson').literalValue as bool?,
-      createFieldMap: reader.read('createFieldMap').literalValue as bool?,
-      createJsonKeys: reader.read('createJsonKeys').literalValue as bool?,
-      createPerFieldToJson:
-          reader.read('createPerFieldToJson').literalValue as bool?,
-      disallowUnrecognizedKeys:
-          reader.read('disallowUnrecognizedKeys').literalValue as bool?,
-      explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-      fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
-      genericArgumentFactories:
-          reader.read('genericArgumentFactories').literalValue as bool?,
-      ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
-      includeIfNull: reader.read('includeIfNull').literalValue as bool?,
-    );
+  anyMap: reader.read('anyMap').literalValue as bool?,
+  checked: reader.read('checked').literalValue as bool?,
+  constructor: reader.read('constructor').literalValue as String?,
+  createFactory: reader.read('createFactory').literalValue as bool?,
+  createToJson: reader.read('createToJson').literalValue as bool?,
+  createFieldMap: reader.read('createFieldMap').literalValue as bool?,
+  createJsonKeys: reader.read('createJsonKeys').literalValue as bool?,
+  createPerFieldToJson:
+      reader.read('createPerFieldToJson').literalValue as bool?,
+  disallowUnrecognizedKeys:
+      reader.read('disallowUnrecognizedKeys').literalValue as bool?,
+  explicitToJson: reader.read('explicitToJson').literalValue as bool?,
+  fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  genericArgumentFactories:
+      reader.read('genericArgumentFactories').literalValue as bool?,
+  ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
+  includeIfNull: reader.read('includeIfNull').literalValue as bool?,
+);
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
 /// instance represented by [reader].
@@ -90,14 +85,18 @@ ClassConfig mergeConfig(
   assert(config.ctorParamDefaults.isEmpty);
 
   final constructor = annotation.constructor ?? config.constructor;
-  final constructorInstance =
-      _constructorByNameOrNull(classElement, constructor);
+  final constructorInstance = _constructorByNameOrNull(
+    classElement,
+    constructor,
+  );
 
   final paramDefaultValueMap = constructorInstance == null
       ? <String, String>{}
-      : Map<String, String>.fromEntries(constructorInstance.parameters
-          .where((element) => element.hasDefaultValue)
-          .map((e) => MapEntry(e.name, e.defaultValueCode!)));
+      : Map<String, String>.fromEntries(
+          constructorInstance.parameters
+              .where((element) => element.hasDefaultValue)
+              .map((e) => MapEntry(e.name, e.defaultValueCode!)),
+        );
 
   final converters = reader.read('converters');
 
@@ -115,7 +114,8 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
-    genericArgumentFactories: annotation.genericArgumentFactories ??
+    genericArgumentFactories:
+        annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
@@ -187,16 +187,13 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedFieldName(
-  FieldRename fieldRename,
-  String declaredName,
-) =>
+String encodedFieldName(FieldRename fieldRename, String declaredName) =>
     switch (fieldRename) {
       FieldRename.none => declaredName,
       FieldRename.snake => declaredName.snake,
       FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
       FieldRename.kebab => declaredName.kebab,
-      FieldRename.pascal => declaredName.pascal
+      FieldRename.pascal => declaredName.pascal,
     };
 
 /// Return the Dart code presentation for the given [type].
@@ -205,10 +202,7 @@ String encodedFieldName(
 /// types and locations of these files in code. Specifically, it supports
 /// only [InterfaceType]s, with optional type arguments that are also should
 /// be [InterfaceType]s.
-String typeToCode(
-  DartType type, {
-  bool forceNullable = false,
-}) {
+String typeToCode(DartType type, {bool forceNullable = false}) {
   if (type is DynamicType) {
     return 'dynamic';
   } else if (type is InterfaceType) {
@@ -273,8 +267,6 @@ extension ExecutableElementExtension on ExecutableElement {
       return '${enclosingElement3.name}.$name';
     }
 
-    throw UnsupportedError(
-      'Not sure how to support typeof $runtimeType',
-    );
+    throw UnsupportedError('Not sure how to support typeof $runtimeType');
   }
 }

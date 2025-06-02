@@ -23,14 +23,18 @@ void _member(String startToken) {
   final classEnd = _exampleContent.indexOf(_memberEnd, start);
   expect(classEnd, greaterThan(start));
 
-  final content =
-      _exampleContent.substring(start, classEnd + _memberEnd.length).trim();
+  final content = _exampleContent
+      .substring(start, classEnd + _memberEnd.length)
+      .trim();
 
-  expect(_readmeContent, contains('''
+  expect(
+    _readmeContent,
+    contains('''
 ```dart
 $content
 ```
-'''));
+'''),
+  );
 }
 
 void main() {
@@ -52,16 +56,19 @@ ParsedYamlException: line 1, column 10: Unsupported value for "name". Cannot be 
   │          ^^
   ╵''';
 
-    expect(_readmeContent, contains('''
+    expect(
+      _readmeContent,
+      contains('''
 ```console
 \$ dart example/example.dart '$inputContent'
 $errorContent
-```'''));
-
-    final proc = await TestProcess.start(
-      Platform.resolvedExecutable,
-      [_examplePath, inputContent],
+```'''),
     );
+
+    final proc = await TestProcess.start(Platform.resolvedExecutable, [
+      _examplePath,
+      inputContent,
+    ]);
     await expectLater(
       proc.stderr,
       emitsInOrder(LineSplitter.split(errorContent)),

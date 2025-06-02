@@ -9,9 +9,9 @@ part of 'json_keys_example.dart';
 // **************************************************************************
 
 Model _$ModelFromJson(Map<String, dynamic> json) => Model(
-      firstName: json['first-name'] as String,
-      lastName: json['LAST_NAME'] as String,
-    );
+  firstName: json['first-name'] as String,
+  lastName: json['LAST_NAME'] as String,
+);
 
 abstract final class _$ModelJsonKeys {
   static const String firstName = 'first-name';
@@ -19,6 +19,6 @@ abstract final class _$ModelJsonKeys {
 }
 
 Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
-      'first-name': instance.firstName,
-      'LAST_NAME': instance.lastName,
-    };
+  'first-name': instance.firstName,
+  'LAST_NAME': instance.lastName,
+};
