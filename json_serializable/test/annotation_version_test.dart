@@ -32,7 +32,7 @@ void main() {
 
   group('language version', () {
     test('is less than required', () async {
-      const sdkLowerBound = '2.12.0';
+      const sdkLowerBound = '3.7.0';
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},

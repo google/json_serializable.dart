@@ -14,6 +14,6 @@ const converterOrKeyInstructions = r'''
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
 
-/// This package generates code that uses case statements, which were introduced
-/// in Dart 3.0.
-const supportedLanguageConstraint = '^3.0.0';
+/// This package generates code that uses null-aware elements, which were
+/// introduced in Dart 3.8.
+const supportedLanguageConstraint = '^3.8.0';
