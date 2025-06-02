@@ -553,8 +553,9 @@ SimpleClassOfEnumType _$SimpleClassOfEnumTypeFromJson(
       _$recordConvert(
         json['value'],
         ($jsonValue) => (
-          $enumDecode(_$EnumTypeEnumMap, $jsonValue[r'$1']),
-          named: $enumDecode(_$EnumTypeEnumMap, $jsonValue['named']),
+          $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, $jsonValue[r'$1']),
+          named: $enumDecodeWithDecodeMap(
+              _$EnumTypeEnumDecodeMap, $jsonValue['named']),
         ),
       ),
     );
@@ -568,11 +569,20 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
       },
     };
 
+// ignore: unused_element
 const _$EnumTypeEnumMap = {
   EnumType.alpha: 'alpha',
   EnumType.beta: 'beta',
   EnumType.gamma: 'gamma',
   EnumType.delta: 'delta',
+};
+
+// ignore: unused_element
+const _$EnumTypeEnumDecodeMap = {
+  'alpha': EnumType.alpha,
+  'beta': EnumType.beta,
+  'gamma': EnumType.gamma,
+  'delta': EnumType.delta,
 };
 
 SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
@@ -581,8 +591,9 @@ SimpleClassNullableOfEnumType _$SimpleClassNullableOfEnumTypeFromJson(
       _$recordConvertNullable(
         json['value'],
         ($jsonValue) => (
-          $enumDecode(_$EnumTypeEnumMap, $jsonValue[r'$1']),
-          named: $enumDecode(_$EnumTypeEnumMap, $jsonValue['named']),
+          $enumDecodeWithDecodeMap(_$EnumTypeEnumDecodeMap, $jsonValue[r'$1']),
+          named: $enumDecodeWithDecodeMap(
+              _$EnumTypeEnumDecodeMap, $jsonValue['named']),
         ),
       ),
     );
@@ -604,8 +615,10 @@ SimpleClassOfEnumTypeNullable _$SimpleClassOfEnumTypeNullableFromJson(
       _$recordConvert(
         json['value'],
         ($jsonValue) => (
-          $enumDecodeNullable(_$EnumTypeEnumMap, $jsonValue[r'$1']),
-          named: $enumDecodeNullable(_$EnumTypeEnumMap, $jsonValue['named']),
+          $enumDecodeNullableWithDecodeMap(
+              _$EnumTypeEnumDecodeMap, $jsonValue[r'$1']),
+          named: $enumDecodeNullableWithDecodeMap(
+              _$EnumTypeEnumDecodeMap, $jsonValue['named']),
         ),
       ),
     );
@@ -626,9 +639,10 @@ SimpleClassNullableOfEnumTypeNullable
           _$recordConvertNullable(
             json['value'],
             ($jsonValue) => (
-              $enumDecodeNullable(_$EnumTypeEnumMap, $jsonValue[r'$1']),
-              named:
-                  $enumDecodeNullable(_$EnumTypeEnumMap, $jsonValue['named']),
+              $enumDecodeNullableWithDecodeMap(
+                  _$EnumTypeEnumDecodeMap, $jsonValue[r'$1']),
+              named: $enumDecodeNullableWithDecodeMap(
+                  _$EnumTypeEnumDecodeMap, $jsonValue['named']),
             ),
           ),
         );
