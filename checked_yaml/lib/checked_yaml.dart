@@ -59,43 +59,42 @@ ParsedYamlException toParsedYamlException(
 }) {
   final yamlMap = exceptionMap ?? exception.map as YamlMap;
 
-  final innerError = exception.innerError;
+  return switch (exception) {
+    CheckedFromJsonException(badKey: true, message: final String message) =>
+      () {
+        final innerError = exception.innerError;
+        final key = (innerError is UnrecognizedKeysException)
+            ? innerError.unrecognizedKeys.first
+            : exception.key;
 
-  if (exception.badKey) {
-    final key = (innerError is UnrecognizedKeysException)
-        ? innerError.unrecognizedKeys.first
-        : exception.key;
-
-    final node =
-        yamlMap.nodes.keys.singleWhere(
-              (k) => (k as YamlScalar).value == key,
-              orElse: () => yamlMap,
-            )
-            as YamlNode;
-    return ParsedYamlException(exception.message!, node, innerError: exception);
-  }
-
-  if (exception.key == null) {
-    return ParsedYamlException(
+        final node =
+            yamlMap.nodes.keys.singleWhere(
+                  (k) => (k as YamlScalar).value == key,
+                  orElse: () => yamlMap,
+                )
+                as YamlNode;
+        return ParsedYamlException(message, node, innerError: exception);
+      }(),
+    CheckedFromJsonException(key: null) => ParsedYamlException(
       exception.message ?? 'There was an error parsing the map.',
       yamlMap,
       innerError: exception,
-    );
-  }
-
-  if (!yamlMap.containsKey(exception.key)) {
-    return ParsedYamlException(
-      ['Missing key "${exception.key}".', ?exception.message].join(' '),
-      yamlMap,
+    ),
+    CheckedFromJsonException(key: final key!) when !yamlMap.containsKey(key) =>
+      ParsedYamlException(
+        ['Missing key "$key".', ?exception.message].join(' '),
+        yamlMap,
+        innerError: exception,
+      ),
+    _ => ParsedYamlException(
+      [
+        'Unsupported value for "${exception.key}".',
+        ?exception.message,
+      ].join(' '),
+      yamlMap.nodes[exception.key] ?? yamlMap,
       innerError: exception,
-    );
-  }
-
-  return ParsedYamlException(
-    ['Unsupported value for "${exception.key}".', ?exception.message].join(' '),
-    yamlMap.nodes[exception.key] ?? yamlMap,
-    innerError: exception,
-  );
+    ),
+  };
 }
 
 /// An exception thrown when parsing YAML that contains information about the
