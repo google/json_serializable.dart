@@ -49,8 +49,7 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
   'enumValue': _$EnumValueEnumMap[instance.enumValue],
   'nested': instance.nested?.toJson(),
   'nestedGeneric': instance.nestedGeneric?.toJson((value) => value),
-  if (instance.nestedExcludeIfNull?.toJson() case final value?)
-    'nestedExcludeIfNull': value,
+  'nestedExcludeIfNull': ?instance.nestedExcludeIfNull?.toJson(),
 };
 
 const _$EnumValueEnumMap = {EnumValue.first: '1', EnumValue.second: 'second'};

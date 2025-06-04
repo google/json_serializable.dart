@@ -6,7 +6,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:source_helper/source_helper.dart';
 
-import 'constants.dart';
 import 'enum_utils.dart';
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -109,10 +108,9 @@ mixin EncodeHelper implements HelperCore {
           final keyExpression = safeNameAccess(field);
           final valueExpression = _serializeField(field, access);
 
-          final keyValuePair = _canWriteJsonWithoutNullCheck(field)
-              ? '$keyExpression: $valueExpression'
-              : 'if ($valueExpression case final $generatedLocalVarName?) '
-                    '$keyExpression: $generatedLocalVarName';
+          final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
+
+          final keyValuePair = '$keyExpression: $maybeQuestion$valueExpression';
           return '        $keyValuePair,\n';
         }),
       )

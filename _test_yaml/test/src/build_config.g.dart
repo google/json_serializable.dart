@@ -119,20 +119,17 @@ Builder _$BuilderFromJson(Map json) => $checkedCreate(
 );
 
 Map<String, dynamic> _$BuilderToJson(Builder instance) => <String, dynamic>{
-  if (instance.target case final value?) 'target': value,
-  if (instance.import case final value?) 'import': value,
-  if (instance.isOptional case final value?) 'is_optional': value,
-  if (instance.configLocation?.toString() case final value?)
-    'configLocation': value,
-  if (_$AutoApplyEnumMap[instance.autoApply] case final value?)
-    'auto_apply': value,
-  if (_$BuildToEnumMap[instance.buildTo] case final value?) 'build_to': value,
-  if (_$AutoApplyEnumMap[instance.defaultEnumTest] case final value?)
-    'defaultEnumTest': value,
+  'target': ?instance.target,
+  'import': ?instance.import,
+  'is_optional': ?instance.isOptional,
+  'configLocation': ?instance.configLocation?.toString(),
+  'auto_apply': ?_$AutoApplyEnumMap[instance.autoApply],
+  'build_to': ?_$BuildToEnumMap[instance.buildTo],
+  'defaultEnumTest': ?_$AutoApplyEnumMap[instance.defaultEnumTest],
   'builder_factories': instance.builderFactories,
-  if (instance.appliesBuilders case final value?) 'applies_builders': value,
-  if (instance.requiredInputs case final value?) 'required_inputs': value,
-  if (instance.buildExtensions case final value?) 'build_extensions': value,
+  'applies_builders': ?instance.appliesBuilders,
+  'required_inputs': ?instance.requiredInputs,
+  'build_extensions': ?instance.buildExtensions,
 };
 
 const _$BuildToEnumMap = {BuildTo.cache: 'cache', BuildTo.source: 'source'};
