@@ -36,7 +36,6 @@ T checkedYamlDecode<T>(
   if (yaml is YamlMap) {
     map = yaml;
   } else if (allowNull && yaml is YamlScalar && yaml.value == null) {
-    // TODO: test this case!
     map = null;
   } else {
     throw ParsedYamlException('Not a map', yaml);
@@ -113,11 +112,7 @@ class ParsedYamlException implements Exception {
   /// contains the source error object.
   final Object? innerError;
 
-  const ParsedYamlException(
-    this.message,
-    YamlNode this.yamlNode, {
-    this.innerError,
-  });
+  ParsedYamlException(this.message, YamlNode this.yamlNode, {this.innerError});
 
   factory ParsedYamlException.fromYamlException(YamlException exception) =
       _WrappedYamlException;
@@ -131,7 +126,7 @@ class ParsedYamlException implements Exception {
 }
 
 class _WrappedYamlException implements ParsedYamlException {
-  const _WrappedYamlException(this.innerError);
+  _WrappedYamlException(this.innerError);
 
   @override
   String? get formattedMessage => innerError.span?.message(innerError.message);
