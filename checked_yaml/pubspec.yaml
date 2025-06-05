@@ -1,5 +1,5 @@
 name: checked_yaml
-version: 2.0.4-wip
+version: 2.0.4
 
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
