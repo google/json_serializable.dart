@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
-import 'package:collection/collection.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
@@ -56,7 +55,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       ),
     );
 
-    if (sealedSupersAndConfigs.firstWhereOrNull((e) => e.config == null)
+    if (sealedSupersAndConfigs.where((e) => e.config == null).firstOrNull
         case final notAnnotated? when sealedSupersAndConfigs.isNotEmpty) {
       throw InvalidGenerationSourceError(
         'The class `${element.displayName}` is annotated '
@@ -82,9 +81,11 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       );
     }
 
-    if (sealedSupersAndConfigs.firstWhereOrNull(
-          (e) => e.config?.unionDiscriminator == config.unionDiscriminator,
-        )
+    if (sealedSupersAndConfigs
+            .where(
+              (e) => e.config?.unionDiscriminator == config.unionDiscriminator,
+            )
+            .firstOrNull
         case final conflictingSuper? when element.isSealed) {
       throw InvalidGenerationSource(
         'The classes `${conflictingSuper.classElement.displayName}` and '
@@ -97,9 +98,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       );
     }
 
-    if (sealedSupersAndConfigs.firstWhereOrNull(
-          (e) => e.config?.createToJson != config.createToJson,
-        )
+    if (sealedSupersAndConfigs
+            .where((e) => e.config?.createToJson != config.createToJson)
+            .firstOrNull
         case final diffSuper?) {
       throw InvalidGenerationSourceError(
         'The class `${diffSuper.classElement.displayName}` is sealed but its '
@@ -191,9 +192,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       ..fold(<String>{}, (Set<String> set, fe) {
         final jsonKey = nameAccess(fe);
 
-        if (sealedSupersAndConfigs.firstWhereOrNull(
-              (e) => e.config?.unionDiscriminator == jsonKey,
-            )
+        if (sealedSupersAndConfigs
+                .where((e) => e.config?.unionDiscriminator == jsonKey)
+                .firstOrNull
             case final conflict?) {
           throw InvalidGenerationSourceError(
             'The JSON key `$jsonKey` is conflicting with the discriminator '

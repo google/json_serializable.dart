@@ -13,38 +13,32 @@ SealedBase _$SealedBaseFromJson(Map<String, dynamic> json) =>
       'SealedSub1' => _$SealedSub1FromJson(json),
       'SealedSub2' => _$SealedSub2FromJson(json),
       _ => throw UnrecognizedUnionTypeException(
-          '${json['type']}',
-          SealedBase,
-          json,
-        ),
+        '${json['type']}',
+        SealedBase,
+        json,
+      ),
     };
 
 Map<String, dynamic> _$SealedBaseToJson(SealedBase instance) =>
     switch (instance) {
       final SealedSub1 instance => {
-          'type': 'SealedSub1',
-          ..._$SealedSub1ToJson(instance),
-        },
+        'type': 'SealedSub1',
+        ..._$SealedSub1ToJson(instance),
+      },
       final SealedSub2 instance => {
-          'type': 'SealedSub2',
-          ..._$SealedSub2ToJson(instance),
-        },
+        'type': 'SealedSub2',
+        ..._$SealedSub2ToJson(instance),
+      },
     };
 
-SealedSub1 _$SealedSub1FromJson(Map<String, dynamic> json) => SealedSub1(
-      exampleField1: json['exampleField1'] as String,
-    );
+SealedSub1 _$SealedSub1FromJson(Map<String, dynamic> json) =>
+    SealedSub1(exampleField1: json['exampleField1'] as String);
 
 Map<String, dynamic> _$SealedSub1ToJson(SealedSub1 instance) =>
-    <String, dynamic>{
-      'exampleField1': instance.exampleField1,
-    };
+    <String, dynamic>{'exampleField1': instance.exampleField1};
 
-SealedSub2 _$SealedSub2FromJson(Map<String, dynamic> json) => SealedSub2(
-      exampleField2: json['exampleField2'] as String,
-    );
+SealedSub2 _$SealedSub2FromJson(Map<String, dynamic> json) =>
+    SealedSub2(exampleField2: json['exampleField2'] as String);
 
 Map<String, dynamic> _$SealedSub2ToJson(SealedSub2 instance) =>
-    <String, dynamic>{
-      'exampleField2': instance.exampleField2,
-    };
+    <String, dynamic>{'exampleField2': instance.exampleField2};
