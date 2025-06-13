@@ -28,11 +28,12 @@ class SubWithoutSuperJsonSerializableAnnotationImpl
     implements SuperWithoutSuperJsonSerializableAnnotation {}
 
 @ShouldThrow(
-  'The class `SuperWithSubExtWithoutJsonSerializableAnnotation` is sealed but its '
-  'subclass `SubWithoutJsonSerializableAnnotationExt` is not annotated with '
-  '`JsonSerializable`.',
+  'The class `SuperWithSubExtWithoutJsonSerializableAnnotation` is sealed but '
+  'its subclass `SubWithoutJsonSerializableAnnotationExt` is not annotated '
+  'with `JsonSerializable`.',
   todo:
-      'Add `@JsonSerializable` annotation to SubWithoutJsonSerializableAnnotationExt.',
+      'Add `@JsonSerializable` annotation to '
+      'SubWithoutJsonSerializableAnnotationExt.',
   element: 'SubWithoutJsonSerializableAnnotationExt',
 )
 @JsonSerializable()
@@ -42,11 +43,12 @@ class SubWithoutJsonSerializableAnnotationExt
     extends SuperWithSubExtWithoutJsonSerializableAnnotation {}
 
 @ShouldThrow(
-  'The class `SuperWithSubImplWithoutJsonSerializableAnnotation` is sealed but its '
-  'subclass `SubWithoutJsonSerializableAnnotationImpl` is not annotated with '
-  '`JsonSerializable`.',
+  'The class `SuperWithSubImplWithoutJsonSerializableAnnotation` is sealed but '
+  'its subclass `SubWithoutJsonSerializableAnnotationImpl` is not annotated '
+  'with `JsonSerializable`.',
   todo:
-      'Add `@JsonSerializable` annotation to SubWithoutJsonSerializableAnnotationImpl.',
+      'Add `@JsonSerializable` annotation to '
+      'SubWithoutJsonSerializableAnnotationImpl.',
   element: 'SubWithoutJsonSerializableAnnotationImpl',
 )
 @JsonSerializable()

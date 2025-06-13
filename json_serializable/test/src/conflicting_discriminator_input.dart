@@ -107,8 +107,8 @@ sealed class SuperSuperWithConflictingNestedDiscriminator
 
 @ShouldThrow(
   'The classes `SuperSuperSuperWithConflictingNestedDiscriminator` and '
-  '`SuperWithConflictingNestedDiscriminator` are nested sealed classes, but they have '
-  'the same discriminator `this_will_conflict`.',
+  '`SuperWithConflictingNestedDiscriminator` are nested sealed classes, '
+  'but they have the same discriminator `this_will_conflict`.',
   todo:
       'Rename one of the discriminators with `unionDiscriminator` '
       'field of `@JsonSerializable`.',
