@@ -29,6 +29,8 @@ JsonSerializable _$JsonSerializableFromJson(
         'generic_argument_factories',
         'ignore_unannotated',
         'include_if_null',
+        'union_discriminator',
+        'union_rename',
       ],
     );
     final val = JsonSerializable(
@@ -46,7 +48,7 @@ JsonSerializable _$JsonSerializableFromJson(
       explicitToJson: $checkedConvert('explicit_to_json', (v) => v as bool?),
       fieldRename: $checkedConvert(
         'field_rename',
-        (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
+        (v) => $enumDecodeNullable(_$RenameTypeEnumMap, v),
       ),
       ignoreUnannotated: $checkedConvert(
         'ignore_unannotated',
@@ -60,6 +62,14 @@ JsonSerializable _$JsonSerializableFromJson(
       createPerFieldToJson: $checkedConvert(
         'create_per_field_to_json',
         (v) => v as bool?,
+      ),
+      unionDiscriminator: $checkedConvert(
+        'union_discriminator',
+        (v) => v as String?,
+      ),
+      unionRename: $checkedConvert(
+        'union_rename',
+        (v) => $enumDecodeNullable(_$RenameTypeEnumMap, v),
       ),
     );
     return val;
@@ -77,6 +87,8 @@ JsonSerializable _$JsonSerializableFromJson(
     'includeIfNull': 'include_if_null',
     'genericArgumentFactories': 'generic_argument_factories',
     'createPerFieldToJson': 'create_per_field_to_json',
+    'unionDiscriminator': 'union_discriminator',
+    'unionRename': 'union_rename',
   },
 );
 
@@ -92,16 +104,18 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
-      'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
+      'field_rename': _$RenameTypeEnumMap[instance.fieldRename],
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
+      'union_discriminator': instance.unionDiscriminator,
+      'union_rename': _$RenameTypeEnumMap[instance.unionRename],
     };
 
-const _$FieldRenameEnumMap = {
-  FieldRename.none: 'none',
-  FieldRename.kebab: 'kebab',
-  FieldRename.snake: 'snake',
-  FieldRename.pascal: 'pascal',
-  FieldRename.screamingSnake: 'screamingSnake',
+const _$RenameTypeEnumMap = {
+  RenameType.none: 'none',
+  RenameType.kebab: 'kebab',
+  RenameType.snake: 'snake',
+  RenameType.pascal: 'pascal',
+  RenameType.screamingSnake: 'screamingSnake',
 };

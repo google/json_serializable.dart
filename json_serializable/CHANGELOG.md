@@ -1,5 +1,7 @@
-## 6.9.6-wip
+## 6.10.0
 
+- Add support for deserializing union json to sealed class
+- Add support for serializing sealed class to union json
 - Move `package:collection` to a dev dependency.
 - Use new `null-aware element` feature in generated code.
 - Require Dart 3.8
