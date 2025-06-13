@@ -22,10 +22,7 @@ sealed class Vehicle {
 class Car extends Vehicle {
   final int numberOfDoors;
 
-  Car({
-    required this.numberOfDoors,
-    required super.vehicleID,
-  });
+  Car({required this.numberOfDoors, required super.vehicleID});
 
   @override
   bool operator ==(Object other) =>
@@ -43,10 +40,7 @@ class Car extends Vehicle {
 class Bicycle extends Vehicle {
   final bool hasBell;
 
-  Bicycle({
-    required this.hasBell,
-    required super.vehicleID,
-  });
+  Bicycle({required this.hasBell, required super.vehicleID});
 
   @override
   bool operator ==(Object other) =>
@@ -62,14 +56,12 @@ class Bicycle extends Vehicle {
 
 @JsonSerializable(
   unionDiscriminator: 'delivery_type',
-  unionRename: UnionRename.snake,
+  unionRename: RenameType.snake,
 )
 sealed class Delivery {
   final int deliveryID;
 
-  Delivery({
-    required this.deliveryID,
-  });
+  Delivery({required this.deliveryID});
 
   factory Delivery.fromJson(Map<String, dynamic> json) =>
       _$DeliveryFromJson(json);
@@ -81,10 +73,7 @@ sealed class Delivery {
 class DroneDelivery extends Delivery {
   final int droneModel;
 
-  DroneDelivery({
-    required this.droneModel,
-    required super.deliveryID,
-  });
+  DroneDelivery({required this.droneModel, required super.deliveryID});
 
   @override
   bool operator ==(Object other) =>
@@ -102,10 +91,7 @@ class DroneDelivery extends Delivery {
 class TruckDelivery extends Delivery {
   final double weightCapacity;
 
-  TruckDelivery({
-    required this.weightCapacity,
-    required super.deliveryID,
-  });
+  TruckDelivery({required this.weightCapacity, required super.deliveryID});
 
   @override
   bool operator ==(Object other) =>
@@ -119,9 +105,7 @@ class TruckDelivery extends Delivery {
   int get hashCode => jsonEncode(this).hashCode;
 }
 
-@JsonSerializable(
-  unionDiscriminator: 'organization',
-)
+@JsonSerializable(unionDiscriminator: 'organization')
 sealed class Organization {
   final String name;
 
@@ -133,16 +117,11 @@ sealed class Organization {
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 }
 
-@JsonSerializable(
-  unionDiscriminator: 'department',
-)
+@JsonSerializable(unionDiscriminator: 'department')
 sealed class Department extends Organization {
   final String departmentHead;
 
-  Department({
-    required this.departmentHead,
-    required super.name,
-  });
+  Department({required this.departmentHead, required super.name});
 
   factory Department.fromJson(Map<String, dynamic> json) =>
       _$DepartmentFromJson(json);
@@ -195,9 +174,7 @@ sealed class Trackable {
 class Ship implements Transportable {
   final double cargoCapacity;
 
-  Ship({
-    required this.cargoCapacity,
-  });
+  Ship({required this.cargoCapacity});
 
   @override
   bool operator ==(Object other) =>
@@ -217,9 +194,7 @@ class Ship implements Transportable {
 class GPSDevice implements Trackable {
   final String serialNumber;
 
-  GPSDevice({
-    required this.serialNumber,
-  });
+  GPSDevice({required this.serialNumber});
 
   @override
   bool operator ==(Object other) =>
@@ -240,10 +215,7 @@ class Package implements Transportable, Trackable {
   final String label;
   final double weight;
 
-  Package({
-    required this.label,
-    required this.weight,
-  });
+  Package({required this.label, required this.weight});
 
   @override
   bool operator ==(Object other) =>
@@ -265,10 +237,7 @@ sealed class Container {
   final String containerID;
   final List<StorageItem> items;
 
-  Container({
-    required this.containerID,
-    this.items = const [],
-  });
+  Container({required this.containerID, this.items = const []});
 
   factory Container.fromJson(Map<String, dynamic> json) =>
       _$ContainerFromJson(json);
@@ -281,10 +250,7 @@ sealed class StorageItem {
   final String itemID;
   final Container? nestedContainer;
 
-  StorageItem({
-    required this.itemID,
-    this.nestedContainer,
-  });
+  StorageItem({required this.itemID, this.nestedContainer});
 
   factory StorageItem.fromJson(Map<String, dynamic> json) =>
       _$StorageItemFromJson(json);
@@ -294,10 +260,7 @@ sealed class StorageItem {
 
 @JsonSerializable()
 class Box extends Container {
-  Box({
-    required super.containerID,
-    super.items,
-  });
+  Box({required super.containerID, super.items});
 
   @override
   bool operator ==(Object other) =>
@@ -313,10 +276,7 @@ class Box extends Container {
 
 @JsonSerializable()
 class Parcel extends Container {
-  Parcel({
-    required super.containerID,
-    super.items,
-  });
+  Parcel({required super.containerID, super.items});
 
   @override
   bool operator ==(Object other) =>
@@ -334,11 +294,7 @@ class Parcel extends Container {
 class Product extends StorageItem {
   final String name;
 
-  Product({
-    required this.name,
-    required super.itemID,
-    super.nestedContainer,
-  });
+  Product({required this.name, required super.itemID, super.nestedContainer});
 
   @override
   bool operator ==(Object other) =>

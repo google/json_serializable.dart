@@ -62,13 +62,13 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
   disallowUnrecognizedKeys:
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-  fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  fieldRename: readEnum(reader.read('fieldRename'), RenameType.values),
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
   includeIfNull: reader.read('includeIfNull').literalValue as bool?,
   unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
-  unionRename: readEnum(reader.read('unionRename'), UnionRename.values),
+  unionRename: readEnum(reader.read('unionRename'), RenameType.values),
 );
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
@@ -174,9 +174,7 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
 /// indirect subclasses (ie. subclasses of subclasses).
 ///
 /// Otherwise, returns an empty iterable.
-Iterable<ClassElement> sealedSubClasses(
-  ClassElement maybeSealedSuperClass,
-) {
+Iterable<ClassElement> sealedSubClasses(ClassElement maybeSealedSuperClass) {
   if (maybeSealedSuperClass case final sc when sc.isSealed) {
     return LibraryReader(
       sc.library,
@@ -251,22 +249,13 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedFieldName(FieldRename fieldRename, String declaredName) =>
+String encodedName(RenameType fieldRename, String declaredName) =>
     switch (fieldRename) {
-      FieldRename.none => declaredName,
-      FieldRename.snake => declaredName.snake,
-      FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
-      FieldRename.kebab => declaredName.kebab,
-      FieldRename.pascal => declaredName.pascal,
-    };
-
-String encodedUnionName(UnionRename unionRename, String declaredName) =>
-    switch (unionRename) {
-      UnionRename.none => declaredName,
-      UnionRename.snake => declaredName.snake,
-      UnionRename.screamingSnake => declaredName.snake.toUpperCase(),
-      UnionRename.kebab => declaredName.kebab,
-      UnionRename.pascal => declaredName.pascal,
+      RenameType.none => declaredName,
+      RenameType.snake => declaredName.snake,
+      RenameType.screamingSnake => declaredName.snake.toUpperCase(),
+      RenameType.kebab => declaredName.kebab,
+      RenameType.pascal => declaredName.pascal,
     };
 
 String classPrefix(ClassElement element) => '_\$${element.name.nonPrivate}';

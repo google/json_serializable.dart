@@ -4,7 +4,7 @@ part 'sealed_class_example.g.dart';
 
 @JsonSerializable(
   unionDiscriminator: 'vehicle_type',
-  unionRename: UnionRename.snake,
+  unionRename: RenameType.snake,
 )
 sealed class Vehicle {
   final String vehicleID;
@@ -21,18 +21,12 @@ sealed class Vehicle {
 class Car extends Vehicle {
   final int numberOfDoors;
 
-  Car({
-    required this.numberOfDoors,
-    required super.vehicleID,
-  });
+  Car({required this.numberOfDoors, required super.vehicleID});
 }
 
 @JsonSerializable()
 class Bicycle extends Vehicle {
   final bool hasBell;
 
-  Bicycle({
-    required this.hasBell,
-    required super.vehicleID,
-  });
+  Bicycle({required this.hasBell, required super.vehicleID});
 }

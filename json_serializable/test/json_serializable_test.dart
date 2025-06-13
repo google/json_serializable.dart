@@ -209,5 +209,5 @@ const _expectedAnnotatedTests = {
   'WrongConstructorNameClass',
   '_BetterPrivateNames',
   'annotatedMethod',
-  'theAnswer'
+  'theAnswer',
 };

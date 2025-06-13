@@ -89,11 +89,12 @@ class UnrecognizedUnionTypeException extends BadKeyException {
   final Type unionType;
 
   @override
-  String get message => 'Unrecognized type: $unrecognizedType '
+  String get message =>
+      'Unrecognized type: $unrecognizedType '
       'for union: $unionType.';
 
   UnrecognizedUnionTypeException(this.unrecognizedType, this.unionType, Map map)
-      : super._(map);
+    : super._(map);
 }
 
 /// Exception thrown if there are missing required keys in a JSON map that was

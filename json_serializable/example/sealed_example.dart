@@ -16,16 +16,12 @@ sealed class SealedBase {
 class SealedSub1 extends SealedBase {
   final String exampleField1;
 
-  SealedSub1({
-    required this.exampleField1,
-  });
+  SealedSub1({required this.exampleField1});
 }
 
 @JsonSerializable()
 class SealedSub2 extends SealedBase {
   final String exampleField2;
 
-  SealedSub2({
-    required this.exampleField2,
-  });
+  SealedSub2({required this.exampleField2});
 }
