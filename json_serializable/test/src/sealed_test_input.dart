@@ -168,7 +168,7 @@ Map<String, dynamic> _$SuperSimpleSealedClassWithChangedUnionRenameToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: UnionRename.snake)
+@JsonSerializable(unionRename: RenameType.snake)
 sealed class SuperSimpleSealedClassWithChangedUnionRename {
   const SuperSimpleSealedClassWithChangedUnionRename();
 }
@@ -259,7 +259,7 @@ _$SuperSimpleSealedClassWithChangedDiscriminatorAndUnionRenameToJson(
 ''')
 @JsonSerializable(
   unionDiscriminator: 'my_discriminator',
-  unionRename: UnionRename.kebab,
+  unionRename: RenameType.kebab,
 )
 sealed class SuperSimpleSealedClassWithChangedDiscriminatorAndUnionRename {
   const SuperSimpleSealedClassWithChangedDiscriminatorAndUnionRename();

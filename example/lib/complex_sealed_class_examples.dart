@@ -2,9 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'complex_sealed_class_examples.g.dart';
 
-@JsonSerializable(
-  unionDiscriminator: 'organization',
-)
+@JsonSerializable(unionDiscriminator: 'organization')
 sealed class Organization {
   final String name;
 
@@ -16,16 +14,11 @@ sealed class Organization {
   Map<String, dynamic> toJson() => _$OrganizationToJson(this);
 }
 
-@JsonSerializable(
-  unionDiscriminator: 'department',
-)
+@JsonSerializable(unionDiscriminator: 'department')
 sealed class Department extends Organization {
   final String departmentHead;
 
-  Department({
-    required this.departmentHead,
-    required super.name,
-  });
+  Department({required this.departmentHead, required super.name});
 
   factory Department.fromJson(Map<String, dynamic> json) =>
       _$DepartmentFromJson(json);

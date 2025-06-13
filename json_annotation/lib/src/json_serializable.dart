@@ -12,8 +12,12 @@ import 'json_key.dart';
 
 part 'json_serializable.g.dart';
 
+// TODO: Remove typedef
+@Deprecated('Use RenameType instead')
+typedef FieldRename = RenameType;
+
 /// Values for the automatic field renaming behavior for [JsonSerializable].
-enum FieldRename {
+enum RenameType {
   /// Use the field name without changes.
   none,
 
@@ -31,31 +35,11 @@ enum FieldRename {
   screamingSnake,
 }
 
-/// Values for the automatic class renaming behavior for [JsonSerializable]
-/// with sealed classes.
-enum UnionRename {
-  /// Use the union class name without changes.
-  none,
-
-  /// Encodes union class named `KebabCase` with a JSON key `kebab-case`.
-  kebab,
-
-  /// Encodes union class named `SnakeCase` with a JSON key `snake_case`.
-  snake,
-
-  /// Encodes union class named `PascalCase` with a JSON key `PascalCase`.
-  pascal,
-
-  /// Encodes union class named `ScreamingSnakeCase` with a JSON key
-  /// `SCREAMING_SNAKE_CASE`
-  screamingSnake,
-}
-
 /// An annotation used to specify a class to generate code for.
 @JsonSerializable(
   checked: true,
   disallowUnrecognizedKeys: true,
-  fieldRename: FieldRename.snake,
+  fieldRename: RenameType.snake,
 )
 @Target({TargetKind.classType})
 class JsonSerializable {
@@ -173,14 +157,14 @@ class JsonSerializable {
   /// Defines the automatic naming strategy when converting class field names
   /// into JSON map keys.
   ///
-  /// With a value [FieldRename.none] (the default), the name of the field is
+  /// With a value [RenameType.none] (the default), the name of the field is
   /// used without modification.
   ///
-  /// See [FieldRename] for details on the other options.
+  /// See [RenameType] for details on the other options.
   ///
   /// Note: the value for [JsonKey.name] takes precedence over this option for
   /// fields annotated with [JsonKey].
-  final FieldRename? fieldRename;
+  final RenameType? fieldRename;
 
   /// When `true` on classes with type parameters (generic types), extra
   /// "helper" parameters will be generated for `fromJson` and/or `toJson` to
@@ -252,11 +236,11 @@ class JsonSerializable {
   /// Defines the automatic naming strategy when converting class names
   /// to union type names.
   ///
-  /// With a value [UnionRename.none] (the default), the name of the class is
+  /// With a value [RenameType.none] (the default), the name of the class is
   /// used without modification.
   ///
-  /// See [UnionRename] for details on the other options.
-  final UnionRename? unionRename;
+  /// See [RenameType] for details on the other options.
+  final RenameType? unionRename;
 
   /// A list of [JsonConverter] to apply to this class.
   ///
@@ -328,12 +312,12 @@ class JsonSerializable {
     createToJson: true,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
-    fieldRename: FieldRename.none,
+    fieldRename: RenameType.none,
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
     unionDiscriminator: 'type',
-    unionRename: UnionRename.none,
+    unionRename: RenameType.none,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the

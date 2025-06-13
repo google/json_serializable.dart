@@ -91,18 +91,15 @@ class GenericArgumentFactoriesFlagWithoutGenericType {}
   'with `JsonSerializable` field `genericArgumentFactories: true`. '
   '`genericArgumentFactories: true` is not supported for classes '
   'that are sealed or have sealed superclasses.',
-  todo: 'Remove the `genericArgumentFactories` option or '
+  todo:
+      'Remove the `genericArgumentFactories` option or '
       'remove the `sealed` keyword from the class.',
   element: 'SuperWithGenericArgumentFactories',
 )
-@JsonSerializable(
-  genericArgumentFactories: true,
-)
+@JsonSerializable(genericArgumentFactories: true)
 sealed class SuperWithGenericArgumentFactories<T> {}
 
-@JsonSerializable(
-  genericArgumentFactories: false,
-)
+@JsonSerializable(genericArgumentFactories: false)
 sealed class SuperWithoutGenericArgumentFactories {}
 
 @ShouldThrow(
@@ -110,13 +107,12 @@ sealed class SuperWithoutGenericArgumentFactories {}
   'with `JsonSerializable` field `genericArgumentFactories: true`. '
   '`genericArgumentFactories: true` is not supported for classes '
   'that are sealed or have sealed superclasses.',
-  todo: 'Remove the `genericArgumentFactories` option or '
+  todo:
+      'Remove the `genericArgumentFactories` option or '
       'remove the `sealed` keyword from the class.',
   element: 'SubWithSubGenericArgumentFactoriesExt',
 )
-@JsonSerializable(
-  genericArgumentFactories: true,
-)
+@JsonSerializable(genericArgumentFactories: true)
 class SubWithSubGenericArgumentFactoriesExt<T>
     extends SuperWithoutGenericArgumentFactories {}
 
@@ -125,13 +121,12 @@ class SubWithSubGenericArgumentFactoriesExt<T>
   'with `JsonSerializable` field `genericArgumentFactories: true`. '
   '`genericArgumentFactories: true` is not supported for classes '
   'that are sealed or have sealed superclasses.',
-  todo: 'Remove the `genericArgumentFactories` option or '
+  todo:
+      'Remove the `genericArgumentFactories` option or '
       'remove the `sealed` keyword from the class.',
   element: 'SubWithSubGenericArgumentFactoriesImpl',
 )
-@JsonSerializable(
-  genericArgumentFactories: true,
-)
+@JsonSerializable(genericArgumentFactories: true)
 class SubWithSubGenericArgumentFactoriesImpl<T>
     implements SuperWithoutGenericArgumentFactories {}
 
@@ -140,13 +135,12 @@ class SubWithSubGenericArgumentFactoriesImpl<T>
   'with `JsonSerializable` field `genericArgumentFactories: true`. '
   '`genericArgumentFactories: true` is not supported for classes '
   'that are sealed or have sealed superclasses.',
-  todo: 'Remove the `genericArgumentFactories` option or '
+  todo:
+      'Remove the `genericArgumentFactories` option or '
       'remove the `sealed` keyword from the class.',
   element: 'SubWithSubAndSuperGenericArgumentFactoriesExt',
 )
-@JsonSerializable(
-  genericArgumentFactories: true,
-)
+@JsonSerializable(genericArgumentFactories: true)
 class SubWithSubAndSuperGenericArgumentFactoriesExt<T>
     extends SuperWithGenericArgumentFactories<T> {}
 
@@ -155,12 +149,11 @@ class SubWithSubAndSuperGenericArgumentFactoriesExt<T>
   'with `JsonSerializable` field `genericArgumentFactories: true`. '
   '`genericArgumentFactories: true` is not supported for classes '
   'that are sealed or have sealed superclasses.',
-  todo: 'Remove the `genericArgumentFactories` option or '
+  todo:
+      'Remove the `genericArgumentFactories` option or '
       'remove the `sealed` keyword from the class.',
   element: 'SubWithSubAndSuperGenericArgumentFactoriesImpl',
 )
-@JsonSerializable(
-  genericArgumentFactories: true,
-)
+@JsonSerializable(genericArgumentFactories: true)
 class SubWithSubAndSuperGenericArgumentFactoriesImpl<T>
     implements SuperWithGenericArgumentFactories<T> {}

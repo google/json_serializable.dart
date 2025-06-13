@@ -69,7 +69,7 @@ JsonSerializable _$JsonSerializableFromJson(
       ),
       unionRename: $checkedConvert(
         'union_rename',
-        (v) => $enumDecodeNullable(_$UnionRenameEnumMap, v),
+        (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
       ),
     );
     return val;
@@ -109,21 +109,13 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
       'union_discriminator': instance.unionDiscriminator,
-      'union_rename': _$UnionRenameEnumMap[instance.unionRename],
+      'union_rename': _$FieldRenameEnumMap[instance.unionRename],
     };
 
 const _$FieldRenameEnumMap = {
-  FieldRename.none: 'none',
-  FieldRename.kebab: 'kebab',
-  FieldRename.snake: 'snake',
-  FieldRename.pascal: 'pascal',
-  FieldRename.screamingSnake: 'screamingSnake',
-};
-
-const _$UnionRenameEnumMap = {
-  UnionRename.none: 'none',
-  UnionRename.kebab: 'kebab',
-  UnionRename.snake: 'snake',
-  UnionRename.pascal: 'pascal',
-  UnionRename.screamingSnake: 'screamingSnake',
+  RenameType.none: 'none',
+  RenameType.kebab: 'kebab',
+  RenameType.snake: 'snake',
+  RenameType.pascal: 'pascal',
+  RenameType.screamingSnake: 'screamingSnake',
 };

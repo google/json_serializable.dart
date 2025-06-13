@@ -148,7 +148,7 @@ mixin EncodeHelper implements HelperCore {
     String buildSingleImpl(ClassElement2 impl) {
       final originalName = impl.name3!;
 
-      final unionName = encodedUnionName(config.unionRename, originalName);
+      final unionName = encodedName(config.unionRename, originalName);
 
       return '''
   final $originalName instance => {

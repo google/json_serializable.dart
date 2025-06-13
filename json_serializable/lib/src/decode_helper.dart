@@ -153,7 +153,7 @@ mixin DecodeHelper implements HelperCore {
     final discriminator = config.unionDiscriminator;
 
     String buildSingleImpl(ClassElement2 impl) {
-      final unionName = encodedUnionName(config.unionRename, impl.name3!);
+      final unionName = encodedName(config.unionRename, impl.name3!);
 
       return "'$unionName' => ${classPrefix(impl)}FromJson(json),";
     }
