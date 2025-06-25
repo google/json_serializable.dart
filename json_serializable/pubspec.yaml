@@ -17,7 +17,7 @@ resolution: workspace
 dependencies:
   analyzer: '>=6.9.0 <8.0.0'
   async: ^2.10.0
-  build: ^2.4.1
+  build: ^3.0.0-dev
   build_config: ^1.1.0
   dart_style: '>=2.3.7 <4.0.0'
 
@@ -43,3 +43,15 @@ dev_dependencies:
   test_descriptor: ^2.0.0
   test_process: ^2.0.0
   yaml: ^3.0.0
+
+dependency_overrides:
+  build: ^3.0.0-dev
+  source_gen:
+    git:
+      url: https://github.com/dart-lang/source_gen
+      path: source_gen
+      ref: 6c9702e7152e61b16c8adec3f3011bda738b0e29
+  source_gen_test:
+    git:
+      url: https://github.com/kevmoo/source_gen_test
+      ref: 9036882e5d69620fa387c14e880ebbe19ed99fee
