@@ -25,8 +25,9 @@ KeyConfig jsonKeyForField(FieldElement field, ClassConfig classAnnotation) =>
 
 KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   final obj = jsonKeyAnnotation(element);
-  final ctorParam = <ParameterElement?>[...classAnnotation.ctorParams]
-      .singleWhere((e) => e!.name == element.name, orElse: () => null);
+  final ctorParam = <ParameterElement?>[
+    ...classAnnotation.ctorParams,
+  ].singleWhere((e) => e!.name == element.name, orElse: () => null);
   final ctorObj = ctorParam == null
       ? null
       : jsonKeyAnnotationForCtorParam(ctorParam);
@@ -249,7 +250,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   }
 
   final ignore = fallbackObjRead('ignore').literalValue as bool?;
-  var includeFromJson = fallbackObjRead('includeFromJson').literalValue as bool?;
+  var includeFromJson =
+      fallbackObjRead('includeFromJson').literalValue as bool?;
   var includeToJson = fallbackObjRead('includeToJson').literalValue as bool?;
 
   if (ignore != null) {
@@ -275,7 +277,8 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
-    disallowNullValue: fallbackObjRead('disallowNullValue').literalValue as bool?,
+    disallowNullValue:
+        fallbackObjRead('disallowNullValue').literalValue as bool?,
     includeIfNull: fallbackObjRead('includeIfNull').literalValue as bool?,
     name: fallbackObjRead('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
