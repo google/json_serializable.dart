@@ -49,6 +49,8 @@ const _expectedAnnotatedTests = {
   'BadToFuncReturnType',
   'BadTwoRequiredPositional',
   'CtorDefaultValueAndJsonKeyDefaultValue',
+  'CtorParamJsonKey',
+  'CtorParamJsonKeyWithExtends',
   'DefaultDoubleConstants',
   'DefaultWithConstObject',
   'DefaultWithDisallowNullRequiredClass',

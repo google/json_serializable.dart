@@ -8,7 +8,7 @@ import 'allowed_keys_helpers.dart';
 import 'json_serializable.dart';
 
 /// An annotation used to specify how a field is serialized.
-@Target({TargetKind.field, TargetKind.getter})
+@Target({TargetKind.field, TargetKind.getter, TargetKind.parameter})
 class JsonKey {
   /// The value to use if the source JSON does not contain this key or if the
   /// value is `null`.

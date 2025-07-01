@@ -14,6 +14,9 @@ import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
+// If an annotation exists on `element` the source is a 'real' field.
+// If the result is `null`, check the getter – it is a property.
+// TODO: setters: github.com/google/json_serializable.dart/issues/24
 DartObject? _jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
     (element.getter == null
@@ -26,6 +29,9 @@ ConstantReader jsonKeyAnnotation(FieldElement element) =>
 /// Returns `true` if [element] is annotated with [JsonKey].
 bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
+
+ConstantReader jsonKeyAnnotationForCtorParam(ParameterElement element) =>
+    ConstantReader(_jsonKeyChecker.firstAnnotationOf(element));
 
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
@@ -82,7 +88,7 @@ ClassConfig mergeConfig(
   required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
-  assert(config.ctorParamDefaults.isEmpty);
+  assert(config.ctorParams.isEmpty);
 
   final constructor = annotation.constructor ?? config.constructor;
   final constructorInstance = _constructorByNameOrNull(
@@ -90,13 +96,7 @@ ClassConfig mergeConfig(
     constructor,
   );
 
-  final paramDefaultValueMap = constructorInstance == null
-      ? <String, String>{}
-      : Map<String, String>.fromEntries(
-          constructorInstance.parameters
-              .where((element) => element.hasDefaultValue)
-              .map((e) => MapEntry(e.name, e.defaultValueCode!)),
-        );
+  final ctorParams = <ParameterElement>[...?constructorInstance?.parameters];
 
   final converters = reader.read('converters');
 
@@ -120,7 +120,7 @@ ClassConfig mergeConfig(
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
-    ctorParamDefaults: paramDefaultValueMap,
+    ctorParams: ctorParams,
     converters: converters.isNull ? const [] : converters.listValue,
   );
 }

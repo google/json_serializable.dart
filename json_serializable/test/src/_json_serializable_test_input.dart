@@ -14,6 +14,7 @@ part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
 part 'default_value_input.dart';
 part 'field_namer_input.dart';
+part 'extends_jsonkey_override.dart';
 part 'generic_test_input.dart';
 part 'inheritance_test_input.dart';
 part 'json_converter_test_input.dart';
