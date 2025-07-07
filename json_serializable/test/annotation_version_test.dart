@@ -7,6 +7,7 @@
 @Timeout.factor(2)
 library;
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:json_serializable/src/check_dependencies.dart';
@@ -189,7 +190,7 @@ class SomeClass{}
 
   final output = lines.toString();
   final expectedWarningCount = message == null ? 0 : 1;
-  final warningCount = '[WARNING]'.allMatches(output).length;
+  final warningCount = _warningStartOfLine.allMatches(output).length;
   expect(
     warningCount,
     expectedWarningCount,
@@ -202,10 +203,12 @@ class SomeClass{}
     expect(
       output,
       contains('''
-[WARNING] json_serializable on $sourceDirectory/sample.dart:
-$message'''),
+W json_serializable on $sourceDirectory/sample.dart:
+${LineSplitter.split(message).map((line) => '  $line').join('\n')}'''),
     );
   }
 
   await proc.shouldExit(0);
 }
+
+final _warningStartOfLine = RegExp(r'^W ', multiLine: true);
