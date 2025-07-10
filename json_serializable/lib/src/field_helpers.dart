@@ -2,9 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/element/element.dart' // ignore: implementation_imports
-    show InterfaceElementImpl;
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
     show InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
@@ -12,15 +10,15 @@ import 'package:source_gen/source_gen.dart';
 import 'utils.dart';
 
 class _FieldSet implements Comparable<_FieldSet> {
-  final FieldElement field;
-  final FieldElement sortField;
+  final FieldElement2 field;
+  final FieldElement2 sortField;
 
   _FieldSet._(this.field, this.sortField)
-    : assert(field.name == sortField.name);
+    : assert(field.name3 == sortField.name3);
 
-  factory _FieldSet(FieldElement? classField, FieldElement? superField) {
+  factory _FieldSet(FieldElement2? classField, FieldElement2? superField) {
     // At least one of these will != null, perhaps both.
-    final fields = [classField, superField].whereType<FieldElement>().toList();
+    final fields = [classField, superField].whereType<FieldElement2>().toList();
 
     // Prefer the class field over the inherited field when sorting.
     final sortField = fields.first;
@@ -38,69 +36,60 @@ class _FieldSet implements Comparable<_FieldSet> {
   @override
   int compareTo(_FieldSet other) => _sortByLocation(sortField, other.sortField);
 
-  static int _sortByLocation(FieldElement a, FieldElement b) {
-    final checkerA = TypeChecker.fromStatic(
-      (a.enclosingElement3 as InterfaceElement).thisType,
-    );
+  static int _sortByLocation(FieldElement2 a, FieldElement2 b) {
+    final checkerA = TypeChecker.fromStatic(a.enclosingElement2.thisType);
 
-    if (!checkerA.isExactly(b.enclosingElement3)) {
+    if (!checkerA.isExactly(b.enclosingElement2)) {
       // in this case, you want to prioritize the enclosingElement that is more
       // "super".
 
-      if (checkerA.isAssignableFrom(b.enclosingElement3)) {
+      if (checkerA.isAssignableFrom(b.enclosingElement2)) {
         return -1;
       }
 
-      final checkerB = TypeChecker.fromStatic(
-        (b.enclosingElement3 as InterfaceElement).thisType,
-      );
+      final checkerB = TypeChecker.fromStatic(b.enclosingElement2.thisType);
 
-      if (checkerB.isAssignableFrom(a.enclosingElement3)) {
+      if (checkerB.isAssignableFrom(a.enclosingElement2)) {
         return 1;
       }
     }
 
     /// Returns the offset of given field/property in its source file – with a
     /// preference for the getter if it's defined.
-    int offsetFor(FieldElement e) {
+    int offsetFor(FieldElement2 e) {
       if (e.isSynthetic) {
-        return (e.getter ?? e.setter)!.nameOffset;
+        return (e.getter2 ?? e.setter2)!.firstFragment.nameOffset2!;
       }
-      return e.nameOffset;
+      return e.firstFragment.nameOffset2!;
     }
 
     return offsetFor(a).compareTo(offsetFor(b));
   }
 }
 
-/// Returns a [List] of all instance [FieldElement] items for [element] and
+/// Returns a [List] of all instance [FieldElement2] items for [element] and
 /// super classes, sorted first by their location in the inheritance hierarchy
 /// (super first) and then by their location in the source file.
-List<FieldElement> createSortedFieldSet(ClassElement element) {
+List<FieldElement2> createSortedFieldSet(ClassElement2 element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   final elementInstanceFields = Map.fromEntries(
-    element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)),
+    element.fields2.where((e) => !e.isStatic).map((e) => MapEntry(e.name3, e)),
   );
 
-  final inheritedFields = <String, FieldElement>{};
+  final inheritedFields = <String, FieldElement2>{};
   final manager = InheritanceManager3();
 
-  for (final v
-      in manager
-          .getInheritedConcreteMap2(element as InterfaceElementImpl)
-          .values) {
-    assert(v is! FieldElement);
-    if (_dartCoreObjectChecker.isExactly(v.enclosingElement3)) {
+  for (final v in manager.getInheritedConcreteMap(element).values) {
+    assert(v is! FieldElement2);
+    if (_dartCoreObjectChecker.isExactly(v.enclosingElement2!)) {
       continue;
     }
 
-    if (v is PropertyAccessorElement &&
-        (v as PropertyAccessorElement).isGetter) {
-      assert((v as PropertyAccessorElement).variable2 is FieldElement);
-      final variable = (v as PropertyAccessorElement).variable2 as FieldElement;
-      assert(!inheritedFields.containsKey(variable.name));
-      inheritedFields[variable.name] = variable;
+    if (v is GetterElement) {
+      final variable = v.variable3 as FieldElement2;
+      assert(!inheritedFields.containsKey(variable.name3));
+      inheritedFields[variable.name3!] = variable;
     }
   }
 

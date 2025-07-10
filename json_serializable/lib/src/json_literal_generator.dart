@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
@@ -17,7 +17,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 
   @override
   Future<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
@@ -39,7 +39,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     final thing = jsonLiteralAsDart(content).toString();
     final marked = asConst ? 'const' : 'final';
 
-    return '$marked _\$${element.name}JsonLiteral = $thing;';
+    return '$marked _\$${element.name3}JsonLiteral = $thing;';
   }
 }
 
