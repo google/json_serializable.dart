@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
@@ -151,14 +150,14 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       // the generated code will be invalid, so skipping until we're bored
       // later
 
-      final functionValue = objectValue.toFunctionValue()!;
+      final functionValue = objectValue.toFunctionValue2()!;
 
       final invokeConst =
-          functionValue is ConstructorElement && functionValue.isConst
+          functionValue is ConstructorElement2 && functionValue.isConst
           ? 'const '
           : '';
 
-      return '$invokeConst${functionValue.name}()';
+      return '$invokeConst${functionValue.qualifiedName}()';
     }
 
     final enumFields = iterateEnumFields(annotationType);
