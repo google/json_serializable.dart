@@ -80,7 +80,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element3?.name3;
+      badType = dartObject.type!.element3?.name3!;
     }
 
     if (badType != null) {
@@ -208,7 +208,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
         (n) => n,
       );
 
-      return '${annotationType.element3!.name3}.$enumValueName';
+      return '${annotationType.element3!.name3!}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {
@@ -228,12 +228,12 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   if (defaultValue != null && ctorParamDefault != null) {
     if (defaultValue == ctorParamDefault) {
       log.info(
-        'The default value `$defaultValue` for `${element.name3}` is defined '
+        'The default value `$defaultValue` for `${element.name3!}` is defined '
         'twice in the constructor and in the `JsonKey.defaultValue`.',
       );
     } else {
       log.warning(
-        'The constructor parameter for `${element.name3}` has a default value '
+        'The constructor parameter for `${element.name3!}` has a default value '
         '`$ctorParamDefault`, but the `JsonKey.defaultValue` value '
         '`$defaultValue` will be used for missing or `null` values in JSON '
         'decoding.',
