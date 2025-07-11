@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -17,7 +17,7 @@ import 'utils.dart';
 
 TypeHelperCtx typeHelperContext(
   HelperCore helperCore,
-  FieldElement fieldElement,
+  FieldElement2 fieldElement,
 ) => TypeHelperCtx._(helperCore, fieldElement);
 
 class TypeHelperCtx
@@ -25,10 +25,10 @@ class TypeHelperCtx
   final HelperCore _helperCore;
 
   @override
-  final FieldElement fieldElement;
+  final FieldElement2 fieldElement;
 
   @override
-  ClassElement get classElement => _helperCore.element;
+  ClassElement2 get classElement => _helperCore.element;
 
   @override
   ClassConfig get config => _helperCore.config;
@@ -97,7 +97,7 @@ class _ConvertPair {
 
   _ConvertPair._(this.fromJson, this.toJson);
 
-  factory _ConvertPair(FieldElement element) {
+  factory _ConvertPair(FieldElement2 element) {
     var pair = _expando[element];
 
     if (pair == null) {
@@ -115,7 +115,7 @@ class _ConvertPair {
   }
 }
 
-ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
+ConvertData? _convertData(DartObject obj, FieldElement2 element, bool isFrom) {
   final paramName = isFrom ? 'fromJson' : 'toJson';
   final objectValue = obj.getField(paramName);
 
@@ -123,20 +123,21 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     return null;
   }
 
-  final executableElement = objectValue.toFunctionValue()!;
+  final executableElement = objectValue.toFunctionValue2()!;
 
-  if (executableElement.parameters.isEmpty ||
-      executableElement.parameters.first.isNamed ||
-      executableElement.parameters.where((pe) => !pe.isOptional).length > 1) {
+  if (executableElement.formalParameters.isEmpty ||
+      executableElement.formalParameters.first.isNamed ||
+      executableElement.formalParameters.where((pe) => !pe.isOptional).length >
+          1) {
     throwUnsupported(
       element,
-      'The `$paramName` function `${executableElement.name}` must have one '
+      'The `$paramName` function `${executableElement.name3}` must have one '
       'positional parameter.',
     );
   }
 
   final returnType = executableElement.returnType;
-  final argType = executableElement.parameters.first.type;
+  final argType = executableElement.formalParameters.first.type;
   if (isFrom) {
     final hasDefaultValue = !jsonKeyAnnotation(
       element,
@@ -155,7 +156,7 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
         final elementTypeCode = typeToCode(element.type);
         throwUnsupported(
           element,
-          'The `$paramName` function `${executableElement.name}` return type '
+          'The `$paramName` function `${executableElement.name3}` return type '
           '`$returnTypeCode` is not compatible with field type '
           '`$elementTypeCode`.',
         );
@@ -171,7 +172,7 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(
         element,
-        'The `$paramName` function `${executableElement.name}` argument type '
+        'The `$paramName` function `${executableElement.name3}` argument type '
         '`$argTypeCode` is not compatible with field type'
         ' `$elementTypeCode`.',
       );

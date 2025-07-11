@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -17,25 +18,25 @@ const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 // If an annotation exists on `element` the source is a 'real' field.
 // If the result is `null`, check the getter – it is a property.
 // TODO: setters: github.com/google/json_serializable.dart/issues/24
-DartObject? _jsonKeyAnnotation(FieldElement element) =>
+DartObject? _jsonKeyAnnotation(FieldElement2 element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
-    (element.getter == null
+    (element.getter2 == null
         ? null
-        : _jsonKeyChecker.firstAnnotationOf(element.getter!));
+        : _jsonKeyChecker.firstAnnotationOf(element.getter2!));
 
-ConstantReader jsonKeyAnnotation(FieldElement element) =>
+ConstantReader jsonKeyAnnotation(FieldElement2 element) =>
     ConstantReader(_jsonKeyAnnotation(element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
-bool hasJsonKeyAnnotation(FieldElement element) =>
+bool hasJsonKeyAnnotation(FieldElement2 element) =>
     _jsonKeyAnnotation(element) != null;
 
-ConstantReader jsonKeyAnnotationForCtorParam(ParameterElement element) =>
+ConstantReader jsonKeyAnnotationForCtorParam(FormalParameterElement element) =>
     ConstantReader(_jsonKeyChecker.firstAnnotationOf(element));
 
-Never throwUnsupported(FieldElement element, String message) =>
+Never throwUnsupported(FieldElement2 element, String message) =>
     throw InvalidGenerationSourceError(
-      'Error with `@JsonKey` on the `${element.name}` field. $message',
+      'Error with `@JsonKey` on the `${element.name3}` field. $message',
       element: element,
     );
 
@@ -85,7 +86,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
 ClassConfig mergeConfig(
   ClassConfig config,
   ConstantReader reader, {
-  required ClassElement classElement,
+  required ClassElement2 classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
   assert(config.ctorParams.isEmpty);
@@ -96,7 +97,9 @@ ClassConfig mergeConfig(
     constructor,
   );
 
-  final ctorParams = <ParameterElement>[...?constructorInstance?.parameters];
+  final ctorParams = <FormalParameterElement>[
+    ...?constructorInstance?.formalParameters,
+  ];
 
   final converters = reader.read('converters');
 
@@ -116,7 +119,7 @@ ClassConfig mergeConfig(
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
-        (classElement.typeParameters.isNotEmpty &&
+        (classElement.typeParameters2.isNotEmpty &&
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
@@ -125,8 +128,8 @@ ClassConfig mergeConfig(
   );
 }
 
-ConstructorElement? _constructorByNameOrNull(
-  ClassElement classElement,
+ConstructorElement2? _constructorByNameOrNull(
+  ClassElement2 classElement,
   String name,
 ) {
   try {
@@ -136,12 +139,12 @@ ConstructorElement? _constructorByNameOrNull(
   }
 }
 
-ConstructorElement constructorByName(ClassElement classElement, String name) {
-  final className = classElement.name;
+ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
+  final className = classElement.name3;
 
-  ConstructorElement? ctor;
+  ConstructorElement2? ctor;
   if (name.isEmpty) {
-    ctor = classElement.unnamedConstructor;
+    ctor = classElement.unnamedConstructor2;
     if (ctor == null) {
       throw InvalidGenerationSourceError(
         'The class `$className` has no default constructor.',
@@ -149,7 +152,7 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
       );
     }
   } else {
-    ctor = classElement.getNamedConstructor(name);
+    ctor = classElement.getNamedConstructor2(name);
     if (ctor == null) {
       throw InvalidGenerationSourceError(
         'The class `$className` does not have a constructor with the name '
@@ -166,9 +169,10 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
 /// with its values.
 ///
 /// Otherwise, `null`.
-Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
-  if (targetType is InterfaceType && targetType.element is EnumElement) {
-    return targetType.element.fields.where((element) => element.isEnumConstant);
+Iterable<FieldElement2>? iterateEnumFields(DartType targetType) {
+  if ( /*targetType is InterfaceType && */ targetType.element3
+      is EnumElement2) {
+    return (targetType.element3 as EnumElement2).constants2;
   }
   return null;
 }
@@ -247,24 +251,24 @@ String? defaultDecodeLogic(
   return null;
 }
 
-extension ExecutableElementExtension on ExecutableElement {
+extension ExecutableElementExtension on ExecutableElement2 {
   /// Returns the name of `this` qualified with the class name if it's a
   /// [MethodElement].
   String get qualifiedName {
-    if (this is FunctionElement) {
-      return name;
+    if (this is TopLevelFunctionElement) {
+      return name3!;
     }
 
-    if (this is MethodElement) {
-      return '${enclosingElement3.name}.$name';
+    if (this is MethodElement2) {
+      return '${enclosingElement2!.name3!}.${name3!}';
     }
 
-    if (this is ConstructorElement) {
-      // Ignore the default constructor.
-      if (name.isEmpty) {
-        return '${enclosingElement3.name}';
+    if (this is ConstructorElement2) {
+      // The default constructor.
+      if (name3 == 'new') {
+        return enclosingElement2!.name3!;
       }
-      return '${enclosingElement3.name}.$name';
+      return '${enclosingElement2!.name3!}.${name3!}';
     }
 
     throw UnsupportedError('Not sure how to support typeof $runtimeType');

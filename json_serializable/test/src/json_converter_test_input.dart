@@ -129,7 +129,7 @@ class _BadConverter<T, S> implements JsonConverter<S, int> {
 
 @ShouldThrow(
   'Found more than one matching converter for `Duration`.',
-  element: '',
+  element: 'new',
 )
 @JsonSerializable()
 @_durationConverter
@@ -154,7 +154,7 @@ class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
 
 @ShouldThrow(
   'Generators with constructor arguments are not supported.',
-  element: '',
+  element: 'new',
 )
 @JsonSerializable()
 @_ConverterWithCtorParams(42)

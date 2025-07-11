@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 
 import 'type_helpers/config_types.dart';
@@ -11,10 +11,10 @@ import 'type_helpers/config_types.dart';
 /// [TypeHelper.deserialize].
 abstract class TypeHelperContext {
   /// The annotated class that code is being generated for.
-  ClassElement get classElement;
+  ClassElement2 get classElement;
 
   /// The field that code is being generated for.
-  FieldElement get fieldElement;
+  FieldElement2 get fieldElement;
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.

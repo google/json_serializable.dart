@@ -278,7 +278,7 @@ class IgnoredFieldClass {
 @ShouldThrow(
   'Cannot populate the required constructor argument: ignoredTrueField. It is '
   'assigned to a field not meant to be used in fromJson.',
-  element: '',
+  element: 'new',
 )
 @JsonSerializable()
 class IgnoredFieldCtorClass {
@@ -315,7 +315,7 @@ class IgnoreAndIncludeFromJsonFieldCtorClass {
 @ShouldThrow(
   'Cannot populate the required constructor argument: '
   '_privateField. It is assigned to a private field.',
-  element: '',
+  element: 'new',
 )
 @JsonSerializable()
 class PrivateFieldCtorClass {

@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -45,7 +45,7 @@ String? enumValueMapFromType(
   final items = enumMap.entries
       .map(
         (e) =>
-            '  ${targetType.element!.name}.${e.key.name}: '
+            '  ${targetType.element!.name}.${e.key.name3}: '
             '${jsonLiteralAsDart(e.value)},',
       )
       .join();
@@ -53,7 +53,7 @@ String? enumValueMapFromType(
   return 'const ${constMapName(targetType)} = {\n$items\n};';
 }
 
-Map<FieldElement, Object?>? _enumMap(
+Map<FieldElement2, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
 }) {
@@ -79,7 +79,7 @@ Map<FieldElement, Object?>? _enumMap(
 }
 
 Object? _generateEntry({
-  required FieldElement field,
+  required FieldElement2 field,
   required JsonEnum jsonEnum,
   required DartType targetType,
 }) {
@@ -92,12 +92,12 @@ Object? _generateEntry({
     if (valueField != null) {
       // TODO: fieldRename is pointless here!!! At least log a warning!
 
-      final fieldElementType = field.type.element as EnumElement;
+      final fieldElementType = field.type.element3 as EnumElement2;
 
-      final e = fieldElementType.getField(valueField);
+      final e = fieldElementType.getField2(valueField);
 
       if (e == null && valueField == 'index') {
-        return fieldElementType.fields
+        return fieldElementType.fields2
             .where((element) => element.isEnumConstant)
             .toList(growable: false)
             .indexOf(field);
@@ -108,7 +108,7 @@ Object? _generateEntry({
           '`JsonEnum.valueField` was set to "$valueField", but '
           'that is not a valid, instance field on '
           '`${typeToCode(targetType)}`.',
-          element: targetType.element,
+          element: targetType.element3,
         );
       }
 
@@ -120,11 +120,11 @@ Object? _generateEntry({
         throw InvalidGenerationSourceError(
           '`JsonEnum.valueField` was set to "$valueField", but '
           'that field does not have a type of String, int, or null.',
-          element: targetType.element,
+          element: targetType.element3,
         );
       }
     } else {
-      return encodedFieldName(jsonEnum.fieldRename, field.name);
+      return encodedFieldName(jsonEnum.fieldRename, field.name3!);
     }
   } else {
     final reader = ConstantReader(annotation);
@@ -136,7 +136,7 @@ Object? _generateEntry({
     } else {
       final targetTypeCode = typeToCode(targetType);
       throw InvalidGenerationSourceError(
-        'The `JsonValue` annotation on `$targetTypeCode.${field.name}` does '
+        'The `JsonValue` annotation on `$targetTypeCode.${field.name3}` does '
         'not have a value of type String, int, or null.',
         element: field,
       );

@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -14,11 +14,11 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
 
   @override
   List<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! EnumElement) {
+    if (element is! EnumElement2) {
       throw InvalidGenerationSourceError(
         '`@JsonEnum` can only be used on enum elements.',
         element: element,
