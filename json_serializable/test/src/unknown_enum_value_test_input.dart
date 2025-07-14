@@ -6,19 +6,29 @@ part of '_json_serializable_test_input.dart';
 UnknownEnumValue _$UnknownEnumValueFromJson(Map<String, dynamic> json) =>
     UnknownEnumValue()
       ..value =
-          $enumDecodeNullable(
-            _$UnknownEnumValueItemsEnumMap,
+          $enumDecodeNullableWithDecodeMap(
+            _$UnknownEnumValueItemsEnumDecodeMap,
             json['value'],
             unknownValue: UnknownEnumValueItems.vUnknown,
           ) ??
           UnknownEnumValueItems.vNull;
 
+// ignore: unused_element
 const _$UnknownEnumValueItemsEnumMap = {
   UnknownEnumValueItems.v0: 'v0',
   UnknownEnumValueItems.v1: 'v1',
   UnknownEnumValueItems.v2: 'v2',
   UnknownEnumValueItems.vUnknown: 'vUnknown',
   UnknownEnumValueItems.vNull: 'vNull',
+};
+
+// ignore: unused_element
+const _$UnknownEnumValueItemsEnumDecodeMap = {
+  'v0': UnknownEnumValueItems.v0,
+  'v1': UnknownEnumValueItems.v1,
+  'v2': UnknownEnumValueItems.v2,
+  'vUnknown': UnknownEnumValueItems.vUnknown,
+  'vNull': UnknownEnumValueItems.vNull,
 };
 ''')
 @JsonSerializable(createToJson: false)

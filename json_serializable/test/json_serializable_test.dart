@@ -32,6 +32,7 @@ Future<void> main() async {
     jsonEnumTestReader,
     const JsonEnumGenerator(),
     expectedAnnotatedTests: {
+      'EnumAliasNotSupportType',
       'EnumValueIssue1147',
       'EnumValueNotAField',
       'EnumValueNotSupportType',
