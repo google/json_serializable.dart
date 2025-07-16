@@ -244,7 +244,7 @@ _JsonConvertData? _typeConverterFrom(
 
   if (match.genericTypeArg != null) {
     return _JsonConvertData.genericClass(
-      match.annotation.type!.element!.name!,
+      match.annotation.type!.element3!.name3!,
       match.genericTypeArg!,
       reviver.accessor,
       match.jsonType,
@@ -253,7 +253,7 @@ _JsonConvertData? _typeConverterFrom(
   }
 
   return _JsonConvertData.className(
-    match.annotation.type!.element!.name!,
+    match.annotation.type!.element3!.name3!,
     reviver.accessor,
     match.jsonType,
     match.fieldType,
@@ -291,7 +291,7 @@ _ConverterMatch? _compatibleMatch(
     return null;
   }
 
-  assert(jsonConverterSuper.element.typeParameters.length == 2);
+  assert(jsonConverterSuper.element3.typeParameters2.length == 2);
   assert(jsonConverterSuper.typeArguments.length == 2);
 
   final fieldType = jsonConverterSuper.typeArguments[0];
@@ -308,7 +308,7 @@ _ConverterMatch? _compatibleMatch(
   }
 
   if (fieldType is TypeParameterType && targetType is TypeParameterType) {
-    assert(annotation?.element is! PropertyAccessorElement2);
+    assert(annotation?.element2 is! PropertyAccessorElement2);
     assert(converterClassElement.typeParameters2.isNotEmpty);
     if (converterClassElement.typeParameters2.length > 1) {
       throw InvalidGenerationSourceError(
@@ -323,7 +323,7 @@ _ConverterMatch? _compatibleMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
+      '${targetType.element3.name3}${targetType.isNullableType ? '?' : ''}',
       fieldType,
     );
   }

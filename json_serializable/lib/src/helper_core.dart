@@ -79,7 +79,7 @@ $converterOrKeyInstructions
   } else if (field.type != error.type) {
     message = '$message because of type `${typeToCode(error.type)}`';
   } else {
-    final element = error.type.element?.name;
+    final element = error.type.element3?.name3;
     todo =
         '''
 To support the type `${element ?? error.type}` you can:
