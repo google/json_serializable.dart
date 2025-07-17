@@ -6,13 +6,6 @@
 - Use new `null-aware element` feature in generated code.
 - Require Dart 3.8
 
-## 6.10.0-dev
-
-- Switch to analyzer element2 model and `build: ^3.0.0-dev`.
-- Move `package:collection` to a dev dependency.
-- Use new `null-aware element` feature in generated code.
-- Require Dart 3.8
-
 ## 6.9.5
 
 - Support the `analyzer: '>=6.9.0 <8.0.0'`.
