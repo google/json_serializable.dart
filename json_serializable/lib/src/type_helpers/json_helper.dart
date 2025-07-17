@@ -157,8 +157,8 @@ List<String> _helperParams(
   final args = <String>[];
 
   for (var helperArg in rest) {
-    final typeParamIndex = type.element.typeParameters.indexOf(
-      helperArg.element,
+    final typeParamIndex = type.element3.typeParameters2.indexOf(
+      helperArg.element3,
     );
 
     // TODO: throw here if `typeParamIndex` is -1 ?
@@ -181,7 +181,7 @@ TypeParameterType _decodeHelper(
       type.normalParameterTypes.length == 1) {
     final funcReturnType = type.returnType;
 
-    if (param.name3 == fromJsonForName(funcReturnType.element!.name!)) {
+    if (param.name3 == fromJsonForName(funcReturnType.element3!.name3!)) {
       final funcParamType = type.normalParameterTypes.single;
 
       if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
@@ -212,7 +212,7 @@ TypeParameterType _encodeHelper(
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 
-    if (param.name3 == toJsonForName(funcParamType.element!.name!)) {
+    if (param.name3 == toJsonForName(funcParamType.element3!.name3!)) {
       if (funcParamType is TypeParameterType) {
         return funcParamType;
       }
@@ -252,7 +252,7 @@ InterfaceType? _instantiate(
   InterfaceType classType,
 ) {
   final argTypes = ctorParamType.typeArguments.map((arg) {
-    final typeParamIndex = classType.element.typeParameters.indexWhere(
+    final typeParamIndex = classType.element3.typeParameters2.indexWhere(
       // TODO: not 100% sure `nullabilitySuffix` is right
       (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg,
     );
@@ -269,7 +269,7 @@ InterfaceType? _instantiate(
     return null;
   }
 
-  return ctorParamType.element.instantiate(
+  return ctorParamType.element3.instantiate(
     typeArguments: argTypes.cast<DartType>(),
     nullabilitySuffix: ctorParamType.nullabilitySuffix,
   );

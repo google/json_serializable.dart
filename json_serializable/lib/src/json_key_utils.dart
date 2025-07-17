@@ -80,7 +80,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element3?.name3!;
+      badType = dartObject.type!.element3?.name3;
     }
 
     if (badType != null) {
@@ -208,7 +208,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
         (n) => n,
       );
 
-      return '${annotationType.element3!.name3!}.$enumValueName';
+      return '${annotationType.element3!.name3}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {

@@ -1,3 +1,7 @@
+## 6.10.0-wip
+
+- Required `analyzer: ^7.4.0`.
+
 ## 6.10.0-dev
 
 - Switch to analyzer element2 model and `build: ^3.0.0-dev`.

@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/element2.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -165,7 +164,7 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
   return ctor;
 }
 
-/// If [targetType] is an enum, returns the [FieldElement] instances associated
+/// If [targetType] is an enum, returns the [FieldElement2] instances associated
 /// with its values.
 ///
 /// Otherwise, `null`.
@@ -179,7 +178,7 @@ Iterable<FieldElement2>? iterateEnumFields(DartType targetType) {
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
-      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+      element3?.library2?.typeSystem.promoteToNonNull(this) ?? this;
 
   String toStringNonNullable() {
     final val = getDisplayString();
@@ -211,7 +210,7 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
     return 'dynamic';
   } else if (type is InterfaceType) {
     return [
-      type.element.name,
+      type.element3.name3,
       if (type.typeArguments.isNotEmpty)
         '<${type.typeArguments.map(typeToCode).join(', ')}>',
       (type.isNullableType || forceNullable) ? '?' : '',
@@ -253,7 +252,7 @@ String? defaultDecodeLogic(
 
 extension ExecutableElementExtension on ExecutableElement2 {
   /// Returns the name of `this` qualified with the class name if it's a
-  /// [MethodElement].
+  /// [MethodElement2].
   String get qualifiedName {
     if (this is TopLevelFunctionElement) {
       return name3!;
