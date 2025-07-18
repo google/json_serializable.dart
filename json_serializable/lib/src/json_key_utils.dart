@@ -25,9 +25,9 @@ KeyConfig jsonKeyForField(FieldElement2 field, ClassConfig classAnnotation) =>
 
 KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   final obj = jsonKeyAnnotation(element);
-  final ctorParam = <FormalParameterElement?>[
-    ...classAnnotation.ctorParams,
-  ].singleWhere((e) => e!.name3 == element.name3, orElse: () => null);
+  final ctorParam = classAnnotation.ctorParams
+      .where((e) => e.name3 == element.name3)
+      .singleOrNull;
   final ctorObj = ctorParam == null
       ? null
       : jsonKeyAnnotationForCtorParam(ctorParam);
