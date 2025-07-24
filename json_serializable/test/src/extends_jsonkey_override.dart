@@ -15,7 +15,11 @@ Map<String, dynamic> _$CtorParamJsonKeyToJson(CtorParamJsonKey instance) =>
       'first': instance.attributeOne,
       'second': instance.attributeTwo,
     };
-''')
+''', expectedLogItems: [
+  'Field `attributeOne` has conflicting `JsonKey.name` annotations: both '
+  'constructor parameter and class field have this annotation. Using '
+  'constructor parameter value.',
+])
 @JsonSerializable()
 class CtorParamJsonKey {
   CtorParamJsonKey({
