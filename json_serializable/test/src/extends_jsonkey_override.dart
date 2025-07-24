@@ -3,7 +3,8 @@
 part of '_json_serializable_test_input.dart';
 
 // https://github.com/google/json_serializable.dart/issues/1437
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 CtorParamJsonKey _$CtorParamJsonKeyFromJson(Map<String, dynamic> json) =>
     CtorParamJsonKey(
       attributeOne: json['first'] as String,
@@ -15,11 +16,13 @@ Map<String, dynamic> _$CtorParamJsonKeyToJson(CtorParamJsonKey instance) =>
       'first': instance.attributeOne,
       'second': instance.attributeTwo,
     };
-''', expectedLogItems: [
-  'Field `attributeOne` has conflicting `JsonKey.name` annotations: both '
-  'constructor parameter and class field have this annotation. Using '
-  'constructor parameter value.',
-])
+''',
+  expectedLogItems: [
+    'Field `attributeOne` has conflicting `JsonKey.name` annotations: both '
+        'constructor parameter and class field have this annotation. Using '
+        'constructor parameter value.',
+  ],
+)
 @JsonSerializable()
 class CtorParamJsonKey {
   CtorParamJsonKey({

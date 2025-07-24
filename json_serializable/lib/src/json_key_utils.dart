@@ -35,13 +35,13 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   ConstantReader fallbackObjRead(String field) {
     if (ctorObj != null && !ctorObj.isNull) {
       final ctorReadResult = ctorObj.read(field);
-      if (!ctorReadResult.isNull)  {
+      if (!ctorReadResult.isNull) {
         if (!obj.isNull && !obj.read(field).isNull) {
-            log.warning(
-              'Field `${element.name3}` has conflicting `JsonKey.$field` '
-              'annotations: both constructor parameter and class field have '
-              'this annotation. Using constructor parameter value.',
-            );
+          log.warning(
+            'Field `${element.name3}` has conflicting `JsonKey.$field` '
+            'annotations: both constructor parameter and class field have '
+            'this annotation. Using constructor parameter value.',
+          );
         }
 
         return ctorReadResult;
