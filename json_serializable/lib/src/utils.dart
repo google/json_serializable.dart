@@ -14,8 +14,8 @@ import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
 
-// If an annotation exists on `element` the source is a 'real' field.
-// If the result is `null`, check the getter – it is a property.
+/// If an annotation exists on `element` the source is a 'real' field.
+/// If the result is `null`, check the getter – it is a property.
 // TODO: setters: github.com/google/json_serializable.dart/issues/24
 DartObject? _jsonKeyAnnotation(FieldElement2 element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
