@@ -1,4 +1,4 @@
-## 6.10.1
+## 6.11.0
 
 - Support `JsonKey` annotation on constructor parameters.
 
