@@ -8,7 +8,7 @@ import 'allowed_keys_helpers.dart';
 import 'json_serializable.dart';
 
 /// An annotation used to specify how a field is serialized.
-/// 
+///
 /// This annotation can be used on both class properties and constructor
 /// parameters.
 @Target({TargetKind.field, TargetKind.getter, TargetKind.parameter})
