@@ -189,7 +189,12 @@ class SomeClass{}
   }
 
   final output = lines.toString();
-  final expectedWarningCount = message == null ? 0 : 1;
+  var expectedWarningCount = message == null ? 0 : 1;
+
+  if (output.contains('W SDK language version ')) {
+    expectedWarningCount++;
+  }
+
   final warningCount = _warningStartOfLine.allMatches(output).length;
   expect(
     warningCount,
