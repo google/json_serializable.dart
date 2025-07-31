@@ -189,7 +189,15 @@ class SomeClass{}
   }
 
   final output = lines.toString();
-  final expectedWarningCount = message == null ? 0 : 1;
+  var expectedWarningCount = message == null ? 0 : 1;
+
+  // If pkg:analyzer is out of sync with the current SDK, we can get a warning
+  // about the "SDK language version". In that case, just expect one more
+  // warning and proceed.
+  if (output.contains('W SDK language version ')) {
+    expectedWarningCount++;
+  }
+
   final warningCount = _warningStartOfLine.allMatches(output).length;
   expect(
     warningCount,
