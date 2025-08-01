@@ -81,6 +81,7 @@ class SubTypeWithAnnotatedFieldOverrideExtendsWithOverrides extends SuperType {
   int? get superReadWriteField => super.superReadWriteField;
 
   @override
+  // ignore: unnecessary_overrides
   set superReadWriteField(int? value) {
     super.superReadWriteField = value;
   }
