@@ -58,9 +58,9 @@ class _FieldSet implements Comparable<_FieldSet> {
     /// preference for the getter if it's defined.
     int offsetFor(FieldElement2 e) {
       if (e.isSynthetic) {
-        return (e.getter2 ?? e.setter2)!.firstFragment.nameOffset2!;
+        return (e.getter2 ?? e.setter2)!.firstFragment.nameOffset2 ?? 0;
       }
-      return e.firstFragment.nameOffset2!;
+      return e.firstFragment.nameOffset2 ?? 0;
     }
 
     return offsetFor(a).compareTo(offsetFor(b));
