@@ -266,3 +266,34 @@ class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
 
   Map<String, dynamic> toJson() => _$RegressionTestIssue1210ToJson(this);
 }
+
+@JsonSerializable()
+class CustomList extends ListBase<String> {
+  // Regression test for issue:
+  // https://github.com/google/json_serializable.dart/issues/1512
+
+  final List<String> _innerList = [];
+
+  CustomList();
+
+  @override
+  int get length => _innerList.length;
+
+  @override
+  set length(int newLength) {
+    _innerList.length = newLength;
+  }
+
+  @override
+  String operator [](int index) => _innerList[index];
+
+  @override
+  void operator []=(int index, String value) {
+    _innerList[index] = value;
+  }
+
+  factory CustomList.fromJson(Map<String, dynamic> json) =>
+      _$CustomListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CustomListToJson(this);
+}

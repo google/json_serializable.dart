@@ -229,3 +229,15 @@ RegressionTestIssue1210 _$RegressionTestIssue1210FromJson(
 Map<String, dynamic> _$RegressionTestIssue1210ToJson(
   RegressionTestIssue1210 instance,
 ) => <String, dynamic>{'field': instance.field};
+
+CustomList _$CustomListFromJson(Map<String, dynamic> json) => CustomList()
+  ..first = json['first'] as String
+  ..last = json['last'] as String
+  ..length = (json['length'] as num).toInt();
+
+Map<String, dynamic> _$CustomListToJson(CustomList instance) =>
+    <String, dynamic>{
+      'first': instance.first,
+      'last': instance.last,
+      'length': instance.length,
+    };
