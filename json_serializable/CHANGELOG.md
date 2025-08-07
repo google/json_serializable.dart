@@ -1,3 +1,7 @@
+## 6.11.0
+
+- Support `JsonKey` annotation on constructor parameters.
+
 ## 6.10.0
 
 - Required `analyzer: ^7.4.0`.

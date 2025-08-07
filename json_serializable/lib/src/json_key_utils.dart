@@ -24,14 +24,38 @@ KeyConfig jsonKeyForField(FieldElement2 field, ClassConfig classAnnotation) =>
     );
 
 KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
-  // If an annotation exists on `element` the source is a 'real' field.
-  // If the result is `null`, check the getter – it is a property.
-  // TODO: setters: github.com/google/json_serializable.dart/issues/24
   final obj = jsonKeyAnnotation(element);
+  final ctorParam = classAnnotation.ctorParams
+      .where((e) => e.name3 == element.name3)
+      .singleOrNull;
+  final ctorObj = ctorParam == null
+      ? null
+      : jsonKeyAnnotationForCtorParam(ctorParam);
 
-  final ctorParamDefault = classAnnotation.ctorParamDefaults[element.name3];
+  ConstantReader fallbackObjRead(String field) {
+    if (ctorObj != null && !ctorObj.isNull) {
+      final ctorReadResult = ctorObj.read(field);
+      if (!ctorReadResult.isNull) {
+        if (!obj.isNull && !obj.read(field).isNull) {
+          log.warning(
+            'Field `${element.name3}` has conflicting `JsonKey.$field` '
+            'annotations: both constructor parameter and class field have '
+            'this annotation. Using constructor parameter value.',
+          );
+        }
 
-  if (obj.isNull) {
+        return ctorReadResult;
+      }
+    }
+    if (obj.isNull) {
+      return ConstantReader(null);
+    }
+    return obj.read(field);
+  }
+
+  final ctorParamDefault = ctorParam?.defaultValueCode;
+
+  if (obj.isNull && (ctorObj == null || ctorObj.isNull)) {
     return _populateJsonKey(
       classAnnotation,
       element,
@@ -121,7 +145,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   /// either the annotated field is not an `enum` or `List` or if the value in
   /// [fieldName] is not an `enum` value.
   String? createAnnotationValue(String fieldName, {bool mustBeEnum = false}) {
-    final annotationValue = obj.read(fieldName);
+    final annotationValue = fallbackObjRead(fieldName);
 
     if (annotationValue.isNull) {
       return null;
@@ -228,16 +252,17 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   }
 
   String? readValueFunctionName;
-  final readValue = obj.read('readValue');
+  final readValue = fallbackObjRead('readValue');
   if (!readValue.isNull) {
     readValueFunctionName = readValue.objectValue
         .toFunctionValue2()!
         .qualifiedName;
   }
 
-  final ignore = obj.read('ignore').literalValue as bool?;
-  var includeFromJson = obj.read('includeFromJson').literalValue as bool?;
-  var includeToJson = obj.read('includeToJson').literalValue as bool?;
+  final ignore = fallbackObjRead('ignore').literalValue as bool?;
+  var includeFromJson =
+      fallbackObjRead('includeFromJson').literalValue as bool?;
+  var includeToJson = fallbackObjRead('includeToJson').literalValue as bool?;
 
   if (ignore != null) {
     if (includeFromJson != null) {
@@ -262,11 +287,12 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
-    disallowNullValue: obj.read('disallowNullValue').literalValue as bool?,
-    includeIfNull: obj.read('includeIfNull').literalValue as bool?,
-    name: obj.read('name').literalValue as String?,
+    disallowNullValue:
+        fallbackObjRead('disallowNullValue').literalValue as bool?,
+    includeIfNull: fallbackObjRead('includeIfNull').literalValue as bool?,
+    name: fallbackObjRead('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
-    required: obj.read('required').literalValue as bool?,
+    required: fallbackObjRead('required').literalValue as bool?,
     unknownEnumValue: createAnnotationValue(
       'unknownEnumValue',
       mustBeEnum: true,
