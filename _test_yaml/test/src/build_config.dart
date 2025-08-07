@@ -85,7 +85,7 @@ class Builder {
   Map<String, dynamic> toJson() => _$BuilderToJson(this);
 }
 
-@JsonEnum(fieldRename: FieldRename.snake)
+@JsonEnum(fieldRename: RenameType.snake)
 enum AutoApply { none, dependents, allPackages, rootPackage }
 
 enum BuildTo { cache, source }

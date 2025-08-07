@@ -307,7 +307,7 @@ KeyConfig _populateJsonKey(
       disallowNullValue,
       classAnnotation.includeIfNull,
     ),
-    name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name3!),
+    name: name ?? encodedName(classAnnotation.fieldRename, element.name3!),
     readValueFunctionName: readValueFunctionName,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,

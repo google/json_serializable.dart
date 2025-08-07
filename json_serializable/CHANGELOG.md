@@ -1,7 +1,10 @@
+## 6.11.0-wip
+
+- Add support for deserializing union json to sealed class
+- Add support for serializing sealed class to union json
+
 ## 6.10.0
 
-- Required `analyzer: ^7.4.0`.
-- Switch to analyzer element2 model and `build: ^3.0.0-dev`.
 - Move `package:collection` to a dev dependency.
 - Use new `null-aware element` feature in generated code.
 - Require Dart 3.8

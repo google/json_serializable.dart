@@ -20,10 +20,12 @@ class ConfigurationImplicitDefaults {
   createPerFieldToJson: false,
   disallowUnrecognizedKeys: false,
   explicitToJson: false,
-  fieldRename: FieldRename.none,
+  fieldRename: RenameType.none,
   ignoreUnannotated: false,
   includeIfNull: true,
   genericArgumentFactories: false,
+  unionDiscriminator: 'type',
+  unionRename: RenameType.none,
 )
 class ConfigurationExplicitDefaults {
   int? field;

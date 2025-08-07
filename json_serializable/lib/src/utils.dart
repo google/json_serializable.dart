@@ -9,10 +9,12 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'settings.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
 const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
+const _jsonSerializableChecker = TypeChecker.fromRuntime(JsonSerializable);
 
 DartObject? _jsonKeyAnnotation(FieldElement2 element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
@@ -60,11 +62,13 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
   disallowUnrecognizedKeys:
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-  fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  fieldRename: readEnum(reader.read('fieldRename'), RenameType.values),
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
   includeIfNull: reader.read('includeIfNull').literalValue as bool?,
+  unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
+  unionRename: readEnum(reader.read('unionRename'), RenameType.values),
 );
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
@@ -122,6 +126,9 @@ ClassConfig mergeConfig(
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
     ctorParamDefaults: paramDefaultValueMap,
     converters: converters.isNull ? const [] : converters.listValue,
+    unionDiscriminator:
+        annotation.unionDiscriminator ?? config.unionDiscriminator,
+    unionRename: annotation.unionRename ?? config.unionRename,
   );
 }
 
@@ -162,6 +169,61 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
   return ctor;
 }
 
+/// Given a [ClassElement2] that is a sealed class, returns all the
+/// direct subclasses of the given sealed class, excluding any
+/// indirect subclasses (ie. subclasses of subclasses).
+///
+/// Otherwise, returns an empty iterable.
+Iterable<ClassElement2> sealedSubClasses(ClassElement2 maybeSealedSuperClass) {
+  if (maybeSealedSuperClass case final sc when sc.isSealed) {
+    return LibraryReader(
+      sc.library2,
+    ).allElements.whereType<ClassElement2>().where(
+      (e) => e.interfaces.contains(sc.thisType) || e.supertype?.element3 == sc,
+    );
+  }
+
+  return const Iterable<ClassElement2>.empty();
+}
+
+/// Given a [ClassElement2] that is a subclass of sealed classes, returns
+/// all of the sealed superclasses, including all indirect superclasses
+/// (ie. superclasses of superclasses)
+///
+/// Otherwise, returns an empty iterable.
+Iterable<ClassElement2> sealedSuperClasses(
+  ClassElement2 maybeSealedImplementation,
+) => maybeSealedImplementation.allSupertypes
+    .map((type) => type.element3)
+    .whereType<ClassElement2>()
+    .where((element) => element.isSealed);
+
+/// Given a [ClassElement2] that is annotated with `@JsonSerializable`, returns
+/// the annotation config merged with build runner config and defaults.
+///
+/// Otherwise, returns `null`.
+ClassConfig? jsonSerializableConfig(
+  ClassElement2 maybeAnnotatedElement,
+  Settings generator,
+) {
+  final maybeSuperAnnotation = _jsonSerializableChecker.firstAnnotationOfExact(
+    maybeAnnotatedElement,
+    throwOnUnresolved: false,
+  );
+
+  if (maybeSuperAnnotation case final superAnnotation?) {
+    final annotationReader = ConstantReader(superAnnotation);
+
+    return mergeConfig(
+      generator.config,
+      annotationReader,
+      classElement: maybeAnnotatedElement,
+    );
+  }
+
+  return null;
+}
+
 /// If [targetType] is an enum, returns the [FieldElement2] instances associated
 /// with its values.
 ///
@@ -188,14 +250,16 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedFieldName(FieldRename fieldRename, String declaredName) =>
+String encodedName(RenameType fieldRename, String declaredName) =>
     switch (fieldRename) {
-      FieldRename.none => declaredName,
-      FieldRename.snake => declaredName.snake,
-      FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
-      FieldRename.kebab => declaredName.kebab,
-      FieldRename.pascal => declaredName.pascal,
+      RenameType.none => declaredName,
+      RenameType.snake => declaredName.snake,
+      RenameType.screamingSnake => declaredName.snake.toUpperCase(),
+      RenameType.kebab => declaredName.kebab,
+      RenameType.pascal => declaredName.pascal,
     };
+
+String classPrefix(ClassElement2 element) => '_\$${element.name3!.nonPrivate}';
 
 /// Return the Dart code presentation for the given [type].
 ///

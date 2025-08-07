@@ -1,6 +1,9 @@
-## 4.9.1-wip
+## 4.10.0-wip
 
+- Add `JsonSerializable.unionRename`
+- Add `JsonSerializable.unionDiscriminator`
 - Require Dart 3.8
+- Deprecated `FieldRename` in favor of `RenameType`
 
 ## 4.9.0
 
