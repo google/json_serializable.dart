@@ -1,3 +1,7 @@
+## 2.0.5-wip
+
+- Require `yaml: ^3.1.2`
+
 ## 2.0.4
 
 - Require Dart 3.8

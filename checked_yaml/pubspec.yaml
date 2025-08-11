@@ -1,5 +1,5 @@
 name: checked_yaml
-version: 2.0.4
+version: 2.0.5-wip
 
 description: >-
   Generate more helpful exceptions when decoding YAML documents using
@@ -20,12 +20,12 @@ resolution: workspace
 dependencies:
   json_annotation: ^4.3.0
   source_span: ^1.8.0
-  yaml: ^3.0.0
+  yaml: ^3.1.2
 
 dev_dependencies:
-  build_runner: ^2.0.6
+  build_runner: ^2.6.0
   build_verify: ^3.0.0
   json_serializable: ^6.0.0
-  path: ^1.8.0
-  test: ^1.17.10
+  path: ^1.9.0
+  test: ^1.25.9
   test_process: ^2.0.0
