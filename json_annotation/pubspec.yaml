@@ -16,4 +16,4 @@ environment:
 resolution: workspace
 
 dependencies:
-  meta: ^1.4.0
+  meta: ^1.15.0

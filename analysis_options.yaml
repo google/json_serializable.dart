@@ -2,6 +2,9 @@
 include: package:dart_flutter_team_lints/analysis_options.yaml
 
 analyzer:
+  errors:
+    # For source_gen and analyzer deprecations
+    deprecated_member_use: ignore
   language:
     strict-casts: true
 

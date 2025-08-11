@@ -1,6 +1,10 @@
-## 6.11.0
+## 6.11.0-wip
 
 - Support `JsonKey` annotation on constructor parameters.
+- Require `analyzer: '>=7.4.0 <9.0.0'`
+- Require `dart_style: ^3.0.0`
+- Require `meta: ^1.15.0`
+- Require `source_helper: ^1.3.6`
 
 ## 6.10.0
 
