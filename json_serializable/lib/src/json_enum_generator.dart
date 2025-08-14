@@ -10,7 +10,7 @@ import 'package:source_gen/source_gen.dart';
 import 'enum_utils.dart';
 
 class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
-  const JsonEnumGenerator();
+  const JsonEnumGenerator() : super(inPackage: 'json_annotation');
 
   @override
   List<String> generateForAnnotatedElement(
