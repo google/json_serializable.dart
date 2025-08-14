@@ -64,15 +64,15 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     String functionName;
     if (targetType.isNullableType || defaultProvided) {
-      functionName = r'$enumDecodeNullable';
+      functionName = r'$enumDecodeNullableWithDecodeMap';
     } else {
-      functionName = r'$enumDecode';
+      functionName = r'$enumDecodeWithDecodeMap';
     }
 
     context.addMember(memberContent);
 
     final args = [
-      constMapName(targetType),
+      constDecodeMapName(targetType),
       expression,
       if (jsonKey.unknownEnumValue != null)
         'unknownValue: ${jsonKey.unknownEnumValue}',

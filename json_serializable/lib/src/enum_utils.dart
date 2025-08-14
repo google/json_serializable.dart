@@ -15,6 +15,9 @@ import 'utils.dart';
 String constMapName(DartType targetType) =>
     '_\$${targetType.element3!.name3}EnumMap';
 
+String constDecodeMapName(DartType targetType) =>
+    '_\$${targetType.element!.name}EnumDecodeMap';
+
 /// If [targetType] is not an enum, return `null`.
 ///
 /// Otherwise, returns `true` if [targetType] is nullable OR if one of the
@@ -40,9 +43,12 @@ String? enumValueMapFromType(
     nullWithNoAnnotation: nullWithNoAnnotation,
   );
 
-  if (enumMap == null) return null;
+  final enumAliases = _enumAliases(
+    targetType,
+    nullWithNoAnnotation: nullWithNoAnnotation,
+  );
 
-  final items = enumMap.entries
+  final valuesItems = enumMap?.entries
       .map(
         (e) =>
             '  ${targetType.element3!.name3}.${e.key.name3}: '
@@ -50,7 +56,27 @@ String? enumValueMapFromType(
       )
       .join();
 
-  return 'const ${constMapName(targetType)} = {\n$items\n};';
+  final valuesMap = valuesItems == null
+      ? null
+      : '// ignore: unused_element\n'
+            'const ${constMapName(targetType)} = {\n$valuesItems\n};';
+
+  final decodeItems = enumAliases?.entries
+      .map(
+        (e) =>
+            '  ${jsonLiteralAsDart(e.key)}: '
+            '${targetType.element!.name}.${e.value.name3},',
+      )
+      .join();
+
+  final decodeMap = decodeItems == null
+      ? null
+      : '// ignore: unused_element\n'
+            'const ${constDecodeMapName(targetType)} = {\n$decodeItems\n};';
+
+  return valuesMap == null && decodeMap == null
+      ? null
+      : [valuesMap, decodeMap].join('\n\n');
 }
 
 Map<FieldElement2, Object?>? _enumMap(
@@ -75,6 +101,31 @@ Map<FieldElement2, Object?>? _enumMap(
         jsonEnum: jsonEnum,
         targetType: targetType,
       ),
+  };
+}
+
+Map<Object?, FieldElement2>? _enumAliases(
+  DartType targetType, {
+  bool nullWithNoAnnotation = false,
+}) {
+  final targetTypeElement = targetType.element;
+  if (targetTypeElement == null) return null;
+  final annotation = _jsonEnumChecker.firstAnnotationOf(targetTypeElement);
+  final jsonEnum = _fromAnnotation(annotation);
+
+  final enumFields = iterateEnumFields(targetType);
+
+  if (enumFields == null || (nullWithNoAnnotation && !jsonEnum.alwaysCreate)) {
+    return null;
+  }
+
+  return {
+    for (var field in enumFields) ...{
+      _generateEntry(field: field, jsonEnum: jsonEnum, targetType: targetType):
+          field,
+      for (var alias in _generateAliases(field: field, targetType: targetType))
+        alias: field,
+    },
   };
 }
 
@@ -144,6 +195,37 @@ Object? _generateEntry({
   }
 }
 
+List<Object?> _generateAliases({
+  required FieldElement2 field,
+  required DartType targetType,
+}) {
+  final annotation = const TypeChecker.fromRuntime(
+    JsonValue,
+  ).firstAnnotationOfExact(field);
+
+  if (annotation == null) {
+    return const [];
+  } else {
+    final reader = ConstantReader(annotation);
+
+    final valueReader = reader.read('aliases');
+
+    if (valueReader.validAliasesType) {
+      return [
+        for (final value in valueReader.setValue)
+          ConstantReader(value).literalValue,
+      ];
+    } else {
+      final targetTypeCode = typeToCode(targetType);
+      throw InvalidGenerationSourceError(
+        'The `JsonValue` annotation on `$targetTypeCode.${field.name3}` '
+        'aliases should all be of type String or int.',
+        element: field,
+      );
+    }
+  }
+}
+
 const _jsonEnumChecker = TypeChecker.fromRuntime(JsonEnum);
 
 JsonEnum _fromAnnotation(DartObject? dartObject) {
@@ -160,4 +242,12 @@ JsonEnum _fromAnnotation(DartObject? dartObject) {
 
 extension on ConstantReader {
   bool get validValueType => isString || isNull || isInt;
+
+  bool get validAliasesType =>
+      isSet &&
+      setValue.every(
+        (element) =>
+            (element.type?.isDartCoreString ?? false) ||
+            (element.type?.isDartCoreInt ?? false),
+      );
 }
