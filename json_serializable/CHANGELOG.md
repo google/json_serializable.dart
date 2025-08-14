@@ -5,6 +5,8 @@
 - Require `dart_style: ^3.0.0`
 - Require `meta: ^1.15.0`
 - Require `source_helper: ^1.3.6`
+- Require `source_gen: ^3.1.0`, stop using deprecated `TypeChecker.fromRuntime`
+  and use the new `TypeChecker.typeNamed` instead.
 
 ## 6.10.0
 

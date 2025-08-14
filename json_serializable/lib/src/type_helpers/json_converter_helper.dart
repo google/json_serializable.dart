@@ -331,4 +331,7 @@ _ConverterMatch? _compatibleMatch(
   return null;
 }
 
-const _jsonConverterChecker = TypeChecker.fromRuntime(JsonConverter);
+const _jsonConverterChecker = TypeChecker.typeNamed(
+  JsonConverter,
+  inPackage: 'json_annotation',
+);

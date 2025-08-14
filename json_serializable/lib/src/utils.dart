@@ -12,7 +12,10 @@ import 'package:source_helper/source_helper.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
-const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
+const _jsonKeyChecker = TypeChecker.typeNamed(
+  JsonKey,
+  inPackage: 'json_annotation',
+);
 
 /// If an annotation exists on `element` the source is a 'real' field.
 /// If the result is `null`, check the getter – it is a property.

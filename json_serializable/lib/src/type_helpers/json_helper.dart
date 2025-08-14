@@ -279,8 +279,9 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   if (source.isEnum) {
     return null;
   }
-  final annotations = const TypeChecker.fromRuntime(
+  final annotations = const TypeChecker.typeNamed(
     JsonSerializable,
+    inPackage: 'json_annotation',
   ).annotationsOfExact(source.element3, throwOnUnresolved: false).toList();
 
   if (annotations.isEmpty) {

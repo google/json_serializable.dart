@@ -13,7 +13,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
-  const JsonLiteralGenerator();
+  const JsonLiteralGenerator() : super(inPackage: 'json_annotation');
 
   @override
   Future<String> generateForAnnotatedElement(

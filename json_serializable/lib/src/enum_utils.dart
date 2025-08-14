@@ -83,8 +83,9 @@ Object? _generateEntry({
   required JsonEnum jsonEnum,
   required DartType targetType,
 }) {
-  final annotation = const TypeChecker.fromRuntime(
+  final annotation = const TypeChecker.typeNamed(
     JsonValue,
+    inPackage: 'json_annotation',
   ).firstAnnotationOfExact(field);
 
   if (annotation == null) {
@@ -144,7 +145,10 @@ Object? _generateEntry({
   }
 }
 
-const _jsonEnumChecker = TypeChecker.fromRuntime(JsonEnum);
+const _jsonEnumChecker = TypeChecker.typeNamed(
+  JsonEnum,
+  inPackage: 'json_annotation',
+);
 
 JsonEnum _fromAnnotation(DartObject? dartObject) {
   if (dartObject == null) {
