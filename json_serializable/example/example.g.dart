@@ -4,6 +4,8 @@
 
 part of 'example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -21,3 +23,5 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'lastName': instance.lastName,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
 };
+
+// dart format on

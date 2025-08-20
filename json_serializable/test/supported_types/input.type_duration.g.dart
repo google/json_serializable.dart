@@ -4,6 +4,8 @@
 
 part of 'input.type_duration.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -24,3 +26,5 @@ SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$SimpleClassNullableToJson(
   SimpleClassNullable instance,
 ) => <String, dynamic>{'value': instance.value?.inMicroseconds};
+
+// dart format on

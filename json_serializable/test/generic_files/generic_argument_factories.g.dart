@@ -4,6 +4,8 @@
 
 part of 'generic_argument_factories.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -59,3 +61,5 @@ Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
         (value) => value?.toString(),
       ),
     };
+
+// dart format on

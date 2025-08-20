@@ -4,6 +4,8 @@
 
 part of 'field_map_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -27,3 +29,5 @@ const _$PrivateModelFieldMap = <String, String>{'fullName': 'full-name'};
 
 Map<String, dynamic> _$PrivateModelToJson(_PrivateModel instance) =>
     <String, dynamic>{'full-name': instance.fullName};
+
+// dart format on

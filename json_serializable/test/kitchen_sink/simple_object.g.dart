@@ -4,6 +4,8 @@
 
 part of 'simple_object.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -13,3 +15,5 @@ SimpleObject _$SimpleObjectFromJson(Map json) =>
 
 Map<String, dynamic> _$SimpleObjectToJson(SimpleObject instance) =>
     <String, dynamic>{'value': instance.value};
+
+// dart format on

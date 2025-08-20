@@ -4,6 +4,8 @@
 
 part of 'input.type_iterable.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -660,3 +662,5 @@ Map<String, dynamic> _$SimpleClassNullableOfUriNullableToJson(
 ) => <String, dynamic>{
   'value': instance.value?.map((e) => e?.toString()).toList(),
 };
+
+// dart format on

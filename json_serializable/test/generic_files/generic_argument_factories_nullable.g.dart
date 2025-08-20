@@ -4,6 +4,8 @@
 
 part of 'generic_argument_factories_nullable.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -80,3 +82,5 @@ Map<String, dynamic> _$ConcreteClassNullableToJson(
     (value) => value?.toString(),
   ),
 };
+
+// dart format on

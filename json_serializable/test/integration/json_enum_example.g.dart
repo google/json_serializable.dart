@@ -4,6 +4,8 @@
 
 part of 'json_enum_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -88,3 +90,5 @@ const _$EnumValueFieldIndexEnumMap = {
   EnumValueFieldIndex.weird: 701,
   EnumValueFieldIndex.oneMore: 2,
 };
+
+// dart format on

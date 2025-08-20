@@ -2,6 +2,8 @@
 
 part of 'example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -86,3 +88,5 @@ final _$glossaryDataJsonLiteral = {
     },
   },
 };
+
+// dart format on

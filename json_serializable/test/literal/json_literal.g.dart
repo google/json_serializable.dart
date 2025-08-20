@@ -4,6 +4,8 @@
 
 part of 'json_literal.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonLiteralGenerator
 // **************************************************************************
@@ -603,3 +605,5 @@ const _$naughtyStringsJsonLiteral = [
   'The quic\b\b\b\b\b\bk brown fo\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07x... [Beeeep]',
   'Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗',
 ];
+
+// dart format on

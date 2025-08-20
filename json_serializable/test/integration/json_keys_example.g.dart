@@ -4,6 +4,8 @@
 
 part of 'json_keys_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -22,3 +24,5 @@ Map<String, dynamic> _$ModelToJson(Model instance) => <String, dynamic>{
   'first-name': instance.firstName,
   'LAST_NAME': instance.lastName,
 };
+
+// dart format on

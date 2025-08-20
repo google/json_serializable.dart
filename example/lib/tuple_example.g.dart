@@ -2,6 +2,8 @@
 
 part of 'tuple_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -46,3 +48,5 @@ Map<String, dynamic> _$ConcreteClassToJson(ConcreteClass instance) =>
         (value) => value.toString(),
       ),
     };
+
+// dart format on

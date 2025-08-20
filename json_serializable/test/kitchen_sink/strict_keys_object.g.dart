@@ -4,6 +4,8 @@
 
 part of 'strict_keys_object.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -25,3 +27,5 @@ Map<String, dynamic> _$StrictKeysObjectToJson(StrictKeysObject instance) =>
       'value': instance.value,
       'custom_field': instance.customField,
     };
+
+// dart format on

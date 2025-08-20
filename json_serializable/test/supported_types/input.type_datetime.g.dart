@@ -4,6 +4,8 @@
 
 part of 'input.type_datetime.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -35,3 +37,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
   'value': instance.value?.toIso8601String(),
   'withDefault': instance.withDefault?.toIso8601String(),
 };
+
+// dart format on

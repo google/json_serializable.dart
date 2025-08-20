@@ -4,6 +4,8 @@
 
 part of 'kitchen_sink.g_explicit_to_json.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -314,3 +316,5 @@ Map<String, dynamic> _$JsonConverterGenericToJson<S, T, U>(
     (k, e) => MapEntry(k, GenericConverter<U>().toJson(e)),
   ),
 };
+
+// dart format on
