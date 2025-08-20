@@ -2,6 +2,8 @@
 
 part of 'json_converter_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -41,3 +43,5 @@ CustomResult _$CustomResultFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
     <String, dynamic>{'name': instance.name, 'size': instance.size};
+
+// dart format on

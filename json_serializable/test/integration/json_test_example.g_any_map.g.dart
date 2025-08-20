@@ -4,6 +4,8 @@
 
 part of 'json_test_example.g_any_map.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -239,3 +241,5 @@ Map<String, dynamic> _$CustomListToJson(CustomList instance) =>
       'last': instance.last,
       'length': instance.length,
     };
+
+// dart format on

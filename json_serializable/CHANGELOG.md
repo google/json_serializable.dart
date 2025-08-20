@@ -5,6 +5,7 @@
 - Require `dart_style: ^3.0.0`
 - Require `meta: ^1.15.0`
 - Require `source_helper: ^1.3.6`
+- Support `page_width` other than 80.
 
 ## 6.10.0
 

@@ -4,6 +4,8 @@
 
 part of 'implicit_default_value.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -108,3 +110,5 @@ const _$GreekEnumMap = {
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
 };
+
+// dart format on

@@ -2,6 +2,8 @@
 
 part of 'generic_response_class_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -31,3 +33,5 @@ Comment _$CommentFromJson(Map<String, dynamic> json) => Comment(
   id: (json['id'] as num?)?.toInt(),
   content: json['content'] as String?,
 );
+
+// dart format on

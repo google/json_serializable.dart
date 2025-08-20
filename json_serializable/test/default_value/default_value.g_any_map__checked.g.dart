@@ -4,6 +4,8 @@
 
 part of 'default_value.g_any_map__checked.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -135,3 +137,5 @@ const _$GreekEnumMap = {
   Greek.gamma: 'gamma',
   Greek.delta: 'delta',
 };
+
+// dart format on

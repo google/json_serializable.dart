@@ -2,6 +2,8 @@
 
 part of 'nested_values_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -17,3 +19,5 @@ Map<String, dynamic> _$NestedValueExampleToJson(NestedValueExample instance) =>
     <String, dynamic>{
       'root_items': const _NestedListConverter().toJson(instance.nestedValues),
     };
+
+// dart format on

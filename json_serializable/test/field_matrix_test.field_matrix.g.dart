@@ -4,6 +4,8 @@
 
 part of 'field_matrix_test.field_matrix.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -232,3 +234,5 @@ ToJsonFalseFromJsonFalsePrivate _$ToJsonFalseFromJsonFalsePrivateFromJson(
 Map<String, dynamic> _$ToJsonFalseFromJsonFalsePrivateToJson(
   ToJsonFalseFromJsonFalsePrivate instance,
 ) => <String, dynamic>{'aField': instance.aField, 'zField': instance.zField};
+
+// dart format on

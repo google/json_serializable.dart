@@ -4,6 +4,8 @@
 
 part of 'input.type_map.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -6510,3 +6512,5 @@ Map<String, dynamic> _$SimpleClassNullableOfUriToUriNullableToJson(
 ) => <String, dynamic>{
   'value': instance.value?.map((k, e) => MapEntry(k.toString(), e?.toString())),
 };
+
+// dart format on

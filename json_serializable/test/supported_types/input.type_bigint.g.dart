@@ -4,6 +4,8 @@
 
 part of 'input.type_bigint.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -35,3 +37,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
   'value': instance.value?.toString(),
   'withDefault': instance.withDefault?.toString(),
 };
+
+// dart format on

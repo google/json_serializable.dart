@@ -4,6 +4,8 @@
 
 part of 'generic_class.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -133,3 +135,5 @@ Map<String, dynamic> _$Issue1047ClassToJson<T>(
   Issue1047Class<T> instance,
   Object? Function(T value) toJsonT,
 ) => <String, dynamic>{'node': toJsonT(instance.node)};
+
+// dart format on

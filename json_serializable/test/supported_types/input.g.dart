@@ -4,6 +4,8 @@
 
 part of 'input.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -16,3 +18,5 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
       'value': instance.value,
       'withDefault': instance.withDefault,
     };
+
+// dart format on

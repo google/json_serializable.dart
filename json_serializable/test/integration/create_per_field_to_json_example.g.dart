@@ -4,6 +4,8 @@
 
 part of 'create_per_field_to_json_example.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -99,3 +101,5 @@ abstract class _$PrivateModelPerFieldToJson {
 
 Map<String, dynamic> _$PrivateModelToJson(_PrivateModel instance) =>
     <String, dynamic>{'full-name': instance.fullName};
+
+// dart format on

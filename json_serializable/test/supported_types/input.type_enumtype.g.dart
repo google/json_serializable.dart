@@ -4,6 +4,8 @@
 
 part of 'input.type_enumtype.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -39,3 +41,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
   'value': _$EnumTypeEnumMap[instance.value],
   'withDefault': _$EnumTypeEnumMap[instance.withDefault],
 };
+
+// dart format on

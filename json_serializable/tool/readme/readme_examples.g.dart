@@ -4,6 +4,8 @@
 
 part of 'readme_examples.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -29,3 +31,5 @@ Sample4 _$Sample4FromJson(Map<String, dynamic> json) => Sample4(
 Map<String, dynamic> _$Sample4ToJson(Sample4 instance) => <String, dynamic>{
   'value': const EpochDateTimeConverter().toJson(instance.value),
 };
+
+// dart format on

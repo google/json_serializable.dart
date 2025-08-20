@@ -4,6 +4,8 @@
 
 part of 'input.type_bool.dart';
 
+// dart format off
+
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
@@ -29,3 +31,5 @@ Map<String, dynamic> _$SimpleClassNullableToJson(
   'value': instance.value,
   'withDefault': instance.withDefault,
 };
+
+// dart format on
