@@ -111,4 +111,4 @@ ArgumentError _argError(Object value) => ArgumentError(
 );
 
 String defaultFormatOutput(String code, Version languageVersion) =>
-    DartFormatter(languageVersion: languageVersion).format(code);
+    '// dart format off\n\n${DartFormatter(languageVersion: languageVersion).format(code)}\n// dart format on\n';
