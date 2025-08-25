@@ -22,7 +22,8 @@ class JsonSerializableGenerator
 
   JsonSerializable get config => _settings.config.toJsonSerializable();
 
-  JsonSerializableGenerator.fromSettings(this._settings);
+  JsonSerializableGenerator.fromSettings(this._settings)
+    : super(inPackage: 'json_annotation');
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///

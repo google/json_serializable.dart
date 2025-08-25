@@ -365,6 +365,7 @@ bool _interfaceTypesEqual(DartType a, DartType b) {
 const jsonKeyNullForUndefinedEnumValueFieldName =
     'JsonKey.nullForUndefinedEnumValue';
 
-final _nullAsUnknownChecker = TypeChecker.fromRuntime(
+final _nullAsUnknownChecker = TypeChecker.typeNamed(
   JsonKey.nullForUndefinedEnumValue.runtimeType,
+  inPackage: 'json_annotation',
 );
