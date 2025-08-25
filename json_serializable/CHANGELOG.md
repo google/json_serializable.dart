@@ -1,4 +1,4 @@
-## 6.11.0-wip
+## 6.11.0
 
 - Support `JsonKey` annotation on constructor parameters.
 - Require `analyzer: '>=7.4.0 <9.0.0'`
