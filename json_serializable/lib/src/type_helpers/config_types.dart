@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// Represents values from [JsonKey] when merged with local configuration.
@@ -49,6 +50,7 @@ class ClassConfig {
   final bool createFactory;
   final bool createToJson;
   final bool createFieldMap;
+  final bool createJsonKeys;
   final bool createPerFieldToJson;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
@@ -56,7 +58,7 @@ class ClassConfig {
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
-  final Map<String, String> ctorParamDefaults;
+  final List<FormalParameterElement> ctorParams;
   final List<DartObject> converters;
 
   const ClassConfig({
@@ -66,6 +68,7 @@ class ClassConfig {
     required this.createFactory,
     required this.createToJson,
     required this.createFieldMap,
+    required this.createJsonKeys,
     required this.createPerFieldToJson,
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
@@ -74,7 +77,7 @@ class ClassConfig {
     required this.ignoreUnannotated,
     required this.includeIfNull,
     this.converters = const [],
-    this.ctorParamDefaults = const {},
+    this.ctorParams = const [],
   });
 
   factory ClassConfig.fromJsonSerializable(JsonSerializable config) =>
@@ -85,7 +88,10 @@ class ClassConfig {
         constructor: config.constructor ?? ClassConfig.defaults.constructor,
         createFieldMap:
             config.createFieldMap ?? ClassConfig.defaults.createFieldMap,
-        createPerFieldToJson: config.createPerFieldToJson ??
+        createJsonKeys:
+            config.createJsonKeys ?? ClassConfig.defaults.createJsonKeys,
+        createPerFieldToJson:
+            config.createPerFieldToJson ??
             ClassConfig.defaults.createPerFieldToJson,
         createFactory:
             config.createFactory ?? ClassConfig.defaults.createFactory,
@@ -96,10 +102,12 @@ class ClassConfig {
             config.explicitToJson ?? ClassConfig.defaults.explicitToJson,
         includeIfNull:
             config.includeIfNull ?? ClassConfig.defaults.includeIfNull,
-        genericArgumentFactories: config.genericArgumentFactories ??
+        genericArgumentFactories:
+            config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
-        disallowUnrecognizedKeys: config.disallowUnrecognizedKeys ??
+        disallowUnrecognizedKeys:
+            config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
         // TODO typeConverters = []
       );
@@ -113,6 +121,7 @@ class ClassConfig {
     createFactory: true,
     createToJson: true,
     createFieldMap: false,
+    createJsonKeys: false,
     createPerFieldToJson: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
@@ -123,19 +132,20 @@ class ClassConfig {
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
-        checked: checked,
-        anyMap: anyMap,
-        constructor: constructor,
-        createFactory: createFactory,
-        createToJson: createToJson,
-        createFieldMap: createFieldMap,
-        createPerFieldToJson: createPerFieldToJson,
-        ignoreUnannotated: ignoreUnannotated,
-        explicitToJson: explicitToJson,
-        includeIfNull: includeIfNull,
-        genericArgumentFactories: genericArgumentFactories,
-        fieldRename: fieldRename,
-        disallowUnrecognizedKeys: disallowUnrecognizedKeys,
-        // TODO typeConverters = []
-      );
+    checked: checked,
+    anyMap: anyMap,
+    constructor: constructor,
+    createFactory: createFactory,
+    createToJson: createToJson,
+    createFieldMap: createFieldMap,
+    createJsonKeys: createJsonKeys,
+    createPerFieldToJson: createPerFieldToJson,
+    ignoreUnannotated: ignoreUnannotated,
+    explicitToJson: explicitToJson,
+    includeIfNull: includeIfNull,
+    genericArgumentFactories: genericArgumentFactories,
+    fieldRename: fieldRename,
+    disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+    // TODO typeConverters = []
+  );
 }

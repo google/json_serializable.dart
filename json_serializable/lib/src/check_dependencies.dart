@@ -8,16 +8,22 @@ import 'package:build/build.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
 
+import 'constants.dart';
+
 const _productionDirectories = {'lib', 'bin'};
 const _annotationPkgName = 'json_annotation';
-final requiredJsonAnnotationMinVersion = Version.parse('4.8.1');
+final _supportLanguageRange = VersionConstraint.parse(
+  supportedLanguageConstraint,
+);
+final requiredJsonAnnotationMinVersion = Version.parse('4.9.0');
 
 Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   final segments = buildStep.inputId.pathSegments;
   final productionDependency =
       segments.length > 1 && _productionDirectories.contains(segments.first);
-  final resource =
-      productionDependency ? _productionDependency : _developmentDependency;
+  final resource = productionDependency
+      ? _productionDependency
+      : _developmentDependency;
 
   await resource.run(buildStep);
 }
@@ -37,21 +43,36 @@ Future<void> _validatePubspec(bool production, BuildStep buildStep) async {
     return;
   }
 
-  Future<Pubspec> readPubspec(AssetId asset) async {
-    final string = await buildStep.readAsString(asset);
-    return Pubspec.parse(string, sourceUrl: asset.uri);
+  final string = await buildStep.readAsString(pubspecAssetId);
+  final pubspec = Pubspec.parse(string, sourceUrl: pubspecAssetId.uri);
+
+  if (_checkAnnotationConstraint(pubspec, !production)
+      case final errorMessage?) {
+    log.warning(errorMessage);
   }
 
-  final pubspec = await readPubspec(pubspecAssetId);
+  //
+  // Ensure the current package language version is at least the minimum.
+  //
+  final currentPackageName = pubspec.name;
+  final packageConfig = await buildStep.packageConfig;
+  final thisPackage = packageConfig[currentPackageName]!;
 
-  final errorMessage = _checkAnnotationConstraint(
-    pubspec,
-    !production,
-  );
+  // build_runner will error out without an SDK version - so assuming
+  // `languageVersion` is not null.
+  final thisPackageVersion = thisPackage.languageVersion!;
 
-  if (errorMessage == null) return;
+  final thisPackageVer = Version.parse('$thisPackageVersion.0');
+  if (!_supportLanguageRange.allows(thisPackageVer)) {
+    log.warning('''
+The language version ($thisPackageVer) of this package ($currentPackageName) does not match the required range `$supportedLanguageConstraint`.
 
-  log.warning(errorMessage);
+Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
+
+environment:
+  sdk: $supportedLanguageConstraint
+''');
+  }
 }
 
 String? _checkAnnotationConstraint(

@@ -84,7 +84,7 @@ serialized value.
 # Supported types
 
 Out of the box, `json_serializable` supports many common types in the
-[dart:core](https://api.dart.dev/stable/dart-core/dart-core-library.html)
+[dart:core](https://api.dart.dev/dart-core/dart-core-library.html)
 library: 
 <!-- REPLACE supported_types -->
 
@@ -141,6 +141,7 @@ targets:
           constructor: ""
           create_factory: true
           create_field_map: false
+          create_json_keys: false
           create_per_field_to_json: false
           create_to_json: true
           disallow_unrecognized_keys: false
@@ -149,6 +150,18 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
+```
+
+To exclude generated files from coverage, you can further configure `build.yaml`.
+
+```yaml
+targets:
+  $default:
+    builders:
+      source_gen:combining_builder:
+        options:
+          preamble: |
+            // coverage:ignore-file
 ```
 
 [example]: https://github.com/google/json_serializable.dart/tree/master/example

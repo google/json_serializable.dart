@@ -5,7 +5,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
@@ -13,22 +13,25 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
-  const JsonLiteralGenerator();
+  const JsonLiteralGenerator() : super(inPackage: 'json_annotation');
 
   @override
   Future<String> generateForAnnotatedElement(
-    Element element,
+    Element2 element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) async {
     if (p.isAbsolute(annotation.read('path').stringValue)) {
       throw ArgumentError(
-          '`annotation.path` must be relative path to the source file.');
+        '`annotation.path` must be relative path to the source file.',
+      );
     }
 
     final sourcePathDir = p.dirname(buildStep.inputId.path);
-    final fileId = AssetId(buildStep.inputId.package,
-        p.join(sourcePathDir, annotation.read('path').stringValue));
+    final fileId = AssetId(
+      buildStep.inputId.package,
+      p.join(sourcePathDir, annotation.read('path').stringValue),
+    );
     final content = json.decode(await buildStep.readAsString(fileId));
 
     final asConst = annotation.read('asConst').boolValue;
@@ -36,7 +39,7 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
     final thing = jsonLiteralAsDart(content).toString();
     final marked = asConst ? 'const' : 'final';
 
-    return '$marked _\$${element.name}JsonLiteral = $thing;';
+    return '$marked _\$${element.name3}JsonLiteral = $thing;';
   }
 }
 

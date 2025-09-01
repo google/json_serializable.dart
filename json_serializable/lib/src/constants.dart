@@ -5,8 +5,7 @@
 /// Name used for closure argument when generating calls to `map`.
 const closureArg = 'e';
 
-const generatedLocalVarName = 'val';
-const toJsonMapHelperName = 'writeNotNull';
+const generatedLocalVarName = 'value';
 
 const converterOrKeyInstructions = r'''
 * Use `JsonConverter`
@@ -14,3 +13,7 @@ const converterOrKeyInstructions = r'''
 * Use `JsonKey` fields `fromJson` and `toJson`
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
   https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html''';
+
+/// This package generates code that uses null-aware elements, which were
+/// introduced in Dart 3.8.
+const supportedLanguageConstraint = '^3.8.0';

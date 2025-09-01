@@ -13,13 +13,14 @@ import 'package:yaml/yaml.dart';
 import 'test_type_builder.dart';
 import 'test_type_data.dart';
 
-Builder readmeBuilder([_]) => _ReadmeBuilder();
+Builder readmeBuilder([BuilderOptions? _]) => _ReadmeBuilder();
 
 class _ReadmeBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    final templateAssetId =
-        buildStep.assetIdForInputPackage('tool/readme/readme_template.md');
+    final templateAssetId = buildStep.assetIdForInputPackage(
+      'tool/readme/readme_template.md',
+    );
 
     final replacements = {
       ...await buildStep.getExampleContent('example/example.dart'),
@@ -38,8 +39,8 @@ class _ReadmeBuilder extends Builder {
 
     String jsonAnnotationUri(String className, [String? member]) =>
         member == null
-            ? '$jsonAnnotationBaseUri/$className-class.html'
-            : '$jsonAnnotationBaseUri/$className/$member.html';
+        ? '$jsonAnnotationBaseUri/$className-class.html'
+        : '$jsonAnnotationBaseUri/$className/$member.html';
 
     final foundClasses = SplayTreeMap<String, String>(compareAsciiLowerCase);
 
@@ -62,11 +63,11 @@ class _ReadmeBuilder extends Builder {
         linkValue = switch (context) {
           'core' => _coreTypeUri(className),
           'ja' => jsonAnnotationUri(className, memberName?.substring(1)),
-          _ => 'https://unknown.com/$context/$className'
+          _ => 'https://unknown.com/$context/$className',
         };
         foundClasses[linkContent] = linkValue;
         return linkContent;
-      }
+      },
     };
 
     var content = (await buildStep.readAsString(templateAssetId)).trim();
@@ -81,7 +82,8 @@ class _ReadmeBuilder extends Builder {
       );
     }
 
-    content = '''
+    content =
+        '''
 <!-- This content is generated. See $_templatePath -->
 $content
 ${foundClasses.entries.map((e) => '${e.key}: ${e.value}').join('\n')}
@@ -95,7 +97,7 @@ ${foundClasses.entries.map((e) => '${e.key}: ${e.value}').join('\n')}
 
   @override
   final buildExtensions = const {
-    _templatePath: [_readmePath]
+    _templatePath: [_readmePath],
   };
 }
 
@@ -103,16 +105,17 @@ const _templatePath = 'tool/readme/readme_template.md';
 const _readmePath = 'README.md';
 
 String _coreTypeUri(String type) =>
-    'https://api.dart.dev/stable/dart-core/$type-class.html';
+    'https://api.dart.dev/dart-core/$type-class.html';
 
 String _classCleanAndSort(Iterable<String> classes) {
-  final initial = (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()
-        ..sort(compareAsciiLowerCase))
-      // Dropping `dynamic` – it's not linkable!
-      .where((element) => element != 'dynamic')
-      // Start by mapping to the output format – so we wrap correctly
-      .map((e) => '[`$e`]')
-      .join(', ');
+  final initial =
+      (classes.map((e) => e == customEnumType ? 'Enum' : e).toList()
+            ..sort(compareAsciiLowerCase))
+          // Dropping `dynamic` – it's not linkable!
+          .where((element) => element != 'dynamic')
+          // Start by mapping to the output format – so we wrap correctly
+          .map((e) => '[`$e`]')
+          .join(', ');
 
   if (initial.length <= 80) {
     return initial;
@@ -143,7 +146,9 @@ String _classCleanAndSort(Iterable<String> classes) {
     lines.add(currentLine);
   }
 
-  return lines.join('\n').replaceAllMapped(
+  return lines
+      .join('\n')
+      .replaceAllMapped(
         // Now put in the core: logic so we autolink correctly
         RegExp(r'\[`(\w+)`\]'),
         (match) => '`core:${match[1]}`',
@@ -154,16 +159,24 @@ extension on BuildStep {
   AssetId assetIdForInputPackage(String path) => AssetId(inputId.package, path);
 
   Future<String> jsonAnnotationVersion() async {
-    final lockFileAssetId = assetIdForInputPackage('pubspec.lock');
-    final lockFileContent = await readAsString(lockFileAssetId);
-    final lockFileYaml =
-        loadYaml(lockFileContent, sourceUrl: lockFileAssetId.uri) as YamlMap;
-    final pkgMap = lockFileYaml['packages'] as YamlMap;
-    final jsonAnnotationMap = pkgMap['json_annotation'] as YamlMap;
-    final jsonAnnotationVersionString = jsonAnnotationMap['version'] as String;
+    final jsonAnnotationPubspecAssetId = AssetId(
+      'json_annotation',
+      'pubspec.yaml',
+    );
+    final jsonAnnotationPubspecContent = await readAsString(
+      jsonAnnotationPubspecAssetId,
+    );
+    final pubspecYaml =
+        loadYaml(
+              jsonAnnotationPubspecContent,
+              sourceUrl: jsonAnnotationPubspecAssetId.uri,
+            )
+            as YamlMap;
+    final jsonAnnotationVersionString = pubspecYaml['version'] as String;
 
-    final jsonAnnotationVersion =
-        Version.parse(jsonAnnotationVersionString.trim());
+    final jsonAnnotationVersion = Version.parse(
+      jsonAnnotationVersionString.trim(),
+    );
 
     final targetVersion = jsonAnnotationVersion.isPreRelease
         ? 'latest'
@@ -173,9 +186,7 @@ extension on BuildStep {
   }
 
   Future<Map<String, String>> getExampleContent(String fileName) async {
-    final content = await readAsString(
-      assetIdForInputPackage(fileName),
-    );
+    final content = await readAsString(assetIdForInputPackage(fileName));
 
     final lines = LineSplitter.split(content);
 
@@ -249,12 +260,11 @@ extension on BuildStep {
 
       if (currentBlock != null) finishBlock();
 
-      return result
-          .map((key, value) => MapEntry('$fileName-$key', value.dartBlock));
+      return result.map(
+        (key, value) => MapEntry('$fileName-$key', value.dartBlock),
+      );
     } else {
-      return {
-        fileName: cleanedSourceLines.join('\n').dartBlock,
-      };
+      return {fileName: cleanedSourceLines.join('\n').dartBlock};
     }
   }
 }
@@ -270,7 +280,8 @@ extension on String {
     return substring(start).trim();
   }
 
-  String get dartBlock => '''
+  String get dartBlock =>
+      '''
 ```dart
 ${trim()}
 ```''';

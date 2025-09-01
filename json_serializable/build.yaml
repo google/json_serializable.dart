@@ -122,9 +122,9 @@ builders:
     required_inputs: ['.dart']
 
   json_serializable:
-    import: "package:safety_json_serializable/builder.dart"
+    import: "package:flexible_json_serializable/builder.dart"
     builder_factories: ["jsonSerializable"]
-    build_extensions: {".dart": ["safety_json_serializable.g.part"]}
+    build_extensions: {".dart": ["flexible_json_serializable.g.part"]}
     auto_apply: dependents
     build_to: cache
     applies_builders: ["source_gen|combining_builder"]

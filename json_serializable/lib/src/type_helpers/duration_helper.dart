@@ -46,7 +46,7 @@ class DurationHelper extends TypeHelper {
 
     return DefaultContainer(
       expression,
-      'Duration(microseconds: $expression as int)',
+      'Duration(microseconds: ($expression as num).toInt())',
     );
   }
 }

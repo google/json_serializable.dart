@@ -18,11 +18,7 @@ class BigIntHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
   ) =>
-      bigIntString.serialize(
-        targetType,
-        expression,
-        targetType.isNullableType,
-      );
+      bigIntString.serialize(targetType, expression, targetType.isNullableType);
 
   @override
   DefaultContainer? deserialize(
@@ -30,11 +26,10 @@ class BigIntHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
     bool defaultProvided,
-  ) =>
-      bigIntString.deserialize(
-        targetType,
-        expression,
-        targetType.isNullableType,
-        false,
-      );
+  ) => bigIntString.deserialize(
+    targetType,
+    expression,
+    targetType.isNullableType,
+    false,
+  );
 }

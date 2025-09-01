@@ -10,8 +10,8 @@ library;
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:safety_json_serializable/src/check_dependencies.dart';
-import 'package:safety_json_serializable/src/constants.dart';
+import 'package:flexible_json_serializable/src/check_dependencies.dart';
+import 'package:flexible_json_serializable/src/constants.dart';
 import 'package:path/path.dart' as p;
 import 'package:pub_semver/pub_semver.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
@@ -37,7 +37,8 @@ void main() {
       await _structurePackage(
         environment: const {'sdk': '^$sdkLowerBound'},
         dependencies: {'json_annotation': _annotationLowerBound},
-        message: '''
+        message:
+            '''
 The language version ($sdkLowerBound) of this package ($_testPkgName) does not match the required range `$supportedLanguageConstraint`.
 
 Edit pubspec.yaml to include an SDK constraint of at least $supportedLanguageConstraint.
@@ -175,14 +176,11 @@ part 'sample.g.dart';
 class SomeClass{}
 '''),
   ]).create();
-  final proc = await TestProcess.start(
-      Platform.resolvedExecutable,
-      [
-        'run',
-        'build_runner',
-        'build',
-      ],
-      workingDirectory: d.sandbox);
+  final proc = await TestProcess.start(Platform.resolvedExecutable, [
+    'run',
+    'build_runner',
+    'build',
+  ], workingDirectory: d.sandbox);
 
   final lines = StringBuffer();
   await for (var line in proc.stdoutStream()) {
