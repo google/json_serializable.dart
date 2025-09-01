@@ -1,9 +1,9 @@
-name: flexible_json_serializable
+name: safety_json_serializable
 version: 6.11.0
 description: >-
   Base on json_serializable package Automatically generate code for converting
   to and from JSON by annotating Dart classes.
-repository: https://github.com/minhtritc97/flexible_json_serializable_package/tree/master/json_serializable
+repository: https://github.com/minhtritc97/safety_json_serializable_package/tree/master/json_serializable
 environment:
   sdk: ^3.8.0
 topics:

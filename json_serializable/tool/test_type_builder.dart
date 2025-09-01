@@ -6,7 +6,7 @@ import 'dart:async';
 
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
-import 'package:flexible_json_serializable/src/type_helpers/map_helper.dart';
+import 'package:safety_json_serializable/src/type_helpers/map_helper.dart';
 
 import 'shared.dart';
 import 'test_type_data.dart';

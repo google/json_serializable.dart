@@ -1,22 +1,19 @@
-### flexible_json_serializable
+### safety_json_serializable
 
 Base on [package:json_serializable] and handle parsing JSON to objects without throwing exceptions.
 
-
 #### Support types without exception (required nullable type)
 
-[`BigInt`], [`bool`], [`DateTime`], [`double`],  [`int`],
+[`BigInt`], [`bool`], [`DateTime`], [`double`], [`int`],
 [`List`], [`Map`], [`Object`], [`String`], [`Uri`]
-
 
 #### Example
 
 Left: json_serializable
 
-Right: flexible_json_serializable
+Right: safety_json_serializable
 
 ![](resources/diff.jpg)
-
 
 [`BigInt`]: https://api.dart.dev/stable/dart-core/BigInt-class.html
 [`bool`]: https://api.dart.dev/stable/dart-core/bool-class.html

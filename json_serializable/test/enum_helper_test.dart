@@ -5,7 +5,7 @@
 @TestOn('vm')
 library;
 
-import 'package:flexible_json_serializable/src/type_helpers/enum_helper.dart';
+import 'package:safety_json_serializable/src/type_helpers/enum_helper.dart';
 import 'package:test/test.dart';
 
 void main() {
