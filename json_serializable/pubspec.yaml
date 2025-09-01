@@ -1,5 +1,5 @@
 name: safety_json_serializable
-version: 6.11.0
+version: 2.0.0
 description: >-
   Base on json_serializable package Automatically generate code for converting
   to and from JSON by annotating Dart classes.
