@@ -26,7 +26,7 @@ Import it into your pubspec `dependencies:` section.
 - [Source code](checked_yaml)
 
 Generate more helpful exceptions when decoding YAML documents using
-`package:json_serializable` and `package:yaml`.
+`package:safety_json_serializable` and `package:yaml`.
 
 Import it into your pubspec `dependencies:` section.
 

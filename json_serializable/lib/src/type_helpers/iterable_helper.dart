@@ -75,7 +75,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(iterableGenericType, closureArg)!;
 
-    var output = '$expression as List<dynamic>';
+    var output = '$expression is List) ? ($expression as List<dynamic>';
 
     final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
 
@@ -87,7 +87,7 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     // anything fancy
     if (closureArg == itemSubVal &&
         !_coreSetChecker.isExactlyType(targetType)) {
-      return output;
+      return '$expression as List<dynamic>';
     }
 
     output = '($output)';
@@ -107,7 +107,11 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
       output += '$optionalQuestion.toSet()';
     }
 
-    return output;
+    if (defaultProvided) {
+      return '($output : [])';
+    }
+
+    return '$output : []';
   }
 }
 

@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:json_serializable/src/type_helpers/config_types.dart';
+import 'package:safety_json_serializable/src/type_helpers/config_types.dart';
 
 final jsonSerializableFields = generatorConfigDefaultJson.keys.toList();
 

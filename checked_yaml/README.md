@@ -1,11 +1,11 @@
 [![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dev/packages/checked_yaml)
 
 `package:checked_yaml` provides a `checkedYamlDecode` function that wraps the
-creation of classes annotated for [`package:json_serializable`] it helps
+creation of classes annotated for [`package:safety_json_serializable`] it helps
 provide more helpful exceptions when the provided YAML is not compatible with
 the target type.
 
-[`package:json_serializable`] can generate classes that can parse the
+[`package:safety_json_serializable`] can generate classes that can parse the
 [`YamlMap`] type provided by [`package:yaml`] when `anyMap: true` is specified
 for the class annotation.
 
@@ -71,6 +71,6 @@ ParsedYamlException: line 1, column 10: Unsupported value for "name". Cannot be 
   ╵
 ```
 
-[`package:json_serializable`]: https://pub.dev/packages/json_serializable
+[`package:safety_json_serializable`]: https://pub.dev/packages/json_serializable
 [`package:yaml`]: https://pub.dev/packages/yaml
 [`YamlMap`]: https://pub.dev/documentation/yaml/latest/yaml/YamlMap-class.html

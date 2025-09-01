@@ -20,8 +20,9 @@ class LambdaResult {
   final String lambda;
   final DartType? asContent;
 
-  String get _fullExpression =>
-      asContent != null ? _cast(expression, asContent!) : expression;
+  String get _asContent => asContent == null ? '' : _asStatement(asContent!);
+
+  String get _fullExpression => '$expression$_asContent';
 
   LambdaResult(this.expression, this.lambda, {this.asContent});
 
@@ -30,39 +31,33 @@ class LambdaResult {
 
   static String process(Object subField) =>
       (subField is LambdaResult && closureArg == subField._fullExpression)
-      ? subField.lambda
-      : '($closureArg) => $subField';
+          ? subField.lambda
+          : '($closureArg) => $subField';
 }
 
-String _cast(String expression, DartType targetType) {
-  if (targetType.isLikeDynamic) {
-    return expression;
+String _asStatement(DartType type) {
+  if (type.isLikeDynamic) {
+    return '';
   }
 
-  final nullableSuffix = targetType.isNullableType ? '?' : '';
+  final nullableSuffix = type.isNullableType ? '?' : '';
 
-  if (coreIterableTypeChecker.isAssignableFromType(targetType)) {
-    final itemType = coreIterableGenericType(targetType);
+  if (coreIterableTypeChecker.isAssignableFromType(type)) {
+    final itemType = coreIterableGenericType(type);
     if (itemType.isLikeDynamic) {
-      return '$expression as List$nullableSuffix';
+      return ' as List$nullableSuffix';
     }
   }
 
-  if (coreMapTypeChecker.isAssignableFromType(targetType)) {
-    final args = targetType.typeArgumentsOf(coreMapTypeChecker)!;
+  if (coreMapTypeChecker.isAssignableFromType(type)) {
+    final args = type.typeArgumentsOf(coreMapTypeChecker)!;
     assert(args.length == 2);
 
     if (args.every((e) => e.isLikeDynamic)) {
-      return '$expression as Map$nullableSuffix';
+      return ' as Map$nullableSuffix';
     }
   }
 
-  final defaultDecodeValue = defaultDecodeLogic(targetType, expression);
-
-  if (defaultDecodeValue != null) {
-    return defaultDecodeValue;
-  }
-
-  final typeCode = typeToCode(targetType);
-  return '$expression as $typeCode';
+  final typeCode = typeToCode(type);
+  return ' as $typeCode';
 }

@@ -10,16 +10,13 @@ import 'package:path/path.dart' as p;
 
 import 'shared.dart';
 
-Builder testBuilder([BuilderOptions? _]) =>
-    validate('_test_builder', const _TestBuilder());
+Builder testBuilder([_]) => validate('_test_builder', const _TestBuilder());
 
 class _TestBuilder implements Builder {
   const _TestBuilder();
 
   @override
   FutureOr<void> build(BuildStep buildStep) async {
-    final formatter = await buildStep.formatter();
-
     final baseName = p.basenameWithoutExtension(buildStep.inputId.path);
 
     final sourceContent = await buildStep.readAsString(buildStep.inputId);
@@ -36,17 +33,15 @@ class _TestBuilder implements Builder {
         Replacement(
           "part '$baseName.g.dart';",
           "part '$baseName$partName.g.dart';",
-        ),
+        )
       ];
 
       if (baseName == _kitchenSinkBaseName) {
         final description = _configToName(config.toSet());
-        replacements.add(
-          Replacement(
-            "String get description => '--defaults--';",
-            "String get description => '$description';",
-          ),
-        );
+        replacements.add(Replacement(
+          "String get description => '--defaults--';",
+          "String get description => '$description';",
+        ));
 
         factories['$baseName$partName.dart'] = description;
       }
@@ -79,24 +74,24 @@ class _TestBuilder implements Builder {
   }
 
   @override
-  Map<String, List<String>> get buildExtensions => {
-    '.dart': _fileConfigurations,
-  };
+  Map<String, List<String>> get buildExtensions =>
+      {'.dart': _fileConfigurations};
 }
 
 const _configReplacements = {
   'any_map': Replacement.addJsonSerializableKey('anyMap', true),
   'checked': Replacement.addJsonSerializableKey('checked', true),
-  'explicit_to_json': Replacement.addJsonSerializableKey(
-    'explicitToJson',
-    true,
-  ),
+  'explicit_to_json':
+      Replacement.addJsonSerializableKey('explicitToJson', true),
   'exclude_null': Replacement.addJsonSerializableKey('includeIfNull', false),
 };
 
 const _kitchenSinkReplacements = {
   'any_map': [
-    Replacement('bool get anyMap => false;', 'bool get anyMap => true;'),
+    Replacement(
+      'bool get anyMap => false;',
+      'bool get anyMap => true;',
+    ),
     Replacement(
       'class _Factory implements k.KitchenSinkFactory<String, dynamic>',
       'class _Factory implements k.KitchenSinkFactory<dynamic, dynamic>',
@@ -111,7 +106,10 @@ const _kitchenSinkReplacements = {
     ),
   ],
   'checked': [
-    Replacement('bool get checked => false;', 'bool get checked => true;'),
+    Replacement(
+      'bool get checked => false;',
+      'bool get checked => true;',
+    )
   ],
   'exclude_null': [
     Replacement(
@@ -134,9 +132,7 @@ const _kitchenSinkReplacements = {
 };
 
 Iterable<Replacement> _optionReplacement(
-  String baseName,
-  String optionKey,
-) sync* {
+    String baseName, String optionKey) sync* {
   final value = _configReplacements[optionKey];
   if (value == null) {
     log.warning('no replacement thingy for `$optionKey`.');
@@ -156,14 +152,13 @@ String _configToExtension(Iterable<String> config) =>
 String _configToName(Set<String> config) =>
     (config.toList()..sort()).join('__');
 
-List<String> get _fileConfigurations =>
-    _fileConfigurationMap.values
-        .expand((v) => v)
-        .map(_configToExtension)
-        .followedBy(['.factories.dart'])
-        .toSet()
-        .toList()
-      ..sort();
+List<String> get _fileConfigurations => _fileConfigurationMap.values
+    .expand((v) => v)
+    .map(_configToExtension)
+    .followedBy(['.factories.dart'])
+    .toSet()
+    .toList()
+  ..sort();
 
 const _kitchenSinkBaseName = 'kitchen_sink';
 

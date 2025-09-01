@@ -1,6 +1,6 @@
 _This example assumes you're using a recent version of the Dart or Flutter SDK._
 
-To use [package:json_serializable][json_serializable] in your package, add these
+To use [package:safety_json_serializable][json_serializable] in your package, add these
 dependencies to your `pubspec.yaml`.
 
 ```yaml

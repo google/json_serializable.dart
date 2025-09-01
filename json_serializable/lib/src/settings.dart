@@ -40,10 +40,10 @@ class Settings {
   final List<TypeHelper> _typeHelpers;
 
   Iterable<TypeHelper> get allHelpers => const <TypeHelper>[
-    ConvertHelper(),
-    JsonConverterHelper(),
-    GenericFactoryHelper(),
-  ].followedBy(_typeHelpers).followedBy(_coreHelpers);
+        ConvertHelper(),
+        JsonConverterHelper(),
+        GenericFactoryHelper(),
+      ].followedBy(_typeHelpers).followedBy(_coreHelpers);
 
   final ClassConfig config;
 
@@ -52,11 +52,13 @@ class Settings {
   /// If [typeHelpers] is not provided, the built-in helpers are used:
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
-  Settings({JsonSerializable? config, List<TypeHelper>? typeHelpers})
-    : config = config != null
-          ? ClassConfig.fromJsonSerializable(config)
-          : ClassConfig.defaults,
-      _typeHelpers = typeHelpers ?? defaultHelpers;
+  Settings({
+    JsonSerializable? config,
+    List<TypeHelper>? typeHelpers,
+  })  : config = config != null
+            ? ClassConfig.fromJsonSerializable(config)
+            : ClassConfig.defaults,
+        _typeHelpers = typeHelpers ?? defaultHelpers;
 
   /// Creates an instance of [Settings].
   ///
@@ -67,8 +69,9 @@ class Settings {
   factory Settings.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
     JsonSerializable? config,
-  }) => Settings(
-    config: config,
-    typeHelpers: List.unmodifiable(typeHelpers.followedBy(defaultHelpers)),
-  );
+  }) =>
+      Settings(
+        config: config,
+        typeHelpers: List.unmodifiable(typeHelpers.followedBy(defaultHelpers)),
+      );
 }

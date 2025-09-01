@@ -3,9 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:build/build.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'check_dependencies.dart';
@@ -20,7 +18,7 @@ import 'settings.dart';
 /// [formatOutput] is called to format the generated code. If not provided,
 /// the default Dart code formatter is used.
 Builder jsonPartBuilder({
-  String Function(String code, Version languageVersion)? formatOutput,
+  String Function(String code)? formatOutput,
   JsonSerializable? config,
 }) {
   final settings = Settings(config: config);
@@ -34,7 +32,7 @@ Builder jsonPartBuilder({
       const JsonLiteralGenerator(),
     ],
     'json_serializable',
-    formatOutput: formatOutput ?? defaultFormatOutput,
+    formatOutput: formatOutput,
   );
 }
 
@@ -57,16 +55,12 @@ class _UnifiedGenerator extends Generator {
     final values = <String>{};
 
     for (var generator in _generators) {
-      for (var annotatedElement in library.annotatedWith(
-        generator.typeChecker,
-      )) {
+      for (var annotatedElement
+          in library.annotatedWith(generator.typeChecker)) {
         await pubspecHasRightVersion(buildStep);
 
         final generatedValue = generator.generateForAnnotatedElement(
-          annotatedElement.element,
-          annotatedElement.annotation,
-          buildStep,
-        );
+            annotatedElement.element, annotatedElement.annotation, buildStep);
         for (var value in _normalizeGeneratorOutput(generatedValue)) {
           assert(value.length == value.trim().length);
           values.add(value);
@@ -90,25 +84,18 @@ Iterable<String> _normalizeGeneratorOutput(Object? value) {
   }
 
   if (value is Iterable) {
-    return value
-        .where((e) => e != null)
-        .map((e) {
-          if (e is String) {
-            return e.trim();
-          }
+    return value.where((e) => e != null).map((e) {
+      if (e is String) {
+        return e.trim();
+      }
 
-          throw _argError(e as Object);
-        })
-        .where((e) => e.isNotEmpty);
+      throw _argError(e as Object);
+    }).where((e) => e.isNotEmpty);
   }
   throw _argError(value);
 }
 
 // Borrowed from `package:source_gen`
 ArgumentError _argError(Object value) => ArgumentError(
-  'Must be a String or be an Iterable containing String values. '
-  'Found `${Error.safeToString(value)}` (${value.runtimeType}).',
-);
-
-String defaultFormatOutput(String code, Version languageVersion) =>
-    DartFormatter(languageVersion: languageVersion).format(code);
+    'Must be a String or be an Iterable containing String values. '
+    'Found `${Error.safeToString(value)}` (${value.runtimeType}).');

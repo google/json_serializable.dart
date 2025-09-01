@@ -17,7 +17,12 @@ class UriHelper extends TypeHelper {
     DartType targetType,
     String expression,
     TypeHelperContext context,
-  ) => uriString.serialize(targetType, expression, targetType.isNullableType);
+  ) =>
+      uriString.serialize(
+        targetType,
+        expression,
+        targetType.isNullableType,
+      );
 
   @override
   DefaultContainer? deserialize(
@@ -25,10 +30,7 @@ class UriHelper extends TypeHelper {
     String expression,
     TypeHelperContext context,
     bool defaultProvided,
-  ) => uriString.deserialize(
-    targetType,
-    expression,
-    targetType.isNullableType,
-    false,
-  );
+  ) =>
+      uriString.deserialize(
+          targetType, expression, targetType.isNullableType, false);
 }

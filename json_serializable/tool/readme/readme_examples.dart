@@ -63,7 +63,10 @@ class Sample3 {
   factory Sample3.fromJson(Map<String, dynamic> json) =>
       _$Sample3FromJson(json);
 
-  @JsonKey(toJson: _toJson, fromJson: _fromJson)
+  @JsonKey(
+    toJson: _toJson,
+    fromJson: _fromJson,
+  )
   final DateTime value;
 
   Map<String, dynamic> toJson() => _$Sample3ToJson(this);

@@ -7,7 +7,6 @@ import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
 import '../type_helper.dart';
-import '../utils.dart';
 
 class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const GenericFactoryHelper();
@@ -57,8 +56,7 @@ class GenericFactoryHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
 const _fromJsonHelperName = r'_$nullableGenericFromJson';
 
-const _fromJsonHelper =
-    '''
+const _fromJsonHelper = '''
 T? $_fromJsonHelperName<T>(
   Object? input,
   T Function(Object? json) fromJson,
@@ -68,8 +66,7 @@ T? $_fromJsonHelperName<T>(
 
 const _toJsonHelperName = r'_$nullableGenericToJson';
 
-const _toJsonHelper =
-    '''
+const _toJsonHelper = '''
 Object? $_toJsonHelperName<T>(
   T? input,
   Object? Function(T value) toJson,
@@ -78,11 +75,11 @@ Object? $_toJsonHelperName<T>(
 ''';
 
 String toJsonForType(TypeParameterType type) =>
-    toJsonForName(type.toStringNonNullable());
+    toJsonForName(type.getDisplayString(withNullability: false));
 
 String toJsonForName(String genericType) => 'toJson$genericType';
 
 String fromJsonForType(TypeParameterType type) =>
-    fromJsonForName(type.toStringNonNullable());
+    fromJsonForName(type.getDisplayString(withNullability: false));
 
 String fromJsonForName(String genericType) => 'fromJson$genericType';

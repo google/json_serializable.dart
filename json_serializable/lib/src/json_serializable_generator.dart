@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -22,8 +22,7 @@ class JsonSerializableGenerator
 
   JsonSerializable get config => _settings.config.toJsonSerializable();
 
-  JsonSerializableGenerator.fromSettings(this._settings)
-    : super(inPackage: 'json_annotation');
+  JsonSerializableGenerator.fromSettings(this._settings);
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -33,9 +32,11 @@ class JsonSerializableGenerator
   factory JsonSerializableGenerator({
     JsonSerializable? config,
     List<TypeHelper>? typeHelpers,
-  }) => JsonSerializableGenerator.fromSettings(
-    Settings(config: config, typeHelpers: typeHelpers),
-  );
+  }) =>
+      JsonSerializableGenerator.fromSettings(Settings(
+        config: config,
+        typeHelpers: typeHelpers,
+      ));
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -46,20 +47,29 @@ class JsonSerializableGenerator
   factory JsonSerializableGenerator.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
     JsonSerializable? config,
-  }) => JsonSerializableGenerator(
-    config: config,
-    typeHelpers: List.unmodifiable(
-      typeHelpers.followedBy(Settings.defaultHelpers),
-    ),
-  );
+  }) =>
+      JsonSerializableGenerator(
+        config: config,
+        typeHelpers: List.unmodifiable(
+          typeHelpers.followedBy(Settings.defaultHelpers),
+        ),
+      );
 
   @override
   Iterable<String> generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! ClassElement2 || element is EnumElement2) {
+    if (!element.library!.isNonNullableByDefault) {
+      throw InvalidGenerationSourceError(
+        'Generator cannot target libraries that have not been migrated to '
+        'null-safety.',
+        element: element,
+      );
+    }
+
+    if (element is! ClassElement || element is EnumElement) {
       throw InvalidGenerationSourceError(
         '`@JsonSerializable` can only be used on classes.',
         element: element,

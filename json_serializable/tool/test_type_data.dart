@@ -1,6 +1,3 @@
-import 'package:dart_style/dart_style.dart';
-import 'package:pub_semver/pub_semver.dart';
-
 import 'shared.dart';
 
 const customEnumType = 'EnumType';
@@ -22,18 +19,18 @@ class TestTypeData {
     String? jsonExpression,
     required String? altJsonExpression,
     this.genericArgs = const {},
-  }) : jsonExpression = jsonExpression ?? defaultExpression,
-       altJsonExpression =
-           altJsonExpression ?? jsonExpression ?? defaultExpression,
-       stringParseType = false;
+  })  : jsonExpression = jsonExpression ?? defaultExpression,
+        altJsonExpression =
+            altJsonExpression ?? jsonExpression ?? defaultExpression,
+        stringParseType = false;
 
   const TestTypeData.defaultFunc({
     this.jsonExpression,
     required String? altJsonExpression,
-  }) : altJsonExpression = altJsonExpression ?? jsonExpression,
-       genericArgs = const {},
-       defaultExpression = null,
-       stringParseType = true;
+  })  : altJsonExpression = altJsonExpression ?? jsonExpression,
+        genericArgs = const {},
+        defaultExpression = null,
+        stringParseType = true;
 
   String libContent(String source, String type) {
     const classAnnotationSplit = '@JsonSerializable()';
@@ -52,12 +49,14 @@ class TestTypeData {
           '$_annotationImport'
           "import 'enum_type.dart';",
         ),
-      Replacement("part 'input.g.dart';", "part 'input$newPart.g.dart';"),
+      Replacement(
+        "part 'input.g.dart';",
+        "part 'input$newPart.g.dart';",
+      )
     ];
 
-    final buffer = StringBuffer(
-      Replacement.generate(split[0], headerReplacements),
-    );
+    final buffer =
+        StringBuffer(Replacement.generate(split[0], headerReplacements));
 
     if (type == recordType) {
       buffer.writeln('typedef RecordTypeDef = ();');
@@ -76,7 +75,10 @@ class TestTypeData {
       )
       ..write(
         Replacement.generate(
-          simpleClassContent.replaceAll('SimpleClass', 'SimpleClassNullable'),
+          simpleClassContent.replaceAll(
+            'SimpleClass',
+            'SimpleClassNullable',
+          ),
           _libReplacements('$simpleLiteral?'),
         ),
       );
@@ -99,9 +101,8 @@ class TestTypeData {
         ',$sampleRecordDefinition',
       );
 
-      final genericType = type == recordType
-          ? '${theName}TypeDef'
-          : '$type<$genericArgFixed>';
+      final genericType =
+          type == recordType ? '${theName}TypeDef' : '$type<$genericArgFixed>';
 
       if (type == recordType) {
         buffer.writeln(
@@ -113,7 +114,10 @@ class TestTypeData {
       buffer
         ..write(
           Replacement.generate(
-            simpleClassContent.replaceAll('SimpleClass', theName),
+            simpleClassContent.replaceAll(
+              'SimpleClass',
+              theName,
+            ),
             _libReplacements(genericType),
           ),
         )
@@ -154,25 +158,33 @@ class TestTypeData {
   }
 
   Iterable<Replacement> _libReplacements(String type) sync* {
-    yield Replacement('final dynamic value;', 'final $type value;');
+    yield Replacement(
+      'final dynamic value;',
+      'final $type value;',
+    );
 
     final defaultNotSupported =
-        _annotationDefaultValue ==
-            null // no default provided
+        _annotationDefaultValue == null // no default provided
             ||
-        type.contains('<') // no support for default values and generic args
+            type.contains('<') // no support for default values and generic args
         ;
 
     final defaultReplacement = defaultNotSupported
         ? ''
         : _defaultSource
-              .replaceFirst('42', _annotationDefaultValue!)
-              .replaceFirst('dynamic', type);
+            .replaceFirst('42', _annotationDefaultValue!)
+            .replaceFirst('dynamic', type);
 
-    yield Replacement(_defaultSource, defaultReplacement);
+    yield Replacement(
+      _defaultSource,
+      defaultReplacement,
+    );
 
     if (defaultNotSupported) {
-      yield const Replacement('this.withDefault', '');
+      yield const Replacement(
+        '    this.withDefault,',
+        '',
+      );
     }
   }
 
@@ -189,9 +201,8 @@ class TestTypeData {
         .replaceAll('non-nullable', 'nullable')
         .replaceAll('SimpleClass', 'SimpleClassNullable');
 
-    final thrownError = type == customEnumType
-        ? 'throwsArgumentError'
-        : 'throwsTypeError';
+    final thrownError =
+        type == customEnumType ? 'throwsArgumentError' : 'throwsTypeError';
 
     final newGroupContent = groupContent.replaceAll(
       r'''
@@ -217,12 +228,10 @@ class TestTypeData {
       sourceContent.substring(endIndex),
     ].join();
 
-    final value = Replacement.generate(
+    return Replacement.generate(
       updatedSourceContent,
       _testReplacements(type),
     );
-
-    return _formatter.format(value);
   }
 
   Iterable<Replacement> _testReplacements(String type) sync* {
@@ -233,18 +242,24 @@ class TestTypeData {
 
     yield Replacement(
       '''
-const _defaultValue = 42;
-const _altValue = 43;
+final _defaultValue = 42;
+final _altValue = 43;
 ''',
       '''
-const _defaultValue = $jsonExpression;
-const _altValue = $altJsonExpression;
+final _defaultValue = $jsonExpression;
+final _altValue = $altJsonExpression;
 ''',
     );
 
     if (defaultExpression == null && !stringParseType) {
-      yield const Replacement("'withDefault': _defaultValue", '');
-      yield const Replacement("'withDefault': _altValue", '');
+      yield const Replacement(
+        "  'withDefault': _defaultValue,\n",
+        '',
+      );
+      yield const Replacement(
+        "  'withDefault': _altValue,\n",
+        '',
+      );
     }
   }
 
@@ -255,16 +270,13 @@ const _altValue = $altJsonExpression;
 ''';
 }
 
-final _formatter = DartFormatter(
-  languageVersion:
-      // Using parse here so searching for the version string is easier!
-      Version.parse('3.8.0'),
-);
-
 String _genericClassPart(String genericArg) => genericArg
     .replaceAll('?', 'Nullable')
     .split(',')
-    .map((e) => [e.substring(0, 1).toUpperCase(), e.substring(1)].join())
+    .map((e) => [
+          e.substring(0, 1).toUpperCase(),
+          e.substring(1),
+        ].join())
     .join('To');
 
 String toTypeExtension(String e, {bool includeDotDart = true}) =>
