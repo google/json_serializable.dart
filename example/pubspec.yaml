@@ -21,7 +21,8 @@ dev_dependencies:
   build_verify: ^3.0.0
 
   # REQUIRED!
-  json_serializable: ^6.10.0
+  safety_json_serializable: 
+    path: ../json_serializable
 
   # Not required to use `json_serializable`.
   path: ^1.9.0

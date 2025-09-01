@@ -19,12 +19,14 @@ Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
 GenericCollection<T> _$GenericCollectionFromJson<T>(
   Map<String, dynamic> json,
 ) => GenericCollection<T>(
-  page: (json['page'] as num?)?.toInt(),
-  totalResults: (json['total_results'] as num?)?.toInt(),
-  totalPages: (json['total_pages'] as num?)?.toInt(),
-  results: (json['results'] as List<dynamic>?)
-      ?.map(_Converter<T>().fromJson)
-      .toList(),
+  page: double.tryParse(json['page'].toString())?.toInt(),
+  totalResults: double.tryParse(json['total_results'].toString())?.toInt(),
+  totalPages: double.tryParse(json['total_pages'].toString())?.toInt(),
+  results: (json['results'] is List)
+      ? (json['results'] as List<dynamic>?)
+            ?.map(_Converter<T>().fromJson)
+            .toList()
+      : [],
 );
 
 Map<String, dynamic> _$GenericCollectionToJson<T>(
@@ -37,7 +39,7 @@ Map<String, dynamic> _$GenericCollectionToJson<T>(
 };
 
 CustomResult _$CustomResultFromJson(Map<String, dynamic> json) =>
-    CustomResult(json['name'] as String, (json['size'] as num).toInt());
+    CustomResult(json['name'] as String, json['size'] as int);
 
 Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
     <String, dynamic>{'name': instance.name, 'size': instance.size};

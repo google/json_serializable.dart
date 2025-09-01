@@ -9,14 +9,16 @@ part of 'example.dart';
 Person _$PersonFromJson(Map<String, dynamic> json) => Person(
   json['firstName'] as String,
   json['lastName'] as String,
-  DateTime.parse(json['date-of-birth'] as String),
-  middleName: json['middleName'] as String?,
+  DateTime.tryParse(json['date-of-birth'].toString())!,
+  middleName: json['middleName']?.toString(),
   lastOrder: json['last-order'] == null
       ? null
-      : DateTime.parse(json['last-order'] as String),
-  orders: (json['orders'] as List<dynamic>?)
-      ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
-      .toList(),
+      : DateTime.tryParse(json['last-order'].toString()),
+  orders: (json['orders'] is List)
+      ? (json['orders'] as List<dynamic>?)
+            ?.map((e) => Order.fromJson(e as Map<String, dynamic>))
+            .toList()
+      : [],
 );
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
@@ -30,10 +32,10 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
 
 Order _$OrderFromJson(Map<String, dynamic> json) =>
     Order(Order._dateTimeFromEpochUs((json['date'] as num).toInt()))
-      ..count = (json['count'] as num?)?.toInt()
-      ..itemNumber = (json['itemNumber'] as num?)?.toInt()
-      ..isRushed = json['isRushed'] as bool?
-      ..item = json['item'] == null
+      ..count = double.tryParse(json['count'].toString())?.toInt()
+      ..itemNumber = double.tryParse(json['itemNumber'].toString())?.toInt()
+      ..isRushed = bool.tryParse(json['isRushed'].toString())
+      ..item = json['item'] == null || json['item'] is! Map
           ? null
           : Item.fromJson(json['item'] as Map<String, dynamic>)
       ..prepTime = Order._durationFromMilliseconds(
@@ -50,9 +52,9 @@ Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
 };
 
 Item _$ItemFromJson(Map<String, dynamic> json) => Item()
-  ..count = (json['count'] as num?)?.toInt()
-  ..itemNumber = (json['itemNumber'] as num?)?.toInt()
-  ..isRushed = json['isRushed'] as bool?;
+  ..count = double.tryParse(json['count'].toString())?.toInt()
+  ..itemNumber = double.tryParse(json['itemNumber'].toString())?.toInt()
+  ..isRushed = bool.tryParse(json['isRushed'].toString());
 
 Map<String, dynamic> _$ItemToJson(Item instance) => <String, dynamic>{
   'count': instance.count,
