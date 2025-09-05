@@ -1,3 +1,8 @@
+## 6.11.1
+
+- Allow `build: '>=3.0.0 <5.0.0'`.
+- Allow `source_gen: '>=3.1.0 <5.0.0'`.
+
 ## 6.11.0
 
 - Support `JsonKey` annotation on constructor parameters.
