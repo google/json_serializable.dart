@@ -135,6 +135,8 @@ const _expectedAnnotatedTests = {
   'UnknownEnumValue',
   'UnknownEnumValueListWrongEnumType',
   'UnknownEnumValueListWrongType',
+  'UnknownEnumValueMapValueWrongEnumType',
+  'UnknownEnumValueMapValueWrongType',
   'UnknownEnumValueNotEnumField',
   'UnknownEnumValueWrongEnumType',
   'UnsupportedDateTimeField',
