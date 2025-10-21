@@ -1,3 +1,8 @@
+## 6.12.0-wip
+
+- Allow `run_only_if_triggered` to be specified in `build.yaml` to turn on the
+  `build_runner` triggers heuristic.
+
 ## 6.11.1
 
 - Allow `build: '>=3.0.0 <5.0.0'`.
