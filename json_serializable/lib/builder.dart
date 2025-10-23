@@ -23,7 +23,12 @@ import 'src/json_part_builder.dart';
 /// Not meant to be invoked by hand-authored code.
 Builder jsonSerializable(BuilderOptions options) {
   try {
-    final config = JsonSerializable.fromJson(options.config);
+    var configJson = options.config;
+    // Ignore `run_only_if_triggered` if present, it's used by `build_runner`.
+    if (configJson.containsKey('run_only_if_triggered')) {
+      configJson = Map.of(configJson)..remove('run_only_if_triggered');
+    }
+    final config = JsonSerializable.fromJson(configJson);
     return jsonPartBuilder(config: config);
   } on CheckedFromJsonException catch (e) {
     final lines = <String>[

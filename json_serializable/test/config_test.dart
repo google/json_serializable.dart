@@ -36,6 +36,12 @@ void main() {
     expect(builder, isNotNull);
   });
 
+  test('triggers config is ignored', () async {
+    // This key is used by build_runner so it's meaningful for any builder,
+    // check it doesn't cause json_serializable's config validation to throw.
+    jsonSerializable(const BuilderOptions({'run_only_if_triggered': true}));
+  });
+
   test('valid, non-default config', () {
     expect(
       generatorConfigNonDefaultJson.keys,
