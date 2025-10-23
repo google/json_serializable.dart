@@ -37,7 +37,8 @@ void main() {
   });
 
   test('triggers config is ignored', () async {
-    // This key is used by build_runner so it's meaningful for any builder.
+    // This key is used by build_runner so it's meaningful for any builder,
+    // check it doesn't cause json_serializable's config validation to throw.
     jsonSerializable(const BuilderOptions({'run_only_if_triggered': true}));
   });
 
