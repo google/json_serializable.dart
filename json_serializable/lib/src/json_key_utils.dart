@@ -36,7 +36,9 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
     if (ctorObj != null && !ctorObj.isNull) {
       final ctorReadResult = ctorObj.read(field);
       if (!ctorReadResult.isNull) {
-        if (!obj.isNull && !obj.read(field).isNull) {
+        final fieldReadResult = obj.isNull ? null : obj.read(field);
+        if (fieldReadResult != null &&
+            fieldReadResult.objectValue != ctorReadResult.objectValue) {
           log.warning(
             'Field `${element.name3}` has conflicting `JsonKey.$field` '
             'annotations: both constructor parameter and class field have '

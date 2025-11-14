@@ -32,10 +32,14 @@ class CtorParamJsonKey {
 
   @JsonKey(name: 'fake_first')
   final String attributeOne;
+
+  // Duplicate annotation with exact same value does not give a warning.
+  @JsonKey(name: 'second')
   final String attributeTwo;
 }
 
-@ShouldGenerate(r'''
+@ShouldGenerate(
+  r'''
 CtorParamJsonKeyWithExtends _$CtorParamJsonKeyWithExtendsFromJson(
   Map<String, dynamic> json,
 ) => CtorParamJsonKeyWithExtends(
@@ -49,7 +53,13 @@ Map<String, dynamic> _$CtorParamJsonKeyWithExtendsToJson(
   'fake_first': instance.attributeOne,
   'two': instance.attributeTwo,
 };
-''')
+''',
+  expectedLogItems: [
+    'Field `attributeTwo` has conflicting `JsonKey.name` annotations: both '
+        'constructor parameter and class field have this annotation. Using '
+        'constructor parameter value.',
+  ],
+)
 @JsonSerializable()
 class CtorParamJsonKeyWithExtends extends CtorParamJsonKey {
   CtorParamJsonKeyWithExtends({

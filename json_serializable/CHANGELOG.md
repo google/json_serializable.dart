@@ -2,6 +2,8 @@
 
 - Allow `run_only_if_triggered` to be specified in `build.yaml` to turn on the
   `build_runner` triggers heuristic.
+- Skip warning about annotations on both constructor and field if the values
+  match.
 
 ## 6.11.1
 
