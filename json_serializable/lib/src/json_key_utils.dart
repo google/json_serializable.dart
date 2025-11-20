@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -17,16 +17,16 @@ import 'utils.dart';
 
 final _jsonKeyExpando = Expando<Map<ClassConfig, KeyConfig>>();
 
-KeyConfig jsonKeyForField(FieldElement2 field, ClassConfig classAnnotation) =>
+KeyConfig jsonKeyForField(FieldElement field, ClassConfig classAnnotation) =>
     (_jsonKeyExpando[field] ??= Map.identity())[classAnnotation] ??= _from(
       field,
       classAnnotation,
     );
 
-KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
+KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   final obj = jsonKeyAnnotation(element);
   final ctorParam = classAnnotation.ctorParams
-      .where((e) => e.name3 == element.name3)
+      .where((e) => e.name == element.name)
       .singleOrNull;
   final ctorObj = ctorParam == null
       ? null
@@ -40,7 +40,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
         if (fieldReadResult != null &&
             fieldReadResult.objectValue != ctorReadResult.objectValue) {
           log.warning(
-            'Field `${element.name3}` has conflicting `JsonKey.$field` '
+            'Field `${element.name}` has conflicting `JsonKey.$field` '
             'annotations: both constructor parameter and class field have '
             'this annotation. Using constructor parameter value.',
           );
@@ -92,7 +92,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       // literal, which is NOT supported!
       badType = 'Function';
     } else if (!reader.isLiteral) {
-      badType = dartObject.type!.element3?.name3;
+      badType = dartObject.type!.element?.name;
     }
 
     if (badType != null) {
@@ -162,10 +162,10 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       // the generated code will be invalid, so skipping until we're bored
       // later
 
-      final functionValue = objectValue.toFunctionValue2()!;
+      final functionValue = objectValue.toFunctionValue()!;
 
       final invokeConst =
-          functionValue is ConstructorElement2 && functionValue.isConst
+          functionValue is ConstructorElement && functionValue.isConst
           ? 'const '
           : '';
 
@@ -211,7 +211,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
       }
 
       final enumValueNames = enumFields
-          .map((p) => p.name3!)
+          .map((p) => p.name!)
           .toList(growable: false);
 
       final enumValueName = enumValueForDartObject<String>(
@@ -220,7 +220,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
         (n) => n,
       );
 
-      return '${annotationType.element3!.name3}.$enumValueName';
+      return '${annotationType.element!.name}.$enumValueName';
     } else {
       final defaultValueLiteral = literalForObject(fieldName, objectValue, []);
       if (defaultValueLiteral == null) {
@@ -240,12 +240,12 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   if (defaultValue != null && ctorParamDefault != null) {
     if (defaultValue == ctorParamDefault) {
       log.info(
-        'The default value `$defaultValue` for `${element.name3!}` is defined '
+        'The default value `$defaultValue` for `${element.name!}` is defined '
         'twice in the constructor and in the `JsonKey.defaultValue`.',
       );
     } else {
       log.warning(
-        'The constructor parameter for `${element.name3!}` has a default value '
+        'The constructor parameter for `${element.name!}` has a default value '
         '`$ctorParamDefault`, but the `JsonKey.defaultValue` value '
         '`$defaultValue` will be used for missing or `null` values in JSON '
         'decoding.',
@@ -257,7 +257,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
   final readValue = fallbackObjRead('readValue');
   if (!readValue.isNull) {
     readValueFunctionName = readValue.objectValue
-        .toFunctionValue2()!
+        .toFunctionValue()!
         .qualifiedName;
   }
 
@@ -306,7 +306,7 @@ KeyConfig _from(FieldElement2 element, ClassConfig classAnnotation) {
 
 KeyConfig _populateJsonKey(
   ClassConfig classAnnotation,
-  FieldElement2 element, {
+  FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
   bool? includeIfNull,
@@ -335,7 +335,7 @@ KeyConfig _populateJsonKey(
       disallowNullValue,
       classAnnotation.includeIfNull,
     ),
-    name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name3!),
+    name: name ?? encodedFieldName(classAnnotation.fieldRename, element.name!),
     readValueFunctionName: readValueFunctionName,
     required: required ?? false,
     unknownEnumValue: unknownEnumValue,
@@ -359,7 +359,7 @@ bool _includeIfNull(
 bool _interfaceTypesEqual(DartType a, DartType b) {
   if (a is InterfaceType && b is InterfaceType) {
     // Handle nullability case. Pretty sure this is fine for enums.
-    return a.element3 == b.element3;
+    return a.element == b.element;
   }
   return a == b;
 }

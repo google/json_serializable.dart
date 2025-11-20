@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -55,11 +55,11 @@ class JsonSerializableGenerator
 
   @override
   Iterable<String> generateForAnnotatedElement(
-    Element2 element,
+    Element element,
     ConstantReader annotation,
     BuildStep buildStep,
   ) {
-    if (element is! ClassElement2 || element is EnumElement2) {
+    if (element is! ClassElement || element is EnumElement) {
       throw InvalidGenerationSourceError(
         '`@JsonSerializable` can only be used on classes.',
         element: element,

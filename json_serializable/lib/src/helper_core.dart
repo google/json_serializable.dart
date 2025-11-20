@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
@@ -17,7 +17,7 @@ import 'unsupported_type_error.dart';
 import 'utils.dart';
 
 abstract class HelperCore {
-  final ClassElement2 element;
+  final ClassElement element;
   final ClassConfig config;
 
   HelperCore(this.element, this.config);
@@ -28,17 +28,17 @@ abstract class HelperCore {
 
   @protected
   String get targetClassReference =>
-      '${element.name3}${genericClassArgumentsImpl(withConstraints: false)}';
+      '${element.name}${genericClassArgumentsImpl(withConstraints: false)}';
 
   @protected
-  String nameAccess(FieldElement2 field) => jsonKeyFor(field).name;
+  String nameAccess(FieldElement field) => jsonKeyFor(field).name;
 
   @protected
-  String safeNameAccess(FieldElement2 field) =>
+  String safeNameAccess(FieldElement field) =>
       escapeDartString(nameAccess(field));
 
   @protected
-  String get prefix => '_\$${element.name3!.nonPrivate}';
+  String get prefix => '_\$${element.name!.nonPrivate}';
 
   /// Returns a [String] representing the type arguments that exist on
   /// [element].
@@ -49,19 +49,19 @@ abstract class HelperCore {
       genericClassArguments(element, withConstraints);
 
   @protected
-  KeyConfig jsonKeyFor(FieldElement2 field) => jsonKeyForField(field, config);
+  KeyConfig jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);
 
   @protected
-  TypeHelperCtx getHelperContext(FieldElement2 field) =>
+  TypeHelperCtx getHelperContext(FieldElement field) =>
       typeHelperContext(this, field);
 }
 
 InvalidGenerationSourceError createInvalidGenerationError(
   String targetMember,
-  FieldElement2 field,
+  FieldElement field,
   UnsupportedTypeError error,
 ) {
-  var message = 'Could not generate `$targetMember` code for `${field.name3!}`';
+  var message = 'Could not generate `$targetMember` code for `${field.name!}`';
 
   String? todo;
   if (error.type is TypeParameterType) {
@@ -79,7 +79,7 @@ $converterOrKeyInstructions
   } else if (field.type != error.type) {
     message = '$message because of type `${typeToCode(error.type)}`';
   } else {
-    final element = error.type.element3?.name3;
+    final element = error.type.element?.name;
     todo =
         '''
 To support the type `${element ?? error.type}` you can:
@@ -114,17 +114,17 @@ $converterOrKeyInstructions''';
 /// ```
 /// "<T as num, S>"
 /// ```
-String genericClassArguments(ClassElement2 element, bool? withConstraints) {
-  if (withConstraints == null || element.typeParameters2.isEmpty) {
+String genericClassArguments(ClassElement element, bool? withConstraints) {
+  if (withConstraints == null || element.typeParameters.isEmpty) {
     return '';
   }
-  final values = element.typeParameters2
+  final values = element.typeParameters
       .map((t) {
         if (withConstraints && t.bound != null) {
           final boundCode = typeToCode(t.bound!);
-          return '${t.name3!} extends $boundCode';
+          return '${t.name!} extends $boundCode';
         } else {
-          return t.name3!;
+          return t.name!;
         }
       })
       .join(', ');

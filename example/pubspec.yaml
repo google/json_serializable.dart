@@ -2,7 +2,7 @@ name: example
 publish_to: none
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.9.0
 
 resolution: workspace
 
@@ -15,7 +15,7 @@ dev_dependencies:
     path: ../shared_test
 
   # REQUIRED!
-  build_runner: ^2.6.0
+  build_runner: ^2.10.4
 
   # Used by tests. Not required to use `json_serializable`.
   build_verify: ^3.0.0
@@ -25,4 +25,4 @@ dev_dependencies:
 
   # Not required to use `json_serializable`.
   path: ^1.9.0
-  test: ^1.25.9
+  test: ^1.27.0

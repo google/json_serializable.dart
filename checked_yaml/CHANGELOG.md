@@ -1,6 +1,7 @@
 ## 2.0.5-wip
 
-- Require `yaml: ^3.1.2`
+- Require `sdk: ^3.9.0`
+- Require `yaml: ^3.1.3`
 
 ## 2.0.4
 

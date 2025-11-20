@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -13,21 +13,20 @@ import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
 
 mixin EncodeHelper implements HelperCore {
-  String _fieldAccess(FieldElement2 field) =>
-      '$_toJsonParamName.${field.name3!}';
+  String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name!}';
 
-  String createPerFieldToJson(Set<FieldElement2> accessibleFieldSet) {
+  String createPerFieldToJson(Set<FieldElement> accessibleFieldSet) {
     final buffer = StringBuffer()
       ..writeln('// ignore: unused_element')
       ..writeln(
-        'abstract class _\$${element.name3!.nonPrivate}PerFieldToJson {',
+        'abstract class _\$${element.name!.nonPrivate}PerFieldToJson {',
       );
 
     for (final field in accessibleFieldSet) {
       buffer
         ..writeln('  // ignore: unused_element')
         ..write(
-          'static Object? ${field.name3!}'
+          'static Object? ${field.name!}'
           '${genericClassArgumentsImpl(withConstraints: true)}'
           '(${field.type} $_toJsonParamName',
         );
@@ -46,16 +45,16 @@ mixin EncodeHelper implements HelperCore {
 
   /// Generates an object containing metadatas related to the encoding,
   /// destined to be used by other code-generators.
-  String createFieldMap(Set<FieldElement2> accessibleFieldSet) {
+  String createFieldMap(Set<FieldElement> accessibleFieldSet) {
     assert(config.createFieldMap);
 
     final buffer = StringBuffer(
-      'const _\$${element.name3!.nonPrivate}FieldMap = <String, String> {',
+      'const _\$${element.name!.nonPrivate}FieldMap = <String, String> {',
     );
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
-        '${escapeDartString(field.name3!)}: '
+        '${escapeDartString(field.name!)}: '
         '${escapeDartString(nameAccess(field))},',
       );
     }
@@ -67,17 +66,17 @@ mixin EncodeHelper implements HelperCore {
 
   /// Generates an object containing metadatas related to the encoding,
   /// destined to be used by other code-generators.
-  String createJsonKeys(Set<FieldElement2> accessibleFieldSet) {
+  String createJsonKeys(Set<FieldElement> accessibleFieldSet) {
     assert(config.createJsonKeys);
 
     final buffer = StringBuffer(
-      'abstract final class _\$${element.name3!.nonPrivate}JsonKeys {',
+      'abstract final class _\$${element.name!.nonPrivate}JsonKeys {',
     );
     // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
-        'static const String ${field.name3} = '
+        'static const String ${field.name} = '
         '${escapeDartString(nameAccess(field))};',
       );
     }
@@ -87,7 +86,7 @@ mixin EncodeHelper implements HelperCore {
     return buffer.toString();
   }
 
-  Iterable<String> createToJson(Set<FieldElement2> accessibleFields) sync* {
+  Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
     assert(config.createToJson);
 
     final buffer = StringBuffer();
@@ -123,20 +122,20 @@ mixin EncodeHelper implements HelperCore {
   }
 
   void _writeGenericArgumentFactories(StringBuffer buffer) {
-    for (var arg in element.typeParameters2) {
+    for (var arg in element.typeParameters) {
       final helperName = toJsonForType(
         arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
       );
-      buffer.write(',Object? Function(${arg.name3} value) $helperName');
+      buffer.write(',Object? Function(${arg.name} value) $helperName');
     }
-    if (element.typeParameters2.isNotEmpty) {
+    if (element.typeParameters.isNotEmpty) {
       buffer.write(',');
     }
   }
 
   static const _toJsonParamName = 'instance';
 
-  String _serializeField(FieldElement2 field, String accessExpression) {
+  String _serializeField(FieldElement field, String accessExpression) {
     try {
       return getHelperContext(
         field,
@@ -149,7 +148,7 @@ mixin EncodeHelper implements HelperCore {
 
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.
-  bool _canWriteJsonWithoutNullCheck(FieldElement2 field) {
+  bool _canWriteJsonWithoutNullCheck(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
 
     if (jsonKey.includeIfNull) {
