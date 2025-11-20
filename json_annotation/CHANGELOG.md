@@ -1,8 +1,8 @@
 ## 4.9.1-wip
 
 - Support `JsonKey` annotation on constructor parameters.
-- Require `meta: ^1.15.0`
-- Require Dart 3.8
+- Require `meta: ^1.16.0`
+- Require `sdk: ^3.9.0`
 
 ## 4.9.0
 

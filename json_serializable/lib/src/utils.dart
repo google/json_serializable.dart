@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/element2.dart';
+import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -20,25 +20,25 @@ const _jsonKeyChecker = TypeChecker.typeNamed(
 /// If an annotation exists on `element` the source is a 'real' field.
 /// If the result is `null`, check the getter – it is a property.
 // TODO: setters: github.com/google/json_serializable.dart/issues/24
-DartObject? _jsonKeyAnnotation(FieldElement2 element) =>
+DartObject? _jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
-    (element.getter2 == null
+    (element.getter == null
         ? null
-        : _jsonKeyChecker.firstAnnotationOf(element.getter2!));
+        : _jsonKeyChecker.firstAnnotationOf(element.getter!));
 
-ConstantReader jsonKeyAnnotation(FieldElement2 element) =>
+ConstantReader jsonKeyAnnotation(FieldElement element) =>
     ConstantReader(_jsonKeyAnnotation(element));
 
 /// Returns `true` if [element] is annotated with [JsonKey].
-bool hasJsonKeyAnnotation(FieldElement2 element) =>
+bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
 
 ConstantReader jsonKeyAnnotationForCtorParam(FormalParameterElement element) =>
     ConstantReader(_jsonKeyChecker.firstAnnotationOf(element));
 
-Never throwUnsupported(FieldElement2 element, String message) =>
+Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
-      'Error with `@JsonKey` on the `${element.name3}` field. $message',
+      'Error with `@JsonKey` on the `${element.name}` field. $message',
       element: element,
     );
 
@@ -88,7 +88,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
 ClassConfig mergeConfig(
   ClassConfig config,
   ConstantReader reader, {
-  required ClassElement2 classElement,
+  required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
   assert(config.ctorParams.isEmpty);
@@ -121,7 +121,7 @@ ClassConfig mergeConfig(
     fieldRename: annotation.fieldRename ?? config.fieldRename,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
-        (classElement.typeParameters2.isNotEmpty &&
+        (classElement.typeParameters.isNotEmpty &&
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
@@ -130,8 +130,8 @@ ClassConfig mergeConfig(
   );
 }
 
-ConstructorElement2? _constructorByNameOrNull(
-  ClassElement2 classElement,
+ConstructorElement? _constructorByNameOrNull(
+  ClassElement classElement,
   String name,
 ) {
   try {
@@ -141,12 +141,12 @@ ConstructorElement2? _constructorByNameOrNull(
   }
 }
 
-ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
-  final className = classElement.name3;
+ConstructorElement constructorByName(ClassElement classElement, String name) {
+  final className = classElement.name;
 
-  ConstructorElement2? ctor;
+  ConstructorElement? ctor;
   if (name.isEmpty) {
-    ctor = classElement.unnamedConstructor2;
+    ctor = classElement.unnamedConstructor;
     if (ctor == null) {
       throw InvalidGenerationSourceError(
         'The class `$className` has no default constructor.',
@@ -154,7 +154,7 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
       );
     }
   } else {
-    ctor = classElement.getNamedConstructor2(name);
+    ctor = classElement.getNamedConstructor(name);
     if (ctor == null) {
       throw InvalidGenerationSourceError(
         'The class `$className` does not have a constructor with the name '
@@ -167,21 +167,20 @@ ConstructorElement2 constructorByName(ClassElement2 classElement, String name) {
   return ctor;
 }
 
-/// If [targetType] is an enum, returns the [FieldElement2] instances associated
+/// If [targetType] is an enum, returns the [FieldElement] instances associated
 /// with its values.
 ///
 /// Otherwise, `null`.
-Iterable<FieldElement2>? iterateEnumFields(DartType targetType) {
-  if ( /*targetType is InterfaceType && */ targetType.element3
-      is EnumElement2) {
-    return (targetType.element3 as EnumElement2).constants2;
+Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
+  if (targetType.element is EnumElement) {
+    return (targetType.element as EnumElement).constants;
   }
   return null;
 }
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() =>
-      element3?.library2?.typeSystem.promoteToNonNull(this) ?? this;
+      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
 
   String toStringNonNullable() {
     final val = getDisplayString();
@@ -213,7 +212,7 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
     return 'dynamic';
   } else if (type is InterfaceType) {
     return [
-      type.element3.name3,
+      type.element.name,
       if (type.typeArguments.isNotEmpty)
         '<${type.typeArguments.map(typeToCode).join(', ')}>',
       (type.isNullableType || forceNullable) ? '?' : '',
@@ -253,24 +252,24 @@ String? defaultDecodeLogic(
   return null;
 }
 
-extension ExecutableElementExtension on ExecutableElement2 {
+extension ExecutableElementExtension on ExecutableElement {
   /// Returns the name of `this` qualified with the class name if it's a
-  /// [MethodElement2].
+  /// [MethodElement].
   String get qualifiedName {
     if (this is TopLevelFunctionElement) {
-      return name3!;
+      return name!;
     }
 
-    if (this is MethodElement2) {
-      return '${enclosingElement2!.name3!}.${name3!}';
+    if (this is MethodElement) {
+      return '${enclosingElement!.name}.$name';
     }
 
-    if (this is ConstructorElement2) {
+    if (this is ConstructorElement) {
       // The default constructor.
-      if (name3 == 'new') {
-        return enclosingElement2!.name3!;
+      if (name == 'new') {
+        return enclosingElement!.name!;
       }
-      return '${enclosingElement2!.name3!}.${name3!}';
+      return '${enclosingElement!.name}.$name';
     }
 
     throw UnsupportedError('Not sure how to support typeof $runtimeType');

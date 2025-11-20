@@ -1,3 +1,13 @@
+## 6.11.3
+
+- Require `analyzer: ^9.0.0`
+- Require `build: ^4.0.3`
+- Require `build_config: ^1.2.0`
+- Require `dart_style: ^3.1.3`
+- Require `sdk: ^3.9.0`
+- Require `source_gen: ^4.1.1`
+- Require `source_helper: ^1.3.9`
+
 ## 6.11.2
 
 - Allow `run_only_if_triggered` to be specified in `build.yaml` to turn on the
