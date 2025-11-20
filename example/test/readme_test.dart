@@ -28,6 +28,6 @@ dependencies:
   json_annotation: ^4.9.0
 
 dev_dependencies:
-  build_runner: ^2.6.0
+  build_runner: ^2.10.4
   json_serializable: ^6.10.0
 ''';
