@@ -64,7 +64,7 @@ precedence over any value set on `ja:JsonSerializable`.
 Annotate `enum` types with `ja:JsonEnum` (new in `json_annotation` 4.2.0) to:
 
 1. Specify the default rename logic for each enum value using `fieldRename`. For
-   instance, use `fieldRename: RenameType.kebab` to encode `enum` value
+   instance, use `fieldRename: FieldRename.kebab` to encode `enum` value
    `noGood` as `"no-good"`.
 1. Force the generation of the `enum` helpers, even if the `enum` is not
    referenced in code. This is an edge scenario, but useful for some.

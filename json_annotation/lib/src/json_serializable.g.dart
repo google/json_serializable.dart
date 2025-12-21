@@ -48,7 +48,7 @@ JsonSerializable _$JsonSerializableFromJson(
       explicitToJson: $checkedConvert('explicit_to_json', (v) => v as bool?),
       fieldRename: $checkedConvert(
         'field_rename',
-        (v) => $enumDecodeNullable(_$RenameTypeEnumMap, v),
+        (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
       ),
       ignoreUnannotated: $checkedConvert(
         'ignore_unannotated',
@@ -69,7 +69,7 @@ JsonSerializable _$JsonSerializableFromJson(
       ),
       unionRename: $checkedConvert(
         'union_rename',
-        (v) => $enumDecodeNullable(_$RenameTypeEnumMap, v),
+        (v) => $enumDecodeNullable(_$FieldRenameEnumMap, v),
       ),
     );
     return val;
@@ -104,18 +104,18 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'create_to_json': instance.createToJson,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'explicit_to_json': instance.explicitToJson,
-      'field_rename': _$RenameTypeEnumMap[instance.fieldRename],
+      'field_rename': _$FieldRenameEnumMap[instance.fieldRename],
       'generic_argument_factories': instance.genericArgumentFactories,
       'ignore_unannotated': instance.ignoreUnannotated,
       'include_if_null': instance.includeIfNull,
       'union_discriminator': instance.unionDiscriminator,
-      'union_rename': _$RenameTypeEnumMap[instance.unionRename],
+      'union_rename': _$FieldRenameEnumMap[instance.unionRename],
     };
 
-const _$RenameTypeEnumMap = {
-  RenameType.none: 'none',
-  RenameType.kebab: 'kebab',
-  RenameType.snake: 'snake',
-  RenameType.pascal: 'pascal',
-  RenameType.screamingSnake: 'screamingSnake',
+const _$FieldRenameEnumMap = {
+  FieldRename.none: 'none',
+  FieldRename.kebab: 'kebab',
+  FieldRename.snake: 'snake',
+  FieldRename.pascal: 'pascal',
+  FieldRename.screamingSnake: 'screamingSnake',
 };

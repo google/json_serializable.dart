@@ -23,7 +23,7 @@ Map<String, dynamic> _$SuperUnionRenameNoneToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: RenameType.none)
+@JsonSerializable(unionRename: FieldRename.none)
 sealed class SuperUnionRenameNone {}
 
 @ShouldGenerate(r'''
@@ -57,7 +57,7 @@ Map<String, dynamic> _$SuperUnionRenameKebabToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: RenameType.kebab)
+@JsonSerializable(unionRename: FieldRename.kebab)
 sealed class SuperUnionRenameKebab {}
 
 @ShouldGenerate(r'''
@@ -92,7 +92,7 @@ Map<String, dynamic> _$SuperUnionRenameSnakeToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: RenameType.snake)
+@JsonSerializable(unionRename: FieldRename.snake)
 sealed class SuperUnionRenameSnake {}
 
 @ShouldGenerate(r'''
@@ -127,7 +127,7 @@ Map<String, dynamic> _$SuperUnionRenamePascalToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: RenameType.pascal)
+@JsonSerializable(unionRename: FieldRename.pascal)
 sealed class SuperUnionRenamePascal {}
 
 @ShouldGenerate(r'''
@@ -165,7 +165,7 @@ Map<String, dynamic> _$SuperUnionRenameScreamingSnakeToJson(
   },
 };
 ''')
-@JsonSerializable(unionRename: RenameType.screamingSnake)
+@JsonSerializable(unionRename: FieldRename.screamingSnake)
 sealed class SuperUnionRenameScreamingSnake {}
 
 @ShouldGenerate(r'''

@@ -54,14 +54,14 @@ class ClassConfig {
   final bool createPerFieldToJson;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
-  final RenameType fieldRename;
+  final FieldRename fieldRename;
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
   final List<FormalParameterElement> ctorParams;
   final List<DartObject> converters;
   final String unionDiscriminator;
-  final RenameType unionRename;
+  final FieldRename unionRename;
 
   const ClassConfig({
     required this.anyMap,
@@ -133,12 +133,12 @@ class ClassConfig {
     createPerFieldToJson: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
-    fieldRename: RenameType.none,
+    fieldRename: FieldRename.none,
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
     unionDiscriminator: 'type',
-    unionRename: RenameType.none,
+    unionRename: FieldRename.none,
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(

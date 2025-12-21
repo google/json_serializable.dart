@@ -16,7 +16,7 @@ enum StandAloneEnum {
 
 Iterable<String> get standAloneEnumValues => _$StandAloneEnumEnumMap.values;
 
-@JsonEnum(alwaysCreate: true, fieldRename: RenameType.kebab)
+@JsonEnum(alwaysCreate: true, fieldRename: FieldRename.kebab)
 enum DayType { noGood, rotten, veryBad }
 
 Iterable<String> get dayTypeEnumValues => _$DayTypeEnumMap.values;

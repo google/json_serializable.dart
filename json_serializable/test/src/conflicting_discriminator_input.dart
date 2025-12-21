@@ -11,7 +11,7 @@ sealed class SuperWithConflictingSnakeCaseDiscriminator {}
   todo: 'Rename the field or the discriminator.',
   element: 'thisWillConflict',
 )
-@JsonSerializable(fieldRename: RenameType.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class SubWithConflictingDiscriminatorWithFieldRenameExt
     extends SuperWithConflictingSnakeCaseDiscriminator {
   final String thisWillConflict;
@@ -27,7 +27,7 @@ class SubWithConflictingDiscriminatorWithFieldRenameExt
   todo: 'Rename the field or the discriminator.',
   element: 'thisWillConflict',
 )
-@JsonSerializable(fieldRename: RenameType.snake)
+@JsonSerializable(fieldRename: FieldRename.snake)
 class SubWithConflictingDiscriminatorWithFieldRenameImpl
     implements SuperWithConflictingSnakeCaseDiscriminator {
   final String thisWillConflict;

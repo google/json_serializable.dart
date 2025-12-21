@@ -12,7 +12,7 @@ import 'json_value.dart';
 class JsonEnum {
   const JsonEnum({
     this.alwaysCreate = false,
-    this.fieldRename = RenameType.none,
+    this.fieldRename = FieldRename.none,
     this.valueField,
   });
 
@@ -27,14 +27,14 @@ class JsonEnum {
   /// Defines the naming strategy when converting enum entry names to JSON
   /// values.
   ///
-  /// With a value [RenameType.none] (the default), the name of the enum entry
+  /// With a value [FieldRename.none] (the default), the name of the enum entry
   /// is used without modification.
   ///
-  /// See [RenameType] for details on the other options.
+  /// See [FieldRename] for details on the other options.
   ///
   /// Note: the value for [JsonValue.value] takes precedence over this option
   /// for entries annotated with [JsonValue].
-  final RenameType fieldRename;
+  final FieldRename fieldRename;
 
   /// Specifies the field within an "enhanced enum" to use as the value
   /// to use for serialization.
