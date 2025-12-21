@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'json_keys_example.g.dart';
 
-@JsonSerializable(createJsonKeys: true, fieldRename: FieldRename.kebab)
+@JsonSerializable(createJsonKeys: true, fieldRename: RenameType.kebab)
 class Model {
   Model({required this.firstName, required this.lastName, this.ignoredName});
 

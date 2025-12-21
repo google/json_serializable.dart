@@ -73,7 +73,7 @@ typedef GenericFactoryPerFieldToJson = _$GenericFactoryPerFieldToJson;
 
 @JsonSerializable(
   createPerFieldToJson: true,
-  fieldRename: FieldRename.kebab,
+  fieldRename: RenameType.kebab,
   createFactory: false,
 )
 class _PrivateModel {

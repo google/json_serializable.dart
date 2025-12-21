@@ -26,6 +26,7 @@ class _ReadmeBuilder extends Builder {
       ...await buildStep.getExampleContent('example/example.dart'),
       ...await buildStep.getExampleContent('example/example.g.dart'),
       ...await buildStep.getExampleContent('tool/readme/readme_examples.dart'),
+      ...await buildStep.getExampleContent('example/sealed_example.dart'),
       'supported_types': _classCleanAndSort(supportedTypes()),
       'collection_types': _classCleanAndSort(collectionTypes()),
       'map_key_types': _classCleanAndSort(mapKeyTypes),
