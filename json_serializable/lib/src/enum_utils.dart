@@ -125,7 +125,7 @@ Object? _generateEntry({
         );
       }
     } else {
-      return encodedFieldName(jsonEnum.fieldRename, field.name!);
+      return encodedName(jsonEnum.fieldRename, field.name!);
     }
   } else {
     final reader = ConstantReader(annotation);
@@ -157,7 +157,7 @@ JsonEnum _fromAnnotation(DartObject? dartObject) {
   final reader = ConstantReader(dartObject);
   return JsonEnum(
     alwaysCreate: reader.read('alwaysCreate').literalValue as bool,
-    fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values)!,
+    fieldRename: readEnum(reader.read('fieldRename'), RenameType.values)!,
     valueField: reader.read('valueField').literalValue as String?,
   );
 }

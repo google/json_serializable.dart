@@ -26,9 +26,11 @@ final generatorConfigNonDefaultJson = Map<String, dynamic>.unmodifiable(
     dateTimeUtc: true,
     disallowUnrecognizedKeys: true,
     explicitToJson: true,
-    fieldRename: FieldRename.kebab,
+    fieldRename: RenameType.kebab,
     genericArgumentFactories: true,
     ignoreUnannotated: true,
     includeIfNull: false,
+    unionDiscriminator: 'runtimeType',
+    unionRename: RenameType.kebab,
   ).toJson(),
 );

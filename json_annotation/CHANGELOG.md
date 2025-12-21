@@ -2,6 +2,8 @@
 
 - Add `JsonSerializable.dateTimeUtc` configuration option. 
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
+- Add `JsonSerializable.unionRename` and `JsonSerializable.unionDiscriminator`
+  to support sealed class serialization.
 
 ## 4.10.0
 
@@ -10,6 +12,8 @@
   (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
 - Require `meta: ^1.16.0`
 - Require `sdk: ^3.9.0`
+- Require Dart 3.8
+- Deprecated `FieldRename` in favor of `RenameType`
 
 ## 4.9.0
 

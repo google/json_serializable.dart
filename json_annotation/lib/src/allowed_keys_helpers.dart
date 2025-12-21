@@ -79,6 +79,24 @@ class UnrecognizedKeysException extends BadKeyException {
     : super._(map);
 }
 
+/// Exception thrown if there is an unrecognized union type in a JSON map
+/// that was provided during deserialization.
+class UnrecognizedUnionTypeException extends BadKeyException {
+  /// The discriminator that was not recognized.
+  final String unrecognizedType;
+
+  /// The type of the union that was being deserialized.
+  final Type unionType;
+
+  @override
+  String get message =>
+      'Unrecognized type: $unrecognizedType '
+      'for union: $unionType.';
+
+  UnrecognizedUnionTypeException(this.unrecognizedType, this.unionType, Map map)
+    : super._(map);
+}
+
 /// Exception thrown if there are missing required keys in a JSON map that was
 /// provided during deserialization.
 class MissingRequiredKeysException extends BadKeyException {

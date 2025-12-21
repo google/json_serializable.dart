@@ -27,31 +27,6 @@ mixin DecodeHelper implements HelperCore {
     Map<String, String> unavailableReasons,
   ) {
     assert(config.createFactory);
-    final buffer = StringBuffer();
-
-    final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
-    buffer.write(
-      '$targetClassReference '
-      '${prefix}FromJson${genericClassArgumentsImpl(withConstraints: true)}'
-      '($mapType json',
-    );
-
-    if (config.genericArgumentFactories) {
-      for (var arg in element.typeParameters) {
-        final helperName = fromJsonForType(
-          arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
-        );
-
-        buffer.write(', ${arg.name} Function(Object? json) $helperName');
-      }
-      if (element.typeParameters.isNotEmpty) {
-        buffer.write(',');
-      }
-    }
-
-    buffer.write(')');
-
-    final fromJsonLines = <String>[];
 
     String deserializeFun(
       String paramOrFieldName, {
@@ -86,88 +61,245 @@ mixin DecodeHelper implements HelperCore {
       ),
     ).toList();
 
-    if (config.checked) {
-      final classLiteral = escapeDartString(element.name!);
+    final functionBodyParts = switch ((
+      isSealed: element.isSealed,
+      isChecked: config.checked,
+    )) {
+      (isSealed: true, isChecked: _) => [_createSealedFunctionExpressionBody()],
+      (isSealed: _, isChecked: true) => [
+        _createCheckedFunctionExpressionBody(data, checks, accessibleFields),
+      ],
+      _ => _createDefaultFunctionBody(data, checks, deserializeFun),
+    };
 
-      final sectionBuffer = StringBuffer()
-        ..write('''
+    return CreateFactoryResult(
+      _createFromJsonFunctionSignature(functionBodyParts),
+      data.usedCtorParamsAndFields,
+    );
+  }
+
+  /// Creates the function signature around [functionBodyParts]
+  /// that will be used to deserialize the class.
+  ///
+  /// If [functionBodyParts] has only one element, expression body is used.
+  ///
+  /// ```dart
+  /// ExampleClass _$ExampleClassFromJson(Map<String, dynamic> json) =>
+  ///       /* only body part here */
+  /// ```
+  ///
+  /// If [functionBodyParts] has more than one element, block body is used.
+  ///
+  /// ```dart
+  /// ExampleClass _$ExampleClassFromJson(Map<String, dynamic> json) {
+  ///      /* first body parts here */
+  ///
+  ///     return /* last body part here */;
+  /// }
+  /// ```
+  String _createFromJsonFunctionSignature(Iterable<String> functionBodyParts) {
+    final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
+
+    final buffer = StringBuffer()
+      ..write(
+        '$targetClassReference '
+        '${prefix}FromJson${genericClassArgumentsImpl(withConstraints: true)}'
+        '($mapType json',
+      );
+
+    if (config.genericArgumentFactories) {
+      for (var arg in element.typeParameters) {
+        final helperName = fromJsonForType(
+          arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+        );
+
+        buffer.write(', ${arg.name!} Function(Object? json) $helperName');
+      }
+      if (element.typeParameters.isNotEmpty) {
+        buffer.write(',');
+      }
+    }
+
+    buffer.write(')');
+
+    if (functionBodyParts case [final single]) {
+      buffer.write('=> $single');
+    } else {
+      buffer
+        ..writeln('{')
+        ..writeAll(functionBodyParts.take(functionBodyParts.length - 1))
+        ..writeln('return ${functionBodyParts.last}')
+        ..writeln('}');
+    }
+
+    return buffer.toString();
+  }
+
+  /// Creates the body of the function that deserializes a sealed class.
+  ///
+  /// For example:
+  /// ```dart
+  /// switch (json['type']) {
+  ///   'FirstSubtype' => _$FirstSubtypeFromJson(json),
+  ///   'SecondSubtype' => _$SecondSubtypeFromJson(json),
+  ///   _ => throw Exception('Unknown type: ${json['type']}'),
+  /// };
+  /// ```
+  String _createSealedFunctionExpressionBody() {
+    assert(element.isSealed);
+
+    final implementations = sealedSubClasses(element);
+
+    final discriminator = config.unionDiscriminator;
+
+    String buildSingleImpl(ClassElement impl) {
+      final unionName = encodedName(config.unionRename, impl.name!);
+
+      return "'$unionName' => ${classPrefix(impl)}FromJson(json),";
+    }
+
+    final sectionBuffer = StringBuffer()
+      ..write("switch (json['$discriminator']) {")
+      ..writeAll(implementations.map(buildSingleImpl), '\n')
+      ..writeln('''
+_ => throw UnrecognizedUnionTypeException(
+  '\${json['$discriminator']}', 
+  ${element.name!},
+  json,
+),''')
+      ..writeln('};');
+
+    return sectionBuffer.toString();
+  }
+
+  /// Creates the body of the function that deserializes a class with checked
+  /// mode.
+  ///
+  /// For example:
+  /// ```dart
+  /// $checkedCreate(
+  ///   'FirstSubtype',
+  ///   json,
+  ///   ($checkedConvert) {
+  ///     $checkKeys(
+  ///       json,
+  ///       allowedKeys: const ['value', 'someAttribute'],
+  ///     );
+  ///     final val = FirstSubtype(
+  ///       $checkedConvert('someAttribute', (v) => v as String),
+  ///       $checkedConvert('value', (v) => v as String),
+  ///     );
+  ///     return val;
+  ///   },
+  /// );
+  /// ```
+  String _createCheckedFunctionExpressionBody(
+    _ConstructorData data,
+    List<String> checks,
+    Map<String, FieldElement> accessibleFields,
+  ) {
+    final classLiteral = escapeDartString(element.name!);
+
+    final sectionBuffer = StringBuffer()
+      ..write('''
   \$checkedCreate(
     $classLiteral,
     json,
     (\$checkedConvert) {\n''')
-        ..write(checks.join())
-        ..write('''
+      ..write(checks.join())
+      ..write('''
     final val = ${data.content};''');
 
-      for (final fieldName in data.fieldsToSet) {
-        sectionBuffer.writeln();
-        final fieldValue = accessibleFields[fieldName]!;
-        final safeName = safeNameAccess(fieldValue);
-        sectionBuffer
-          ..write('''
+    for (final fieldName in data.fieldsToSet) {
+      sectionBuffer.writeln();
+      final fieldValue = accessibleFields[fieldName]!;
+      final safeName = safeNameAccess(fieldValue);
+      sectionBuffer
+        ..write('''
     \$checkedConvert($safeName, (v) => ''')
-          ..write('val.$fieldName = ')
-          ..write(_deserializeForField(fieldValue, checkedProperty: true));
+        ..write('val.$fieldName = ')
+        ..write(_deserializeForField(fieldValue, checkedProperty: true));
 
-        final readValueFunc = jsonKeyFor(fieldValue).readValueFunctionName;
-        if (readValueFunc != null) {
-          sectionBuffer.writeln(',readValue: $readValueFunc,');
-        }
-
-        sectionBuffer.write(');');
+      final readValueFunc = jsonKeyFor(fieldValue).readValueFunctionName;
+      if (readValueFunc != null) {
+        sectionBuffer.writeln(',readValue: $readValueFunc,');
       }
 
-      sectionBuffer.write('''\n    return val;
+      sectionBuffer.write(');');
+    }
+
+    sectionBuffer.write('''\n    return val;
   }''');
 
-      final fieldKeyMap = Map.fromEntries(
-        data.usedCtorParamsAndFields
-            .map((k) => MapEntry(k, nameAccess(accessibleFields[k]!)))
-            .where((me) => me.key != me.value),
-      );
+    final fieldKeyMap = Map.fromEntries(
+      data.usedCtorParamsAndFields
+          .map((k) => MapEntry(k, nameAccess(accessibleFields[k]!)))
+          .where((me) => me.key != me.value),
+    );
 
-      String fieldKeyMapArg;
-      if (fieldKeyMap.isEmpty) {
-        fieldKeyMapArg = '';
-      } else {
-        final mapLiteral = jsonMapAsDart(fieldKeyMap);
-        fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
-      }
-
-      sectionBuffer
-        ..write(fieldKeyMapArg)
-        ..write(',);');
-      fromJsonLines.add(sectionBuffer.toString());
+    String fieldKeyMapArg;
+    if (fieldKeyMap.isEmpty) {
+      fieldKeyMapArg = '';
     } else {
-      fromJsonLines.addAll(checks);
+      final mapLiteral = jsonMapAsDart(fieldKeyMap);
+      fieldKeyMapArg = ', fieldKeyMap: const $mapLiteral';
+    }
 
-      final sectionBuffer = StringBuffer()
-        ..write('''
+    sectionBuffer
+      ..write(fieldKeyMapArg)
+      ..write(',);');
+
+    return sectionBuffer.toString();
+  }
+
+  /// Creates the body of the function that deserializes a class.
+  ///
+  /// If there are no checks will return a single constructor invocation.
+  ///
+  /// ```dart
+  /// [
+  ///   ExampleClass(
+  ///    json['exampleField'] as String,
+  ///   )
+  /// ]
+  /// /* OR with fields to set */
+  /// [
+  ///  ExampleClass(
+  ///   json['exampleField'] as String,
+  ///  )
+  ///  ..field1 = json['field1'] as String
+  ///  ..field2 = json['field2'] as String
+  /// ]
+  /// ```
+  ///
+  /// If there are checks, will return the checks followed by the
+  /// constructor invocation.
+  /// ```dart
+  /// [
+  ///   $checkKeys(
+  ///    json,
+  ///    allowedKeys: const ['exampleField', 'field1', 'field2'],
+  ///   ),
+  ///   ExampleClass(
+  ///    json['exampleField'] as String,
+  ///   )
+  /// ]
+  /// ```
+  List<String> _createDefaultFunctionBody(
+    _ConstructorData data,
+    List<String> checks,
+    String Function(String paramOrFieldName, {FormalParameterElement ctorParam})
+    deserializeForField,
+  ) {
+    final sectionBuffer = StringBuffer()
+      ..write('''
   ${data.content}''');
-      for (final field in data.fieldsToSet) {
-        sectionBuffer
-          ..writeln()
-          ..write('    ..$field = ')
-          ..write(deserializeFun(field));
-      }
-      sectionBuffer.writeln(';');
-      fromJsonLines.add(sectionBuffer.toString());
+    for (final field in data.fieldsToSet) {
+      sectionBuffer.writeln('..$field = ${deserializeForField(field)}');
     }
+    sectionBuffer.writeln(';');
 
-    if (fromJsonLines.length == 1) {
-      buffer
-        ..write('=>')
-        ..write(fromJsonLines.single);
-    } else {
-      buffer
-        ..write('{')
-        ..writeAll(fromJsonLines.take(fromJsonLines.length - 1))
-        ..write('return ')
-        ..write(fromJsonLines.last)
-        ..write('}');
-    }
-
-    return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
+    return [...checks, sectionBuffer.toString()];
   }
 
   Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {

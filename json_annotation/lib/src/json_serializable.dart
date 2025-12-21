@@ -12,8 +12,12 @@ import 'json_key.dart';
 
 part 'json_serializable.g.dart';
 
+// TODO: Remove typedef
+@Deprecated('Use RenameType instead')
+typedef FieldRename = RenameType;
+
 /// Values for the automatic field renaming behavior for [JsonSerializable].
-enum FieldRename {
+enum RenameType {
   /// Use the field name without changes.
   none,
 
@@ -35,7 +39,7 @@ enum FieldRename {
 @JsonSerializable(
   checked: true,
   disallowUnrecognizedKeys: true,
-  fieldRename: FieldRename.snake,
+  fieldRename: RenameType.snake,
 )
 @Target({TargetKind.classType})
 class JsonSerializable {
@@ -166,14 +170,14 @@ class JsonSerializable {
   /// Defines the automatic naming strategy when converting class field names
   /// into JSON map keys.
   ///
-  /// With a value [FieldRename.none] (the default), the name of the field is
+  /// With a value [RenameType.none] (the default), the name of the field is
   /// used without modification.
   ///
-  /// See [FieldRename] for details on the other options.
+  /// See [RenameType] for details on the other options.
   ///
   /// Note: the value for [JsonKey.name] takes precedence over this option for
   /// fields annotated with [JsonKey].
-  final FieldRename? fieldRename;
+  final RenameType? fieldRename;
 
   /// When `true` on classes with type parameters (generic types), extra
   /// "helper" parameters will be generated for `fromJson` and/or `toJson` to
@@ -237,6 +241,20 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+  /// The discriminator key used to identify the union type.
+  ///
+  /// Defaults to `type`.
+  final String? unionDiscriminator;
+
+  /// Defines the automatic naming strategy when converting class names
+  /// to union type names.
+  ///
+  /// With a value [RenameType.none] (the default), the name of the class is
+  /// used without modification.
+  ///
+  /// See [RenameType] for details on the other options.
+  final RenameType? unionRename;
+
   /// A list of [JsonConverter] to apply to this class.
   ///
   /// Writing:
@@ -291,6 +309,8 @@ class JsonSerializable {
     this.genericArgumentFactories,
     this.createPerFieldToJson,
     this.dateTimeUtc,
+    this.unionDiscriminator,
+    this.unionRename,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -307,10 +327,13 @@ class JsonSerializable {
     createToJson: true,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
-    fieldRename: FieldRename.none,
+    fieldRename: RenameType.none,
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
+    dateTimeUtc: false,
+    unionDiscriminator: 'type',
+    unionRename: RenameType.none,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -333,6 +356,9 @@ class JsonSerializable {
     includeIfNull: includeIfNull ?? defaults.includeIfNull,
     genericArgumentFactories:
         genericArgumentFactories ?? defaults.genericArgumentFactories,
+    dateTimeUtc: dateTimeUtc ?? defaults.dateTimeUtc,
+    unionDiscriminator: unionDiscriminator ?? defaults.unionDiscriminator,
+    unionRename: unionRename ?? defaults.unionRename,
   );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

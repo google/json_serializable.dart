@@ -64,12 +64,14 @@ class ClassConfig {
   final bool dateTimeUtc;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
-  final FieldRename fieldRename;
+  final RenameType fieldRename;
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
   final List<FormalParameterElement> ctorParams;
   final List<DartObject> converters;
+  final String unionDiscriminator;
+  final RenameType unionRename;
 
   const ClassConfig({
     required this.anyMap,
@@ -88,6 +90,8 @@ class ClassConfig {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    required this.unionDiscriminator,
+    required this.unionRename,
     this.converters = const [],
     this.ctorParams = const [],
   });
@@ -124,6 +128,10 @@ class ClassConfig {
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
+        unionDiscriminator:
+            config.unionDiscriminator ??
+            ClassConfig.defaults.unionDiscriminator,
+        unionRename: config.unionRename ?? ClassConfig.defaults.unionRename,
       );
 
   /// An instance of [JsonSerializable] with all fields set to their default
@@ -141,10 +149,12 @@ class ClassConfig {
     dateTimeUtc: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
-    fieldRename: FieldRename.none,
+    fieldRename: RenameType.none,
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
+    unionDiscriminator: 'type',
+    unionRename: RenameType.none,
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
@@ -164,6 +174,8 @@ class ClassConfig {
     fieldRename: fieldRename,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
     dateTimeUtc: dateTimeUtc,
+    unionDiscriminator: unionDiscriminator,
+    unionRename: unionRename,
     // TODO typeConverters = []
   );
 
@@ -185,6 +197,8 @@ class ClassConfig {
         genericArgumentFactories: genericArgumentFactories,
         ignoreUnannotated: ignoreUnannotated,
         includeIfNull: includeIfNull,
+        unionDiscriminator: unionDiscriminator,
+        unionRename: unionRename,
         ctorParams: ctorParams ?? this.ctorParams,
         converters: converters,
       );
