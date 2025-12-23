@@ -125,7 +125,7 @@ Object? _generateEntry({
         );
       }
     } else {
-      return encodedName(jsonEnum.fieldRename, field.name!);
+      return encodedFieldName(jsonEnum.fieldRename, field.name!);
     }
   } else {
     final reader = ConstantReader(annotation);

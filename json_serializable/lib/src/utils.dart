@@ -258,7 +258,7 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedName(FieldRename fieldRename, String declaredName) =>
+String encodedFieldName(FieldRename fieldRename, String declaredName) =>
     switch (fieldRename) {
       FieldRename.none => declaredName,
       FieldRename.snake => declaredName.snake,
