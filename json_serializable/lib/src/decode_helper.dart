@@ -97,7 +97,7 @@ mixin DecodeHelper implements HelperCore {
   ///     return /* last body part here */;
   /// }
   /// ```
-  String _createFromJsonFunctionSignature(Iterable<String> functionBodyParts) {
+  String _createFromJsonFunctionSignature(List<String> functionBodyParts) {
     final mapType = config.anyMap ? 'Map' : 'Map<String, dynamic>';
 
     final buffer = StringBuffer()
