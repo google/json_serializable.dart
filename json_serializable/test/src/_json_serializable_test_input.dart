@@ -18,6 +18,7 @@ part 'extends_jsonkey_override.dart';
 part 'generic_test_input.dart';
 part 'inheritance_test_input.dart';
 part 'json_converter_test_input.dart';
+part 'json_converter_params_test_input.dart';
 part 'map_key_variety_test_input.dart';
 part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';

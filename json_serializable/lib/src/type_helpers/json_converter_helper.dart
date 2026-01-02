@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../json_literal_generator.dart';
 import '../lambda_result.dart';
 import '../type_helper.dart';
 import '../utils.dart';
@@ -115,18 +116,22 @@ class _JsonConvertData {
     String className,
     String accessor,
     this.jsonType,
-    this.fieldType,
-  ) : accessString = 'const $className${_withAccessor(accessor)}()',
-      isGeneric = false;
+    this.fieldType, [
+    String constructorArgs = '',
+  ]) : accessString =
+           'const $className${_withAccessor(accessor)}($constructorArgs)',
+       isGeneric = false;
 
   _JsonConvertData.genericClass(
     String className,
     String genericTypeArg,
     String accessor,
     this.jsonType,
-    this.fieldType,
-  ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()',
-      isGeneric = true;
+    this.fieldType, [
+    String constructorArgs = '',
+  ]) : accessString =
+           '$className<$genericTypeArg>${_withAccessor(accessor)}($constructorArgs)',
+       isGeneric = true;
 
   _JsonConvertData.propertyAccess(
     this.accessString,
@@ -234,13 +239,7 @@ _JsonConvertData? _typeConverterFrom(
 
   final reviver = ConstantReader(match.annotation).revive();
 
-  if (reviver.namedArguments.isNotEmpty ||
-      reviver.positionalArguments.isNotEmpty) {
-    throw InvalidGenerationSourceError(
-      'Generators with constructor arguments are not supported.',
-      element: match.elementAnnotation?.element,
-    );
-  }
+  final args = _parseArguments(reviver);
 
   if (match.genericTypeArg != null) {
     return _JsonConvertData.genericClass(
@@ -249,6 +248,7 @@ _JsonConvertData? _typeConverterFrom(
       reviver.accessor,
       match.jsonType,
       match.fieldType,
+      args,
     );
   }
 
@@ -257,6 +257,61 @@ _JsonConvertData? _typeConverterFrom(
     reviver.accessor,
     match.jsonType,
     match.fieldType,
+    args,
+  );
+}
+
+String _parseArguments(Revivable reviver) {
+  final args = <String>[];
+  for (final arg in reviver.positionalArguments) {
+    args.add(_dartObjectToString(arg));
+  }
+  for (final entry in reviver.namedArguments.entries) {
+    args.add('${entry.key}: ${_dartObjectToString(entry.value)}');
+  }
+  return args.join(', ');
+}
+
+String _dartObjectToString(DartObject object) {
+  final reader = ConstantReader(object);
+
+  if (reader.isNull) {
+    return 'null';
+  }
+
+  if (reader.isBool || reader.isInt || reader.isDouble || reader.isString) {
+    return jsonLiteralAsDart(reader.literalValue);
+  }
+
+  if (reader.isList) {
+    final list = reader.listValue.map(_dartObjectToString).join(', ');
+    return '[$list]';
+  }
+
+  if (reader.isMap) {
+    final map = reader.mapValue.entries
+        .map((e) {
+          return '${_dartObjectToString(e.key!)}: ${_dartObjectToString(e.value!)}';
+        })
+        .join(', ');
+    return '{$map}';
+  }
+
+  if (reader.isSet) {
+    final set = reader.setValue.map(_dartObjectToString).join(', ');
+    return '{$set}';
+  }
+
+  final type = object.type;
+  if (type is InterfaceType && type.element is EnumElement) {
+    final enumElement = type.element as EnumElement;
+    final index = object.getField('index')!.toIntValue()!;
+    return '${type.element.name}.${enumElement.constants[index].name}';
+  }
+
+  throw InvalidGenerationSourceError(
+    'Unsupported argument type for JsonConverter: ${object.type}',
+    element: object.type?.element,
   );
 }
 
