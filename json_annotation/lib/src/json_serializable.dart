@@ -224,6 +224,20 @@ class JsonSerializable {
   /// `includeIfNull`, that value takes precedent.
   final bool? includeIfNull;
 
+  /// The discriminator key used to identify the union type.
+  ///
+  /// Defaults to `type`.
+  final String? unionDiscriminator;
+
+  /// Defines the automatic naming strategy when converting class names
+  /// to union type names.
+  ///
+  /// With a value [FieldRename.none] (the default), the name of the class is
+  /// used without modification.
+  ///
+  /// See [FieldRename] for details on the other options.
+  final FieldRename? unionRename;
+
   /// A list of [JsonConverter] to apply to this class.
   ///
   /// Writing:
@@ -276,6 +290,8 @@ class JsonSerializable {
     this.converters,
     this.genericArgumentFactories,
     this.createPerFieldToJson,
+    this.unionDiscriminator,
+    this.unionRename,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -296,6 +312,8 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
+    unionDiscriminator: 'type',
+    unionRename: FieldRename.none,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -318,6 +336,8 @@ class JsonSerializable {
     includeIfNull: includeIfNull ?? defaults.includeIfNull,
     genericArgumentFactories:
         genericArgumentFactories ?? defaults.genericArgumentFactories,
+    unionDiscriminator: unionDiscriminator ?? defaults.unionDiscriminator,
+    unionRename: unionRename ?? defaults.unionRename,
   );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

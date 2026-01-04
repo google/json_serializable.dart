@@ -1,8 +1,11 @@
-## 4.9.1-wip
+## 4.10.0-wip
 
 - Support `JsonKey` annotation on constructor parameters.
 - Require `meta: ^1.16.0`
 - Require `sdk: ^3.9.0`
+- Add `JsonSerializable.unionRename`
+- Add `JsonSerializable.unionDiscriminator`
+- Require Dart 3.8
 
 ## 4.9.0
 

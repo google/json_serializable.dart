@@ -7,7 +7,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  json_annotation: ^4.9.0
+  json_annotation: ^4.10.0-wip
 
 dev_dependencies:
   # Used by tests. Not required to use `json_serializable`.

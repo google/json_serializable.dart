@@ -253,6 +253,53 @@ customize the encoding/decoding of any type, you have a few options.
     }
     ```
 
+# Sealed classes
+
+As of `json_serializable` version 6.10.0 and `json_annotation`
+version 4.10.0, sealed classes can be serialized to json unions and json unions
+can be deserialized to sealed classes.
+
+To achieve this, both the sealed class and its subclasses should be annotated
+with [`JsonSerializable`]. Only the sealed class should have `fromJson` factory
+or `toJson` function. To customize the sealed class behavior, use the fields
+`unionRename` and `unionDiscriminator` in [`JsonSerializable`] or adjust the
+default behavior by changing the corresponding fields in `build.yaml`. For
+more complex examples, please see [example]:
+
+```dart
+import 'package:json_annotation/json_annotation.dart';
+
+part 'sealed_example.g.dart';
+
+@JsonSerializable()
+sealed class SealedBase {
+  const SealedBase();
+
+  factory SealedBase.fromJson(Map<String, dynamic> json) =>
+      _$SealedBaseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SealedBaseToJson(this);
+}
+
+@JsonSerializable()
+class SealedSub1 extends SealedBase {
+  final String exampleField1;
+
+  SealedSub1({
+    required this.exampleField1,
+  });
+}
+
+@JsonSerializable()
+class SealedSub2 extends SealedBase {
+  final String exampleField2;
+
+  SealedSub2({
+    required this.exampleField2,
+  });
+}
+```
+
 # Build configuration
 
 Aside from setting arguments on the associated annotation classes, you can also
@@ -282,6 +329,8 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
+          union_discriminator: type
+          union_rename: none
 ```
 
 To exclude generated files from coverage, you can further configure `build.yaml`.

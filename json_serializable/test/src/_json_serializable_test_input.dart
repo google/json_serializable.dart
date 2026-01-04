@@ -10,6 +10,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
 part 'checked_test_input.dart';
+part 'conflicting_discriminator_input.dart';
 part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
 part 'default_value_input.dart';
@@ -19,8 +20,12 @@ part 'generic_test_input.dart';
 part 'inheritance_test_input.dart';
 part 'json_converter_test_input.dart';
 part 'map_key_variety_test_input.dart';
+part 'mismatching_config_input.dart';
+part 'missing_annotation_input.dart';
+part 'sealed_test_input.dart';
 part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';
+part 'union_namer_input.dart';
 part 'unknown_enum_value_test_input.dart';
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
