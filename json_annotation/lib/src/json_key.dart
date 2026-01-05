@@ -152,11 +152,18 @@ class JsonKey {
   /// This is only valid for nullable enum fields.
   final Enum? unknownEnumValue;
 
+  /// If true, enum will be parsed with case-insensitive.
+  /// Specifically, both values will be lower-cased and compared.
+  ///
+  /// Valid only on enum fields with a compatible enum value.
+  final bool caseInsensitive;
+
   /// Creates a new [JsonKey] instance.
   ///
   /// Use this constructor when the default behavior is not desired.
   const JsonKey({
-    @Deprecated('Has no effect') bool? nullable,
+    @Deprecated('Has no effect')
+        bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
     this.fromJson,
@@ -164,7 +171,7 @@ class JsonKey {
       'Use `includeFromJson` and `includeToJson` with a value of `false` '
       'instead.',
     )
-    this.ignore,
+        this.ignore,
     this.includeFromJson,
     this.includeIfNull,
     this.includeToJson,
@@ -173,6 +180,7 @@ class JsonKey {
     this.required,
     this.toJson,
     this.unknownEnumValue,
+    this.caseInsensitive = false,
   });
 
   /// Sentinel value for use with [unknownEnumValue].
