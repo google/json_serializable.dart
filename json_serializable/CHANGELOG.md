@@ -1,3 +1,7 @@
+## 6.11.4
+
+- Allow `analyzer: >=9.0.0 <11.0.0`
+
 ## 6.11.3
 
 - Require `analyzer: ^9.0.0`
