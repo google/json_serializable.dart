@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/src/dart/constant/value.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -122,12 +123,19 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
   if (objectValue == null || objectValue.isNull) {
     return null;
   }
-
   final executableElement = objectValue.toFunctionValue()!;
+  var executableType = executableElement.type;
+  var qualifiedName = executableElement.qualifiedName;
+  final state = (objectValue as DartObjectImpl).state;
+  if (((state as FunctionState).typeArguments?.length ?? 0) > 0) {
+    final generics = state.typeArguments!.cast<DartType>();
+    executableType = executableType.instantiate(generics);
+    qualifiedName += "<${generics.join(',')}>";
+  }
 
-  if (executableElement.formalParameters.isEmpty ||
-      executableElement.formalParameters.first.isNamed ||
-      executableElement.formalParameters.where((pe) => !pe.isOptional).length >
+  if (executableType.formalParameters.isEmpty ||
+      executableType.formalParameters.first.isNamed ||
+      executableType.formalParameters.where((pe) => !pe.isOptional).length >
           1) {
     throwUnsupported(
       element,
@@ -136,8 +144,8 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     );
   }
 
-  final returnType = executableElement.returnType;
-  final argType = executableElement.formalParameters.first.type;
+  final returnType = executableType.returnType;
+  final argType = executableType.formalParameters.first.type;
   if (isFrom) {
     final hasDefaultValue = !jsonKeyAnnotation(
       element,
@@ -179,5 +187,5 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
     }
   }
 
-  return ConvertData(executableElement.qualifiedName, argType, returnType);
+  return ConvertData(qualifiedName, argType, returnType);
 }
