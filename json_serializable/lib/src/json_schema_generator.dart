@@ -7,17 +7,16 @@ import 'shared_checkers.dart';
 
 /// Generates a JSON Schema for a [ClassElement].
 class JsonSchemaGenerator {
-  final _generatedSchemas = <String, Map<String, dynamic>>{};
-
   /// Generates the schema string literal.
   Map<String, dynamic> generateSchema(
     ClassElement element,
     Iterable<PropertyInfo> properties,
   ) {
-    _generatedSchemas.clear();
+    final generatedSchemas = <String, Map<String, dynamic>>{};
     final mainSchema = _generateSchemaForProperties(
       properties,
       element.displayName,
+      generatedSchemas,
       isRoot: true,
       seenTypes: {element.thisType},
     );
@@ -25,12 +24,13 @@ class JsonSchemaGenerator {
     return {
       r'$schema': 'https://json-schema.org/draft/2020-12/schema',
       ...mainSchema,
-      if (_generatedSchemas.isNotEmpty) r'$defs': _generatedSchemas,
+      if (generatedSchemas.isNotEmpty) r'$defs': generatedSchemas,
     };
   }
 
   Map<String, dynamic> _getPropertySchema(
-    DartType type, {
+    DartType type,
+    Map<String, Map<String, dynamic>> generatedSchemas, {
     bool isRoot = false,
     Set<DartType> seenTypes = const {},
   }) {
@@ -59,7 +59,11 @@ class JsonSchemaGenerator {
       final itemType = coreIterableGenericType(type);
       return {
         'type': 'array',
-        'items': _getPropertySchema(itemType, seenTypes: newSeenTypes),
+        'items': _getPropertySchema(
+          itemType,
+          generatedSchemas,
+          seenTypes: newSeenTypes,
+        ),
       };
     }
     if (coreMapTypeChecker.isAssignableFromType(type)) {
@@ -69,6 +73,7 @@ class JsonSchemaGenerator {
           'type': 'object',
           'additionalProperties': _getPropertySchema(
             typeArgs[1],
+            generatedSchemas,
             seenTypes: newSeenTypes,
           ),
         };
@@ -88,7 +93,12 @@ class JsonSchemaGenerator {
     }
 
     if (type is InterfaceType && !type.isDartCoreObject) {
-      return _generateComplexTypeSchema(type, isRoot, newSeenTypes);
+      return _generateComplexTypeSchema(
+        type,
+        generatedSchemas,
+        isRoot,
+        newSeenTypes,
+      );
     }
 
     return {'type': 'object'};
@@ -96,13 +106,14 @@ class JsonSchemaGenerator {
 
   Map<String, dynamic> _generateComplexTypeSchema(
     InterfaceType type,
+    Map<String, Map<String, dynamic>> generatedSchemas,
     bool isRoot,
     Set<DartType> seenTypes,
   ) {
     final element = type.element;
     final typeName = element.displayName;
 
-    if (!isRoot && _generatedSchemas.containsKey(typeName)) {
+    if (!isRoot && generatedSchemas.containsKey(typeName)) {
       return {r'$ref': '#/\$defs/$typeName'};
     }
 
@@ -150,10 +161,11 @@ class JsonSchemaGenerator {
       final schema = _generateSchemaForProperties(
         properties,
         typeName,
+        generatedSchemas,
         isRoot: false,
         seenTypes: seenTypes,
       );
-      _generatedSchemas[typeName] = schema;
+      generatedSchemas[typeName] = schema;
       return {r'$ref': '#/\$defs/$typeName'};
     }
 
@@ -164,7 +176,8 @@ class JsonSchemaGenerator {
 
   Map<String, dynamic> _generateSchemaForProperties(
     Iterable<PropertyInfo> properties,
-    String typeName, {
+    String typeName,
+    Map<String, Map<String, dynamic>> generatedSchemas, {
     required bool isRoot,
     required Set<DartType> seenTypes,
   }) {
@@ -174,6 +187,7 @@ class JsonSchemaGenerator {
     for (final property in properties) {
       final propertySchema = _getPropertySchema(
         property.type,
+        generatedSchemas,
         seenTypes: seenTypes,
       );
 
