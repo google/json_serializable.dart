@@ -37,6 +37,14 @@ class KeyConfig {
     required this.required,
     required this.unknownEnumValue,
   });
+
+  bool get explicitYesFromJson => includeFromJson == true;
+
+  bool get explicitNoFromJson => includeFromJson == false;
+
+  bool get explicitYesToJson => includeToJson == true;
+
+  bool get explicitNoToJson => includeToJson == false;
 }
 
 /// Represents values from [JsonSerializable] when merged with local

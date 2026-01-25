@@ -52,8 +52,7 @@ Future<void> main() async {
                 ),
               );
 
-          final generator = JsonSchemaGenerator();
-          final schemaMap = generator.generateSchema(element, properties);
+          final schemaMap = generateJsonSchema(element, properties);
 
           try {
             // Validate that the generated map is a valid JSON Schema

@@ -6,7 +6,12 @@ import 'package:source_helper/source_helper.dart';
 import 'shared_checkers.dart';
 
 /// Generates a JSON Schema for a [ClassElement].
-class JsonSchemaGenerator {
+Map<String, dynamic> generateJsonSchema(
+  ClassElement element,
+  Iterable<PropertyInfo> properties,
+) => _JsonSchemaGenerator().generateSchema(element, properties);
+
+final class _JsonSchemaGenerator {
   /// Generates the schema string literal.
   Map<String, dynamic> generateSchema(
     ClassElement element,
@@ -197,11 +202,13 @@ class JsonSchemaGenerator {
 
       // Default value handling
       if (property.defaultValue != null) {
-        _applyDefaultValue(
-          propertySchema,
+        final defaultValue = _defaultValue(
           property.defaultValue!,
           property.type,
         );
+        if (defaultValue != _noMatch) {
+          propertySchema['default'] = defaultValue;
+        }
       }
 
       schemaProperties[property.name] = propertySchema;
@@ -218,25 +225,23 @@ class JsonSchemaGenerator {
     };
   }
 
-  void _applyDefaultValue(
-    Map<String, dynamic> schema,
-    DartObject defaultValue,
-    DartType type,
-  ) {
-    if (coreStringTypeChecker.isAssignableFromType(type)) {
-      schema['default'] = defaultValue.toStringValue();
-    } else if (type.isDartCoreInt) {
-      schema['default'] = defaultValue.toIntValue();
-    } else if (type.isDartCoreDouble || type.isDartCoreNum) {
-      schema['default'] = defaultValue.toDoubleValue();
-    } else if (type.isDartCoreBool) {
-      schema['default'] = defaultValue.toBoolValue();
-    } else if (coreIterableTypeChecker.isAssignableFromType(type)) {
-      schema['default'] = defaultValue.toListValue();
-    } else if (coreMapTypeChecker.isAssignableFromType(type)) {
-      schema['default'] = defaultValue.toMapValue();
-    }
-  }
+  Object? _defaultValue(DartObject defaultValue, DartType type) =>
+      switch (type) {
+        _ when coreStringTypeChecker.isAssignableFromType(type) =>
+          defaultValue.toStringValue(),
+        _ when type.isDartCoreInt => defaultValue.toIntValue(),
+        _ when type.isDartCoreDouble || type.isDartCoreNum =>
+          defaultValue.toDoubleValue(),
+        _ when type.isDartCoreBool => defaultValue.toBoolValue(),
+        _ when coreIterableTypeChecker.isAssignableFromType(type) =>
+          defaultValue.toListValue(),
+        _ when coreMapTypeChecker.isAssignableFromType(type) =>
+          defaultValue.toMapValue(),
+        _ => _noMatch,
+      };
+
+  /// Sentinel value used to indicate that no default value could be determined.
+  final _noMatch = Object();
 }
 
 class PropertyInfo {
