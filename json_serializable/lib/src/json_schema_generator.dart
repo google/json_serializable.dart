@@ -63,16 +63,8 @@ class JsonSchemaGenerator {
       };
     }
     if (coreMapTypeChecker.isAssignableFromType(type)) {
-      final valueType = (type as InterfaceType).typeArguments.length > 1
-          ? type.typeArguments[1]
-          : type.typeArguments.first;
-      return {
-        'type': 'object',
-        'additionalProperties': _getPropertySchema(
-          valueType,
-          seenTypes: newSeenTypes,
-        ),
-      };
+      final mapInterfaceType = coreMapTypeChecker.asInstanceOf(type)!;
+      final valueType = mapInterfaceType.typeArguments.last;
     }
 
     // Check for DateTime/Uri which might have specialized checkers in
