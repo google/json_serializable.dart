@@ -72,10 +72,6 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
 };
 
-  'lastName': instance.lastName,
-  'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
-};
-// The constant below is the generated JSON Schema for the Person class.
 const _$PersonJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
@@ -281,6 +277,37 @@ customize the encoding/decoding of any type, you have a few options.
       int toJson(DateTime object) => object.millisecondsSinceEpoch;
     }
     ```
+
+# JSON Schema Generation
+
+You can generate [JSON Schema](https://json-schema.org/) definitions for your annotated classes. This is useful for validation, documentation, or defining APIs.
+
+To enable this feature, set `createJsonSchema: true` on the [`JsonSerializable`] annotation:
+
+```dart
+@JsonSerializable(createJsonSchema: true)
+class Person {
+  // ...
+  /// The JSON Schema for this class.
+  static const jsonSchema = _$PersonJsonSchema;
+}
+```
+
+The generator will create a `static const` field named `_$ClassNameJsonSchema` containing the schema as a `Map<String, dynamic>`.
+
+Key features of the generated schema:
+*   **Separation of Concerns:** The schema generation logic is handled by a dedicated `JsonSchemaGenerator`.
+*   **Idiomatic Dart:** The output uses single quotes (`'`) for string literals.
+*   **Type Mapping:**
+    *   [`int`] maps to `integer`.
+    *   [`DateTime`] maps to `string` with `format: date-time`.
+    *   [`List`]/[`Set`] map to `array`.
+    *   [`Map`] maps to `object`.
+    *   Nested objects use `$ref` to reference their schema definitions.
+*   **Documentation:** Comments (`///`) on fields are included as `description` fields in the schema.
+*   **Defaults:** `defaultValue` from [`JsonKey`] is reflected in the schema.
+
+See the [Example](#example) above for a complete code sample.
 
 # Build configuration
 
