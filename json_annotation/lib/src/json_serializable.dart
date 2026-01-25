@@ -105,6 +105,12 @@ class JsonSerializable {
   /// ```
   final bool? createJsonKeys;
 
+  /// If `true` (defaults to false), a top-level constant `_$ExampleJsonSchema`
+  /// will be created in the generated part file.
+  ///
+  /// This constant will contain the JSON schema for the class.
+  final bool? createJsonSchema;
+
   /// If `true` (defaults to false), a private, static `_$ExamplePerFieldToJson`
   /// abstract class will be generated in the part file.
   ///
@@ -266,6 +272,8 @@ class JsonSerializable {
     this.constructor,
     this.createFieldMap,
     this.createJsonKeys,
+    this.createJsonSchema,
+    this.createPerFieldToJson,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
@@ -275,7 +283,6 @@ class JsonSerializable {
     this.includeIfNull,
     this.converters,
     this.genericArgumentFactories,
-    this.createPerFieldToJson,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -296,6 +303,9 @@ class JsonSerializable {
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
+    createJsonKeys: false,
+    createJsonSchema: false,
+    createPerFieldToJson: false,
   );
 
   /// Returns a new [JsonSerializable] instance with fields equal to the
@@ -318,6 +328,10 @@ class JsonSerializable {
     includeIfNull: includeIfNull ?? defaults.includeIfNull,
     genericArgumentFactories:
         genericArgumentFactories ?? defaults.genericArgumentFactories,
+    createJsonSchema: createJsonSchema ?? defaults.createJsonSchema,
+    createPerFieldToJson:
+        createPerFieldToJson ??
+        defaults.createPerFieldToJson, // Moved/Added back?
   );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

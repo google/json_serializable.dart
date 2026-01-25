@@ -30,7 +30,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'example.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(createJsonSchema: true)
 class Person {
   /// The generated code assumes these values exist in JSON.
   final String firstName, lastName;
@@ -47,6 +47,9 @@ class Person {
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$PersonToJson(this);
+
+  /// The JSON Schema for this class.
+  static const jsonSchema = _$PersonJsonSchema;
 }
 ```
 
@@ -67,6 +70,28 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'firstName': instance.firstName,
   'lastName': instance.lastName,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+};
+
+const _$PersonJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'firstName': {
+      'type': 'string',
+      'description': 'The generated code assumes these values exist in JSON.',
+    },
+    'lastName': {
+      'type': 'string',
+      'description': 'The generated code assumes these values exist in JSON.',
+    },
+    'dateOfBirth': {
+      'type': 'string',
+      'format': 'date-time',
+      'description':
+          "The generated code below handles if the corresponding JSON value doesn't\nexist or is empty.",
+    },
+  },
+  'required': ['firstName', 'lastName'],
 };
 ```
 
@@ -274,6 +299,7 @@ targets:
           create_factory: true
           create_field_map: false
           create_json_keys: false
+          create_json_schema: false
           create_per_field_to_json: false
           create_to_json: true
           disallow_unrecognized_keys: false

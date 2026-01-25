@@ -142,6 +142,7 @@ targets:
           create_factory: true
           create_field_map: false
           create_json_keys: false
+          create_json_schema: false
           create_per_field_to_json: false
           create_to_json: true
           disallow_unrecognized_keys: false

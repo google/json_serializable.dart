@@ -1,3 +1,7 @@
+## 6.12.0-wip
+
+- Add support for `JsonSerializable(createJsonSchema: true)`.
+
 ## 6.11.4
 
 - Allow `analyzer: >=9.0.0 <11.0.0`
