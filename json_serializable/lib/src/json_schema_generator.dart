@@ -1,3 +1,7 @@
+// Copyright (c) 2026, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -238,6 +242,7 @@ final class _JsonSchemaGenerator {
   final _noMatch = Object();
 }
 
+/// Property information used to generate the JSON Schema.
 class PropertyInfo {
   final String name;
   final DartType type;
