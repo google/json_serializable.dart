@@ -1,5 +1,5 @@
 name: json_serializable
-version: 6.11.4
+version: 6.12.0-wip
 description: >-
   Automatically generate code for converting to and from JSON by annotating
   Dart classes.
@@ -23,7 +23,7 @@ dependencies:
 
   # Use a tight version constraint to ensure that a constraint on
   # `json_annotation` properly constrains all features it provides.
-  json_annotation: '>=4.9.0 <4.10.0'
+  json_annotation: '>=4.10.0-0 <4.11.0'
   json_schema: ^5.2.2
   meta: ^1.16.0
   path: ^1.9.0
