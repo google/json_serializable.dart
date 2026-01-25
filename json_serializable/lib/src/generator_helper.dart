@@ -152,18 +152,10 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
   String createJsonSchema() {
     final sortedFields = createSortedFieldSet(element);
-    final accessibleFields = sortedFields.where((FieldElement f) {
+    final accessibleFields = createSortedFieldSet(element).where((FieldElement f) {
       final jsonKey = jsonKeyFor(f);
-      // Logic from `generate` method to filter accessible fields We should
-      // probably reuse the already calculated `accessibleFieldSet` but it's
-      // local to `generate`. Re-calculating for now or we could refactor
-      // `generate` to expose it? `generate` yields strings, so accessing
-      // `accessibleFieldSet` is hard from here without keeping it as state. But
-      // `sortedFields` is available. Let's filter `sortedFields` with the same
-      // logic.
-      if (!f.isPublic && !jsonKey.explicitYesFromJson) return false;
+      if (jsonKey.explicitNoToJson) return false;
       if (f.getter == null) return false;
-      if (jsonKey.explicitNoFromJson && jsonKey.explicitNoToJson) return false;
       return true;
     });
 
