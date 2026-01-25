@@ -72,6 +72,10 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
 };
 
+  'lastName': instance.lastName,
+  'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+};
+// The constant below is the generated JSON Schema for the Person class.
 const _$PersonJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
