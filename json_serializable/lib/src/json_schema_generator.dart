@@ -136,7 +136,7 @@ class JsonSchemaGenerator {
           .where((f) => !f.isStatic && f.isPublic)
           .map(
             (f) => PropertyInfo(
-              f.name!,
+              f.name,
               f.type,
               isRequired: !f.type.isNullableType,
             ), // basic guess
