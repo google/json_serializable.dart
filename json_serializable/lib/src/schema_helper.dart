@@ -5,10 +5,10 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
-import 'package:source_helper/source_helper.dart';
 
 import 'field_helpers.dart';
 import 'helper_core.dart';
+import 'json_literal_generator.dart';
 import 'json_schema_generator.dart';
 import 'utils.dart';
 
@@ -71,34 +71,6 @@ mixin SchemaHelper implements HelperCore {
 
     final schema = generateJsonSchema(element, properties);
     final name = '_\$${element.name}JsonSchema';
-    return 'const $name = ${_toDartLiteral(schema)};';
-  }
-
-  String _toDartLiteral(Object? value) {
-    if (value is Map) {
-      final buffer = StringBuffer('{');
-      for (final entry in value.entries) {
-        buffer
-          ..write(_toDartLiteral(entry.key))
-          ..write(': ')
-          ..write(_toDartLiteral(entry.value))
-          ..write(', ');
-      }
-      buffer.write('}');
-      return buffer.toString();
-    } else if (value is List) {
-      final buffer = StringBuffer('[');
-      for (final item in value) {
-        buffer
-          ..write(_toDartLiteral(item))
-          ..write(', ');
-      }
-      buffer.write(']');
-      return buffer.toString();
-    } else if (value is String) {
-      return escapeDartString(value);
-    } else {
-      return value.toString();
-    }
+    return 'const $name = ${jsonLiteralAsDart(schema)};';
   }
 }
