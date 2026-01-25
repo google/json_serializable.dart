@@ -46,7 +46,7 @@ final class _JsonSchemaGenerator {
       }
     }
 
-    final newSeenTypes = Set<DartType>.from(seenTypes)..add(type);
+    final newSeenTypes = {...seenTypes, type};
 
     if (coreStringTypeChecker.isExactlyType(type)) {
       return {'type': 'string'};
@@ -60,12 +60,18 @@ final class _JsonSchemaGenerator {
     if (type.isDartCoreBool) {
       return {'type': 'boolean'};
     }
+    if (coreDateTimeTypeChecker.isExactlyType(type)) {
+      return {'type': 'string', 'format': 'date-time'};
+    }
+    if (coreUriTypeChecker.isExactlyType(type)) {
+      return {'type': 'string', 'format': 'uri'};
+    }
+
     if (coreIterableTypeChecker.isAssignableFromType(type)) {
-      final itemType = coreIterableGenericType(type);
       return {
         'type': 'array',
         'items': _getPropertySchema(
-          itemType,
+          coreIterableGenericType(type),
           generatedSchemas,
           seenTypes: newSeenTypes,
         ),
@@ -73,28 +79,16 @@ final class _JsonSchemaGenerator {
     }
     if (coreMapTypeChecker.isAssignableFromType(type)) {
       final typeArgs = type.typeArgumentsOf(coreMapTypeChecker);
-      if (typeArgs != null && typeArgs.length == 2) {
-        return {
-          'type': 'object',
-          'additionalProperties': _getPropertySchema(
-            typeArgs[1],
-            generatedSchemas,
-            seenTypes: newSeenTypes,
-          ),
-        };
-      }
-    }
-
-    // Check for DateTime/Uri which might have specialized checkers in
-    // shared_checkers or not. shared_checkers doesn't have dateTime/uri, so we
-    // check conventionally.
-    if (type.element?.name == 'DateTime' &&
-        type.element?.library?.name == 'dart.core') {
-      return {'type': 'string', 'format': 'date-time'};
-    }
-    if (type.element?.name == 'Uri' &&
-        type.element?.library?.name == 'dart.core') {
-      return {'type': 'string', 'format': 'uri'};
+      assert(typeArgs != null);
+      assert(typeArgs!.length == 2);
+      return {
+        'type': 'object',
+        'additionalProperties': _getPropertySchema(
+          typeArgs![1],
+          generatedSchemas,
+          seenTypes: newSeenTypes,
+        ),
+      };
     }
 
     if (type is InterfaceType && !type.isDartCoreObject) {
