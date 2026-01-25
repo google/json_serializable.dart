@@ -212,7 +212,7 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
     return 'const $name = ${_toDartLiteral(schema)};';
   }
 
-  String _toDartLiteral(dynamic value) {
+  String _toDartLiteral(Object? value) {
     if (value is Map) {
       final buffer = StringBuffer('{');
       for (final entry in value.entries) {
