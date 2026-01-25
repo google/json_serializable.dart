@@ -329,8 +329,7 @@ class JsonSerializable {
     genericArgumentFactories:
         genericArgumentFactories ?? defaults.genericArgumentFactories,
     createJsonSchema: createJsonSchema ?? defaults.createJsonSchema,
-    createPerFieldToJson:
-        createPerFieldToJson ?? defaults.createPerFieldToJson,
+    createPerFieldToJson: createPerFieldToJson ?? defaults.createPerFieldToJson,
   );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);

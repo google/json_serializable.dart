@@ -151,8 +151,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
   }
 
   String createJsonSchema() {
-    final sortedFields = createSortedFieldSet(element);
-    final accessibleFields = createSortedFieldSet(element).where((FieldElement f) {
+    final accessibleFields = createSortedFieldSet(element).where((
+      FieldElement f,
+    ) {
       final jsonKey = jsonKeyFor(f);
       if (jsonKey.explicitNoToJson) return false;
       if (f.getter == null) return false;
