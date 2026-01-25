@@ -171,4 +171,5 @@ const _expectedSchemaTests = {
   'JsonSchemaDefaultsTest',
   'JsonSchemaNullableTest',
   'JsonSchemaNestedTest',
+  'JsonSchemaNonCollectionTest',
 };

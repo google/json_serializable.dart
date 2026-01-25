@@ -55,7 +55,8 @@ final class _JsonSchemaGenerator {
     if (coreStringTypeChecker.isExactlyType(type)) {
       return {'type': 'string'};
     }
-    if (type.isDartCoreInt) {
+    if (type.isDartCoreInt ||
+        coreBigIntTypeChecker.isAssignableFromType(type)) {
       return {'type': 'integer'};
     }
     if (type.isDartCoreDouble || type.isDartCoreNum) {

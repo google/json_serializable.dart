@@ -138,3 +138,56 @@ class InnerClass {
 
   InnerClass(this.value);
 }
+
+@ShouldGenerate(r'''
+const _$JsonSchemaNonCollectionTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'intField': {'type': 'integer'},
+    'doubleField': {'type': 'number'},
+    'numField': {'type': 'number'},
+    'boolField': {'type': 'boolean'},
+    'stringField': {'type': 'string'},
+    'dateTimeField': {'type': 'string', 'format': 'date-time'},
+    'uriField': {'type': 'string', 'format': 'uri'},
+    'bigIntField': {'type': 'integer'},
+  },
+  'required': [
+    'intField',
+    'doubleField',
+    'numField',
+    'boolField',
+    'stringField',
+    'dateTimeField',
+    'uriField',
+    'bigIntField',
+  ],
+};
+''', contains: true)
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaNonCollectionTest {
+  final int intField;
+  final double doubleField;
+  final num numField;
+  final bool boolField;
+  final String stringField;
+  final DateTime dateTimeField;
+  final Uri uriField;
+  final BigInt bigIntField;
+
+  JsonSchemaNonCollectionTest(
+    this.intField,
+    this.doubleField,
+    this.numField,
+    this.boolField,
+    this.stringField,
+    this.dateTimeField,
+    this.uriField,
+    this.bigIntField,
+  );
+}
