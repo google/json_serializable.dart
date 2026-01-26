@@ -45,12 +45,9 @@ class FromJsonOptionalParameters {
 }
 
 class ChildWithFromJson {
-  ChildWithFromJson.fromJson(
-    //ignore: avoid_unused_constructor_parameters
-    Map<String, dynamic> json, {
-    //ignore: avoid_unused_constructor_parameters
-    bool initValue = false,
-  });
+  // Intentionally untyped parameters to ensure this codepath is handled well.
+  //ignore: avoid_unused_constructor_parameters, strict_top_level_inference, type_annotate_public_apis
+  ChildWithFromJson.fromJson(json, {initValue = false});
 }
 
 @JsonSerializable()
