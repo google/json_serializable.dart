@@ -32,11 +32,8 @@ part 'example.g.dart';
 
 @JsonSerializable(createJsonSchema: true)
 class Person {
-  /// The generated code assumes these values exist in JSON.
   final String firstName, lastName;
 
-  /// The generated code below handles if the corresponding JSON value doesn't
-  /// exist or is empty.
   final DateTime? dateOfBirth;
 
   Person({required this.firstName, required this.lastName, this.dateOfBirth});
@@ -76,20 +73,9 @@ const _$PersonJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
   'properties': {
-    'firstName': {
-      'type': 'string',
-      'description': 'The generated code assumes these values exist in JSON.',
-    },
-    'lastName': {
-      'type': 'string',
-      'description': 'The generated code assumes these values exist in JSON.',
-    },
-    'dateOfBirth': {
-      'type': 'string',
-      'format': 'date-time',
-      'description':
-          "The generated code below handles if the corresponding JSON value doesn't\nexist or is empty.",
-    },
+    'firstName': {'type': 'string'},
+    'lastName': {'type': 'string'},
+    'dateOfBirth': {'type': 'string', 'format': 'date-time'},
   },
   'required': ['firstName', 'lastName'],
 };
