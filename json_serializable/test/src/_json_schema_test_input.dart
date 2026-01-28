@@ -153,16 +153,6 @@ const _$JsonSchemaNonCollectionTestJsonSchema = {
     'uriField': {'type': 'string', 'format': 'uri'},
     'bigIntField': {'type': 'integer'},
   },
-  'required': [
-    'intField',
-    'doubleField',
-    'numField',
-    'boolField',
-    'stringField',
-    'dateTimeField',
-    'uriField',
-    'bigIntField',
-  ],
 };
 ''', contains: true)
 @JsonSerializable(
@@ -171,16 +161,16 @@ const _$JsonSchemaNonCollectionTestJsonSchema = {
   createToJson: false,
 )
 class JsonSchemaNonCollectionTest {
-  final int intField;
-  final double doubleField;
-  final num numField;
-  final bool boolField;
-  final String stringField;
-  final DateTime dateTimeField;
-  final Uri uriField;
-  final BigInt bigIntField;
+  final int? intField;
+  final double? doubleField;
+  final num? numField;
+  final bool? boolField;
+  final String? stringField;
+  final DateTime? dateTimeField;
+  final Uri? uriField;
+  final BigInt? bigIntField;
 
-  JsonSchemaNonCollectionTest(
+  JsonSchemaNonCollectionTest({
     this.intField,
     this.doubleField,
     this.numField,
@@ -189,5 +179,5 @@ class JsonSchemaNonCollectionTest {
     this.dateTimeField,
     this.uriField,
     this.bigIntField,
-  );
+  });
 }
