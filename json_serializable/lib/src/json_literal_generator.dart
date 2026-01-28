@@ -47,7 +47,6 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 String jsonLiteralAsDart(Object? value) => switch (value) {
   null => 'null',
   final String s => escapeDartString(s),
-  final BigInt i => "BigInt.parse('$i')",
   final double d when d.isNaN => 'double.nan',
   final double d when d.isInfinite =>
     d.isNegative ? 'double.negativeInfinity' : 'double.infinity',
