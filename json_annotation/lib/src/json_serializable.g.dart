@@ -42,10 +42,6 @@ JsonSerializable _$JsonSerializableFromJson(
         'create_json_schema',
         (v) => v as bool?,
       ),
-      createPerFieldToJson: $checkedConvert(
-        'create_per_field_to_json',
-        (v) => v as bool?,
-      ),
       createFactory: $checkedConvert('create_factory', (v) => v as bool?),
       createToJson: $checkedConvert('create_to_json', (v) => v as bool?),
       disallowUnrecognizedKeys: $checkedConvert(
@@ -66,6 +62,10 @@ JsonSerializable _$JsonSerializableFromJson(
         'generic_argument_factories',
         (v) => v as bool?,
       ),
+      createPerFieldToJson: $checkedConvert(
+        'create_per_field_to_json',
+        (v) => v as bool?,
+      ),
     );
     return val;
   },
@@ -74,7 +74,6 @@ JsonSerializable _$JsonSerializableFromJson(
     'createFieldMap': 'create_field_map',
     'createJsonKeys': 'create_json_keys',
     'createJsonSchema': 'create_json_schema',
-    'createPerFieldToJson': 'create_per_field_to_json',
     'createFactory': 'create_factory',
     'createToJson': 'create_to_json',
     'disallowUnrecognizedKeys': 'disallow_unrecognized_keys',
@@ -83,6 +82,7 @@ JsonSerializable _$JsonSerializableFromJson(
     'ignoreUnannotated': 'ignore_unannotated',
     'includeIfNull': 'include_if_null',
     'genericArgumentFactories': 'generic_argument_factories',
+    'createPerFieldToJson': 'create_per_field_to_json',
   },
 );
 
