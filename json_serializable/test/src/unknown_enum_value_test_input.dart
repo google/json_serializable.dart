@@ -54,6 +54,28 @@ class UnknownEnumValueListWrongEnumType {
   late List<UnknownEnumValueItems> value;
 }
 
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
+  '`int`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueMapValueWrongType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  late Map<String, int> value;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
+  '`UnknownEnumValueItems`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueMapValueWrongEnumType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  late Map<String, UnknownEnumValueItems> value;
+}
+
 enum WrongEnumType { otherValue }
 
 @ShouldThrow(
@@ -69,7 +91,7 @@ class UnknownEnumValueWrongEnumType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on the `value` field. `unknownEnumValue` can only be '
-  'set on fields of type enum or on Iterable, List, or Set instances of an '
+  'set on fields of type enum or on Iterable, List, Set or Map instances of an '
   'enum type.',
 )
 @JsonSerializable()
