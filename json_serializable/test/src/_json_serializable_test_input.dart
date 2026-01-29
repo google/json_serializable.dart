@@ -13,8 +13,8 @@ part 'checked_test_input.dart';
 part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
 part 'default_value_input.dart';
-part 'field_namer_input.dart';
 part 'extends_jsonkey_override.dart';
+part 'field_namer_input.dart';
 part 'generic_test_input.dart';
 part 'inheritance_test_input.dart';
 part 'json_converter_test_input.dart';
@@ -586,4 +586,27 @@ class TearOffValueClass {
   factory TearOffValueClass.fromJson(String value) => TearOffValueClass(value);
 
   final String value;
+}
+
+@ShouldGenerate(r'''
+const _$JsonSchemaTestClassJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'name': {'type': 'string'},
+    'age': {'type': 'integer'},
+  },
+  'required': ['name', 'age'],
+};
+''', contains: true)
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaTestClass {
+  final String name;
+  final int age;
+
+  JsonSchemaTestClass(this.name, this.age);
 }

@@ -24,6 +24,7 @@ class ConfigurationImplicitDefaults {
   ignoreUnannotated: false,
   includeIfNull: true,
   genericArgumentFactories: false,
+  createJsonSchema: false,
 )
 class ConfigurationExplicitDefaults {
   int? field;

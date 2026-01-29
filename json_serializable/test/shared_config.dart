@@ -28,5 +28,6 @@ final generatorConfigNonDefaultJson = Map<String, dynamic>.unmodifiable(
     ignoreUnannotated: true,
     includeIfNull: false,
     genericArgumentFactories: true,
+    createJsonSchema: true,
   ).toJson(),
 );

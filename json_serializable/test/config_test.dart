@@ -173,6 +173,7 @@ const _invalidConfig = {
   'create_factory': 42,
   'create_field_map': 42,
   'create_json_keys': 42,
+  'create_json_schema': 42,
   'create_per_field_to_json': 42,
   'create_to_json': 42,
   'disallow_unrecognized_keys': 42,

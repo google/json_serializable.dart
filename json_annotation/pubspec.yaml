@@ -1,5 +1,5 @@
 name: json_annotation
-version: 4.9.1-wip
+version: 4.10.0-wip
 description: >-
   Classes and helper functions that support JSON code generation via the
   `json_serializable` package.
@@ -17,3 +17,8 @@ resolution: workspace
 
 dependencies:
   meta: ^1.16.0
+
+dev_dependencies:
+  build_runner: any
+  json_serializable:
+    path: ../json_serializable
