@@ -121,7 +121,6 @@ class ClassConfig {
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
-        // TODO typeConverters = []
       );
 
   /// An instance of [JsonSerializable] with all fields set to their default
