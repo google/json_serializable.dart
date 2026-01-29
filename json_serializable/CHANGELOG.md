@@ -1,5 +1,6 @@
-## 6.12.0-wip
+## 6.12.0
 
+- Support `JsonKey` annotation on constructor parameters.
 - Add support for `JsonSerializable(createJsonSchema: true)`.
 
 ## 6.11.4
