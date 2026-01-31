@@ -4,16 +4,16 @@ part 'schema_example.g.dart';
 
 @JsonSerializable(createJsonSchema: true)
 final class SchemaExample {
-  /// Requried named constructor parameter
+  /// Required named constructor parameter
   final double requiredName;
 
   /// Nullable required named constructor parameter
   final double? nullableNotRequired;
 
-  final double? nullableRequriedPositional;
+  final double? nullableRequiredPositional;
   final double? nullableRequiredName;
 
-  /// Requried named constructor parameter
+  /// Required named constructor parameter
   final List<SchemaExample> requiredBranch;
 
   @JsonKey(defaultValue: 3.145)
@@ -21,7 +21,7 @@ final class SchemaExample {
 
   SchemaExample(
     this.requiredBranch,
-    this.nullableRequriedPositional, {
+    this.nullableRequiredPositional, {
     required this.requiredName,
     this.nullableNotRequired = 3.145,
     required this.nullableRequiredName,
