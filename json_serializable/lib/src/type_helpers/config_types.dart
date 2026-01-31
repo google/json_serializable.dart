@@ -37,6 +37,14 @@ class KeyConfig {
     required this.required,
     required this.unknownEnumValue,
   });
+
+  bool get explicitYesFromJson => includeFromJson == true;
+
+  bool get explicitNoFromJson => includeFromJson == false;
+
+  bool get explicitYesToJson => includeToJson == true;
+
+  bool get explicitNoToJson => includeToJson == false;
 }
 
 /// Represents values from [JsonSerializable] when merged with local
@@ -52,6 +60,7 @@ class ClassConfig {
   final bool createFieldMap;
   final bool createJsonKeys;
   final bool createPerFieldToJson;
+  final bool createJsonSchema;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
@@ -70,6 +79,7 @@ class ClassConfig {
     required this.createFieldMap,
     required this.createJsonKeys,
     required this.createPerFieldToJson,
+    required this.createJsonSchema,
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
@@ -93,6 +103,8 @@ class ClassConfig {
         createPerFieldToJson:
             config.createPerFieldToJson ??
             ClassConfig.defaults.createPerFieldToJson,
+        createJsonSchema:
+            config.createJsonSchema ?? ClassConfig.defaults.createJsonSchema,
         createFactory:
             config.createFactory ?? ClassConfig.defaults.createFactory,
         createToJson: config.createToJson ?? ClassConfig.defaults.createToJson,
@@ -123,6 +135,7 @@ class ClassConfig {
     createFieldMap: false,
     createJsonKeys: false,
     createPerFieldToJson: false,
+    createJsonSchema: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
@@ -140,6 +153,7 @@ class ClassConfig {
     createFieldMap: createFieldMap,
     createJsonKeys: createJsonKeys,
     createPerFieldToJson: createPerFieldToJson,
+    createJsonSchema: createJsonSchema,
     ignoreUnannotated: ignoreUnannotated,
     explicitToJson: explicitToJson,
     includeIfNull: includeIfNull,

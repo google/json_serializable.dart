@@ -105,6 +105,12 @@ class JsonSerializable {
   /// ```
   final bool? createJsonKeys;
 
+  /// If `true` (defaults to false), a top-level constant `_$ExampleJsonSchema`
+  /// will be created in the generated part file.
+  ///
+  /// This constant will contain the JSON schema for the class.
+  final bool? createJsonSchema;
+
   /// If `true` (defaults to false), a private, static `_$ExamplePerFieldToJson`
   /// abstract class will be generated in the part file.
   ///
@@ -266,6 +272,7 @@ class JsonSerializable {
     this.constructor,
     this.createFieldMap,
     this.createJsonKeys,
+    this.createJsonSchema,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,

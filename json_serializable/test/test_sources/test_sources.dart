@@ -24,6 +24,7 @@ class ConfigurationImplicitDefaults {
   ignoreUnannotated: false,
   includeIfNull: true,
   genericArgumentFactories: false,
+  createJsonSchema: false,
 )
 class ConfigurationExplicitDefaults {
   int? field;
@@ -44,7 +45,8 @@ class FromJsonOptionalParameters {
 }
 
 class ChildWithFromJson {
-  //ignore: avoid_unused_constructor_parameters, strict_top_level_inference
+  // Intentionally untyped parameters to ensure this codepath is handled well.
+  //ignore: avoid_unused_constructor_parameters, strict_top_level_inference, type_annotate_public_apis
   ChildWithFromJson.fromJson(json, {initValue = false});
 }
 

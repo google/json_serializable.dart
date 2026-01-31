@@ -15,7 +15,7 @@ const _annotationPkgName = 'json_annotation';
 final _supportLanguageRange = VersionConstraint.parse(
   supportedLanguageConstraint,
 );
-final requiredJsonAnnotationMinVersion = Version.parse('4.9.0');
+final requiredJsonAnnotationMinVersion = Version.parse('4.10.0');
 
 Future<void> pubspecHasRightVersion(BuildStep buildStep) async {
   final segments = buildStep.inputId.pathSegments;

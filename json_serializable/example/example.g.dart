@@ -21,3 +21,14 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'lastName': instance.lastName,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
 };
+
+const _$PersonJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'firstName': {'type': 'string'},
+    'lastName': {'type': 'string'},
+    'dateOfBirth': {'type': 'string', 'format': 'date-time'},
+  },
+  'required': ['firstName', 'lastName'],
+};

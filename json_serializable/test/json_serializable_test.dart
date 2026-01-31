@@ -17,10 +17,21 @@ Future<void> main() async {
     '_json_serializable_test_input.dart',
   );
 
+  final jsonSchemaTestReader = await initializeLibraryReaderForDirectory(
+    p.join('test', 'src'),
+    '_json_schema_test_input.dart',
+  );
+
   testAnnotatedElements(
     jsonSerializableTestReader,
     JsonSerializableGenerator(),
     expectedAnnotatedTests: _expectedAnnotatedTests,
+  );
+
+  testAnnotatedElements(
+    jsonSchemaTestReader,
+    JsonSerializableGenerator(),
+    expectedAnnotatedTests: _expectedSchemaTests,
   );
 
   final jsonEnumTestReader = await initializeLibraryReaderForDirectory(
@@ -151,4 +162,14 @@ const _expectedAnnotatedTests = {
   '_BetterPrivateNames',
   'annotatedMethod',
   'theAnswer',
+  'JsonSchemaTestClass',
+};
+
+const _expectedSchemaTests = {
+  'JsonSchemaDocsTest',
+  'JsonSchemaCollectionsTest',
+  'JsonSchemaDefaultsTest',
+  'JsonSchemaNullableTest',
+  'JsonSchemaNestedTest',
+  'JsonSchemaNonCollectionTest',
 };

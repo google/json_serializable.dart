@@ -121,6 +121,37 @@ customize the encoding/decoding of any type, you have a few options.
 
     <!-- REPLACE tool/readme/readme_examples.dart-json_converter -->
 
+# JSON Schema Generation
+
+You can generate [JSON Schema](https://json-schema.org/) definitions for your annotated classes. This is useful for validation, documentation, or defining APIs.
+
+To enable this feature, set `createJsonSchema: true` on the `ja:JsonSerializable` annotation:
+
+```dart
+@JsonSerializable(createJsonSchema: true)
+class Person {
+  // ...
+  /// The JSON Schema for this class.
+  static const jsonSchema = _$PersonJsonSchema;
+}
+```
+
+The generator will create a `static const` field named `_$ClassNameJsonSchema` containing the schema as a `Map<String, dynamic>`.
+
+Key features of the generated schema:
+*   **Separation of Concerns:** The schema generation logic is handled by a dedicated `JsonSchemaGenerator`.
+*   **Idiomatic Dart:** The output uses single quotes (`'`) for string literals.
+*   **Type Mapping:**
+    *   `core:int` maps to `integer`.
+    *   `core:DateTime` maps to `string` with `format: date-time`.
+    *   `core:List`/`core:Set` map to `array`.
+    *   `core:Map` maps to `object`.
+    *   Nested objects use `$ref` to reference their schema definitions.
+*   **Documentation:** Comments (`///`) on fields are included as `description` fields in the schema.
+*   **Defaults:** `defaultValue` from `ja:JsonKey` is reflected in the schema.
+
+See the [Example](#example) above for a complete code sample.
+
 # Build configuration
 
 Aside from setting arguments on the associated annotation classes, you can also
@@ -142,6 +173,7 @@ targets:
           create_factory: true
           create_field_map: false
           create_json_keys: false
+          create_json_schema: false
           create_per_field_to_json: false
           create_to_json: true
           disallow_unrecognized_keys: false

@@ -11,10 +11,12 @@ import 'decode_helper.dart';
 import 'encoder_helper.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
+import 'schema_helper.dart';
 import 'settings.dart';
 import 'utils.dart';
 
-class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
+class GeneratorHelper extends HelperCore
+    with EncodeHelper, DecodeHelper, SchemaHelper {
   final Settings _generator;
   final _addedMembers = <String>{};
 
@@ -109,9 +111,9 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
 
     accessibleFieldSet
       ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson)
-      // Check for duplicate JSON keys due to colliding annotations.
-      // We do this now, since we have a final field list after any pruning done
-      // by `_writeCtor`.
+      // Check for duplicate JSON keys due to colliding annotations. We do this
+      // now, since we have a final field list after any pruning done by
+      // `_writeCtor`.
       ..fold(<String>{}, (Set<String> set, fe) {
         final jsonKey = nameAccess(fe);
         if (!set.add(jsonKey)) {
@@ -139,16 +141,10 @@ class GeneratorHelper extends HelperCore with EncodeHelper, DecodeHelper {
       yield* createToJson(accessibleFieldSet);
     }
 
+    if (config.createJsonSchema) {
+      yield createJsonSchema();
+    }
+
     yield* _addedMembers;
   }
-}
-
-extension on KeyConfig {
-  bool get explicitYesFromJson => includeFromJson == true;
-
-  bool get explicitNoFromJson => includeFromJson == false;
-
-  bool get explicitYesToJson => includeToJson == true;
-
-  bool get explicitNoToJson => includeToJson == false;
 }

@@ -44,45 +44,23 @@ class JsonLiteralGenerator extends GeneratorForAnnotation<JsonLiteral> {
 }
 
 /// Returns a [String] representing a valid Dart literal for [value].
-String jsonLiteralAsDart(Object? value) {
-  if (value == null) return 'null';
-
-  if (value is String) return escapeDartString(value);
-
-  if (value is double) {
-    if (value.isNaN) {
-      return 'double.nan';
-    }
-
-    if (value.isInfinite) {
-      if (value.isNegative) {
-        return 'double.negativeInfinity';
-      }
-      return 'double.infinity';
-    }
-  }
-
-  if (value is bool || value is num) return value.toString();
-
-  if (value is List) {
-    final listItems = value.map(jsonLiteralAsDart).join(', ');
-    return '[$listItems]';
-  }
-
-  if (value is Set) {
-    final listItems = value.map(jsonLiteralAsDart).join(', ');
-    return '{$listItems}';
-  }
-
-  if (value is Map) return jsonMapAsDart(value);
-
-  throw StateError(
+String jsonLiteralAsDart(Object? value) => switch (value) {
+  null => 'null',
+  final String s => escapeDartString(s),
+  final double d when d.isNaN => 'double.nan',
+  final double d when d.isInfinite =>
+    d.isNegative ? 'double.negativeInfinity' : 'double.infinity',
+  bool() || num() => value.toString(),
+  final List l => '[${l.map(jsonLiteralAsDart).join(', ')}]',
+  final Set s => '{${s.map(jsonLiteralAsDart).join(', ')}}',
+  final Map m => jsonMapAsDart(m),
+  _ => throw StateError(
     'Should never get here – with ${value.runtimeType} - `$value`.',
-  );
-}
+  ),
+};
 
 String jsonMapAsDart(Map value) {
-  final buffer = StringBuffer()..write('{');
+  final buffer = StringBuffer('{');
 
   var first = true;
   value.forEach((k, v) {
