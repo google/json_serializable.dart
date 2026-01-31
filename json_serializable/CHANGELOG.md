@@ -1,3 +1,8 @@
+## 6.12.1-wip
+
+- Fix schema generation for many different types of fields. 
+  ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
+
 ## 6.12.0
 
 - Support `JsonKey` annotation on constructor parameters.

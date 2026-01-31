@@ -14,7 +14,7 @@ const _$JsonSchemaDocsTestJsonSchema = {
   },
   'required': ['name'],
 };
-''', contains: true)
+''')
 @JsonSerializable(
   createJsonSchema: true,
   createFactory: false,
@@ -43,7 +43,7 @@ const _$JsonSchemaCollectionsTestJsonSchema = {
   },
   'required': ['tags', 'metadata'],
 };
-''', contains: true)
+''')
 @JsonSerializable(
   createJsonSchema: true,
   createFactory: false,
@@ -57,45 +57,63 @@ class JsonSchemaCollectionsTest {
 }
 
 @ShouldGenerate(r'''
+JsonSchemaDefaultsTest _$JsonSchemaDefaultsTestFromJson(
+  Map<String, dynamic> json,
+) => JsonSchemaDefaultsTest(
+  (json['propAnnotatedDefaultValue'] as num?)?.toInt() ?? 42,
+  propCtorDefaultValue: (json['propCtorDefaultValue'] as num?)?.toInt() ?? 42,
+);
+
 const _$JsonSchemaDefaultsTestJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
   'properties': {
-    'count': {'type': 'integer', 'default': 42},
+    'propAnnotatedDefaultValue': {'type': 'integer', 'default': 42},
+    'propCtorDefaultValue': {
+      'type': 'integer',
+      'description': 'Default value is still required',
+      'default': 42,
+    },
   },
-  'required': ['count'],
 };
-''', contains: true)
-@JsonSerializable(
-  createJsonSchema: true,
-  createFactory: false,
-  createToJson: false,
-)
+''')
+@JsonSerializable(createJsonSchema: true, createToJson: false)
 class JsonSchemaDefaultsTest {
   @JsonKey(defaultValue: 42)
-  final int count;
+  final int propAnnotatedDefaultValue;
 
-  JsonSchemaDefaultsTest(this.count);
+  /// Default value is still required
+  final int propCtorDefaultValue;
+
+  JsonSchemaDefaultsTest(
+    this.propAnnotatedDefaultValue, {
+    this.propCtorDefaultValue = 42,
+  });
 }
 
 @ShouldGenerate(r'''
+JsonSchemaNullableTest _$JsonSchemaNullableTestFromJson(
+  Map<String, dynamic> json,
+) => JsonSchemaNullableTest(json['nullableStillRequired'] as String?);
+
 const _$JsonSchemaNullableTestJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
   'properties': {
-    'description': {'type': 'string'},
+    'nullableStillRequired': {
+      'type': 'string',
+      'description': 'Nullable field is still required!',
+    },
   },
+  'required': ['nullableStillRequired'],
 };
-''', contains: true)
-@JsonSerializable(
-  createJsonSchema: true,
-  createFactory: false,
-  createToJson: false,
-)
+''')
+@JsonSerializable(createJsonSchema: true, createToJson: false)
 class JsonSchemaNullableTest {
-  final String? description;
+  /// Nullable field is still required!
+  final String? nullableStillRequired;
 
-  JsonSchemaNullableTest(this.description);
+  JsonSchemaNullableTest(this.nullableStillRequired);
 }
 
 @ShouldGenerate(r'''
@@ -116,7 +134,7 @@ const _$JsonSchemaNestedTestJsonSchema = {
     },
   },
 };
-''', contains: true)
+''')
 @JsonSerializable(
   createJsonSchema: true,
   createFactory: false,
@@ -154,7 +172,7 @@ const _$JsonSchemaNonCollectionTestJsonSchema = {
     'bigIntField': {'type': 'integer'},
   },
 };
-''', contains: true)
+''')
 @JsonSerializable(
   createJsonSchema: true,
   createFactory: false,
@@ -180,4 +198,29 @@ class JsonSchemaNonCollectionTest {
     this.uriField,
     this.bigIntField,
   });
+}
+
+@ShouldGenerate(r'''
+const _$JsonSchemaGetterTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'renamed_name': {'type': 'string'},
+  },
+  'required': ['renamed_name'],
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaGetterTest {
+  @JsonKey(name: 'renamed_name')
+  final String name;
+
+  // This getter should NOT be in the schema
+  int get length => name.length;
+
+  JsonSchemaGetterTest(this.name);
 }

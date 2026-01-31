@@ -20,7 +20,12 @@ mixin SchemaHelper implements HelperCore {
       final jsonKey = jsonKeyFor(f);
       if (jsonKey.explicitNoToJson) return false;
       if (f.getter == null) return false;
-      return true;
+
+      // If the field is writable (has a setter), it's fine.
+      if (f.setter != null) return true;
+
+      // If the field is read-only, we need to make sure it's in the constructor
+      return config.ctorParams.any((p) => p.name == f.name);
     });
 
     final properties = accessibleFields.map((FieldElement field) {
@@ -49,6 +54,20 @@ mixin SchemaHelper implements HelperCore {
         }
       }
 
+      // If it's a constructor parameter, trust the parameter strictness.
+      FormalParameterElement? param;
+      for (final p in config.ctorParams) {
+        if (p.name == field.name) {
+          param = p;
+          break;
+        }
+      }
+
+      // Try reading default value from constructor if not on annotation
+      if (defaultValueObj == null && param != null && param.hasDefaultValue) {
+        defaultValueObj = param.computeConstantValue();
+      }
+
       // Description
       final description = field.documentationComment
           ?.replaceAll(RegExp(r'^\s*/// ?', multiLine: true), '')
@@ -58,12 +77,29 @@ mixin SchemaHelper implements HelperCore {
           )
           .trim();
 
+      bool calculateIsRequired() {
+        if (jsonKey.required) return true;
+        if (defaultValueObj != null) return false;
+
+        if (param != null) {
+          // If param has default value -> it is optional.
+          // (defaultValueObj check above handles this if we successfully read
+          // it, but for safety/consistency with `param.hasDefaultValue`...)
+          if (param.hasDefaultValue) return false;
+
+          return param.isRequiredPositional || param.isRequiredNamed;
+        }
+
+        // If it has an initializer, it's not required.
+        if (field.hasInitializer) return false;
+
+        return field.type.nullabilitySuffix == NullabilitySuffix.none;
+      }
+
       return PropertyInfo(
         name,
         field.type,
-        isRequired:
-            field.type.nullabilitySuffix ==
-            NullabilitySuffix.none, // Simplified check
+        isRequired: calculateIsRequired(),
         defaultValue: defaultValueObj,
         description: description,
       );
