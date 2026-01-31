@@ -2,7 +2,7 @@
 
 - Support `JsonKey` annotation on constructor parameters.
 - Add `JsonSerializable(createJsonSchema: true)`.
-  - Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!
+  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
 - Require `meta: ^1.16.0`
 - Require `sdk: ^3.9.0`
 
