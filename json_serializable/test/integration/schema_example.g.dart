@@ -14,7 +14,7 @@ SchemaExample _$SchemaExampleFromJson(Map<String, dynamic> json) {
       (json['requiredBranch'] as List<dynamic>)
           .map((e) => SchemaExample.fromJson(e as Map<String, dynamic>))
           .toList(),
-      (json['nullableRequriedPositional'] as num?)?.toDouble(),
+      (json['nullableRequiredPositional'] as num?)?.toDouble(),
       requiredName: (json['requiredName'] as num).toDouble(),
       nullableNotRequired:
           (json['nullableNotRequired'] as num?)?.toDouble() ?? 3.145,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$SchemaExampleToJson(SchemaExample instance) =>
     <String, dynamic>{
       'requiredName': instance.requiredName,
       'nullableNotRequired': instance.nullableNotRequired,
-      'nullableRequriedPositional': instance.nullableRequriedPositional,
+      'nullableRequiredPositional': instance.nullableRequiredPositional,
       'nullableRequiredName': instance.nullableRequiredName,
       'requiredBranch': instance.requiredBranch,
       'optionalNullableFieldWithJsonKeyDefault':
@@ -47,19 +47,19 @@ const _$SchemaExampleJsonSchema = {
   'properties': {
     'requiredName': {
       'type': 'number',
-      'description': 'Requried named constructor parameter',
+      'description': 'Required named constructor parameter',
     },
     'nullableNotRequired': {
       'type': 'number',
       'description': 'Nullable required named constructor parameter',
       'default': 3.145,
     },
-    'nullableRequriedPositional': {'type': 'number'},
+    'nullableRequiredPositional': {'type': 'number'},
     'nullableRequiredName': {'type': 'number'},
     'requiredBranch': {
       'type': 'array',
       'items': {r'$ref': r'#/$defs/SchemaExample'},
-      'description': 'Requried named constructor parameter',
+      'description': 'Required named constructor parameter',
     },
     'optionalNullableFieldWithJsonKeyDefault': {
       'type': 'number',
@@ -78,7 +78,7 @@ const _$SchemaExampleJsonSchema = {
   },
   'required': [
     'requiredName',
-    'nullableRequriedPositional',
+    'nullableRequiredPositional',
     'nullableRequiredName',
     'requiredBranch',
     'propExtraFieldRequired',
