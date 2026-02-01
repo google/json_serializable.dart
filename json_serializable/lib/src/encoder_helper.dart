@@ -174,7 +174,10 @@ mixin EncodeHelper implements HelperCore {
     // We can consider enums as kinda like having custom converters
     // same rules apply. If `null` is in the set of encoded values, we
     // should not write naive
-    final enumWithNullValue = enumFieldWithNullInEncodeMap(field.type);
+    final enumWithNullValue = enumFieldWithNullInEncodeMap(
+      field.type,
+      defaultEnumFieldRename: config.enumFieldRename,
+    );
     if (enumWithNullValue != null) {
       return !enumWithNullValue;
     }

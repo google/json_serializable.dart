@@ -19,8 +19,14 @@ String constMapName(DartType targetType) =>
 ///
 /// Otherwise, returns `true` if [targetType] is nullable OR if one of the
 /// encoded values of the enum is `null`.
-bool? enumFieldWithNullInEncodeMap(DartType targetType) {
-  final enumMap = _enumMap(targetType);
+bool? enumFieldWithNullInEncodeMap(
+  DartType targetType, {
+  FieldRename? defaultEnumFieldRename,
+}) {
+  final enumMap = _enumMap(
+    targetType,
+    defaultEnumFieldRename: defaultEnumFieldRename,
+  );
 
   if (enumMap == null) return null;
 
@@ -34,10 +40,12 @@ bool? enumFieldWithNullInEncodeMap(DartType targetType) {
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
+  FieldRename? defaultEnumFieldRename,
 }) {
   final enumMap = _enumMap(
     targetType,
     nullWithNoAnnotation: nullWithNoAnnotation,
+    defaultEnumFieldRename: defaultEnumFieldRename,
   );
 
   if (enumMap == null) return null;
@@ -56,6 +64,7 @@ String? enumValueMapFromType(
 Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
+  FieldRename? defaultEnumFieldRename,
 }) {
   final targetTypeElement = targetType.element;
   if (targetTypeElement == null) return null;
@@ -74,6 +83,7 @@ Map<FieldElement, Object?>? _enumMap(
         field: field,
         jsonEnum: jsonEnum,
         targetType: targetType,
+        defaultEnumFieldRename: defaultEnumFieldRename,
       ),
   };
 }
@@ -82,6 +92,7 @@ Object? _generateEntry({
   required FieldElement field,
   required JsonEnum jsonEnum,
   required DartType targetType,
+  FieldRename? defaultEnumFieldRename,
 }) {
   final annotation = const TypeChecker.typeNamed(
     JsonValue,
@@ -91,8 +102,6 @@ Object? _generateEntry({
   if (annotation == null) {
     final valueField = jsonEnum.valueField;
     if (valueField != null) {
-      // TODO: fieldRename is pointless here!!! At least log a warning!
-
       final fieldElementType = field.type.element as EnumElement;
 
       final e = fieldElementType.getField(valueField);
@@ -125,7 +134,10 @@ Object? _generateEntry({
         );
       }
     } else {
-      return encodedFieldName(jsonEnum.fieldRename, field.name!);
+      final effectiveRename = jsonEnum.fieldRename != FieldRename.none
+          ? jsonEnum.fieldRename
+          : (defaultEnumFieldRename ?? FieldRename.none);
+      return encodedFieldName(effectiveRename, field.name!);
     }
   } else {
     final reader = ConstantReader(annotation);

@@ -24,6 +24,7 @@ final generatorConfigNonDefaultJson = Map<String, dynamic>.unmodifiable(
     createPerFieldToJson: true,
     disallowUnrecognizedKeys: true,
     explicitToJson: true,
+    enumFieldRename: FieldRename.pascal,
     fieldRename: FieldRename.kebab,
     ignoreUnannotated: true,
     includeIfNull: false,

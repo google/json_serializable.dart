@@ -70,6 +70,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
   fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  enumFieldRename: readEnum(reader.read('enumFieldRename'), FieldRename.values),
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
@@ -120,6 +121,7 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
+    enumFieldRename: annotation.enumFieldRename ?? config.enumFieldRename,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&

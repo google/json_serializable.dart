@@ -19,6 +19,7 @@ class ConfigurationImplicitDefaults {
   createJsonKeys: false,
   createPerFieldToJson: false,
   disallowUnrecognizedKeys: false,
+  enumFieldRename: FieldRename.none,
   explicitToJson: false,
   fieldRename: FieldRename.none,
   ignoreUnannotated: false,
