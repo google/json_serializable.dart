@@ -19,6 +19,13 @@ import 'utils.dart';
 
 mixin SchemaHelper implements HelperCore {
   String createJsonSchema() {
+    final properties = _doPropertyThingy(element);
+    final schema = _generateJsonSchema(element, properties);
+    final name = '_\$${element.name}JsonSchema';
+    return 'const $name = ${jsonLiteralAsDart(schema)};';
+  }
+
+  Iterable<PropertyInfo> _doPropertyThingy(ClassElement element) {
     final accessibleFields = createSortedFieldSet(element).where((
       FieldElement f,
     ) {
@@ -110,244 +117,246 @@ mixin SchemaHelper implements HelperCore {
       );
     }).whereType<PropertyInfo>();
 
-    final schema = generateJsonSchema(element, properties);
-    final name = '_\$${element.name}JsonSchema';
-    return 'const $name = ${jsonLiteralAsDart(schema)};';
-  }
-}
-
-Map<String, dynamic> generateJsonSchema(
-  ClassElement element,
-  Iterable<PropertyInfo> properties,
-) {
-  final generatedSchemas = <String, Map<String, dynamic>>{};
-  final mainSchema = _generateSchemaForProperties(
-    properties,
-    element.displayName,
-    generatedSchemas,
-    isRoot: true,
-    seenTypes: {element.thisType},
-  );
-
-  return {
-    r'$schema': 'https://json-schema.org/draft/2020-12/schema',
-    ...mainSchema,
-    if (generatedSchemas.isNotEmpty) r'$defs': generatedSchemas,
-  };
-}
-
-Map<String, dynamic> _getPropertySchema(
-  DartType type,
-  Map<String, Map<String, dynamic>> generatedSchemas, {
-  bool isRoot = false,
-  Set<DartType> seenTypes = const {},
-}) {
-  if (!isRoot && seenTypes.contains(type)) {
-    final element = type.element;
-    if (element != null) {
-      return {r'$ref': '#/\$defs/${element.displayName}'};
-    }
+    return properties;
   }
 
-  final newSeenTypes = {...seenTypes, type};
-
-  if (coreStringTypeChecker.isExactlyType(type)) {
-    return {'type': 'string'};
-  }
-  if (type.isDartCoreInt || coreBigIntTypeChecker.isAssignableFromType(type)) {
-    return {'type': 'integer'};
-  }
-  if (type.isDartCoreDouble || type.isDartCoreNum) {
-    return {'type': 'number'};
-  }
-  if (type.isDartCoreBool) {
-    return {'type': 'boolean'};
-  }
-  if (coreDateTimeTypeChecker.isExactlyType(type)) {
-    return {'type': 'string', 'format': 'date-time'};
-  }
-  if (coreUriTypeChecker.isExactlyType(type)) {
-    return {'type': 'string', 'format': 'uri'};
-  }
-
-  if (coreIterableTypeChecker.isAssignableFromType(type)) {
-    return {
-      'type': 'array',
-      'items': _getPropertySchema(
-        coreIterableGenericType(type),
-        generatedSchemas,
-        seenTypes: newSeenTypes,
-      ),
-    };
-  }
-  if (coreMapTypeChecker.isAssignableFromType(type)) {
-    final typeArgs = type.typeArgumentsOf(coreMapTypeChecker);
-    assert(typeArgs != null);
-    assert(typeArgs!.length == 2);
-    return {
-      'type': 'object',
-      'additionalProperties': _getPropertySchema(
-        typeArgs![1],
-        generatedSchemas,
-        seenTypes: newSeenTypes,
-      ),
-    };
-  }
-
-  if (type is InterfaceType && !type.isDartCoreObject) {
-    return _generateComplexTypeSchema(
-      type,
-      generatedSchemas,
-      isRoot,
-      newSeenTypes,
-    );
-  }
-
-  return {'type': 'object'};
-}
-
-Map<String, dynamic> _generateComplexTypeSchema(
-  InterfaceType type,
-  Map<String, Map<String, dynamic>> generatedSchemas,
-  bool isRoot,
-  Set<DartType> seenTypes,
-) {
-  final element = type.element;
-  final typeName = element.displayName;
-
-  if (!isRoot && generatedSchemas.containsKey(typeName)) {
-    return {r'$ref': '#/\$defs/$typeName'};
-  }
-
-  final classElement = element;
-  if (classElement is! ClassElement) {
-    return {'type': 'object'};
-  }
-
-  // We only have properties for the ROOT object passed in from
-  // GeneratorHelper. For nested objects, we'd need to invoke the same logic,
-  // but GeneratorHelper generates one class at a time. To properly support
-  // nested objects with full schema fidelity, we would need to inspect them
-  // similarly. However, since we are decoupling, we will make a best-effort
-  // inspection of fields here strictly for nested types, ignoring specific
-  // json_serializable overrides (renames) unless we duplicate that logic or
-  // accept simple names. Given the request for "Separation of Concerns" and
-  // "DRY", fully supporting nested objects with complex configuration without
-  // circular dependency on GeneratorHelper is tricky.
-  //
-  // Compromise: Use simple field inspection for nested types, as they are
-  // "refs". Or, better, if a type is encountered that we don't have explicit
-  // properties for, we just emit a ref if possible or a basic object
-  // structure.
-  //
-  // For now, let's implement basic recursion that just looks at public
-  // fields.
-
-  if (!isRoot) {
-    // Create a simplified schema for nested objects
-    final annotation = jsonSerializableChecker.firstAnnotationOfExact(
-      classElement,
-      throwOnUnresolved: false,
-    );
-    var config = ClassConfig.defaults;
-    if (annotation != null) {
-      config = mergeConfig(
-        config,
-        ConstantReader(annotation),
-        classElement: classElement,
-      );
-    }
-
-    final properties = classElement.fields
-        .map((f) => (field: f, jsonKey: jsonKeyForField(f, config)))
-        .where((record) {
-          final (:field, :jsonKey) = record;
-
-          if (field.isStatic || !field.isPublic) return false;
-
-          if (jsonKey.explicitNoToJson) {
-            return false;
-          }
-
-          // If no JsonKey on the field/getter, check validity
-          // Logic from SchemaHelper.createJsonSchema
-          // If the field is writable (has a setter), it's fine.
-          if (field.setter != null) return true;
-
-          // If NO annotation exists, we skip synthetic fields (getters).
-          if (!hasJsonKeyAnnotation(field) && field.isSynthetic) {
-            return false;
-          }
-
-          return true;
-        })
-        .map(
-          (record) => PropertyInfo(
-            record.jsonKey.name,
-            record.field.type,
-            isRequired:
-                record.jsonKey.required || !record.field.type.isNullableType,
-            defaultValue: record.field.computeConstantValue(), // Best effort
-          ),
-        );
-
-    final schema = _generateSchemaForProperties(
+  Map<String, dynamic> _generateJsonSchema(
+    ClassElement element,
+    Iterable<PropertyInfo> properties,
+  ) {
+    final generatedSchemas = <String, Map<String, dynamic>>{};
+    final mainSchema = _generateSchemaForProperties(
       properties,
-      typeName,
+      element.displayName,
       generatedSchemas,
-      isRoot: false,
-      seenTypes: seenTypes,
+      isRoot: true,
+      seenTypes: {element.thisType},
     );
-    generatedSchemas[typeName] = schema;
-    return {r'$ref': '#/\$defs/$typeName'};
+
+    return {
+      r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+      ...mainSchema,
+      if (generatedSchemas.isNotEmpty) r'$defs': generatedSchemas,
+    };
   }
 
-  // This path shouldn't be reached for isRoot=false usually due to check
-  // above.
-  return {'type': 'object'};
-}
-
-Map<String, dynamic> _generateSchemaForProperties(
-  Iterable<PropertyInfo> properties,
-  String typeName,
-  Map<String, Map<String, dynamic>> generatedSchemas, {
-  required bool isRoot,
-  required Set<DartType> seenTypes,
-}) {
-  final schemaProperties = <String, dynamic>{};
-  final required = <String>[];
-
-  for (final property in properties) {
-    final propertySchema = _getPropertySchema(
-      property.type,
-      generatedSchemas,
-      seenTypes: seenTypes,
-    );
-
-    if (property.description != null) {
-      propertySchema['description'] = property.description;
-    }
-
-    // Default value handling
-    if (property.defaultValue != null) {
-      final defaultValue = _defaultValue(property.defaultValue!, property.type);
-      if (defaultValue != _noMatch) {
-        propertySchema['default'] = defaultValue;
+  Map<String, dynamic> _getPropertySchema(
+    DartType type,
+    Map<String, Map<String, dynamic>> generatedSchemas, {
+    bool isRoot = false,
+    Set<DartType> seenTypes = const {},
+  }) {
+    if (!isRoot && seenTypes.contains(type)) {
+      final element = type.element;
+      if (element != null) {
+        return {r'$ref': '#/\$defs/${element.displayName}'};
       }
     }
 
-    schemaProperties[property.name] = propertySchema;
+    final newSeenTypes = {...seenTypes, type};
 
-    if (property.isRequired) {
-      required.add(property.name);
+    if (coreStringTypeChecker.isExactlyType(type)) {
+      return {'type': 'string'};
     }
+    if (type.isDartCoreInt ||
+        coreBigIntTypeChecker.isAssignableFromType(type)) {
+      return {'type': 'integer'};
+    }
+    if (type.isDartCoreDouble || type.isDartCoreNum) {
+      return {'type': 'number'};
+    }
+    if (type.isDartCoreBool) {
+      return {'type': 'boolean'};
+    }
+    if (coreDateTimeTypeChecker.isExactlyType(type)) {
+      return {'type': 'string', 'format': 'date-time'};
+    }
+    if (coreUriTypeChecker.isExactlyType(type)) {
+      return {'type': 'string', 'format': 'uri'};
+    }
+
+    if (coreIterableTypeChecker.isAssignableFromType(type)) {
+      return {
+        'type': 'array',
+        'items': _getPropertySchema(
+          coreIterableGenericType(type),
+          generatedSchemas,
+          seenTypes: newSeenTypes,
+        ),
+      };
+    }
+    if (coreMapTypeChecker.isAssignableFromType(type)) {
+      final typeArgs = type.typeArgumentsOf(coreMapTypeChecker);
+      assert(typeArgs != null);
+      assert(typeArgs!.length == 2);
+      return {
+        'type': 'object',
+        'additionalProperties': _getPropertySchema(
+          typeArgs![1],
+          generatedSchemas,
+          seenTypes: newSeenTypes,
+        ),
+      };
+    }
+
+    if (type is InterfaceType && !type.isDartCoreObject) {
+      return _generateComplexTypeSchema(
+        type,
+        generatedSchemas,
+        isRoot,
+        newSeenTypes,
+      );
+    }
+
+    return {'type': 'object'};
   }
 
-  return {
-    'type': 'object',
-    'properties': schemaProperties,
-    if (required.isNotEmpty) 'required': required,
-  };
+  Map<String, dynamic> _generateComplexTypeSchema(
+    InterfaceType type,
+    Map<String, Map<String, dynamic>> generatedSchemas,
+    bool isRoot,
+    Set<DartType> seenTypes,
+  ) {
+    final element = type.element;
+    final typeName = element.displayName;
+
+    if (!isRoot && generatedSchemas.containsKey(typeName)) {
+      return {r'$ref': '#/\$defs/$typeName'};
+    }
+
+    final classElement = element;
+    if (classElement is! ClassElement) {
+      return {'type': 'object'};
+    }
+
+    // We only have properties for the ROOT object passed in from
+    // GeneratorHelper. For nested objects, we'd need to invoke the same logic,
+    // but GeneratorHelper generates one class at a time. To properly support
+    // nested objects with full schema fidelity, we would need to inspect them
+    // similarly. However, since we are decoupling, we will make a best-effort
+    // inspection of fields here strictly for nested types, ignoring specific
+    // json_serializable overrides (renames) unless we duplicate that logic or
+    // accept simple names. Given the request for "Separation of Concerns" and
+    // "DRY", fully supporting nested objects with complex configuration without
+    // circular dependency on GeneratorHelper is tricky.
+    //
+    // Compromise: Use simple field inspection for nested types, as they are
+    // "refs". Or, better, if a type is encountered that we don't have explicit
+    // properties for, we just emit a ref if possible or a basic object
+    // structure.
+    //
+    // For now, let's implement basic recursion that just looks at public
+    // fields.
+
+    if (!isRoot) {
+      // Create a simplified schema for nested objects
+      final annotation = jsonSerializableChecker.firstAnnotationOfExact(
+        classElement,
+        throwOnUnresolved: false,
+      );
+      var config = ClassConfig.defaults;
+      if (annotation != null) {
+        config = mergeConfig(
+          config,
+          ConstantReader(annotation),
+          classElement: classElement,
+        );
+      }
+
+      final properties = classElement.fields
+          .map((f) => (field: f, jsonKey: jsonKeyForField(f, config)))
+          .where((record) {
+            final (:field, :jsonKey) = record;
+
+            if (field.isStatic || !field.isPublic) return false;
+
+            if (jsonKey.explicitNoToJson) {
+              return false;
+            }
+
+            // If no JsonKey on the field/getter, check validity
+            // Logic from SchemaHelper.createJsonSchema
+            // If the field is writable (has a setter), it's fine.
+            if (field.setter != null) return true;
+
+            // If NO annotation exists, we skip synthetic fields (getters).
+            if (!hasJsonKeyAnnotation(field) && field.isSynthetic) {
+              return false;
+            }
+
+            return true;
+          })
+          .map(
+            (record) => PropertyInfo(
+              record.jsonKey.name,
+              record.field.type,
+              isRequired:
+                  record.jsonKey.required || !record.field.type.isNullableType,
+              defaultValue: record.field.computeConstantValue(), // Best effort
+            ),
+          );
+
+      final schema = _generateSchemaForProperties(
+        properties,
+        typeName,
+        generatedSchemas,
+        isRoot: false,
+        seenTypes: seenTypes,
+      );
+      generatedSchemas[typeName] = schema;
+      return {r'$ref': '#/\$defs/$typeName'};
+    }
+
+    // This path shouldn't be reached for isRoot=false usually due to check
+    // above.
+    return {'type': 'object'};
+  }
+
+  Map<String, dynamic> _generateSchemaForProperties(
+    Iterable<PropertyInfo> properties,
+    String typeName,
+    Map<String, Map<String, dynamic>> generatedSchemas, {
+    required bool isRoot,
+    required Set<DartType> seenTypes,
+  }) {
+    final schemaProperties = <String, dynamic>{};
+    final required = <String>[];
+
+    for (final property in properties) {
+      final propertySchema = _getPropertySchema(
+        property.type,
+        generatedSchemas,
+        seenTypes: seenTypes,
+      );
+
+      if (property.description != null) {
+        propertySchema['description'] = property.description;
+      }
+
+      // Default value handling
+      if (property.defaultValue != null) {
+        final defaultValue = _defaultValue(
+          property.defaultValue!,
+          property.type,
+        );
+        if (defaultValue != _noMatch) {
+          propertySchema['default'] = defaultValue;
+        }
+      }
+
+      schemaProperties[property.name] = propertySchema;
+
+      if (property.isRequired) {
+        required.add(property.name);
+      }
+    }
+
+    return {
+      'type': 'object',
+      'properties': schemaProperties,
+      if (required.isNotEmpty) 'required': required,
+    };
+  }
 }
 
 Object? _defaultValue(DartObject defaultValue, DartType type) => switch (type) {
