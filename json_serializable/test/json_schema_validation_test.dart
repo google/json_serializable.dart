@@ -8,7 +8,7 @@ library;
 import 'package:analyzer/dart/element/element.dart' as analyzer;
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:json_schema/json_schema.dart' as js;
-import 'package:json_serializable/src/json_schema_generator.dart';
+import 'package:json_serializable/src/schema_helper.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen/source_gen.dart' as source_gen;
 import 'package:source_gen_test/source_gen_test.dart';
