@@ -1,3 +1,7 @@
+## 6.12.1-wip
+
+- Remove `json_schema` from `dependencies` (it is only used in tests).
+
 ## 6.12.0
 
 - Support `JsonKey` annotation on constructor parameters.
