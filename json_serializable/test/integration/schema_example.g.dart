@@ -96,9 +96,8 @@ const _$SchemaExampleJsonSchema = {
           'type': 'array',
           'items': {r'$ref': r'#/$defs/Branch'},
         },
-        'proportion': {'type': 'number'},
       },
-      'required': ['length', 'branch', 'proportion'],
+      'required': ['length', 'branch'],
     },
   },
 };

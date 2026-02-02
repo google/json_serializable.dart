@@ -5,9 +5,13 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'json_key_utils.dart';
 import 'shared_checkers.dart';
+import 'type_helpers/config_types.dart';
+import 'utils.dart';
 
 /// Generates a JSON Schema for a [ClassElement].
 Map<String, dynamic> generateJsonSchema(
@@ -147,20 +151,50 @@ final class _JsonSchemaGenerator {
 
     if (!isRoot) {
       // Create a simplified schema for nested objects
-      final properties = classElement.fields
-          .where((f) => !f.isStatic && f.isPublic)
-          .map(
-            (f) => PropertyInfo(
-              f.name!,
-              f.type,
-              isRequired: !f.type.isNullableType,
-            ), // basic guess
-          );
+      final annotation = _jsonSerializableChecker.firstAnnotationOf(
+        classElement,
+      );
+      var config = ClassConfig.defaults;
+      if (annotation != null) {
+        config = mergeConfig(
+          config,
+          ConstantReader(annotation),
+          classElement: classElement,
+        );
+      }
 
-      // Note: This ignores JsonKey configuration on nested objects. To fix this
-      // properly, we'd need access to KeyConfig for arbitrary types, which
-      // resides in json_key_utils. But we don't need to over-engineer right now
-      // (YAGNI).
+      final properties = classElement.fields
+          .map((f) => (field: f, jsonKey: jsonKeyForField(f, config)))
+          .where((record) {
+            final (:field, :jsonKey) = record;
+
+            if (field.isStatic || !field.isPublic) return false;
+
+            if (jsonKey.explicitNoToJson) {
+              return false;
+            }
+
+            // If no JsonKey on the field/getter, check validity
+            // Logic from SchemaHelper.createJsonSchema
+            // If the field is writable (has a setter), it's fine.
+            if (field.setter != null) return true;
+
+            // If NO annotation exists, we skip synthetic fields (getters).
+            if (!hasJsonKeyAnnotation(field) && field.isSynthetic) {
+              return false;
+            }
+
+            return true;
+          })
+          .map(
+            (record) => PropertyInfo(
+              record.jsonKey.name,
+              record.field.type,
+              isRequired:
+                  record.jsonKey.required || !record.field.type.isNullableType,
+              defaultValue: record.field.computeConstantValue(), // Best effort
+            ),
+          );
 
       final schema = _generateSchemaForProperties(
         properties,
@@ -259,3 +293,7 @@ class PropertyInfo {
     this.description,
   });
 }
+
+const _jsonSerializableChecker = TypeChecker.fromUrl(
+  'package:json_annotation/src/json_serializable.dart#JsonSerializable',
+);
