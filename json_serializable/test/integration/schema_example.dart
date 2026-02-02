@@ -21,6 +21,8 @@ final class SchemaExample {
 
   final Branch branch;
 
+  final ComprehensiveNested? nested;
+
   SchemaExample(
     this.requiredBranch,
     this.nullableRequiredPositional, {
@@ -29,6 +31,7 @@ final class SchemaExample {
     required this.nullableRequiredName,
     this.optionalNullableFieldWithJsonKeyDefault,
     required this.branch,
+    this.nested,
   });
 
   factory SchemaExample.fromJson(Map<String, dynamic> json) =>
@@ -63,4 +66,43 @@ final class Branch {
   double get proportion => length / branch.length;
 
   Map<String, dynamic> toJson() => _$BranchToJson(this);
+}
+
+@JsonSerializable(createJsonSchema: true)
+final class ComprehensiveNested {
+  static const staticConst = 1;
+  static int staticVar = 2;
+
+  // ignore: unused_field
+  final int _privateVar = 3;
+
+  @JsonKey(includeToJson: false)
+  int noIncludeToJson = 4;
+
+  @JsonKey(includeFromJson: false)
+  int noIncludeFromJson = 4;
+
+  /// Writable field comment
+  ///
+  /// With a second line.
+  int writableField = 5;
+
+  @JsonKey(name: 'renamed_field')
+  int renamedField = 6;
+
+  int get getterOnly => 7;
+
+  @JsonKey(includeToJson: true)
+  int get getterIncluded => 8;
+
+  @JsonKey(includeToJson: false)
+  int get getterExcluded => 9;
+
+  ComprehensiveNested();
+
+  factory ComprehensiveNested.fromJson(Map<String, dynamic> json) =>
+      _$ComprehensiveNestedFromJson(json);
+  Map<String, dynamic> toJson() => _$ComprehensiveNestedToJson(this);
+
+  static const schema = _$ComprehensiveNestedJsonSchema;
 }

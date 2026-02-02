@@ -24,6 +24,11 @@ SchemaExample _$SchemaExampleFromJson(Map<String, dynamic> json) {
               ?.toDouble() ??
           3.145,
       branch: Branch.fromJson(json['branch'] as Map<String, dynamic>),
+      nested: json['nested'] == null
+          ? null
+          : ComprehensiveNested.fromJson(
+              json['nested'] as Map<String, dynamic>,
+            ),
     )
     ..propExtraField = json['propExtraField'] as bool
     ..propExtraFieldRequired = json['propExtraFieldRequired'] as bool;
@@ -39,6 +44,7 @@ Map<String, dynamic> _$SchemaExampleToJson(SchemaExample instance) =>
       'optionalNullableFieldWithJsonKeyDefault':
           instance.optionalNullableFieldWithJsonKeyDefault,
       'branch': instance.branch,
+      'nested': instance.nested,
       'propExtraField': instance.propExtraField,
       'propExtraFieldRequired': instance.propExtraFieldRequired,
     };
@@ -68,6 +74,7 @@ const _$SchemaExampleJsonSchema = {
       'default': 3.145,
     },
     'branch': {r'$ref': r'#/$defs/Branch'},
+    'nested': {r'$ref': r'#/$defs/ComprehensiveNested'},
     'propExtraField': {
       'type': 'boolean',
       'description':
@@ -99,6 +106,21 @@ const _$SchemaExampleJsonSchema = {
       },
       'required': ['length', 'branch'],
     },
+    'ComprehensiveNested': {
+      'type': 'object',
+      'properties': {
+        'noIncludeFromJson': {'type': 'integer'},
+        'writableField': {'type': 'integer'},
+        'renamed_field': {'type': 'integer'},
+        'getterIncluded': {'type': 'integer'},
+      },
+      'required': [
+        'noIncludeFromJson',
+        'writableField',
+        'renamed_field',
+        'getterIncluded',
+      ],
+    },
   },
 };
 
@@ -112,4 +134,31 @@ Branch _$BranchFromJson(Map<String, dynamic> json) => Branch(
 Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
   'length': instance.length,
   'branch': instance.branch,
+};
+
+ComprehensiveNested _$ComprehensiveNestedFromJson(Map<String, dynamic> json) =>
+    ComprehensiveNested()
+      ..noIncludeToJson = (json['noIncludeToJson'] as num).toInt()
+      ..writableField = (json['writableField'] as num).toInt()
+      ..renamedField = (json['renamed_field'] as num).toInt();
+
+Map<String, dynamic> _$ComprehensiveNestedToJson(
+  ComprehensiveNested instance,
+) => <String, dynamic>{
+  'writableField': instance.writableField,
+  'renamed_field': instance.renamedField,
+  'getterIncluded': instance.getterIncluded,
+};
+
+const _$ComprehensiveNestedJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'noIncludeFromJson': {'type': 'integer'},
+    'writableField': {
+      'type': 'integer',
+      'description': 'Writable field comment\n\nWith a second line.',
+    },
+    'renamed_field': {'type': 'integer'},
+  },
 };
