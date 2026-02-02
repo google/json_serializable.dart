@@ -2,11 +2,13 @@
 
 - Fix schema generation for many different types of fields. 
   ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
+- Remove `json_schema` from `dependencies` (it is only used in tests).
 
 ## 6.12.0
 
 - Support `JsonKey` annotation on constructor parameters.
 - Add support for `JsonSerializable(createJsonSchema: true)`.
+  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
 
 ## 6.11.4
 
