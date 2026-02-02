@@ -131,11 +131,9 @@ class JsonSerializable {
 
   /// Whether the generator should use UTC time for [DateTime] fields.
   ///
-  /// If `true` (the default), all [DateTime] fields are written to JSON in
-  /// UTC.
-  ///
-  /// If a field is annotated with `JsonKey` with a non-`null` value for
-  /// `dateTimeUtc`, that value takes precedent.
+  /// If `true`, all [DateTime] fields are written to JSON in UTC using
+  /// `DateTime.toUtc().toIso8601String()`.
+  /// If `false` (the default), `DateTime.toIso8601String()` is used.
   final bool? dateTimeUtc;
 
   /// If `false` (the default), then the generated `FromJson` function will
