@@ -1,3 +1,8 @@
+## 6.13.0-wip
+
+- Support `JsonSerializable.dateTimeUtc` configuration option. 
+  ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
+
 ## 6.12.0
 
 - Support `JsonKey` annotation on constructor parameters.

@@ -18,6 +18,7 @@ class ConfigurationImplicitDefaults {
   createFieldMap: false,
   createJsonKeys: false,
   createPerFieldToJson: false,
+  dateTimeUtc: false,
   disallowUnrecognizedKeys: false,
   explicitToJson: false,
   fieldRename: FieldRename.none,

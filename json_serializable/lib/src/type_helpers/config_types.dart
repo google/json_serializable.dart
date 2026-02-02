@@ -61,6 +61,7 @@ class ClassConfig {
   final bool createJsonKeys;
   final bool createPerFieldToJson;
   final bool createJsonSchema;
+  final bool dateTimeUtc;
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
@@ -80,6 +81,7 @@ class ClassConfig {
     required this.createJsonKeys,
     required this.createPerFieldToJson,
     required this.createJsonSchema,
+    required this.dateTimeUtc,
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
@@ -108,6 +110,7 @@ class ClassConfig {
         createFactory:
             config.createFactory ?? ClassConfig.defaults.createFactory,
         createToJson: config.createToJson ?? ClassConfig.defaults.createToJson,
+        dateTimeUtc: config.dateTimeUtc ?? ClassConfig.defaults.dateTimeUtc,
         ignoreUnannotated:
             config.ignoreUnannotated ?? ClassConfig.defaults.ignoreUnannotated,
         explicitToJson:
@@ -135,6 +138,7 @@ class ClassConfig {
     createJsonKeys: false,
     createPerFieldToJson: false,
     createJsonSchema: false,
+    dateTimeUtc: false,
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
@@ -159,6 +163,7 @@ class ClassConfig {
     genericArgumentFactories: genericArgumentFactories,
     fieldRename: fieldRename,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+    dateTimeUtc: dateTimeUtc,
     // TODO typeConverters = []
   );
 }

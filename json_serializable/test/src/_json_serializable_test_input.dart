@@ -610,3 +610,19 @@ class JsonSchemaTestClass {
 
   JsonSchemaTestClass(this.name, this.age);
 }
+
+@ShouldGenerate(r'''
+DateTimeUtcTestClass _$DateTimeUtcTestClassFromJson(
+  Map<String, dynamic> json,
+) => DateTimeUtcTestClass(DateTime.parse(json['date'] as String));
+
+Map<String, dynamic> _$DateTimeUtcTestClassToJson(
+  DateTimeUtcTestClass instance,
+) => <String, dynamic>{'date': instance.date.toUtc().toIso8601String()};
+''')
+@JsonSerializable(dateTimeUtc: true)
+class DateTimeUtcTestClass {
+  final DateTime date;
+
+  DateTimeUtcTestClass(this.date);
+}

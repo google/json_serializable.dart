@@ -15,6 +15,12 @@ final dateTimeString = ToFromStringHelper(
   'DateTime',
 );
 
+final dateTimeUtcString = ToFromStringHelper(
+  'DateTime.parse',
+  'toUtc().toIso8601String()',
+  'DateTime',
+);
+
 final uriString = ToFromStringHelper('Uri.parse', 'toString()', 'Uri');
 
 /// Package-internal helper that unifies implementations of [Type]s that convert
