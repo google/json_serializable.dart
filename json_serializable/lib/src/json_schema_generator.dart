@@ -151,8 +151,9 @@ final class _JsonSchemaGenerator {
 
     if (!isRoot) {
       // Create a simplified schema for nested objects
-      final annotation = _jsonSerializableChecker.firstAnnotationOf(
+      final annotation = jsonSerializableChecker.firstAnnotationOfExact(
         classElement,
+        throwOnUnresolved: false,
       );
       var config = ClassConfig.defaults;
       if (annotation != null) {
@@ -293,7 +294,3 @@ class PropertyInfo {
     this.description,
   });
 }
-
-const _jsonSerializableChecker = TypeChecker.fromUrl(
-  'package:json_annotation/src/json_serializable.dart#JsonSerializable',
-);

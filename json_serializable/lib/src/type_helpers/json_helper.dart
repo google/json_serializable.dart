@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -278,18 +277,18 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   if (source.isEnum) {
     return null;
   }
-  final annotations = const TypeChecker.typeNamed(
-    JsonSerializable,
-    inPackage: 'json_annotation',
-  ).annotationsOfExact(source.element, throwOnUnresolved: false).toList();
+  final annotation = jsonSerializableChecker.firstAnnotationOfExact(
+    source.element,
+    throwOnUnresolved: false,
+  );
 
-  if (annotations.isEmpty) {
+  if (annotation == null) {
     return null;
   }
 
   return mergeConfig(
     config,
-    ConstantReader(annotations.single),
+    ConstantReader(annotation),
     classElement: source.element as ClassElement,
   );
 }
