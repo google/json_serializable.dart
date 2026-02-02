@@ -23,6 +23,7 @@ SchemaExample _$SchemaExampleFromJson(Map<String, dynamic> json) {
           (json['optionalNullableFieldWithJsonKeyDefault'] as num?)
               ?.toDouble() ??
           3.145,
+      branch: Branch.fromJson(json['branch'] as Map<String, dynamic>),
     )
     ..propExtraField = json['propExtraField'] as bool
     ..propExtraFieldRequired = json['propExtraFieldRequired'] as bool;
@@ -37,6 +38,7 @@ Map<String, dynamic> _$SchemaExampleToJson(SchemaExample instance) =>
       'requiredBranch': instance.requiredBranch,
       'optionalNullableFieldWithJsonKeyDefault':
           instance.optionalNullableFieldWithJsonKeyDefault,
+      'branch': instance.branch,
       'propExtraField': instance.propExtraField,
       'propExtraFieldRequired': instance.propExtraFieldRequired,
     };
@@ -65,6 +67,7 @@ const _$SchemaExampleJsonSchema = {
       'type': 'number',
       'default': 3.145,
     },
+    'branch': {r'$ref': r'#/$defs/Branch'},
     'propExtraField': {
       'type': 'boolean',
       'description':
@@ -81,6 +84,33 @@ const _$SchemaExampleJsonSchema = {
     'nullableRequiredPositional',
     'nullableRequiredName',
     'requiredBranch',
+    'branch',
     'propExtraFieldRequired',
   ],
+  r'$defs': {
+    'Branch': {
+      'type': 'object',
+      'properties': {
+        'length': {'type': 'number'},
+        'branch': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/Branch'},
+        },
+        'proportion': {'type': 'number'},
+      },
+      'required': ['length', 'branch', 'proportion'],
+    },
+  },
+};
+
+Branch _$BranchFromJson(Map<String, dynamic> json) => Branch(
+  length: (json['length'] as num).toDouble(),
+  branch: (json['branch'] as List<dynamic>)
+      .map((e) => Branch.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$BranchToJson(Branch instance) => <String, dynamic>{
+  'length': instance.length,
+  'branch': instance.branch,
 };

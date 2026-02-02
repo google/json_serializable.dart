@@ -19,6 +19,8 @@ final class SchemaExample {
   @JsonKey(defaultValue: 3.145)
   final double? optionalNullableFieldWithJsonKeyDefault;
 
+  final Branch branch;
+
   SchemaExample(
     this.requiredBranch,
     this.nullableRequiredPositional, {
@@ -26,6 +28,7 @@ final class SchemaExample {
     this.nullableNotRequired = 3.145,
     required this.nullableRequiredName,
     this.optionalNullableFieldWithJsonKeyDefault,
+    required this.branch,
   });
 
   factory SchemaExample.fromJson(Map<String, dynamic> json) =>
@@ -44,4 +47,20 @@ final class SchemaExample {
   bool propExtraFieldRequired = false;
 
   static const schema = _$SchemaExampleJsonSchema;
+}
+
+@JsonSerializable()
+final class Branch {
+  final double length;
+  final List<Branch> branch;
+
+  const Branch({required this.length, required this.branch});
+
+  factory Branch.fromJson(Map<String, dynamic> json) => _$BranchFromJson(json);
+
+  // This getter should NOT be in the schema, especially as required
+  @JsonKey(includeFromJson: false, includeToJson: false, required: false)
+  double get proportion => length / branch.length;
+
+  Map<String, dynamic> toJson() => _$BranchToJson(this);
 }
