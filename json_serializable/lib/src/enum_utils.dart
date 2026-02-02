@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -102,6 +103,12 @@ Object? _generateEntry({
   if (annotation == null) {
     final valueField = jsonEnum.valueField;
     if (valueField != null) {
+      if (jsonEnum.fieldRename != FieldRename.none) {
+        log.warning(
+          '`JsonEnum.fieldRename` is ignored when `valueField` is set. '
+          'Enum values are derived from the `$valueField` field.',
+        );
+      }
       final fieldElementType = field.type.element as EnumElement;
 
       final e = fieldElementType.getField(valueField);
