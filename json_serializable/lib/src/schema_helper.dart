@@ -26,6 +26,7 @@ mixin SchemaHelper implements HelperCore {
       element.displayName,
       generatedSchemas,
       seenTypes: {element.thisType},
+      rootType: element.thisType,
     );
 
     final schema = {
@@ -142,6 +143,7 @@ Map<String, dynamic> _generateSchemaForProperties(
   String typeName,
   Map<String, Map<String, dynamic>> generatedSchemas, {
   required Set<DartType> seenTypes,
+  required DartType rootType,
 }) {
   final schemaProperties = <String, dynamic>{};
   final required = <String>[];
@@ -153,6 +155,7 @@ Map<String, dynamic> _generateSchemaForProperties(
       property.type,
       generatedSchemas,
       seenTypes: seenTypes,
+      rootType: rootType,
     );
 
     if (property.description != null) {
@@ -185,15 +188,23 @@ Map<String, dynamic> _getPropertySchema(
   DartType type,
   Map<String, Map<String, dynamic>> generatedSchemas, {
   Set<DartType> seenTypes = const {},
+  required DartType rootType,
 }) {
   if (seenTypes.contains(type)) {
+    if (type == rootType) {
+      return {r'$ref': '#'};
+    }
     final element = type.element;
     if (element != null) {
       return {r'$ref': '#/\$defs/${element.displayName}'};
     }
   }
 
-  final newSeenTypes = {...seenTypes, type};
+  final isCollection =
+      coreIterableTypeChecker.isAssignableFromType(type) ||
+      coreMapTypeChecker.isAssignableFromType(type);
+
+  final newSeenTypes = isCollection ? seenTypes : {...seenTypes, type};
 
   if (coreStringTypeChecker.isExactlyType(type)) {
     return {'type': 'string'};
@@ -221,6 +232,7 @@ Map<String, dynamic> _getPropertySchema(
         coreIterableGenericType(type),
         generatedSchemas,
         seenTypes: newSeenTypes,
+        rootType: rootType,
       ),
     };
   }
@@ -234,12 +246,18 @@ Map<String, dynamic> _getPropertySchema(
         typeArgs![1],
         generatedSchemas,
         seenTypes: newSeenTypes,
+        rootType: rootType,
       ),
     };
   }
 
   if (type is InterfaceType && !type.isDartCoreObject) {
-    return _generateComplexTypeSchema(type, generatedSchemas, newSeenTypes);
+    return _generateComplexTypeSchema(
+      type,
+      generatedSchemas,
+      newSeenTypes,
+      rootType,
+    );
   }
 
   return {'type': 'object'};
@@ -249,6 +267,7 @@ Map<String, dynamic> _generateComplexTypeSchema(
   InterfaceType type,
   Map<String, Map<String, dynamic>> generatedSchemas,
   Set<DartType> seenTypes,
+  DartType rootType,
 ) {
   final element = type.element;
   final typeName = element.displayName;
@@ -296,6 +315,7 @@ Map<String, dynamic> _generateComplexTypeSchema(
     typeName,
     generatedSchemas,
     seenTypes: seenTypes,
+    rootType: rootType,
   );
   generatedSchemas[typeName] = schema;
   return {r'$ref': '#/\$defs/$typeName'};

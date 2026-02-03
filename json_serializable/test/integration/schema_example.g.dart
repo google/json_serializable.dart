@@ -66,7 +66,7 @@ const _$SchemaExampleJsonSchema = {
     'nullableRequiredName': {'type': 'number'},
     'requiredBranch': {
       'type': 'array',
-      'items': {r'$ref': r'#/$defs/SchemaExample'},
+      'items': {r'$ref': '#'},
       'description': 'Required named constructor parameter',
     },
     'optionalNullableFieldWithJsonKeyDefault': {

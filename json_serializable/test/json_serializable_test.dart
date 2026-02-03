@@ -174,4 +174,6 @@ const _expectedSchemaTests = {
   'JsonSchemaNestedTest',
   'JsonSchemaNonCollectionTest',
   'JsonSchemaGetterTest',
+  'JsonSchemaRecursiveListTest',
+  'JsonSchemaRecursiveListIssue',
 };

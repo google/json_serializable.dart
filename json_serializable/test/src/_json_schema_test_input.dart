@@ -224,3 +224,69 @@ class JsonSchemaGetterTest {
 
   JsonSchemaGetterTest(this.name);
 }
+
+@ShouldGenerate(r'''
+const _$JsonSchemaRecursiveListTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'children': {
+      'type': 'array',
+      'items': {r'$ref': '#'},
+    },
+  },
+  'required': ['children'],
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaRecursiveListTest {
+  final List<JsonSchemaRecursiveListTest> children;
+
+  JsonSchemaRecursiveListTest(this.children);
+}
+
+@ShouldGenerate(r'''
+const _$JsonSchemaRecursiveListIssueJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'alternates': {
+      'type': 'array',
+      'items': {r'$ref': r'#/$defs/JsonSchemaRecursiveListIssueA'},
+    },
+  },
+  'required': ['alternates'],
+  r'$defs': {
+    'JsonSchemaRecursiveListIssueA': {
+      'type': 'object',
+      'properties': {
+        'children': {
+          'type': 'array',
+          'items': {r'$ref': r'#/$defs/JsonSchemaRecursiveListIssueA'},
+        },
+      },
+      'required': ['children'],
+    },
+  },
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaRecursiveListIssue {
+  final List<JsonSchemaRecursiveListIssueA> alternates;
+
+  JsonSchemaRecursiveListIssue(this.alternates);
+}
+
+class JsonSchemaRecursiveListIssueA {
+  final List<JsonSchemaRecursiveListIssueA> children;
+
+  JsonSchemaRecursiveListIssueA(this.children);
+}
