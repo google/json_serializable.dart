@@ -8,6 +8,7 @@ import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
 import 'enum_helpers.dart';
 import 'json_converter.dart';
+import 'json_enum.dart' show JsonEnum;
 import 'json_key.dart';
 
 part 'json_serializable.g.dart';
