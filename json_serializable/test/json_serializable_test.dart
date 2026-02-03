@@ -163,6 +163,7 @@ const _expectedAnnotatedTests = {
   'annotatedMethod',
   'theAnswer',
   'JsonSchemaTestClass',
+  'DateTimeUtcTestClass',
 };
 
 const _expectedSchemaTests = {
