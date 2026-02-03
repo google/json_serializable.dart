@@ -13,6 +13,7 @@ import 'json_enum_example.dart';
 import 'json_keys_example.dart' as js_keys;
 import 'json_test_common.dart' show Category, Platform, StatusCode;
 import 'json_test_example.dart';
+import 'schema_example.dart';
 
 Matcher _throwsArgumentError(Object matcher) =>
     throwsA(isArgumentError.having((e) => e.message, 'message', matcher));
@@ -481,5 +482,14 @@ void main() {
 
   test('ModelJsonKeys', () {
     expect(js_keys.keys, {'first-name', 'LAST_NAME'});
+  });
+
+  test('nested schema matches standalone schema', () {
+    final definitions = SchemaExample.schema[r'$defs'] as Map<String, dynamic>;
+    final nestedSchemaFromExample = definitions['ComprehensiveNested'];
+    final standaloneSchema = Map<String, dynamic>.from(
+      ComprehensiveNested.schema,
+    )..remove(r'$schema');
+    expect(nestedSchemaFromExample, standaloneSchema);
   });
 }

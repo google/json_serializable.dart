@@ -110,16 +110,14 @@ const _$SchemaExampleJsonSchema = {
       'type': 'object',
       'properties': {
         'noIncludeFromJson': {'type': 'integer'},
-        'writableField': {'type': 'integer'},
+        'writableField': {
+          'type': 'integer',
+          'description': 'Writable field comment\n\nWith a second line.',
+        },
         'renamed_field': {'type': 'integer'},
         'getterIncluded': {'type': 'integer'},
       },
-      'required': [
-        'noIncludeFromJson',
-        'writableField',
-        'renamed_field',
-        'getterIncluded',
-      ],
+      'required': ['getterIncluded'],
     },
   },
 };
@@ -160,5 +158,7 @@ const _$ComprehensiveNestedJsonSchema = {
       'description': 'Writable field comment\n\nWith a second line.',
     },
     'renamed_field': {'type': 'integer'},
+    'getterIncluded': {'type': 'integer'},
   },
+  'required': ['getterIncluded'],
 };
