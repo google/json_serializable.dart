@@ -78,6 +78,13 @@ Map<FieldElement, Object?>? _enumMap(
     return null;
   }
 
+  if (jsonEnum.valueField != null && jsonEnum.fieldRename != FieldRename.none) {
+    log.warning(
+      '`JsonEnum.fieldRename` is ignored when `valueField` is set. '
+      'Enum values are derived from the `${jsonEnum.valueField}` field.',
+    );
+  }
+
   return {
     for (var field in enumFields)
       field: _generateEntry(
@@ -103,12 +110,6 @@ Object? _generateEntry({
   if (annotation == null) {
     final valueField = jsonEnum.valueField;
     if (valueField != null) {
-      if (jsonEnum.fieldRename != FieldRename.none) {
-        log.warning(
-          '`JsonEnum.fieldRename` is ignored when `valueField` is set. '
-          'Enum values are derived from the `$valueField` field.',
-        );
-      }
       final fieldElementType = field.type.element as EnumElement;
 
       final e = fieldElementType.getField(valueField);

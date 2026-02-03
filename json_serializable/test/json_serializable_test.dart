@@ -5,6 +5,7 @@
 @TestOn('vm')
 library;
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/settings.dart';
 import 'package:path/path.dart' as p;
@@ -50,6 +51,36 @@ Future<void> main() async {
       'EnumValueWeirdField',
       'UnsupportedClass',
     },
+  );
+
+  // We have two files added in this PR: _json_enum_default_rename_test_input.dart
+  // and _json_enum_valuefield_fieldrename_warning_test_input.dart
+  // We need to test both of these files.
+  final jsonEnumDefaultRenameReader = await initializeLibraryReaderForDirectory(
+    p.join('test', 'src'),
+    '_json_enum_default_rename_test_input.dart',
+  );
+
+  testAnnotatedElements(
+    jsonEnumDefaultRenameReader,
+    JsonEnumGenerator(Settings()),
+    expectedAnnotatedTests: {'EnumForDefaultRename', 'EnumWithKebabOverride'},
+  );
+
+  final jsonEnumValuefieldFieldrenameWarningReader =
+      await initializeLibraryReaderForDirectory(
+        p.join('test', 'src'),
+        '_json_enum_valuefield_fieldrename_warning_test_input.dart',
+      );
+
+  testAnnotatedElements(
+    jsonEnumValuefieldFieldrenameWarningReader,
+    JsonEnumGenerator(
+      Settings(
+        config: const JsonSerializable(enumFieldRename: FieldRename.snake),
+      ),
+    ),
+    expectedAnnotatedTests: {'EnumWithValueFieldAndFieldRename'},
   );
 }
 
