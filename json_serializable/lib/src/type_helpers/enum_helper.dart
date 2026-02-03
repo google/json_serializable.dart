@@ -34,9 +34,10 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     if (targetType.isNullableType ||
         enumFieldWithNullInEncodeMap(
-          targetType,
-          defaultEnumFieldRename: context.config.enumFieldRename,
-        ) == true) {
+              targetType,
+              defaultEnumFieldRename: context.config.enumFieldRename,
+            ) ==
+            true) {
       return '${constMapName(targetType)}[$expression]';
     } else {
       return '${constMapName(targetType)}[$expression]!';
