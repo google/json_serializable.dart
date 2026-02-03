@@ -176,6 +176,7 @@ targets:
           create_json_schema: false
           create_per_field_to_json: false
           create_to_json: true
+          date_time_utc: false
           disallow_unrecognized_keys: false
           explicit_to_json: false
           enum_field_rename: none

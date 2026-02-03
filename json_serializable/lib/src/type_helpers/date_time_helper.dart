@@ -9,15 +9,15 @@ import '../default_container.dart';
 import '../type_helper.dart';
 import 'to_from_string.dart';
 
-class DateTimeHelper extends TypeHelper {
+class DateTimeHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const DateTimeHelper();
 
   @override
   String? serialize(
     DartType targetType,
     String expression,
-    TypeHelperContext context,
-  ) => dateTimeString.serialize(
+    TypeHelperContextWithConfig context,
+  ) => context._dateTimeHelper.serialize(
     targetType,
     expression,
     targetType.isNullableType,
@@ -35,4 +35,9 @@ class DateTimeHelper extends TypeHelper {
     targetType.isNullableType,
     false,
   );
+}
+
+extension on TypeHelperContextWithConfig {
+  ToFromStringHelper get _dateTimeHelper =>
+      config.dateTimeUtc ? dateTimeUtcString : dateTimeString;
 }

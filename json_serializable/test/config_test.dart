@@ -179,6 +179,7 @@ const _invalidConfig = {
   'create_json_schema': 42,
   'create_per_field_to_json': 42,
   'create_to_json': 42,
+  'date_time_utc': 42,
   'disallow_unrecognized_keys': 42,
   'enum_field_rename': 42,
   'explicit_to_json': 42,

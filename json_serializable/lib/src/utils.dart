@@ -66,6 +66,7 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
   createJsonKeys: reader.read('createJsonKeys').literalValue as bool?,
   createPerFieldToJson:
       reader.read('createPerFieldToJson').literalValue as bool?,
+  dateTimeUtc: reader.read('dateTimeUtc').literalValue as bool?,
   disallowUnrecognizedKeys:
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
@@ -131,6 +132,7 @@ ClassConfig mergeConfig(
     ctorParams: ctorParams,
     converters: converters.isNull ? const [] : converters.listValue,
     createJsonSchema: annotation.createJsonSchema ?? config.createJsonSchema,
+    dateTimeUtc: annotation.dateTimeUtc ?? config.dateTimeUtc,
   );
 }
 

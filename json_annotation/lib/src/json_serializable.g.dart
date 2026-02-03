@@ -24,6 +24,7 @@ JsonSerializable _$JsonSerializableFromJson(
         'create_json_schema',
         'create_per_field_to_json',
         'create_to_json',
+        'date_time_utc',
         'disallow_unrecognized_keys',
         'enum_field_rename',
         'explicit_to_json',
@@ -71,6 +72,7 @@ JsonSerializable _$JsonSerializableFromJson(
         'create_per_field_to_json',
         (v) => v as bool?,
       ),
+      dateTimeUtc: $checkedConvert('date_time_utc', (v) => v as bool?),
     );
     return val;
   },
@@ -89,6 +91,7 @@ JsonSerializable _$JsonSerializableFromJson(
     'includeIfNull': 'include_if_null',
     'genericArgumentFactories': 'generic_argument_factories',
     'createPerFieldToJson': 'create_per_field_to_json',
+    'dateTimeUtc': 'date_time_utc',
   },
 );
 
@@ -103,6 +106,7 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
       'create_json_schema': instance.createJsonSchema,
       'create_per_field_to_json': instance.createPerFieldToJson,
       'create_to_json': instance.createToJson,
+      'date_time_utc': instance.dateTimeUtc,
       'disallow_unrecognized_keys': instance.disallowUnrecognizedKeys,
       'enum_field_rename': _$FieldRenameEnumMap[instance.enumFieldRename],
       'explicit_to_json': instance.explicitToJson,

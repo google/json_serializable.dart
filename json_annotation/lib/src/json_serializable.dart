@@ -130,6 +130,13 @@ class JsonSerializable {
   /// ```
   final bool? createToJson;
 
+  /// Whether the generator should use UTC time for [DateTime] fields.
+  ///
+  /// If `true`, all [DateTime] fields are written to JSON in UTC using
+  /// `DateTime.toUtc().toIso8601String()`.
+  /// If `false` (the default), `DateTime.toIso8601String()` is used.
+  final bool? dateTimeUtc;
+
   /// If `false` (the default), then the generated `FromJson` function will
   /// ignore unrecognized keys in the provided JSON [Map].
   ///
@@ -291,6 +298,7 @@ class JsonSerializable {
     this.converters,
     this.genericArgumentFactories,
     this.createPerFieldToJson,
+    this.dateTimeUtc,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
