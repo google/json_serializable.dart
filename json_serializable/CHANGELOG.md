@@ -1,5 +1,7 @@
-## 6.12.1-wip
+## 6.13.0-wip
 
+- Support `JsonSerializable.dateTimeUtc` configuration option. 
+  ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
 - Remove `json_schema` from `dependencies` (it is only used in tests).
 
 ## 6.12.0
