@@ -25,7 +25,6 @@ mixin SchemaHelper implements HelperCore {
       config,
       element.displayName,
       generatedSchemas,
-      isRoot: true,
       seenTypes: {element.thisType},
     );
 
@@ -142,7 +141,6 @@ Map<String, dynamic> _generateSchemaForProperties(
   ClassConfig config,
   String typeName,
   Map<String, Map<String, dynamic>> generatedSchemas, {
-  required bool isRoot,
   required Set<DartType> seenTypes,
 }) {
   final schemaProperties = <String, dynamic>{};
@@ -186,10 +184,9 @@ Map<String, dynamic> _generateSchemaForProperties(
 Map<String, dynamic> _getPropertySchema(
   DartType type,
   Map<String, Map<String, dynamic>> generatedSchemas, {
-  bool isRoot = false,
   Set<DartType> seenTypes = const {},
 }) {
-  if (!isRoot && seenTypes.contains(type)) {
+  if (seenTypes.contains(type)) {
     final element = type.element;
     if (element != null) {
       return {r'$ref': '#/\$defs/${element.displayName}'};
@@ -242,12 +239,7 @@ Map<String, dynamic> _getPropertySchema(
   }
 
   if (type is InterfaceType && !type.isDartCoreObject) {
-    return _generateComplexTypeSchema(
-      type,
-      generatedSchemas,
-      isRoot,
-      newSeenTypes,
-    );
+    return _generateComplexTypeSchema(type, generatedSchemas, newSeenTypes);
   }
 
   return {'type': 'object'};
@@ -256,13 +248,12 @@ Map<String, dynamic> _getPropertySchema(
 Map<String, dynamic> _generateComplexTypeSchema(
   InterfaceType type,
   Map<String, Map<String, dynamic>> generatedSchemas,
-  bool isRoot,
   Set<DartType> seenTypes,
 ) {
   final element = type.element;
   final typeName = element.displayName;
 
-  if (!isRoot && generatedSchemas.containsKey(typeName)) {
+  if (generatedSchemas.containsKey(typeName)) {
     return {r'$ref': '#/\$defs/$typeName'};
   }
 
@@ -271,58 +262,53 @@ Map<String, dynamic> _generateComplexTypeSchema(
     return {'type': 'object'};
   }
 
-  if (!isRoot) {
-    // Create a simplified schema for nested objects
-    final annotation = jsonSerializableChecker.firstAnnotationOfExact(
-      classElement,
-      throwOnUnresolved: false,
-    );
-    var config = ClassConfig.defaults;
-    if (annotation != null) {
-      config = mergeConfig(
-        config,
-        ConstantReader(annotation),
-        classElement: classElement,
-      );
-    } else {
-      // Try to find default constructor parameters even if not annotated
-      final ctor = classElement.unnamedConstructor;
-      if (ctor != null) {
-        // Create a copy of defaults with ctorParams
-        config = ClassConfig(
-          anyMap: config.anyMap,
-          checked: config.checked,
-          constructor: config.constructor,
-          createFactory: config.createFactory,
-          createToJson: config.createToJson,
-          createFieldMap: config.createFieldMap,
-          createJsonKeys: config.createJsonKeys,
-          createPerFieldToJson: config.createPerFieldToJson,
-          createJsonSchema: config.createJsonSchema,
-          disallowUnrecognizedKeys: config.disallowUnrecognizedKeys,
-          explicitToJson: config.explicitToJson,
-          fieldRename: config.fieldRename,
-          genericArgumentFactories: config.genericArgumentFactories,
-          ignoreUnannotated: config.ignoreUnannotated,
-          includeIfNull: config.includeIfNull,
-          ctorParams: [...ctor.formalParameters],
-        );
-      }
-    }
-
-    final schema = _generateSchemaForProperties(
-      classElement,
+  // Create a simplified schema for nested objects
+  final annotation = jsonSerializableChecker.firstAnnotationOfExact(
+    classElement,
+    throwOnUnresolved: false,
+  );
+  var config = ClassConfig.defaults;
+  if (annotation != null) {
+    config = mergeConfig(
       config,
-      typeName,
-      generatedSchemas,
-      isRoot: false,
-      seenTypes: seenTypes,
+      ConstantReader(annotation),
+      classElement: classElement,
     );
-    generatedSchemas[typeName] = schema;
-    return {r'$ref': '#/\$defs/$typeName'};
+  } else {
+    // Try to find default constructor parameters even if not annotated
+    final ctor = classElement.unnamedConstructor;
+    if (ctor != null) {
+      // Create a copy of defaults with ctorParams
+      config = ClassConfig(
+        anyMap: config.anyMap,
+        checked: config.checked,
+        constructor: config.constructor,
+        createFactory: config.createFactory,
+        createToJson: config.createToJson,
+        createFieldMap: config.createFieldMap,
+        createJsonKeys: config.createJsonKeys,
+        createPerFieldToJson: config.createPerFieldToJson,
+        createJsonSchema: config.createJsonSchema,
+        disallowUnrecognizedKeys: config.disallowUnrecognizedKeys,
+        explicitToJson: config.explicitToJson,
+        fieldRename: config.fieldRename,
+        genericArgumentFactories: config.genericArgumentFactories,
+        ignoreUnannotated: config.ignoreUnannotated,
+        includeIfNull: config.includeIfNull,
+        ctorParams: [...ctor.formalParameters],
+      );
+    }
   }
 
-  return {'type': 'object'};
+  final schema = _generateSchemaForProperties(
+    classElement,
+    config,
+    typeName,
+    generatedSchemas,
+    seenTypes: seenTypes,
+  );
+  generatedSchemas[typeName] = schema;
+  return {r'$ref': '#/\$defs/$typeName'};
 }
 
 Object? _defaultValue(DartObject defaultValue, DartType type) => switch (type) {
