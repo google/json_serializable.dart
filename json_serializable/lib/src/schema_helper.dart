@@ -267,6 +267,11 @@ Map<String, dynamic> _generateComplexTypeSchema(
     classElement,
     throwOnUnresolved: false,
   );
+
+  // TODO(kevmoo): make this use the generator settings
+  // - need to make all of the functions "instance"
+  // - need to expose the config via `HelperCore`
+  // - test the generator with a custom, global config!
   var config = ClassConfig.defaults;
   if (annotation != null) {
     config = mergeConfig(
@@ -275,28 +280,13 @@ Map<String, dynamic> _generateComplexTypeSchema(
       classElement: classElement,
     );
   } else {
+    // TOOD(kevmoo): test for nested types that are NOT annotated!
+
     // Try to find default constructor parameters even if not annotated
     final ctor = classElement.unnamedConstructor;
     if (ctor != null) {
       // Create a copy of defaults with ctorParams
-      config = ClassConfig(
-        anyMap: config.anyMap,
-        checked: config.checked,
-        constructor: config.constructor,
-        createFactory: config.createFactory,
-        createToJson: config.createToJson,
-        createFieldMap: config.createFieldMap,
-        createJsonKeys: config.createJsonKeys,
-        createPerFieldToJson: config.createPerFieldToJson,
-        createJsonSchema: config.createJsonSchema,
-        disallowUnrecognizedKeys: config.disallowUnrecognizedKeys,
-        explicitToJson: config.explicitToJson,
-        fieldRename: config.fieldRename,
-        genericArgumentFactories: config.genericArgumentFactories,
-        ignoreUnannotated: config.ignoreUnannotated,
-        includeIfNull: config.includeIfNull,
-        ctorParams: [...ctor.formalParameters],
-      );
+      config = config.copyWith(ctorParams: [...ctor.formalParameters]);
     }
   }
 
