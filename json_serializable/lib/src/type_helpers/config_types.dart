@@ -178,6 +178,7 @@ class ClassConfig {
         createJsonKeys: createJsonKeys,
         createPerFieldToJson: createPerFieldToJson,
         createJsonSchema: createJsonSchema,
+        dateTimeUtc: dateTimeUtc,
         disallowUnrecognizedKeys: disallowUnrecognizedKeys,
         explicitToJson: explicitToJson,
         fieldRename: fieldRename,
