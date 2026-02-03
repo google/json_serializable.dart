@@ -2,11 +2,13 @@
 
 - Support `JsonSerializable.dateTimeUtc` configuration option. 
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
+- Remove `json_schema` from `dependencies` (it is only used in tests).
 
 ## 6.12.0
 
 - Support `JsonKey` annotation on constructor parameters.
 - Add support for `JsonSerializable(createJsonSchema: true)`.
+  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
 
 ## 6.11.4
 
