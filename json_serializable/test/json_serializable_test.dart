@@ -38,7 +38,7 @@ Future<void> main() async {
 
   final jsonEnumTestReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
-    '_json_enum_test_input.dart',
+    '_enum_default_test_input.dart',
   );
 
   testAnnotatedElements(
@@ -55,7 +55,7 @@ Future<void> main() async {
 
   final jsonEnumDefaultRenameReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
-    '_json_enum_default_rename_test_input.dart',
+    '_enum_rename_test_input.dart',
   );
 
   testAnnotatedElements(
@@ -67,7 +67,7 @@ Future<void> main() async {
   final jsonEnumValuefieldFieldrenameWarningReader =
       await initializeLibraryReaderForDirectory(
         p.join('test', 'src'),
-        '_json_enum_global_snake_rename_test_input.dart',
+        '_enum_snake_test_input.dart',
       );
 
   testAnnotatedElements(
@@ -86,7 +86,7 @@ Future<void> main() async {
   final jsonSerializableEnumConfigTestReader =
       await initializeLibraryReaderForDirectory(
         p.join('test', 'src'),
-        '_json_serializable_enum_config_test_input.dart',
+        '_enum_json_serializable_snake_test_input.dart',
       );
 
   testAnnotatedElements(
