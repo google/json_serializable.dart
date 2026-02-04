@@ -1,6 +1,7 @@
 ## 4.11.0-wip
-
-- Add `JsonSerializable.dateTimeUtc` configuration option. 
+- Add `JsonSerializable.enumFieldRename` configuration option.
+  ([#1556](https://github.com/google/json_serializable.dart/pull/1556))
+- Add `JsonSerializable.dateTimeUtc` configuration option.
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
 
 ## 4.10.0
