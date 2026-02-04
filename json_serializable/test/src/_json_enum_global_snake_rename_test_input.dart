@@ -33,7 +33,6 @@ enum EnumWithValueFieldAndFieldRename {
   final int code;
 }
 
-// NOTE the enum names are using `snake_case` because of global settings!
 @ShouldGenerate(r'''
 const _$EnumWithJsonConfigThatSetsTheOutputEnumMap = {
   EnumWithJsonConfigThatSetsTheOutput.aFunkyName: 'a_funky_name',

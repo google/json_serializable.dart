@@ -53,9 +53,6 @@ Future<void> main() async {
     },
   );
 
-  // We have two files added in this PR: _json_enum_default_rename_test_input.dart
-  // and _json_enum_valuefield_fieldrename_warning_test_input.dart
-  // We need to test both of these files.
   final jsonEnumDefaultRenameReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
     '_json_enum_default_rename_test_input.dart',
@@ -70,7 +67,7 @@ Future<void> main() async {
   final jsonEnumValuefieldFieldrenameWarningReader =
       await initializeLibraryReaderForDirectory(
         p.join('test', 'src'),
-        '_json_enum_valuefield_fieldrename_warning_test_input.dart',
+        '_json_enum_global_snake_rename_test_input.dart',
       );
 
   testAnnotatedElements(
@@ -80,7 +77,24 @@ Future<void> main() async {
         config: const JsonSerializable(enumFieldRename: FieldRename.snake),
       ),
     ),
-    expectedAnnotatedTests: {'EnumWithValueFieldAndFieldRename'},
+    expectedAnnotatedTests: {
+      'EnumWithJsonConfigThatSetsTheOutput',
+      'EnumWithValueFieldAndFieldRename',
+    },
+  );
+
+  final jsonSerializableEnumConfigTestReader =
+      await initializeLibraryReaderForDirectory(
+        p.join('test', 'src'),
+        '_json_serializable_enum_config_test_input.dart',
+      );
+
+  testAnnotatedElements(
+    jsonSerializableEnumConfigTestReader,
+    JsonSerializableGenerator(
+      config: const JsonSerializable(enumFieldRename: FieldRename.snake),
+    ),
+    expectedAnnotatedTests: {'JsonSerialWithEnum'},
   );
 }
 

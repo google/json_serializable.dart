@@ -25,7 +25,7 @@ Future<void> main() async {
   );
   final warningTestReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
-    '_json_enum_valuefield_fieldrename_warning_test_input.dart',
+    '_json_enum_global_snake_rename_test_input.dart',
   );
 
   EnumElement? enumForDefaultRenameElement;
