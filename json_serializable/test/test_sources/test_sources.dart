@@ -48,7 +48,7 @@ class FromJsonOptionalParameters {
 
 class ChildWithFromJson {
   // Intentionally untyped parameters to ensure this codepath is handled well.
-  // ignore: type_annotate_public_apis, avoid_unused_constructor_parameters, strict_top_level_inference
+  //ignore: avoid_unused_constructor_parameters, strict_top_level_inference, type_annotate_public_apis
   ChildWithFromJson.fromJson(json, {initValue = false});
 }
 
