@@ -53,13 +53,13 @@ Future<void> main() async {
     },
   );
 
-  final jsonEnumDefaultRenameReader = await initializeLibraryReaderForDirectory(
+  final enumDefaultRenameReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
     '_enum_rename_test_input.dart',
   );
 
   testAnnotatedElements(
-    jsonEnumDefaultRenameReader,
+    enumDefaultRenameReader,
     JsonEnumGenerator(Settings()),
     expectedAnnotatedTests: {'EnumForDefaultRename', 'EnumWithKebabOverride'},
   );
