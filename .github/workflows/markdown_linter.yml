@@ -4,7 +4,6 @@ on:
     branches:
       - main
   pull_request:
-  workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
 
@@ -15,8 +14,10 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           fetch-depth: 0
+      # sadly, markdown-link-check has a bug where it doesn't handle config files
+      # so we pin to a version that doesn't have that bug
       - run: |
-          npm install -g markdown-link-check
+          npm install -g markdown-link-check@3.14.2
           find . -name "*.md" -not -path './.git/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 markdown-link-check -c .github/markdown-link-check-config.json
   markdown_lint:
     runs-on: ubuntu-latest
