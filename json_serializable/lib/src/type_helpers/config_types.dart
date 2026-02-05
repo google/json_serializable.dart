@@ -65,6 +65,7 @@ class ClassConfig {
   final bool disallowUnrecognizedKeys;
   final bool explicitToJson;
   final FieldRename fieldRename;
+  final FieldRename enumFieldRename;
   final bool genericArgumentFactories;
   final bool ignoreUnannotated;
   final bool includeIfNull;
@@ -85,6 +86,7 @@ class ClassConfig {
     required this.disallowUnrecognizedKeys,
     required this.explicitToJson,
     required this.fieldRename,
+    required this.enumFieldRename,
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
@@ -121,6 +123,8 @@ class ClassConfig {
             config.genericArgumentFactories ??
             ClassConfig.defaults.genericArgumentFactories,
         fieldRename: config.fieldRename ?? ClassConfig.defaults.fieldRename,
+        enumFieldRename:
+            config.enumFieldRename ?? ClassConfig.defaults.enumFieldRename,
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
@@ -142,6 +146,7 @@ class ClassConfig {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
+    enumFieldRename: FieldRename.none,
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
@@ -162,6 +167,7 @@ class ClassConfig {
     includeIfNull: includeIfNull,
     genericArgumentFactories: genericArgumentFactories,
     fieldRename: fieldRename,
+    enumFieldRename: enumFieldRename,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
     dateTimeUtc: dateTimeUtc,
     // TODO typeConverters = []

@@ -179,6 +179,7 @@ targets:
           date_time_utc: false
           disallow_unrecognized_keys: false
           explicit_to_json: false
+          enum_field_rename: none
           field_rename: none
           generic_argument_factories: false
           ignore_unannotated: false

@@ -8,9 +8,12 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'enum_utils.dart';
+import 'settings.dart';
 
 class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
-  const JsonEnumGenerator() : super(inPackage: 'json_annotation');
+  JsonEnumGenerator(this._settings) : super(inPackage: 'json_annotation');
+
+  final Settings _settings;
 
   @override
   List<String> generateForAnnotatedElement(
@@ -28,6 +31,7 @@ class JsonEnumGenerator extends GeneratorForAnnotation<JsonEnum> {
     final value = enumValueMapFromType(
       element.thisType,
       nullWithNoAnnotation: true,
+      defaultEnumFieldRename: _settings.config.enumFieldRename,
     );
 
     return [?value];

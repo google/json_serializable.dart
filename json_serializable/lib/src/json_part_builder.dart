@@ -29,7 +29,7 @@ Builder jsonPartBuilder({
     [
       _UnifiedGenerator([
         JsonSerializableGenerator.fromSettings(settings),
-        const JsonEnumGenerator(),
+        JsonEnumGenerator(settings),
       ]),
       const JsonLiteralGenerator(),
     ],

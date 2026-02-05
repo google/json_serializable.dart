@@ -1,5 +1,7 @@
 ## 6.13.0-wip
 
+- Add `JsonSerializable.enumFieldRename` configuration option.
+  ([#1556](https://github.com/google/json_serializable.dart/pull/1556))
 - Fix schema generation for many different types of fields. 
   ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
 - Support `JsonSerializable.dateTimeUtc` configuration option. 

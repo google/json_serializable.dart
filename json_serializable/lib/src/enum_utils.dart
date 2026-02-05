@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:build/build.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -19,8 +20,14 @@ String constMapName(DartType targetType) =>
 ///
 /// Otherwise, returns `true` if [targetType] is nullable OR if one of the
 /// encoded values of the enum is `null`.
-bool? enumFieldWithNullInEncodeMap(DartType targetType) {
-  final enumMap = _enumMap(targetType);
+bool? enumFieldWithNullInEncodeMap(
+  DartType targetType, {
+  FieldRename? defaultEnumFieldRename,
+}) {
+  final enumMap = _enumMap(
+    targetType,
+    defaultEnumFieldRename: defaultEnumFieldRename,
+  );
 
   if (enumMap == null) return null;
 
@@ -34,10 +41,12 @@ bool? enumFieldWithNullInEncodeMap(DartType targetType) {
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final enumMap = _enumMap(
     targetType,
     nullWithNoAnnotation: nullWithNoAnnotation,
+    defaultEnumFieldRename: defaultEnumFieldRename,
   );
 
   if (enumMap == null) return null;
@@ -56,6 +65,7 @@ String? enumValueMapFromType(
 Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final targetTypeElement = targetType.element;
   if (targetTypeElement == null) return null;
@@ -68,12 +78,20 @@ Map<FieldElement, Object?>? _enumMap(
     return null;
   }
 
+  if (jsonEnum.valueField != null && jsonEnum.fieldRename != FieldRename.none) {
+    log.warning(
+      '`JsonEnum.fieldRename` is ignored when `valueField` is set. '
+      'Enum values are derived from the `${jsonEnum.valueField}` field.',
+    );
+  }
+
   return {
     for (var field in enumFields)
       field: _generateEntry(
         field: field,
         jsonEnum: jsonEnum,
         targetType: targetType,
+        defaultEnumFieldRename: defaultEnumFieldRename,
       ),
   };
 }
@@ -82,6 +100,7 @@ Object? _generateEntry({
   required FieldElement field,
   required JsonEnum jsonEnum,
   required DartType targetType,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final annotation = const TypeChecker.typeNamed(
     JsonValue,
@@ -91,8 +110,6 @@ Object? _generateEntry({
   if (annotation == null) {
     final valueField = jsonEnum.valueField;
     if (valueField != null) {
-      // TODO: fieldRename is pointless here!!! At least log a warning!
-
       final fieldElementType = field.type.element as EnumElement;
 
       final e = fieldElementType.getField(valueField);
@@ -125,7 +142,10 @@ Object? _generateEntry({
         );
       }
     } else {
-      return encodedFieldName(jsonEnum.fieldRename, field.name!);
+      final effectiveRename = jsonEnum.fieldRename != FieldRename.none
+          ? jsonEnum.fieldRename
+          : (defaultEnumFieldRename ?? FieldRename.none);
+      return encodedFieldName(effectiveRename, field.name!);
     }
   } else {
     final reader = ConstantReader(annotation);

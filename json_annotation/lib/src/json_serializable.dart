@@ -8,6 +8,7 @@ import 'allowed_keys_helpers.dart';
 import 'checked_helpers.dart';
 import 'enum_helpers.dart';
 import 'json_converter.dart';
+import 'json_enum.dart' show JsonEnum;
 import 'json_key.dart';
 
 part 'json_serializable.g.dart';
@@ -175,6 +176,12 @@ class JsonSerializable {
   /// fields annotated with [JsonKey].
   final FieldRename? fieldRename;
 
+  /// Default field rename for enum values when not set on [JsonEnum].
+  ///
+  /// Only applies when configured via `build.yaml`; has no effect when set on
+  /// [JsonSerializable] annotations in source code.
+  final FieldRename? enumFieldRename;
+
   /// When `true` on classes with type parameters (generic types), extra
   /// "helper" parameters will be generated for `fromJson` and/or `toJson` to
   /// support serializing values of those types.
@@ -285,6 +292,7 @@ class JsonSerializable {
     this.disallowUnrecognizedKeys,
     this.explicitToJson,
     this.fieldRename,
+    this.enumFieldRename,
     this.ignoreUnannotated,
     this.includeIfNull,
     this.converters,
@@ -308,6 +316,7 @@ class JsonSerializable {
     disallowUnrecognizedKeys: false,
     explicitToJson: false,
     fieldRename: FieldRename.none,
+    enumFieldRename: FieldRename.none,
     ignoreUnannotated: false,
     includeIfNull: true,
     genericArgumentFactories: false,
@@ -329,6 +338,7 @@ class JsonSerializable {
         disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
     explicitToJson: explicitToJson ?? defaults.explicitToJson,
     fieldRename: fieldRename ?? defaults.fieldRename,
+    enumFieldRename: enumFieldRename ?? defaults.enumFieldRename,
     ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
     includeIfNull: includeIfNull ?? defaults.includeIfNull,
     genericArgumentFactories:
