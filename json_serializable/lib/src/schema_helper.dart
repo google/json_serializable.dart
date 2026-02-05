@@ -44,37 +44,29 @@ Iterable<_PropertyInfo> _propertiesFor(
   ClassElement element,
   ClassConfig config,
 ) {
-  final accessibleFields = createSortedFieldSet(element).where((
-    FieldElement f,
-  ) {
+  final accessibleFields = createSortedFieldSet(element).where((f) {
     final jsonKey = jsonKeyForField(f, config);
 
     if (jsonKey.explicitNoToJson) {
       return false;
     }
 
-    // If the field is writable (has a setter), it's fine.
-    if (f.setter != null) return true;
-
-    // If NO annotation exists, we skip synthetic fields (getters).
-    // This matches the behavior in `_generateComplexTypeSchema` before
-    // refactoring, ensuring we don't accidentally include pure getters unless
-    // they are in the constructor (checked below) or explicitly annotated
-    // (checked above via jsonKey).
-    //
-    // Check previous `_generateComplexTypeSchema` logic:
-    // if (jsonKey.explicitNoToJson) return false;
-    // if (f.setter != null) return true;
-    // if (!hasJsonKeyAnnotation(field) && field.isSynthetic) return false;
-    // return true;
-    //
-    // Revised logic for `_propertiesFor`:
-    if (jsonKey.explicitNoToJson) return false;
-    if (f.getter == null) return false;
-    if (f.setter != null) return true;
-    if (jsonKey.includeToJson == true) {
-      return true; // Allow explicitly included getters
+    // Fields without a getter are not included.
+    if (f.getter == null) {
+      return false;
     }
+
+    // Writable fields are included.
+    if (f.setter != null) {
+      return true;
+    }
+
+    // Getter-only fields are included if explicitly annotated for `toJson`...
+    if (jsonKey.includeToJson == true) {
+      return true;
+    }
+
+    // ...or if they are a constructor parameter.
     return config.ctorParams.any((p) => p.name == f.name);
   });
 
