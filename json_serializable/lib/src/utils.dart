@@ -279,3 +279,7 @@ extension ExecutableElementExtension on ExecutableElement {
     throw UnsupportedError('Not sure how to support typeof $runtimeType');
   }
 }
+
+const jsonSerializableChecker = TypeChecker.fromUrl(
+  'package:json_annotation/src/json_serializable.dart#JsonSerializable',
+);

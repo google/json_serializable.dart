@@ -1,5 +1,7 @@
 ## 6.13.0-wip
 
+- Fix schema generation for many different types of fields. 
+  ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
 - Support `JsonSerializable.dateTimeUtc` configuration option. 
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
 - Remove `json_schema` from `dependencies` (it is only used in tests).
