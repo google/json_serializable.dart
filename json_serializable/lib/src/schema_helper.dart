@@ -96,13 +96,9 @@ Iterable<_PropertyInfo> _propertiesFor(
     }
 
     // Constructor param default
-    FormalParameterElement? param;
-    for (final p in config.ctorParams) {
-      if (p.name == field.name) {
-        param = p;
-        break;
-      }
-    }
+    final param = config.ctorParams
+        .where((p) => p.name == field.name)
+        .singleOrNull;
 
     if (defaultValueObj == null && param != null && param.hasDefaultValue) {
       defaultValueObj = param.computeConstantValue();
@@ -299,7 +295,7 @@ Map<String, dynamic> _generateComplexTypeSchema(
       classElement: classElement,
     );
   } else {
-    // TOOD(kevmoo): test for nested types that are NOT annotated!
+    // TODO(kevmoo): test for nested types that are NOT annotated!
 
     // Try to find default constructor parameters even if not annotated
     final ctor = classElement.unnamedConstructor;
