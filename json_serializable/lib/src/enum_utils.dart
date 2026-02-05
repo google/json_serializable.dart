@@ -41,7 +41,7 @@ bool? enumFieldWithNullInEncodeMap(
 String? enumValueMapFromType(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
-  FieldRename? defaultEnumFieldRename,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final enumMap = _enumMap(
     targetType,
@@ -65,7 +65,7 @@ String? enumValueMapFromType(
 Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
-  FieldRename? defaultEnumFieldRename,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final targetTypeElement = targetType.element;
   if (targetTypeElement == null) return null;
@@ -100,7 +100,7 @@ Object? _generateEntry({
   required FieldElement field,
   required JsonEnum jsonEnum,
   required DartType targetType,
-  FieldRename? defaultEnumFieldRename,
+  required FieldRename? defaultEnumFieldRename,
 }) {
   final annotation = const TypeChecker.typeNamed(
     JsonValue,
