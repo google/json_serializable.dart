@@ -91,6 +91,9 @@ final class ComprehensiveNested {
   /// With a second line.
   int writableField = 5;
 
+  /// Description with a multiplication: a * b
+  int regexChecks = 10;
+
   @JsonKey(name: 'renamed_field')
   int renamedField = 6;
 

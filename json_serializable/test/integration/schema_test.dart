@@ -99,5 +99,15 @@ void main() {
       final validation = schema.validate(json);
       expect(validation.isValid, isFalse);
     });
+
+    test('validates doc comment extraction', () {
+      final properties =
+          schema.schemaMap!['properties'] as Map<String, dynamic>;
+      final regexChecks = properties['regexChecks'] as Map<String, dynamic>;
+      expect(
+        regexChecks['description'],
+        'Description with a multiplication: a * b',
+      );
+    });
   });
 }

@@ -114,6 +114,10 @@ const _$SchemaExampleJsonSchema = {
           'type': 'integer',
           'description': 'Writable field comment\n\nWith a second line.',
         },
+        'regexChecks': {
+          'type': 'integer',
+          'description': 'Description with a multiplication: a * b',
+        },
         'renamed_field': {'type': 'integer'},
         'getterIncluded': {'type': 'integer'},
       },
@@ -138,12 +142,14 @@ ComprehensiveNested _$ComprehensiveNestedFromJson(Map<String, dynamic> json) =>
     ComprehensiveNested()
       ..noIncludeToJson = (json['noIncludeToJson'] as num).toInt()
       ..writableField = (json['writableField'] as num).toInt()
+      ..regexChecks = (json['regexChecks'] as num).toInt()
       ..renamedField = (json['renamed_field'] as num).toInt();
 
 Map<String, dynamic> _$ComprehensiveNestedToJson(
   ComprehensiveNested instance,
 ) => <String, dynamic>{
   'writableField': instance.writableField,
+  'regexChecks': instance.regexChecks,
   'renamed_field': instance.renamedField,
   'getterIncluded': instance.getterIncluded,
 };
@@ -156,6 +162,10 @@ const _$ComprehensiveNestedJsonSchema = {
     'writableField': {
       'type': 'integer',
       'description': 'Writable field comment\n\nWith a second line.',
+    },
+    'regexChecks': {
+      'type': 'integer',
+      'description': 'Description with a multiplication: a * b',
     },
     'renamed_field': {'type': 'integer'},
     'getterIncluded': {'type': 'integer'},

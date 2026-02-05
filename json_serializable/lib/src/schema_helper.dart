@@ -99,7 +99,7 @@ Iterable<_PropertyInfo> _propertiesFor(
     final description = field.documentationComment
         ?.replaceAll(RegExp(r'^\s*/// ?', multiLine: true), '')
         .replaceAll(
-          RegExp(r'^\s*\/\*\*\s*|\s*\*\/\s*$|\s*\*\s?', multiLine: true),
+          RegExp(r'^\s*\/\*\*[ \t]*|[ \t]*\*\/\s*$|^\s*\*\s?', multiLine: true),
           '',
         )
         .trim();
