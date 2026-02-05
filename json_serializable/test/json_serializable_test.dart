@@ -219,4 +219,7 @@ const _expectedSchemaTests = {
   'JsonSchemaNullableTest',
   'JsonSchemaNestedTest',
   'JsonSchemaNonCollectionTest',
+  'JsonSchemaGetterTest',
+  'JsonSchemaRecursiveListTest',
+  'JsonSchemaRecursiveListIssue',
 };

@@ -172,4 +172,26 @@ class ClassConfig {
     dateTimeUtc: dateTimeUtc,
     // TODO typeConverters = []
   );
+
+  ClassConfig copyWith({List<FormalParameterElement>? ctorParams}) =>
+      ClassConfig(
+        anyMap: anyMap,
+        checked: checked,
+        constructor: constructor,
+        createFactory: createFactory,
+        createToJson: createToJson,
+        createFieldMap: createFieldMap,
+        createJsonKeys: createJsonKeys,
+        createPerFieldToJson: createPerFieldToJson,
+        createJsonSchema: createJsonSchema,
+        dateTimeUtc: dateTimeUtc,
+        disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+        explicitToJson: explicitToJson,
+        fieldRename: fieldRename,
+        genericArgumentFactories: genericArgumentFactories,
+        ignoreUnannotated: ignoreUnannotated,
+        includeIfNull: includeIfNull,
+        ctorParams: ctorParams ?? this.ctorParams,
+        converters: converters,
+      );
 }
