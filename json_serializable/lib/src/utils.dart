@@ -221,12 +221,34 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
         '<${type.typeArguments.map(typeToCode).join(', ')}>',
       (type.isNullableType || forceNullable) ? '?' : '',
     ].join();
+  } else if (type is TypeParameterType) {
+    return type.toStringNonNullable();
+  } else if (type is RecordType) {
+    final positional =
+        type.positionalFields.map((f) => typeToCode(f.type)).join(', ');
+    final named = type.namedFields
+        .map((f) => '${typeToCode(f.type)} ${f.name}')
+        .join(', ');
+
+    final buffer = StringBuffer('(');
+    if (positional.isNotEmpty) {
+      buffer.write(positional);
+      if (named.isNotEmpty) buffer.write(', ');
+    }
+    if (named.isNotEmpty) {
+      buffer.write('{$named}');
+    }
+    if (type.positionalFields.length == 1 && type.namedFields.isEmpty) {
+      buffer.write(',');
+    }
+    buffer.write(')');
+    if (type.isNullableType || forceNullable) {
+      buffer.write('?');
+    }
+    return buffer.toString();
   }
 
-  if (type is TypeParameterType) {
-    return type.toStringNonNullable();
-  }
-  throw UnimplementedError('(${type.runtimeType}) $type');
+  return type.getDisplayString();
 }
 
 String? defaultDecodeLogic(
