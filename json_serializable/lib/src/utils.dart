@@ -208,48 +208,46 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
 /// Return the Dart code presentation for the given [type].
 ///
 /// This function is intentionally limited, and does not support all possible
-/// types and locations of these files in code. Specifically, it supports
-/// only [InterfaceType]s, with optional type arguments that are also should
-/// be [InterfaceType]s.
-String typeToCode(DartType type, {bool forceNullable = false}) {
-  if (type is DynamicType) {
-    return 'dynamic';
-  } else if (type is InterfaceType) {
-    return [
-      type.element.name,
-      if (type.typeArguments.isNotEmpty)
-        '<${type.typeArguments.map(typeToCode).join(', ')}>',
-      (type.isNullableType || forceNullable) ? '?' : '',
-    ].join();
-  } else if (type is TypeParameterType) {
-    return type.toStringNonNullable();
-  } else if (type is RecordType) {
-    final positional = type.positionalFields
-        .map((f) => typeToCode(f.type))
-        .join(', ');
-    final named = type.namedFields
-        .map((f) => '${typeToCode(f.type)} ${f.name}')
-        .join(', ');
+/// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
+/// [TypeParameterType]s, and [DynamicType]s.
+String typeToCode(DartType type, {bool forceNullable = false}) =>
+    switch (type) {
+      DynamicType() => 'dynamic',
+      InterfaceType() => [
+        type.element.name,
+        if (type.typeArguments.isNotEmpty)
+          '<${type.typeArguments.map(typeToCode).join(', ')}>',
+        (type.isNullableType || forceNullable) ? '?' : '',
+      ].join(),
+      TypeParameterType() => type.toStringNonNullable(),
+      RecordType() => _recordTypeToCode(type, forceNullable),
+      _ => type.getDisplayString(),
+    };
 
-    final buffer = StringBuffer('(');
-    if (positional.isNotEmpty) {
-      buffer.write(positional);
-      if (named.isNotEmpty) buffer.write(', ');
-    }
-    if (named.isNotEmpty) {
-      buffer.write('{$named}');
-    }
-    if (type.positionalFields.length == 1 && type.namedFields.isEmpty) {
-      buffer.write(',');
-    }
-    buffer.write(')');
-    if (type.isNullableType || forceNullable) {
-      buffer.write('?');
-    }
-    return buffer.toString();
+String _recordTypeToCode(RecordType type, bool forceNullable) {
+  final positional = type.positionalFields
+      .map((f) => typeToCode(f.type))
+      .join(', ');
+  final named = type.namedFields
+      .map((f) => '${typeToCode(f.type)} ${f.name}')
+      .join(', ');
+
+  final buffer = StringBuffer('(');
+  if (positional.isNotEmpty) {
+    buffer.write(positional);
+    if (named.isNotEmpty) buffer.write(', ');
   }
-
-  return type.getDisplayString();
+  if (named.isNotEmpty) {
+    buffer.write('{$named}');
+  }
+  if (type.positionalFields.length == 1 && type.namedFields.isEmpty) {
+    buffer.write(',');
+  }
+  buffer.write(')');
+  if (type.isNullableType || forceNullable) {
+    buffer.write('?');
+  }
+  return buffer.toString();
 }
 
 String? defaultDecodeLogic(
