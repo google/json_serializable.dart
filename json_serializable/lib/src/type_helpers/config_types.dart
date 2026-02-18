@@ -186,6 +186,7 @@ class ClassConfig {
         createJsonSchema: createJsonSchema,
         dateTimeUtc: dateTimeUtc,
         disallowUnrecognizedKeys: disallowUnrecognizedKeys,
+        enumFieldRename: enumFieldRename,
         explicitToJson: explicitToJson,
         fieldRename: fieldRename,
         genericArgumentFactories: genericArgumentFactories,
