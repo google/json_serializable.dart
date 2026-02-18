@@ -136,6 +136,9 @@ void main() {
 
         String lastLine;
         lastLine = switch (entry.key) {
+          'enum_field_rename' =>
+            '`42` is not one of the supported values: none, kebab, snake, '
+                'pascal, screamingSnake',
           'field_rename' =>
             '`42` is not one of the supported values: none, kebab, snake, '
                 'pascal, screamingSnake',
@@ -178,6 +181,7 @@ const _invalidConfig = {
   'create_to_json': 42,
   'date_time_utc': 42,
   'disallow_unrecognized_keys': 42,
+  'enum_field_rename': 42,
   'explicit_to_json': 42,
   'field_rename': 42,
   'generic_argument_factories': 42,

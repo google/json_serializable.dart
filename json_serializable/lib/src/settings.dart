@@ -52,7 +52,7 @@ class Settings {
   /// If [typeHelpers] is not provided, the built-in helpers are used:
   /// [BigIntHelper], [DateTimeHelper], [DurationHelper], [JsonHelper], and
   /// [UriHelper].
-  Settings({required JsonSerializable? config, List<TypeHelper>? typeHelpers})
+  Settings({JsonSerializable? config, List<TypeHelper>? typeHelpers})
     : config = config != null
           ? ClassConfig.fromJsonSerializable(config)
           : ClassConfig.defaults,

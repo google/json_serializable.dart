@@ -121,6 +121,7 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
+    enumFieldRename: annotation.enumFieldRename ?? config.enumFieldRename,
     genericArgumentFactories:
         annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&

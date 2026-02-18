@@ -5,7 +5,9 @@
 @TestOn('vm')
 library;
 
+import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
+import 'package:json_serializable/src/settings.dart';
 import 'package:path/path.dart' as p;
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
@@ -36,12 +38,12 @@ Future<void> main() async {
 
   final jsonEnumTestReader = await initializeLibraryReaderForDirectory(
     p.join('test', 'src'),
-    '_json_enum_test_input.dart',
+    '_enum_default_test_input.dart',
   );
 
   testAnnotatedElements(
     jsonEnumTestReader,
-    const JsonEnumGenerator(),
+    JsonEnumGenerator(Settings()),
     expectedAnnotatedTests: {
       'EnumValueIssue1147',
       'EnumValueNotAField',
@@ -49,6 +51,50 @@ Future<void> main() async {
       'EnumValueWeirdField',
       'UnsupportedClass',
     },
+  );
+
+  final enumDefaultRenameReader = await initializeLibraryReaderForDirectory(
+    p.join('test', 'src'),
+    '_enum_rename_test_input.dart',
+  );
+
+  testAnnotatedElements(
+    enumDefaultRenameReader,
+    JsonEnumGenerator(Settings()),
+    expectedAnnotatedTests: {'EnumForDefaultRename', 'EnumWithKebabOverride'},
+  );
+
+  final jsonEnumValuefieldFieldrenameWarningReader =
+      await initializeLibraryReaderForDirectory(
+        p.join('test', 'src'),
+        '_enum_snake_test_input.dart',
+      );
+
+  testAnnotatedElements(
+    jsonEnumValuefieldFieldrenameWarningReader,
+    JsonEnumGenerator(
+      Settings(
+        config: const JsonSerializable(enumFieldRename: FieldRename.snake),
+      ),
+    ),
+    expectedAnnotatedTests: {
+      'EnumWithJsonConfigThatSetsTheOutput',
+      'EnumWithValueFieldAndFieldRename',
+    },
+  );
+
+  final jsonSerializableEnumConfigTestReader =
+      await initializeLibraryReaderForDirectory(
+        p.join('test', 'src'),
+        '_enum_json_serializable_snake_test_input.dart',
+      );
+
+  testAnnotatedElements(
+    jsonSerializableEnumConfigTestReader,
+    JsonSerializableGenerator(
+      config: const JsonSerializable(enumFieldRename: FieldRename.snake),
+    ),
+    expectedAnnotatedTests: {'JsonSerialWithEnum'},
   );
 }
 
