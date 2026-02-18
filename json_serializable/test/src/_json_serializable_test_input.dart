@@ -628,7 +628,8 @@ class DateTimeUtcTestClass {
 }
 
 @ShouldThrow(
-  'Could not generate `fromJson` code for `record` because of type `void Function()`.',
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
 )
 @JsonSerializable()
 class RecordWithFunction {
@@ -638,7 +639,8 @@ class RecordWithFunction {
 }
 
 @ShouldThrow(
-  'Could not generate `fromJson` code for `record` because of type `void Function()`.',
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
 )
 @JsonSerializable()
 class RecordWithNamedFunction {
@@ -648,7 +650,8 @@ class RecordWithNamedFunction {
 }
 
 @ShouldThrow(
-  'Could not generate `fromJson` code for `record` because of type `void Function()`.',
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
 )
 @JsonSerializable()
 class RecordWithSinglePositionalFunction {
@@ -673,9 +676,7 @@ class RecordConverter2 extends JsonConverter<(int, int), Map<String, dynamic>> {
   Map<String, dynamic> toJson((int, int) object) => {};
 }
 
-@ShouldThrow(
-  'Found more than one matching converter for `(int, int)`.',
-)
+@ShouldThrow('Found more than one matching converter for `(int, int)`.')
 @JsonSerializable()
 @RecordConverter1()
 @RecordConverter2()
@@ -701,9 +702,7 @@ class SingleRecordConverter2
   Map<String, dynamic> toJson((int,) object) => {};
 }
 
-@ShouldThrow(
-  'Found more than one matching converter for `(int,)`.',
-)
+@ShouldThrow('Found more than one matching converter for `(int,)`.')
 @JsonSerializable()
 @SingleRecordConverter1()
 @SingleRecordConverter2()
@@ -729,9 +728,7 @@ class NullableRecordConverter2
   Map<String, dynamic> toJson((int, int)? object) => {};
 }
 
-@ShouldThrow(
-  'Found more than one matching converter for `(int, int)?`.',
-)
+@ShouldThrow('Found more than one matching converter for `(int, int)?`.')
 @JsonSerializable()
 @NullableRecordConverter1()
 @NullableRecordConverter2()
@@ -757,9 +754,7 @@ class NamedRecordConverter2
   Map<String, dynamic> toJson(({int a, int b}) object) => {};
 }
 
-@ShouldThrow(
-  'Found more than one matching converter for `({int a, int b})`.',
-)
+@ShouldThrow('Found more than one matching converter for `({int a, int b})`.')
 @JsonSerializable()
 @NamedRecordConverter1()
 @NamedRecordConverter2()

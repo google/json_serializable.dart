@@ -224,8 +224,9 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
   } else if (type is TypeParameterType) {
     return type.toStringNonNullable();
   } else if (type is RecordType) {
-    final positional =
-        type.positionalFields.map((f) => typeToCode(f.type)).join(', ');
+    final positional = type.positionalFields
+        .map((f) => typeToCode(f.type))
+        .join(', ');
     final named = type.namedFields
         .map((f) => '${typeToCode(f.type)} ${f.name}')
         .join(', ');
