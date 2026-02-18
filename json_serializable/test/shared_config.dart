@@ -5,7 +5,9 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/src/type_helpers/config_types.dart';
 
-final jsonSerializableFields = generatorConfigDefaultJson.keys.toList();
+final jsonSerializableFields = generatorConfigDefaultJson.keys
+    .where((key) => key != 'enum_field_rename')
+    .toList();
 
 final generatorConfigDefaultJson = Map<String, dynamic>.unmodifiable(
   ClassConfig.defaults.toJsonSerializable().toJson(),
