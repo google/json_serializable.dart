@@ -1,4 +1,4 @@
-## 6.13.0-wip
+## 6.13.0
 
 - Fix schema generation for many different types of fields. 
   ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
