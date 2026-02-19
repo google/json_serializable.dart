@@ -1,4 +1,4 @@
-## 4.11.0-wip
+## 4.11.0
 
 - Add `JsonSerializable.dateTimeUtc` configuration option. 
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
