@@ -1,5 +1,6 @@
 ## 2.0.5-wip
 
+- Require `source_span: ^1.10.0`
 - Require `sdk: ^3.9.0`
 - Require `yaml: ^3.1.3`
 
