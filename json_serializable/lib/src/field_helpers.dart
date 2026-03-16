@@ -57,7 +57,7 @@ class _FieldSet implements Comparable<_FieldSet> {
     /// Returns the offset of given field/property in its source file – with a
     /// preference for the getter if it's defined.
     int offsetFor(FieldElement e) {
-      if (e.isSynthetic) {
+      if (e.isOriginGetterSetter) {
         return (e.getter ?? e.setter)!.firstFragment.nameOffset ?? 0;
       }
       return e.firstFragment.nameOffset ?? 0;
