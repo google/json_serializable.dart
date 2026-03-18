@@ -217,7 +217,7 @@ String typeToCode(DartType type, {bool forceNullable = false}) =>
         type.element.name,
         if (type.typeArguments.isNotEmpty)
           '<${type.typeArguments.map(typeToCode).join(', ')}>',
-        (type.isNullableType || forceNullable) ? '?' : '',
+        if (type.isNullableType || forceNullable) '?',
       ].join(),
       TypeParameterType() => type.toStringNonNullable(),
       RecordType() => _recordTypeToCode(type, forceNullable),

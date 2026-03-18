@@ -768,4 +768,3 @@ Could not generate `fromJson` code for `field` because type is unimplemented (Un
 class UnsupportedNestedFunctionType {
   late List<void Function()> field;
 }
-}
