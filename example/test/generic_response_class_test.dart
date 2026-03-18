@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 const _jsonUser = {
   'status': 200,
   'msg': 'success',
-  'data': {'id': 1, 'email': 'test@test.com'}
+  'data': {'id': 1, 'email': 'test@test.com'},
 };
 
 final _jsonArticle = {
@@ -21,8 +21,8 @@ final _jsonArticle = {
     'comments': [
       {'content': 'comment context', 'id': 1},
       {'content': 'comment context', 'id': 2},
-    ]
-  }
+    ],
+  },
 };
 
 final _jsonArticleList = {
@@ -31,7 +31,7 @@ final _jsonArticleList = {
   'data': [
     {'id': 1, 'title': 'title1'},
     _jsonArticle['data'],
-  ]
+  ],
 };
 
 void _testResponse<T>(BaseResponse response, void Function(T) testFunction) {

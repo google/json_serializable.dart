@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: prefer_const_declarations
 @TestOn('vm')
 library;
 
@@ -17,11 +16,11 @@ void main() {
   for (var input in const <Map<String, Object?>>{
     {'value': {}},
     {
-      'value': {'key': 'value'}
+      'value': {'key': 'value'},
     },
     {
       // Regression case for https://github.com/google/json_serializable.dart/issues/864
-      'value': {'key': null}
+      'value': {'key': null},
     },
   }) {
     test(input, () {

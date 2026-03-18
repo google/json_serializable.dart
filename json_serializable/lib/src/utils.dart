@@ -2,10 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// TODO: Waiting until Dart 3.6 so we can pin a stable Dart SDK compatible w/ latest
-// analyzer
-// ignore_for_file: deprecated_member_use
-
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -16,8 +12,14 @@ import 'package:source_helper/source_helper.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
-const _jsonKeyChecker = TypeChecker.fromRuntime(JsonKey);
+const _jsonKeyChecker = TypeChecker.typeNamed(
+  JsonKey,
+  inPackage: 'json_annotation',
+);
 
+/// If an annotation exists on `element` the source is a 'real' field.
+/// If the result is `null`, check the getter – it is a property.
+// TODO: setters: github.com/google/json_serializable.dart/issues/24
 DartObject? _jsonKeyAnnotation(FieldElement element) =>
     _jsonKeyChecker.firstAnnotationOf(element) ??
     (element.getter == null
@@ -31,6 +33,9 @@ ConstantReader jsonKeyAnnotation(FieldElement element) =>
 bool hasJsonKeyAnnotation(FieldElement element) =>
     _jsonKeyAnnotation(element) != null;
 
+ConstantReader jsonKeyAnnotationForCtorParam(FormalParameterElement element) =>
+    ConstantReader(_jsonKeyChecker.firstAnnotationOf(element));
+
 Never throwUnsupported(FieldElement element, String message) =>
     throw InvalidGenerationSourceError(
       'Error with `@JsonKey` on the `${element.name}` field. $message',
@@ -39,42 +44,39 @@ Never throwUnsupported(FieldElement element, String message) =>
 
 T? readEnum<T extends Enum>(ConstantReader reader, List<T> values) =>
     reader.isNull
-        ? null
-        : enumValueForDartObject<T>(
-            reader.objectValue,
-            values,
-            (f) => f.name,
-          );
+    ? null
+    : enumValueForDartObject<T>(reader.objectValue, values, (f) => f.name);
 
 T enumValueForDartObject<T>(
   DartObject source,
   List<T> items,
   String Function(T) name,
-) =>
-    items[source.getField('index')!.toIntValue()!];
+) => items[source.getField('index')!.toIntValue()!];
 
 /// Return an instance of [JsonSerializable] corresponding to the provided
 /// [reader].
 // #CHANGE WHEN UPDATING json_annotation
 JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
-      anyMap: reader.read('anyMap').literalValue as bool?,
-      checked: reader.read('checked').literalValue as bool?,
-      constructor: reader.read('constructor').literalValue as String?,
-      createFactory: reader.read('createFactory').literalValue as bool?,
-      createToJson: reader.read('createToJson').literalValue as bool?,
-      createFieldMap: reader.read('createFieldMap').literalValue as bool?,
-      createJsonKeys: reader.read('createJsonKeys').literalValue as bool?,
-      createPerFieldToJson:
-          reader.read('createPerFieldToJson').literalValue as bool?,
-      disallowUnrecognizedKeys:
-          reader.read('disallowUnrecognizedKeys').literalValue as bool?,
-      explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-      fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
-      genericArgumentFactories:
-          reader.read('genericArgumentFactories').literalValue as bool?,
-      ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
-      includeIfNull: reader.read('includeIfNull').literalValue as bool?,
-    );
+  anyMap: reader.read('anyMap').literalValue as bool?,
+  checked: reader.read('checked').literalValue as bool?,
+  constructor: reader.read('constructor').literalValue as String?,
+  createFactory: reader.read('createFactory').literalValue as bool?,
+  createToJson: reader.read('createToJson').literalValue as bool?,
+  createFieldMap: reader.read('createFieldMap').literalValue as bool?,
+  createJsonKeys: reader.read('createJsonKeys').literalValue as bool?,
+  createPerFieldToJson:
+      reader.read('createPerFieldToJson').literalValue as bool?,
+  dateTimeUtc: reader.read('dateTimeUtc').literalValue as bool?,
+  disallowUnrecognizedKeys:
+      reader.read('disallowUnrecognizedKeys').literalValue as bool?,
+  explicitToJson: reader.read('explicitToJson').literalValue as bool?,
+  fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
+  genericArgumentFactories:
+      reader.read('genericArgumentFactories').literalValue as bool?,
+  ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
+  includeIfNull: reader.read('includeIfNull').literalValue as bool?,
+  createJsonSchema: reader.read('createJsonSchema').literalValue as bool?,
+);
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
 /// instance represented by [reader].
@@ -91,17 +93,17 @@ ClassConfig mergeConfig(
   required ClassElement classElement,
 }) {
   final annotation = _valueForAnnotation(reader);
-  assert(config.ctorParamDefaults.isEmpty);
+  assert(config.ctorParams.isEmpty);
 
   final constructor = annotation.constructor ?? config.constructor;
-  final constructorInstance =
-      _constructorByNameOrNull(classElement, constructor);
+  final constructorInstance = _constructorByNameOrNull(
+    classElement,
+    constructor,
+  );
 
-  final paramDefaultValueMap = constructorInstance == null
-      ? <String, String>{}
-      : Map<String, String>.fromEntries(constructorInstance.parameters
-          .where((element) => element.hasDefaultValue)
-          .map((e) => MapEntry(e.name, e.defaultValueCode!)));
+  final ctorParams = <FormalParameterElement>[
+    ...?constructorInstance?.formalParameters,
+  ];
 
   final converters = reader.read('converters');
 
@@ -119,13 +121,16 @@ ClassConfig mergeConfig(
         annotation.disallowUnrecognizedKeys ?? config.disallowUnrecognizedKeys,
     explicitToJson: annotation.explicitToJson ?? config.explicitToJson,
     fieldRename: annotation.fieldRename ?? config.fieldRename,
-    genericArgumentFactories: annotation.genericArgumentFactories ??
+    genericArgumentFactories:
+        annotation.genericArgumentFactories ??
         (classElement.typeParameters.isNotEmpty &&
             config.genericArgumentFactories),
     ignoreUnannotated: annotation.ignoreUnannotated ?? config.ignoreUnannotated,
     includeIfNull: annotation.includeIfNull ?? config.includeIfNull,
-    ctorParamDefaults: paramDefaultValueMap,
+    ctorParams: ctorParams,
     converters: converters.isNull ? const [] : converters.listValue,
+    createJsonSchema: annotation.createJsonSchema ?? config.createJsonSchema,
+    dateTimeUtc: annotation.dateTimeUtc ?? config.dateTimeUtc,
   );
 }
 
@@ -135,7 +140,6 @@ ConstructorElement? _constructorByNameOrNull(
 ) {
   try {
     return constructorByName(classElement, name);
-    // ignore: avoid_catching_errors
   } on InvalidGenerationSourceError {
     return null;
   }
@@ -172,8 +176,8 @@ ConstructorElement constructorByName(ClassElement classElement, String name) {
 ///
 /// Otherwise, `null`.
 Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
-  if (targetType is InterfaceType && targetType.element is EnumElement) {
-    return targetType.element.fields.where((element) => element.isEnumConstant);
+  if (targetType.element is EnumElement) {
+    return (targetType.element as EnumElement).constants;
   }
   return null;
 }
@@ -192,16 +196,13 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedFieldName(
-  FieldRename fieldRename,
-  String declaredName,
-) =>
+String encodedFieldName(FieldRename fieldRename, String declaredName) =>
     switch (fieldRename) {
       FieldRename.none => declaredName,
       FieldRename.snake => declaredName.snake,
       FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
       FieldRename.kebab => declaredName.kebab,
-      FieldRename.pascal => declaredName.pascal
+      FieldRename.pascal => declaredName.pascal,
     };
 
 /// Return the Dart code presentation for the given [type].
@@ -210,10 +211,7 @@ String encodedFieldName(
 /// types and locations of these files in code. Specifically, it supports
 /// only [InterfaceType]s, with optional type arguments that are also should
 /// be [InterfaceType]s.
-String typeToCode(
-  DartType type, {
-  bool forceNullable = false,
-}) {
+String typeToCode(DartType type, {bool forceNullable = false}) {
   if (type is DynamicType) {
     return 'dynamic';
   } else if (type is InterfaceType) {
@@ -262,24 +260,26 @@ extension ExecutableElementExtension on ExecutableElement {
   /// Returns the name of `this` qualified with the class name if it's a
   /// [MethodElement].
   String get qualifiedName {
-    if (this is FunctionElement) {
-      return name;
+    if (this is TopLevelFunctionElement) {
+      return name!;
     }
 
     if (this is MethodElement) {
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement!.name}.$name';
     }
 
     if (this is ConstructorElement) {
-      // Ignore the default constructor.
-      if (name.isEmpty) {
-        return '${enclosingElement.name}';
+      // The default constructor.
+      if (name == 'new') {
+        return enclosingElement!.name!;
       }
-      return '${enclosingElement.name}.$name';
+      return '${enclosingElement!.name}.$name';
     }
 
-    throw UnsupportedError(
-      'Not sure how to support typeof $runtimeType',
-    );
+    throw UnsupportedError('Not sure how to support typeof $runtimeType');
   }
 }
+
+const jsonSerializableChecker = TypeChecker.fromUrl(
+  'package:json_annotation/src/json_serializable.dart#JsonSerializable',
+);

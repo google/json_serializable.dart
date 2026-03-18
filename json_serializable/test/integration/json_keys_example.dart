@@ -4,11 +4,7 @@ part 'json_keys_example.g.dart';
 
 @JsonSerializable(createJsonKeys: true, fieldRename: FieldRename.kebab)
 class Model {
-  Model({
-    required this.firstName,
-    required this.lastName,
-    this.ignoredName,
-  });
+  Model({required this.firstName, required this.lastName, this.ignoredName});
 
   factory Model.fromJson(Map<String, Object?> json) => _$ModelFromJson(json);
 

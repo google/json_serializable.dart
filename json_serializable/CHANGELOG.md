@@ -1,6 +1,96 @@
-## 6.9.0-wip
+## 6.13.1-wip
+
+- Require `analyzer: ^10.0.0`
+- Require `build: ^4.0.4`
+- Require `dart_style: ^3.1.4`
+- Require `source_gen: ^4.1.2`
+- Require `source_helper: ^1.3.10`
+
+## 6.13.0
+
+- Fix schema generation for many different types of fields. 
+  ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
+- Support `JsonSerializable.dateTimeUtc` configuration option. 
+  ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
+- Remove `json_schema` from `dependencies` (it is only used in tests).
+
+## 6.12.0
+
+- Support `JsonKey` annotation on constructor parameters.
+- Add support for `JsonSerializable(createJsonSchema: true)`.
+  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
+
+## 6.11.4
+
+- Allow `analyzer: >=9.0.0 <11.0.0`
+
+## 6.11.3
+
+- Require `analyzer: ^9.0.0`
+- Require `build: ^4.0.3`
+- Require `build_config: ^1.2.0`
+- Require `dart_style: ^3.1.3`
+- Require `sdk: ^3.9.0`
+- Require `source_gen: ^4.1.1`
+- Require `source_helper: ^1.3.9`
+
+## 6.11.2
+
+- Allow `run_only_if_triggered` to be specified in `build.yaml` to turn on the
+  `build_runner` triggers heuristic.
+- Skip warning about annotations on both constructor and field if the values
+  match.
+
+## 6.11.1
+
+- Allow `build: '>=3.0.0 <5.0.0'`.
+- Allow `source_gen: '>=3.1.0 <5.0.0'`.
+
+## 6.11.0
+
+- Support `JsonKey` annotation on constructor parameters.
+- Require `analyzer: '>=7.4.0 <9.0.0'`
+- Require `dart_style: ^3.0.0`
+- Require `meta: ^1.15.0`
+- Require `source_helper: ^1.3.6`
+- Require `source_gen: ^3.1.0`, stop using deprecated `TypeChecker.fromRuntime`
+  and use the new `TypeChecker.typeNamed` instead.
+
+## 6.10.0
+
+- Required `analyzer: ^7.4.0`.
+- Switch to analyzer element2 model and `build: ^3.0.0-dev`.
+- Move `package:collection` to a dev dependency.
+- Use new `null-aware element` feature in generated code.
+- Require Dart 3.8
+
+## 6.9.5
+
+- Support the `analyzer: '>=6.9.0 <8.0.0'`.
+- Fixed use of deprecated analyzer APIs.
+
+## 6.9.4
+
+- Fix extra line being generated when targeting Dart 3.7 package.
+
+## 6.9.3
+
+- Error out if the target package does not have a language version of `3.0` or 
+  greater.
+
+## 6.9.2
+
+- Support the latest `package:analyzer`.
+
+## 6.9.1
+
+- Support the latest `package:source_gen`.
+- Require Dart 3.6
+
+## 6.9.0
 
 - Use conditional map syntax to clean up `null` handling in `toJson` functions.
+- Fix core Dart type links in docs.
 - Require Dart 3.5
 
 ## 6.8.0

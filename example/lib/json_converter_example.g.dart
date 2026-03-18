@@ -17,32 +17,27 @@ Map<String, dynamic> _$DateTimeExampleToJson(DateTimeExample instance) =>
     };
 
 GenericCollection<T> _$GenericCollectionFromJson<T>(
-        Map<String, dynamic> json) =>
-    GenericCollection<T>(
-      page: (json['page'] as num?)?.toInt(),
-      totalResults: (json['total_results'] as num?)?.toInt(),
-      totalPages: (json['total_pages'] as num?)?.toInt(),
-      results: (json['results'] as List<dynamic>?)
-          ?.map(_Converter<T>().fromJson)
-          .toList(),
-    );
+  Map<String, dynamic> json,
+) => GenericCollection<T>(
+  page: (json['page'] as num?)?.toInt(),
+  totalResults: (json['total_results'] as num?)?.toInt(),
+  totalPages: (json['total_pages'] as num?)?.toInt(),
+  results: (json['results'] as List<dynamic>?)
+      ?.map(_Converter<T>().fromJson)
+      .toList(),
+);
 
 Map<String, dynamic> _$GenericCollectionToJson<T>(
-        GenericCollection<T> instance) =>
-    <String, dynamic>{
-      'page': instance.page,
-      'total_results': instance.totalResults,
-      'total_pages': instance.totalPages,
-      'results': instance.results?.map(_Converter<T>().toJson).toList(),
-    };
+  GenericCollection<T> instance,
+) => <String, dynamic>{
+  'page': instance.page,
+  'total_results': instance.totalResults,
+  'total_pages': instance.totalPages,
+  'results': instance.results?.map(_Converter<T>().toJson).toList(),
+};
 
-CustomResult _$CustomResultFromJson(Map<String, dynamic> json) => CustomResult(
-      json['name'] as String,
-      (json['size'] as num).toInt(),
-    );
+CustomResult _$CustomResultFromJson(Map<String, dynamic> json) =>
+    CustomResult(json['name'] as String, (json['size'] as num).toInt());
 
 Map<String, dynamic> _$CustomResultToJson(CustomResult instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'size': instance.size,
-    };
+    <String, dynamic>{'name': instance.name, 'size': instance.size};

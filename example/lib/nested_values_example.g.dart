@@ -8,8 +8,9 @@ part of 'nested_values_example.dart';
 
 NestedValueExample _$NestedValueExampleFromJson(Map<String, dynamic> json) =>
     NestedValueExample(
-      const _NestedListConverter()
-          .fromJson(json['root_items'] as Map<String, dynamic>),
+      const _NestedListConverter().fromJson(
+        json['root_items'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$NestedValueExampleToJson(NestedValueExample instance) =>

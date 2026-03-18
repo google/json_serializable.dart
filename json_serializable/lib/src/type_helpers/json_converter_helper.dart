@@ -5,7 +5,6 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -117,8 +116,8 @@ class _JsonConvertData {
     String accessor,
     this.jsonType,
     this.fieldType,
-  )   : accessString = 'const $className${_withAccessor(accessor)}()',
-        isGeneric = false;
+  ) : accessString = 'const $className${_withAccessor(accessor)}()',
+      isGeneric = false;
 
   _JsonConvertData.genericClass(
     String className,
@@ -126,9 +125,8 @@ class _JsonConvertData {
     String accessor,
     this.jsonType,
     this.fieldType,
-  )   : accessString =
-            '$className<$genericTypeArg>${_withAccessor(accessor)}()',
-        isGeneric = true;
+  ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()',
+      isGeneric = true;
 
   _JsonConvertData.propertyAccess(
     this.accessString,
@@ -173,14 +171,19 @@ _JsonConvertData? _typeConverter(
       .whereType<_ConverterMatch>()
       .toList();
 
-  var matchingAnnotations = converterMatches(ctx.fieldElement.metadata);
+  var matchingAnnotations = converterMatches(
+    ctx.fieldElement.getter?.metadata.annotations ?? [],
+  );
 
   if (matchingAnnotations.isEmpty) {
-    matchingAnnotations =
-        converterMatches(ctx.fieldElement.getter?.metadata ?? []);
+    matchingAnnotations = converterMatches(
+      ctx.fieldElement.metadata.annotations,
+    );
 
     if (matchingAnnotations.isEmpty) {
-      matchingAnnotations = converterMatches(ctx.classElement.metadata);
+      matchingAnnotations = converterMatches(
+        ctx.classElement.metadata.annotations,
+      );
 
       if (matchingAnnotations.isEmpty) {
         matchingAnnotations = ctx.config.converters
@@ -214,7 +217,6 @@ _JsonConvertData? _typeConverterFrom(
 
   final annotationElement = match.elementAnnotation?.element;
   if (annotationElement is PropertyAccessorElement) {
-    // ignore: deprecated_member_use
     final enclosing = annotationElement.enclosingElement;
 
     var accessString = annotationElement.name;
@@ -224,7 +226,7 @@ _JsonConvertData? _typeConverterFrom(
     }
 
     return _JsonConvertData.propertyAccess(
-      accessString,
+      accessString!,
       match.jsonType,
       match.fieldType,
     );
@@ -281,10 +283,9 @@ _ConverterMatch? _compatibleMatch(
 ) {
   final converterClassElement = constantValue.type!.element as ClassElement;
 
-  final jsonConverterSuper =
-      converterClassElement.allSupertypes.singleWhereOrNull(
-    (e) => _jsonConverterChecker.isExactly(e.element),
-  );
+  final jsonConverterSuper = converterClassElement.allSupertypes
+      .where((e) => _jsonConverterChecker.isExactly(e.element))
+      .singleOrNull;
 
   if (jsonConverterSuper == null) {
     return null;
@@ -311,10 +312,11 @@ _ConverterMatch? _compatibleMatch(
     assert(converterClassElement.typeParameters.isNotEmpty);
     if (converterClassElement.typeParameters.length > 1) {
       throw InvalidGenerationSourceError(
-          '`JsonConverter` implementations can have no more than one type '
-          'argument. `${converterClassElement.name}` has '
-          '${converterClassElement.typeParameters.length}.',
-          element: converterClassElement);
+        '`JsonConverter` implementations can have no more than one type '
+        'argument. `${converterClassElement.name}` has '
+        '${converterClassElement.typeParameters.length}.',
+        element: converterClassElement,
+      );
     }
 
     return _ConverterMatch(
@@ -329,4 +331,7 @@ _ConverterMatch? _compatibleMatch(
   return null;
 }
 
-const _jsonConverterChecker = TypeChecker.fromRuntime(JsonConverter);
+const _jsonConverterChecker = TypeChecker.typeNamed(
+  JsonConverter,
+  inPackage: 'json_annotation',
+);

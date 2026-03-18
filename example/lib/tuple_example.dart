@@ -18,14 +18,12 @@ class Tuple<T, S> {
     Map<String, dynamic> json,
     T Function(Object? json) fromJsonT,
     S Function(Object? json) fromJsonS,
-  ) =>
-      _$TupleFromJson(json, fromJsonT, fromJsonS);
+  ) => _$TupleFromJson(json, fromJsonT, fromJsonS);
 
   Map<String, dynamic> toJson(
     Object Function(T value) toJsonT,
     Object Function(S value) toJsonS,
-  ) =>
-      _$TupleToJson(this, toJsonT, toJsonS);
+  ) => _$TupleToJson(this, toJsonT, toJsonS);
 }
 
 @JsonSerializable()

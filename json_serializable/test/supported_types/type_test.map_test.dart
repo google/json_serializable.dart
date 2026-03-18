@@ -2,7 +2,6 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-// ignore_for_file: prefer_const_declarations
 @TestOn('vm')
 library;
 
@@ -28,10 +27,7 @@ void main() {
     });
 
     test('round trip null', () {
-      expect(
-        () => loudEncode(SimpleClass.fromJson({})),
-        throwsTypeError,
-      );
+      expect(() => loudEncode(SimpleClass.fromJson({})), throwsTypeError);
     });
 
     test('round trip alternate values', () {
@@ -87,24 +83,13 @@ void main() {
   }); // end nullable group
 }
 
-final _defaultValue = {'a': 1};
-final _altValue = {'b': 2};
+const _defaultValue = {'a': 1};
+const _altValue = {'b': 2};
 
-final _defaultInput = <String, Object?>{
-  'value': _defaultValue,
-};
+final _defaultInput = <String, Object?>{'value': _defaultValue};
 
-final _defaultOutput = {
-  'value': _defaultValue,
-  'withDefault': _defaultValue,
-};
+final _defaultOutput = {'value': _defaultValue, 'withDefault': _defaultValue};
 
-final _nullableDefaultOutput = {
-  'value': null,
-  'withDefault': _defaultValue,
-};
+final _nullableDefaultOutput = {'value': null, 'withDefault': _defaultValue};
 
-final _nonDefaultJson = {
-  'value': _altValue,
-  'withDefault': _altValue,
-};
+final _nonDefaultJson = {'value': _altValue, 'withDefault': _altValue};

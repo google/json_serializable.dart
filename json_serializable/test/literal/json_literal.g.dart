@@ -16,7 +16,7 @@ final _$dataJsonLiteral = [
     'vertical tab': '\v',
     'form feed': '\r',
     'carriage return': '\r',
-    'delete': '\x7F'
+    'delete': '\x7F',
   },
   'simple string',
   "'string with single quotes'",
@@ -47,8 +47,8 @@ final _$dataJsonLiteral = [
     'double': 42.0,
     'string': 'string',
     'list': [],
-    'bool': true
-  }
+    'bool': true,
+  },
 ];
 
 const _$asConstJsonLiteral = [
@@ -59,7 +59,7 @@ const _$asConstJsonLiteral = [
     'vertical tab': '\v',
     'form feed': '\r',
     'carriage return': '\r',
-    'delete': '\x7F'
+    'delete': '\x7F',
   },
   'simple string',
   "'string with single quotes'",
@@ -90,8 +90,8 @@ const _$asConstJsonLiteral = [
     'double': 42.0,
     'string': 'string',
     'list': [],
-    'bool': true
-  }
+    'bool': true,
+  },
 ];
 
 const _$naughtyStringsJsonLiteral = [
@@ -601,5 +601,5 @@ const _$naughtyStringsJsonLiteral = [
   'Roses are \x1B[0;31mred\x1B[0m, violets are \x1B[0;34mblue. Hope you enjoy terminal hue',
   'But now...\x1B[20Cfor my greatest trick...\x1B[8m',
   'The quic\b\b\b\b\b\bk brown fo\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07\x07x... [Beeeep]',
-  'Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗'
+  'Powerلُلُصّبُلُلصّبُررً ॣ ॣh ॣ ॣ冗',
 ];

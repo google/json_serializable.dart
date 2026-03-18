@@ -36,7 +36,6 @@ T checkedYamlDecode<T>(
   if (yaml is YamlMap) {
     map = yaml;
   } else if (allowNull && yaml is YamlScalar && yaml.value == null) {
-    // TODO: test this case!
     map = null;
   } else {
     throw ParsedYamlException('Not a map', yaml);
@@ -66,42 +65,36 @@ ParsedYamlException toParsedYamlException(
         ? innerError.unrecognizedKeys.first
         : exception.key;
 
-    final node = yamlMap.nodes.keys.singleWhere(
-        (k) => (k as YamlScalar).value == key,
-        orElse: () => yamlMap) as YamlNode;
+    final node =
+        yamlMap.nodes.keys.singleWhere(
+              (k) => (k as YamlScalar).value == key,
+              orElse: () => yamlMap,
+            )
+            as YamlNode;
+    return ParsedYamlException(exception.message!, node, innerError: exception);
+  }
+
+  if (exception.key == null) {
     return ParsedYamlException(
-      exception.message!,
-      node,
+      exception.message ?? 'There was an error parsing the map.',
+      yamlMap,
       innerError: exception,
     );
-  } else {
-    if (exception.key == null) {
-      return ParsedYamlException(
-        exception.message ?? 'There was an error parsing the map.',
-        yamlMap,
-        innerError: exception,
-      );
-    } else if (!yamlMap.containsKey(exception.key)) {
-      return ParsedYamlException(
-        [
-          'Missing key "${exception.key}".',
-          if (exception.message != null) exception.message!,
-        ].join(' '),
-        yamlMap,
-        innerError: exception,
-      );
-    } else {
-      var message = 'Unsupported value for "${exception.key}".';
-      if (exception.message != null) {
-        message = '$message ${exception.message}';
-      }
-      return ParsedYamlException(
-        message,
-        yamlMap.nodes[exception.key] ?? yamlMap,
-        innerError: exception,
-      );
-    }
   }
+
+  if (!yamlMap.containsKey(exception.key)) {
+    return ParsedYamlException(
+      ['Missing key "${exception.key}".', ?exception.message].join(' '),
+      yamlMap,
+      innerError: exception,
+    );
+  }
+
+  return ParsedYamlException(
+    ['Unsupported value for "${exception.key}".', ?exception.message].join(' '),
+    yamlMap.nodes[exception.key] ?? yamlMap,
+    innerError: exception,
+  );
 }
 
 /// An exception thrown when parsing YAML that contains information about the
@@ -119,16 +112,10 @@ class ParsedYamlException implements Exception {
   /// contains the source error object.
   final Object? innerError;
 
-  ParsedYamlException(
-    String message,
-    YamlNode this.yamlNode, {
-    this.innerError,
-  }) :
-        // TODO(kevmoo) remove when dart-lang/sdk#50756 is fixed!
-        message = message.replaceAll(" of ' in type cast'", ' in type cast');
+  ParsedYamlException(this.message, YamlNode this.yamlNode, {this.innerError});
 
-  factory ParsedYamlException.fromYamlException(YamlException exception) =>
-      _WrappedYamlException(exception);
+  factory ParsedYamlException.fromYamlException(YamlException exception) =
+      _WrappedYamlException;
 
   /// Returns [message] formatted with source information provided by
   /// [yamlNode].
@@ -152,7 +139,4 @@ class _WrappedYamlException implements ParsedYamlException {
 
   @override
   YamlNode? get yamlNode => null;
-
-  @override
-  String toString() => 'ParsedYamlException: $formattedMessage';
 }

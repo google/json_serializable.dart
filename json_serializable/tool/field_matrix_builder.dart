@@ -10,11 +10,13 @@ import 'package:source_helper/source_helper.dart';
 
 import 'shared.dart';
 
-Builder builder([_]) => _FieldMatrixBuilder();
+Builder builder([BuilderOptions? _]) => _FieldMatrixBuilder();
 
 class _FieldMatrixBuilder extends Builder {
   @override
   FutureOr<void> build(BuildStep buildStep) async {
+    final formatter = await buildStep.formatter();
+
     final inputBaseName = p.basenameWithoutExtension(buildStep.inputId.path);
 
     final output = buildStep.allowedOutputs.single;
@@ -30,7 +32,8 @@ part '$inputBaseName.field_matrix.g.dart';
     for (var isPublic in [true, false]) {
       for (var includeToJson in [null, true, false]) {
         for (var includeFromJson in [null, true, false]) {
-          final className = 'ToJson${includeToJson.toString().pascal}'
+          final className =
+              'ToJson${includeToJson.toString().pascal}'
               'FromJson${includeFromJson.toString().pascal}'
               '${isPublic ? 'Public' : 'Private'}';
 
@@ -44,8 +47,9 @@ part '$inputBaseName.field_matrix.g.dart';
             if (!isPublic) "name: 'field'",
           ];
 
-          final fieldAnnotation =
-              bits.isEmpty ? '' : '@JsonKey(${bits.join()})';
+          final fieldAnnotation = bits.isEmpty
+              ? ''
+              : '@JsonKey(${bits.join()})';
 
           content.writeln('''
 @JsonSerializable()
@@ -83,6 +87,6 @@ const fromJsonFactories = <Object Function(Map<String, dynamic>)>{
 
   @override
   Map<String, List<String>> get buildExtensions => const {
-        '.dart': ['.field_matrix.dart'],
-      };
+    '.dart': ['.field_matrix.dart'],
+  };
 }

@@ -12,9 +12,7 @@ import 'json_test_common.dart';
 
 part 'json_test_example.g_any_map.g.dart';
 
-@JsonSerializable(
-  anyMap: true,
-)
+@JsonSerializable(anyMap: true)
 class Person {
   final String firstName, lastName;
   final String? middleName;
@@ -29,8 +27,13 @@ class Person {
   Map<String, Category>? houseMap;
   Map<Category, int>? categoryCounts;
 
-  Person(this.firstName, this.lastName, this.house,
-      {this.middleName, this.dateOfBirth});
+  Person(
+    this.firstName,
+    this.lastName,
+    this.house, {
+    this.middleName,
+    this.dateOfBirth,
+  });
 
   factory Person.fromJson(Map<String, dynamic> json) => _$PersonFromJson(json);
 
@@ -84,8 +87,9 @@ class Order {
   bool? shouldBeCached;
 
   Order.custom(this.category, [Iterable<Item>? items])
-      : items = UnmodifiableListView<Item>(
-            List<Item>.unmodifiable(items ?? const <Item>[]));
+    : items = UnmodifiableListView<Item>(
+        List<Item>.unmodifiable(items ?? const <Item>[]),
+      );
 
   factory Order.fromJson(Map<String, dynamic> json) => _$OrderFromJson(json);
 
@@ -100,9 +104,7 @@ class Order {
       deepEquals(altPlatforms, other.altPlatforms);
 }
 
-@JsonSerializable(
-  anyMap: true,
-)
+@JsonSerializable(anyMap: true)
 class Item extends ItemCore {
   @JsonKey(includeIfNull: false, name: 'item-number')
   int? itemNumber;
@@ -148,9 +150,7 @@ class GeoPoint {
   GeoPoint(this.latitude, this.longitude);
 }
 
-@JsonSerializable(
-  anyMap: true,
-)
+@JsonSerializable(anyMap: true)
 class Numbers {
   List<int>? ints;
   List<num>? nums;
@@ -185,9 +185,7 @@ class Numbers {
       deepEquals(date, other.date);
 }
 
-@JsonSerializable(
-  anyMap: true,
-)
+@JsonSerializable(anyMap: true)
 class MapKeyVariety {
   Map<int, int>? intIntMap;
   Map<Uri, int>? uriIntMap;
@@ -258,9 +256,7 @@ mixin RegressionTestIssue1210Mixin {
   int get hashCode => identityHashCode(this);
 }
 
-@JsonSerializable(
-  anyMap: true,
-)
+@JsonSerializable(anyMap: true)
 class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
   const RegressionTestIssue1210(this.field);
 
@@ -269,4 +265,35 @@ class RegressionTestIssue1210 with RegressionTestIssue1210Mixin {
   final String field;
 
   Map<String, dynamic> toJson() => _$RegressionTestIssue1210ToJson(this);
+}
+
+@JsonSerializable(anyMap: true)
+class CustomList extends ListBase<String> {
+  // Regression test for issue:
+  // https://github.com/google/json_serializable.dart/issues/1512
+
+  final List<String> _innerList = [];
+
+  CustomList();
+
+  @override
+  int get length => _innerList.length;
+
+  @override
+  set length(int newLength) {
+    _innerList.length = newLength;
+  }
+
+  @override
+  String operator [](int index) => _innerList[index];
+
+  @override
+  void operator []=(int index, String value) {
+    _innerList[index] = value;
+  }
+
+  factory CustomList.fromJson(Map<String, dynamic> json) =>
+      _$CustomListFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CustomListToJson(this);
 }

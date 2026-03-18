@@ -10,9 +10,7 @@ part 'input.type_duration.g.dart';
 class SimpleClass {
   final Duration value;
 
-  SimpleClass(
-    this.value,
-  );
+  SimpleClass(this.value);
 
   factory SimpleClass.fromJson(Map<String, Object?> json) =>
       _$SimpleClassFromJson(json);
@@ -24,9 +22,7 @@ class SimpleClass {
 class SimpleClassNullable {
   final Duration? value;
 
-  SimpleClassNullable(
-    this.value,
-  );
+  SimpleClassNullable(this.value);
 
   factory SimpleClassNullable.fromJson(Map<String, Object?> json) =>
       _$SimpleClassNullableFromJson(json);

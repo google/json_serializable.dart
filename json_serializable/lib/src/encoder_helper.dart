@@ -6,7 +6,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:source_helper/source_helper.dart';
 
-import 'constants.dart';
 import 'enum_utils.dart';
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -14,18 +13,20 @@ import 'type_helpers/json_converter_helper.dart';
 import 'unsupported_type_error.dart';
 
 mixin EncodeHelper implements HelperCore {
-  String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name}';
+  String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name!}';
 
   String createPerFieldToJson(Set<FieldElement> accessibleFieldSet) {
     final buffer = StringBuffer()
       ..writeln('// ignore: unused_element')
-      ..writeln('abstract class _\$${element.name.nonPrivate}PerFieldToJson {');
+      ..writeln(
+        'abstract class _\$${element.name!.nonPrivate}PerFieldToJson {',
+      );
 
     for (final field in accessibleFieldSet) {
       buffer
         ..writeln('  // ignore: unused_element')
         ..write(
-          'static Object? ${field.name}'
+          'static Object? ${field.name!}'
           '${genericClassArgumentsImpl(withConstraints: true)}'
           '(${field.type} $_toJsonParamName',
         );
@@ -48,12 +49,12 @@ mixin EncodeHelper implements HelperCore {
     assert(config.createFieldMap);
 
     final buffer = StringBuffer(
-      'const _\$${element.name.nonPrivate}FieldMap = <String, String> {',
+      'const _\$${element.name!.nonPrivate}FieldMap = <String, String> {',
     );
 
     for (final field in accessibleFieldSet) {
       buffer.writeln(
-        '${escapeDartString(field.name)}: '
+        '${escapeDartString(field.name!)}: '
         '${escapeDartString(nameAccess(field))},',
       );
     }
@@ -69,7 +70,7 @@ mixin EncodeHelper implements HelperCore {
     assert(config.createJsonKeys);
 
     final buffer = StringBuffer(
-      'abstract final class _\$${element.name.nonPrivate}JsonKeys {',
+      'abstract final class _\$${element.name!.nonPrivate}JsonKeys {',
     );
     // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
 
@@ -92,26 +93,29 @@ mixin EncodeHelper implements HelperCore {
 
     final functionName =
         '${prefix}ToJson${genericClassArgumentsImpl(withConstraints: true)}';
-    buffer.write('Map<String, dynamic> '
-        '$functionName($targetClassReference $_toJsonParamName');
+    buffer.write(
+      'Map<String, dynamic> '
+      '$functionName($targetClassReference $_toJsonParamName',
+    );
 
     if (config.genericArgumentFactories) _writeGenericArgumentFactories(buffer);
 
     buffer
       ..write(') ')
       ..writeln('=> <String, dynamic>{')
-      ..writeAll(accessibleFields.map((field) {
-        final access = _fieldAccess(field);
+      ..writeAll(
+        accessibleFields.map((field) {
+          final access = _fieldAccess(field);
 
-        final keyExpression = safeNameAccess(field);
-        final valueExpression = _serializeField(field, access);
+          final keyExpression = safeNameAccess(field);
+          final valueExpression = _serializeField(field, access);
 
-        final keyValuePair = _canWriteJsonWithoutNullCheck(field)
-            ? '$keyExpression: $valueExpression'
-            : 'if ($valueExpression case final $generatedLocalVarName?) '
-                '$keyExpression: $generatedLocalVarName';
-        return '        $keyValuePair,\n';
-      }))
+          final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
+
+          final keyValuePair = '$keyExpression: $maybeQuestion$valueExpression';
+          return '        $keyValuePair,\n';
+        }),
+      )
       ..writeln('};');
 
     yield buffer.toString();
@@ -133,9 +137,9 @@ mixin EncodeHelper implements HelperCore {
 
   String _serializeField(FieldElement field, String accessExpression) {
     try {
-      return getHelperContext(field)
-          .serialize(field.type, accessExpression)
-          .toString();
+      return getHelperContext(
+        field,
+      ).serialize(field.type, accessExpression).toString();
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);
@@ -158,8 +162,10 @@ mixin EncodeHelper implements HelperCore {
       return !serializeConvertData.returnType.isNullableType;
     }
 
-    final nullableEncodeConverter =
-        hasConverterNullEncode(field.type, helperContext);
+    final nullableEncodeConverter = hasConverterNullEncode(
+      field.type,
+      helperContext,
+    );
 
     if (nullableEncodeConverter != null) {
       return !nullableEncodeConverter && !field.type.isNullableType;

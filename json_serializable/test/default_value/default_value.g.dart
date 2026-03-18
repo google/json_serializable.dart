@@ -9,62 +9,62 @@ part of 'default_value.dart';
 // **************************************************************************
 
 DefaultValue _$DefaultValueFromJson(Map<String, dynamic> json) => DefaultValue(
-      json['fieldBool'] as bool? ?? true,
-      json['fieldString'] as String? ?? 'string',
-      (json['fieldInt'] as num?)?.toInt() ?? 42,
-      (json['fieldDouble'] as num?)?.toDouble() ?? 3.14,
-      json['fieldListEmpty'] as List<dynamic>? ?? [],
-      (json['fieldSetEmpty'] as List<dynamic>?)?.toSet() ?? {},
-      json['fieldMapEmpty'] as Map<String, dynamic>? ?? {},
-      (json['fieldListSimple'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
-              .toList() ??
-          [1, 2, 3],
-      (json['fieldSetSimple'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toSet() ??
-          {'entry1', 'entry2'},
-      (json['fieldMapSimple'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(k, (e as num).toInt()),
-          ) ??
-          {'answer': 42},
-      (json['fieldMapListString'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(
-                k, (e as List<dynamic>).map((e) => e as String).toList()),
-          ) ??
-          {
-            'root': ['child']
-          },
-      $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
-      durationField: json['durationField'] == null
-          ? Duration.zero
-          : Duration(microseconds: (json['durationField'] as num).toInt()),
-      constClass: json['constClass'] == null
-          ? const ConstClass('value')
-          : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
-      valueFromConverter: json['valueFromConverter'] == null
-          ? const ConstClass('value')
-          : const ConstClassConverter()
-              .fromJson(json['valueFromConverter'] as String),
-      valueFromFunction: json['valueFromFunction'] == null
-          ? const ConstClass('value')
-          : constClassFromJson(json['valueFromFunction'] as String),
-      intDefaultValueFromFunction:
-          (json['intDefaultValueFromFunction'] as num?)?.toInt() ??
-              intDefaultValueFunction(),
-      valueFromDefaultValueDefaultConstructor:
-          json['valueFromDefaultValueDefaultConstructor'] == null
-              ? const ConstClass()
-              : ConstClass.fromJson(
-                  json['valueFromDefaultValueDefaultConstructor']
-                      as Map<String, dynamic>),
-      valueFromDefaultValueNamedConstructor:
-          json['valueFromDefaultValueNamedConstructor'] == null
-              ? ConstClass.easy()
-              : ConstClass.fromJson(
-                  json['valueFromDefaultValueNamedConstructor']
-                      as Map<String, dynamic>),
-    );
+  json['fieldBool'] as bool? ?? true,
+  json['fieldString'] as String? ?? 'string',
+  (json['fieldInt'] as num?)?.toInt() ?? 42,
+  (json['fieldDouble'] as num?)?.toDouble() ?? 3.14,
+  json['fieldListEmpty'] as List<dynamic>? ?? [],
+  (json['fieldSetEmpty'] as List<dynamic>?)?.toSet() ?? {},
+  json['fieldMapEmpty'] as Map<String, dynamic>? ?? {},
+  (json['fieldListSimple'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      [1, 2, 3],
+  (json['fieldSetSimple'] as List<dynamic>?)?.map((e) => e as String).toSet() ??
+      {'entry1', 'entry2'},
+  (json['fieldMapSimple'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, (e as num).toInt()),
+      ) ??
+      {'answer': 42},
+  (json['fieldMapListString'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, (e as List<dynamic>).map((e) => e as String).toList()),
+      ) ??
+      {
+        'root': ['child'],
+      },
+  $enumDecodeNullable(_$GreekEnumMap, json['fieldEnum']) ?? Greek.beta,
+  durationField: json['durationField'] == null
+      ? Duration.zero
+      : Duration(microseconds: (json['durationField'] as num).toInt()),
+  constClass: json['constClass'] == null
+      ? const ConstClass('value')
+      : ConstClass.fromJson(json['constClass'] as Map<String, dynamic>),
+  valueFromConverter: json['valueFromConverter'] == null
+      ? const ConstClass('value')
+      : const ConstClassConverter().fromJson(
+          json['valueFromConverter'] as String,
+        ),
+  valueFromFunction: json['valueFromFunction'] == null
+      ? const ConstClass('value')
+      : constClassFromJson(json['valueFromFunction'] as String),
+  intDefaultValueFromFunction:
+      (json['intDefaultValueFromFunction'] as num?)?.toInt() ??
+      intDefaultValueFunction(),
+  valueFromDefaultValueDefaultConstructor:
+      json['valueFromDefaultValueDefaultConstructor'] == null
+      ? const ConstClass()
+      : ConstClass.fromJson(
+          json['valueFromDefaultValueDefaultConstructor']
+              as Map<String, dynamic>,
+        ),
+  valueFromDefaultValueNamedConstructor:
+      json['valueFromDefaultValueNamedConstructor'] == null
+      ? ConstClass.easy()
+      : ConstClass.fromJson(
+          json['valueFromDefaultValueNamedConstructor'] as Map<String, dynamic>,
+        ),
+);
 
 Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
     <String, dynamic>{
@@ -82,8 +82,9 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'durationField': instance.durationField.inMicroseconds,
       'fieldEnum': _$GreekEnumMap[instance.fieldEnum]!,
       'constClass': instance.constClass,
-      'valueFromConverter':
-          const ConstClassConverter().toJson(instance.valueFromConverter),
+      'valueFromConverter': const ConstClassConverter().toJson(
+        instance.valueFromConverter,
+      ),
       'valueFromFunction': constClassToJson(instance.valueFromFunction),
       'intDefaultValueFromFunction': instance.intDefaultValueFromFunction,
       'valueFromDefaultValueDefaultConstructor':

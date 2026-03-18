@@ -19,18 +19,18 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.repository_owner == 'google' }}
     steps:
-      - uses: actions/stale@28ca1036281a5e5922ead5184a1bbf96e5fc984e
+      - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f
         with:
           # Don't automatically mark inactive issues+PRs as stale.
           days-before-stale: -1
           # Close needs-info issues and PRs after 14 days of inactivity.
           days-before-close: 14
-          stale-issue-label: "needs-info"
+          stale-issue-label: "State: needs info"
           close-issue-message: >
             Without additional information we're not able to resolve this issue.
             Feel free to add more info or respond to any questions above and we
             can reopen the case. Thanks for your contribution!
-          stale-pr-label: "needs-info"
+          stale-pr-label: "State: needs info"
           close-pr-message: >
             Without additional information we're not able to resolve this PR.
             Feel free to add more info or respond to any questions above.

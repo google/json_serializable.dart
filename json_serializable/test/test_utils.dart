@@ -6,5 +6,7 @@ import 'package:collection/collection.dart';
 
 export 'package:_json_serial_shared_test/shared_test.dart';
 
+int deepHash(List value) => const DeepCollectionEquality().hash(value);
+
 bool deepEquals(dynamic a, dynamic b) =>
     const DeepCollectionEquality().equals(a, b);

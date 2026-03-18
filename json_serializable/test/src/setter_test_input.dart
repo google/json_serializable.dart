@@ -1,3 +1,5 @@
+// @dart=3.8
+
 part of '_json_serializable_test_input.dart';
 
 @ShouldGenerate(
@@ -29,8 +31,8 @@ class JustSetterNoToJson {
 @ShouldGenerate(
   r'''
 Map<String, dynamic> _$JustSetterNoFromJsonToJson(
-        JustSetterNoFromJson instance) =>
-    <String, dynamic>{};
+  JustSetterNoFromJson instance,
+) => <String, dynamic>{};
 ''',
   expectedLogItems: ['Setters are ignored: JustSetterNoFromJson.someSetter'],
 )

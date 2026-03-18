@@ -22,7 +22,8 @@ class JsonSerializableGenerator
 
   JsonSerializable get config => _settings.config.toJsonSerializable();
 
-  JsonSerializableGenerator.fromSettings(this._settings);
+  JsonSerializableGenerator.fromSettings(this._settings)
+    : super(inPackage: 'json_annotation');
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -32,11 +33,9 @@ class JsonSerializableGenerator
   factory JsonSerializableGenerator({
     JsonSerializable? config,
     List<TypeHelper>? typeHelpers,
-  }) =>
-      JsonSerializableGenerator.fromSettings(Settings(
-        config: config,
-        typeHelpers: typeHelpers,
-      ));
+  }) => JsonSerializableGenerator.fromSettings(
+    Settings(config: config, typeHelpers: typeHelpers),
+  );
 
   /// Creates an instance of [JsonSerializableGenerator].
   ///
@@ -47,13 +46,12 @@ class JsonSerializableGenerator
   factory JsonSerializableGenerator.withDefaultHelpers(
     Iterable<TypeHelper> typeHelpers, {
     JsonSerializable? config,
-  }) =>
-      JsonSerializableGenerator(
-        config: config,
-        typeHelpers: List.unmodifiable(
-          typeHelpers.followedBy(Settings.defaultHelpers),
-        ),
-      );
+  }) => JsonSerializableGenerator(
+    config: config,
+    typeHelpers: List.unmodifiable(
+      typeHelpers.followedBy(Settings.defaultHelpers),
+    ),
+  );
 
   @override
   Iterable<String> generateForAnnotatedElement(

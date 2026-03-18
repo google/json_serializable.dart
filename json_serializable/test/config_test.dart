@@ -18,8 +18,10 @@ import 'shared_config.dart';
 
 void main() {
   test('fields in JsonSerializable are sorted', () {
-    expect(generatorConfigDefaultJson.keys,
-        orderedEquals(generatorConfigDefaultJson.keys.toList()..sort()));
+    expect(
+      generatorConfigDefaultJson.keys,
+      orderedEquals(generatorConfigDefaultJson.keys.toList()..sort()),
+    );
   });
 
   test('empty', () async {
@@ -28,29 +30,42 @@ void main() {
   });
 
   test('valid default config', () async {
-    final builder =
-        jsonSerializable(BuilderOptions(generatorConfigDefaultJson));
+    final builder = jsonSerializable(
+      BuilderOptions(generatorConfigDefaultJson),
+    );
     expect(builder, isNotNull);
   });
 
+  test('triggers config is ignored', () async {
+    // This key is used by build_runner so it's meaningful for any builder,
+    // check it doesn't cause json_serializable's config validation to throw.
+    jsonSerializable(const BuilderOptions({'run_only_if_triggered': true}));
+  });
+
   test('valid, non-default config', () {
-    expect(generatorConfigNonDefaultJson.keys,
-        unorderedEquals(generatorConfigDefaultJson.keys));
+    expect(
+      generatorConfigNonDefaultJson.keys,
+      unorderedEquals(generatorConfigDefaultJson.keys),
+    );
 
     for (var entry in generatorConfigDefaultJson.entries) {
-      expect(generatorConfigNonDefaultJson,
-          containsPair(entry.key, isNot(entry.value)),
-          reason: 'should have values that are different than the defaults');
+      expect(
+        generatorConfigNonDefaultJson,
+        containsPair(entry.key, isNot(entry.value)),
+        reason: 'should have values that are different than the defaults',
+      );
     }
 
-    final builder =
-        jsonSerializable(BuilderOptions(generatorConfigNonDefaultJson));
+    final builder = jsonSerializable(
+      BuilderOptions(generatorConfigNonDefaultJson),
+    );
     expect(builder, isNotNull);
   });
 
   test('config is null-protected when passed to JsonSerializableGenerator', () {
     final nullValueMap = Map.fromEntries(
-        generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)));
+      generatorConfigDefaultJson.entries.map((e) => MapEntry(e.key, null)),
+    );
     final config = JsonSerializable.fromJson(nullValueMap);
     final generator = JsonSerializableGenerator(config: config);
     expect(generator.config.toJson(), generatorConfigDefaultJson);
@@ -71,7 +86,7 @@ void main() {
       r'$default',
       'builders',
       'json_serializable',
-      'options'
+      'options',
     ]) {
       yaml = yaml[key] as YamlMap;
     }
@@ -81,7 +96,8 @@ void main() {
     expect(
       configMap.keys,
       unorderedEquals(generatorConfigDefaultJson.keys),
-      reason: 'All supported keys are documented. '
+      reason:
+          'All supported keys are documented. '
           'Did you forget to change README.md?',
     );
 
@@ -104,8 +120,9 @@ void main() {
     );
 
     expect(
-        () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
-        throwsA(matcher));
+      () => jsonSerializable(const BuilderOptions({'unsupported': 'config'})),
+      throwsA(matcher),
+    );
   });
 
   group('invalid config', () {
@@ -128,7 +145,7 @@ void main() {
           'create_to_json' =>
             "type 'int' is not a subtype of type 'bool?' in type "
                 'cast',
-          _ => "type 'int' is not a subtype of type 'bool?' in type cast"
+          _ => "type 'int' is not a subtype of type 'bool?' in type cast",
         };
 
         final matcher = isA<StateError>().having(
@@ -140,7 +157,9 @@ There is a problem with "${entry.key}".
 $lastLine''',
         );
         expect(
-            () => jsonSerializable(BuilderOptions(config)), throwsA(matcher));
+          () => jsonSerializable(BuilderOptions(config)),
+          throwsA(matcher),
+        );
       });
     }
   });
@@ -154,8 +173,10 @@ const _invalidConfig = {
   'create_factory': 42,
   'create_field_map': 42,
   'create_json_keys': 42,
+  'create_json_schema': 42,
   'create_per_field_to_json': 42,
   'create_to_json': 42,
+  'date_time_utc': 42,
   'disallow_unrecognized_keys': 42,
   'explicit_to_json': 42,
   'field_rename': 42,

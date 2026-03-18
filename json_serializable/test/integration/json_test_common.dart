@@ -16,7 +16,7 @@ enum Category {
   down,
   // NOTE: this should override the kebab bits below!
   @JsonValue('not_discovered_yet')
-  notDiscoveredYet
+  notDiscoveredYet,
 }
 
 enum StatusCode {
@@ -57,10 +57,10 @@ class Platform {
   const Platform._(this.description);
 
   factory Platform.fromJson(String value) => switch (value) {
-        'foo' => foo,
-        'undefined' => undefined,
-        _ => throw ArgumentError.value(value, 'value', 'Not a supported value.')
-      };
+    'foo' => foo,
+    'undefined' => undefined,
+    _ => throw ArgumentError.value(value, 'value', 'Not a supported value.'),
+  };
 
   String toJson() => description;
 }

@@ -105,6 +105,12 @@ class JsonSerializable {
   /// ```
   final bool? createJsonKeys;
 
+  /// If `true` (defaults to false), a top-level constant `_$ExampleJsonSchema`
+  /// will be created in the generated part file.
+  ///
+  /// This constant will contain the JSON schema for the class.
+  final bool? createJsonSchema;
+
   /// If `true` (defaults to false), a private, static `_$ExamplePerFieldToJson`
   /// abstract class will be generated in the part file.
   ///
@@ -122,6 +128,13 @@ class JsonSerializable {
   /// }
   /// ```
   final bool? createToJson;
+
+  /// Whether the generator should use UTC time for [DateTime] fields.
+  ///
+  /// If `true`, all [DateTime] fields are written to JSON in UTC using
+  /// `DateTime.toUtc().toIso8601String()`.
+  /// If `false` (the default), `DateTime.toIso8601String()` is used.
+  final bool? dateTimeUtc;
 
   /// If `false` (the default), then the generated `FromJson` function will
   /// ignore unrecognized keys in the provided JSON [Map].
@@ -266,6 +279,7 @@ class JsonSerializable {
     this.constructor,
     this.createFieldMap,
     this.createJsonKeys,
+    this.createJsonSchema,
     this.createFactory,
     this.createToJson,
     this.disallowUnrecognizedKeys,
@@ -276,6 +290,7 @@ class JsonSerializable {
     this.converters,
     this.genericArgumentFactories,
     this.createPerFieldToJson,
+    this.dateTimeUtc,
   });
 
   factory JsonSerializable.fromJson(Map<String, dynamic> json) =>
@@ -305,20 +320,20 @@ class JsonSerializable {
   /// [defaults].
   @Deprecated('Was only ever included to support builder infrastructure.')
   JsonSerializable withDefaults() => JsonSerializable(
-        anyMap: anyMap ?? defaults.anyMap,
-        checked: checked ?? defaults.checked,
-        constructor: constructor ?? defaults.constructor,
-        createFactory: createFactory ?? defaults.createFactory,
-        createToJson: createToJson ?? defaults.createToJson,
-        disallowUnrecognizedKeys:
-            disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
-        explicitToJson: explicitToJson ?? defaults.explicitToJson,
-        fieldRename: fieldRename ?? defaults.fieldRename,
-        ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
-        includeIfNull: includeIfNull ?? defaults.includeIfNull,
-        genericArgumentFactories:
-            genericArgumentFactories ?? defaults.genericArgumentFactories,
-      );
+    anyMap: anyMap ?? defaults.anyMap,
+    checked: checked ?? defaults.checked,
+    constructor: constructor ?? defaults.constructor,
+    createFactory: createFactory ?? defaults.createFactory,
+    createToJson: createToJson ?? defaults.createToJson,
+    disallowUnrecognizedKeys:
+        disallowUnrecognizedKeys ?? defaults.disallowUnrecognizedKeys,
+    explicitToJson: explicitToJson ?? defaults.explicitToJson,
+    fieldRename: fieldRename ?? defaults.fieldRename,
+    ignoreUnannotated: ignoreUnannotated ?? defaults.ignoreUnannotated,
+    includeIfNull: includeIfNull ?? defaults.includeIfNull,
+    genericArgumentFactories:
+        genericArgumentFactories ?? defaults.genericArgumentFactories,
+  );
 
   Map<String, dynamic> toJson() => _$JsonSerializableToJson(this);
 }

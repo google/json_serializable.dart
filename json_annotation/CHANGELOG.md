@@ -1,6 +1,15 @@
-## 4.9.1-wip
+## 4.11.0
 
-- Require Dart 3.5
+- Add `JsonSerializable.dateTimeUtc` configuration option. 
+  ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
+
+## 4.10.0
+
+- Support `JsonKey` annotation on constructor parameters.
+- Add `JsonSerializable(createJsonSchema: true)`.
+  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
+- Require `meta: ^1.16.0`
+- Require `sdk: ^3.9.0`
 
 ## 4.9.0
 

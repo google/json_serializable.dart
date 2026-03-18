@@ -24,14 +24,14 @@ class _NestedListConverter
 
   @override
   List<String> fromJson(Map<String, dynamic> json) => [
-        for (var e in json['items'] as List)
-          (e as Map<String, dynamic>)['name'] as String
-      ];
+    for (var e in json['items'] as List)
+      (e as Map<String, dynamic>)['name'] as String,
+  ];
 
   @override
   Map<String, dynamic> toJson(List<String> object) => {
-        'items': [
-          for (var item in object) {'name': item}
-        ]
-      };
+    'items': [
+      for (var item in object) {'name': item},
+    ],
+  };
 }

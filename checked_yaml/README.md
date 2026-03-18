@@ -1,7 +1,7 @@
 [![Pub Package](https://img.shields.io/pub/v/checked_yaml.svg)](https://pub.dev/packages/checked_yaml)
 
 `package:checked_yaml` provides a `checkedYamlDecode` function that wraps the
-the creation of classes annotated for [`package:json_serializable`] it helps
+creation of classes annotated for [`package:json_serializable`] it helps
 provide more helpful exceptions when the provided YAML is not compatible with
 the target type.
 
@@ -10,11 +10,7 @@ the target type.
 for the class annotation.
 
 ```dart
-@JsonSerializable(
-  anyMap: true,
-  checked: true,
-  disallowUnrecognizedKeys: true,
-)
+@JsonSerializable(anyMap: true, checked: true, disallowUnrecognizedKeys: true)
 class Configuration {
   @JsonKey(required: true)
   final String name;
