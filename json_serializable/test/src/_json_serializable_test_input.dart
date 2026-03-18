@@ -680,7 +680,7 @@ class RecordConverter2 extends JsonConverter<(int, int), Map<String, dynamic>> {
 @JsonSerializable()
 @RecordConverter1()
 @RecordConverter2()
-class DoubleConverter {
+class RecordDoubleConverter {
   late (int, int) record;
 }
 
@@ -706,7 +706,7 @@ class SingleRecordConverter2
 @JsonSerializable()
 @SingleRecordConverter1()
 @SingleRecordConverter2()
-class SingleDoubleConverter {
+class RecordSingleDoubleConverter {
   late (int,) record;
 }
 
@@ -732,7 +732,7 @@ class NullableRecordConverter2
 @JsonSerializable()
 @NullableRecordConverter1()
 @NullableRecordConverter2()
-class NullableDoubleConverter {
+class RecordNullableDoubleConverter {
   late (int, int)? record;
 }
 
@@ -758,6 +758,6 @@ class NamedRecordConverter2
 @JsonSerializable()
 @NamedRecordConverter1()
 @NamedRecordConverter2()
-class NamedDoubleConverter {
+class RecordNamedDoubleConverter {
   late ({int a, int b}) record;
 }
