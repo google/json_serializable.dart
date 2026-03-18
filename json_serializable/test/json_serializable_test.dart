@@ -153,6 +153,7 @@ const _expectedAnnotatedTests = {
   'UnsupportedEnum',
   'UnsupportedListField',
   'UnsupportedMapField',
+  'UnsupportedNestedFunctionType',
   'UnsupportedSetField',
   'UnsupportedUriField',
   'ValidToFromFuncClassStatic',

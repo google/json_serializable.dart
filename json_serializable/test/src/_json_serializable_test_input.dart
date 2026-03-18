@@ -626,3 +626,10 @@ class DateTimeUtcTestClass {
 
   DateTimeUtcTestClass(this.date);
 }
+
+@ShouldThrow('''
+Could not generate `fromJson` code for `field` because type is unimplemented (UnimplementedError: (FunctionTypeImpl) void Function()).''')
+@JsonSerializable(createToJson: false)
+class UnsupportedNestedFunctionType {
+  late List<void Function()> field;
+}
