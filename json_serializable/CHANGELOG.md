@@ -1,5 +1,8 @@
 ## 6.13.1-wip
 
+- Improve error message when generating code for `Record` types with unsupported
+  fields.
+  ([#1559](https://github.com/google/json_serializable.dart/issues/1559))
 - Require `analyzer: ^10.0.0`
 - Require `build: ^4.0.4`
 - Require `dart_style: ^3.1.4`
@@ -8,9 +11,6 @@
 
 ## 6.13.0
 
-- Improve error message when generating code for `Record` types with unsupported
-  fields.
-  ([#1559](https://github.com/google/json_serializable.dart/issues/1559))
 - Fix schema generation for many different types of fields. 
   ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
 - Support `JsonSerializable.dateTimeUtc` configuration option. 
