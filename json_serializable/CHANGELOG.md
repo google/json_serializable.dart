@@ -1,4 +1,12 @@
-## 6.13.0-wip
+## 6.13.1-wip
+
+- Require `analyzer: ^10.0.0`
+- Require `build: ^4.0.4`
+- Require `dart_style: ^3.1.4`
+- Require `source_gen: ^4.1.2`
+- Require `source_helper: ^1.3.10`
+
+## 6.13.0
 
 - Improve error message when generating code for `Record` types with unsupported
   fields.
