@@ -79,8 +79,9 @@ $converterOrKeyInstructions
   } else if (field.type != error.type) {
     try {
       message = '$message because of type `${typeToCode(error.type)}`';
+      // ignore: avoid_catching_errors
     } on UnimplementedError catch (ex) {
-      message = '$message because type is Unimplemented ($ex)';
+      message = '$message because type is unimplemented ($ex)';
     }
   } else {
     final element = error.type.element?.name;
