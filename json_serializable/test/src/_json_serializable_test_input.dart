@@ -763,8 +763,16 @@ class RecordNamedDoubleConverter {
 }
 
 @ShouldThrow('''
-Could not generate `fromJson` code for `field` because type is unimplemented (UnimplementedError: (FunctionTypeImpl) void Function()).''')
+Could not generate `fromJson` code for `field` because of type `void Function()`.''')
 @JsonSerializable(createToJson: false)
 class UnsupportedNestedFunctionType {
   late List<void Function()> field;
+}
+
+@ShouldThrow('''
+Could not generate `fromJson` code for `map` because of type `(int, int)`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''')
+@JsonSerializable(createToJson: false)
+class UnsupportedMapKeyRecord {
+  late Map<(int, int), String> map;
 }
