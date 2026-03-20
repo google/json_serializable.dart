@@ -627,9 +627,152 @@ class DateTimeUtcTestClass {
   DateTimeUtcTestClass(this.date);
 }
 
+@ShouldThrow(
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
+)
+@JsonSerializable()
+class RecordWithFunction {
+  final (int, void Function()) record;
+
+  RecordWithFunction(this.record);
+}
+
+@ShouldThrow(
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
+)
+@JsonSerializable()
+class RecordWithNamedFunction {
+  final ({int a, void Function() b}) record;
+
+  RecordWithNamedFunction(this.record);
+}
+
+@ShouldThrow(
+  'Could not generate `fromJson` code for `record` because of type '
+  '`void Function()`.',
+)
+@JsonSerializable()
+class RecordWithSinglePositionalFunction {
+  final (void Function(),) record;
+
+  RecordWithSinglePositionalFunction(this.record);
+}
+
+class RecordConverter1 extends JsonConverter<(int, int), Map<String, dynamic>> {
+  const RecordConverter1();
+  @override
+  (int, int) fromJson(Map<String, dynamic> json) => (0, 0);
+  @override
+  Map<String, dynamic> toJson((int, int) object) => {};
+}
+
+class RecordConverter2 extends JsonConverter<(int, int), Map<String, dynamic>> {
+  const RecordConverter2();
+  @override
+  (int, int) fromJson(Map<String, dynamic> json) => (0, 0);
+  @override
+  Map<String, dynamic> toJson((int, int) object) => {};
+}
+
+@ShouldThrow('Found more than one matching converter for `(int, int)`.')
+@JsonSerializable()
+@RecordConverter1()
+@RecordConverter2()
+class RecordDoubleConverter {
+  late (int, int) record;
+}
+
+class SingleRecordConverter1
+    extends JsonConverter<(int,), Map<String, dynamic>> {
+  const SingleRecordConverter1();
+  @override
+  (int,) fromJson(Map<String, dynamic> json) => (0,);
+  @override
+  Map<String, dynamic> toJson((int,) object) => {};
+}
+
+class SingleRecordConverter2
+    extends JsonConverter<(int,), Map<String, dynamic>> {
+  const SingleRecordConverter2();
+  @override
+  (int,) fromJson(Map<String, dynamic> json) => (0,);
+  @override
+  Map<String, dynamic> toJson((int,) object) => {};
+}
+
+@ShouldThrow('Found more than one matching converter for `(int,)`.')
+@JsonSerializable()
+@SingleRecordConverter1()
+@SingleRecordConverter2()
+class RecordSingleDoubleConverter {
+  late (int,) record;
+}
+
+class NullableRecordConverter1
+    extends JsonConverter<(int, int)?, Map<String, dynamic>> {
+  const NullableRecordConverter1();
+  @override
+  (int, int)? fromJson(Map<String, dynamic> json) => null;
+  @override
+  Map<String, dynamic> toJson((int, int)? object) => {};
+}
+
+class NullableRecordConverter2
+    extends JsonConverter<(int, int)?, Map<String, dynamic>> {
+  const NullableRecordConverter2();
+  @override
+  (int, int)? fromJson(Map<String, dynamic> json) => null;
+  @override
+  Map<String, dynamic> toJson((int, int)? object) => {};
+}
+
+@ShouldThrow('Found more than one matching converter for `(int, int)?`.')
+@JsonSerializable()
+@NullableRecordConverter1()
+@NullableRecordConverter2()
+class RecordNullableDoubleConverter {
+  late (int, int)? record;
+}
+
+class NamedRecordConverter1
+    extends JsonConverter<({int a, int b}), Map<String, dynamic>> {
+  const NamedRecordConverter1();
+  @override
+  ({int a, int b}) fromJson(Map<String, dynamic> json) => (a: 0, b: 0);
+  @override
+  Map<String, dynamic> toJson(({int a, int b}) object) => {};
+}
+
+class NamedRecordConverter2
+    extends JsonConverter<({int a, int b}), Map<String, dynamic>> {
+  const NamedRecordConverter2();
+  @override
+  ({int a, int b}) fromJson(Map<String, dynamic> json) => (a: 0, b: 0);
+  @override
+  Map<String, dynamic> toJson(({int a, int b}) object) => {};
+}
+
+@ShouldThrow('Found more than one matching converter for `({int a, int b})`.')
+@JsonSerializable()
+@NamedRecordConverter1()
+@NamedRecordConverter2()
+class RecordNamedDoubleConverter {
+  late ({int a, int b}) record;
+}
+
 @ShouldThrow('''
-Could not generate `fromJson` code for `field` because type is unimplemented (UnimplementedError: (FunctionTypeImpl) void Function()).''')
+Could not generate `fromJson` code for `field` because of type `void Function()`.''')
 @JsonSerializable(createToJson: false)
 class UnsupportedNestedFunctionType {
   late List<void Function()> field;
+}
+
+@ShouldThrow('''
+Could not generate `fromJson` code for `map` because of type `(int, int)`.
+Map keys must be one of: Object, dynamic, enum, String, BigInt, DateTime, int, Uri.''')
+@JsonSerializable(createToJson: false)
+class UnsupportedMapKeyRecord {
+  late Map<(int, int), String> map;
 }
