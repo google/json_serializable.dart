@@ -106,6 +106,7 @@ const _expectedAnnotatedTests = {
   'Issue713',
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
+  'JsonConverterIssue1339',
   'JsonConverterNamedCtor',
   'JsonConverterNullableToNonNullable',
   'JsonConverterOnGetter',
