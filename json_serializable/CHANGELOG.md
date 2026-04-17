@@ -1,3 +1,8 @@
+## 6.14.0-wip
+
+- Add support for deserializing union json to sealed class
+- Add support for serializing sealed class to union json
+
 ## 6.13.1
 
 - Improve error message when generating code for `Record` types with unsupported
@@ -8,24 +13,6 @@
 - Require `dart_style: ^3.1.4`
 - Require `source_gen: ^4.1.2`
 - Require `source_helper: ^1.3.10`
-
-## 6.13.0
-
-- Fix schema generation for many different types of fields. 
-  ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
-- Support `JsonSerializable.dateTimeUtc` configuration option. 
-  ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
-- Remove `json_schema` from `dependencies` (it is only used in tests).
-
-## 6.12.0
-
-- Support `JsonKey` annotation on constructor parameters.
-- Add support for `JsonSerializable(createJsonSchema: true)`.
-  (Huge thanks to [Chris Sells](https://sellsbrothers.com/) for the PR!)
-
-## 6.11.4
-
-- Allow `analyzer: >=9.0.0 <11.0.0`
 
 ## 6.11.3
 
@@ -61,8 +48,6 @@
 
 ## 6.10.0
 
-- Required `analyzer: ^7.4.0`.
-- Switch to analyzer element2 model and `build: ^3.0.0-dev`.
 - Move `package:collection` to a dev dependency.
 - Use new `null-aware element` feature in generated code.
 - Require Dart 3.8

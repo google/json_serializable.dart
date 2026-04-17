@@ -115,7 +115,7 @@ precedence over any value set on [`JsonSerializable`].
 Annotate `enum` types with [`JsonEnum`] (new in `json_annotation` 4.2.0) to:
 
 1. Specify the default rename logic for each enum value using `fieldRename`. For
-   instance, use `fieldRename: FieldRename.kebab` to encode `enum` value
+   instance, use `fieldRename: RenameType.kebab` to encode `enum` value
    `noGood` as `"no-good"`.
 1. Force the generation of the `enum` helpers, even if the `enum` is not
    referenced in code. This is an edge scenario, but useful for some.
@@ -295,6 +295,49 @@ Key features of the generated schema:
 
 See the [Example](#example) above for a complete code sample.
 
+# Sealed classes
+
+As of `json_serializable` version 6.10.0 and `json_annotation`
+version 4.10.0, sealed classes can be serialized to json unions and json unions
+can be deserialized to sealed classes.
+
+To achieve this, both the sealed class and its subclasses should be annotated
+with [`JsonSerializable`]. Only the sealed class should have `fromJson` factory
+or `toJson` function. To customize the sealed class behavior, use the fields
+`unionRename` and `unionDiscriminator` in [`JsonSerializable`] or adjust the
+default behavior by changing the corresponding fields in `build.yaml`. For
+more complex examples, please see [example]:
+
+```dart
+import 'package:json_annotation/json_annotation.dart';
+
+part 'sealed_example.g.dart';
+
+@JsonSerializable()
+sealed class SealedBase {
+  const SealedBase();
+
+  factory SealedBase.fromJson(Map<String, dynamic> json) =>
+      _$SealedBaseFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SealedBaseToJson(this);
+}
+
+@JsonSerializable()
+class SealedSub1 extends SealedBase {
+  final String exampleField1;
+
+  SealedSub1({required this.exampleField1});
+}
+
+@JsonSerializable()
+class SealedSub2 extends SealedBase {
+  final String exampleField2;
+
+  SealedSub2({required this.exampleField2});
+}
+```
+
 # Build configuration
 
 Aside from setting arguments on the associated annotation classes, you can also
@@ -326,6 +369,8 @@ targets:
           generic_argument_factories: false
           ignore_unannotated: false
           include_if_null: true
+          union_discriminator: type
+          union_rename: none
 ```
 
 To exclude generated files from coverage, you can further configure `build.yaml`.
@@ -351,15 +396,15 @@ targets:
 [`Enum`]: https://api.dart.dev/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/dart-core/Iterable-class.html
-[`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonConverter-class.html
-[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonEnum/valueField.html
-[`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonEnum-class.html
-[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey/fromJson.html
-[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey/toJson.html
-[`JsonKey`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey-class.html
-[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonLiteral-class.html
-[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonSerializable-class.html
-[`JsonValue`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonValue-class.html
+[`JsonConverter`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
+[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum/valueField.html
+[`JsonEnum`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum-class.html
+[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
+[`JsonKey`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey-class.html
+[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonLiteral-class.html
+[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable-class.html
+[`JsonValue`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonValue-class.html
 [`List`]: https://api.dart.dev/dart-core/List-class.html
 [`Map`]: https://api.dart.dev/dart-core/Map-class.html
 [`num`]: https://api.dart.dev/dart-core/num-class.html

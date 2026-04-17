@@ -26,6 +26,8 @@ class ConfigurationImplicitDefaults {
   includeIfNull: true,
   genericArgumentFactories: false,
   createJsonSchema: false,
+  unionDiscriminator: 'type',
+  unionRename: FieldRename.none,
 )
 class ConfigurationExplicitDefaults {
   int? field;

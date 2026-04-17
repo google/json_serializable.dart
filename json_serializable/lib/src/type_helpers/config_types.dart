@@ -70,6 +70,8 @@ class ClassConfig {
   final bool includeIfNull;
   final List<FormalParameterElement> ctorParams;
   final List<DartObject> converters;
+  final String unionDiscriminator;
+  final FieldRename unionRename;
 
   const ClassConfig({
     required this.anyMap,
@@ -88,6 +90,8 @@ class ClassConfig {
     required this.genericArgumentFactories,
     required this.ignoreUnannotated,
     required this.includeIfNull,
+    required this.unionDiscriminator,
+    required this.unionRename,
     this.converters = const [],
     this.ctorParams = const [],
   });
@@ -124,6 +128,10 @@ class ClassConfig {
         disallowUnrecognizedKeys:
             config.disallowUnrecognizedKeys ??
             ClassConfig.defaults.disallowUnrecognizedKeys,
+        unionDiscriminator:
+            config.unionDiscriminator ??
+            ClassConfig.defaults.unionDiscriminator,
+        unionRename: config.unionRename ?? ClassConfig.defaults.unionRename,
       );
 
   /// An instance of [JsonSerializable] with all fields set to their default
@@ -145,6 +153,8 @@ class ClassConfig {
     genericArgumentFactories: false,
     ignoreUnannotated: false,
     includeIfNull: true,
+    unionDiscriminator: 'type',
+    unionRename: FieldRename.none,
   );
 
   JsonSerializable toJsonSerializable() => JsonSerializable(
@@ -164,6 +174,8 @@ class ClassConfig {
     fieldRename: fieldRename,
     disallowUnrecognizedKeys: disallowUnrecognizedKeys,
     dateTimeUtc: dateTimeUtc,
+    unionDiscriminator: unionDiscriminator,
+    unionRename: unionRename,
     // TODO typeConverters = []
   );
 
@@ -185,6 +197,8 @@ class ClassConfig {
         genericArgumentFactories: genericArgumentFactories,
         ignoreUnannotated: ignoreUnannotated,
         includeIfNull: includeIfNull,
+        unionDiscriminator: unionDiscriminator,
+        unionRename: unionRename,
         ctorParams: ctorParams ?? this.ctorParams,
         converters: converters,
       );
