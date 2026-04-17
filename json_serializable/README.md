@@ -327,18 +327,14 @@ sealed class SealedBase {
 class SealedSub1 extends SealedBase {
   final String exampleField1;
 
-  SealedSub1({
-    required this.exampleField1,
-  });
+  SealedSub1({required this.exampleField1});
 }
 
 @JsonSerializable()
 class SealedSub2 extends SealedBase {
   final String exampleField2;
 
-  SealedSub2({
-    required this.exampleField2,
-  });
+  SealedSub2({required this.exampleField2});
 }
 ```
 
@@ -400,15 +396,15 @@ targets:
 [`Enum`]: https://api.dart.dev/dart-core/Enum-class.html
 [`int`]: https://api.dart.dev/dart-core/int-class.html
 [`Iterable`]: https://api.dart.dev/dart-core/Iterable-class.html
-[`JsonConverter`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonConverter-class.html
-[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonEnum/valueField.html
-[`JsonEnum`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonEnum-class.html
-[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey/fromJson.html
-[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey/toJson.html
-[`JsonKey`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonKey-class.html
-[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonLiteral-class.html
-[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonSerializable-class.html
-[`JsonValue`]: https://pub.dev/documentation/json_annotation/4.11.0/json_annotation/JsonValue-class.html
+[`JsonConverter`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonConverter-class.html
+[`JsonEnum.valueField`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum/valueField.html
+[`JsonEnum`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonEnum-class.html
+[`JsonKey.fromJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/fromJson.html
+[`JsonKey.toJson`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey/toJson.html
+[`JsonKey`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonKey-class.html
+[`JsonLiteral`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonLiteral-class.html
+[`JsonSerializable`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonSerializable-class.html
+[`JsonValue`]: https://pub.dev/documentation/json_annotation/latest/json_annotation/JsonValue-class.html
 [`List`]: https://api.dart.dev/dart-core/List-class.html
 [`Map`]: https://api.dart.dev/dart-core/Map-class.html
 [`num`]: https://api.dart.dev/dart-core/num-class.html
