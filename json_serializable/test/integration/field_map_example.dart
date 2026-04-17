@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'field_map_example.g.dart';
 
-@JsonSerializable(createFieldMap: true, fieldRename: RenameType.kebab)
+@JsonSerializable(createFieldMap: true, fieldRename: FieldRename.kebab)
 class Model {
   Model({required this.firstName, required this.lastName, this.ignoredName});
 
@@ -25,7 +25,7 @@ const modelFieldMap = _$ModelFieldMap;
 
 @JsonSerializable(
   createFieldMap: true,
-  fieldRename: RenameType.kebab,
+  fieldRename: FieldRename.kebab,
   createFactory: false,
 )
 class _PrivateModel {

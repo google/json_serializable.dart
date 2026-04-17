@@ -124,9 +124,9 @@ Map<String, dynamic> _$JsonSerializableToJson(JsonSerializable instance) =>
     };
 
 const _$RenameTypeEnumMap = {
-  RenameType.none: 'none',
-  RenameType.kebab: 'kebab',
-  RenameType.snake: 'snake',
-  RenameType.pascal: 'pascal',
-  RenameType.screamingSnake: 'screamingSnake',
+  FieldRename.none: 'none',
+  FieldRename.kebab: 'kebab',
+  FieldRename.snake: 'snake',
+  FieldRename.pascal: 'pascal',
+  FieldRename.screamingSnake: 'screamingSnake',
 };

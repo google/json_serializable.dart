@@ -76,14 +76,14 @@ JsonSerializable _valueForAnnotation(ConstantReader reader) => JsonSerializable(
   disallowUnrecognizedKeys:
       reader.read('disallowUnrecognizedKeys').literalValue as bool?,
   explicitToJson: reader.read('explicitToJson').literalValue as bool?,
-  fieldRename: readEnum(reader.read('fieldRename'), RenameType.values),
+  fieldRename: readEnum(reader.read('fieldRename'), FieldRename.values),
   genericArgumentFactories:
       reader.read('genericArgumentFactories').literalValue as bool?,
   ignoreUnannotated: reader.read('ignoreUnannotated').literalValue as bool?,
   includeIfNull: reader.read('includeIfNull').literalValue as bool?,
   createJsonSchema: reader.read('createJsonSchema').literalValue as bool?,
   unionDiscriminator: reader.read('unionDiscriminator').literalValue as String?,
-  unionRename: readEnum(reader.read('unionRename'), RenameType.values),
+  unionRename: readEnum(reader.read('unionRename'), FieldRename.values),
 );
 
 /// Returns a [ClassConfig] with values from the [JsonSerializable]
@@ -262,13 +262,13 @@ extension DartTypeExtension on DartType {
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
     '$test == null ? $ifNull : $ifNotNull';
 
-String encodedName(RenameType fieldRename, String declaredName) =>
+String encodeFielddName(FieldRename fieldRename, String declaredName) =>
     switch (fieldRename) {
-      RenameType.none => declaredName,
-      RenameType.snake => declaredName.snake,
-      RenameType.screamingSnake => declaredName.snake.toUpperCase(),
-      RenameType.kebab => declaredName.kebab,
-      RenameType.pascal => declaredName.pascal,
+      FieldRename.none => declaredName,
+      FieldRename.snake => declaredName.snake,
+      FieldRename.screamingSnake => declaredName.snake.toUpperCase(),
+      FieldRename.kebab => declaredName.kebab,
+      FieldRename.pascal => declaredName.pascal,
     };
 
 String classPrefix(ClassElement element) => '_\$${element.name!.nonPrivate}';

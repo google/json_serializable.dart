@@ -4,7 +4,7 @@ part 'sealed_class_example.g.dart';
 
 @JsonSerializable(
   unionDiscriminator: 'vehicle_type',
-  unionRename: RenameType.snake,
+  unionRename: FieldRename.snake,
 )
 sealed class Vehicle {
   final String vehicleID;

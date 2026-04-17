@@ -56,7 +56,7 @@ class Bicycle extends Vehicle {
 
 @JsonSerializable(
   unionDiscriminator: 'delivery_type',
-  unionRename: RenameType.snake,
+  unionRename: FieldRename.snake,
 )
 sealed class Delivery {
   final int deliveryID;
