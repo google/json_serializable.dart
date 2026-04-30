@@ -1,3 +1,7 @@
+## 6.13.2
+
+- Require `analyzer: '>=10.0.0 <14.0.0'`
+
 ## 6.13.1
 
 - Improve error message when generating code for `Record` types with unsupported
@@ -11,9 +15,9 @@
 
 ## 6.13.0
 
-- Fix schema generation for many different types of fields. 
+- Fix schema generation for many different types of fields.
   ([#1549](https://github.com/google/json_serializable.dart/issues/1549))
-- Support `JsonSerializable.dateTimeUtc` configuration option. 
+- Support `JsonSerializable.dateTimeUtc` configuration option.
   ([#1371](https://github.com/google/json_serializable.dart/issues/1371))
 - Remove `json_schema` from `dependencies` (it is only used in tests).
 
@@ -78,7 +82,7 @@
 
 ## 6.9.3
 
-- Error out if the target package does not have a language version of `3.0` or 
+- Error out if the target package does not have a language version of `3.0` or
   greater.
 
 ## 6.9.2
@@ -101,7 +105,7 @@
 - Add type arguments to `Map` literals used for `Record` serialization.
 - Add support for `JsonSerializable(createJsonKeys: true)`.
   ([#1401](https://github.com/google/json_serializable.dart/pull/1401))
-- Handle decoding an `int` value from a `double` literal. 
+- Handle decoding an `int` value from a `double` literal.
   This now matches the behavior of `double` values being encoded as `int`.
 
 ## 6.7.1
