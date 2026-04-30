@@ -26,7 +26,8 @@ linter:
     - prefer_final_locals
     - sort_child_properties_last
     - unnecessary_breaks
-    - unnecessary_ignore
+    # TODO: Add this back when the SDK on CI is at least 3.13.0-76.0.dev
+    #- unnecessary_ignore
     - use_full_hex_values_for_flutter_colors
     - use_null_aware_elements
     - use_string_buffers
