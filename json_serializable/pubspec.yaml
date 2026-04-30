@@ -15,7 +15,7 @@ topics:
 resolution: workspace
 
 dependencies:
-  analyzer: '>=10.0.0 <13.0.0'
+  analyzer: '>=10.0.0 <14.0.0'
   async: ^2.10.0
   build: ^4.0.4
   build_config: ^1.2.0
