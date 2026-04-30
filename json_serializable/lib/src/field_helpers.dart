@@ -86,8 +86,7 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
       continue;
     }
 
-    if (v is GetterElement) {
-      final variable = v.variable as FieldElement;
+    if (v case GetterElement(variable: final FieldElement variable)) {
       assert(!inheritedFields.containsKey(variable.name));
       inheritedFields[variable.name!] = variable;
     }
