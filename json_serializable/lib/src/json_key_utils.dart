@@ -285,12 +285,16 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     includeToJson = includeFromJson = !ignore;
   }
 
+  final explicitJsonNullWhenNonNullField =
+      fallbackObjRead('explicitJsonNullWhenNonNullField').literalValue as bool?;
+
   return _populateJsonKey(
     classAnnotation,
     element,
     defaultValue: defaultValue ?? ctorParamDefault,
     disallowNullValue:
         fallbackObjRead('disallowNullValue').literalValue as bool?,
+    explicitJsonNullWhenNonNullField: explicitJsonNullWhenNonNullField,
     includeIfNull: fallbackObjRead('includeIfNull').literalValue as bool?,
     name: fallbackObjRead('name').literalValue as String?,
     readValueFunctionName: readValueFunctionName,
@@ -309,6 +313,7 @@ KeyConfig _populateJsonKey(
   FieldElement element, {
   required String? defaultValue,
   bool? disallowNullValue,
+  bool? explicitJsonNullWhenNonNullField,
   bool? includeIfNull,
   String? name,
   String? readValueFunctionName,
@@ -327,9 +332,48 @@ KeyConfig _populateJsonKey(
     }
   }
 
+  if (explicitJsonNullWhenNonNullField == true) {
+    if (!element.type.isNullableType) {
+      throwUnsupported(
+        element,
+        'Fields with `explicitJsonNullWhenNonNullField` must be nullable so '
+        'a missing JSON key can be represented as Dart `null`.',
+      );
+    }
+    if (disallowNullValue == true) {
+      throwUnsupported(
+        element,
+        'Cannot set both `explicitJsonNullWhenNonNullField` and '
+        '`disallowNullValue` to `true`.',
+      );
+    }
+    if (required == true) {
+      throwUnsupported(
+        element,
+        'Cannot set both `explicitJsonNullWhenNonNullField` and `required` to '
+        '`true`.',
+      );
+    }
+    if (defaultValue != null) {
+      throwUnsupported(
+        element,
+        'Cannot set `defaultValue` when `explicitJsonNullWhenNonNullField` is '
+        '`true`.',
+      );
+    }
+    if (readValueFunctionName != null) {
+      throwUnsupported(
+        element,
+        'Cannot set `readValue` when `explicitJsonNullWhenNonNullField` is '
+        '`true`.',
+      );
+    }
+  }
+
   return KeyConfig(
     defaultValue: defaultValue,
     disallowNullValue: disallowNullValue ?? false,
+    explicitJsonNullWhenNonNullField: explicitJsonNullWhenNonNullField ?? false,
     includeIfNull: _includeIfNull(
       includeIfNull,
       disallowNullValue,

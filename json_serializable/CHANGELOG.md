@@ -1,3 +1,10 @@
+## 6.14.0
+
+- Support `JsonKey.explicitJsonNullWhenNonNullField` for PATCH-style tri-state
+  JSON fields: distinguish omitted keys from explicit `null` in `fromJson` and
+  emit explicit JSON `null` in `toJson` when the Dart field is non-null.
+- Require `json_annotation: '>=4.12.0 <4.13.0'`
+
 ## 6.13.2
 
 - Require `analyzer: '>=10.0.0 <14.0.0'`

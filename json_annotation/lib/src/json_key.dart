@@ -34,6 +34,22 @@ class JsonKey {
   /// same field, an exception will be thrown during code generation.
   final bool? disallowNullValue;
 
+  /// Enables PATCH-style tri-state semantics for this field.
+  ///
+  /// When `true`, generated `toJson` omits the JSON key only when the **Dart**
+  /// field is `null`, but still writes `"key": null` when the field is
+  /// non-null and serialization yields JSON `null`.
+  ///
+  /// Generated `fromJson` uses [Map.containsKey] to distinguish a missing key
+  /// (typically decoded as Dart `null` on a nullable field) from an explicit
+  /// JSON `null` (decoded via the field's `fromJson` path with a `null`
+  /// argument). The field type must be nullable, and any custom [fromJson]
+  /// function must accept a nullable JSON input for the explicit-`null` case.
+  ///
+  /// Cannot be combined with [disallowNullValue], [required], [defaultValue],
+  /// or [readValue]. Setting this flag to `true` overrides [includeIfNull].
+  final bool? explicitJsonNullWhenNonNullField;
+
   /// A [Function] to use when decoding the associated JSON value to the
   /// annotated field.
   ///
@@ -87,6 +103,9 @@ class JsonKey {
   ///
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
+  ///
+  /// If [explicitJsonNullWhenNonNullField] is `true`, this value is ignored
+  /// because `null` Dart fields are always omitted from the serialized output.
   final bool? includeIfNull;
 
   /// Determines whether a field should be included (or excluded) when encoding
@@ -120,6 +139,8 @@ class JsonKey {
   /// Note: using this feature does not change any of the subsequent decoding
   /// logic for the field. For instance, if the field is of type [DateTime] we
   /// expect the function provided here to return a [String].
+  ///
+  /// Cannot be combined with [explicitJsonNullWhenNonNullField].
   final Object? Function(Map, String)? readValue;
 
   /// If `true`, generated code for `fromJson` will verify that the source JSON
@@ -159,6 +180,7 @@ class JsonKey {
     @Deprecated('Has no effect') bool? nullable,
     this.defaultValue,
     this.disallowNullValue,
+    this.explicitJsonNullWhenNonNullField,
     this.fromJson,
     @Deprecated(
       'Use `includeFromJson` and `includeToJson` with a value of `false` '

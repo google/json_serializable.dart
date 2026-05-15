@@ -75,6 +75,26 @@ class TypeHelperCtx
     );
   }
 
+  /// Like [deserialize], but does not apply nullable short-circuiting for
+  /// [targetType].
+  ///
+  /// Used when a JSON key is present (including when its value is JSON `null`)
+  /// for PATCH tri-state fields, so explicit `null` is passed to `fromJson`.
+  Object deserializePresentJsonValue(
+    DartType targetType,
+    String expression, {
+    String? defaultValue,
+  }) {
+    final value = _run(
+      targetType,
+      expression,
+      (TypeHelper th) =>
+          th.deserialize(targetType, expression, this, defaultValue != null),
+    );
+
+    return DefaultContainer.deserialize(value, defaultValue: defaultValue);
+  }
+
   Object _run(
     DartType targetType,
     String expression,

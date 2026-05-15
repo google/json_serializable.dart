@@ -11,6 +11,7 @@ import 'package:source_helper/source_helper.dart';
 import 'helper_core.dart';
 import 'json_literal_generator.dart';
 import 'type_helpers/generic_factory_helper.dart';
+import 'type_helpers/patch_tri_state_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
 
@@ -218,15 +219,38 @@ mixin DecodeHelper implements HelperCore {
     final jsonKey = jsonKeyFor(field);
     final defaultValue = jsonKey.defaultValue;
     final readValueFunc = jsonKey.readValueFunctionName;
+    final patchTriState = usesExplicitJsonNullWhenNonNullField(jsonKey);
 
-    String deserialize(String expression) => contextHelper
-        .deserialize(targetType, expression, defaultValue: defaultValue)
-        .toString();
+    String deserialize(String expression, {bool patchPresentValue = false}) =>
+        (patchPresentValue
+                ? contextHelper.deserializePresentJsonValue(
+                    targetType,
+                    expression,
+                    defaultValue: defaultValue,
+                  )
+                : contextHelper.deserialize(
+                    targetType,
+                    expression,
+                    defaultValue: defaultValue,
+                  ))
+            .toString();
 
     String value;
     try {
       if (config.checked) {
-        value = deserialize('v');
+        final deserializeV = deserialize('v');
+        if (patchTriState) {
+          validateExplicitJsonNullDeserialize(field, contextHelper, targetType);
+          final triStateBody = wrapPatchTriStateCheckedConvert(
+            mapExpression: 'json',
+            jsonKeyName: jsonKeyName,
+            absentExpression: 'null',
+            presentExpression: deserialize('v', patchPresentValue: true),
+          );
+          value = triStateBody;
+        } else {
+          value = deserializeV;
+        }
         if (!checkedProperty) {
           final readValueBit = readValueFunc == null
               ? ''
@@ -239,11 +263,26 @@ mixin DecodeHelper implements HelperCore {
           'should only be true if `_generator.checked` is true.',
         );
 
-        value = deserialize(
-          readValueFunc == null
-              ? 'json[$jsonKeyName]'
-              : '$readValueFunc(json, $jsonKeyName)',
+        final jsonValueExpression = readValueFunc == null
+            ? 'json[$jsonKeyName]'
+            : '$readValueFunc(json, $jsonKeyName)';
+
+        final deserializeValue = deserialize(
+          jsonValueExpression,
+          patchPresentValue: patchTriState,
         );
+
+        if (patchTriState) {
+          validateExplicitJsonNullDeserialize(field, contextHelper, targetType);
+          value = wrapPatchTriStateFromJson(
+            mapExpression: 'json',
+            jsonKeyName: jsonKeyName,
+            absentExpression: 'null',
+            presentExpression: deserializeValue,
+          );
+        } else {
+          value = deserializeValue;
+        }
       }
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
