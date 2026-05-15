@@ -10,7 +10,9 @@ import 'enum_utils.dart';
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/json_converter_helper.dart';
+import 'type_helpers/patch_tri_state_helper.dart';
 import 'unsupported_type_error.dart';
+import 'utils.dart';
 
 mixin EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name!}';
@@ -105,9 +107,16 @@ mixin EncodeHelper implements HelperCore {
       ..writeln('=> <String, dynamic>{')
       ..writeAll(
         accessibleFields.map((field) {
-          final access = _fieldAccess(field);
-
           final keyExpression = safeNameAccess(field);
+
+          if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
+            final access = _fieldAccess(field);
+            final valueExpression = _serializePatchField(field, 'value');
+            return '        if ($access case final value?) '
+                '$keyExpression: $valueExpression,\n';
+          }
+
+          final access = _fieldAccess(field);
           final valueExpression = _serializeField(field, access);
 
           final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
@@ -146,10 +155,26 @@ mixin EncodeHelper implements HelperCore {
     }
   }
 
+  String _serializePatchField(FieldElement field, String accessExpression) {
+    try {
+      final type = field.type.promoteNonNullable();
+      return getHelperContext(
+        field,
+      ).serialize(type, accessExpression).toString();
+    } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
+    {
+      throw createInvalidGenerationError('toJson', field, e);
+    }
+  }
+
   /// Returns `true` if the field can be written to JSON 'naively' – meaning
   /// we can avoid checking for `null`.
   bool _canWriteJsonWithoutNullCheck(FieldElement field) {
     final jsonKey = jsonKeyFor(field);
+
+    if (usesExplicitJsonNullWhenNonNullField(jsonKey)) {
+      return true;
+    }
 
     if (jsonKey.includeIfNull) {
       return true;

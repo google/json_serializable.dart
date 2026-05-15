@@ -22,6 +22,7 @@ part 'map_key_variety_test_input.dart';
 part 'setter_test_input.dart';
 part 'to_from_json_test_input.dart';
 part 'unknown_enum_value_test_input.dart';
+part 'patch_tri_state_test_input.dart';
 
 @ShouldThrow('`@JsonSerializable` can only be used on classes.')
 @JsonSerializable() // ignore: invalid_annotation_target

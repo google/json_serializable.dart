@@ -12,6 +12,8 @@ class KeyConfig {
 
   final bool disallowNullValue;
 
+  final bool explicitJsonNullWhenNonNullField;
+
   final bool? includeFromJson;
 
   final bool includeIfNull;
@@ -29,6 +31,7 @@ class KeyConfig {
   KeyConfig({
     required this.defaultValue,
     required this.disallowNullValue,
+    required this.explicitJsonNullWhenNonNullField,
     required this.includeFromJson,
     required this.includeIfNull,
     required this.includeToJson,
