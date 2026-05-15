@@ -258,3 +258,18 @@ class PatchBadCustomFromJson {
   )
   final String? note;
 }
+
+Object? _dummyReadValue(Map json, String key) => json[key];
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `note` field. Cannot set `readValue` when '
+  '`explicitJsonNullWhenNonNullField` is `true`.',
+  element: 'note',
+)
+@JsonSerializable()
+class PatchReadValueWithExplicit {
+  const PatchReadValueWithExplicit({this.note});
+
+  @JsonKey(explicitJsonNullWhenNonNullField: true, readValue: _dummyReadValue)
+  final String? note;
+}

@@ -361,6 +361,13 @@ KeyConfig _populateJsonKey(
         '`true`.',
       );
     }
+    if (readValueFunctionName != null) {
+      throwUnsupported(
+        element,
+        'Cannot set `readValue` when `explicitJsonNullWhenNonNullField` is '
+        '`true`.',
+      );
+    }
   }
 
   return KeyConfig(

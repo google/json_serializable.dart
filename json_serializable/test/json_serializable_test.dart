@@ -66,6 +66,7 @@ const _expectedAnnotatedTests = {
   'PatchNullableStringEntity',
   'PatchRequiredWithExplicit',
   'PatchWithCustomFromJson',
+  'PatchReadValueWithExplicit',
   'BadNoArgs',
   'BadOneNamed',
   'BadToFuncReturnType',

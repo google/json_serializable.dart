@@ -46,8 +46,8 @@ class JsonKey {
   /// argument). The field type must be nullable, and any custom [fromJson]
   /// function must accept a nullable JSON input for the explicit-`null` case.
   ///
-  /// Cannot be combined with [disallowNullValue], [required], or
-  /// [defaultValue].
+  /// Cannot be combined with [disallowNullValue], [required], [defaultValue],
+  /// or [readValue]. Setting this flag to `true` overrides [includeIfNull].
   final bool? explicitJsonNullWhenNonNullField;
 
   /// A [Function] to use when decoding the associated JSON value to the
@@ -103,6 +103,9 @@ class JsonKey {
   ///
   /// If both [includeIfNull] and [disallowNullValue] are set to `true` on the
   /// same field, an exception will be thrown during code generation.
+  ///
+  /// If [explicitJsonNullWhenNonNullField] is `true`, this value is ignored
+  /// because `null` Dart fields are always omitted from the serialized output.
   final bool? includeIfNull;
 
   /// Determines whether a field should be included (or excluded) when encoding
@@ -136,6 +139,8 @@ class JsonKey {
   /// Note: using this feature does not change any of the subsequent decoding
   /// logic for the field. For instance, if the field is of type [DateTime] we
   /// expect the function provided here to return a [String].
+  ///
+  /// Cannot be combined with [explicitJsonNullWhenNonNullField].
   final Object? Function(Map, String)? readValue;
 
   /// If `true`, generated code for `fromJson` will verify that the source JSON
