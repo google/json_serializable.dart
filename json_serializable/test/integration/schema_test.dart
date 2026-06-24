@@ -110,4 +110,43 @@ void main() {
       );
     });
   });
+
+  group('SchemaEnumExample', () {
+    late JsonSchema schema;
+
+    setUpAll(() {
+      schema = JsonSchema.create(SchemaEnumExample.schema);
+    });
+
+    test('valid instance', () {
+      final instance = SchemaEnumExample(Season.summer, [
+        Season.spring,
+        Season.winter,
+      ]);
+
+      final json = jsonDecode(jsonEncode(instance));
+      final validation = schema.validate(json);
+      expect(validation.isValid, isTrue, reason: validation.errors.toString());
+    });
+
+    test('invalid instance - value not in enum', () {
+      final json = <String, dynamic>{
+        'season': 'fall', // not a valid Season
+        'seasons': <dynamic>['spring'],
+      };
+
+      final validation = schema.validate(json);
+      expect(validation.isValid, isFalse);
+    });
+
+    test('invalid instance - bad value in enum list', () {
+      final json = <String, dynamic>{
+        'season': 'summer',
+        'seasons': <dynamic>['spring', 'fall'],
+      };
+
+      final validation = schema.validate(json);
+      expect(validation.isValid, isFalse);
+    });
+  });
 }

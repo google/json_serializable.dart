@@ -9,6 +9,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'enum_utils.dart';
 import 'field_helpers.dart';
 import 'helper_core.dart';
 import 'json_key_utils.dart';
@@ -239,6 +240,11 @@ Map<String, dynamic> _getPropertySchema(
     };
   }
 
+  final enumValues = enumEncodedValues(type);
+  if (enumValues != null) {
+    return {'enum': enumValues};
+  }
+
   if (type is InterfaceType && !type.isDartCoreObject) {
     return _generateComplexTypeSchema(
       type,
@@ -320,8 +326,15 @@ Object? _defaultValue(DartObject defaultValue, DartType type) => switch (type) {
     defaultValue.toListValue(),
   _ when coreMapTypeChecker.isAssignableFromType(type) =>
     defaultValue.toMapValue(),
+  _ when type.isEnum => _enumDefaultValue(defaultValue, type),
   _ => _noMatch,
 };
+
+Object? _enumDefaultValue(DartObject defaultValue, DartType type) {
+  final values = enumEncodedValues(type);
+  if (values == null) return _noMatch;
+  return enumValueForDartObject<Object?>(defaultValue, values, (v) => '$v');
+}
 
 /// Sentinel value used to indicate that no default value could be determined.
 final _noMatch = Object();
