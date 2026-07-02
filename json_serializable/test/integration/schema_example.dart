@@ -113,3 +113,21 @@ final class ComprehensiveNested {
 
   static const schema = _$ComprehensiveNestedJsonSchema;
 }
+
+@JsonEnum()
+enum Season { spring, summer, autumn, winter }
+
+@JsonSerializable(createJsonSchema: true)
+final class SchemaEnumExample {
+  final Season season;
+  final List<Season> seasons;
+
+  SchemaEnumExample(this.season, this.seasons);
+
+  factory SchemaEnumExample.fromJson(Map<String, dynamic> json) =>
+      _$SchemaEnumExampleFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SchemaEnumExampleToJson(this);
+
+  static const schema = _$SchemaEnumExampleJsonSchema;
+}
