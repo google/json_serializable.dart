@@ -25,6 +25,18 @@ const coreBigIntTypeChecker = TypeChecker.fromUrl('dart:core#BigInt');
 DartType coreIterableGenericType(DartType type) =>
     type.typeArgumentsOf(coreIterableTypeChecker)!.single;
 
+/// Returns the generic key type of the [Map] represented by [type].
+///
+/// If [type] does not extend [Map], an error is thrown.
+DartType coreMapGenericKeyType(DartType type) =>
+    type.typeArgumentsOf(coreMapTypeChecker)![0];
+
+/// Returns the generic value type of the [Map] represented by [type].
+///
+/// If [type] does not extend [Map], an error is thrown.
+DartType coreMapGenericValueType(DartType type) =>
+    type.typeArgumentsOf(coreMapTypeChecker)![1];
+
 /// A [TypeChecker] for [String], [bool] and [num].
 const simpleJsonTypeChecker = TypeChecker.any([
   coreStringTypeChecker,

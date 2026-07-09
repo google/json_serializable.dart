@@ -181,11 +181,13 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
           targetEnumType = element.type;
         } else if (coreIterableTypeChecker.isAssignableFromType(element.type)) {
           targetEnumType = coreIterableGenericType(element.type);
+        } else if (coreMapTypeChecker.isAssignableFromType(element.type)) {
+          targetEnumType = coreMapGenericValueType(element.type);
         } else {
           throwUnsupported(
             element,
             '`$fieldName` can only be set on fields of type enum or on '
-            'Iterable, List, or Set instances of an enum type.',
+            'Iterable, List, Set or Map instances of an enum type.',
           );
         }
 
