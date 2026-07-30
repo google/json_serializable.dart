@@ -1,3 +1,7 @@
+## 6.14.1
+
+- Require `analyzer: '>=10.0.0 <15.0.0'`
+
 ## 6.14.0
 
 - Support `JsonKey.explicitJsonNullWhenNonNullField` for PATCH-style tri-state
