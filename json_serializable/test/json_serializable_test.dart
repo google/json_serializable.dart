@@ -196,4 +196,5 @@ const _expectedSchemaTests = {
   'JsonSchemaGetterTest',
   'JsonSchemaRecursiveListTest',
   'JsonSchemaRecursiveListIssue',
+  'JsonSchemaEnumTest',
 };

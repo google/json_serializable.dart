@@ -1,3 +1,9 @@
+## 6.15.0-wip
+
+- Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
+  enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
+  ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
+
 ## 6.14.1
 
 - Require `analyzer: '>=10.0.0 <15.0.0'`

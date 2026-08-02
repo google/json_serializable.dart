@@ -290,3 +290,80 @@ class JsonSchemaRecursiveListIssueA {
 
   JsonSchemaRecursiveListIssueA(this.children);
 }
+
+enum JsonSchemaCategory { fruit, vegetable, grain }
+
+enum JsonSchemaPriority {
+  @JsonValue(1)
+  low,
+  @JsonValue(2)
+  medium,
+  @JsonValue(3)
+  high,
+}
+
+enum JsonSchemaNullableValue {
+  @JsonValue(null)
+  unknown,
+  @JsonValue('known')
+  known,
+}
+
+@ShouldGenerate(r'''
+const _$JsonSchemaEnumTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'category': {
+      'enum': ['fruit', 'vegetable', 'grain'],
+    },
+    'categories': {
+      'type': 'array',
+      'items': {
+        'enum': ['fruit', 'vegetable', 'grain'],
+      },
+    },
+    'priority': {
+      'enum': [1, 2, 3],
+      'description': 'Encoded with `@JsonValue` overrides',
+    },
+    'nullableValue': {
+      'enum': [null, 'known'],
+      'description': '`@JsonValue(null)` is a valid member',
+    },
+    'priorityWithDefault': {
+      'enum': [1, 2, 3],
+      'description': 'Default uses the encoded value, respecting `@JsonValue`',
+      'default': 2,
+    },
+  },
+  'required': ['category', 'categories', 'priority', 'nullableValue'],
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaEnumTest {
+  final JsonSchemaCategory category;
+  final List<JsonSchemaCategory> categories;
+
+  /// Encoded with `@JsonValue` overrides
+  final JsonSchemaPriority priority;
+
+  /// `@JsonValue(null)` is a valid member
+  final JsonSchemaNullableValue nullableValue;
+
+  /// Default uses the encoded value, respecting `@JsonValue`
+  @JsonKey(defaultValue: JsonSchemaPriority.medium)
+  final JsonSchemaPriority priorityWithDefault;
+
+  JsonSchemaEnumTest(
+    this.category,
+    this.categories,
+    this.priority,
+    this.nullableValue,
+    this.priorityWithDefault,
+  );
+}
