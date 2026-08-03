@@ -327,6 +327,17 @@ class PrivateFieldCtorClass {
 }
 
 @ShouldThrow(
+  'Cannot populate the required constructor argument: '
+  'standaloneParam. It does not correspond to any field or getter on the '
+  'class.',
+  element: 'new',
+)
+@JsonSerializable()
+class StandaloneCtorParamClass {
+  StandaloneCtorParamClass({required int standaloneParam});
+}
+
+@ShouldThrow(
   'Error with `@JsonKey` on the `field` field. '
   'Cannot set both `disallowNullValue` and `includeIfNull` to `true`. '
   'This leads to incompatible `toJson` and `fromJson` behavior.',

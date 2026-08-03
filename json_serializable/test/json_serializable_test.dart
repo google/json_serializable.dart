@@ -157,6 +157,7 @@ const _expectedAnnotatedTests = {
   'Reproduce869NullableGenericTypeWithDefault',
   'SameCtorAndJsonKeyDefaultValue',
   'SetSupport',
+  'StandaloneCtorParamClass',
   'SubclassedJsonKey',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
