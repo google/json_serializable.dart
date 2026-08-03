@@ -308,7 +308,8 @@ mixin DecodeHelper implements HelperCore {
 ///
 /// To improve the error details, [unavailableReasons] is checked for the
 /// unavailable constructor parameter. If the value is not `null`, it is
-/// included in the [UnsupportedError] message.
+/// included in the [UnsupportedError] message; otherwise a default explanation
+/// is provided.
 ///
 /// [writableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
@@ -336,11 +337,10 @@ _ConstructorData _writeConstructorInvocation(
             'Cannot populate the required constructor '
             'argument: ${arg.name}.';
 
-        final additionalInfo = unavailableReasons[arg.name];
-
-        if (additionalInfo != null) {
-          msg = '$msg $additionalInfo';
-        }
+        final additionalInfo =
+            unavailableReasons[arg.name] ??
+            'It does not correspond to any field or getter on the class.';
+        msg = '$msg $additionalInfo';
 
         throw InvalidGenerationSourceError(msg, element: ctor);
       }
