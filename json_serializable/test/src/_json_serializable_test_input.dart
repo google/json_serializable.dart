@@ -334,6 +334,7 @@ class PrivateFieldCtorClass {
 )
 @JsonSerializable()
 class StandaloneCtorParamClass {
+  // ignore: avoid_unused_constructor_parameters
   StandaloneCtorParamClass({required int standaloneParam});
 }
 
