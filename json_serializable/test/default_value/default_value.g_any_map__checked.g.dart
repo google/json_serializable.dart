@@ -116,7 +116,7 @@ Map<String, dynamic> _$DefaultValueToJson(DefaultValue instance) =>
       'fieldMapSimple': instance.fieldMapSimple,
       'fieldMapListString': instance.fieldMapListString,
       'durationField': instance.durationField.inMicroseconds,
-      'fieldEnum': _$GreekEnumMap[instance.fieldEnum]!,
+      'fieldEnum': $enumEncode(_$GreekEnumMap, instance.fieldEnum),
       'constClass': instance.constClass,
       'valueFromConverter': const ConstClassConverter().toJson(
         instance.valueFromConverter,

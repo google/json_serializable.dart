@@ -333,6 +333,14 @@ void main() {
     expect(dayTypeEnumValues, ['no-good', 'rotten', 'very-bad']);
   });
 
+  test('non-nullable enum toJson uses enumEncode without a bang', () {
+    final json = Issue1515Regression(
+      state: Issue1145RegressionEnum.alpha,
+    ).toJson();
+    expect(json, {'state': 'alpha'});
+    expect(json['state'], const TypeMatcher<String>());
+  });
+
   test('serializing a non-nullable enum as a key in a map should produce a '
       'non-nullable string key', () {
     final cls = Issue1145RegressionA(

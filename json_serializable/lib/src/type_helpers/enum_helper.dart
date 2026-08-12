@@ -33,7 +33,10 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
         enumFieldWithNullInEncodeMap(targetType) == true) {
       return '${constMapName(targetType)}[$expression]';
     } else {
-      return '${constMapName(targetType)}[$expression]!';
+      // Avoid `_$EnumMap[value]!` which triggers `unnecessary_null_checks` when
+      // the result is stored in a `Map<String, dynamic>` (#1515), while still
+      // producing a non-nullable value for Map keys (#1145).
+      return '\$enumEncode(${constMapName(targetType)}, $expression)';
     }
   }
 

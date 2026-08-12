@@ -183,8 +183,10 @@ SchemaEnumExample _$SchemaEnumExampleFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SchemaEnumExampleToJson(SchemaEnumExample instance) =>
     <String, dynamic>{
-      'season': _$SeasonEnumMap[instance.season]!,
-      'seasons': instance.seasons.map((e) => _$SeasonEnumMap[e]!).toList(),
+      'season': $enumEncode(_$SeasonEnumMap, instance.season),
+      'seasons': instance.seasons
+          .map((e) => $enumEncode(_$SeasonEnumMap, e))
+          .toList(),
     };
 
 const _$SchemaEnumExampleJsonSchema = {

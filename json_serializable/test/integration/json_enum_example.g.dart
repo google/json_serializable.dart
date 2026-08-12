@@ -33,7 +33,7 @@ Map<String, dynamic> _$Issue1145RegressionAToJson(
   Issue1145RegressionA instance,
 ) => <String, dynamic>{
   'status': instance.status.map(
-    (k, e) => MapEntry(_$Issue1145RegressionEnumEnumMap[k]!, e),
+    (k, e) => MapEntry($enumEncode(_$Issue1145RegressionEnumEnumMap, k), e),
   ),
 };
 
@@ -63,6 +63,12 @@ Map<String, dynamic> _$Issue1226RegressionToJson(
   Issue1226Regression instance,
 ) => <String, dynamic>{
   'durationType': ?_$Issue1145RegressionEnumEnumMap[instance.durationType],
+};
+
+Map<String, dynamic> _$Issue1515RegressionToJson(
+  Issue1515Regression instance,
+) => <String, dynamic>{
+  'state': $enumEncode(_$Issue1145RegressionEnumEnumMap, instance.state),
 };
 
 const _$StandAloneEnumEnumMap = {

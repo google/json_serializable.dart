@@ -536,8 +536,8 @@ Map<String, dynamic> _$SimpleClassOfEnumTypeToJson(
   SimpleClassOfEnumType instance,
 ) => <String, dynamic>{
   'value': <String, dynamic>{
-    r'$1': _$EnumTypeEnumMap[instance.value.$1]!,
-    'named': _$EnumTypeEnumMap[instance.value.named]!,
+    r'$1': $enumEncode(_$EnumTypeEnumMap, instance.value.$1),
+    'named': $enumEncode(_$EnumTypeEnumMap, instance.value.named),
   },
 };
 
@@ -566,8 +566,8 @@ Map<String, dynamic> _$SimpleClassNullableOfEnumTypeToJson(
   'value': instance.value == null
       ? null
       : <String, dynamic>{
-          r'$1': _$EnumTypeEnumMap[instance.value!.$1]!,
-          'named': _$EnumTypeEnumMap[instance.value!.named]!,
+          r'$1': $enumEncode(_$EnumTypeEnumMap, instance.value!.$1),
+          'named': $enumEncode(_$EnumTypeEnumMap, instance.value!.named),
         },
 };
 

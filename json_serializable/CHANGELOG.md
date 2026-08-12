@@ -1,5 +1,10 @@
 ## 6.15.0-wip
 
+- Use `$enumEncode` for non-nullable enum `toJson` map lookups so generated
+  code no longer triggers `unnecessary_null_checks` on `_$EnumMap[value]!`.
+  ([#1515](https://github.com/google/json_serializable.dart/issues/1515))
+- Require `json_annotation: '>=4.13.0-0 <4.14.0'`
+
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))

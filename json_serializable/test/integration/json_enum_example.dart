@@ -99,3 +99,12 @@ class Issue1226Regression {
 
   Map<String, dynamic> toJson() => _$Issue1226RegressionToJson(this);
 }
+
+@JsonSerializable(createFactory: false)
+class Issue1515Regression {
+  Issue1515Regression({required this.state});
+
+  Map<String, dynamic> toJson() => _$Issue1515RegressionToJson(this);
+
+  final Issue1145RegressionEnum state;
+}

@@ -1,3 +1,7 @@
+## 4.13.0-wip
+
+- Add `$enumEncode` helper for generated enum `toJson` code.
+
 ## 4.12.0
 
 - Add `JsonKey.explicitJsonNullWhenNonNullField` for PATCH-style tri-state JSON

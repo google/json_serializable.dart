@@ -41,14 +41,14 @@ Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
   'lastName': instance.lastName,
   'middleName': instance.middleName,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
-  r'$house': _$CategoryEnumMap[instance.house]!,
+  r'$house': $enumEncode(_$CategoryEnumMap, instance.house),
   'order': instance.order,
   'customOrders': instance.customOrders,
   'houseMap': instance.houseMap?.map(
-    (k, e) => MapEntry(k, _$CategoryEnumMap[e]!),
+    (k, e) => MapEntry(k, $enumEncode(_$CategoryEnumMap, e)),
   ),
   'categoryCounts': instance.categoryCounts?.map(
-    (k, e) => MapEntry(_$CategoryEnumMap[k]!, e),
+    (k, e) => MapEntry($enumEncode(_$CategoryEnumMap, k), e),
   ),
 };
 
