@@ -9,6 +9,7 @@ import '../test_utils.dart';
 import 'converter_examples.dart';
 import 'create_per_field_to_json_example.dart';
 import 'field_map_example.dart';
+import 'json_annotation_prefix_example.dart';
 import 'json_enum_example.dart';
 import 'json_keys_example.dart' as js_keys;
 import 'json_test_common.dart' show Category, Platform, StatusCode;
@@ -491,5 +492,16 @@ void main() {
       ComprehensiveNested.schema,
     )..remove(r'$schema');
     expect(nestedSchemaFromExample, standaloneSchema);
+  });
+
+  test('json_annotation import prefix helpers', () {
+    final checked = CheckedPrefixModel.fromJson({'field1': 'a', 'field2': 'b'});
+    expect(checked.field1, 'a');
+    expect(checked.field2, 'b');
+    expect(checked.toJson(), {'field1': 'a', 'field2': 'b'});
+
+    final enumModel = EnumPrefixModel.fromJson({'gender': 'female'});
+    expect(enumModel.gender, PrefixModelGender.female);
+    expect(enumModel.toJson(), {'gender': 'female'});
   });
 }

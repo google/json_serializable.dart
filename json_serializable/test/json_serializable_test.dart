@@ -50,6 +50,18 @@ Future<void> main() async {
       'UnsupportedClass',
     },
   );
+
+  final jsonAnnotationPrefixTestReader =
+      await initializeLibraryReaderForDirectory(
+        p.join('test', 'src'),
+        '_json_annotation_prefix_test_input.dart',
+      );
+
+  testAnnotatedElements(
+    jsonAnnotationPrefixTestReader,
+    JsonSerializableGenerator(),
+    expectedAnnotatedTests: {'CheckedWithPrefix', 'EnumWithPrefix'},
+  );
 }
 
 const _expectedAnnotatedTests = {

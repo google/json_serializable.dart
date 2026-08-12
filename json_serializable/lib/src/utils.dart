@@ -304,3 +304,26 @@ extension ExecutableElementExtension on ExecutableElement {
 const jsonSerializableChecker = TypeChecker.fromUrl(
   'package:json_annotation/src/json_serializable.dart#JsonSerializable',
 );
+
+/// Returns the import prefix used for `package:json_annotation`, including a
+/// trailing `.`, or an empty string when the import is unprefixed.
+///
+/// Generated references to helpers like `$checkedCreate` and `$enumDecode` must
+/// use this prefix so they resolve when the annotation library is imported with
+/// a prefix.
+String jsonAnnotationHelperPrefix(LibraryElement library) {
+  for (final fragment in library.fragments) {
+    for (final import in fragment.libraryImports) {
+      final uri = import.importedLibrary?.uri;
+      if (uri == null ||
+          uri.scheme != 'package' ||
+          uri.pathSegments.isEmpty ||
+          uri.pathSegments.first != 'json_annotation') {
+        continue;
+      }
+      final prefix = import.prefix?.name;
+      return prefix == null ? '' : '$prefix.';
+    }
+  }
+  return '';
+}

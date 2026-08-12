@@ -9,6 +9,7 @@ import 'package:source_helper/source_helper.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 final simpleExpression = RegExp('^[a-zA-Z_]+\$');
 
@@ -62,11 +63,14 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
-    String functionName;
+    final helperPrefix = jsonAnnotationHelperPrefix(
+      context.classElement.library,
+    );
+    final String functionName;
     if (targetType.isNullableType || defaultProvided) {
-      functionName = r'$enumDecodeNullable';
+      functionName = '${helperPrefix}\$enumDecodeNullable';
     } else {
-      functionName = r'$enumDecode';
+      functionName = '${helperPrefix}\$enumDecode';
     }
 
     context.addMember(memberContent);

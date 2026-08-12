@@ -90,9 +90,10 @@ mixin DecodeHelper implements HelperCore {
     if (config.checked) {
       final classLiteral = escapeDartString(element.name!);
 
+      final helperPrefix = jsonAnnotationHelperPrefix(element.library);
       final sectionBuffer = StringBuffer()
         ..write('''
-  \$checkedCreate(
+  ${helperPrefix}\$checkedCreate(
     $classLiteral,
     json,
     (\$checkedConvert) {\n''')
@@ -202,7 +203,8 @@ mixin DecodeHelper implements HelperCore {
     }
 
     if (args.isNotEmpty) {
-      yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
+      final helperPrefix = jsonAnnotationHelperPrefix(element.library);
+      yield '${helperPrefix}\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
     }
   }
 
