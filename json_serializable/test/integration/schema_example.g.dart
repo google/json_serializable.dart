@@ -172,3 +172,41 @@ const _$ComprehensiveNestedJsonSchema = {
   },
   'required': ['getterIncluded'],
 };
+
+SchemaEnumExample _$SchemaEnumExampleFromJson(Map<String, dynamic> json) =>
+    SchemaEnumExample(
+      $enumDecode(_$SeasonEnumMap, json['season']),
+      (json['seasons'] as List<dynamic>)
+          .map((e) => $enumDecode(_$SeasonEnumMap, e))
+          .toList(),
+    );
+
+Map<String, dynamic> _$SchemaEnumExampleToJson(SchemaEnumExample instance) =>
+    <String, dynamic>{
+      'season': _$SeasonEnumMap[instance.season]!,
+      'seasons': instance.seasons.map((e) => _$SeasonEnumMap[e]!).toList(),
+    };
+
+const _$SchemaEnumExampleJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'season': {
+      'enum': ['spring', 'summer', 'autumn', 'winter'],
+    },
+    'seasons': {
+      'type': 'array',
+      'items': {
+        'enum': ['spring', 'summer', 'autumn', 'winter'],
+      },
+    },
+  },
+  'required': ['season', 'seasons'],
+};
+
+const _$SeasonEnumMap = {
+  Season.spring: 'spring',
+  Season.summer: 'summer',
+  Season.autumn: 'autumn',
+  Season.winter: 'winter',
+};

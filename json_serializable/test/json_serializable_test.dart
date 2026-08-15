@@ -157,6 +157,7 @@ const _expectedAnnotatedTests = {
   'Reproduce869NullableGenericTypeWithDefault',
   'SameCtorAndJsonKeyDefaultValue',
   'SetSupport',
+  'StandaloneCtorParamClass',
   'SubclassedJsonKey',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
@@ -196,4 +197,5 @@ const _expectedSchemaTests = {
   'JsonSchemaGetterTest',
   'JsonSchemaRecursiveListTest',
   'JsonSchemaRecursiveListIssue',
+  'JsonSchemaEnumTest',
 };

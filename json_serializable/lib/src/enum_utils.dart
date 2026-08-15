@@ -53,6 +53,16 @@ String? enumValueMapFromType(
   return 'const ${constMapName(targetType)} = {\n$items\n};';
 }
 
+/// If [targetType] is an enum, returns the values used to encode its constants
+/// in JSON, in declaration order.
+///
+/// Otherwise, `null`.
+List<Object?>? enumEncodedValues(DartType targetType) {
+  final enumMap = _enumMap(targetType);
+  if (enumMap == null) return null;
+  return enumMap.values.toList(growable: false);
+}
+
 Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
