@@ -1,4 +1,4 @@
-# Created with package:mono_repo v6.6.3
+# Created with package:mono_repo v6.7.2
 name: Dart CI
 on:
   push:
@@ -13,7 +13,8 @@ defaults:
     shell: bash
 env:
   PUB_ENVIRONMENT: bot.github
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   job_001:
@@ -35,8 +36,10 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - name: mono_repo self validate
-        run: dart pub global activate mono_repo 6.6.3
+        run: dart pub global activate mono_repo 6.7.2
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
@@ -60,6 +63,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -126,6 +131,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -212,6 +219,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -273,6 +282,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -307,6 +318,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -341,6 +354,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -375,6 +390,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -436,6 +453,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -470,6 +489,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -504,6 +525,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -538,6 +561,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade
@@ -598,6 +623,8 @@ jobs:
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - id: _test_yaml_pub_upgrade
         name: _test_yaml; dart pub upgrade
         run: dart pub upgrade

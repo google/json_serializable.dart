@@ -1,8 +1,11 @@
 name: markdown_linter
+permissions:
+  contents: read
+
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
   schedule:
     - cron: "0 0 * * 0"
@@ -14,6 +17,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           fetch-depth: 0
+          persist-credentials: false
       # sadly, markdown-link-check has a bug where it doesn't handle config files
       # so we pin to a version that doesn't have that bug
       - run: |
@@ -23,4 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
       - uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff
