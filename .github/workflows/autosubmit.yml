@@ -1,6 +1,7 @@
 name: Autosubmit
 
 on:
+  # zizmor: ignore[dangerous-triggers] - pull_request_target needed to enable auto-merge on fork/dependabot PRs; no code checkout performed
   pull_request_target:
     types: [labeled]
 
