@@ -170,6 +170,60 @@ The collection types –
 For [`Map`], the key value must be one of
 [`BigInt`], [`DateTime`], [`Enum`], [`int`], [`Object`], [`String`], [`Uri`]
 
+## `int` and `double` fields
+
+JSON has a single number type, so a value decoded for an `int` field may
+arrive as a Dart `double` – for example `42.0` or `1e5`, or any number that
+crossed untyped JS interop on `dart2wasm`. To accept these, generated code
+decodes `int` fields with `(json['field'] as num).toInt()` and `double` fields
+with `(json['field'] as num).toDouble()`.
+
+Because `double.toInt()` truncates toward zero and clamps out-of-range values,
+this is more permissive than `json['field'] as int`:
+
+- A non-integral value is truncated: `1.9` decodes to `1`, and `-1.9` to `-1`.
+- On native platforms, a value outside the 64-bit range is clamped: `1e26`
+  decodes to `9223372036854775807`.
+- On the web, numbers are JavaScript numbers: large values are not clamped,
+  and integers beyond ±2<sup>53</sup> lose precision when parsed.
+
+If you need strict validation – for example rejecting `1.9` or out-of-range
+values – provide your own conversion with [`JsonKey.fromJson`] or a
+[`JsonConverter`] (see
+[Custom types and custom encoding](#custom-types-and-custom-encoding)):
+
+```dart
+@JsonSerializable()
+class Sample5 {
+  Sample5(this.value);
+
+  factory Sample5.fromJson(Map<String, dynamic> json) =>
+      _$Sample5FromJson(json);
+
+  // Rejects non-integral and out-of-range values instead of truncating or
+  // clamping them.
+  @JsonKey(fromJson: _strictInt)
+  final int value;
+
+  Map<String, dynamic> toJson() => _$Sample5ToJson(this);
+
+  static int _strictInt(Object? value) {
+    if (value is int) return value;
+    if (value is double &&
+        value == value.truncateToDouble() &&
+        value >= -9223372036854775808.0 &&
+        value < 9223372036854775808.0) {
+      return value.toInt();
+    }
+    throw ArgumentError.value(value, 'value', 'Not an integer');
+  }
+}
+```
+
+On `dart2js`, `value is int` is also true for integral values beyond
+±2<sup>53</sup> (such as `1e26`); add a bound of `±9007199254740991` if the
+check must reject them on the web too.
+
 # Custom types and custom encoding
 
 If you want to use types that are not supported out-of-the-box or if you want to
