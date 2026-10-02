@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -281,9 +282,20 @@ _ConverterMatch? _compatibleMatch(
   ElementAnnotation? annotation,
   DartObject constantValue,
 ) {
-  final converterClassElement = constantValue.type!.element as ClassElement;
+  var converterClassType = constantValue.type! as InterfaceType;
+  final converterClassElement = converterClassType.element as ClassElement;
+  String? genericTypeArg;
 
-  final jsonConverterSuper = converterClassElement.allSupertypes
+  final generics = (constantValue.type as InterfaceType).typeArguments;
+  if (generics.isNotEmpty) {
+    converterClassType = converterClassElement.instantiate(
+      typeArguments: generics,
+      nullabilitySuffix: NullabilitySuffix.none,
+    );
+    genericTypeArg = generics.join(", ");
+  }
+
+  final jsonConverterSuper = converterClassType.allSupertypes
       .where((e) => _jsonConverterChecker.isExactly(e.element))
       .singleOrNull;
 
@@ -302,7 +314,7 @@ _ConverterMatch? _compatibleMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      null,
+      genericTypeArg,
       fieldType,
     );
   }
