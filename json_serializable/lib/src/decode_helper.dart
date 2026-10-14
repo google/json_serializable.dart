@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -127,7 +128,12 @@ mixin DecodeHelper implements HelperCore {
         ],
         {
           if (fieldKeyMap.isNotEmpty)
-            'fieldKeyMap': literalConstMap(fieldKeyMap),
+            'fieldKeyMap': literalConstMap({
+              for (final MapEntry(:key, :value) in fieldKeyMap.entries)
+                CodeExpression(Code(escapeDartString(key))): CodeExpression(
+                  Code(escapeDartString(value)),
+                ),
+            }),
         },
       );
 
