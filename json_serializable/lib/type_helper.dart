@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+export 'package:code_builder/code_builder.dart' show Expression;
+
 export 'src/shared_checkers.dart' show simpleJsonTypeChecker;
 export 'src/type_helper.dart'
     show TypeHelper, TypeHelperContext, TypeHelperContextWithConfig;

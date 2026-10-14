@@ -1,5 +1,10 @@
-## 6.15.0-wip
+## 7.0.0-wip
 
+- `type_helper.dart`: **BREAKING** Changed `TypeHelper.serialize`,
+  `TypeHelper.deserialize`, `TypeHelperContext.serialize`, and
+  `TypeHelperContext.deserialize` parameter and return types from
+  `String`/`Object?` to `Expression`/`Expression?` (from
+  `package:code_builder`).
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
