@@ -1,5 +1,6 @@
 ## 6.15.0-wip
 
+- Allow `build` 5.0.0.
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
