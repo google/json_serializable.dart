@@ -21,13 +21,20 @@ class LambdaResult extends Expression {
   final Expression expression;
   final String lambda;
   final DartType? asContent;
+  final List<Expression> additionalPositionalArguments;
 
   Expression get _fullExpression =>
       asContent != null ? _cast(expression, asContent!) : expression;
 
-  LambdaResult(this.expression, this.lambda, {this.asContent});
+  LambdaResult(
+    this.expression,
+    this.lambda, {
+    this.asContent,
+    this.additionalPositionalArguments = const [],
+  });
 
-  Expression get asInvocation => refer(lambda).call([_fullExpression]);
+  Expression get asInvocation =>
+      refer(lambda).call([_fullExpression, ...additionalPositionalArguments]);
 
   @override
   R accept<R>(ExpressionVisitor<R> visitor, [R? context]) =>
@@ -38,6 +45,7 @@ class LambdaResult extends Expression {
 
   static Expression process(Expression subField) {
     if (subField is LambdaResult &&
+        subField.additionalPositionalArguments.isEmpty &&
         closureArg == toCodeString(subField._fullExpression)) {
       return refer(subField.lambda);
     }

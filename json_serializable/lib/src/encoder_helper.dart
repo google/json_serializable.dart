@@ -66,7 +66,7 @@ mixin EncodeHelper implements HelperCore {
 
             m
               ..lambda = true
-              ..body = Code(_serializeField(fe, refer(_toJsonParamName)));
+              ..body = _serializeField(fe, refer(_toJsonParamName)).code;
           }),
         ),
       ),
@@ -162,16 +162,17 @@ mixin EncodeHelper implements HelperCore {
 
             if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
               final access = _fieldAccess(field);
-              final valueExpression = _serializePatchField(
-                field,
-                refer('value'),
+              final valueExpression = toCodeString(
+                _serializePatchField(field, refer('value')),
               );
               return '  if ($access case final value?) '
                   '$keyExpression: $valueExpression';
             }
 
             final accessExpr = refer(_toJsonParamName).property(field.name!);
-            final valueExpression = _serializeField(field, accessExpr);
+            final valueExpression = toCodeString(
+              _serializeField(field, accessExpr),
+            );
             final maybeQuestion = _canWriteJsonWithoutNullCheck(field)
                 ? ''
                 : '?';
@@ -182,29 +183,30 @@ mixin EncodeHelper implements HelperCore {
       m
         ..lambda = true
         // TODO: use code_builder once it supports null-aware map entries
-        ..body = Code('<String, dynamic>{\n$mapEntries\n}');
+        ..body = CodeExpression(
+          Code('<String, dynamic>{\n$mapEntries\n}'),
+        ).statement;
     });
   }
 
   static const _toJsonParamName = 'instance';
 
-  String _serializeField(FieldElement field, Expression accessExpression) {
+  Expression _serializeField(FieldElement field, Expression accessExpression) {
     try {
-      final res = getHelperContext(
-        field,
-      ).serialize(field.type, accessExpression);
-      return toCodeString(res);
+      return getHelperContext(field).serialize(field.type, accessExpression)!;
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);
     }
   }
 
-  String _serializePatchField(FieldElement field, Expression accessExpression) {
+  Expression _serializePatchField(
+    FieldElement field,
+    Expression accessExpression,
+  ) {
     try {
       final type = field.type.promoteNonNullable();
-      final res = getHelperContext(field).serialize(type, accessExpression);
-      return toCodeString(res);
+      return getHelperContext(field).serialize(type, accessExpression)!;
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);

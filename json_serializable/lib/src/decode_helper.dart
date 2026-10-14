@@ -9,7 +9,6 @@ import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'helper_core.dart';
-import 'json_literal_generator.dart';
 import 'type_helpers/generic_factory_helper.dart';
 import 'type_helpers/patch_tri_state_helper.dart';
 import 'unsupported_type_error.dart';
@@ -32,7 +31,7 @@ mixin DecodeHelper implements HelperCore {
     Expression? lambdaExpr;
     final fromJsonLines = <Code>[];
 
-    String deserializeFun(
+    Expression deserializeFun(
       String paramOrFieldName, {
       FormalParameterElement? ctorParam,
     }) => _deserializeForField(
@@ -74,7 +73,7 @@ mixin DecodeHelper implements HelperCore {
 
       final closureBody = Block(
         (b) => b
-          ..statements.addAll(checks.map((c) => Code(c.trim())))
+          ..statements.addAll(checks)
           ..statements.add(declareFinal('val').assign(data.content).statement)
           ..statements.addAll(
             data.fieldsToSet.map((fieldName) {
@@ -98,7 +97,9 @@ mixin DecodeHelper implements HelperCore {
                             Parameter((p) => p..name = 'v'),
                           )
                           ..lambda = true
-                          ..body = Code('val.$fieldName = $deserializeCall'),
+                          ..body = refer(
+                            'val',
+                          ).property(fieldName).assign(deserializeCall).code,
                       ).closure,
                     ],
                     {
@@ -137,7 +138,7 @@ mixin DecodeHelper implements HelperCore {
           lambdaExpr = data.content;
         } else {
           fromJsonLines
-            ..addAll(checks.map((c) => Code(c.trim())))
+            ..addAll(checks)
             ..add(data.content.returned.statement);
         }
       } else {
@@ -147,14 +148,16 @@ mixin DecodeHelper implements HelperCore {
           data.content,
           (current, field) => current
               .cascade(field)
-              .assign(CodeExpression(Code('${deserializeFun(field)} '))),
+              .assign(
+                CodeExpression(Code('${toCodeString(deserializeFun(field))} ')),
+              ),
         );
 
         if (checks.isEmpty) {
           lambdaExpr = expr;
         } else {
           fromJsonLines
-            ..addAll(checks.map((c) => Code(c.trim())))
+            ..addAll(checks)
             ..add(expr.returned.statement);
         }
       }
@@ -209,49 +212,43 @@ mixin DecodeHelper implements HelperCore {
     return CreateFactoryResult(method, data.usedCtorParamsAndFields);
   }
 
-  Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
-    final args = <String>[];
+  Iterable<Code> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
+    final args = <String, Expression>{};
 
-    String constantList(Iterable<FieldElement> things) =>
-        'const ${jsonLiteralAsDart(things.map<String>(nameAccess).toList())}';
+    Expression constantList(Iterable<FieldElement> things) =>
+        literalConstList(things.map<String>(nameAccess).toList());
 
     if (config.disallowUnrecognizedKeys) {
-      final allowKeysLiteral = constantList(accessibleFields);
-
-      args.add('allowedKeys: $allowKeysLiteral');
+      args['allowedKeys'] = constantList(accessibleFields);
     }
 
     final requiredKeys = accessibleFields
         .where((fe) => jsonKeyFor(fe).required)
         .toList();
     if (requiredKeys.isNotEmpty) {
-      final requiredKeyLiteral = constantList(requiredKeys);
-
-      args.add('requiredKeys: $requiredKeyLiteral');
+      args['requiredKeys'] = constantList(requiredKeys);
     }
 
     final disallowNullKeys = accessibleFields
         .where((fe) => jsonKeyFor(fe).disallowNullValue)
         .toList();
     if (disallowNullKeys.isNotEmpty) {
-      final disallowNullKeyLiteral = constantList(disallowNullKeys);
-
-      args.add('disallowNullValues: $disallowNullKeyLiteral');
+      args['disallowNullValues'] = constantList(disallowNullKeys);
     }
 
     if (args.isNotEmpty) {
-      yield '\$checkKeys(json, ${args.map((e) => '$e, ').join()});\n';
+      yield refer(r'$checkKeys').call([refer('json')], args).statement;
     }
   }
 
   /// If [checkedProperty] is `true`, we're using this function to write to a
   /// setter.
-  String _deserializeForField(
+  Expression _deserializeForField(
     FieldElement field, {
     FormalParameterElement? ctorParam,
     bool checkedProperty = false,
   }) {
-    final jsonKeyName = safeNameAccess(field);
+    final jsonKeyName = CodeExpression(Code(safeNameAccess(field)));
     final targetType = ctorParam?.type ?? field.type;
     final contextHelper = getHelperContext(field);
     final jsonKey = jsonKeyFor(field);
@@ -259,45 +256,49 @@ mixin DecodeHelper implements HelperCore {
     final readValueFunc = jsonKey.readValueFunctionName;
     final patchTriState = usesExplicitJsonNullWhenNonNullField(jsonKey);
 
-    String deserialize(
+    Expression deserialize(
       Expression expression, {
       bool patchPresentValue = false,
-    }) {
-      final res = patchPresentValue
-          ? contextHelper.deserializePresentJsonValue(
-              targetType,
-              expression,
-              defaultValue: defaultValue,
-            )
-          : contextHelper.deserialize(
-              targetType,
-              expression,
-              defaultValue: defaultValue,
-            );
-      return toCodeString(res);
-    }
+    }) => patchPresentValue
+        ? contextHelper.deserializePresentJsonValue(
+            targetType,
+            expression,
+            defaultValue: defaultValue,
+          )
+        : contextHelper.deserialize(
+            targetType,
+            expression,
+            defaultValue: defaultValue,
+          );
 
-    String value;
+    Expression value;
     try {
       if (config.checked) {
         final deserializeV = deserialize(refer('v'));
         if (patchTriState) {
           validateExplicitJsonNullDeserialize(field, contextHelper, targetType);
-          final triStateBody = wrapPatchTriStateCheckedConvert(
-            mapExpression: 'json',
+          value = wrapPatchTriStateCheckedConvert(
+            mapExpression: refer('json'),
             jsonKeyName: jsonKeyName,
-            absentExpression: 'null',
+            absentExpression: literalNull,
             presentExpression: deserialize(refer('v'), patchPresentValue: true),
           );
-          value = triStateBody;
         } else {
           value = deserializeV;
         }
         if (!checkedProperty) {
-          final readValueBit = readValueFunc == null
-              ? ''
-              : ',readValue: $readValueFunc,';
-          value = '\$checkedConvert($jsonKeyName, (v) => $value$readValueBit)';
+          value = refer(r'$checkedConvert').call(
+            [
+              jsonKeyName,
+              Method(
+                (m) => m
+                  ..requiredParameters.add(Parameter((p) => p..name = 'v'))
+                  ..lambda = true
+                  ..body = value.code,
+              ).closure,
+            ],
+            {if (readValueFunc != null) 'readValue': refer(readValueFunc)},
+          );
         }
       } else {
         assert(
@@ -306,10 +307,8 @@ mixin DecodeHelper implements HelperCore {
         );
 
         final jsonValueExpression = readValueFunc == null
-            ? refer('json').index(CodeExpression(Code(jsonKeyName)))
-            : refer(
-                readValueFunc,
-              ).call([refer('json'), CodeExpression(Code(jsonKeyName))]);
+            ? refer('json').index(jsonKeyName)
+            : refer(readValueFunc).call([refer('json'), jsonKeyName]);
 
         final deserializeValue = deserialize(
           jsonValueExpression,
@@ -319,9 +318,9 @@ mixin DecodeHelper implements HelperCore {
         if (patchTriState) {
           validateExplicitJsonNullDeserialize(field, contextHelper, targetType);
           value = wrapPatchTriStateFromJson(
-            mapExpression: 'json',
+            mapExpression: refer('json'),
             jsonKeyName: jsonKeyName,
-            absentExpression: 'null',
+            absentExpression: literalNull,
             presentExpression: deserializeValue,
           );
         } else {
@@ -363,7 +362,10 @@ _ConstructorData _writeConstructorInvocation(
   Iterable<String> availableConstructorParameters,
   Iterable<String> writableFields,
   Map<String, String> unavailableReasons,
-  String Function(String paramOrFieldName, {FormalParameterElement ctorParam})
+  Expression Function(
+    String paramOrFieldName, {
+    FormalParameterElement ctorParam,
+  })
   deserializeForField,
 ) {
   final className = classElement.name;
@@ -392,8 +394,7 @@ _ConstructorData _writeConstructorInvocation(
       continue;
     }
 
-    final value = deserializeForField(arg.name!, ctorParam: arg);
-    final expr = CodeExpression(Code(value));
+    final expr = deserializeForField(arg.name!, ctorParam: arg);
     if (arg.isNamed) {
       namedArgs[arg.name!] = expr;
     } else {

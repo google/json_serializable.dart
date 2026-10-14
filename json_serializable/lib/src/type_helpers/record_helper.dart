@@ -77,27 +77,22 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
   ) {
     if (targetType is! RecordType) return null;
 
-    final maybeBang = targetType.isNullableType ? '!' : '';
-    final exprStr = toCodeString(expression);
+    final receiver = targetType.isNullableType
+        ? expression.nullChecked
+        : expression;
 
     final mapEntries = <Expression, Expression>{};
 
     var index = 1;
     for (var field in targetType.positionalFields) {
       final indexer = literalString('\$$index', raw: true);
-      final val = context.serialize(
-        field.type,
-        CodeExpression(Code('$exprStr$maybeBang.\$$index')),
-      );
+      final val = context.serialize(field.type, receiver.property('\$$index'));
       mapEntries[indexer] = val!;
       index++;
     }
     for (var field in targetType.namedFields) {
       final indexer = literalString(field.name);
-      final val = context.serialize(
-        field.type,
-        CodeExpression(Code('$exprStr$maybeBang.${field.name}')),
-      );
+      final val = context.serialize(field.type, receiver.property(field.name));
       mapEntries[indexer] = val!;
     }
 

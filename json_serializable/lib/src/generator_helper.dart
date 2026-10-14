@@ -73,7 +73,7 @@ class GeneratorHelper extends HelperCore
     }
 
     if (config.createToJson) {
-      yield Code('${createToJson(accessibleFieldSet).accept(DartEmitter())};');
+      yield createToJson(accessibleFieldSet);
     }
 
     if (config.createJsonSchema) {

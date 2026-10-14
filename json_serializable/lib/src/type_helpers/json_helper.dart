@@ -38,7 +38,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final interfaceType = targetType as InterfaceType;
 
-    final toJsonArgs = <String>[];
+    final toJsonArgs = <Expression>[];
 
     var toJson = _toJsonMethod(interfaceType);
 
@@ -64,8 +64,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       final prop = interfaceType.isNullableType
           ? expression.nullSafeProperty('toJson')
           : expression.property('toJson');
-      final posArgs = toJsonArgs.map((a) => CodeExpression(Code(a))).toList();
-      return prop.call(posArgs);
+      return prop.call(toJsonArgs);
     }
     return expression;
   }
@@ -88,6 +87,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         .singleOrNull;
 
     var output = expression;
+    var additionalArgs = const <Expression>[];
 
     if (fromJsonCtor != null) {
       final positionalParams = fromJsonCtor.formalParameters
@@ -111,21 +111,15 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         }
       }
 
-      final deserialized = context.deserialize(asCastType, output);
-      final deserializedStr = toCodeString(deserialized);
+      output = context.deserialize(asCastType, output)!;
 
-      final args = [
-        deserializedStr,
-        ..._helperParams(
-          context.deserialize,
-          _decodeHelper,
-          targetType,
-          positionalParams.skip(1),
-          fromJsonCtor,
-        ),
-      ];
-
-      output = CodeExpression(Code(args.join(', ')));
+      additionalArgs = _helperParams(
+        context.deserialize,
+        _decodeHelper,
+        targetType,
+        positionalParams.skip(1),
+        fromJsonCtor,
+      );
     } else if (_annotation(context.config, targetType)?.createFactory == true) {
       if (context.config.anyMap) {
         output = CodeExpression(Code('${toCodeString(output)} as Map'));
@@ -143,13 +137,14 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final lambda = LambdaResult(
       output,
       '${typeToCode(targetType.promoteNonNullable())}.fromJson',
+      additionalPositionalArguments: additionalArgs,
     );
 
     return DefaultContainer(expression, lambda);
   }
 }
 
-List<String> _helperParams(
+List<Expression> _helperParams(
   Expression? Function(DartType, Expression) execute,
   TypeParameterType Function(FormalParameterElement, Element) paramMapper,
   InterfaceType type,
@@ -161,7 +156,7 @@ List<String> _helperParams(
     rest.add(paramMapper(param, targetElement));
   }
 
-  final args = <String>[];
+  final args = <Expression>[];
 
   for (var helperArg in rest) {
     final typeParamIndex = type.element.typeParameters.indexOf(
@@ -170,8 +165,17 @@ List<String> _helperParams(
 
     // TODO: throw here if `typeParamIndex` is -1 ?
     final typeArg = type.typeArguments[typeParamIndex];
-    final body = execute(typeArg, refer(_helperLambdaParam));
-    args.add('($_helperLambdaParam) => ${toCodeString(body)}');
+    final body = execute(typeArg, refer(_helperLambdaParam))!;
+    args.add(
+      Method(
+        (m) => m
+          ..requiredParameters.add(
+            Parameter((p) => p..name = _helperLambdaParam),
+          )
+          ..lambda = true
+          ..body = body.code,
+      ).closure,
+    );
   }
 
   return args;
