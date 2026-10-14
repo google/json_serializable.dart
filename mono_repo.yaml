@@ -2,6 +2,8 @@
 self_validate: analyzer_and_format
 
 github:
+  permissions:
+    contents: read
   on:
     push:
       branches:

@@ -96,3 +96,30 @@ class EpochDateTimeConverter implements JsonConverter<DateTime, int> {
   @override
   int toJson(DateTime object) => object.millisecondsSinceEpoch;
 }
+
+// # strict_int
+@JsonSerializable()
+class Sample5 {
+  Sample5(this.value);
+
+  factory Sample5.fromJson(Map<String, dynamic> json) =>
+      _$Sample5FromJson(json);
+
+  // Rejects non-integral and out-of-range values instead of truncating or
+  // clamping them.
+  @JsonKey(fromJson: _strictInt)
+  final int value;
+
+  Map<String, dynamic> toJson() => _$Sample5ToJson(this);
+
+  static int _strictInt(Object? value) {
+    if (value is int) return value;
+    if (value is double &&
+        value == value.truncateToDouble() &&
+        value >= -9223372036854775808.0 &&
+        value < 9223372036854775808.0) {
+      return value.toInt();
+    }
+    throw ArgumentError.value(value, 'value', 'Not an integer');
+  }
+}

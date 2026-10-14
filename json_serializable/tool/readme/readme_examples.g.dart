@@ -29,3 +29,10 @@ Sample4 _$Sample4FromJson(Map<String, dynamic> json) => Sample4(
 Map<String, dynamic> _$Sample4ToJson(Sample4 instance) => <String, dynamic>{
   'value': const EpochDateTimeConverter().toJson(instance.value),
 };
+
+Sample5 _$Sample5FromJson(Map<String, dynamic> json) =>
+    Sample5(Sample5._strictInt(json['value']));
+
+Map<String, dynamic> _$Sample5ToJson(Sample5 instance) => <String, dynamic>{
+  'value': instance.value,
+};
