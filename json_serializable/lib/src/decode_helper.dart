@@ -200,7 +200,7 @@ mixin DecodeHelper implements HelperCore {
       if (lambdaExpr != null) {
         m
           ..lambda = true
-          ..body = lambdaExpr.code;
+          ..body = lambdaExpr.statement;
       } else {
         m.body = Block((b) => b.statements.addAll(fromJsonLines));
       }
