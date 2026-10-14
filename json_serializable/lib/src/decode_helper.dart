@@ -59,8 +59,6 @@ mixin DecodeHelper implements HelperCore {
       deserializeFun,
     );
 
-    final renderedCtor = data.content.accept(DartEmitter()).toString();
-
     final checks = _checkKeys(
       accessibleFields.values.where(
         (fe) => data.usedCtorParamsAndFields.contains(fe.name),
@@ -77,7 +75,7 @@ mixin DecodeHelper implements HelperCore {
       final closureBody = Block(
         (b) => b
           ..statements.addAll(checks.map((c) => Code(c.trim())))
-          ..statements.add(Code('final val = $renderedCtor;'))
+          ..statements.add(declareFinal('val').assign(data.content).statement)
           ..statements.addAll(
             data.fieldsToSet.map((fieldName) {
               final fieldValue = accessibleFields[fieldName]!;
@@ -128,9 +126,7 @@ mixin DecodeHelper implements HelperCore {
         ],
         {
           if (fieldKeyMap.isNotEmpty)
-            'fieldKeyMap': CodeExpression(
-              Code('const ${jsonMapAsDart(fieldKeyMap)}'),
-            ),
+            'fieldKeyMap': literalConstMap(fieldKeyMap),
         },
       );
 
@@ -204,7 +200,7 @@ mixin DecodeHelper implements HelperCore {
       if (lambdaExpr != null) {
         m
           ..lambda = true
-          ..body = Code('${lambdaExpr.accept(DartEmitter()).toString()};');
+          ..body = lambdaExpr.code;
       } else {
         m.body = Block((b) => b.statements.addAll(fromJsonLines));
       }
