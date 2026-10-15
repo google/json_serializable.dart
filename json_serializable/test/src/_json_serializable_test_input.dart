@@ -472,10 +472,11 @@ class IgnoreUnannotated {
 
 @ShouldGenerate(r'''
 SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) =>
-    SubclassedJsonKey()..annotatedWithSubclass = (json['bob'] as num).toInt();
+    SubclassedJsonKey()
+      ..annotatedWithSubclass = _myFromJson(json['bob'] as String);
 
 Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
-    <String, dynamic>{'bob': instance.annotatedWithSubclass};
+    <String, dynamic>{'bob': _myToJson(instance.annotatedWithSubclass)};
 ''')
 @JsonSerializable(ignoreUnannotated: true)
 class SubclassedJsonKey {
@@ -484,8 +485,13 @@ class SubclassedJsonKey {
 }
 
 class MyJsonKey extends JsonKey {
-  const MyJsonKey() : super(name: 'bob');
+  const MyJsonKey()
+    : super(name: 'bob', fromJson: _myFromJson, toJson: _myToJson);
 }
+
+int _myFromJson(String value) => int.parse(value);
+
+String _myToJson(int value) => value.toString();
 
 @ShouldGenerate(r'''
 OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
