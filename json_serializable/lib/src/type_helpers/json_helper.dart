@@ -152,6 +152,10 @@ List<String> _helperParams(
     rest.add(paramMapper(param, targetElement));
   }
 
+  if (targetElement.enclosingElement case final InterfaceElement enclosing) {
+    type = type.asInstanceOf(enclosing) ?? type;
+  }
+
   final args = <String>[];
 
   for (var helperArg in rest) {

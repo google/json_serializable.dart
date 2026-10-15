@@ -85,3 +85,77 @@ Map<String, dynamic> _$GenericArgumentFactoriesFlagWithoutGenericTypeToJson(
 )
 @JsonSerializable(genericArgumentFactories: true)
 class GenericArgumentFactoriesFlagWithoutGenericType {}
+
+@ShouldGenerate(r'''
+Issue1208<T> _$Issue1208FromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) => Issue1208<T>(
+  child: Issue1208Child<String>.fromJson(
+    json['child'] as Map<String, dynamic>,
+    (value) => value as String,
+  ),
+  genericChild: Issue1208Child<T>.fromJson(
+    json['genericChild'] as Map<String, dynamic>,
+    (value) => fromJsonT(value),
+  ),
+  reordered: Issue1208ChildReordered<int, DateTime>.fromJson(
+    json['reordered'] as Map<String, dynamic>,
+    (value) => (value as num).toInt(),
+    (value) => DateTime.parse(value as String),
+  ),
+);
+
+Map<String, dynamic> _$Issue1208ToJson<T>(
+  Issue1208<T> instance,
+  Object? Function(T value) toJsonT,
+) => <String, dynamic>{
+  'child': instance.child.toJson((value) => value),
+  'genericChild': instance.genericChild.toJson((value) => toJsonT(value)),
+  'reordered': instance.reordered.toJson((value) => value.toIso8601String()),
+};
+''')
+@JsonSerializable(genericArgumentFactories: true)
+class Issue1208<T> {
+  final Issue1208Child<String> child;
+  final Issue1208Child<T> genericChild;
+  final Issue1208ChildReordered<int, DateTime> reordered;
+
+  Issue1208({
+    required this.child,
+    required this.genericChild,
+    required this.reordered,
+  });
+}
+
+class Issue1208Child<T> with Issue1208ChildMixin<T> {
+  final T content;
+
+  Issue1208Child({required this.content});
+
+  factory Issue1208Child.fromJson(
+    Map<String, dynamic> json,
+    T Function(Object? json) fromJsonT,
+  ) => Issue1208Child(content: fromJsonT(json['content']));
+}
+
+class Issue1208ChildReordered<A, B> with Issue1208ChildMixin<B> {
+  final A first;
+  final B second;
+
+  Issue1208ChildReordered({required this.first, required this.second});
+
+  factory Issue1208ChildReordered.fromJson(
+    Map<String, dynamic> json,
+    A Function(Object? json) fromJsonA,
+    B Function(Object? json) fromJsonB,
+  ) => Issue1208ChildReordered(
+    first: fromJsonA(json['first']),
+    second: fromJsonB(json['second']),
+  );
+}
+
+mixin Issue1208ChildMixin<T> {
+  Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
+      throw UnimplementedError();
+}
