@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import '../default_container.dart';
@@ -13,16 +14,16 @@ class UriHelper extends TypeHelper {
   const UriHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
   ) => uriString.serialize(targetType, expression, targetType.isNullableType);
 
   @override
   DefaultContainer? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
     bool defaultProvided,
   ) => uriString.deserialize(

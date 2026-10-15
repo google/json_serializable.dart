@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import '../lambda_result.dart';
@@ -29,9 +30,9 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   const ConvertHelper();
 
   @override
-  Object? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConvert context,
   ) {
     final toJsonData = context.serializeConvertData;
@@ -47,9 +48,9 @@ class ConvertHelper extends TypeHelper<TypeHelperContextWithConvert> {
   }
 
   @override
-  Object? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConvert context,
     bool defaultProvided,
   ) {

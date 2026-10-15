@@ -1,4 +1,5 @@
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import '../type_helper.dart';
@@ -8,34 +9,40 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const RecordHelper();
 
   @override
-  Object? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
     if (targetType is! RecordType) return null;
 
-    final items = <Object>[];
+    final positionalItems = <Expression>[];
+    final namedItems = <String, Expression>{};
 
     const paramName = r'$jsonValue';
 
     var index = 1;
     for (var field in targetType.positionalFields) {
       final indexer = escapeDartString('\$$index');
-      items.add(context.deserialize(field.type, '$paramName[$indexer]')!);
+      final val = context.deserialize(
+        field.type,
+        refer(paramName).index(CodeExpression(Code(indexer))),
+      );
+      positionalItems.add(val!);
       index++;
     }
     for (var field in targetType.namedFields) {
       final indexer = escapeDartString(field.name);
-      items.add(
-        '${field.name}:'
-        '${context.deserialize(field.type, '$paramName[$indexer]')!}',
+      final val = context.deserialize(
+        field.type,
+        refer(paramName).index(CodeExpression(Code(indexer))),
       );
+      namedItems[field.name] = val!;
     }
 
-    if (items.isEmpty) {
-      return '()';
+    if (positionalItems.isEmpty && namedItems.isEmpty) {
+      return literalRecord([], {});
     }
 
     context.addMember(
@@ -45,55 +52,59 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
       ),
     );
 
-    final recordLiteral = '(${items.map((e) => '$e,').join()})';
+    final recordLiteral = literalRecord(positionalItems, namedItems);
 
     final helperName = _recordConvertName(
       nullable: targetType.isNullableType,
       anyMap: context.config.anyMap,
     );
 
-    return '''
-$helperName(
-  $expression,
-  ($paramName) => $recordLiteral,
-)''';
+    final closure = Method(
+      (m) => m
+        ..requiredParameters.add(Parameter((p) => p..name = paramName))
+        ..lambda = true
+        ..body = recordLiteral.code,
+    ).closure;
+
+    return refer(helperName).call([expression, closure]);
   }
 
   @override
-  Object? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     if (targetType is! RecordType) return null;
 
-    final maybeBang = targetType.isNullableType ? '!' : '';
+    final receiver = targetType.isNullableType
+        ? expression.nullChecked
+        : expression;
 
-    final items = <Object>[];
+    final mapEntries = <Expression, Expression>{};
 
     var index = 1;
     for (var field in targetType.positionalFields) {
-      final indexer = escapeDartString('\$$index');
-      items.add(
-        '$indexer:'
-        '${context.serialize(field.type, '$expression$maybeBang.\$$index')!}',
-      );
+      final indexer = literalString('\$$index', raw: true);
+      final val = context.serialize(field.type, receiver.property('\$$index'));
+      mapEntries[indexer] = val!;
       index++;
     }
     for (var field in targetType.namedFields) {
-      final indexer = escapeDartString(field.name);
-      final key = context.serialize(
-        field.type,
-        '$expression$maybeBang.${field.name}',
-      )!;
-      items.add('$indexer:$key');
+      final indexer = literalString(field.name);
+      final val = context.serialize(field.type, receiver.property(field.name));
+      mapEntries[indexer] = val!;
     }
 
-    final mapValue = '<String, dynamic>{${items.map((e) => '$e,').join()}}';
+    final mapLiteral = literalMap(
+      mapEntries,
+      refer('String'),
+      refer('dynamic'),
+    );
 
     return targetType.isNullableType
-        ? ifNullOrElse(expression, 'null', mapValue)
-        : mapValue;
+        ? expression.equalTo(literalNull).conditional(literalNull, mapLiteral)
+        : mapLiteral;
   }
 }
 

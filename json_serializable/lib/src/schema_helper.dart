@@ -6,6 +6,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -19,7 +20,7 @@ import 'type_helpers/config_types.dart';
 import 'utils.dart';
 
 mixin SchemaHelper implements HelperCore {
-  String createJsonSchema() {
+  Field createJsonSchema() {
     final generatedSchemas = <String, Map<String, dynamic>>{};
     final mainSchema = _generateSchemaForProperties(
       element,
@@ -36,8 +37,13 @@ mixin SchemaHelper implements HelperCore {
       if (generatedSchemas.isNotEmpty) r'$defs': generatedSchemas,
     };
 
-    final name = '_\$${element.name}JsonSchema';
-    return 'const $name = ${jsonLiteralAsDart(schema)};';
+    return Field(
+      (f) => f
+        ..name = '_\$${element.name}JsonSchema'
+        ..modifier = FieldModifier.constant
+        // TODO: use code_builder once it supports encoding keys correctly
+        ..assignment = Code(jsonLiteralAsDart(schema)),
+    );
   }
 }
 

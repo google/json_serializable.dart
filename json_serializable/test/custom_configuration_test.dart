@@ -9,6 +9,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/type.dart';
 import 'package:build/experiments.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:json_serializable/src/constants.dart';
@@ -255,9 +256,9 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   const _ConfigLogger();
 
   @override
-  Object? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
@@ -266,9 +267,9 @@ class _ConfigLogger implements TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  Object? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     configurations.add(context.config.toJsonSerializable());

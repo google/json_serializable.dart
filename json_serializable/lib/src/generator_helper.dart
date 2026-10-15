@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../type_helper.dart';
@@ -31,13 +32,15 @@ class GeneratorHelper extends HelperCore
 
   @override
   void addMember(String memberContent) {
-    _addedMembers.add(memberContent);
+    if (memberContent.trim().isNotEmpty) {
+      _addedMembers.add(memberContent);
+    }
   }
 
   @override
   Iterable<TypeHelper> get allTypeHelpers => _generator.allHelpers;
 
-  Iterable<String> generate() sync* {
+  Iterable<Spec> generate() sync* {
     assert(_addedMembers.isEmpty);
 
     if (config.genericArgumentFactories && element.typeParameters.isEmpty) {
@@ -50,14 +53,46 @@ class GeneratorHelper extends HelperCore
       );
     }
 
+    final result = _processFields();
+    if (result.fromJsonMethod case final fromJsonMethod?) {
+      yield fromJsonMethod;
+    }
+
+    final accessibleFieldSet = result.accessibleFields;
+
+    if (config.createFieldMap) {
+      yield createFieldMap(accessibleFieldSet);
+    }
+
+    if (config.createJsonKeys) {
+      yield createJsonKeys(accessibleFieldSet);
+    }
+
+    if (config.createPerFieldToJson) {
+      yield createPerFieldToJson(accessibleFieldSet);
+    }
+
+    if (config.createToJson) {
+      yield createToJson(accessibleFieldSet);
+    }
+
+    if (config.createJsonSchema) {
+      yield createJsonSchema();
+    }
+
+    for (final member in _addedMembers) {
+      assert(member.trim().isNotEmpty);
+      yield Code(member);
+    }
+  }
+
+  ({Set<FieldElement> accessibleFields, Spec? fromJsonMethod})
+  _processFields() {
     final sortedFields = createSortedFieldSet(element);
 
-    // Used to keep track of why a field is ignored. Useful for providing
-    // helpful errors when generating constructor calls that try to use one of
-    // these fields.
     final unavailableReasons = <String, String>{};
 
-    final accessibleFields = sortedFields.fold<Map<String, FieldElement>>(
+    final accessibleFieldsMap = sortedFields.fold<Map<String, FieldElement>>(
       <String, FieldElement>{},
       (map, field) {
         final jsonKey = jsonKeyFor(field);
@@ -81,18 +116,21 @@ class GeneratorHelper extends HelperCore
       },
     );
 
-    var accessibleFieldSet = accessibleFields.values.toSet();
-    if (config.createFactory) {
-      final createResult = createFactory(accessibleFields, unavailableReasons);
-      yield createResult.output;
+    var accessibleFieldSet = accessibleFieldsMap.values.toSet();
+    Spec? fromJsonMethod;
 
-      final fieldsToUse = accessibleFields.entries
+    if (config.createFactory) {
+      final createResult = createFactory(
+        accessibleFieldsMap,
+        unavailableReasons,
+      );
+      fromJsonMethod = createResult.method;
+
+      final fieldsToUse = accessibleFieldsMap.entries
           .where((e) => createResult.usedFields.contains(e.key))
           .map((e) => e.value)
           .toList();
 
-      // Need to add candidates BACK even if they are not used in the factory if
-      // they are forced to be used for toJSON
       for (var candidate in sortedFields.where(
         (element) =>
             jsonKeyFor(element).explicitYesToJson &&
@@ -101,7 +139,6 @@ class GeneratorHelper extends HelperCore
         fieldsToUse.add(candidate);
       }
 
-      // Need the fields to maintain the original source ordering
       fieldsToUse.sort(
         (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)),
       );
@@ -111,9 +148,6 @@ class GeneratorHelper extends HelperCore
 
     accessibleFieldSet
       ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson)
-      // Check for duplicate JSON keys due to colliding annotations. We do this
-      // now, since we have a final field list after any pruning done by
-      // `_writeCtor`.
       ..fold(<String>{}, (Set<String> set, fe) {
         final jsonKey = nameAccess(fe);
         if (!set.add(jsonKey)) {
@@ -125,26 +159,9 @@ class GeneratorHelper extends HelperCore
         return set;
       });
 
-    if (config.createFieldMap) {
-      yield createFieldMap(accessibleFieldSet);
-    }
-
-    if (config.createJsonKeys) {
-      yield createJsonKeys(accessibleFieldSet);
-    }
-
-    if (config.createPerFieldToJson) {
-      yield createPerFieldToJson(accessibleFieldSet);
-    }
-
-    if (config.createToJson) {
-      yield* createToJson(accessibleFieldSet);
-    }
-
-    if (config.createJsonSchema) {
-      yield createJsonSchema();
-    }
-
-    yield* _addedMembers;
+    return (
+      accessibleFields: accessibleFieldSet,
+      fromJsonMethod: fromJsonMethod,
+    );
   }
 }

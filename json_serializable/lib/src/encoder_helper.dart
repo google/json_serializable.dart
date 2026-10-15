@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_helper/source_helper.dart';
 
 import 'enum_utils.dart';
@@ -17,150 +18,195 @@ import 'utils.dart';
 mixin EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name!}';
 
-  String createPerFieldToJson(Set<FieldElement> accessibleFieldSet) {
-    final buffer = StringBuffer()
-      ..writeln('// ignore: unused_element')
-      ..writeln(
-        'abstract class _\$${element.name!.nonPrivate}PerFieldToJson {',
-      );
+  Class createPerFieldToJson(Set<FieldElement> accessibleFieldSet) => Class(
+    (c) => c
+      ..name = '_\$${element.name!.nonPrivate}PerFieldToJson'
+      ..abstract = true
+      ..docs.add('// ignore: unused_element')
+      ..methods.addAll(
+        accessibleFieldSet.map(
+          (fe) => Method((m) {
+            m
+              ..name = fe.name!
+              ..static = true
+              ..docs.add('// ignore: unused_element')
+              ..returns = refer('Object?')
+              ..types.addAll(
+                element.typeParameters.map((t) {
+                  final bound = t.bound;
+                  return refer(
+                    bound != null
+                        ? '${t.name} extends ${bound.getDisplayString()}'
+                        : t.name!,
+                  );
+                }),
+              )
+              ..requiredParameters.add(
+                Parameter(
+                  (p) => p
+                    ..name = _toJsonParamName
+                    ..type = refer(fe.type.getDisplayString()),
+                ),
+              );
 
-    for (final field in accessibleFieldSet) {
-      buffer
-        ..writeln('  // ignore: unused_element')
-        ..write(
-          'static Object? ${field.name!}'
-          '${genericClassArgumentsImpl(withConstraints: true)}'
-          '(${field.type} $_toJsonParamName',
+            if (config.genericArgumentFactories) {
+              for (var arg in element.typeParameters) {
+                final helperName = toJsonForType(
+                  arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+                );
+                m.requiredParameters.add(
+                  Parameter(
+                    (p) => p
+                      ..name = helperName
+                      ..type = refer('Object? Function(${arg.name} value)'),
+                  ),
+                );
+              }
+            }
+
+            m
+              ..lambda = true
+              ..body = _serializeField(fe, refer(_toJsonParamName)).code;
+          }),
+        ),
+      ),
+  );
+
+  /// Generates an object containing metadatas related to the encoding,
+  /// destined to be used by other code-generators.
+  Field createFieldMap(Set<FieldElement> accessibleFieldSet) {
+    assert(config.createFieldMap);
+
+    return Field(
+      (f) => f
+        ..name = '_\$${element.name!.nonPrivate}FieldMap'
+        ..modifier = FieldModifier.constant
+        ..assignment = literalMap(
+          Map.fromEntries(
+            accessibleFieldSet.map((fe) => MapEntry(fe.name!, nameAccess(fe))),
+          ),
+          refer('String'),
+          refer('String'),
+        ).code,
+    );
+  }
+
+  /// Generates an object containing metadatas related to the encoding,
+  /// destined to be used by other code-generators.
+  Class createJsonKeys(Set<FieldElement> accessibleFieldSet) {
+    assert(config.createJsonKeys);
+
+    return Class(
+      (c) => c
+        ..name = '_\$${element.name!.nonPrivate}JsonKeys'
+        ..abstract = true
+        ..modifier = ClassModifier.final$
+        ..fields.addAll(
+          accessibleFieldSet.map(
+            (fe) => Field(
+              (f) => f
+                ..name = fe.name!
+                ..static = true
+                ..modifier = FieldModifier.constant
+                ..type = refer('String')
+                ..assignment = literalString(nameAccess(fe)).code,
+            ),
+          ),
+        ),
+    );
+  }
+
+  Method createToJson(Set<FieldElement> accessibleFields) {
+    assert(config.createToJson);
+
+    return Method((m) {
+      m
+        ..name = '${prefix}ToJson'
+        ..returns = refer('Map<String, dynamic>')
+        ..types.addAll(
+          element.typeParameters.map((t) {
+            final bound = t.bound;
+            return refer(
+              bound != null
+                  ? '${t.name} extends ${bound.getDisplayString()}'
+                  : t.name!,
+            );
+          }),
+        )
+        ..requiredParameters.add(
+          Parameter(
+            (p) => p
+              ..name = _toJsonParamName
+              ..type = refer(targetClassReference),
+          ),
         );
 
       if (config.genericArgumentFactories) {
-        _writeGenericArgumentFactories(buffer);
+        for (var arg in element.typeParameters) {
+          final helperName = toJsonForType(
+            arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+          );
+          m.requiredParameters.add(
+            Parameter(
+              (p) => p
+                ..name = helperName
+                ..type = refer('Object? Function(${arg.name} value)'),
+            ),
+          );
+        }
       }
 
-      buffer.writeln(') => ${_serializeField(field, _toJsonParamName)};');
-    }
+      final mapEntries = accessibleFields
+          .map((field) {
+            final keyExpression = safeNameAccess(field);
 
-    buffer.writeln('}');
+            if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
+              final access = _fieldAccess(field);
+              final valueExpression = toCodeString(
+                _serializePatchField(field, refer('value')),
+              );
+              return '  if ($access case final value?) '
+                  '$keyExpression: $valueExpression';
+            }
 
-    return buffer.toString();
-  }
+            final accessExpr = refer(_toJsonParamName).property(field.name!);
+            final valueExpression = toCodeString(
+              _serializeField(field, accessExpr),
+            );
+            final maybeQuestion = _canWriteJsonWithoutNullCheck(field)
+                ? ''
+                : '?';
+            return '  $keyExpression: $maybeQuestion$valueExpression';
+          })
+          .join(',\n');
 
-  /// Generates an object containing metadatas related to the encoding,
-  /// destined to be used by other code-generators.
-  String createFieldMap(Set<FieldElement> accessibleFieldSet) {
-    assert(config.createFieldMap);
-
-    final buffer = StringBuffer(
-      'const _\$${element.name!.nonPrivate}FieldMap = <String, String> {',
-    );
-
-    for (final field in accessibleFieldSet) {
-      buffer.writeln(
-        '${escapeDartString(field.name!)}: '
-        '${escapeDartString(nameAccess(field))},',
-      );
-    }
-
-    buffer.write('};');
-
-    return buffer.toString();
-  }
-
-  /// Generates an object containing metadatas related to the encoding,
-  /// destined to be used by other code-generators.
-  String createJsonKeys(Set<FieldElement> accessibleFieldSet) {
-    assert(config.createJsonKeys);
-
-    final buffer = StringBuffer(
-      'abstract final class _\$${element.name!.nonPrivate}JsonKeys {',
-    );
-    // ..write('static const _\$${element.name.nonPrivate}JsonKeys();');
-
-    for (final field in accessibleFieldSet) {
-      buffer.writeln(
-        'static const String ${field.name} = '
-        '${escapeDartString(nameAccess(field))};',
-      );
-    }
-
-    buffer.write('}');
-
-    return buffer.toString();
-  }
-
-  Iterable<String> createToJson(Set<FieldElement> accessibleFields) sync* {
-    assert(config.createToJson);
-
-    final buffer = StringBuffer();
-
-    final functionName =
-        '${prefix}ToJson${genericClassArgumentsImpl(withConstraints: true)}';
-    buffer.write(
-      'Map<String, dynamic> '
-      '$functionName($targetClassReference $_toJsonParamName',
-    );
-
-    if (config.genericArgumentFactories) _writeGenericArgumentFactories(buffer);
-
-    buffer
-      ..write(') ')
-      ..writeln('=> <String, dynamic>{')
-      ..writeAll(
-        accessibleFields.map((field) {
-          final keyExpression = safeNameAccess(field);
-
-          if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
-            final access = _fieldAccess(field);
-            final valueExpression = _serializePatchField(field, 'value');
-            return '        if ($access case final value?) '
-                '$keyExpression: $valueExpression,\n';
-          }
-
-          final access = _fieldAccess(field);
-          final valueExpression = _serializeField(field, access);
-
-          final maybeQuestion = _canWriteJsonWithoutNullCheck(field) ? '' : '?';
-
-          final keyValuePair = '$keyExpression: $maybeQuestion$valueExpression';
-          return '        $keyValuePair,\n';
-        }),
-      )
-      ..writeln('};');
-
-    yield buffer.toString();
-  }
-
-  void _writeGenericArgumentFactories(StringBuffer buffer) {
-    for (var arg in element.typeParameters) {
-      final helperName = toJsonForType(
-        arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
-      );
-      buffer.write(',Object? Function(${arg.name} value) $helperName');
-    }
-    if (element.typeParameters.isNotEmpty) {
-      buffer.write(',');
-    }
+      m
+        ..lambda = true
+        // TODO: use code_builder once it supports null-aware map entries
+        ..body = CodeExpression(
+          Code('<String, dynamic>{\n$mapEntries\n}'),
+        ).statement;
+    });
   }
 
   static const _toJsonParamName = 'instance';
 
-  String _serializeField(FieldElement field, String accessExpression) {
+  Expression _serializeField(FieldElement field, Expression accessExpression) {
     try {
-      return getHelperContext(
-        field,
-      ).serialize(field.type, accessExpression).toString();
+      return getHelperContext(field).serialize(field.type, accessExpression)!;
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);
     }
   }
 
-  String _serializePatchField(FieldElement field, String accessExpression) {
+  Expression _serializePatchField(
+    FieldElement field,
+    Expression accessExpression,
+  ) {
     try {
       final type = field.type.promoteNonNullable();
-      return getHelperContext(
-        field,
-      ).serialize(type, accessExpression).toString();
+      return getHelperContext(field).serialize(type, accessExpression)!;
     } on UnsupportedTypeError catch (e) // ignore: avoid_catching_errors
     {
       throw createInvalidGenerationError('toJson', field, e);

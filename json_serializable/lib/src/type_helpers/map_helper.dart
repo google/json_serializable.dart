@@ -3,12 +3,14 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
+import '../utils.dart';
 import 'to_from_string.dart';
 
 const _keyParam = 'k';
@@ -17,9 +19,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const MapHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     if (!coreMapTypeChecker.isAssignableFromType(targetType)) {
@@ -31,28 +33,45 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final keyType = args[0];
     final valueType = args[1];
 
-    _checkSafeKeyType(expression, keyType);
+    final exprStr = toCodeString(expression);
+    _checkSafeKeyType(exprStr, keyType);
 
-    final subFieldValue = context.serialize(valueType, closureArg);
+    final subFieldValue = context.serialize(valueType, refer(closureArg));
+    final subFieldValueStr = toCodeString(subFieldValue);
     final subKeyValue =
-        _forType(keyType)?.serialize(keyType, _keyParam, false) ??
-        context.serialize(keyType, _keyParam);
+        _forType(keyType)?.serialize(keyType, refer(_keyParam), false) ??
+        context.serialize(keyType, refer(_keyParam));
+    final subKeyValueStr = toCodeString(subKeyValue);
 
-    if (closureArg == subFieldValue && _keyParam == subKeyValue) {
+    if (closureArg == subFieldValueStr && _keyParam == subKeyValueStr) {
       return expression;
     }
 
-    final optionalQuestion = targetType.isNullableType ? '?' : '';
+    final mapProperty = targetType.isNullableType
+        ? expression.nullSafeProperty('map')
+        : expression.property('map');
 
-    return '$expression$optionalQuestion'
-        '.map(($_keyParam, $closureArg) => '
-        'MapEntry($subKeyValue, $subFieldValue))';
+    final mapEntry = refer(
+      'MapEntry',
+    ).newInstance([subKeyValue!, subFieldValue!]);
+
+    final closure = Method(
+      (m) => m
+        ..requiredParameters.addAll([
+          Parameter((p) => p..name = _keyParam),
+          Parameter((p) => p..name = closureArg),
+        ])
+        ..lambda = true
+        ..body = mapEntry.code,
+    ).closure;
+
+    return mapProperty.call([closure]);
   }
 
   @override
-  String? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
@@ -65,7 +84,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final keyArg = typeArgs.first;
     final valueArg = typeArgs.last;
 
-    _checkSafeKeyType(expression, keyArg);
+    final exprStr = toCodeString(expression);
+    _checkSafeKeyType(exprStr, keyArg);
 
     final valueArgIsAny =
         valueArg is DynamicType ||
@@ -79,12 +99,18 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
           if (keyArg.isLikeDynamic) {
-            return '$expression as Map$optionalQuestion';
+            // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+            // for unparenthesized argument cast.
+            return CodeExpression(Code('$exprStr as Map$optionalQuestion'));
           }
         } else {
           // this is the trivial case. Do a runtime cast to the known type of
           // JSON map values - `Map<String, dynamic>`
-          return '$expression as Map<String, dynamic>$optionalQuestion';
+          // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+          // for unparenthesized argument cast.
+          return CodeExpression(
+            Code('$exprStr as Map<String, dynamic>$optionalQuestion'),
+          );
         }
       }
 
@@ -95,44 +121,62 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
               valueArg.isSimpleJsonTypeNotDouble)) {
         // No mapping of the values or null check required!
         final valueString = valueArg.getDisplayString();
-        return 'Map<String, $valueString>.from($expression as Map)';
+        // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+        // for unparenthesized argument cast.
+        return refer(
+          'Map<String, $valueString>',
+        ).property('from').call([CodeExpression(Code('$exprStr as Map'))]);
       }
     }
 
     // In this case, we're going to create a new Map with matching reified
     // types.
 
-    final itemSubVal = context.deserialize(valueArg, closureArg);
+    final itemSubVal = context.deserialize(valueArg, refer(closureArg));
 
-    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
-
-    if (targetTypeIsNullable) {
-      mapCast += '?';
-    }
-
-    String keyUsage;
+    Expression keyUsage;
     if (keyArg.isEnum) {
-      keyUsage = context.deserialize(keyArg, _keyParam).toString();
+      keyUsage = context.deserialize(keyArg, refer(_keyParam))!;
     } else if (context.config.anyMap &&
         !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
-      keyUsage = '$_keyParam as String';
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+      // for unparenthesized argument cast.
+      keyUsage = const CodeExpression(Code('$_keyParam as String'));
     } else if (context.config.anyMap &&
         keyArg.isDartCoreObject &&
         !keyArg.isNullableType) {
-      keyUsage = '$_keyParam as Object';
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+      // for unparenthesized argument cast.
+      keyUsage = const CodeExpression(Code('$_keyParam as Object'));
     } else {
-      keyUsage = _keyParam;
+      keyUsage = refer(_keyParam);
     }
 
     final toFromString = _forType(keyArg);
     if (toFromString != null) {
-      keyUsage = toFromString
-          .deserialize(keyArg, keyUsage, false, true)
-          .toString();
+      keyUsage = toFromString.deserialize(keyArg, keyUsage, false, true)!;
     }
 
-    return '($expression $mapCast)$optionalQuestion.map( '
-        '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
+    final mapTypeStr = context.config.anyMap ? 'Map' : 'Map<String, dynamic>';
+    final castType = refer('$mapTypeStr${targetTypeIsNullable ? '?' : ''}');
+    final target = expression.asA(castType);
+    final mapProperty = targetTypeIsNullable
+        ? target.nullSafeProperty('map')
+        : target.property('map');
+
+    final mapEntry = refer('MapEntry').newInstance([keyUsage, itemSubVal!]);
+
+    final closure = Method(
+      (m) => m
+        ..requiredParameters.addAll([
+          Parameter((p) => p..name = _keyParam),
+          Parameter((p) => p..name = closureArg),
+        ])
+        ..lambda = true
+        ..body = mapEntry.code,
+    ).closure;
+
+    return mapProperty.call([closure]);
   }
 }
 

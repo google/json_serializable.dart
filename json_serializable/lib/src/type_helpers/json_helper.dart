@@ -4,6 +4,8 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart'
+    hide Enum, FunctionType, RecordType;
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -25,9 +27,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
   /// By default, JSON encoding in from `dart:convert` calls `toJson()` on
   /// provided objects.
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     if (!_canSerialize(context.config, targetType)) {
@@ -36,7 +38,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final interfaceType = targetType as InterfaceType;
 
-    final toJsonArgs = <String>[];
+    final toJsonArgs = <Expression>[];
 
     var toJson = _toJsonMethod(interfaceType);
 
@@ -59,16 +61,18 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (context.config.explicitToJson || toJsonArgs.isNotEmpty) {
-      return '$expression${interfaceType.isNullableType ? '?' : ''}'
-          '.toJson(${toJsonArgs.map((a) => '$a, ').join()} )';
+      final prop = interfaceType.isNullableType
+          ? expression.nullSafeProperty('toJson')
+          : expression.property('toJson');
+      return prop.call(toJsonArgs);
     }
     return expression;
   }
 
   @override
-  Object? deserialize(
+  DefaultContainer? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
@@ -83,6 +87,8 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         .singleOrNull;
 
     var output = expression;
+    var additionalArgs = const <Expression>[];
+
     if (fromJsonCtor != null) {
       final positionalParams = fromJsonCtor.formalParameters
           .where((element) => element.isPositional)
@@ -105,25 +111,22 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         }
       }
 
-      output = context.deserialize(asCastType, output).toString();
+      output = context.deserialize(asCastType, output)!;
 
-      final args = [
-        output,
-        ..._helperParams(
-          context.deserialize,
-          _decodeHelper,
-          targetType,
-          positionalParams.skip(1),
-          fromJsonCtor,
-        ),
-      ];
-
-      output = args.join(', ');
+      additionalArgs = _helperParams(
+        context.deserialize,
+        _decodeHelper,
+        targetType,
+        positionalParams.skip(1),
+        fromJsonCtor,
+      );
     } else if (_annotation(context.config, targetType)?.createFactory == true) {
       if (context.config.anyMap) {
-        output += ' as Map';
+        output = CodeExpression(Code('${toCodeString(output)} as Map'));
       } else {
-        output += ' as Map<String, dynamic>';
+        output = CodeExpression(
+          Code('${toCodeString(output)} as Map<String, dynamic>'),
+        );
       }
     } else {
       return null;
@@ -134,14 +137,15 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final lambda = LambdaResult(
       output,
       '${typeToCode(targetType.promoteNonNullable())}.fromJson',
+      additionalPositionalArguments: additionalArgs,
     );
 
     return DefaultContainer(expression, lambda);
   }
 }
 
-List<String> _helperParams(
-  Object? Function(DartType, String) execute,
+List<Expression> _helperParams(
+  Expression? Function(DartType, Expression) execute,
   TypeParameterType Function(FormalParameterElement, Element) paramMapper,
   InterfaceType type,
   Iterable<FormalParameterElement> positionalParams,
@@ -152,7 +156,7 @@ List<String> _helperParams(
     rest.add(paramMapper(param, targetElement));
   }
 
-  final args = <String>[];
+  final args = <Expression>[];
 
   for (var helperArg in rest) {
     final typeParamIndex = type.element.typeParameters.indexOf(
@@ -161,8 +165,17 @@ List<String> _helperParams(
 
     // TODO: throw here if `typeParamIndex` is -1 ?
     final typeArg = type.typeArguments[typeParamIndex];
-    final body = execute(typeArg, _helperLambdaParam);
-    args.add('($_helperLambdaParam) => $body');
+    final body = execute(typeArg, refer(_helperLambdaParam))!;
+    args.add(
+      Method(
+        (m) => m
+          ..requiredParameters.add(
+            Parameter((p) => p..name = _helperLambdaParam),
+          )
+          ..lambda = true
+          ..body = body.code,
+      ).closure,
+    );
   }
 
   return args;

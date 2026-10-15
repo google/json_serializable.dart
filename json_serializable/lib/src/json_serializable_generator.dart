@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -67,6 +68,8 @@ class JsonSerializableGenerator
     }
 
     final helper = GeneratorHelper(_settings, element, annotation);
-    return helper.generate();
+    return helper.generate().map(
+      (spec) => spec.accept(DartEmitter()).toString(),
+    );
   }
 }
