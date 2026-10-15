@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -210,19 +211,30 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
 /// This function is intentionally limited, and does not support all possible
 /// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
 /// [TypeParameterType]s, and [DynamicType]s.
-String typeToCode(DartType type, {bool forceNullable = false}) =>
-    switch (type) {
-      DynamicType() => 'dynamic',
-      InterfaceType() => [
-        type.element.name,
-        if (type.typeArguments.isNotEmpty)
-          '<${type.typeArguments.map(typeToCode).join(', ')}>',
-        if (type.isNullableType || forceNullable) '?',
-      ].join(),
-      TypeParameterType() => type.toStringNonNullable(),
-      RecordType() => _recordTypeToCode(type, forceNullable),
-      _ => type.getDisplayString(),
-    };
+String typeToCode(DartType type, {bool forceNullable = false}) {
+  if (type.alias case final alias?) {
+    return [
+      alias.element.name,
+      if (alias.typeArguments.isNotEmpty)
+        '<${alias.typeArguments.map(typeToCode).join(', ')}>',
+      if (alias.nullabilitySuffix == NullabilitySuffix.question ||
+          (!type.isNullableType && forceNullable))
+        '?',
+    ].join();
+  }
+  return switch (type) {
+    DynamicType() => 'dynamic',
+    InterfaceType() => [
+      type.element.name,
+      if (type.typeArguments.isNotEmpty)
+        '<${type.typeArguments.map(typeToCode).join(', ')}>',
+      if (type.isNullableType || forceNullable) '?',
+    ].join(),
+    TypeParameterType() => type.toStringNonNullable(),
+    RecordType() => _recordTypeToCode(type, forceNullable),
+    _ => type.getDisplayString(),
+  };
+}
 
 String _recordTypeToCode(RecordType type, bool forceNullable) {
   final positional = type.positionalFields

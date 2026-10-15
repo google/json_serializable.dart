@@ -4,6 +4,8 @@
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
+- Preserve `typedef` alias names in generated code.
+  ([#1124](https://github.com/google/json_serializable.dart/issues/1124))
 
 ## 6.14.1
 

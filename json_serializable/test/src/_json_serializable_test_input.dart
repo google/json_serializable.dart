@@ -575,6 +575,111 @@ class Issue1038RegressionTest {
   Issue1038RegressionTest.ean(this.ean) : id = null;
 }
 
+class Issue1124Class {
+  Issue1124Class();
+
+  factory Issue1124Class.fromJson(Map<String, dynamic> _) => Issue1124Class();
+
+  Map<String, dynamic> toJson() => throw UnimplementedError();
+}
+
+typedef Issue1124Alias = Issue1124Class;
+typedef NullableIssue1124Alias = Issue1124Class?;
+typedef MyListAlias<T> = MyList<T, int>;
+typedef StringAlias = String;
+typedef NullableStringAlias = String?;
+typedef DurationAlias = Duration;
+
+class _DurationAliasConverter implements JsonConverter<DurationAlias, int> {
+  const _DurationAliasConverter();
+
+  @override
+  DurationAlias fromJson(int json) => Duration(milliseconds: json);
+
+  @override
+  int toJson(DurationAlias object) => object.inMilliseconds;
+}
+
+@ShouldGenerate(r'''
+Issue1124RegressionTest _$Issue1124RegressionTestFromJson(
+  Map<String, dynamic> json,
+) => Issue1124RegressionTest(
+  value: Issue1124Alias.fromJson(json['value'] as Map<String, dynamic>),
+  nullableValue: json['nullableValue'] == null
+      ? null
+      : Issue1124Alias.fromJson(json['nullableValue'] as Map<String, dynamic>),
+  nullableAliasValue: json['nullableAliasValue'] == null
+      ? null
+      : NullableIssue1124Alias.fromJson(
+          json['nullableAliasValue'] as Map<String, dynamic>,
+        ),
+  genericList: json['genericList'] == null
+      ? null
+      : MyListAlias<Issue1124Alias>.fromJson(
+          (json['genericList'] as List<dynamic>)
+              .map((e) => Issue1124Alias.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+  stringWithDefault: json['stringWithDefault'] as StringAlias? ?? 'default',
+  nullableString: json['nullableString'] as StringAlias?,
+  nullableAliasString: json['nullableAliasString'] as NullableStringAlias,
+  durationValue: _$JsonConverterFromJson<int, DurationAlias>(
+    json['durationValue'],
+    const _DurationAliasConverter().fromJson,
+  ),
+);
+
+Map<String, dynamic> _$Issue1124RegressionTestToJson(
+  Issue1124RegressionTest instance,
+) => <String, dynamic>{
+  'value': instance.value,
+  'nullableValue': instance.nullableValue,
+  'nullableAliasValue': instance.nullableAliasValue,
+  'genericList': instance.genericList,
+  'stringWithDefault': instance.stringWithDefault,
+  'nullableString': instance.nullableString,
+  'nullableAliasString': instance.nullableAliasString,
+  'durationValue': _$JsonConverterToJson<int, DurationAlias>(
+    instance.durationValue,
+    const _DurationAliasConverter().toJson,
+  ),
+};
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);
+''')
+@JsonSerializable()
+@_DurationAliasConverter()
+class Issue1124RegressionTest {
+  final Issue1124Alias value;
+  final Issue1124Alias? nullableValue;
+  final NullableIssue1124Alias nullableAliasValue;
+  final MyListAlias<Issue1124Alias>? genericList;
+  @JsonKey(defaultValue: 'default')
+  final StringAlias stringWithDefault;
+  final StringAlias? nullableString;
+  final NullableStringAlias nullableAliasString;
+  final DurationAlias? durationValue;
+
+  Issue1124RegressionTest({
+    required this.value,
+    this.nullableValue,
+    this.nullableAliasValue,
+    this.genericList,
+    required this.stringWithDefault,
+    this.nullableString,
+    this.nullableAliasString,
+    this.durationValue,
+  });
+}
+
 @ShouldGenerate(r'''
 TearOffFromJsonClass _$TearOffFromJsonClassFromJson(
   Map<String, dynamic> json,
