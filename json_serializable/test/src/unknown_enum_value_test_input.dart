@@ -32,6 +32,88 @@ class UnknownEnumValue {
 
 enum UnknownEnumValueItems { v0, v1, v2, vUnknown, vNull }
 
+@ShouldGenerate(r'''
+UnknownEnumValueMap _$UnknownEnumValueMapFromJson(Map<String, dynamic> json) =>
+    UnknownEnumValueMap()
+      ..stringKeyMap = (json['stringKeyMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+          k,
+          $enumDecode(
+            _$UnknownEnumValueItemsEnumMap,
+            e,
+            unknownValue: UnknownEnumValueItems.vUnknown,
+          ),
+        ),
+      )
+      ..nullableValueMap = (json['nullableValueMap'] as Map<String, dynamic>)
+          .map(
+            (k, e) => MapEntry(
+              k,
+              $enumDecodeNullable(
+                _$UnknownEnumValueItemsEnumMap,
+                e,
+                unknownValue: JsonKey.nullForUndefinedEnumValue,
+              ),
+            ),
+          )
+      ..enumKeyMap = (json['enumKeyMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+          $enumDecode(_$WrongEnumTypeEnumMap, k),
+          $enumDecode(
+            _$UnknownEnumValueItemsEnumMap,
+            e,
+            unknownValue: UnknownEnumValueItems.vUnknown,
+          ),
+        ),
+      )
+      ..enumKeyNullableValueMap =
+          (json['enumKeyNullableValueMap'] as Map<String, dynamic>).map(
+            (k, e) => MapEntry(
+              $enumDecode(_$WrongEnumTypeEnumMap, k),
+              $enumDecodeNullable(
+                _$UnknownEnumValueItemsEnumMap,
+                e,
+                unknownValue: JsonKey.nullForUndefinedEnumValue,
+              ),
+            ),
+          );
+
+const _$UnknownEnumValueItemsEnumMap = {
+  UnknownEnumValueItems.v0: 'v0',
+  UnknownEnumValueItems.v1: 'v1',
+  UnknownEnumValueItems.v2: 'v2',
+  UnknownEnumValueItems.vUnknown: 'vUnknown',
+  UnknownEnumValueItems.vNull: 'vNull',
+};
+
+const _$WrongEnumTypeEnumMap = {WrongEnumType.otherValue: 'otherValue'};
+''')
+@JsonSerializable(createToJson: false)
+class UnknownEnumValueMap {
+  @JsonKey(unknownEnumValue: UnknownEnumValueItems.vUnknown)
+  late Map<String, UnknownEnumValueItems> stringKeyMap;
+
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  late Map<String, UnknownEnumValueItems?> nullableValueMap;
+
+  @JsonKey(unknownEnumValue: UnknownEnumValueItems.vUnknown)
+  late Map<WrongEnumType, UnknownEnumValueItems> enumKeyMap;
+
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  late Map<WrongEnumType, UnknownEnumValueItems?> enumKeyNullableValueMap;
+}
+
+@ShouldThrow(
+  '`JsonKey.nullForUndefinedEnumValue` cannot be used with '
+  '`JsonKey.unknownEnumValue` unless the field is nullable.',
+  element: 'value',
+)
+@JsonSerializable()
+class UnknownEnumValueMapNotNullable {
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  late Map<String, UnknownEnumValueItems> value;
+}
+
 @ShouldThrow(
   'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
   '`int`, but the provided unknownEnumValue is of type '
@@ -54,6 +136,28 @@ class UnknownEnumValueListWrongEnumType {
   late List<UnknownEnumValueItems> value;
 }
 
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
+  '`int`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueMapValueWrongType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  late Map<String, int> value;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
+  '`UnknownEnumValueItems`, but the provided unknownEnumValue is of type '
+  '`WrongEnumType`.',
+)
+@JsonSerializable()
+class UnknownEnumValueMapValueWrongEnumType {
+  @JsonKey(unknownEnumValue: WrongEnumType.otherValue)
+  late Map<String, UnknownEnumValueItems> value;
+}
+
 enum WrongEnumType { otherValue }
 
 @ShouldThrow(
@@ -69,7 +173,7 @@ class UnknownEnumValueWrongEnumType {
 
 @ShouldThrow(
   'Error with `@JsonKey` on the `value` field. `unknownEnumValue` can only be '
-  'set on fields of type enum or on Iterable, List, or Set instances of an '
+  'set on fields of type enum or on Iterable, List, Set or Map instances of an '
   'enum type.',
 )
 @JsonSerializable()

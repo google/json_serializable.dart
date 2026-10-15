@@ -4,6 +4,8 @@
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
+- `JsonKey.unknownEnumValue`: Added support for `Map` values.
+  ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
 
 ## 6.14.1
 
