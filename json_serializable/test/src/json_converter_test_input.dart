@@ -221,3 +221,98 @@ class _NullableConverter implements JsonConverter<NeedsConversion?, Object?> {
   @override
   Object? toJson(NeedsConversion? object) => null;
 }
+
+@ShouldGenerate(r'''
+JsonConverterNullableAndNonNullable
+_$JsonConverterNullableAndNonNullableFromJson(Map<String, dynamic> json) =>
+    JsonConverterNullableAndNonNullable()
+      ..value = const _DurationMillisecondConverter().fromJson(
+        (json['value'] as num).toInt(),
+      )
+      ..nullableValue = const _NullableDurationMillisecondConverter().fromJson(
+        (json['nullableValue'] as num?)?.toInt(),
+      )
+      ..intValue = const _DynamicIntConverter().fromJson(json['intValue'])
+      ..nullableIntValue = const _NullableDynamicIntConverter().fromJson(
+        json['nullableIntValue'],
+      )
+      ..nullableNeedsConversion = const _NeedsConversionDynamicConverter()
+          .fromJson(json['nullableNeedsConversion']);
+
+Map<String, dynamic> _$JsonConverterNullableAndNonNullableToJson(
+  JsonConverterNullableAndNonNullable instance,
+) => <String, dynamic>{
+  'value': const _DurationMillisecondConverter().toJson(instance.value),
+  'nullableValue': const _NullableDurationMillisecondConverter().toJson(
+    instance.nullableValue,
+  ),
+  'intValue': const _DynamicIntConverter().toJson(instance.intValue),
+  'nullableIntValue': const _NullableDynamicIntConverter().toJson(
+    instance.nullableIntValue,
+  ),
+  'nullableNeedsConversion': _$JsonConverterToJson<dynamic, NeedsConversion>(
+    instance.nullableNeedsConversion,
+    const _NeedsConversionDynamicConverter().toJson,
+  ),
+};
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);
+''')
+@JsonSerializable(
+  converters: [_DynamicIntConverter(), _NullableDynamicIntConverter()],
+)
+@_DurationMillisecondConverter()
+@_NullableDurationMillisecondConverter()
+@_NeedsConversionDynamicConverter()
+class JsonConverterNullableAndNonNullable {
+  late Duration value;
+  Duration? nullableValue;
+  late int intValue;
+  int? nullableIntValue;
+  NeedsConversion? nullableNeedsConversion;
+}
+
+class _NullableDurationMillisecondConverter
+    implements JsonConverter<Duration?, int?> {
+  const _NullableDurationMillisecondConverter();
+
+  @override
+  Duration? fromJson(int? json) => null;
+
+  @override
+  int? toJson(Duration? object) => null;
+}
+
+class _DynamicIntConverter implements JsonConverter<int, dynamic> {
+  const _DynamicIntConverter();
+
+  @override
+  int fromJson(dynamic json) => 0;
+
+  @override
+  dynamic toJson(int object) => object;
+}
+
+class _NullableDynamicIntConverter implements JsonConverter<int?, dynamic> {
+  const _NullableDynamicIntConverter();
+
+  @override
+  int? fromJson(dynamic json) => null;
+
+  @override
+  dynamic toJson(int? object) => object;
+}
+
+class _NeedsConversionDynamicConverter
+    implements JsonConverter<NeedsConversion, dynamic> {
+  const _NeedsConversionDynamicConverter();
+
+  @override
+  NeedsConversion fromJson(dynamic json) => NeedsConversion();
+
+  @override
+  dynamic toJson(NeedsConversion object) => 0;
+}

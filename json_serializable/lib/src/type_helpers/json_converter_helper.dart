@@ -206,11 +206,20 @@ _JsonConvertData? _typeConverterFrom(
   }
 
   if (matchingAnnotations.length > 1) {
-    final targetTypeCode = typeToCode(targetType);
-    throw InvalidGenerationSourceError(
-      'Found more than one matching converter for `$targetTypeCode`.',
-      element: matchingAnnotations[1].elementAnnotation?.element,
-    );
+    final exactMatches = matchingAnnotations
+        .where((e) => e.fieldType.isNullableType == targetType.isNullableType)
+        .toList();
+    if (exactMatches.isNotEmpty) {
+      matchingAnnotations = exactMatches;
+    }
+
+    if (matchingAnnotations.length > 1) {
+      final targetTypeCode = typeToCode(targetType);
+      throw InvalidGenerationSourceError(
+        'Found more than one matching converter for `$targetTypeCode`.',
+        element: matchingAnnotations[1].elementAnnotation?.element,
+      );
+    }
   }
 
   final match = matchingAnnotations.single;

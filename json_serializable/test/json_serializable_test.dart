@@ -117,6 +117,7 @@ const _expectedAnnotatedTests = {
   'JsonConverterCtorParams',
   'JsonConverterDuplicateAnnotations',
   'JsonConverterNamedCtor',
+  'JsonConverterNullableAndNonNullable',
   'JsonConverterNullableToNonNullable',
   'JsonConverterOnGetter',
   'JsonConverterWithBadTypeArg',
