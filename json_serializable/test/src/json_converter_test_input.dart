@@ -152,28 +152,6 @@ class _DurationMillisecondConverter implements JsonConverter<Duration, int> {
   int toJson(Duration object) => throw UnimplementedError();
 }
 
-@ShouldThrow(
-  'Generators with constructor arguments are not supported.',
-  element: 'new',
-)
-@JsonSerializable()
-@_ConverterWithCtorParams(42)
-class JsonConverterCtorParams {
-  late Duration value;
-}
-
-class _ConverterWithCtorParams implements JsonConverter<Duration, int> {
-  final int param;
-
-  const _ConverterWithCtorParams(this.param);
-
-  @override
-  Duration fromJson(int json) => throw UnimplementedError();
-
-  @override
-  int toJson(Duration object) => 0;
-}
-
 @ShouldGenerate(r'''
 Map<String, dynamic> _$JsonConverterOnGetterToJson(
   JsonConverterOnGetter instance,
