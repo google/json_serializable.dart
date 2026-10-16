@@ -7,6 +7,7 @@ library;
 
 import 'dart:io';
 
+import 'package:analyzer/dart/analysis/features.dart';
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
 import 'package:pub_semver/pub_semver.dart';
@@ -54,7 +55,11 @@ Future<void> main() async {
     },
   );
 
-  if (Version.parse(Platform.version.split(' ').first) >= Version(3, 12, 0)) {
+  final primaryConstructorsRelease =
+      Feature.primary_constructors.releaseVersion;
+  final currentSdkVersion = Version.parse(Platform.version.split(' ').first);
+  if (primaryConstructorsRelease != null &&
+      currentSdkVersion >= primaryConstructorsRelease) {
     final primaryConstructorTestReader = await initializeLibraryReader({
       'primary_constructor_test_input.dart': _primaryConstructorTestInput,
     }, 'primary_constructor_test_input.dart');
@@ -66,6 +71,12 @@ Future<void> main() async {
         'PrimaryConstructorLargeClass',
         'PrimaryConstructorMixedWithBodyFields',
       },
+    );
+  } else {
+    test(
+      'primary constructors',
+      () {},
+      skip: 'Requires primary-constructors support in SDK and analyzer.',
     );
   }
 }
