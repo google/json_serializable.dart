@@ -2,9 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 import 'default_container.dart';
@@ -125,8 +125,8 @@ class _ConvertPair {
       if (obj.isNull) {
         pair = _ConvertPair._(null, null);
       } else {
-        final toJson = _convertData(obj.objectValue, element, false);
-        final fromJson = _convertData(obj.objectValue, element, true);
+        final toJson = _convertData(obj, element, false);
+        final fromJson = _convertData(obj, element, true);
         pair = _ConvertPair._(fromJson, toJson);
       }
       _expando[element] = pair;
@@ -135,15 +135,19 @@ class _ConvertPair {
   }
 }
 
-ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
+ConvertData? _convertData(
+  ConstantReader obj,
+  FieldElement element,
+  bool isFrom,
+) {
   final paramName = isFrom ? 'fromJson' : 'toJson';
-  final objectValue = obj.getField(paramName);
+  final objectValue = obj.read(paramName);
 
-  if (objectValue == null || objectValue.isNull) {
+  if (objectValue.isNull) {
     return null;
   }
 
-  final executableElement = objectValue.toFunctionValue()!;
+  final executableElement = objectValue.objectValue.toFunctionValue()!;
 
   if (executableElement.formalParameters.isEmpty ||
       executableElement.formalParameters.first.isNamed ||
@@ -159,9 +163,7 @@ ConvertData? _convertData(DartObject obj, FieldElement element, bool isFrom) {
   final returnType = executableElement.returnType;
   final argType = executableElement.formalParameters.first.type;
   if (isFrom) {
-    final hasDefaultValue = !jsonKeyAnnotation(
-      element,
-    ).read('defaultValue').isNull;
+    final hasDefaultValue = !obj.read('defaultValue').isNull;
 
     if (returnType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
