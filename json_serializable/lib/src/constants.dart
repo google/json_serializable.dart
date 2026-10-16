@@ -5,6 +5,9 @@
 /// Name used for closure argument when generating calls to `map`.
 const closureArg = 'e';
 
+/// Name used for key argument when generating calls to `Map.map`.
+const keyParam = 'k';
+
 const generatedLocalVarName = 'value';
 
 const converterOrKeyInstructions = r'''
