@@ -9,6 +9,9 @@ import 'dart:collection';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
+import 'issue_1124_typedef_base.dart' show Issue1124Base;
+import 'issue_1124_typedef_base.dart' as issue1124_prefix;
+
 part 'checked_test_input.dart';
 part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
@@ -472,10 +475,11 @@ class IgnoreUnannotated {
 
 @ShouldGenerate(r'''
 SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) =>
-    SubclassedJsonKey()..annotatedWithSubclass = (json['bob'] as num).toInt();
+    SubclassedJsonKey()
+      ..annotatedWithSubclass = _myFromJson(json['bob'] as String);
 
 Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
-    <String, dynamic>{'bob': instance.annotatedWithSubclass};
+    <String, dynamic>{'bob': _myToJson(instance.annotatedWithSubclass)};
 ''')
 @JsonSerializable(ignoreUnannotated: true)
 class SubclassedJsonKey {
@@ -484,8 +488,13 @@ class SubclassedJsonKey {
 }
 
 class MyJsonKey extends JsonKey {
-  const MyJsonKey() : super(name: 'bob');
+  const MyJsonKey()
+    : super(name: 'bob', fromJson: _myFromJson, toJson: _myToJson);
 }
+
+int _myFromJson(String value) => int.parse(value);
+
+String _myToJson(int value) => value.toString();
 
 @ShouldGenerate(r'''
 OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
@@ -700,6 +709,116 @@ class Issue1124RegressionTest {
     required this.privateString,
     required this.aliasMap,
   });
+}
+
+@ShouldGenerate(r'''
+Issue1124PerFieldAndScopeTest<T> _$Issue1124PerFieldAndScopeTestFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) => Issue1124PerFieldAndScopeTest<T>()
+  ..inheritedInts = (json['inheritedInts'] as List<dynamic>?)
+      ?.map((e) => (e as num).toInt())
+      .toList()
+  ..inheritedString = json['inheritedString'] as String?
+  ..genericNullable = _$nullableGenericFromJson(
+    json['genericNullable'],
+    fromJsonT,
+  )
+  ..genericNullableList = (json['genericNullableList'] as List<dynamic>)
+      .map((e) => _$nullableGenericFromJson(e, fromJsonT))
+      .toList()
+  ..prefixedInts = (json['prefixedInts'] as List<dynamic>?)
+      ?.map((e) => (e as num).toInt())
+      .toList()
+  ..prefixedIntsMap = (json['prefixedIntsMap'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(
+      k,
+      (e as List<dynamic>).map((e) => (e as num).toInt()).toList(),
+    ),
+  )
+  ..prefixedStringMap = Map<String, String>.from(
+    json['prefixedStringMap'] as Map,
+  )
+  ..localAlias = json['localAlias'] as StringAlias?;
+
+// ignore: unused_element
+abstract class _$Issue1124PerFieldAndScopeTestPerFieldToJson {
+  // ignore: unused_element
+  static Object? inheritedInts<T>(
+    List<int>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+  // ignore: unused_element
+  static Object? inheritedString<T>(
+    String? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+  // ignore: unused_element
+  static Object? genericNullable<T>(
+    T? instance,
+    Object? Function(T value) toJsonT,
+  ) => _$nullableGenericToJson(instance, toJsonT);
+  // ignore: unused_element
+  static Object? genericNullableList<T>(
+    List<T?> instance,
+    Object? Function(T value) toJsonT,
+  ) => instance.map((e) => _$nullableGenericToJson(e, toJsonT)).toList();
+  // ignore: unused_element
+  static Object? prefixedInts<T>(
+    List<int>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+  // ignore: unused_element
+  static Object? prefixedIntsMap<T>(
+    Map<String, List<int>>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+  // ignore: unused_element
+  static Object? prefixedStringMap<T>(
+    Map<String, String> instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+  // ignore: unused_element
+  static Object? localAlias<T>(
+    StringAlias? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+}
+
+Map<String, dynamic> _$Issue1124PerFieldAndScopeTestToJson<T>(
+  Issue1124PerFieldAndScopeTest<T> instance,
+  Object? Function(T value) toJsonT,
+) => <String, dynamic>{
+  'inheritedInts': instance.inheritedInts,
+  'inheritedString': instance.inheritedString,
+  'genericNullable': _$nullableGenericToJson(instance.genericNullable, toJsonT),
+  'genericNullableList': instance.genericNullableList
+      .map((e) => _$nullableGenericToJson(e, toJsonT))
+      .toList(),
+  'prefixedInts': instance.prefixedInts,
+  'prefixedIntsMap': instance.prefixedIntsMap,
+  'prefixedStringMap': instance.prefixedStringMap,
+  'localAlias': instance.localAlias,
+};
+
+T? _$nullableGenericFromJson<T>(
+  Object? input,
+  T Function(Object? json) fromJson,
+) => input == null ? null : fromJson(input);
+
+Object? _$nullableGenericToJson<T>(
+  T? input,
+  Object? Function(T value) toJson,
+) => input == null ? null : toJson(input);
+''')
+@JsonSerializable(createPerFieldToJson: true, genericArgumentFactories: true)
+class Issue1124PerFieldAndScopeTest<T> extends Issue1124Base {
+  T? genericNullable;
+  List<T?> genericNullableList = [];
+  issue1124_prefix.Ints? prefixedInts;
+  Map<String, issue1124_prefix.Ints>? prefixedIntsMap;
+  Map<String, issue1124_prefix.ImportedStringAlias> prefixedStringMap = {};
+  StringAlias? localAlias;
 }
 
 @ShouldGenerate(r'''

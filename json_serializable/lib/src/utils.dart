@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -205,13 +207,26 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
       FieldRename.pascal => declaredName.pascal,
     };
 
+/// Runs [action] with [library] as the active target library for [typeToCode].
+T runWithTargetLibrary<T>(LibraryElement library, T Function() action) =>
+    runZoned(action, zoneValues: {#_targetLibrary: library});
+
+bool _isAliasInScope(TypeAliasElement element) {
+  if (element.isPrivate) return false;
+  final library = Zone.current[#_targetLibrary] as LibraryElement?;
+  if (library == null) return true;
+  final name = element.name;
+  return name != null &&
+      library.firstFragment.scope.lookup(name).getter == element;
+}
+
 /// Return the Dart code presentation for the given [type].
 ///
 /// This function is intentionally limited, and does not support all possible
 /// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
 /// [TypeParameterType]s, and [DynamicType]s.
 String typeToCode(DartType type, {bool forceNullable = false}) {
-  if (type.alias case final alias? when !alias.element.isPrivate) {
+  if (type.alias case final alias?) {
     if (alias.element.aliasedType case final TypeParameterType aliasedParam) {
       final index = alias.element.typeParameters.indexOf(aliasedParam.element);
       if (index >= 0) {
@@ -221,14 +236,16 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
             : typeToCode(argType.promoteNonNullable());
       }
     }
-    return [
-      alias.element.name,
-      if (alias.typeArguments.isNotEmpty)
-        '<${alias.typeArguments.map(typeToCode).join(', ')}>',
-      if (!alias.element.aliasedType.isNullableType &&
-          (type.isNullableType || forceNullable))
-        '?',
-    ].join();
+    if (_isAliasInScope(alias.element)) {
+      return [
+        alias.element.name,
+        if (alias.typeArguments.isNotEmpty)
+          '<${alias.typeArguments.map(typeToCode).join(', ')}>',
+        if (!alias.element.aliasedType.isNullableType &&
+            (type.isNullableType || forceNullable))
+          '?',
+      ].join();
+    }
   }
   return switch (type) {
     DynamicType() => 'dynamic',
@@ -238,7 +255,10 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
         '<${type.typeArguments.map(typeToCode).join(', ')}>',
       if (type.isNullableType || forceNullable) '?',
     ].join(),
-    TypeParameterType() => type.toStringNonNullable(),
+    TypeParameterType() => [
+      type.toStringNonNullable(),
+      if (type.isNullableType || forceNullable) '?',
+    ].join(),
     RecordType() => _recordTypeToCode(type, forceNullable),
     _ => type.getDisplayString(),
   };
