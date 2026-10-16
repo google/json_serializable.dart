@@ -9,7 +9,6 @@ import 'package:source_helper/source_helper.dart';
 import '../constants.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
-import '../shared_checkers.dart';
 import '../type_helper.dart';
 
 final simpleExpression = RegExp('^[a-zA-Z_]+\$');
@@ -53,9 +52,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
-    final unknownEnumValue =
-        (coreMapTypeChecker.isAssignableFromType(context.fieldElement.type) &&
-            expression != closureArg)
+    final unknownEnumValue = expression == keyParam
         ? null
         : jsonKey.unknownEnumValue;
 
