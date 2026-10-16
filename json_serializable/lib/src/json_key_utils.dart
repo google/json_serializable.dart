@@ -176,14 +176,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
 
     if (enumFields != null) {
       if (mustBeEnum) {
-        late DartType targetEnumType;
-        if (element.type.isEnum) {
-          targetEnumType = element.type;
-        } else if (coreIterableTypeChecker.isAssignableFromType(element.type)) {
-          targetEnumType = coreIterableGenericType(element.type);
-        } else if (coreMapTypeChecker.isAssignableFromType(element.type)) {
-          targetEnumType = coreMapGenericValueType(element.type);
-        } else {
+        if (!element.type.isEnum &&
+            !coreIterableTypeChecker.isAssignableFromType(element.type) &&
+            !coreMapTypeChecker.isAssignableFromType(element.type)) {
           throwUnsupported(
             element,
             '`$fieldName` can only be set on fields of type enum or on '
@@ -191,7 +186,19 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
           );
         }
 
-        if (_nullAsUnknownChecker.isExactlyType(annotationType)) {
+        var targetEnumType = element.type;
+        while (!targetEnumType.isEnum) {
+          if (coreIterableTypeChecker.isAssignableFromType(targetEnumType)) {
+            targetEnumType = coreIterableGenericType(targetEnumType);
+          } else if (coreMapTypeChecker.isAssignableFromType(targetEnumType)) {
+            targetEnumType = coreMapGenericValueType(targetEnumType);
+          } else {
+            break;
+          }
+        }
+
+        if (_nullAsUnknownChecker.isExactlyType(annotationType) &&
+            targetEnumType.isEnum) {
           return jsonKeyNullForUndefinedEnumValueFieldName;
         } else if (!_interfaceTypesEqual(annotationType, targetEnumType)) {
           throwUnsupported(

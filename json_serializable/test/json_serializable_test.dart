@@ -172,6 +172,7 @@ const _expectedAnnotatedTests = {
   'UnknownEnumValueListWrongType',
   'UnknownEnumValueMap',
   'UnknownEnumValueMapNotNullable',
+  'UnknownEnumValueMapNullForUndefinedWrongType',
   'UnknownEnumValueMapValueWrongEnumType',
   'UnknownEnumValueMapValueWrongType',
   'UnknownEnumValueNotEnumField',

@@ -76,7 +76,21 @@ UnknownEnumValueMap _$UnknownEnumValueMapFromJson(Map<String, dynamic> json) =>
                 unknownValue: JsonKey.nullForUndefinedEnumValue,
               ),
             ),
-          );
+          )
+      ..nestedListMap = (json['nestedListMap'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(
+          k,
+          (e as List<dynamic>)
+              .map(
+                (e) => $enumDecode(
+                  _$UnknownEnumValueItemsEnumMap,
+                  e,
+                  unknownValue: UnknownEnumValueItems.vUnknown,
+                ),
+              )
+              .toList(),
+        ),
+      );
 
 const _$UnknownEnumValueItemsEnumMap = {
   UnknownEnumValueItems.v0: 'v0',
@@ -101,6 +115,19 @@ class UnknownEnumValueMap {
 
   @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
   late Map<WrongEnumType, UnknownEnumValueItems?> enumKeyNullableValueMap;
+
+  @JsonKey(unknownEnumValue: UnknownEnumValueItems.vUnknown)
+  late Map<String, List<UnknownEnumValueItems>> nestedListMap;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `value` field. `unknownEnumValue` has type '
+  '`int`, but the provided unknownEnumValue is of type `_NullAsDefault`.',
+)
+@JsonSerializable()
+class UnknownEnumValueMapNullForUndefinedWrongType {
+  @JsonKey(unknownEnumValue: JsonKey.nullForUndefinedEnumValue)
+  late Map<String, int?> value;
 }
 
 @ShouldThrow(
