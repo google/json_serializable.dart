@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -185,8 +186,12 @@ Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
 }
 
 extension DartTypeExtension on DartType {
-  DartType promoteNonNullable() =>
-      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+  DartType promoteNonNullable() => switch (this) {
+    final TypeParameterType t => t.element.instantiate(
+      nullabilitySuffix: NullabilitySuffix.none,
+    ),
+    _ => element?.library?.typeSystem.promoteToNonNull(this) ?? this,
+  };
 
   String toStringNonNullable() {
     final val = getDisplayString();
@@ -256,8 +261,9 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
       if (type.isNullableType || forceNullable) '?',
     ].join(),
     TypeParameterType() => [
-      type.toStringNonNullable(),
-      if (type.isNullableType || forceNullable) '?',
+      type.element.name,
+      if (type.nullabilitySuffix == NullabilitySuffix.question || forceNullable)
+        '?',
     ].join(),
     RecordType() => _recordTypeToCode(type, forceNullable),
     _ => type.getDisplayString(),
