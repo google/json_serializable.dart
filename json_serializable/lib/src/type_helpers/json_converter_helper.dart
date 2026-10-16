@@ -98,8 +98,8 @@ String _nullableJsonConverterLambdaResult(
 }) {
   final jsonDisplayString = typeToCode(converter.jsonType);
   final fieldTypeDisplayString = converter.isGeneric
-      ? typeToCode(targetType)
-      : typeToCode(converter.fieldType);
+      ? typeToCode(targetType.promoteNonNullable())
+      : typeToCode(converter.fieldType.promoteNonNullable());
 
   return '$name<$jsonDisplayString, $fieldTypeDisplayString>('
       '$expression, $callback)';

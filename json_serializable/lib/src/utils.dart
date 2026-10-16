@@ -2,8 +2,11 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -183,8 +186,12 @@ Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
 }
 
 extension DartTypeExtension on DartType {
-  DartType promoteNonNullable() =>
-      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+  DartType promoteNonNullable() => switch (this) {
+    final TypeParameterType t => t.element.instantiate(
+      nullabilitySuffix: NullabilitySuffix.none,
+    ),
+    _ => element?.library?.typeSystem.promoteToNonNull(this) ?? this,
+  };
 
   String toStringNonNullable() {
     final val = getDisplayString();
@@ -205,24 +212,63 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
       FieldRename.pascal => declaredName.pascal,
     };
 
+/// Runs [action] with [library] as the active target library for [typeToCode].
+T runWithTargetLibrary<T>(LibraryElement library, T Function() action) =>
+    runZoned(action, zoneValues: {#_targetLibrary: library});
+
+bool _isAliasInScope(TypeAliasElement element) {
+  if (element.isPrivate) return false;
+  final library = Zone.current[#_targetLibrary] as LibraryElement?;
+  if (library == null) return true;
+  final name = element.name;
+  return name != null &&
+      library.firstFragment.scope.lookup(name).getter == element;
+}
+
 /// Return the Dart code presentation for the given [type].
 ///
 /// This function is intentionally limited, and does not support all possible
 /// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
 /// [TypeParameterType]s, and [DynamicType]s.
-String typeToCode(DartType type, {bool forceNullable = false}) =>
-    switch (type) {
-      DynamicType() => 'dynamic',
-      InterfaceType() => [
-        type.element.name,
-        if (type.typeArguments.isNotEmpty)
-          '<${type.typeArguments.map(typeToCode).join(', ')}>',
-        if (type.isNullableType || forceNullable) '?',
-      ].join(),
-      TypeParameterType() => type.toStringNonNullable(),
-      RecordType() => _recordTypeToCode(type, forceNullable),
-      _ => type.getDisplayString(),
-    };
+String typeToCode(DartType type, {bool forceNullable = false}) {
+  if (type.alias case final alias?) {
+    if (alias.element.aliasedType case final TypeParameterType aliasedParam) {
+      final index = alias.element.typeParameters.indexOf(aliasedParam.element);
+      if (index >= 0) {
+        final argType = alias.typeArguments[index];
+        return type.isNullableType || forceNullable
+            ? typeToCode(argType, forceNullable: true)
+            : typeToCode(argType.promoteNonNullable());
+      }
+    }
+    if (_isAliasInScope(alias.element)) {
+      return [
+        alias.element.name,
+        if (alias.typeArguments.isNotEmpty)
+          '<${alias.typeArguments.map(typeToCode).join(', ')}>',
+        if (!alias.element.aliasedType.isNullableType &&
+            (type.isNullableType || forceNullable))
+          '?',
+      ].join();
+    }
+  }
+  return switch (type) {
+    DynamicType() => 'dynamic',
+    InterfaceType() => [
+      type.element.name,
+      if (type.typeArguments.isNotEmpty)
+        '<${type.typeArguments.map(typeToCode).join(', ')}>',
+      if (type.isNullableType || forceNullable) '?',
+    ].join(),
+    TypeParameterType() => [
+      type.element.name,
+      if (type.nullabilitySuffix == NullabilitySuffix.question || forceNullable)
+        '?',
+    ].join(),
+    RecordType() => _recordTypeToCode(type, forceNullable),
+    _ => type.getDisplayString(),
+  };
+}
 
 String _recordTypeToCode(RecordType type, bool forceNullable) {
   final positional = type.positionalFields

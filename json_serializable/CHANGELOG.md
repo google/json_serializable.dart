@@ -6,6 +6,8 @@
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
 - Support `fromJson` and `toJson` on classes that extend `JsonKey`.
   ([#1057](https://github.com/google/json_serializable.dart/issues/1057))
+- Preserve `typedef` alias names in generated code.
+  ([#1124](https://github.com/google/json_serializable.dart/issues/1124))
 - Fix `genericArgumentFactories: true` when `toJson` is inherited from a
   generic mixin or superclass.
   ([#1208](https://github.com/google/json_serializable.dart/issues/1208))

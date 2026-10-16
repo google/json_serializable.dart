@@ -30,7 +30,7 @@ mixin EncodeHelper implements HelperCore {
         ..write(
           'static Object? ${field.name!}'
           '${genericClassArgumentsImpl(withConstraints: true)}'
-          '(${field.type} $_toJsonParamName',
+          '(${typeToCode(field.type)} $_toJsonParamName',
         );
 
       if (config.genericArgumentFactories) {

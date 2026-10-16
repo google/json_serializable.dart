@@ -37,7 +37,10 @@ class GeneratorHelper extends HelperCore
   @override
   Iterable<TypeHelper> get allTypeHelpers => _generator.allHelpers;
 
-  Iterable<String> generate() sync* {
+  Iterable<String> generate() =>
+      runWithTargetLibrary(element.library, () => _generate().toList());
+
+  Iterable<String> _generate() sync* {
     assert(_addedMembers.isEmpty);
 
     if (config.genericArgumentFactories && element.typeParameters.isEmpty) {
