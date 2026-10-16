@@ -145,15 +145,19 @@ class _JsonConvertData {
 /// Used to make sure we create a smart encoding function.
 bool? hasConverterNullEncode(
   DartType targetType,
-  TypeHelperContextWithConfig ctx,
-) {
+  TypeHelperContextWithConfig ctx, {
+  bool forNullCheck = false,
+}) {
   final data = _typeConverter(targetType, ctx);
 
   if (data == null) {
     return null;
   }
 
-  return data.jsonType.isNullableType;
+  return data.jsonType.isNullableType ||
+      (forNullCheck &&
+          !data.fieldType.isNullableType &&
+          targetType.isNullableType);
 }
 
 _JsonConvertData? _typeConverter(
@@ -206,11 +210,20 @@ _JsonConvertData? _typeConverterFrom(
   }
 
   if (matchingAnnotations.length > 1) {
-    final targetTypeCode = typeToCode(targetType);
-    throw InvalidGenerationSourceError(
-      'Found more than one matching converter for `$targetTypeCode`.',
-      element: matchingAnnotations[1].elementAnnotation?.element,
-    );
+    final exactMatches = matchingAnnotations
+        .where((e) => e.fieldType.isNullableType == targetType.isNullableType)
+        .toList();
+    if (exactMatches.isNotEmpty) {
+      matchingAnnotations = exactMatches;
+    }
+
+    if (matchingAnnotations.length > 1) {
+      final targetTypeCode = typeToCode(targetType);
+      throw InvalidGenerationSourceError(
+        'Found more than one matching converter for `$targetTypeCode`.',
+        element: matchingAnnotations[1].elementAnnotation?.element,
+      );
+    }
   }
 
   final match = matchingAnnotations.single;
@@ -307,7 +320,9 @@ _ConverterMatch? _compatibleMatch(
     );
   }
 
-  if (fieldType is TypeParameterType && targetType is TypeParameterType) {
+  if (fieldType is TypeParameterType &&
+      targetType is TypeParameterType &&
+      (!fieldType.isNullableType || targetType.isNullableType)) {
     assert(annotation?.element is! PropertyAccessorElement);
     assert(converterClassElement.typeParameters.isNotEmpty);
     if (converterClassElement.typeParameters.length > 1) {
@@ -319,11 +334,14 @@ _ConverterMatch? _compatibleMatch(
       );
     }
 
+    final nullableSuffix =
+        targetType.isNullableType && !fieldType.isNullableType ? '?' : '';
+
     return _ConverterMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
+      '${targetType.element.name}$nullableSuffix',
       fieldType,
     );
   }

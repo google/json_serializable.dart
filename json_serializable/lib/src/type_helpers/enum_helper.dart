@@ -6,6 +6,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../constants.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
@@ -51,9 +52,12 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
+    final unknownEnumValue = expression == keyParam
+        ? null
+        : jsonKey.unknownEnumValue;
 
     if (!targetType.isNullableType &&
-        jsonKey.unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
+        unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
       // If the target is not nullable,
       throw InvalidGenerationSourceError(
         '`$jsonKeyNullForUndefinedEnumValueFieldName` cannot be used with '
@@ -74,8 +78,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final args = [
       constMapName(targetType),
       expression,
-      if (jsonKey.unknownEnumValue != null)
-        'unknownValue: ${jsonKey.unknownEnumValue}',
+      if (unknownEnumValue != null) 'unknownValue: $unknownEnumValue',
     ];
 
     return '$functionName(${args.join(', ')})';

@@ -12,8 +12,6 @@ import '../unsupported_type_error.dart';
 import '../utils.dart';
 import 'to_from_string.dart';
 
-const _keyParam = 'k';
-
 class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const MapHelper();
 
@@ -36,17 +34,17 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final subFieldValue = context.serialize(valueType, closureArg);
     final subKeyValue =
-        _forType(keyType)?.serialize(keyType, _keyParam, false) ??
-        context.serialize(keyType, _keyParam);
+        _forType(keyType)?.serialize(keyType, keyParam, false) ??
+        context.serialize(keyType, keyParam);
 
-    if (closureArg == subFieldValue && _keyParam == subKeyValue) {
+    if (closureArg == subFieldValue && keyParam == subKeyValue) {
       return expression;
     }
 
     final optionalQuestion = targetType.isNullableType ? '?' : '';
 
     return '$expression$optionalQuestion'
-        '.map(($_keyParam, $closureArg) => '
+        '.map(($keyParam, $closureArg) => '
         'MapEntry($subKeyValue, $subFieldValue))';
   }
 
@@ -113,16 +111,16 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     String keyUsage;
     if (keyArg.isEnum) {
-      keyUsage = context.deserialize(keyArg, _keyParam).toString();
+      keyUsage = context.deserialize(keyArg, keyParam).toString();
     } else if (context.config.anyMap &&
         !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
-      keyUsage = '$_keyParam as String';
+      keyUsage = '$keyParam as String';
     } else if (context.config.anyMap &&
         keyArg.isDartCoreObject &&
         !keyArg.isNullableType) {
-      keyUsage = '$_keyParam as Object';
+      keyUsage = '$keyParam as Object';
     } else {
-      keyUsage = _keyParam;
+      keyUsage = keyParam;
     }
 
     final toFromString = _forType(keyArg);
@@ -133,7 +131,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     return '($expression $mapCast)$optionalQuestion.map( '
-        '($_keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
+        '($keyParam, $closureArg) => MapEntry($keyUsage, $itemSubVal),)';
   }
 }
 
