@@ -4,7 +4,6 @@
 
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
@@ -217,8 +216,8 @@ String typeToCode(DartType type, {bool forceNullable = false}) {
       alias.element.name,
       if (alias.typeArguments.isNotEmpty)
         '<${alias.typeArguments.map(typeToCode).join(', ')}>',
-      if (alias.nullabilitySuffix == NullabilitySuffix.question ||
-          (!type.isNullableType && forceNullable))
+      if (!alias.element.aliasedType.isNullableType &&
+          (type.isNullableType || forceNullable))
         '?',
     ].join();
   }
