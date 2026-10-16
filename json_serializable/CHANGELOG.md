@@ -6,6 +6,8 @@
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
 - Support `fromJson` and `toJson` on classes that extend `JsonKey`.
   ([#1057](https://github.com/google/json_serializable.dart/issues/1057))
+- `JsonKey.unknownEnumValue`: Added support for `Map` values.
+  ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
