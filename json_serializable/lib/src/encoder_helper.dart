@@ -190,6 +190,7 @@ mixin EncodeHelper implements HelperCore {
     final nullableEncodeConverter = hasConverterNullEncode(
       field.type,
       helperContext,
+      forNullCheck: true,
     );
 
     if (nullableEncodeConverter != null) {

@@ -145,8 +145,9 @@ class _JsonConvertData {
 /// Used to make sure we create a smart encoding function.
 bool? hasConverterNullEncode(
   DartType targetType,
-  TypeHelperContextWithConfig ctx,
-) {
+  TypeHelperContextWithConfig ctx, {
+  bool forNullCheck = false,
+}) {
   final data = _typeConverter(targetType, ctx);
 
   if (data == null) {
@@ -154,7 +155,9 @@ bool? hasConverterNullEncode(
   }
 
   return data.jsonType.isNullableType ||
-      (!data.fieldType.isNullableType && targetType.isNullableType);
+      (forNullCheck &&
+          !data.fieldType.isNullableType &&
+          targetType.isNullableType);
 }
 
 _JsonConvertData? _typeConverter(

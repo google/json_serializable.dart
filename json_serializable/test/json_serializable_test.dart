@@ -58,6 +58,7 @@ const _expectedAnnotatedTests = {
   'BadEnumDefaultValue',
   'BadFromFuncReturnType',
   'BadPatchEntity',
+  'PatchBadConverterFromJson',
   'PatchBadCustomFromJson',
   'PatchDefaultValueWithExplicit',
   'PatchDisallowNullWithExplicit',
