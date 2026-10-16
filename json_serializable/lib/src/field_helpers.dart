@@ -61,7 +61,10 @@ class _FieldSet implements Comparable<_FieldSet> {
         return (e.getter ?? e.setter)!.firstFragment.nameOffset ?? 0;
       }
       if (e.isOriginDeclaringFormalParameter) {
-        return e.declaringFormalParameter?.firstFragment.nameOffset ?? 0;
+        final offset = e.declaringFormalParameter?.firstFragment.nameOffset;
+        if (offset != null) {
+          return offset;
+        }
       }
       return e.firstFragment.nameOffset ?? 0;
     }

@@ -5,8 +5,11 @@
 @TestOn('vm')
 library;
 
+import 'dart:io';
+
 import 'package:json_serializable/json_serializable.dart';
 import 'package:path/path.dart' as p;
+import 'package:pub_semver/pub_semver.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
 
@@ -51,18 +54,20 @@ Future<void> main() async {
     },
   );
 
-  final primaryConstructorTestReader = await initializeLibraryReader({
-    'primary_constructor_test_input.dart': _primaryConstructorTestInput,
-  }, 'primary_constructor_test_input.dart');
+  if (Version.parse(Platform.version.split(' ').first) >= Version(3, 12, 0)) {
+    final primaryConstructorTestReader = await initializeLibraryReader({
+      'primary_constructor_test_input.dart': _primaryConstructorTestInput,
+    }, 'primary_constructor_test_input.dart');
 
-  testAnnotatedElements(
-    primaryConstructorTestReader,
-    JsonSerializableGenerator(),
-    expectedAnnotatedTests: {
-      'PrimaryConstructorLargeClass',
-      'PrimaryConstructorMixedWithBodyFields',
-    },
-  );
+    testAnnotatedElements(
+      primaryConstructorTestReader,
+      JsonSerializableGenerator(),
+      expectedAnnotatedTests: {
+        'PrimaryConstructorLargeClass',
+        'PrimaryConstructorMixedWithBodyFields',
+      },
+    );
+  }
 }
 
 const _expectedAnnotatedTests = {
