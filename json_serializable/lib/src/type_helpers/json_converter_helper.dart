@@ -153,7 +153,8 @@ bool? hasConverterNullEncode(
     return null;
   }
 
-  return data.jsonType.isNullableType;
+  return data.jsonType.isNullableType ||
+      (!data.fieldType.isNullableType && targetType.isNullableType);
 }
 
 _JsonConvertData? _typeConverter(
@@ -316,7 +317,9 @@ _ConverterMatch? _compatibleMatch(
     );
   }
 
-  if (fieldType is TypeParameterType && targetType is TypeParameterType) {
+  if (fieldType is TypeParameterType &&
+      targetType is TypeParameterType &&
+      (!fieldType.isNullableType || targetType.isNullableType)) {
     assert(annotation?.element is! PropertyAccessorElement);
     assert(converterClassElement.typeParameters.isNotEmpty);
     if (converterClassElement.typeParameters.length > 1) {
@@ -328,11 +331,14 @@ _ConverterMatch? _compatibleMatch(
       );
     }
 
+    final nullableSuffix =
+        targetType.isNullableType && !fieldType.isNullableType ? '?' : '';
+
     return _ConverterMatch(
       annotation,
       constantValue,
       jsonConverterSuper.typeArguments[1],
-      '${targetType.element.name}${targetType.isNullableType ? '?' : ''}',
+      '${targetType.element.name}$nullableSuffix',
       fieldType,
     );
   }

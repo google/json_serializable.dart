@@ -193,7 +193,7 @@ mixin EncodeHelper implements HelperCore {
     );
 
     if (nullableEncodeConverter != null) {
-      return !nullableEncodeConverter && !field.type.isNullableType;
+      return !nullableEncodeConverter;
     }
 
     // We can consider enums as kinda like having custom converters

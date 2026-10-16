@@ -223,25 +223,34 @@ class _NullableConverter implements JsonConverter<NeedsConversion?, Object?> {
 }
 
 @ShouldGenerate(r'''
-JsonConverterNullableAndNonNullable
-_$JsonConverterNullableAndNonNullableFromJson(Map<String, dynamic> json) =>
-    JsonConverterNullableAndNonNullable()
-      ..value = const _DurationMillisecondConverter().fromJson(
-        (json['value'] as num).toInt(),
-      )
-      ..nullableValue = const _NullableDurationMillisecondConverter().fromJson(
-        (json['nullableValue'] as num?)?.toInt(),
-      )
-      ..intValue = const _DynamicIntConverter().fromJson(json['intValue'])
-      ..nullableIntValue = const _NullableDynamicIntConverter().fromJson(
-        json['nullableIntValue'],
-      )
-      ..nullableNeedsConversion = const _NeedsConversionDynamicConverter()
-          .fromJson(json['nullableNeedsConversion']);
+JsonConverterNullableAndNonNullable<T>
+_$JsonConverterNullableAndNonNullableFromJson<T extends Object>(
+  Map<String, dynamic> json,
+) => JsonConverterNullableAndNonNullable<T>()
+  ..value = const _DurationMillisecondConverter().fromJson(
+    (json['value'] as num).toInt(),
+  )
+  ..nullableValue = const _NullableDurationMillisecondConverter().fromJson(
+    (json['nullableValue'] as num?)?.toInt(),
+  )
+  ..intValue = const _DynamicIntConverter().fromJson(json['intValue'])
+  ..nullableIntValue = const _NullableDynamicIntConverter().fromJson(
+    json['nullableIntValue'],
+  )
+  ..nullableNeedsConversion = const _NeedsConversionDynamicConverter().fromJson(
+    json['nullableNeedsConversion'],
+  )
+  ..genericValue = _GenericConverter<T>().fromJson(
+    (json['genericValue'] as num).toInt(),
+  )
+  ..nullableGenericValue = _$JsonConverterFromJson<int, T>(
+    json['nullableGenericValue'],
+    _NullableGenericConverter<T>().fromJson,
+  );
 
-Map<String, dynamic> _$JsonConverterNullableAndNonNullableToJson(
-  JsonConverterNullableAndNonNullable instance,
-) => <String, dynamic>{
+Map<String, dynamic> _$JsonConverterNullableAndNonNullableToJson<
+  T extends Object
+>(JsonConverterNullableAndNonNullable<T> instance) => <String, dynamic>{
   'value': const _DurationMillisecondConverter().toJson(instance.value),
   'nullableValue': const _NullableDurationMillisecondConverter().toJson(
     instance.nullableValue,
@@ -254,7 +263,16 @@ Map<String, dynamic> _$JsonConverterNullableAndNonNullableToJson(
     instance.nullableNeedsConversion,
     const _NeedsConversionDynamicConverter().toJson,
   ),
+  'genericValue': _GenericConverter<T>().toJson(instance.genericValue),
+  'nullableGenericValue': _NullableGenericConverter<T>().toJson(
+    instance.nullableGenericValue,
+  ),
 };
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => json == null ? null : fromJson(json as Json);
 
 Json? _$JsonConverterToJson<Json, Value>(
   Value? value,
@@ -267,12 +285,28 @@ Json? _$JsonConverterToJson<Json, Value>(
 @_DurationMillisecondConverter()
 @_NullableDurationMillisecondConverter()
 @_NeedsConversionDynamicConverter()
-class JsonConverterNullableAndNonNullable {
+@_GenericConverter()
+@_NullableGenericConverter()
+class JsonConverterNullableAndNonNullable<T extends Object> {
   late Duration value;
   Duration? nullableValue;
   late int intValue;
   int? nullableIntValue;
   NeedsConversion? nullableNeedsConversion;
+  late T genericValue;
+  @JsonKey(includeIfNull: false)
+  T? nullableGenericValue;
+}
+
+class _NullableGenericConverter<T extends Object>
+    implements JsonConverter<T?, int> {
+  const _NullableGenericConverter();
+
+  @override
+  T? fromJson(int json) => null;
+
+  @override
+  int toJson(T? object) => 0;
 }
 
 class _NullableDurationMillisecondConverter
