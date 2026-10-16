@@ -589,6 +589,8 @@ typedef MyListAlias<T> = MyList<T, int>;
 typedef StringAlias = String;
 typedef NullableStringAlias = String?;
 typedef DurationAlias = Duration;
+typedef IdentityAlias<T> = T;
+typedef _PrivateStringAlias = String;
 
 class _DurationAliasConverter implements JsonConverter<DurationAlias, int> {
   const _DurationAliasConverter();
@@ -627,6 +629,12 @@ Issue1124RegressionTest _$Issue1124RegressionTestFromJson(
     json['durationValue'],
     const _DurationAliasConverter().fromJson,
   ),
+  identityValue: Issue1124Alias.fromJson(
+    json['identityValue'] as Map<String, dynamic>,
+  ),
+  nullableIdentityString: json['nullableIdentityString'] as StringAlias?,
+  privateString: json['privateString'] as String,
+  aliasMap: Map<String, StringAlias>.from(json['aliasMap'] as Map),
 );
 
 Map<String, dynamic> _$Issue1124RegressionTestToJson(
@@ -643,6 +651,10 @@ Map<String, dynamic> _$Issue1124RegressionTestToJson(
     instance.durationValue,
     const _DurationAliasConverter().toJson,
   ),
+  'identityValue': instance.identityValue,
+  'nullableIdentityString': instance.nullableIdentityString,
+  'privateString': instance.privateString,
+  'aliasMap': instance.aliasMap,
 };
 
 Value? _$JsonConverterFromJson<Json, Value>(
@@ -667,6 +679,11 @@ class Issue1124RegressionTest {
   final StringAlias? nullableString;
   final NullableStringAlias nullableAliasString;
   final DurationAlias? durationValue;
+  final IdentityAlias<Issue1124Alias> identityValue;
+  final IdentityAlias<StringAlias?> nullableIdentityString;
+  // ignore: library_private_types_in_public_api
+  final _PrivateStringAlias privateString;
+  final Map<String, StringAlias> aliasMap;
 
   Issue1124RegressionTest({
     required this.value,
@@ -677,6 +694,11 @@ class Issue1124RegressionTest {
     this.nullableString,
     this.nullableAliasString,
     this.durationValue,
+    required this.identityValue,
+    this.nullableIdentityString,
+    // ignore: library_private_types_in_public_api
+    required this.privateString,
+    required this.aliasMap,
   });
 }
 

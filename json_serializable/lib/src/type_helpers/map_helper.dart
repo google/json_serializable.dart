@@ -9,6 +9,7 @@ import '../constants.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
+import '../utils.dart';
 import 'to_from_string.dart';
 
 const _keyParam = 'k';
@@ -94,7 +95,7 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
               // `toDouble` on input values
               valueArg.isSimpleJsonTypeNotDouble)) {
         // No mapping of the values or null check required!
-        final valueString = valueArg.getDisplayString();
+        final valueString = typeToCode(valueArg);
         return 'Map<String, $valueString>.from($expression as Map)';
       }
     }

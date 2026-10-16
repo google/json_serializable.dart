@@ -211,7 +211,16 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
 /// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
 /// [TypeParameterType]s, and [DynamicType]s.
 String typeToCode(DartType type, {bool forceNullable = false}) {
-  if (type.alias case final alias?) {
+  if (type.alias case final alias? when !alias.element.isPrivate) {
+    if (alias.element.aliasedType case final TypeParameterType aliasedParam) {
+      final index = alias.element.typeParameters.indexOf(aliasedParam.element);
+      if (index >= 0) {
+        final argType = alias.typeArguments[index];
+        return type.isNullableType || forceNullable
+            ? typeToCode(argType, forceNullable: true)
+            : typeToCode(argType.promoteNonNullable());
+      }
+    }
     return [
       alias.element.name,
       if (alias.typeArguments.isNotEmpty)
