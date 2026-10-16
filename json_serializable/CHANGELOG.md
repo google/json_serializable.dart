@@ -9,6 +9,14 @@
 - Fix `genericArgumentFactories: true` when `toJson` is inherited from a
   generic mixin or superclass.
   ([#1208](https://github.com/google/json_serializable.dart/issues/1208))
+- Preserve field declaration order in `toJson` for classes with primary
+  constructor declaring parameters.
+  ([#1599](https://github.com/google/json_serializable.dart/issues/1599))
+- `JsonKey.unknownEnumValue`: Added support for `Map` values.
+  ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
+- Prefer `JsonConverter`s with matching nullability when both nullable and
+  non-nullable converters for the same type are present.
+  ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
 
 ## 6.14.1
 
