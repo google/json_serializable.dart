@@ -25,8 +25,9 @@ class CreateFactoryResult {
 mixin DecodeHelper implements HelperCore {
   CreateFactoryResult createFactory(
     Map<String, FieldElement> accessibleFields,
-    Map<String, String> unavailableReasons,
-  ) {
+    Map<String, String> unavailableReasons, {
+    Iterable<FieldElement> explicitToJsonFields = const [],
+  }) {
     assert(config.createFactory);
     final buffer = StringBuffer();
 
@@ -85,6 +86,7 @@ mixin DecodeHelper implements HelperCore {
       accessibleFields.values.where(
         (fe) => data.usedCtorParamsAndFields.contains(fe.name),
       ),
+      explicitToJsonFields: explicitToJsonFields,
     ).toList();
 
     if (config.checked) {
@@ -171,14 +173,21 @@ mixin DecodeHelper implements HelperCore {
     return CreateFactoryResult(buffer.toString(), data.usedCtorParamsAndFields);
   }
 
-  Iterable<String> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
+  Iterable<String> _checkKeys(
+    Iterable<FieldElement> accessibleFields, {
+    Iterable<FieldElement> explicitToJsonFields = const [],
+  }) sync* {
     final args = <String>[];
 
     String constantList(Iterable<FieldElement> things) =>
         'const ${jsonLiteralAsDart(things.map<String>(nameAccess).toList())}';
 
     if (config.disallowUnrecognizedKeys) {
-      final allowKeysLiteral = constantList(accessibleFields);
+      final allowedFields = [
+        ...accessibleFields,
+        ...explicitToJsonFields.where((fe) => !accessibleFields.contains(fe)),
+      ];
+      final allowKeysLiteral = constantList(allowedFields);
 
       args.add('allowedKeys: $allowKeysLiteral');
     }
