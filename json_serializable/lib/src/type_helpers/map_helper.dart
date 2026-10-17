@@ -36,11 +36,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     _checkSafeKeyType(expression, keyType);
 
     final subFieldValue = context.serialize(valueType, closureArg);
-    final customKeyConverter = const JsonConverterHelper().serialize(
-      keyType,
-      keyParam,
-      context,
-    );
+    final customKeyConverter = const JsonConverterHelper(
+      forMapKey: true,
+    ).serialize(keyType, keyParam, context);
     var subKeyValue =
         customKeyConverter ??
         _forType(
@@ -136,12 +134,9 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     String keyUsage;
-    final customKeyConverter = const JsonConverterHelper().deserialize(
-      keyArg,
-      keyParam,
-      context,
-      false,
-    );
+    final customKeyConverter = const JsonConverterHelper(
+      forMapKey: true,
+    ).deserialize(keyArg, keyParam, context, false);
     if (customKeyConverter != null) {
       if (!isAnyMapKey &&
           customKeyConverter is LambdaResult &&

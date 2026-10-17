@@ -57,6 +57,17 @@ class EpochDateTimeConverter implements JsonConverter<DateTime, String> {
   @override
   String toJson(DateTime object) => object.millisecondsSinceEpoch.toString();
 }
+
+class EpochIntConverter implements JsonConverter<DateTime, int> {
+  const EpochIntConverter();
+
+  @override
+  DateTime fromJson(int json) =>
+      DateTime.fromMillisecondsSinceEpoch(json, isUtc: true);
+
+  @override
+  int toJson(DateTime object) => object.millisecondsSinceEpoch;
+}
 ''';
 
 void main() {
@@ -218,6 +229,71 @@ final inst = ObjectKeyMapTrue({1: 42});
 final decoded = ObjectKeyMapTrue.fromJson(inst.toJson());
 if (decoded.a[1] != 42) {
   throw StateError('Expected 42 for key 1, got ${decoded.a}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'issue1606_11c_map_key_non_string_converter_ignored_for_key',
+        elementName: 'MapWithIntDateTimeConverter',
+        declarations: r'''
+@JsonSerializable()
+@EpochIntConverter()
+class MapWithIntDateTimeConverter {
+  final Map<DateTime, DateTime> items;
+
+  MapWithIntDateTimeConverter(this.items);
+
+  factory MapWithIntDateTimeConverter.fromJson(Map<String, dynamic> json) =>
+      _$MapWithIntDateTimeConverterFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapWithIntDateTimeConverterToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final k = DateTime.utc(2025, 1, 1);
+final v = DateTime.utc(2025, 6, 1);
+final inst = MapWithIntDateTimeConverter({k: v});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map<String, dynamic>;
+final decoded = MapWithIntDateTimeConverter.fromJson(json);
+if (decoded.items[k] != v) {
+  throw StateError('Expected ${ {k: v} }, got ${decoded.items}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_enum_with_null_json_value_and_default_round_trip',
+        elementName: 'FuzzNullJsonValueWithDefaultHolder',
+        declarations: r'''
+@JsonSerializable()
+class FuzzNullJsonValueWithDefaultHolder {
+  final FuzzNullValEnum status;
+
+  FuzzNullJsonValueWithDefaultHolder({
+    this.status = FuzzNullValEnum.normal,
+  });
+
+  factory FuzzNullJsonValueWithDefaultHolder.fromJson(
+    Map<String, dynamic> json,
+  ) => _$FuzzNullJsonValueWithDefaultHolderFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$FuzzNullJsonValueWithDefaultHolderToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final nullInst = FuzzNullJsonValueWithDefaultHolder(
+  status: FuzzNullValEnum.nullEncoded,
+);
+final encodedNull =
+    jsonDecode(jsonEncode(nullInst.toJson())) as Map<String, dynamic>;
+final decodedNull = FuzzNullJsonValueWithDefaultHolder.fromJson(encodedNull);
+if (decodedNull.status != FuzzNullValEnum.nullEncoded) {
+  throw StateError('Expected nullEncoded on explicit null, got ${decodedNull.status}');
+}
+final fromEmpty =
+    FuzzNullJsonValueWithDefaultHolder.fromJson(<String, dynamic>{});
+if (fromEmpty.status != FuzzNullValEnum.normal) {
+  throw StateError('Expected default normal on missing key, got ${fromEmpty.status}');
 }
 ''',
       ),

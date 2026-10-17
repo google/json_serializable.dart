@@ -7,6 +7,7 @@ import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
+import '../default_container.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
@@ -39,7 +40,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
   }
 
   @override
-  String? deserialize(
+  Object? deserialize(
     DartType targetType,
     String expression,
     TypeHelperContextWithConfig context,
@@ -97,10 +98,16 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
     ];
 
     final decoded = '$functionName(${args.join(', ')})';
-    if (!targetType.isNullableType &&
-        !defaultProvided &&
-        nullEnumValue != null) {
-      return '$decoded ?? $nullEnumValue';
+    if (!targetType.isNullableType && nullEnumValue != null) {
+      final withNullEnum = '$decoded ?? $nullEnumValue';
+      if (defaultProvided) {
+        return DefaultContainer(
+          expression,
+          withNullEnum,
+          checkKeyPresence: true,
+        );
+      }
+      return withNullEnum;
     }
     return decoded;
   }
