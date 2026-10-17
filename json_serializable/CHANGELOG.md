@@ -26,6 +26,9 @@
   `null` over `defaultValue` when the key is present),
   `@JsonEnum(valueField: 'name')`, and rejecting getter-backed
   `JsonEnum.valueField`s.
+- Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
+  and `Map` constants, `int` defaults on `num`/`double` fields, and function
+  tear-off defaults, as well as nullable self-references and private fields.
 
 ## 6.14.1
 
