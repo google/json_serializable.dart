@@ -21,13 +21,14 @@ import 'utils.dart';
 mixin SchemaHelper implements HelperCore {
   String createJsonSchema() {
     final generatedSchemas = <String, Map<String, dynamic>>{};
+    final rootType = element.thisType.promoteNonNullable();
     final mainSchema = _generateSchemaForProperties(
       element,
       config,
       element.displayName,
       generatedSchemas,
-      seenTypes: {element.thisType},
-      rootType: element.thisType,
+      seenTypes: {rootType},
+      rootType: rootType,
     );
 
     final schema = {
@@ -47,6 +48,12 @@ Iterable<_PropertyInfo> _propertiesFor(
 ) {
   final accessibleFields = createSortedFieldSet(element).where((f) {
     final jsonKey = jsonKeyForField(f, config);
+
+    if (!f.isPublic &&
+        !jsonKey.explicitYesFromJson &&
+        !jsonKey.explicitYesToJson) {
+      return false;
+    }
 
     if (jsonKey.explicitNoToJson) {
       return false;
@@ -175,11 +182,12 @@ Map<String, dynamic> _generateSchemaForProperties(
 }
 
 Map<String, dynamic> _getPropertySchema(
-  DartType type,
+  DartType rawType,
   Map<String, Map<String, dynamic>> generatedSchemas, {
   Set<DartType> seenTypes = const {},
   required DartType rootType,
 }) {
+  final type = rawType.promoteNonNullable();
   if (seenTypes.contains(type)) {
     if (type == rootType) {
       return {r'$ref': '#'};
@@ -316,22 +324,79 @@ Map<String, dynamic> _generateComplexTypeSchema(
   return {r'$ref': '#/\$defs/$typeName'};
 }
 
-Object? _defaultValue(DartObject defaultValue, DartType type) => switch (type) {
-  _ when coreStringTypeChecker.isAssignableFromType(type) =>
-    defaultValue.toStringValue(),
-  _ when type.isDartCoreInt => defaultValue.toIntValue(),
-  _ when type.isDartCoreDouble || type.isDartCoreNum =>
-    defaultValue.toDoubleValue(),
-  _ when type.isDartCoreBool => defaultValue.toBoolValue(),
-  _ when coreIterableTypeChecker.isAssignableFromType(type) =>
-    defaultValue.toListValue(),
-  _ when coreMapTypeChecker.isAssignableFromType(type) =>
-    defaultValue.toMapValue(),
-  _ when type.isEnum => _enumDefaultValue(defaultValue, type),
-  _ => _noMatch,
-};
+Object? _defaultValue(DartObject defaultValue, DartType type) {
+  if (defaultValue.isNull) {
+    return null;
+  }
+  if (defaultValue.type is FunctionType ||
+      defaultValue.toFunctionValue() != null) {
+    return _noMatch;
+  }
+  final effectiveType =
+      (type is DynamicType || type.isDartCoreObject) &&
+          defaultValue.type != null
+      ? defaultValue.type!
+      : type;
+  return switch (effectiveType) {
+    _ when coreStringTypeChecker.isAssignableFromType(effectiveType) =>
+      defaultValue.toStringValue() ?? _noMatch,
+    _ when effectiveType.isDartCoreInt => defaultValue.toIntValue() ?? _noMatch,
+    _ when effectiveType.isDartCoreDouble =>
+      defaultValue.toDoubleValue() ?? defaultValue.toIntValue() ?? _noMatch,
+    _ when effectiveType.isDartCoreNum =>
+      defaultValue.toIntValue() ?? defaultValue.toDoubleValue() ?? _noMatch,
+    _ when effectiveType.isDartCoreBool =>
+      defaultValue.toBoolValue() ?? _noMatch,
+    _ when coreIterableTypeChecker.isAssignableFromType(effectiveType) =>
+      _iterableDefaultValue(defaultValue, effectiveType),
+    _ when coreMapTypeChecker.isAssignableFromType(effectiveType) =>
+      _mapDefaultValue(defaultValue, effectiveType),
+    _ when effectiveType.isEnum => _enumDefaultValue(
+      defaultValue,
+      effectiveType,
+    ),
+    _ => _noMatch,
+  };
+}
+
+Object? _iterableDefaultValue(DartObject defaultValue, DartType type) {
+  final items =
+      defaultValue.toListValue() ?? defaultValue.toSetValue()?.toList();
+  if (items == null) return _noMatch;
+  final itemType = coreIterableGenericType(type);
+  final result = <Object?>[];
+  for (final item in items) {
+    final converted = _defaultValue(item, itemType);
+    if (converted == _noMatch) return _noMatch;
+    result.add(converted);
+  }
+  return result;
+}
+
+Object? _mapDefaultValue(DartObject defaultValue, DartType type) {
+  final map = defaultValue.toMapValue();
+  if (map == null) return _noMatch;
+  final typeArgs = type.typeArgumentsOf(coreMapTypeChecker);
+  final keyType = typeArgs != null && typeArgs.length == 2 ? typeArgs[0] : null;
+  final valueType = typeArgs != null && typeArgs.length == 2
+      ? typeArgs[1]
+      : null;
+  final result = <String, Object?>{};
+  for (final MapEntry(:key, :value) in map.entries) {
+    if (key == null || value == null) return _noMatch;
+    final convertedKey =
+        key.toStringValue() ??
+        (keyType == null ? _noMatch : _defaultValue(key, keyType));
+    if (convertedKey == _noMatch || convertedKey == null) return _noMatch;
+    final convertedValue = _defaultValue(value, valueType ?? value.type!);
+    if (convertedValue == _noMatch) return _noMatch;
+    result['$convertedKey'] = convertedValue;
+  }
+  return result;
+}
 
 Object? _enumDefaultValue(DartObject defaultValue, DartType type) {
+  if (defaultValue.getField('index')?.toIntValue() == null) return _noMatch;
   final values = enumEncodedValues(type);
   if (values == null) return _noMatch;
   return enumValueForDartObject<Object?>(defaultValue, values, (v) => '$v');
