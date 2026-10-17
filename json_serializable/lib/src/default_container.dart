@@ -34,11 +34,37 @@ class DefaultContainer {
     }
 
     if (defaultValue != null) {
-      value = '$value ?? $defaultValue';
+      value = '$value ?? ${wrapDefaultValue(defaultValue)}';
     }
     return value;
   }
 
+  static String wrapDefaultValue(String defaultValue) =>
+      _isTopLevelConditional(defaultValue) ? '($defaultValue)' : defaultValue;
+
   @override
   String toString() => deserialize(this).toString();
+}
+
+final _stringLiteralPattern = RegExp(
+  r'''r?('''
+  "'''"
+  r'''[\s\S]*?'''
+  "'''"
+  r'''|"""[\s\S]*?"""|'[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*")''',
+);
+final _bracketsPattern = RegExp(r'\([^()]*\)|\[[^\[\]]*\]|\{[^{}]*\}');
+
+String _stripNestedAndStrings(String expression) {
+  var current = expression.replaceAll(_stringLiteralPattern, '');
+  while (true) {
+    final next = current.replaceAll(_bracketsPattern, '');
+    if (next == current) return current;
+    current = next;
+  }
+}
+
+bool _isTopLevelConditional(String expression) {
+  final topLevel = _stripNestedAndStrings(expression);
+  return topLevel.contains('?') && topLevel.contains(':');
 }

@@ -229,7 +229,7 @@ class DefaultDoubleConstants {
 DefaultWithRecord _$DefaultWithRecordFromJson(Map<String, dynamic> json) =>
     DefaultWithRecord(
       value:
-          _$recordConvert(
+          _$recordConvertNullable(
             json['value'],
             ($jsonValue) => (
               ($jsonValue[r'$1'] as num).toInt(),
@@ -247,8 +247,10 @@ Map<String, dynamic> _$DefaultWithRecordToJson(DefaultWithRecord instance) =>
       },
     };
 
-$Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
-    convert(value as Map<String, dynamic>);
+$Rec? _$recordConvertNullable<$Rec>(
+  Object? value,
+  $Rec Function(Map) convert,
+) => value == null ? null : convert(value as Map<String, dynamic>);
 ''')
 @JsonSerializable()
 class DefaultWithRecord {
