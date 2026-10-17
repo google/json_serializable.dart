@@ -8,6 +8,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:analyzer/dart/element/type_system.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -190,7 +191,12 @@ extension DartTypeExtension on DartType {
     final TypeParameterType t => t.element.instantiate(
       nullabilitySuffix: NullabilitySuffix.none,
     ),
-    _ => element?.library?.typeSystem.promoteToNonNull(this) ?? this,
+    final RecordType r when _typeSystemFor(r) == null => RecordType(
+      positional: [for (final f in r.positionalFields) f.type],
+      named: {for (final f in r.namedFields) f.name: f.type},
+      nullabilitySuffix: NullabilitySuffix.none,
+    ),
+    _ => _typeSystemFor(this)?.promoteToNonNull(this) ?? this,
   };
 
   String toStringNonNullable() {
@@ -198,6 +204,35 @@ extension DartTypeExtension on DartType {
     if (val.endsWith('?')) return val.substring(0, val.length - 1);
     return val;
   }
+}
+
+TypeSystem? _typeSystemFor(DartType type) {
+  if (type.element?.library?.typeSystem case final ts?) return ts;
+  if (type.alias?.element.library.typeSystem case final ts?) return ts;
+  if (Zone.current[#_targetLibrary] case final LibraryElement lib) {
+    return lib.typeSystem;
+  }
+  return switch (type) {
+    RecordType(:final positionalFields, :final namedFields) =>
+      positionalFields
+              .map((f) => _typeSystemFor(f.type))
+              .nonNulls
+              .firstOrNull ??
+          namedFields.map((f) => _typeSystemFor(f.type)).nonNulls.firstOrNull,
+    FunctionType(
+      :final returnType,
+      :final normalParameterTypes,
+      :final optionalParameterTypes,
+      :final namedParameterTypes,
+      :final typeParameters,
+    ) =>
+      _typeSystemFor(returnType) ??
+          normalParameterTypes.map(_typeSystemFor).nonNulls.firstOrNull ??
+          optionalParameterTypes.map(_typeSystemFor).nonNulls.firstOrNull ??
+          namedParameterTypes.values.map(_typeSystemFor).nonNulls.firstOrNull ??
+          typeParameters.firstOrNull?.library?.typeSystem,
+    _ => null,
+  };
 }
 
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
@@ -317,6 +352,18 @@ String? defaultDecodeLogic(
     return '($expression as num$question)$question.toInt()';
   } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
     final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
+    final targetTypeNullable = defaultProvided || targetType.isNullableType;
+    final question = targetTypeNullable ? '?' : '';
+    if (const TypeChecker.fromUrl(
+      'dart:core#double',
+    ).isAssignableFromType(targetType)) {
+      return '($expression as num$question)$question.toDouble() as $typeCode';
+    }
+    if (const TypeChecker.fromUrl(
+      'dart:core#int',
+    ).isAssignableFromType(targetType)) {
+      return '($expression as num$question)$question.toInt() as $typeCode';
+    }
     return '$expression as $typeCode';
   }
 

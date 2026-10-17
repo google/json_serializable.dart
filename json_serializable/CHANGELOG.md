@@ -19,6 +19,11 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix `JsonConverter`, `@JsonKey(fromJson: ..., toJson: ...)`, `JsonHelper`,
+  and extension type edge cases across generic converters, nullable fields,
+  constructor parameter annotations, and custom `fromJson`/`toJson` signatures.
+- Fix `JsonKey.explicitJsonNullWhenNonNullField` for `Record`, `Function`,
+  `DateTime`, generic argument factories, and `toJson` callbacks named `value`.
 
 ## 6.14.1
 
