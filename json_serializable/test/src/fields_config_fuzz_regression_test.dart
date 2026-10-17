@@ -21,6 +21,18 @@ class BaseWithJsonKey {
   BaseWithJsonKey([this.x]);
 }
 
+class BaseMultiLevel {
+  @JsonKey(name: 'when', defaultValue: 3)
+  final num n;
+  BaseMultiLevel([this.n = 3]);
+}
+
+class MiddleMultiLevel extends BaseMultiLevel {
+  @override
+  final int n;
+  MiddleMultiLevel([this.n = 3]) : super(n);
+}
+
 class BaseWithGetterSetter {
   int _prop = 0;
   int get prop => _prop;
@@ -50,6 +62,33 @@ final encoded = jsonDecode(jsonEncode(SubNarrowedDateTime(dt).toJson()))
     as Map<String, dynamic>;
 final decoded = SubNarrowedDateTime.fromJson(encoded);
 if (decoded.x != dt) throw StateError('Expected $dt, got ${decoded.x}');
+''',
+  ),
+  // 1b. Two-level override chain (Base -> Middle -> Leaf) preserves Base
+  // @JsonKey.
+  CodegenCase(
+    id: 'issue1606_05c_multi_level_override_chain',
+    elementName: 'LeafMultiLevel',
+    declarations: r'''
+@JsonSerializable()
+class LeafMultiLevel extends MiddleMultiLevel {
+  @override
+  final int n;
+  LeafMultiLevel(this.n) : super(n);
+  factory LeafMultiLevel.fromJson(Map<String, dynamic> json) =>
+      _$LeafMultiLevelFromJson(json);
+  Map<String, dynamic> toJson() => _$LeafMultiLevelToJson(this);
+}
+''',
+    runtimeCheck: r'''
+final encoded = LeafMultiLevel(42).toJson();
+if (encoded['when'] != 42) {
+  throw StateError('Expected key "when": 42, got $encoded');
+}
+final fromEmpty = LeafMultiLevel.fromJson(<String, dynamic>{});
+if (fromEmpty.n != 3) {
+  throw StateError('Expected default 3, got ${fromEmpty.n}');
+}
 ''',
   ),
   // 2. Subclass overriding only setter of inherited getter/setter

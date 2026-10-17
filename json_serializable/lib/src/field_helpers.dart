@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
     show InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
@@ -15,102 +14,12 @@ const _objectGetterNames = {'hashCode', 'runtimeType'};
 bool _isUnannotatedObjectGetter(FieldElement element) =>
     _objectGetterNames.contains(element.name) && !hasJsonKeyAnnotation(element);
 
-class _MergedFieldElement implements FieldElement {
-  final FieldElement _classField;
-  final FieldElement _superField;
-  final FieldElement _annotationField;
+final _fieldHierarchyExpando = Expando<List<FieldElement>>();
 
-  _MergedFieldElement(
-    this._classField,
-    this._superField,
-    this._annotationField,
-  );
-
-  FieldElement get _primary =>
-      _classField.getter != null ? _classField : _superField;
-
-  @override
-  DartType get type => _primary.type;
-
-  @override
-  GetterElement? get getter =>
-      _annotationField.getter ?? _classField.getter ?? _superField.getter;
-
-  @override
-  SetterElement? get setter => _classField.setter ?? _superField.setter;
-
-  @override
-  Metadata get metadata => _annotationField.metadata;
-
-  @override
-  String? get documentationComment =>
-      _classField.documentationComment ?? _superField.documentationComment;
-
-  @override
-  bool get hasInitializer =>
-      _classField.hasInitializer || _superField.hasInitializer;
-
-  @override
-  String? get name => _classField.name;
-
-  @override
-  String get displayName => _classField.displayName;
-
-  @override
-  bool get isPublic => _classField.isPublic;
-
-  @override
-  bool get isPrivate => _classField.isPrivate;
-
-  @override
-  bool get isStatic => _classField.isStatic;
-
-  @override
-  bool get isFinal => _primary.isFinal;
-
-  @override
-  bool get isConst => _primary.isConst;
-
-  @override
-  bool get isLate => _primary.isLate;
-
-  @override
-  InstanceElement get enclosingElement => _classField.enclosingElement;
-
-  @override
-  LibraryElement get library => _classField.library;
-
-  @override
-  FieldFragment get firstFragment => _classField.firstFragment;
-
-  @override
-  List<FieldFragment> get fragments => _classField.fragments;
-
-  @override
-  bool get isOriginGetterSetter => _primary.isOriginGetterSetter;
-
-  @override
-  bool get isOriginDeclaringFormalParameter =>
-      _primary.isOriginDeclaringFormalParameter;
-
-  @override
-  FieldFormalParameterElement? get declaringFormalParameter =>
-      _classField.declaringFormalParameter ??
-      _superField.declaringFormalParameter;
-
-  @override
-  FieldElement get baseElement => _primary.baseElement;
-
-  @override
-  ElementKind get kind => _classField.kind;
-
-  @override
-  int get id => _classField.id;
-
-  @override
-  dynamic noSuchMethod(Invocation invocation) =>
-      throw UnimplementedError('${invocation.memberName}');
-}
+/// Returns [field] followed by any overridden superclass/superinterface
+/// [FieldElement]s in inheritance order.
+List<FieldElement> fieldHierarchyFor(FieldElement field) =>
+    _fieldHierarchyExpando[field] ?? [field];
 
 class _FieldSet implements Comparable<_FieldSet> {
   final FieldElement field;
@@ -119,28 +28,26 @@ class _FieldSet implements Comparable<_FieldSet> {
   _FieldSet._(this.field, this.sortField)
     : assert(field.name == sortField.name);
 
-  factory _FieldSet(FieldElement? classField, FieldElement? superField) {
+  factory _FieldSet(FieldElement? classField, List<FieldElement> superFields) {
     // At least one of these will != null, perhaps both.
-    final fields = [classField, superField].whereType<FieldElement>().toList();
+    final fields = <FieldElement>[?classField, ...superFields];
 
     // Prefer the class field over the inherited field when sorting.
     final sortField = fields.first;
 
-    // Prefer the field that's annotated with `JsonKey`, if any.
-    // If not, use the class field.
-    final fieldHasJsonKey = fields.firstWhere(
-      hasJsonKeyAnnotation,
+    // Use the concrete field that provides the getter (so narrowed subclass
+    // types win while setter-only subclass overrides keep the inherited
+    // getter's FieldElement).
+    final primaryField = fields.firstWhere(
+      (f) => f.getter != null,
       orElse: () => fields.first,
     );
 
-    if (classField != null && superField != null) {
-      return _FieldSet._(
-        _MergedFieldElement(classField, superField, fieldHasJsonKey),
-        sortField,
-      );
+    if (fields.length > 1) {
+      _fieldHierarchyExpando[primaryField] = fields;
     }
 
-    return _FieldSet._(fieldHasJsonKey, sortField);
+    return _FieldSet._(primaryField, sortField);
   }
 
   @override
@@ -195,7 +102,7 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
         .map((e) => MapEntry(e.name, e)),
   );
 
-  final inheritedFields = <String, FieldElement>{};
+  final inheritedFields = <String, List<FieldElement>>{};
   final manager = InheritanceManager3();
 
   for (final v in manager.getInheritedConcreteMap(element).values) {
@@ -208,8 +115,24 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
       if (_isUnannotatedObjectGetter(variable)) {
         continue;
       }
-      assert(!inheritedFields.containsKey(variable.name));
-      inheritedFields[variable.name!] = variable;
+      inheritedFields.putIfAbsent(variable.name!, () => []).add(variable);
+    }
+  }
+
+  for (final supertype in element.allSupertypes) {
+    if (_dartCoreObjectChecker.isExactly(supertype.element)) {
+      continue;
+    }
+    for (final field in supertype.element.fields) {
+      if (field.isStatic || _isUnannotatedObjectGetter(field)) {
+        continue;
+      }
+      final name = field.name;
+      if (name == null) continue;
+      final list = inheritedFields[name];
+      if (list != null && !list.contains(field)) {
+        list.add(field);
+      }
     }
   }
 
@@ -220,7 +143,12 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
 
   final fields =
       allFields
-          .map((e) => _FieldSet(elementInstanceFields[e], inheritedFields[e]))
+          .map(
+            (e) => _FieldSet(
+              elementInstanceFields[e],
+              inheritedFields[e] ?? const [],
+            ),
+          )
           .toList()
         ..sort();
 
