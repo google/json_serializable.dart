@@ -3,11 +3,114 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
     show InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
 
 import 'utils.dart';
+
+const _objectGetterNames = {'hashCode', 'runtimeType'};
+
+bool _isUnannotatedObjectGetter(FieldElement element) =>
+    _objectGetterNames.contains(element.name) && !hasJsonKeyAnnotation(element);
+
+class _MergedFieldElement implements FieldElement {
+  final FieldElement _classField;
+  final FieldElement _superField;
+  final FieldElement _annotationField;
+
+  _MergedFieldElement(
+    this._classField,
+    this._superField,
+    this._annotationField,
+  );
+
+  FieldElement get _primary =>
+      _classField.getter != null ? _classField : _superField;
+
+  @override
+  DartType get type => _primary.type;
+
+  @override
+  GetterElement? get getter =>
+      _annotationField.getter ?? _classField.getter ?? _superField.getter;
+
+  @override
+  SetterElement? get setter => _classField.setter ?? _superField.setter;
+
+  @override
+  Metadata get metadata => _annotationField.metadata;
+
+  @override
+  String? get documentationComment =>
+      _classField.documentationComment ?? _superField.documentationComment;
+
+  @override
+  bool get hasInitializer =>
+      _classField.hasInitializer || _superField.hasInitializer;
+
+  @override
+  String? get name => _classField.name;
+
+  @override
+  String get displayName => _classField.displayName;
+
+  @override
+  bool get isPublic => _classField.isPublic;
+
+  @override
+  bool get isPrivate => _classField.isPrivate;
+
+  @override
+  bool get isStatic => _classField.isStatic;
+
+  @override
+  bool get isFinal => _primary.isFinal;
+
+  @override
+  bool get isConst => _primary.isConst;
+
+  @override
+  bool get isLate => _primary.isLate;
+
+  @override
+  InstanceElement get enclosingElement => _classField.enclosingElement;
+
+  @override
+  LibraryElement get library => _classField.library;
+
+  @override
+  FieldFragment get firstFragment => _classField.firstFragment;
+
+  @override
+  List<FieldFragment> get fragments => _classField.fragments;
+
+  @override
+  bool get isOriginGetterSetter => _primary.isOriginGetterSetter;
+
+  @override
+  bool get isOriginDeclaringFormalParameter =>
+      _primary.isOriginDeclaringFormalParameter;
+
+  @override
+  FieldFormalParameterElement? get declaringFormalParameter =>
+      _classField.declaringFormalParameter ??
+      _superField.declaringFormalParameter;
+
+  @override
+  FieldElement get baseElement => _primary.baseElement;
+
+  @override
+  ElementKind get kind => _classField.kind;
+
+  @override
+  int get id => _classField.id;
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) =>
+      throw UnimplementedError('${invocation.memberName}');
+}
 
 class _FieldSet implements Comparable<_FieldSet> {
   final FieldElement field;
@@ -29,6 +132,13 @@ class _FieldSet implements Comparable<_FieldSet> {
       hasJsonKeyAnnotation,
       orElse: () => fields.first,
     );
+
+    if (classField != null && superField != null) {
+      return _FieldSet._(
+        _MergedFieldElement(classField, superField, fieldHasJsonKey),
+        sortField,
+      );
+    }
 
     return _FieldSet._(fieldHasJsonKey, sortField);
   }
@@ -80,7 +190,9 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   final elementInstanceFields = Map.fromEntries(
-    element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)),
+    element.fields
+        .where((e) => !e.isStatic && !_isUnannotatedObjectGetter(e))
+        .map((e) => MapEntry(e.name, e)),
   );
 
   final inheritedFields = <String, FieldElement>{};
@@ -93,6 +205,9 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
     }
 
     if (v case GetterElement(variable: final FieldElement variable)) {
+      if (_isUnannotatedObjectGetter(variable)) {
+        continue;
+      }
       assert(!inheritedFields.containsKey(variable.name));
       inheritedFields[variable.name!] = variable;
     }

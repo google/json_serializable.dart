@@ -19,6 +19,12 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix field discovery, inheritance, and class configuration edge cases,
+  including covariant and setter-only overrides, `hashCode`/`runtimeType`
+  overrides, `createFactory: false` with `includeToJson: true`,
+  `disallowUnrecognizedKeys` with `includeFromJson: false`, generic
+  `includeIfNull: false` map entries, duplicate `fromJson` key detection, and
+  `createPerFieldToJson` when a field is named `Object`.
 
 ## 6.14.1
 
