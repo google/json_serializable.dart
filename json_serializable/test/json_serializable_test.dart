@@ -111,6 +111,7 @@ const _expectedAnnotatedTests = {
   'DefaultWithFunction',
   'DefaultWithFunctionInList',
   'DefaultWithNestedEnum',
+  'DefaultWithRecord',
   'DefaultWithSymbol',
   'DefaultWithToJsonClass',
   'DefaultWithType',

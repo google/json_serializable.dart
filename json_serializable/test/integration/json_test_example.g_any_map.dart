@@ -208,6 +208,21 @@ class MapKeyVariety {
       deepEquals(other.bigIntMap, bigIntMap);
 }
 
+@JsonSerializable(anyMap: true)
+class MapValueVariety {
+  Map<String, double>? stringDoubleMap;
+  Map<String, int>? stringIntMap;
+  Map<String, num>? stringNumMap;
+  Map<String, (int, String, {bool truth})>? stringRecordMap;
+
+  MapValueVariety();
+
+  factory MapValueVariety.fromJson(Map<String, dynamic> json) =>
+      _$MapValueVarietyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueVarietyToJson(this);
+}
+
 @JsonSerializable(anyMap: true, createToJson: false)
 class UnknownEnumValue {
   @JsonKey(unknownEnumValue: Category.notDiscoveredYet)

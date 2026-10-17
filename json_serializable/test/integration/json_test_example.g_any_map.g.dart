@@ -183,6 +183,47 @@ Map<String, dynamic> _$MapKeyVarietyToJson(MapKeyVariety instance) =>
       'bigIntMap': instance.bigIntMap?.map((k, e) => MapEntry(k.toString(), e)),
     };
 
+MapValueVariety _$MapValueVarietyFromJson(Map json) => MapValueVariety()
+  ..stringDoubleMap = (json['stringDoubleMap'] as Map?)?.map(
+    (k, e) => MapEntry(k as String, (e as num).toDouble()),
+  )
+  ..stringIntMap = (json['stringIntMap'] as Map?)?.map(
+    (k, e) => MapEntry(k as String, (e as num).toInt()),
+  )
+  ..stringNumMap = (json['stringNumMap'] as Map?)?.map(
+    (k, e) => MapEntry(k as String, e as num),
+  )
+  ..stringRecordMap = (json['stringRecordMap'] as Map?)?.map(
+    (k, e) => MapEntry(
+      k as String,
+      _$recordConvertAny(
+        e,
+        ($jsonValue) => (
+          ($jsonValue[r'$1'] as num).toInt(),
+          $jsonValue[r'$2'] as String,
+          truth: $jsonValue['truth'] as bool,
+        ),
+      ),
+    ),
+  );
+
+Map<String, dynamic> _$MapValueVarietyToJson(MapValueVariety instance) =>
+    <String, dynamic>{
+      'stringDoubleMap': instance.stringDoubleMap,
+      'stringIntMap': instance.stringIntMap,
+      'stringNumMap': instance.stringNumMap,
+      'stringRecordMap': instance.stringRecordMap?.map(
+        (k, e) => MapEntry(k, <String, dynamic>{
+          r'$1': e.$1,
+          r'$2': e.$2,
+          'truth': e.truth,
+        }),
+      ),
+    };
+
+$Rec _$recordConvertAny<$Rec>(Object? value, $Rec Function(Map) convert) =>
+    convert(value as Map);
+
 UnknownEnumValue _$UnknownEnumValueFromJson(Map json) => UnknownEnumValue()
   ..enumValue = $enumDecode(
     _$CategoryEnumMap,

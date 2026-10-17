@@ -88,6 +88,10 @@ for PKG in ${PKGS}; do
         dart test -p chrome || EXIT_CODE=$?
         ;;
       test_3)
+        echo 'dart test -p chrome --compiler dart2wasm'
+        dart test -p chrome --compiler dart2wasm || EXIT_CODE=$?
+        ;;
+      test_4)
         echo 'dart test --run-skipped -t presubmit-only test/annotation_version_test.dart'
         dart test --run-skipped -t presubmit-only test/annotation_version_test.dart || EXIT_CODE=$?
         ;;
