@@ -14,7 +14,7 @@ Map<String, dynamic> _$SimpleClassToJson(SimpleClass instance) =>
     <String, dynamic>{'value': <String, dynamic>{}};
 
 SimpleClassNullable _$SimpleClassNullableFromJson(Map<String, dynamic> json) =>
-    SimpleClassNullable(());
+    SimpleClassNullable(json['value'] == null ? null : ());
 
 Map<String, dynamic> _$SimpleClassNullableToJson(
   SimpleClassNullable instance,

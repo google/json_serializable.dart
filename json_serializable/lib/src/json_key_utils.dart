@@ -55,7 +55,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     return obj.read(field);
   }
 
-  final ctorParamDefault = ctorParam?.defaultValueCode;
+  final ctorParamDefault = _ctorParamDefault(ctorParam);
 
   if (obj.isNull && (ctorObj == null || ctorObj.isNull)) {
     return _populateJsonKey(
@@ -80,6 +80,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
     }
 
     final reader = ConstantReader(dartObject);
+    final recordValue = dartObject.toRecordValue();
 
     String? badType;
     if (reader.isSymbol) {
@@ -91,7 +92,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
       // here, it's because the function is nested instead of a collection
       // literal, which is NOT supported!
       badType = 'Function';
-    } else if (!reader.isLiteral) {
+    } else if (!reader.isLiteral && recordValue == null) {
       badType = dartObject.type!.element?.name;
     }
 
@@ -127,6 +128,22 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
         (k, v) => MapEntry(
           literalForObject(fieldName, k!, mapTypeInformation),
           literalForObject(fieldName, v!, mapTypeInformation),
+        ),
+      );
+    }
+
+    if (recordValue != null) {
+      final recordTypeInformation = [...typeInformation, 'Record'];
+      return (
+        positional: [
+          for (var e in recordValue.positional)
+            literalForObject(fieldName, e, recordTypeInformation),
+        ],
+        named: recordValue.named.map(
+          (k, v) => MapEntry(
+            k,
+            literalForObject(fieldName, v, recordTypeInformation),
+          ),
         ),
       );
     }
@@ -424,3 +441,31 @@ final _nullAsUnknownChecker = TypeChecker.typeNamed(
   JsonKey.nullForUndefinedEnumValue.runtimeType,
   inPackage: 'json_annotation',
 );
+
+String? _ctorParamDefault(FormalParameterElement? ctorParam) {
+  final code = ctorParam?.defaultValueCode;
+  if (code == null || !code.startsWith('(') || !code.endsWith(')')) {
+    return code;
+  }
+  if (!_isSinglePositionalRecordParam(ctorParam!)) {
+    return code;
+  }
+  final inner = code.substring(1, code.length - 1).trim();
+  if (inner.isEmpty || inner.endsWith(',')) {
+    return code;
+  }
+  return '($inner,)';
+}
+
+bool _isSinglePositionalRecordParam(FormalParameterElement ctorParam) {
+  final paramType = ctorParam.type;
+  if (paramType is RecordType &&
+      paramType.positionalFields.length == 1 &&
+      paramType.namedFields.isEmpty) {
+    return true;
+  }
+  final constRecord = ctorParam.computeConstantValue()?.toRecordValue();
+  return constRecord != null &&
+      constRecord.positional.length == 1 &&
+      constRecord.named.isEmpty;
+}
