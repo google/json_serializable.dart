@@ -144,9 +144,8 @@ class CheckedFromJsonException implements Exception {
     this.innerStack,
     this.map,
     this.key, {
-    String? className,
-  }) : _className = className,
-       badKey = innerError is BadKeyException,
+    this._className,
+  }) : badKey = innerError is BadKeyException,
        message = _getMessage(innerError);
 
   static String _getMessage(Object error) {
