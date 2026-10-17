@@ -11,17 +11,21 @@ part of 'generic_class.dart';
 GenericClass<T, S> _$GenericClassFromJson<T extends num, S>(
   Map<String, dynamic> json,
 ) => GenericClass<T, S>()
-  ..fieldObject = GenericClass._dataFromJson(
-    json['fieldObject'] as Map<String, dynamic>,
-  )
-  ..fieldDynamic = GenericClass._dataFromJson(
-    json['fieldDynamic'] as Map<String, dynamic>,
-  )
-  ..fieldInt = GenericClass._dataFromJson(
-    json['fieldInt'] as Map<String, dynamic>,
-  )
-  ..fieldT = GenericClass._dataFromJson(json['fieldT'] as Map<String, dynamic>)
-  ..fieldS = GenericClass._dataFromJson(json['fieldS'] as Map<String, dynamic>);
+  ..fieldObject = json['fieldObject'] == null
+      ? null
+      : GenericClass._dataFromJson(json['fieldObject'] as Map<String, dynamic>)
+  ..fieldDynamic = json['fieldDynamic'] == null
+      ? null
+      : GenericClass._dataFromJson(json['fieldDynamic'] as Map<String, dynamic>)
+  ..fieldInt = json['fieldInt'] == null
+      ? null
+      : GenericClass._dataFromJson(json['fieldInt'] as Map<String, dynamic>)
+  ..fieldT = json['fieldT'] == null
+      ? null
+      : GenericClass._dataFromJson(json['fieldT'] as Map<String, dynamic>)
+  ..fieldS = json['fieldS'] == null
+      ? null
+      : GenericClass._dataFromJson(json['fieldS'] as Map<String, dynamic>);
 
 Map<String, dynamic> _$GenericClassToJson<T extends num, S>(
   GenericClass<T, S> instance,

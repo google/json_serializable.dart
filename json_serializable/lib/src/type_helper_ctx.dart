@@ -9,9 +9,11 @@ import 'package:source_helper/source_helper.dart';
 
 import 'default_container.dart';
 import 'helper_core.dart';
+import 'json_key_utils.dart';
 import 'type_helper.dart';
 import 'type_helpers/config_types.dart';
 import 'type_helpers/convert_helper.dart';
+import 'type_helpers/patch_tri_state_helper.dart';
 import 'unsupported_type_error.dart';
 import 'utils.dart';
 
@@ -39,7 +41,8 @@ class TypeHelperCtx
   @override
   ConvertData? get deserializeConvertData => _pairFromContext.fromJson;
 
-  late final _pairFromContext = _ConvertPair(fieldElement);
+  late final _pairFromContext = _ConvertPair(fieldElement, config);
+  int _runDepth = 0;
 
   TypeHelperCtx._(this._helperCore, this.fieldElement);
 
@@ -61,12 +64,41 @@ class TypeHelperCtx
     String expression, {
     String? defaultValue,
   }) {
-    final value = _run(
+    if (_runDepth == 0 &&
+        usesExplicitJsonNullWhenNonNullField(
+          jsonKeyForField(fieldElement, config),
+        )) {
+      return deserializePresentJsonValue(
+        targetType,
+        expression,
+        defaultValue: defaultValue,
+      );
+    }
+
+    var value = _run(
       targetType,
       expression,
       (TypeHelper th) =>
           th.deserialize(targetType, expression, this, defaultValue != null),
     );
+
+    final fromJsonData = deserializeConvertData;
+    if (fromJsonData != null) {
+      if (defaultValue != null &&
+          !targetType.isNullableType &&
+          fromJsonData.returnType.isNullableType) {
+        return ifNullOrElse(
+          expression,
+          defaultValue,
+          '$value ?? ${DefaultContainer.wrapDefaultValue(defaultValue)}',
+        );
+      }
+      if (defaultValue == null &&
+          targetType.isNullableType &&
+          !fromJsonData.paramType.isNullableType) {
+        value = DefaultContainer(expression, value);
+      }
+    }
 
     return DefaultContainer.deserialize(
       value,
@@ -76,7 +108,8 @@ class TypeHelperCtx
   }
 
   /// Like [deserialize], but does not apply nullable short-circuiting for
-  /// [targetType].
+  /// [targetType] when [targetType] deserializes explicit `null` through a
+  /// `fromJson` constructor, converter, or generic argument factory.
   ///
   /// Used when a JSON key is present (including when its value is JSON `null`)
   /// for PATCH tri-state fields, so explicit `null` is passed to `fromJson`.
@@ -85,22 +118,38 @@ class TypeHelperCtx
     String expression, {
     String? defaultValue,
   }) {
+    final effectiveTargetType =
+        config.genericArgumentFactories && targetType is TypeParameterType
+        ? targetType.promoteNonNullable()
+        : targetType;
     final value = _run(
-      targetType,
+      effectiveTargetType,
       expression,
-      (TypeHelper th) =>
-          th.deserialize(targetType, expression, this, defaultValue != null),
+      (TypeHelper th) => th.deserialize(
+        effectiveTargetType,
+        expression,
+        this,
+        defaultValue != null,
+      ),
     );
 
-    return DefaultContainer.deserialize(value, defaultValue: defaultValue);
+    return DefaultContainer.deserialize(
+      value,
+      nullable:
+          targetType.isNullableType &&
+          !passesExplicitNullToFromJson(this, targetType),
+      defaultValue: defaultValue,
+    );
   }
 
   Object _run(
     DartType targetType,
     String expression,
     Object? Function(TypeHelper) invoke,
-  ) =>
-      _helperCore.allTypeHelpers
+  ) {
+    _runDepth++;
+    try {
+      return _helperCore.allTypeHelpers
               .map(invoke)
               .firstWhere(
                 (r) => r != null,
@@ -108,40 +157,68 @@ class TypeHelperCtx
                     throw UnsupportedTypeError(targetType, expression),
               )
           as Object;
+    } finally {
+      _runDepth--;
+    }
+  }
 }
 
 class _ConvertPair {
-  static final _expando = Expando<_ConvertPair>();
+  static final _expando = Expando<Map<ClassConfig, _ConvertPair>>();
 
   final ConvertData? fromJson, toJson;
 
   _ConvertPair._(this.fromJson, this.toJson);
 
-  factory _ConvertPair(FieldElement element) {
-    var pair = _expando[element];
+  factory _ConvertPair(FieldElement element, ClassConfig config) {
+    final map = _expando[element] ??= <ClassConfig, _ConvertPair>{};
+    var pair = map[config];
 
     if (pair == null) {
+      final ctorParam = config.ctorParams
+          .where((e) => e.name == element.name)
+          .singleOrNull;
       final obj = jsonKeyAnnotation(element);
-      if (obj.isNull) {
+      final ctorObj = ctorParam == null
+          ? ConstantReader(null)
+          : jsonKeyAnnotationForCtorParam(ctorParam);
+      if (obj.isNull && ctorObj.isNull) {
         pair = _ConvertPair._(null, null);
       } else {
-        final toJson = _convertData(obj, element, false);
-        final fromJson = _convertData(obj, element, true);
+        final toJson = _convertData(obj, ctorObj, ctorParam, element, false);
+        final fromJson = _convertData(obj, ctorObj, ctorParam, element, true);
         pair = _ConvertPair._(fromJson, toJson);
       }
-      _expando[element] = pair;
+      map[config] = pair;
     }
     return pair;
   }
 }
 
+ConstantReader _fallbackRead(
+  ConstantReader obj,
+  ConstantReader ctorObj,
+  String field,
+) {
+  if (!ctorObj.isNull) {
+    final reader = ctorObj.read(field);
+    if (!reader.isNull) return reader;
+  }
+  if (!obj.isNull) {
+    return obj.read(field);
+  }
+  return ConstantReader(null);
+}
+
 ConvertData? _convertData(
   ConstantReader obj,
+  ConstantReader ctorObj,
+  FormalParameterElement? ctorParam,
   FieldElement element,
   bool isFrom,
 ) {
   final paramName = isFrom ? 'fromJson' : 'toJson';
-  final objectValue = obj.read(paramName);
+  final objectValue = _fallbackRead(obj, ctorObj, paramName);
 
   if (objectValue.isNull) {
     return null;
@@ -160,10 +237,38 @@ ConvertData? _convertData(
     );
   }
 
-  final returnType = executableElement.returnType;
-  final argType = executableElement.formalParameters.first.type;
+  final functionType = objectValue.objectValue.type as FunctionType;
+  var returnType = functionType.returnType;
+  var argType = functionType.formalParameters.first.type;
+
+  if (functionType.typeParameters.isNotEmpty) {
+    if (isFrom) {
+      if (argType is TypeParameterType &&
+          functionType.typeParameters.contains(argType.element)) {
+        if (returnType is TypeParameterType &&
+            returnType.element == argType.element) {
+          argType = element.type;
+          returnType = element.type;
+        } else {
+          argType = argType.bound;
+        }
+      }
+    } else {
+      if (argType is TypeParameterType &&
+          functionType.typeParameters.contains(argType.element)) {
+        if (returnType is TypeParameterType &&
+            returnType.element == argType.element) {
+          returnType = element.type;
+        }
+        argType = element.type;
+      }
+    }
+  }
+
   if (isFrom) {
-    final hasDefaultValue = !obj.read('defaultValue').isNull;
+    final hasDefaultValue =
+        !_fallbackRead(obj, ctorObj, 'defaultValue').isNull ||
+        ctorParam?.defaultValueCode != null;
 
     if (returnType is TypeParameterType) {
       // We keep things simple in this case. We rely on inferred type arguments
