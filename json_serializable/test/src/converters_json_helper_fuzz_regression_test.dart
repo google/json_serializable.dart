@@ -551,6 +551,8 @@ check(decodedNull.nullableWithNonNullFromJson == null);
             id: 'issue1606_18a_nullable_from_json_with_json_key_default',
             elementName: 'NullableFromJsonWithJsonKeyDefault',
             declarations: r'''
+const bool kCondDefaultFlag = true;
+
 int? topNullableReturnFromJson(Object? json) =>
     json is int ? json + 1 : null;
 
@@ -562,9 +564,13 @@ class NullableFromJsonWithJsonKeyDefault {
   @JsonKey(fromJson: topNullableReturnFromJson)
   final int fieldB;
 
+  @JsonKey(fromJson: topNullableReturnFromJson)
+  final int fieldC;
+
   NullableFromJsonWithJsonKeyDefault({
     required this.fieldA,
     this.fieldB = 99,
+    this.fieldC = kCondDefaultFlag ? 1 : 2,
   });
 
   factory NullableFromJsonWithJsonKeyDefault.fromJson(
@@ -579,16 +585,20 @@ class NullableFromJsonWithJsonKeyDefault {
 final decoded = NullableFromJsonWithJsonKeyDefault.fromJson({
   'fieldA': 'not-an-int',
   'fieldB': 'not-an-int',
+  'fieldC': 'not-an-int',
 });
 checkEquals(decoded.fieldA, 42);
 checkEquals(decoded.fieldB, 99);
+checkEquals(decoded.fieldC, 1);
 
 final decodedValid = NullableFromJsonWithJsonKeyDefault.fromJson({
   'fieldA': 10,
   'fieldB': 20,
+  'fieldC': 30,
 });
 checkEquals(decodedValid.fieldA, 11);
 checkEquals(decodedValid.fieldB, 21);
+checkEquals(decodedValid.fieldC, 31);
 ''',
           ),
 

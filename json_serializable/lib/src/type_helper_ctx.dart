@@ -90,7 +90,7 @@ class TypeHelperCtx
         return ifNullOrElse(
           expression,
           defaultValue,
-          '$value ?? $defaultValue',
+          '$value ?? ${DefaultContainer.wrapDefaultValue(defaultValue)}',
         );
       }
       if (defaultValue == null &&
