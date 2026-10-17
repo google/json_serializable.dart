@@ -24,6 +24,9 @@
   constructor parameter annotations, and custom `fromJson`/`toJson` signatures.
 - Fix `JsonKey.explicitJsonNullWhenNonNullField` for `Record`, `Function`,
   `DateTime`, generic argument factories, and `toJson` callbacks named `value`.
+- Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
+  and `Map` constants, `int` defaults on `num`/`double` fields, and function
+  tear-off defaults, as well as nullable self-references and private fields.
 
 ## 6.14.1
 
