@@ -43,23 +43,23 @@ jobs:
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
-    name: "analyzer_and_format; Dart 3.9.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart analyze`"
+    name: "analyzer_and_format; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart analyze`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:analyze_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:analyze_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -199,23 +199,23 @@ jobs:
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
   job_004:
-    name: "unit_test; Dart 3.9.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
+    name: "unit_test; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example-json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -262,23 +262,23 @@ jobs:
       - job_002
       - job_003
   job_005:
-    name: "unit_test; Dart 3.9.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
+    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable;commands:test_3"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_3"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -298,23 +298,23 @@ jobs:
       - job_002
       - job_003
   job_006:
-    name: "unit_test; Dart 3.9.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable;commands:test_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -334,23 +334,23 @@ jobs:
       - job_002
       - job_003
   job_007:
-    name: "unit_test; Dart 3.9.0; PKG: json_serializable; `dart test -p chrome`"
+    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test -p chrome`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable;commands:test_2"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_2"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
@@ -541,23 +541,23 @@ jobs:
       - job_002
       - job_003
   job_012:
-    name: "ensure_build; Dart 3.9.0; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
+    name: "ensure_build; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example;commands:test_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example;commands:test_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0;packages:_test_yaml-checked_yaml-example
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.9.0
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
       - name: Setup Dart SDK
         uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
         with:
-          sdk: "3.9.0"
+          sdk: "3.12.0"
       - id: checkout
         name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
