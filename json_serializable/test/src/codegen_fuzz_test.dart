@@ -5,9 +5,14 @@
 @TestOn('vm')
 library;
 
+import 'package:analyzer/dart/element/element.dart';
 import 'package:json_serializable/src/json_serializable_generator.dart';
+import 'package:json_serializable/src/type_helpers/map_helper.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
+
+import '../../tool/readme_builder.dart';
+import '../shared_config.dart';
 
 const _sharedImports = [
   "import 'dart:convert';",
@@ -230,6 +235,8 @@ bool jsonRoundTripEquals(Object? a, Object? b) =>
 
 class _FieldTypeSpec {
   final String key;
+  final String supportedTypeName;
+  final String? mapKeyTypeName;
   final String nonNullType;
   final String nullableType;
   final String sampleExpr;
@@ -237,6 +244,8 @@ class _FieldTypeSpec {
 
   const _FieldTypeSpec({
     required this.key,
+    required this.supportedTypeName,
+    this.mapKeyTypeName,
     required this.nonNullType,
     required this.nullableType,
     required this.sampleExpr,
@@ -247,6 +256,7 @@ class _FieldTypeSpec {
 const _coreTypeSpecs = <_FieldTypeSpec>[
   _FieldTypeSpec(
     key: 'int',
+    supportedTypeName: 'int',
     nonNullType: 'int',
     nullableType: 'int?',
     sampleExpr: '42',
@@ -254,6 +264,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'double',
+    supportedTypeName: 'double',
     nonNullType: 'double',
     nullableType: 'double?',
     sampleExpr: '3.25',
@@ -261,6 +272,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'num',
+    supportedTypeName: 'num',
     nonNullType: 'num',
     nullableType: 'num?',
     sampleExpr: '99.5',
@@ -268,6 +280,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'string',
+    supportedTypeName: 'String',
     nonNullType: 'String',
     nullableType: 'String?',
     sampleExpr: "'hello'",
@@ -275,19 +288,29 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'bool',
+    supportedTypeName: 'bool',
     nonNullType: 'bool',
     nullableType: 'bool?',
     sampleExpr: 'true',
     constDefaultCode: 'false',
   ),
   _FieldTypeSpec(
+    key: 'object',
+    supportedTypeName: 'Object',
+    nonNullType: 'Object',
+    nullableType: 'Object?',
+    sampleExpr: "'obj_val'",
+  ),
+  _FieldTypeSpec(
     key: 'dateTime',
+    supportedTypeName: 'DateTime',
     nonNullType: 'DateTime',
     nullableType: 'DateTime?',
     sampleExpr: 'DateTime.utc(2026, 5, 10, 12, 30)',
   ),
   _FieldTypeSpec(
     key: 'duration',
+    supportedTypeName: 'Duration',
     nonNullType: 'Duration',
     nullableType: 'Duration?',
     sampleExpr: 'const Duration(seconds: 45)',
@@ -295,18 +318,21 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'bigInt',
+    supportedTypeName: 'BigInt',
     nonNullType: 'BigInt',
     nullableType: 'BigInt?',
     sampleExpr: "BigInt.parse('12345678901234567890')",
   ),
   _FieldTypeSpec(
     key: 'uri',
+    supportedTypeName: 'Uri',
     nonNullType: 'Uri',
     nullableType: 'Uri?',
     sampleExpr: "Uri.parse('https://dart.dev/path?q=1')",
   ),
   _FieldTypeSpec(
     key: 'enum',
+    supportedTypeName: 'EnumType',
     nonNullType: 'FuzzStatus',
     nullableType: 'FuzzStatus?',
     sampleExpr: 'FuzzStatus.done',
@@ -314,6 +340,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'listInt',
+    supportedTypeName: 'List',
     nonNullType: 'List<int>',
     nullableType: 'List<int?>?',
     sampleExpr: 'const [1, 2, 3]',
@@ -321,6 +348,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'setString',
+    supportedTypeName: 'Set',
     nonNullType: 'Set<String>',
     nullableType: 'Set<String>?',
     sampleExpr: "const {'a', 'b'}",
@@ -328,6 +356,7 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'iterableInt',
+    supportedTypeName: 'Iterable',
     nonNullType: 'Iterable<int>',
     nullableType: 'Iterable<int>?',
     sampleExpr: 'const [4, 5]',
@@ -335,6 +364,8 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'mapStringInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'String',
     nonNullType: 'Map<String, int>',
     nullableType: 'Map<String, int?>?',
     sampleExpr: "const {'k1': 10, 'k2': 20}",
@@ -342,6 +373,8 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'mapEnumInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'enum',
     nonNullType: 'Map<FuzzStatus, int>',
     nullableType: 'Map<FuzzStatus, int>?',
     sampleExpr: 'const {FuzzStatus.active: 1, FuzzStatus.done: 2}',
@@ -349,19 +382,63 @@ const _coreTypeSpecs = <_FieldTypeSpec>[
   ),
   _FieldTypeSpec(
     key: 'mapIntString',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'int',
     nonNullType: 'Map<int, String>',
     nullableType: 'Map<int, String>?',
     sampleExpr: "const {1: 'one', 2: 'two'}",
     constDefaultCode: "const {0: 'zero'}",
   ),
   _FieldTypeSpec(
+    key: 'mapBigIntString',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'BigInt',
+    nonNullType: 'Map<BigInt, String>',
+    nullableType: 'Map<BigInt, String>?',
+    sampleExpr: "{BigInt.from(7): 'seven'}",
+  ),
+  _FieldTypeSpec(
+    key: 'mapDateTimeInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'DateTime',
+    nonNullType: 'Map<DateTime, int>',
+    nullableType: 'Map<DateTime, int>?',
+    sampleExpr: '{DateTime.utc(2026, 1, 2): 9}',
+  ),
+  _FieldTypeSpec(
+    key: 'mapUriInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'Uri',
+    nonNullType: 'Map<Uri, int>',
+    nullableType: 'Map<Uri, int>?',
+    sampleExpr: "{Uri.parse('https://dart.dev'): 3}",
+  ),
+  _FieldTypeSpec(
+    key: 'mapObjectInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'Object',
+    nonNullType: 'Map<Object, int>',
+    nullableType: 'Map<Object, int>?',
+    sampleExpr: "const <Object, int>{'objKey': 4}",
+  ),
+  _FieldTypeSpec(
+    key: 'mapDynamicInt',
+    supportedTypeName: 'Map',
+    mapKeyTypeName: 'dynamic',
+    nonNullType: 'Map<dynamic, int>',
+    nullableType: 'Map<dynamic, int>?',
+    sampleExpr: "const <dynamic, int>{'dynKey': 5}",
+  ),
+  _FieldTypeSpec(
     key: 'recordPositional',
+    supportedTypeName: 'Record',
     nonNullType: '(int, String)',
     nullableType: '(int, String)?',
     sampleExpr: "(11, 'rec')",
   ),
   _FieldTypeSpec(
     key: 'recordNamed',
+    supportedTypeName: 'Record',
     nonNullType: '({int a, String b})',
     nullableType: '({int a, String b})?',
     sampleExpr: "(a: 22, b: 'named')",
@@ -388,7 +465,7 @@ List<CodegenCase> _buildCoreAndContainerCases() {
     final checked = row['checked']!;
     final anyMap = row['anyMap']!;
 
-    // Keep the batch fast and focused (~180 cases) by sampling checked/anyMap
+    // Keep the batch fast and focused (~220 cases) by sampling checked/anyMap
     // orthogonally across indices while covering every type and nullability.
     if ((i + int.parse(row['specIndex']!)) % 2 != 0 &&
         checked == 'true' &&
@@ -407,6 +484,9 @@ List<CodegenCase> _buildCoreAndContainerCases() {
         ? 'value: ${spec.sampleExpr}'
         : spec.sampleExpr;
     final mapParamType = anyMap == 'true' ? 'Map' : 'Map<String, dynamic>';
+    final dateTimeUtcArg = spec.key == 'dateTime'
+        ? 'dateTimeUtc: $checked,'
+        : '';
     final className = 'CoreFuzz$i';
     final idSuffix = 'inc${includeIfNull}_chk${checked}_any$anyMap';
 
@@ -420,6 +500,7 @@ List<CodegenCase> _buildCoreAndContainerCases() {
   includeIfNull: $includeIfNull,
   checked: $checked,
   anyMap: $anyMap,
+  $dateTimeUtcArg
 )
 class $className {
   final $fieldType value;
@@ -607,17 +688,123 @@ if (!jsonRoundTripEquals($reEncodeCall, $encodeCall)) {
   return cases;
 }
 
+// #CHANGE WHEN UPDATING json_annotation
+class _FeatureSpec {
+  final String key;
+  final String classAnnotationExtra;
+  final String fieldDeclarations;
+  final String sampleArgs;
+  final String secondParamType;
+  final bool supportsJsonSchema;
+
+  const _FeatureSpec({
+    required this.key,
+    this.classAnnotationExtra = '',
+    required this.fieldDeclarations,
+    required this.sampleArgs,
+    this.secondParamType = 'int?',
+    this.supportsJsonSchema = true,
+  });
+}
+
+const _featureSpecs = <_FeatureSpec>[
+  _FeatureSpec(
+    key: 'fieldConverter',
+    fieldDeclarations: '''
+  @CustomValConverter()
+  final CustomVal firstValue;
+  @CustomValConverter()
+  final CustomVal? secondValue;
+''',
+    sampleArgs: 'const CustomVal(10), null',
+    secondParamType: 'CustomVal?',
+  ),
+  _FeatureSpec(
+    key: 'classConverter',
+    classAnnotationExtra: 'converters: [CustomValConverter()],',
+    fieldDeclarations: '''
+  final CustomVal firstValue;
+  final CustomVal? secondValue;
+''',
+    sampleArgs: 'const CustomVal(10), null',
+    secondParamType: 'CustomVal?',
+  ),
+  _FeatureSpec(
+    key: 'topLevelConstConverter',
+    fieldDeclarations: '''
+  @topLevelCustomValConverter
+  final CustomVal firstValue;
+  @topLevelCustomValConverter
+  final CustomVal? secondValue;
+''',
+    sampleArgs: 'const CustomVal(10), null',
+    secondParamType: 'CustomVal?',
+  ),
+  _FeatureSpec(
+    key: 'customFromToJson',
+    fieldDeclarations: '''
+  @JsonKey(fromJson: customFromJson, toJson: customToJson)
+  final int firstValue;
+  final int? secondValue;
+''',
+    sampleArgs: '25, 30',
+  ),
+  _FeatureSpec(
+    key: 'readValueHook',
+    fieldDeclarations: '''
+  @JsonKey(readValue: readNestedOrDirect)
+  final int firstValue;
+  final int? secondValue;
+''',
+    sampleArgs: '25, 30',
+  ),
+  _FeatureSpec(
+    key: 'nestedSerializable',
+    fieldDeclarations: '''
+  final NestedPayload firstValue;
+  final NestedPayload? secondValue;
+''',
+    sampleArgs: "const NestedPayload('item', 4), null",
+    secondParamType: 'NestedPayload?',
+  ),
+  _FeatureSpec(
+    key: 'patchTriStateCustom',
+    fieldDeclarations: '''
+  @JsonKey(
+    explicitJsonNullWhenNonNullField: true,
+    fromJson: patchBoxFromJson,
+    toJson: patchBoxToJson,
+  )
+  final PatchBox<int>? firstValue;
+  final int? secondValue;
+''',
+    sampleArgs: 'const PatchBox<int>(null), 5',
+    supportsJsonSchema: false,
+  ),
+  _FeatureSpec(
+    key: 'jsonKeyConstraintsAndDefaults',
+    fieldDeclarations: '''
+  @JsonKey(
+    name: 'custom_first',
+    defaultValue: 11,
+    required: true,
+    disallowNullValue: true,
+  )
+  final int firstValue;
+  @JsonKey(
+    includeIfNull: false,
+    unknownEnumValue: FuzzStatus.active,
+  )
+  final FuzzStatus? secondValue;
+''',
+    sampleArgs: '25, FuzzStatus.done',
+    secondParamType: 'FuzzStatus?',
+  ),
+];
+
 List<CodegenCase> _buildConverterConfigAndAuxCases() {
   final matrix = cartesianProduct<String, String>({
-    'feature': [
-      'fieldConverter',
-      'classConverter',
-      'topLevelConstConverter',
-      'customFromToJson',
-      'readValueHook',
-      'nestedSerializable',
-      'patchTriStateCustom',
-    ],
+    'specIndex': [for (var i = 0; i < _featureSpecs.length; i++) '$i'],
     'fieldRename': ['none', 'snake', 'kebab', 'pascal', 'screamingSnake'],
     'auxMode': ['none', 'allAux', 'schemaOnly'],
     'explicitToJson': ['false', 'true'],
@@ -626,12 +813,13 @@ List<CodegenCase> _buildConverterConfigAndAuxCases() {
   final cases = <CodegenCase>[];
   for (var i = 0; i < matrix.length; i++) {
     final row = matrix[i];
-    final feature = row['feature']!;
+    final spec = _featureSpecs[int.parse(row['specIndex']!)];
+    final feature = spec.key;
     final rename = row['fieldRename']!;
     final auxMode = row['auxMode']!;
     final explicitToJson = row['explicitToJson']!;
 
-    // Keep slice size around ~100 cases while covering all combinations of
+    // Keep slice size around ~115 cases while covering all combinations of
     // feature x fieldRename and feature x auxMode x explicitToJson.
     if (explicitToJson == 'true' &&
         rename != 'none' &&
@@ -645,78 +833,8 @@ List<CodegenCase> _buildConverterConfigAndAuxCases() {
     final createPerFieldToJson = auxMode == 'allAux';
     final createJsonSchema =
         (auxMode == 'allAux' || auxMode == 'schemaOnly') &&
-        feature != 'patchTriStateCustom';
+        spec.supportsJsonSchema;
     final className = 'CfgFuzz$i';
-
-    final classConverters = feature == 'classConverter'
-        ? 'converters: [CustomValConverter()],'
-        : '';
-
-    final fieldDecl = switch (feature) {
-      'fieldConverter' =>
-        '''
-  @CustomValConverter()
-  final CustomVal firstValue;
-  @CustomValConverter()
-  final CustomVal? secondValue;
-''',
-      'classConverter' =>
-        '''
-  final CustomVal firstValue;
-  final CustomVal? secondValue;
-''',
-      'topLevelConstConverter' =>
-        '''
-  @topLevelCustomValConverter
-  final CustomVal firstValue;
-  @topLevelCustomValConverter
-  final CustomVal? secondValue;
-''',
-      'customFromToJson' =>
-        '''
-  @JsonKey(fromJson: customFromJson, toJson: customToJson)
-  final int firstValue;
-  final int? secondValue;
-''',
-      'readValueHook' =>
-        '''
-  @JsonKey(readValue: readNestedOrDirect)
-  final int firstValue;
-  final int? secondValue;
-''',
-      'nestedSerializable' =>
-        '''
-  final NestedPayload firstValue;
-  final NestedPayload? secondValue;
-''',
-      'patchTriStateCustom' =>
-        '''
-  @JsonKey(
-    explicitJsonNullWhenNonNullField: true,
-    fromJson: patchBoxFromJson,
-    toJson: patchBoxToJson,
-  )
-  final PatchBox<int>? firstValue;
-  final int? secondValue;
-''',
-      _ => throw StateError('Unknown feature: $feature'),
-    };
-
-    final sampleArgs = switch (feature) {
-      'fieldConverter' ||
-      'classConverter' ||
-      'topLevelConstConverter' => 'const CustomVal(10), null',
-      'customFromToJson' || 'readValueHook' => '25, 30',
-      'nestedSerializable' => "const NestedPayload('item', 4), null",
-      'patchTriStateCustom' => 'const PatchBox<int>(null), 5',
-      _ => throw StateError('Unknown feature: $feature'),
-    };
-
-    final secondParamType = feature == 'nestedSerializable'
-        ? 'NestedPayload?'
-        : feature.contains('Converter')
-        ? 'CustomVal?'
-        : 'int?';
 
     final auxGetters = [
       if (createFieldMap)
@@ -724,7 +842,7 @@ List<CodegenCase> _buildConverterConfigAndAuxCases() {
       if (createJsonKeys)
         'static String get firstKey => _\$${className}JsonKeys.firstValue;',
       if (createPerFieldToJson)
-        'static Object? encodeSecond($secondParamType v) => '
+        'static Object? encodeSecond(${spec.secondParamType} v) => '
             '_\$${className}PerFieldToJson.secondValue(v);',
       if (createJsonSchema)
         'static Map<String, Object?> get schema => _\$${className}JsonSchema;',
@@ -759,10 +877,10 @@ List<CodegenCase> _buildConverterConfigAndAuxCases() {
   createJsonKeys: $createJsonKeys,
   createPerFieldToJson: $createPerFieldToJson,
   createJsonSchema: $createJsonSchema,
-  $classConverters
+  ${spec.classAnnotationExtra}
 )
 class $className {
-$fieldDecl
+${spec.fieldDeclarations}
   $className(this.firstValue, this.secondValue);
   factory $className.fromJson(Map<String, dynamic> json) =>
       _\$${className}FromJson(json);
@@ -772,7 +890,7 @@ $fieldDecl
 ''',
         runtimeCheck:
             '''
-final instance = $className($sampleArgs);
+final instance = $className(${spec.sampleArgs});
 final rawJson = jsonEncode(instance.toJson());
 final encoded = jsonDecode(rawJson) as Map<String, dynamic>;
 final decoded = $className.fromJson(encoded);
@@ -1560,20 +1678,251 @@ if (const JsonEncoder.withIndent(' ').convert(object2) != encoded) {
 }
 ''',
     ),
+    CodegenCase(
+      id: 'extra_custom_constructor_and_ignore_unannotated',
+      elementName: 'ExtraCustomCtorIgnoreUnannotated',
+      declarations: '''
+@JsonSerializable(
+  constructor: 'custom',
+  ignoreUnannotated: true,
+)
+class ExtraCustomCtorIgnoreUnannotated {
+  @JsonKey()
+  final int kept;
+  int ignored = 99;
+  ExtraCustomCtorIgnoreUnannotated.custom(this.kept);
+  factory ExtraCustomCtorIgnoreUnannotated.fromJson(
+    Map<String, dynamic> json,
+  ) => _\$ExtraCustomCtorIgnoreUnannotatedFromJson(json);
+  Map<String, dynamic> toJson() =>
+      _\$ExtraCustomCtorIgnoreUnannotatedToJson(this);
+}
+''',
+      runtimeCheck: '''
+final decoded = ExtraCustomCtorIgnoreUnannotated.fromJson(<String, dynamic>{
+  'kept': 7,
+  'ignored': 123,
+});
+if (decoded.kept != 7 || decoded.ignored != 99) {
+  throw StateError('Unexpected ExtraCustomCtorIgnoreUnannotated fields');
+}
+if (!jsonRoundTripEquals(decoded.toJson(), const <String, dynamic>{'kept': 7})) {
+  throw StateError('Unexpected ExtraCustomCtorIgnoreUnannotated toJson');
+}
+''',
+    ),
+    CodegenCase(
+      id: 'extra_create_factory_false',
+      elementName: 'ExtraCreateFactoryFalse',
+      declarations: '''
+@JsonSerializable(
+  createFactory: false,
+  createToJson: true,
+)
+class ExtraCreateFactoryFalse {
+  final int x;
+  ExtraCreateFactoryFalse(this.x);
+  Map<String, dynamic> toJson() => _\$ExtraCreateFactoryFalseToJson(this);
+}
+''',
+      runtimeCheck: '''
+if (!jsonRoundTripEquals(
+  ExtraCreateFactoryFalse(5).toJson(),
+  const <String, dynamic>{'x': 5},
+)) {
+  throw StateError('Unexpected ExtraCreateFactoryFalse toJson');
+}
+''',
+    ),
+    CodegenCase(
+      id: 'extra_create_to_json_false',
+      elementName: 'ExtraCreateToJsonFalse',
+      declarations: '''
+@JsonSerializable(
+  createFactory: true,
+  createToJson: false,
+)
+class ExtraCreateToJsonFalse {
+  final int x;
+  ExtraCreateToJsonFalse(this.x);
+  factory ExtraCreateToJsonFalse.fromJson(Map<String, dynamic> json) =>
+      _\$ExtraCreateToJsonFalseFromJson(json);
+}
+''',
+      runtimeCheck: '''
+final decoded = ExtraCreateToJsonFalse.fromJson(const <String, dynamic>{'x': 9});
+if (decoded.x != 9) {
+  throw StateError('Unexpected ExtraCreateToJsonFalse.x: \${decoded.x}');
+}
+''',
+    ),
+    CodegenCase(
+      id: 'extra_json_enum_options',
+      elementName: 'ExtraJsonEnumOptions',
+      declarations: '''
+@JsonEnum(
+  alwaysCreate: true,
+  fieldRename: FieldRename.kebab,
+)
+enum FuzzKebabEnum { firstEntry, secondEntry }
+
+@JsonEnum(
+  valueField: 'code',
+)
+enum FuzzValueFieldEnum {
+  alpha('a_code'),
+  beta('b_code');
+
+  final String code;
+  const FuzzValueFieldEnum(this.code);
+}
+
+@JsonSerializable()
+class ExtraJsonEnumOptions {
+  final FuzzKebabEnum kebab;
+  final FuzzValueFieldEnum byField;
+  ExtraJsonEnumOptions(this.kebab, this.byField);
+  factory ExtraJsonEnumOptions.fromJson(Map<String, dynamic> json) =>
+      _\$ExtraJsonEnumOptionsFromJson(json);
+  Map<String, dynamic> toJson() => _\$ExtraJsonEnumOptionsToJson(this);
+}
+''',
+      runtimeCheck: '''
+final instance = ExtraJsonEnumOptions(
+  FuzzKebabEnum.firstEntry,
+  FuzzValueFieldEnum.beta,
+);
+final encoded = instance.toJson();
+if (encoded['kebab'] != 'first-entry' || encoded['byField'] != 'b_code') {
+  throw StateError('Unexpected ExtraJsonEnumOptions encoding: \$encoded');
+}
+final decoded = ExtraJsonEnumOptions.fromJson(encoded);
+if (decoded.kebab != instance.kebab || decoded.byField != instance.byField) {
+  throw StateError('ExtraJsonEnumOptions round-trip mismatch');
+}
+''',
+    ),
   ]);
 
   return cases;
+}
+
+const _driftRemediationHint = '''
+How to update test/src/codegen_fuzz_test.dart:
+- New supported type or map key type -> add a `_FieldTypeSpec` entry to
+  `_coreTypeSpecs` (Slice 1).
+- New @JsonKey or converter feature -> add a `_FeatureSpec` entry to
+  `_featureSpecs` (Slice 3).
+- New asymmetric @JsonSerializable or @JsonEnum option -> add a `CodegenCase` to
+  `_buildFieldMatrixAndExtraMapCases` (Slice 5).
+
+This suite uses `verifyGeneratorBatch` from `package:source_gen_test`.
+If using an AI agent, load the bundled `source-gen-test-fuzz` skill
+(`dart run skills@ get` or see `skills/source-gen-test-fuzz/SKILL.md` in
+`package:source_gen_test`).''';
+
+Set<String> _extractExercisedAnnotationArgs(
+  Iterable<CodegenCase> cases,
+  String annotationName,
+) {
+  final pattern = RegExp('@$annotationName\\s*\\(([^)]*)\\)', multiLine: true);
+  final argNamePattern = RegExp(r'(\b\w+)\s*:');
+  final found = <String>{};
+  for (final c in cases) {
+    for (final match in pattern.allMatches(c.declarations)) {
+      for (final argMatch in argNamePattern.allMatches(match.group(1)!)) {
+        found.add(argMatch.group(1)!);
+      }
+    }
+  }
+  return found;
 }
 
 void main() {
   group(
     'JsonSerializableGenerator combinatorial soundness (source-gen-fuzz)',
     () {
+      // #CHANGE WHEN UPDATING json_annotation
+      test(
+        'surface area drift guard: all supported types, map keys, and '
+        'annotation parameters are exercised in positive fuzz cases',
+        () async {
+          final positiveCases = <CodegenCase>[
+            ..._buildCoreAndContainerCases(),
+            ..._buildHierarchyGenericAndTypedefCases(),
+            ..._buildConverterConfigAndAuxCases(),
+            ..._buildFieldMatrixAndExtraMapCases(),
+          ];
+
+          expect(
+            _coreTypeSpecs.map((s) => s.supportedTypeName).toSet(),
+            unorderedEquals(supportedTypes().toSet()),
+            reason:
+                'Every type in supportedTypes() (tool/readme_builder.dart) '
+                'must have a `_FieldTypeSpec` in `_coreTypeSpecs`.\n'
+                '$_driftRemediationHint',
+          );
+
+          expect(
+            _coreTypeSpecs.map((s) => s.mapKeyTypeName).nonNulls.toSet(),
+            unorderedEquals(allowedMapKeyTypes.toSet()),
+            reason:
+                'Every type in allowedMapKeyTypes (map_helper.dart) must have '
+                'a map `_FieldTypeSpec` in `_coreTypeSpecs`.\n'
+                '$_driftRemediationHint',
+          );
+
+          final reader = await initializeLibraryReader({
+            'annotation_surface.dart': '''
+export 'package:json_annotation/json_annotation.dart'
+    show JsonSerializable, JsonKey, JsonEnum;
+''',
+          }, 'annotation_surface.dart');
+
+          final exported = reader.element.exportNamespace.definedNames2;
+          for (final annotationName in const [
+            'JsonSerializable',
+            'JsonKey',
+            'JsonEnum',
+          ]) {
+            final cls = exported[annotationName] as ClassElement;
+            final expectedParams = {
+              for (final param in cls.unnamedConstructor!.formalParameters)
+                if (!param.metadata.hasDeprecated) param.name!,
+            };
+            final exercisedParams = _extractExercisedAnnotationArgs(
+              positiveCases,
+              annotationName,
+            );
+
+            expect(
+              exercisedParams,
+              containsAll(expectedParams),
+              reason:
+                  'Every non-deprecated parameter on @$annotationName '
+                  '(missing: ${expectedParams.difference(exercisedParams)}) '
+                  'must be exercised in at least one positive CodegenCase.\n'
+                  '$_driftRemediationHint',
+            );
+          }
+
+          // Also cross-check against build.yaml config keys from shared_config.
+          expect(
+            generatorConfigDefaultJson.keys.length,
+            16,
+            reason:
+                'If build.yaml config keys changed in json_annotation, ensure '
+                'they are exercised in test/src/codegen_fuzz_test.dart.\n'
+                '$_driftRemediationHint',
+          );
+        },
+      );
+
       test(
         'slice 1: core scalars, dates, enums, collections, and records',
         () async {
           final cases = _buildCoreAndContainerCases();
-          expect(cases.length, greaterThanOrEqualTo(150));
+          expect(cases.length, greaterThanOrEqualTo(200));
 
           final report = await verifyGeneratorBatch(
             generator: JsonSerializableGenerator(),
@@ -1611,7 +1960,7 @@ void main() {
         'slice 3: converters, callbacks, fieldRename, and auxiliary outputs',
         () async {
           final cases = _buildConverterConfigAndAuxCases();
-          expect(cases.length, greaterThanOrEqualTo(90));
+          expect(cases.length, greaterThanOrEqualTo(100));
 
           final report = await verifyGeneratorBatch(
             generator: JsonSerializableGenerator(),
@@ -1646,7 +1995,7 @@ void main() {
         'slice 5: field matrix visibility/inclusion and extra map edge cases',
         () async {
           final cases = _buildFieldMatrixAndExtraMapCases();
-          expect(cases.length, 23);
+          expect(cases.length, 27);
 
           final report = await verifyGeneratorBatch(
             generator: JsonSerializableGenerator(),
