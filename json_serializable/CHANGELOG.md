@@ -1,6 +1,10 @@
 ## 6.15.0-wip
 
 - Allow `build` 5.0.0.
+- Fix `Record` serialization and default value handling, including nullable
+  empty records `()?`, non-nullable records with defaults, single-positional
+  record defaults, record and non-`String` map literals in
+  `@JsonKey(defaultValue: ...)`, and conditional `? :` constructor defaults.
 - Fix `createJsonSchema` to emit an `enum` constraint (and `default`) for
   enum-typed fields, respecting `@JsonValue` and `JsonEnum.valueField`.
   ([#1577](https://github.com/google/json_serializable.dart/issues/1577))
@@ -19,10 +23,12 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
-- Fix `Record` serialization and default value handling, including nullable
-  empty records `()?`, non-nullable records with defaults, single-positional
-  record defaults, record and non-`String` map literals in
-  `@JsonKey(defaultValue: ...)`, and conditional `? :` constructor defaults.
+- Fix field discovery, inheritance, and class configuration edge cases,
+  including covariant and setter-only overrides, `hashCode`/`runtimeType`
+  overrides, `createFactory: false` with `includeToJson: true`,
+  `disallowUnrecognizedKeys` with `includeFromJson: false`, generic
+  `includeIfNull: false` map entries, duplicate `fromJson` key detection, and
+  `createPerFieldToJson` when a field is named `Object`.
 - Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
   and `Map` constants, `int` defaults on `num`/`double` fields, and function
   tear-off defaults, as well as nullable self-references and private fields.

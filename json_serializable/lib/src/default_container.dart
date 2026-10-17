@@ -34,13 +34,13 @@ class DefaultContainer {
     }
 
     if (defaultValue != null) {
-      final safeDefault = _isTopLevelConditional(defaultValue)
-          ? '($defaultValue)'
-          : defaultValue;
-      value = '$value ?? $safeDefault';
+      value = '$value ?? ${wrapDefaultValue(defaultValue)}';
     }
     return value;
   }
+
+  static String wrapDefaultValue(String defaultValue) =>
+      _isTopLevelConditional(defaultValue) ? '($defaultValue)' : defaultValue;
 
   @override
   String toString() => deserialize(this).toString();

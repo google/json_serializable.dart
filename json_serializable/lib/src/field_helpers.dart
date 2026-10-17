@@ -9,6 +9,18 @@ import 'package:source_gen/source_gen.dart';
 
 import 'utils.dart';
 
+const _objectGetterNames = {'hashCode', 'runtimeType'};
+
+bool _isUnannotatedObjectGetter(FieldElement element) =>
+    _objectGetterNames.contains(element.name) && !hasJsonKeyAnnotation(element);
+
+final _fieldHierarchyExpando = Expando<List<FieldElement>>();
+
+/// Returns [field] followed by any overridden superclass/superinterface
+/// [FieldElement]s in inheritance order.
+List<FieldElement> fieldHierarchyFor(FieldElement field) =>
+    _fieldHierarchyExpando[field] ?? [field];
+
 class _FieldSet implements Comparable<_FieldSet> {
   final FieldElement field;
   final FieldElement sortField;
@@ -16,21 +28,26 @@ class _FieldSet implements Comparable<_FieldSet> {
   _FieldSet._(this.field, this.sortField)
     : assert(field.name == sortField.name);
 
-  factory _FieldSet(FieldElement? classField, FieldElement? superField) {
+  factory _FieldSet(FieldElement? classField, List<FieldElement> superFields) {
     // At least one of these will != null, perhaps both.
-    final fields = [classField, superField].whereType<FieldElement>().toList();
+    final fields = <FieldElement>[?classField, ...superFields];
 
     // Prefer the class field over the inherited field when sorting.
     final sortField = fields.first;
 
-    // Prefer the field that's annotated with `JsonKey`, if any.
-    // If not, use the class field.
-    final fieldHasJsonKey = fields.firstWhere(
-      hasJsonKeyAnnotation,
+    // Use the concrete field that provides the getter (so narrowed subclass
+    // types win while setter-only subclass overrides keep the inherited
+    // getter's FieldElement).
+    final primaryField = fields.firstWhere(
+      (f) => f.getter != null,
       orElse: () => fields.first,
     );
 
-    return _FieldSet._(fieldHasJsonKey, sortField);
+    if (fields.length > 1) {
+      _fieldHierarchyExpando[primaryField] = fields;
+    }
+
+    return _FieldSet._(primaryField, sortField);
   }
 
   @override
@@ -80,10 +97,12 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
   // Get all of the fields that need to be assigned
   // TODO: support overriding the field set with an annotation option
   final elementInstanceFields = Map.fromEntries(
-    element.fields.where((e) => !e.isStatic).map((e) => MapEntry(e.name, e)),
+    element.fields
+        .where((e) => !e.isStatic && !_isUnannotatedObjectGetter(e))
+        .map((e) => MapEntry(e.name, e)),
   );
 
-  final inheritedFields = <String, FieldElement>{};
+  final inheritedFields = <String, List<FieldElement>>{};
   final manager = InheritanceManager3();
 
   for (final v in manager.getInheritedConcreteMap(element).values) {
@@ -93,8 +112,27 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
     }
 
     if (v case GetterElement(variable: final FieldElement variable)) {
-      assert(!inheritedFields.containsKey(variable.name));
-      inheritedFields[variable.name!] = variable;
+      if (_isUnannotatedObjectGetter(variable)) {
+        continue;
+      }
+      inheritedFields.putIfAbsent(variable.name!, () => []).add(variable);
+    }
+  }
+
+  for (final supertype in element.allSupertypes) {
+    if (_dartCoreObjectChecker.isExactly(supertype.element)) {
+      continue;
+    }
+    for (final field in supertype.element.fields) {
+      if (field.isStatic || _isUnannotatedObjectGetter(field)) {
+        continue;
+      }
+      final name = field.name;
+      if (name == null) continue;
+      final list = inheritedFields[name];
+      if (list != null && !list.contains(field)) {
+        list.add(field);
+      }
     }
   }
 
@@ -105,7 +143,12 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
 
   final fields =
       allFields
-          .map((e) => _FieldSet(elementInstanceFields[e], inheritedFields[e]))
+          .map(
+            (e) => _FieldSet(
+              elementInstanceFields[e],
+              inheritedFields[e] ?? const [],
+            ),
+          )
           .toList()
         ..sort();
 
