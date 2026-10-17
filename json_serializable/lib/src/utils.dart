@@ -13,6 +13,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'field_helpers.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
@@ -24,11 +25,19 @@ const _jsonKeyChecker = TypeChecker.typeNamed(
 /// If an annotation exists on `element` the source is a 'real' field.
 /// If the result is `null`, check the getter – it is a property.
 // TODO: setters: github.com/google/json_serializable.dart/issues/24
-DartObject? _jsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyChecker.firstAnnotationOf(element) ??
-    (element.getter == null
-        ? null
-        : _jsonKeyChecker.firstAnnotationOf(element.getter!));
+DartObject? _jsonKeyAnnotation(FieldElement element) {
+  for (final candidate in fieldHierarchyFor(element)) {
+    final direct =
+        _jsonKeyChecker.firstAnnotationOf(candidate) ??
+        (candidate.getter == null
+            ? null
+            : _jsonKeyChecker.firstAnnotationOf(candidate.getter!));
+    if (direct != null) {
+      return direct;
+    }
+  }
+  return null;
+}
 
 ConstantReader jsonKeyAnnotation(FieldElement element) =>
     ConstantReader(_jsonKeyAnnotation(element));

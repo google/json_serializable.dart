@@ -84,40 +84,16 @@ class GeneratorHelper extends HelperCore
       },
     );
 
-    var accessibleFieldSet = accessibleFields.values.toSet();
-    if (config.createFactory) {
-      final createResult = createFactory(accessibleFields, unavailableReasons);
-      yield createResult.output;
+    final explicitToJsonFields = sortedFields
+        .where(
+          (element) =>
+              element.getter != null && jsonKeyFor(element).explicitYesToJson,
+        )
+        .toList();
 
-      final fieldsToUse = accessibleFields.entries
-          .where((e) => createResult.usedFields.contains(e.key))
-          .map((e) => e.value)
-          .toList();
-
-      // Need to add candidates BACK even if they are not used in the factory if
-      // they are forced to be used for toJSON
-      for (var candidate in sortedFields.where(
-        (element) =>
-            jsonKeyFor(element).explicitYesToJson &&
-            !fieldsToUse.contains(element),
-      )) {
-        fieldsToUse.add(candidate);
-      }
-
-      // Need the fields to maintain the original source ordering
-      fieldsToUse.sort(
-        (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)),
-      );
-
-      accessibleFieldSet = fieldsToUse.toSet();
-    }
-
-    accessibleFieldSet
-      ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson)
-      // Check for duplicate JSON keys due to colliding annotations. We do this
-      // now, since we have a final field list after any pruning done by
-      // `_writeCtor`.
-      ..fold(<String>{}, (Set<String> set, fe) {
+    void checkForDuplicateKeys(Iterable<FieldElement> fields) {
+      final set = <String>{};
+      for (final fe in fields) {
         final jsonKey = nameAccess(fe);
         if (!set.add(jsonKey)) {
           throw InvalidGenerationSourceError(
@@ -125,8 +101,48 @@ class GeneratorHelper extends HelperCore
             element: fe,
           );
         }
-        return set;
-      });
+      }
+    }
+
+    var fieldsToUse = accessibleFields.values.toList();
+    if (config.createFactory) {
+      final createResult = createFactory(
+        accessibleFields,
+        unavailableReasons,
+        explicitToJsonFields: config.createToJson
+            ? explicitToJsonFields
+            : const [],
+      );
+      yield createResult.output;
+
+      fieldsToUse = accessibleFields.entries
+          .where((e) => createResult.usedFields.contains(e.key))
+          .map((e) => e.value)
+          .toList();
+
+      checkForDuplicateKeys(fieldsToUse);
+    }
+
+    // Need to add candidates BACK even if they are not used in the factory if
+    // they are forced to be used for toJSON
+    for (var candidate in explicitToJsonFields) {
+      if (!fieldsToUse.contains(candidate)) {
+        fieldsToUse.add(candidate);
+      }
+    }
+
+    // Need the fields to maintain the original source ordering
+    fieldsToUse.sort(
+      (a, b) => sortedFields.indexOf(a).compareTo(sortedFields.indexOf(b)),
+    );
+
+    final accessibleFieldSet = fieldsToUse.toSet()
+      ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson);
+
+    // Check for duplicate JSON keys due to colliding annotations. We do this
+    // now, since we have a final field list after any pruning done by
+    // `_writeCtor`.
+    checkForDuplicateKeys(accessibleFieldSet);
 
     if (config.createFieldMap) {
       yield createFieldMap(accessibleFieldSet);

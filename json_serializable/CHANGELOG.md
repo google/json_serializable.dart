@@ -19,14 +19,20 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix field discovery, inheritance, and class configuration edge cases,
+  including covariant and setter-only overrides, `hashCode`/`runtimeType`
+  overrides, `createFactory: false` with `includeToJson: true`,
+  `disallowUnrecognizedKeys` with `includeFromJson: false`, generic
+  `includeIfNull: false` map entries, duplicate `fromJson` key detection, and
+  `createPerFieldToJson` when a field is named `Object`.
+- Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
+  and `Map` constants, `int` defaults on `num`/`double` fields, and function
+  tear-off defaults, as well as nullable self-references and private fields.
 - Fix `JsonConverter`, `@JsonKey(fromJson: ..., toJson: ...)`, `JsonHelper`,
   and extension type edge cases across generic converters, nullable fields,
   constructor parameter annotations, and custom `fromJson`/`toJson` signatures.
 - Fix `JsonKey.explicitJsonNullWhenNonNullField` for `Record`, `Function`,
   `DateTime`, generic argument factories, and `toJson` callbacks named `value`.
-- Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
-  and `Map` constants, `int` defaults on `num`/`double` fields, and function
-  tear-off defaults, as well as nullable self-references and private fields.
 
 ## 6.14.1
 
