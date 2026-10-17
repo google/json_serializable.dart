@@ -54,10 +54,26 @@ String jsonLiteralAsDart(Object? value) => switch (value) {
   final List l => '[${l.map(jsonLiteralAsDart).join(', ')}]',
   final Set s => '{${s.map(jsonLiteralAsDart).join(', ')}}',
   final Map m => jsonMapAsDart(m),
+  (
+    positional: final List<Object?> positional,
+    named: final Map<String, Object?> named,
+  ) =>
+    _jsonRecordAsDart(positional, named),
   _ => throw StateError(
     'Should never get here – with ${value.runtimeType} - `$value`.',
   ),
 };
+
+String _jsonRecordAsDart(List<Object?> positional, Map<String, Object?> named) {
+  if (positional.length == 1 && named.isEmpty) {
+    return '(${jsonLiteralAsDart(positional.single)},)';
+  }
+  final parts = [
+    ...positional.map(jsonLiteralAsDart),
+    ...named.entries.map((e) => '${e.key}: ${jsonLiteralAsDart(e.value)}'),
+  ];
+  return '(${parts.join(', ')})';
+}
 
 String jsonMapAsDart(Map value) {
   final buffer = StringBuffer('{');
@@ -70,7 +86,7 @@ String jsonMapAsDart(Map value) {
       buffer.writeln(',');
     }
     buffer
-      ..write(escapeDartString(k as String))
+      ..write(jsonLiteralAsDart(k))
       ..write(': ')
       ..write(jsonLiteralAsDart(v));
   });
