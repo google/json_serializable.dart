@@ -1,3 +1,7 @@
+## 4.12.1-wip
+
+- Require `sdk: ^3.12.0`.
+
 ## 4.12.0
 
 - Add `JsonKey.explicitJsonNullWhenNonNullField` for PATCH-style tri-state JSON
