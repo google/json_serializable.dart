@@ -444,28 +444,141 @@ final _nullAsUnknownChecker = TypeChecker.typeNamed(
 
 String? _ctorParamDefault(FormalParameterElement? ctorParam) {
   final code = ctorParam?.defaultValueCode;
-  if (code == null || !code.startsWith('(') || !code.endsWith(')')) {
-    return code;
+  if (code == null) {
+    return null;
   }
-  if (!_isSinglePositionalRecordParam(ctorParam!)) {
-    return code;
+  final constValue = ctorParam!.computeConstantValue();
+  if (constValue != null &&
+      _containsSinglePositionalRecord(ctorParam.type, constValue)) {
+    final formatted = _formatConstantValueWithRecords(constValue);
+    if (formatted != null) {
+      return code.startsWith('const ') && !formatted.startsWith('const ')
+          ? 'const $formatted'
+          : formatted;
+    }
   }
-  final inner = code.substring(1, code.length - 1).trim();
-  if (inner.isEmpty || inner.endsWith(',')) {
-    return code;
-  }
-  return '($inner,)';
+  return code;
 }
 
-bool _isSinglePositionalRecordParam(FormalParameterElement ctorParam) {
-  final paramType = ctorParam.type;
-  if (paramType is RecordType &&
-      paramType.positionalFields.length == 1 &&
-      paramType.namedFields.isEmpty) {
-    return true;
+bool _containsSinglePositionalRecord(DartType? type, DartObject? value) {
+  if (type is RecordType) {
+    if (type.positionalFields.length == 1 && type.namedFields.isEmpty) {
+      return true;
+    }
+    if (type.positionalFields.any(
+          (f) => _containsSinglePositionalRecord(f.type, null),
+        ) ||
+        type.namedFields.any(
+          (f) => _containsSinglePositionalRecord(f.type, null),
+        )) {
+      return true;
+    }
+  } else if (type is ParameterizedType) {
+    if (type.typeArguments.any(
+      (t) => _containsSinglePositionalRecord(t, null),
+    )) {
+      return true;
+    }
   }
-  final constRecord = ctorParam.computeConstantValue()?.toRecordValue();
-  return constRecord != null &&
-      constRecord.positional.length == 1 &&
-      constRecord.named.isEmpty;
+  if (value == null || value.isNull) {
+    return false;
+  }
+  final recordVal = value.toRecordValue();
+  if (recordVal != null) {
+    if (recordVal.positional.length == 1 && recordVal.named.isEmpty) {
+      return true;
+    }
+    return recordVal.positional.any(
+          (v) => _containsSinglePositionalRecord(v.type, v),
+        ) ||
+        recordVal.named.values.any(
+          (v) => _containsSinglePositionalRecord(v.type, v),
+        );
+  }
+  final listVal = value.toListValue();
+  if (listVal != null) {
+    return listVal.any((v) => _containsSinglePositionalRecord(v.type, v));
+  }
+  final setVal = value.toSetValue();
+  if (setVal != null) {
+    return setVal.any((v) => _containsSinglePositionalRecord(v.type, v));
+  }
+  final mapVal = value.toMapValue();
+  if (mapVal != null) {
+    return mapVal.entries.any(
+      (e) =>
+          _containsSinglePositionalRecord(e.key?.type, e.key) ||
+          _containsSinglePositionalRecord(e.value?.type, e.value),
+    );
+  }
+  return false;
+}
+
+String? _formatConstantValueWithRecords(DartObject object) {
+  if (object.isNull) {
+    return 'null';
+  }
+  final reader = ConstantReader(object);
+  if (reader.isBool || reader.isInt || reader.isDouble || reader.isString) {
+    return jsonLiteralAsDart(reader.literalValue);
+  }
+  final type = object.type;
+  if (type != null) {
+    final enumFields = iterateEnumFields(type);
+    if (enumFields != null) {
+      final enumValueNames = enumFields.map((p) => p.name!).toList();
+      final enumValueName = enumValueForDartObject<String>(
+        object,
+        enumValueNames,
+        (n) => n,
+      );
+      return '${type.element!.name}.$enumValueName';
+    }
+  }
+  final recordVal = object.toRecordValue();
+  if (recordVal != null) {
+    final parts = <String>[];
+    for (final pos in recordVal.positional) {
+      final formatted = _formatConstantValueWithRecords(pos);
+      if (formatted == null) return null;
+      parts.add(formatted);
+    }
+    for (final entry in recordVal.named.entries) {
+      final formatted = _formatConstantValueWithRecords(entry.value);
+      if (formatted == null) return null;
+      parts.add('${entry.key}: $formatted');
+    }
+    final trailingComma =
+        recordVal.positional.length == 1 && recordVal.named.isEmpty ? ',' : '';
+    return '(${parts.join(', ')}$trailingComma)';
+  }
+  if (reader.isList) {
+    final items = <String>[];
+    for (final item in reader.listValue) {
+      final formatted = _formatConstantValueWithRecords(item);
+      if (formatted == null) return null;
+      items.add(formatted);
+    }
+    return '[${items.join(', ')}]';
+  }
+  if (reader.isSet) {
+    final items = <String>[];
+    for (final item in reader.setValue) {
+      final formatted = _formatConstantValueWithRecords(item);
+      if (formatted == null) return null;
+      items.add(formatted);
+    }
+    return '{${items.join(', ')}}';
+  }
+  if (reader.isMap) {
+    final entries = <String>[];
+    for (final entry in reader.mapValue.entries) {
+      final k = _formatConstantValueWithRecords(entry.key!);
+      final v = _formatConstantValueWithRecords(entry.value!);
+      if (k == null || v == null) return null;
+      entries.add('$k: $v');
+    }
+    return '{${entries.join(', ')}}';
+  }
+  return null;
 }

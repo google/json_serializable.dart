@@ -147,7 +147,15 @@ if (decoded.pair != (42, 'hello')) {
 @JsonSerializable()
 class SinglePosRecDefault {
   final (int,)? value;
-  const SinglePosRecDefault({this.value = const (7,)});
+  final (int,) cond;
+  final (int,) parenCond;
+  final List<(int,)> nestedList;
+  const SinglePosRecDefault({
+    this.value = const (7,),
+    this.cond = kCondTrue ? (1,) : (2,),
+    this.parenCond = (kCondTrue) ? (3,) : (4,),
+    this.nestedList = const [(7,)],
+  });
   factory SinglePosRecDefault.fromJson(Map<String, dynamic> json) =>
       _$SinglePosRecDefaultFromJson(json);
   Map<String, dynamic> toJson() => _$SinglePosRecDefaultToJson(this);
@@ -155,8 +163,14 @@ class SinglePosRecDefault {
 ''',
     runtimeCheck: r'''
 final decoded = SinglePosRecDefault.fromJson(<String, dynamic>{});
-if (decoded.value != const (7,)) {
-  throw StateError('Expected (7,), got: ${decoded.value}');
+if (decoded.value != const (7,) ||
+    decoded.cond != const (1,) ||
+    decoded.parenCond != const (3,) ||
+    decoded.nestedList.single != const (7,)) {
+  throw StateError(
+    'Unexpected defaults: ${decoded.value}, ${decoded.cond}, '
+    '${decoded.parenCond}, ${decoded.nestedList}',
+  );
 }
 ''',
   ),
