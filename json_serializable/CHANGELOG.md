@@ -19,6 +19,9 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
+  and `Map` constants, `int` defaults on `num`/`double` fields, and function
+  tear-off defaults, as well as nullable self-references and private fields.
 
 ## 6.14.1
 
