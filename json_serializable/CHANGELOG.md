@@ -1,6 +1,5 @@
-## 6.15.0-wip
+## 6.15.0
 
-- Allow `build` 5.0.0.
 - Fix `Record` serialization and default value handling, including nullable
   empty records `()?`, non-nullable records with defaults, single-positional
   record defaults, record and non-`String` map literals in
@@ -44,6 +43,8 @@
   constructor parameter annotations, and custom `fromJson`/`toJson` signatures.
 - Fix `JsonKey.explicitJsonNullWhenNonNullField` for `Record`, `Function`,
   `DateTime`, generic argument factories, and `toJson` callbacks named `value`.
+- Allow `build` 5.0.0.
+- Require `sdk: ^3.12.0`.
 
 ## 6.14.1
 
