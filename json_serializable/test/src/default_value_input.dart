@@ -224,3 +224,35 @@ class DefaultDoubleConstants {
 
   DefaultDoubleConstants();
 }
+
+@ShouldGenerate(r'''
+DefaultWithRecord _$DefaultWithRecordFromJson(Map<String, dynamic> json) =>
+    DefaultWithRecord(
+      value:
+          _$recordConvert(
+            json['value'],
+            ($jsonValue) => (
+              ($jsonValue[r'$1'] as num).toInt(),
+              label: $jsonValue['label'] as String,
+            ),
+          ) ??
+          (1, label: 'a'),
+    );
+
+Map<String, dynamic> _$DefaultWithRecordToJson(DefaultWithRecord instance) =>
+    <String, dynamic>{
+      'value': <String, dynamic>{
+        r'$1': instance.value.$1,
+        'label': instance.value.label,
+      },
+    };
+
+$Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
+    convert(value as Map<String, dynamic>);
+''')
+@JsonSerializable()
+class DefaultWithRecord {
+  final (int, {String label}) value;
+
+  DefaultWithRecord({this.value = const (1, label: 'a')});
+}

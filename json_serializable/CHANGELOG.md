@@ -14,11 +14,6 @@
 - Preserve field declaration order in `toJson` for classes with primary
   constructor declaring parameters.
   ([#1599](https://github.com/google/json_serializable.dart/issues/1599))
-- `JsonKey.unknownEnumValue`: Added support for `Map` values.
-  ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
-- Prefer `JsonConverter`s with matching nullability when both nullable and
-  non-nullable converters for the same type are present.
-  ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
 - Fix `Map` key and enum handling, including custom `String`-backed
   `JsonConverter`s and `dateTimeUtc: true` on `Map` keys, `int`-encoded enum
   `Map` keys, `Map<Object, V>` / `Map<dynamic, V>`, decoding `null` to
@@ -26,6 +21,17 @@
   `null` over `defaultValue` when the key is present),
   `@JsonEnum(valueField: 'name')`, and rejecting getter-backed
   `JsonEnum.valueField`s.
+- `JsonKey.unknownEnumValue`: Added support for `Map` values.
+  ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
+- Prefer `JsonConverter`s with matching nullability when both nullable and
+  non-nullable converters for the same type are present.
+  ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix field discovery, inheritance, and class configuration edge cases,
+  including covariant and setter-only overrides, `hashCode`/`runtimeType`
+  overrides, `createFactory: false` with `includeToJson: true`,
+  `disallowUnrecognizedKeys` with `includeFromJson: false`, generic
+  `includeIfNull: false` map entries, duplicate `fromJson` key detection, and
+  `createPerFieldToJson` when a field is named `Object`.
 - Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
   and `Map` constants, `int` defaults on `num`/`double` fields, and function
   tear-off defaults, as well as nullable self-references and private fields.

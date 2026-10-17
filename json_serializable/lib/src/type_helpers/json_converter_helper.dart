@@ -9,6 +9,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../field_helpers.dart';
 import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
@@ -190,26 +191,26 @@ _JsonConvertData? _typeConverter(
       .whereType<_ConverterMatch>()
       .toList();
 
-  var matchingAnnotations = converterMatches(
-    ctx.fieldElement.getter?.metadata.annotations ?? [],
-  );
+  var matchingAnnotations = <_ConverterMatch>[];
+  for (final field in fieldHierarchyFor(ctx.fieldElement)) {
+    matchingAnnotations = converterMatches(
+      field.getter?.metadata.annotations ?? [],
+    );
+    if (matchingAnnotations.isNotEmpty) break;
+    matchingAnnotations = converterMatches(field.metadata.annotations);
+    if (matchingAnnotations.isNotEmpty) break;
+  }
 
   if (matchingAnnotations.isEmpty) {
     matchingAnnotations = converterMatches(
-      ctx.fieldElement.metadata.annotations,
+      ctx.classElement.metadata.annotations,
     );
 
     if (matchingAnnotations.isEmpty) {
-      matchingAnnotations = converterMatches(
-        ctx.classElement.metadata.annotations,
-      );
-
-      if (matchingAnnotations.isEmpty) {
-        matchingAnnotations = ctx.config.converters
-            .map((e) => _compatibleMatch(targetType, null, e))
-            .whereType<_ConverterMatch>()
-            .toList();
-      }
+      matchingAnnotations = ctx.config.converters
+          .map((e) => _compatibleMatch(targetType, null, e))
+          .whereType<_ConverterMatch>()
+          .toList();
     }
   }
 

@@ -24,17 +24,23 @@ mixin EncodeHelper implements HelperCore {
         'abstract class _\$${element.name!.nonPrivate}PerFieldToJson {',
       );
 
+    final hasObjectField = accessibleFieldSet.any((f) => f.name == 'Object');
+    final returnType = hasObjectField ? 'dynamic' : 'Object?';
+
     for (final field in accessibleFieldSet) {
+      final paramType = hasObjectField && field.type.isDartCoreObject
+          ? 'dynamic'
+          : typeToCode(field.type);
       buffer
         ..writeln('  // ignore: unused_element')
         ..write(
-          'static Object? ${field.name!}'
+          'static $returnType ${field.name!}'
           '${genericClassArgumentsImpl(withConstraints: true)}'
-          '(${typeToCode(field.type)} $_toJsonParamName',
+          '($paramType $_toJsonParamName',
         );
 
       if (config.genericArgumentFactories) {
-        _writeGenericArgumentFactories(buffer);
+        _writeGenericArgumentFactories(buffer, objectType: returnType);
       }
 
       buffer.writeln(') => ${_serializeField(field, _toJsonParamName)};');
@@ -130,12 +136,15 @@ mixin EncodeHelper implements HelperCore {
     yield buffer.toString();
   }
 
-  void _writeGenericArgumentFactories(StringBuffer buffer) {
+  void _writeGenericArgumentFactories(
+    StringBuffer buffer, {
+    String objectType = 'Object?',
+  }) {
     for (var arg in element.typeParameters) {
       final helperName = toJsonForType(
         arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
       );
-      buffer.write(',Object? Function(${arg.name} value) $helperName');
+      buffer.write(',$objectType Function(${arg.name} value) $helperName');
     }
     if (element.typeParameters.isNotEmpty) {
       buffer.write(',');
@@ -184,7 +193,9 @@ mixin EncodeHelper implements HelperCore {
 
     final serializeConvertData = helperContext.serializeConvertData;
     if (serializeConvertData != null) {
-      return !serializeConvertData.returnType.isNullableType;
+      return !element.library.typeSystem.isPotentiallyNullable(
+        serializeConvertData.returnType,
+      );
     }
 
     final nullableEncodeConverter = hasConverterNullEncode(
@@ -205,6 +216,6 @@ mixin EncodeHelper implements HelperCore {
       return !enumWithNullValue;
     }
 
-    return !field.type.isNullableType;
+    return !element.library.typeSystem.isPotentiallyNullable(field.type);
   }
 }

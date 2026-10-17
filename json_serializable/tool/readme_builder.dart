@@ -7,11 +7,35 @@ import 'dart:convert';
 
 import 'package:build/build.dart';
 import 'package:collection/collection.dart';
+import 'package:json_serializable/src/type_helpers/map_helper.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'package:yaml/yaml.dart';
 
-import 'test_type_builder.dart';
-import 'test_type_data.dart';
+const customEnumType = 'EnumType';
+
+const _scalarTypes = [
+  'BigInt',
+  'bool',
+  'DateTime',
+  'double',
+  'Duration',
+  customEnumType,
+  'int',
+  'num',
+  'Object',
+  'String',
+  'Uri',
+];
+
+const _collectionTypes = ['Map', 'List', 'Set', 'Iterable', 'Record'];
+
+Iterable<String> supportedTypes() => [..._scalarTypes, ..._collectionTypes];
+
+Iterable<String> collectionTypes() => _collectionTypes;
+
+Iterable<String> get mapKeyTypes =>
+    allowedMapKeyTypes.map((e) => e == 'enum' ? customEnumType : e).toList()
+      ..sort(compareAsciiLowerCase);
 
 Builder readmeBuilder([BuilderOptions? _]) => _ReadmeBuilder();
 

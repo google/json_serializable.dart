@@ -65,7 +65,8 @@ Iterable<_PropertyInfo> _propertiesFor(
     }
 
     // Writable fields are included.
-    if (f.setter != null) {
+    if (f.setter != null ||
+        element.lookUpSetter(name: f.name!, library: element.library) != null) {
       return true;
     }
 
