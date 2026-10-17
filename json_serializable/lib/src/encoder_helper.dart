@@ -117,8 +117,8 @@ mixin EncodeHelper implements HelperCore {
 
           if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
             final access = _fieldAccess(field);
-            final valueExpression = _serializePatchField(field, 'value');
-            return '        if ($access case final value?) '
+            final valueExpression = _serializePatchField(field, r'$value');
+            return '        if ($access case final \$value?) '
                 '$keyExpression: $valueExpression,\n';
           }
 
