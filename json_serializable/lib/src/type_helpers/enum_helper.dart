@@ -7,9 +7,12 @@ import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import '../constants.dart';
+import '../default_container.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
 final simpleExpression = RegExp(r'^[a-zA-Z_]+$');
 
@@ -53,10 +56,13 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
+    final exprStr = toCodeString(expression);
+    final isMapKey = exprStr == keyParam;
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
+    final unknownEnumValue = isMapKey ? null : jsonKey.unknownEnumValue;
 
     if (!targetType.isNullableType &&
-        jsonKey.unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
+        unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
       // If the target is not nullable,
       throw InvalidGenerationSourceError(
         '`$jsonKeyNullForUndefinedEnumValueFieldName` cannot be used with '
@@ -65,19 +71,45 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
-    final functionName = (targetType.isNullableType || defaultProvided)
+    var expr = expression;
+    if (isMapKey) {
+      final encodedValues = enumEncodedValues(targetType);
+      if (encodedValues != null && encodedValues.any((v) => v is int)) {
+        final keyString = context.config.anyMap
+            ? CodeExpression(Code('$exprStr as String'))
+            : expr;
+        if (encodedValues.every((v) => v is int || v == null)) {
+          expr = refer('int.parse').call([keyString]);
+        } else {
+          expr = refer('int.tryParse').call([keyString]).ifNullThen(keyString);
+        }
+      }
+    }
+
+    final nullEnumValue = enumValueForNull(targetType);
+
+    final functionName =
+        (targetType.isNullableType || defaultProvided || nullEnumValue != null)
         ? r'$enumDecodeNullable'
         : r'$enumDecode';
 
     context.addMember(memberContent);
 
     final namedArgs = <String, Expression>{
-      if (jsonKey.unknownEnumValue != null)
-        'unknownValue': CodeExpression(Code(jsonKey.unknownEnumValue!)),
+      if (unknownEnumValue != null)
+        'unknownValue': CodeExpression(Code(unknownEnumValue)),
     };
 
-    return refer(
+    final decoded = refer(
       functionName,
-    ).call([refer(constMapName(targetType)), expression], namedArgs);
+    ).call([refer(constMapName(targetType)), expr], namedArgs);
+    if (!targetType.isNullableType && nullEnumValue != null) {
+      final withNullEnum = decoded.ifNullThen(refer(nullEnumValue));
+      if (defaultProvided) {
+        return DefaultContainer(expr, withNullEnum, checkKeyPresence: true);
+      }
+      return withNullEnum;
+    }
+    return decoded;
   }
 }

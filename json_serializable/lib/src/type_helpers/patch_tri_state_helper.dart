@@ -17,6 +17,26 @@ import 'json_converter_helper.dart';
 bool usesExplicitJsonNullWhenNonNullField(KeyConfig jsonKey) =>
     jsonKey.explicitJsonNullWhenNonNullField;
 
+/// Whether [targetType] deserializes explicit JSON `null` by invoking a
+/// `fromJson` constructor, converter, or callback directly rather than
+/// short-circuiting `DefaultContainer` to `null`.
+bool passesExplicitNullToFromJson(TypeHelperCtx context, DartType targetType) {
+  if (context.deserializeConvertData != null) {
+    return true;
+  }
+  if (hasConverterNullEncode(targetType, context) != null) {
+    return true;
+  }
+  if (context.config.genericArgumentFactories &&
+      targetType is TypeParameterType) {
+    return true;
+  }
+  if (targetType is InterfaceType) {
+    return targetType.constructors.any((ce) => ce.name == 'fromJson');
+  }
+  return false;
+}
+
 /// Validates that explicit JSON `null` can be passed through deserialization.
 void validateExplicitJsonNullDeserialize(
   FieldElement field,
@@ -54,7 +74,7 @@ void validateExplicitJsonNullDeserialize(
     return;
   }
 
-  final fromJsonCtor = targetType.element.constructors
+  final fromJsonCtor = targetType.constructors
       .where((ce) => ce.name == 'fromJson')
       .singleOrNull;
 

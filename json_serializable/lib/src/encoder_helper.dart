@@ -18,59 +18,69 @@ import 'utils.dart';
 mixin EncodeHelper implements HelperCore {
   String _fieldAccess(FieldElement field) => '$_toJsonParamName.${field.name!}';
 
-  Class createPerFieldToJson(Set<FieldElement> accessibleFieldSet) => Class(
-    (c) => c
-      ..name = '_\$${element.name!.nonPrivate}PerFieldToJson'
-      ..abstract = true
-      ..docs.add('// ignore: unused_element')
-      ..methods.addAll(
-        accessibleFieldSet.map(
-          (fe) => Method((m) {
-            m
-              ..name = fe.name!
-              ..static = true
-              ..docs.add('// ignore: unused_element')
-              ..returns = refer('Object?')
-              ..types.addAll(
-                element.typeParameters.map((t) {
-                  final bound = t.bound;
-                  return refer(
-                    bound != null
-                        ? '${t.name} extends ${bound.getDisplayString()}'
-                        : t.name!,
-                  );
-                }),
-              )
-              ..requiredParameters.add(
-                Parameter(
-                  (p) => p
-                    ..name = _toJsonParamName
-                    ..type = refer(fe.type.getDisplayString()),
-                ),
-              );
+  Class createPerFieldToJson(Set<FieldElement> accessibleFieldSet) {
+    final hasObjectField = accessibleFieldSet.any((f) => f.name == 'Object');
+    final returnType = hasObjectField ? 'dynamic' : 'Object?';
 
-            if (config.genericArgumentFactories) {
-              for (var arg in element.typeParameters) {
-                final helperName = toJsonForType(
-                  arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
-                );
-                m.requiredParameters.add(
+    return Class(
+      (c) => c
+        ..name = '_\$${element.name!.nonPrivate}PerFieldToJson'
+        ..abstract = true
+        ..docs.add('// ignore: unused_element')
+        ..methods.addAll(
+          accessibleFieldSet.map((fe) {
+            final paramType = hasObjectField && fe.type.isDartCoreObject
+                ? 'dynamic'
+                : typeToCode(fe.type);
+            return Method((m) {
+              m
+                ..name = fe.name!
+                ..static = true
+                ..docs.add('// ignore: unused_element')
+                ..returns = refer(returnType)
+                ..types.addAll(
+                  element.typeParameters.map((t) {
+                    final bound = t.bound;
+                    return refer(
+                      bound != null
+                          ? '${t.name} extends ${bound.getDisplayString()}'
+                          : t.name!,
+                    );
+                  }),
+                )
+                ..requiredParameters.add(
                   Parameter(
                     (p) => p
-                      ..name = helperName
-                      ..type = refer('Object? Function(${arg.name} value)'),
+                      ..name = _toJsonParamName
+                      ..type = refer(paramType),
                   ),
                 );
-              }
-            }
 
-            m
-              ..lambda = true
-              ..body = _serializeField(fe, refer(_toJsonParamName)).code;
+              if (config.genericArgumentFactories) {
+                for (var arg in element.typeParameters) {
+                  final helperName = toJsonForType(
+                    arg.instantiate(nullabilitySuffix: NullabilitySuffix.none),
+                  );
+                  m.requiredParameters.add(
+                    Parameter(
+                      (p) => p
+                        ..name = helperName
+                        ..type = refer(
+                          '$returnType Function(${arg.name} value)',
+                        ),
+                    ),
+                  );
+                }
+              }
+
+              m
+                ..lambda = true
+                ..body = _serializeField(fe, refer(_toJsonParamName)).code;
+            });
           }),
         ),
-      ),
-  );
+    );
+  }
 
   /// Generates an object containing metadatas related to the encoding,
   /// destined to be used by other code-generators.
@@ -163,9 +173,9 @@ mixin EncodeHelper implements HelperCore {
             if (usesExplicitJsonNullWhenNonNullField(jsonKeyFor(field))) {
               final access = _fieldAccess(field);
               final valueExpression = toCodeString(
-                _serializePatchField(field, refer('value')),
+                _serializePatchField(field, refer(r'$value')),
               );
-              return '  if ($access case final value?) '
+              return '  if ($access case final \$value?) '
                   '$keyExpression: $valueExpression';
             }
 
@@ -230,16 +240,19 @@ mixin EncodeHelper implements HelperCore {
 
     final serializeConvertData = helperContext.serializeConvertData;
     if (serializeConvertData != null) {
-      return !serializeConvertData.returnType.isNullableType;
+      return !element.library.typeSystem.isPotentiallyNullable(
+        serializeConvertData.returnType,
+      );
     }
 
     final nullableEncodeConverter = hasConverterNullEncode(
       field.type,
       helperContext,
+      forNullCheck: true,
     );
 
     if (nullableEncodeConverter != null) {
-      return !nullableEncodeConverter && !field.type.isNullableType;
+      return !nullableEncodeConverter;
     }
 
     // We can consider enums as kinda like having custom converters
@@ -250,6 +263,6 @@ mixin EncodeHelper implements HelperCore {
       return !enumWithNullValue;
     }
 
-    return !field.type.isNullableType;
+    return !element.library.typeSystem.isPotentiallyNullable(field.type);
   }
 }

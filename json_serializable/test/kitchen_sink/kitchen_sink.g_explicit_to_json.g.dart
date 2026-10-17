@@ -64,8 +64,9 @@ KitchenSink _$KitchenSinkFromJson(Map<String, dynamic> json) =>
         json['stringStringMap'] as Map,
       )
       ..dynamicIntMap = Map<String, int>.from(json['dynamicIntMap'] as Map)
-      ..objectDateTimeMap = (json['objectDateTimeMap'] as Map<String, dynamic>)
-          .map((k, e) => MapEntry(k, DateTime.parse(e as String)))
+      ..objectDateTimeMap = (json['objectDateTimeMap'] as Map).map(
+        (k, e) => MapEntry(k as Object, DateTime.parse(e as String)),
+      )
       ..nullableSimpleObjectMap =
           (json['nullableSimpleObjectMap'] as Map<String, dynamic>).map(
             (k, e) => MapEntry(

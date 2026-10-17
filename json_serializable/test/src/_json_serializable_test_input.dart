@@ -9,6 +9,9 @@ import 'dart:collection';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen_test/annotations.dart';
 
+import 'issue_1124_typedef_base.dart' show Issue1124Base;
+import 'issue_1124_typedef_base.dart' as issue1124_prefix;
+
 part 'checked_test_input.dart';
 part 'constants_copy.dart';
 part 'core_subclass_type_input.dart';
@@ -472,10 +475,11 @@ class IgnoreUnannotated {
 
 @ShouldGenerate(r'''
 SubclassedJsonKey _$SubclassedJsonKeyFromJson(Map<String, dynamic> json) =>
-    SubclassedJsonKey()..annotatedWithSubclass = (json['bob'] as num).toInt();
+    SubclassedJsonKey()
+      ..annotatedWithSubclass = _myFromJson(json['bob'] as String);
 
 Map<String, dynamic> _$SubclassedJsonKeyToJson(SubclassedJsonKey instance) =>
-    <String, dynamic>{'bob': instance.annotatedWithSubclass};
+    <String, dynamic>{'bob': _myToJson(instance.annotatedWithSubclass)};
 ''')
 @JsonSerializable(ignoreUnannotated: true)
 class SubclassedJsonKey {
@@ -484,8 +488,13 @@ class SubclassedJsonKey {
 }
 
 class MyJsonKey extends JsonKey {
-  const MyJsonKey() : super(name: 'bob');
+  const MyJsonKey()
+    : super(name: 'bob', fromJson: _myFromJson, toJson: _myToJson);
 }
+
+int _myFromJson(String value) => int.parse(value);
+
+String _myToJson(int value) => value.toString();
 
 @ShouldGenerate(r'''
 OverrideGetterExampleI613 _$OverrideGetterExampleI613FromJson(
@@ -573,6 +582,250 @@ class Issue1038RegressionTest {
   Issue1038RegressionTest.id(this.id) : ean = null;
 
   Issue1038RegressionTest.ean(this.ean) : id = null;
+}
+
+class Issue1124Class {
+  Issue1124Class();
+
+  factory Issue1124Class.fromJson(Map<String, dynamic> _) => Issue1124Class();
+
+  Map<String, dynamic> toJson() => throw UnimplementedError();
+}
+
+typedef Issue1124Alias = Issue1124Class;
+typedef NullableIssue1124Alias = Issue1124Class?;
+typedef MyListAlias<T> = MyList<T, int>;
+typedef StringAlias = String;
+typedef NullableStringAlias = String?;
+typedef DurationAlias = Duration;
+typedef IdentityAlias<T> = T;
+typedef _PrivateStringAlias = String;
+
+class _DurationAliasConverter implements JsonConverter<DurationAlias, int> {
+  const _DurationAliasConverter();
+
+  @override
+  DurationAlias fromJson(int json) => Duration(milliseconds: json);
+
+  @override
+  int toJson(DurationAlias object) => object.inMilliseconds;
+}
+
+@ShouldGenerate(r'''
+Issue1124RegressionTest _$Issue1124RegressionTestFromJson(
+  Map<String, dynamic> json,
+) => Issue1124RegressionTest(
+  value: Issue1124Alias.fromJson(json['value'] as Map<String, dynamic>),
+  nullableValue: json['nullableValue'] == null
+      ? null
+      : Issue1124Alias.fromJson(json['nullableValue'] as Map<String, dynamic>),
+  nullableAliasValue: json['nullableAliasValue'] == null
+      ? null
+      : NullableIssue1124Alias.fromJson(
+          json['nullableAliasValue'] as Map<String, dynamic>,
+        ),
+  genericList: json['genericList'] == null
+      ? null
+      : MyListAlias<Issue1124Alias>.fromJson(
+          (json['genericList'] as List<dynamic>)
+              .map((e) => Issue1124Alias.fromJson(e as Map<String, dynamic>))
+              .toList(),
+        ),
+  stringWithDefault: json['stringWithDefault'] as StringAlias? ?? 'default',
+  nullableString: json['nullableString'] as StringAlias?,
+  nullableAliasString: json['nullableAliasString'] as NullableStringAlias,
+  durationValue: _$JsonConverterFromJson<int, DurationAlias>(
+    json['durationValue'],
+    const _DurationAliasConverter().fromJson,
+  ),
+  identityValue: Issue1124Alias.fromJson(
+    json['identityValue'] as Map<String, dynamic>,
+  ),
+  nullableIdentityString: json['nullableIdentityString'] as StringAlias?,
+  privateString: json['privateString'] as String,
+  aliasMap: Map<String, StringAlias>.from(json['aliasMap'] as Map),
+);
+
+Map<String, dynamic> _$Issue1124RegressionTestToJson(
+  Issue1124RegressionTest instance,
+) => <String, dynamic>{
+  'value': instance.value,
+  'nullableValue': instance.nullableValue,
+  'nullableAliasValue': instance.nullableAliasValue,
+  'genericList': instance.genericList,
+  'stringWithDefault': instance.stringWithDefault,
+  'nullableString': instance.nullableString,
+  'nullableAliasString': instance.nullableAliasString,
+  'durationValue': _$JsonConverterToJson<int, DurationAlias>(
+    instance.durationValue,
+    const _DurationAliasConverter().toJson,
+  ),
+  'identityValue': instance.identityValue,
+  'nullableIdentityString': instance.nullableIdentityString,
+  'privateString': instance.privateString,
+  'aliasMap': instance.aliasMap,
+};
+
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => json == null ? null : fromJson(json as Json);
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);
+''')
+@JsonSerializable()
+@_DurationAliasConverter()
+class Issue1124RegressionTest {
+  final Issue1124Alias value;
+  final Issue1124Alias? nullableValue;
+  final NullableIssue1124Alias nullableAliasValue;
+  final MyListAlias<Issue1124Alias>? genericList;
+  @JsonKey(defaultValue: 'default')
+  final StringAlias stringWithDefault;
+  final StringAlias? nullableString;
+  final NullableStringAlias nullableAliasString;
+  final DurationAlias? durationValue;
+  final IdentityAlias<Issue1124Alias> identityValue;
+  final IdentityAlias<StringAlias?> nullableIdentityString;
+  // ignore: library_private_types_in_public_api
+  final _PrivateStringAlias privateString;
+  final Map<String, StringAlias> aliasMap;
+
+  Issue1124RegressionTest({
+    required this.value,
+    this.nullableValue,
+    this.nullableAliasValue,
+    this.genericList,
+    required this.stringWithDefault,
+    this.nullableString,
+    this.nullableAliasString,
+    this.durationValue,
+    required this.identityValue,
+    this.nullableIdentityString,
+    // ignore: library_private_types_in_public_api
+    required this.privateString,
+    required this.aliasMap,
+  });
+}
+
+@ShouldGenerate(r'''
+Issue1124PerFieldAndScopeTest<T> _$Issue1124PerFieldAndScopeTestFromJson<T>(
+  Map<String, dynamic> json,
+  T Function(Object? json) fromJsonT,
+) => Issue1124PerFieldAndScopeTest<T>()
+  ..inheritedInts = (json['inheritedInts'] as List<dynamic>?)
+      ?.map((e) => (e as num).toInt())
+      .toList()
+  ..inheritedString = json['inheritedString'] as String?
+  ..genericNullable = _$nullableGenericFromJson(
+    json['genericNullable'],
+    fromJsonT,
+  )
+  ..genericNullableList = (json['genericNullableList'] as List<dynamic>)
+      .map((e) => _$nullableGenericFromJson(e, fromJsonT))
+      .toList()
+  ..prefixedInts = (json['prefixedInts'] as List<dynamic>?)
+      ?.map((e) => (e as num).toInt())
+      .toList()
+  ..prefixedIntsMap = (json['prefixedIntsMap'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(
+      k,
+      (e as List<dynamic>).map((e) => (e as num).toInt()).toList(),
+    ),
+  )
+  ..prefixedStringMap = Map<String, String>.from(
+    json['prefixedStringMap'] as Map,
+  )
+  ..localAlias = json['localAlias'] as StringAlias?;
+
+// ignore: unused_element
+abstract class _$Issue1124PerFieldAndScopeTestPerFieldToJson {
+  // ignore: unused_element
+  static Object? inheritedInts<T>(
+    List<int>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+
+  // ignore: unused_element
+  static Object? inheritedString<T>(
+    String? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+
+  // ignore: unused_element
+  static Object? genericNullable<T>(
+    T? instance,
+    Object? Function(T value) toJsonT,
+  ) => _$nullableGenericToJson(instance, toJsonT);
+
+  // ignore: unused_element
+  static Object? genericNullableList<T>(
+    List<T?> instance,
+    Object? Function(T value) toJsonT,
+  ) => instance.map((e) => _$nullableGenericToJson(e, toJsonT)).toList();
+
+  // ignore: unused_element
+  static Object? prefixedInts<T>(
+    List<int>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+
+  // ignore: unused_element
+  static Object? prefixedIntsMap<T>(
+    Map<String, List<int>>? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+
+  // ignore: unused_element
+  static Object? prefixedStringMap<T>(
+    Map<String, String> instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+
+  // ignore: unused_element
+  static Object? localAlias<T>(
+    StringAlias? instance,
+    Object? Function(T value) toJsonT,
+  ) => instance;
+}
+
+Map<String, dynamic> _$Issue1124PerFieldAndScopeTestToJson<T>(
+  Issue1124PerFieldAndScopeTest<T> instance,
+  Object? Function(T value) toJsonT,
+) => <String, dynamic>{
+  'inheritedInts': instance.inheritedInts,
+  'inheritedString': instance.inheritedString,
+  'genericNullable': _$nullableGenericToJson(instance.genericNullable, toJsonT),
+  'genericNullableList': instance.genericNullableList
+      .map((e) => _$nullableGenericToJson(e, toJsonT))
+      .toList(),
+  'prefixedInts': instance.prefixedInts,
+  'prefixedIntsMap': instance.prefixedIntsMap,
+  'prefixedStringMap': instance.prefixedStringMap,
+  'localAlias': instance.localAlias,
+};
+
+T? _$nullableGenericFromJson<T>(
+  Object? input,
+  T Function(Object? json) fromJson,
+) => input == null ? null : fromJson(input);
+
+Object? _$nullableGenericToJson<T>(
+  T? input,
+  Object? Function(T value) toJson,
+) => input == null ? null : toJson(input);
+''')
+@JsonSerializable(createPerFieldToJson: true, genericArgumentFactories: true)
+class Issue1124PerFieldAndScopeTest<T> extends Issue1124Base {
+  T? genericNullable;
+  List<T?> genericNullableList = [];
+  issue1124_prefix.Ints? prefixedInts;
+  Map<String, issue1124_prefix.Ints>? prefixedIntsMap;
+  Map<String, issue1124_prefix.ImportedStringAlias> prefixedStringMap = {};
+  StringAlias? localAlias;
 }
 
 @ShouldGenerate(r'''

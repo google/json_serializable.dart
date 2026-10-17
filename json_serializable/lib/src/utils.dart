@@ -2,14 +2,20 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
-import 'package:code_builder/code_builder.dart' hide Enum, RecordType;
+import 'package:analyzer/dart/element/type_system.dart';
+import 'package:code_builder/code_builder.dart'
+    hide Enum, FunctionType, RecordType;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
+import 'field_helpers.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
@@ -21,11 +27,19 @@ const _jsonKeyChecker = TypeChecker.typeNamed(
 /// If an annotation exists on `element` the source is a 'real' field.
 /// If the result is `null`, check the getter – it is a property.
 // TODO: setters: github.com/google/json_serializable.dart/issues/24
-DartObject? _jsonKeyAnnotation(FieldElement element) =>
-    _jsonKeyChecker.firstAnnotationOf(element) ??
-    (element.getter == null
-        ? null
-        : _jsonKeyChecker.firstAnnotationOf(element.getter!));
+DartObject? _jsonKeyAnnotation(FieldElement element) {
+  for (final candidate in fieldHierarchyFor(element)) {
+    final direct =
+        _jsonKeyChecker.firstAnnotationOf(candidate) ??
+        (candidate.getter == null
+            ? null
+            : _jsonKeyChecker.firstAnnotationOf(candidate.getter!));
+    if (direct != null) {
+      return direct;
+    }
+  }
+  return null;
+}
 
 ConstantReader jsonKeyAnnotation(FieldElement element) =>
     ConstantReader(_jsonKeyAnnotation(element));
@@ -184,14 +198,52 @@ Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
 }
 
 extension DartTypeExtension on DartType {
-  DartType promoteNonNullable() =>
-      element?.library?.typeSystem.promoteToNonNull(this) ?? this;
+  DartType promoteNonNullable() => switch (this) {
+    final TypeParameterType t => t.element.instantiate(
+      nullabilitySuffix: NullabilitySuffix.none,
+    ),
+    final RecordType r when _typeSystemFor(r) == null => RecordType(
+      positional: [for (final f in r.positionalFields) f.type],
+      named: {for (final f in r.namedFields) f.name: f.type},
+      nullabilitySuffix: NullabilitySuffix.none,
+    ),
+    _ => _typeSystemFor(this)?.promoteToNonNull(this) ?? this,
+  };
 
   String toStringNonNullable() {
     final val = getDisplayString();
     if (val.endsWith('?')) return val.substring(0, val.length - 1);
     return val;
   }
+}
+
+TypeSystem? _typeSystemFor(DartType type) {
+  if (type.element?.library?.typeSystem case final ts?) return ts;
+  if (type.alias?.element.library.typeSystem case final ts?) return ts;
+  if (Zone.current[#_targetLibrary] case final LibraryElement lib) {
+    return lib.typeSystem;
+  }
+  return switch (type) {
+    RecordType(:final positionalFields, :final namedFields) =>
+      positionalFields
+              .map((f) => _typeSystemFor(f.type))
+              .nonNulls
+              .firstOrNull ??
+          namedFields.map((f) => _typeSystemFor(f.type)).nonNulls.firstOrNull,
+    FunctionType(
+      :final returnType,
+      :final normalParameterTypes,
+      :final optionalParameterTypes,
+      :final namedParameterTypes,
+      :final typeParameters,
+    ) =>
+      _typeSystemFor(returnType) ??
+          normalParameterTypes.map(_typeSystemFor).nonNulls.firstOrNull ??
+          optionalParameterTypes.map(_typeSystemFor).nonNulls.firstOrNull ??
+          namedParameterTypes.values.map(_typeSystemFor).nonNulls.firstOrNull ??
+          typeParameters.firstOrNull?.library?.typeSystem,
+    _ => null,
+  };
 }
 
 String ifNullOrElse(String test, String ifNull, String ifNotNull) =>
@@ -206,24 +258,63 @@ String encodedFieldName(FieldRename fieldRename, String declaredName) =>
       FieldRename.pascal => declaredName.pascal,
     };
 
+/// Runs [action] with [library] as the active target library for [typeToCode].
+T runWithTargetLibrary<T>(LibraryElement library, T Function() action) =>
+    runZoned(action, zoneValues: {#_targetLibrary: library});
+
+bool _isAliasInScope(TypeAliasElement element) {
+  if (element.isPrivate) return false;
+  final library = Zone.current[#_targetLibrary] as LibraryElement?;
+  if (library == null) return true;
+  final name = element.name;
+  return name != null &&
+      library.firstFragment.scope.lookup(name).getter == element;
+}
+
 /// Return the Dart code presentation for the given [type].
 ///
 /// This function is intentionally limited, and does not support all possible
 /// types. Specifically, it supports [InterfaceType]s, [RecordType]s,
 /// [TypeParameterType]s, and [DynamicType]s.
-String typeToCode(DartType type, {bool forceNullable = false}) =>
-    switch (type) {
-      DynamicType() => 'dynamic',
-      InterfaceType() => [
-        type.element.name,
-        if (type.typeArguments.isNotEmpty)
-          '<${type.typeArguments.map(typeToCode).join(', ')}>',
-        if (type.isNullableType || forceNullable) '?',
-      ].join(),
-      TypeParameterType() => type.toStringNonNullable(),
-      RecordType() => _recordTypeToCode(type, forceNullable),
-      _ => type.getDisplayString(),
-    };
+String typeToCode(DartType type, {bool forceNullable = false}) {
+  if (type.alias case final alias?) {
+    if (alias.element.aliasedType case final TypeParameterType aliasedParam) {
+      final index = alias.element.typeParameters.indexOf(aliasedParam.element);
+      if (index >= 0) {
+        final argType = alias.typeArguments[index];
+        return type.isNullableType || forceNullable
+            ? typeToCode(argType, forceNullable: true)
+            : typeToCode(argType.promoteNonNullable());
+      }
+    }
+    if (_isAliasInScope(alias.element)) {
+      return [
+        alias.element.name,
+        if (alias.typeArguments.isNotEmpty)
+          '<${alias.typeArguments.map(typeToCode).join(', ')}>',
+        if (!alias.element.aliasedType.isNullableType &&
+            (type.isNullableType || forceNullable))
+          '?',
+      ].join();
+    }
+  }
+  return switch (type) {
+    DynamicType() => 'dynamic',
+    InterfaceType() => [
+      type.element.name,
+      if (type.typeArguments.isNotEmpty)
+        '<${type.typeArguments.map(typeToCode).join(', ')}>',
+      if (type.isNullableType || forceNullable) '?',
+    ].join(),
+    TypeParameterType() => [
+      type.element.name,
+      if (type.nullabilitySuffix == NullabilitySuffix.question || forceNullable)
+        '?',
+    ].join(),
+    RecordType() => _recordTypeToCode(type, forceNullable),
+    _ => type.getDisplayString(),
+  };
+}
 
 String _recordTypeToCode(RecordType type, bool forceNullable) {
   final positional = type.positionalFields
@@ -289,6 +380,24 @@ Expression? defaultDecodeLogic(
         : expression.asA(numType).property('toInt').call([]);
   } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
     final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
+    final targetTypeNullable = defaultProvided || targetType.isNullableType;
+    final numType = targetTypeNullable ? refer('num?') : refer('num');
+    if (const TypeChecker.fromUrl(
+      'dart:core#double',
+    ).isAssignableFromType(targetType)) {
+      final toDoubleExpr = targetTypeNullable
+          ? expression.asA(numType).nullSafeProperty('toDouble').call([])
+          : expression.asA(numType).property('toDouble').call([]);
+      return CodeExpression(Code('${toCodeString(toDoubleExpr)} as $typeCode'));
+    }
+    if (const TypeChecker.fromUrl(
+      'dart:core#int',
+    ).isAssignableFromType(targetType)) {
+      final toIntExpr = targetTypeNullable
+          ? expression.asA(numType).nullSafeProperty('toInt').call([])
+          : expression.asA(numType).property('toInt').call([]);
+      return CodeExpression(Code('${toCodeString(toIntExpr)} as $typeCode'));
+    }
     // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
     // for unparenthesized argument cast.
     return CodeExpression(Code('$exprStr as $typeCode'));

@@ -63,6 +63,21 @@ List<Object?>? enumEncodedValues(DartType targetType) {
   return enumMap.values.toList(growable: false);
 }
 
+/// If [targetType] is an enum with a constant that encodes to `null`, returns
+/// the qualified code for that constant (e.g. `'MyEnum.nullValue'`).
+///
+/// Otherwise, returns `null`.
+String? enumValueForNull(DartType targetType) {
+  final enumMap = _enumMap(targetType);
+  if (enumMap == null) return null;
+  for (final entry in enumMap.entries) {
+    if (entry.value == null) {
+      return '${targetType.element!.name}.${entry.key.name}';
+    }
+  }
+  return null;
+}
+
 Map<FieldElement, Object?>? _enumMap(
   DartType targetType, {
   bool nullWithNoAnnotation = false,
@@ -114,7 +129,11 @@ Object? _generateEntry({
             .indexOf(field);
       }
 
-      if (e == null || e.isStatic) {
+      if (e == null && valueField == 'name') {
+        return field.name!;
+      }
+
+      if (e == null || e.isStatic || e.isOriginGetterSetter) {
         throw InvalidGenerationSourceError(
           '`JsonEnum.valueField` was set to "$valueField", but '
           'that is not a valid, instance field on '

@@ -2,6 +2,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
+import '../default_container.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
@@ -42,20 +43,19 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
     }
 
     if (positionalItems.isEmpty && namedItems.isEmpty) {
-      return literalRecord([], {});
+      return DefaultContainer(expression, literalRecord([], {}));
     }
 
+    final nullable = targetType.isNullableType || defaultProvided;
+
     context.addMember(
-      _recordConvertImpl(
-        nullable: targetType.isNullableType,
-        anyMap: context.config.anyMap,
-      ),
+      _recordConvertImpl(nullable: nullable, anyMap: context.config.anyMap),
     );
 
     final recordLiteral = literalRecord(positionalItems, namedItems);
 
     final helperName = _recordConvertName(
-      nullable: targetType.isNullableType,
+      nullable: nullable,
       anyMap: context.config.anyMap,
     );
 
@@ -77,7 +77,9 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
   ) {
     if (targetType is! RecordType) return null;
 
-    final receiver = targetType.isNullableType
+    final exprStr = toCodeString(expression);
+    final isSimpleIdentifier = !exprStr.contains('.');
+    final receiver = targetType.isNullableType && !isSimpleIdentifier
         ? expression.nullChecked
         : expression;
 

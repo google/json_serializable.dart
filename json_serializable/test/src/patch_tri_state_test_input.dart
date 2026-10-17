@@ -57,12 +57,12 @@ PatchEntity _$PatchEntityFromJson(Map<String, dynamic> json) => PatchEntity(
         ),
 );
 
-Map<String, dynamic> _$PatchEntityToJson(
-  PatchEntity instance,
-) => <String, dynamic>{
-  'name': instance.name,
-  if (instance.inner case final value?) 'inner': value.toJson((value) => value),
-};
+Map<String, dynamic> _$PatchEntityToJson(PatchEntity instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      if (instance.inner case final $value?)
+        'inner': $value.toJson((value) => value),
+    };
 ''')
 @JsonSerializable()
 class PatchEntity {
@@ -125,12 +125,12 @@ PatchEntityChecked _$PatchEntityCheckedFromJson(Map<String, dynamic> json) =>
       return val;
     });
 
-Map<String, dynamic> _$PatchEntityCheckedToJson(
-  PatchEntityChecked instance,
-) => <String, dynamic>{
-  'name': instance.name,
-  if (instance.inner case final value?) 'inner': value.toJson((value) => value),
-};
+Map<String, dynamic> _$PatchEntityCheckedToJson(PatchEntityChecked instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      if (instance.inner case final $value?)
+        'inner': $value.toJson((value) => value),
+    };
 ''')
 @JsonSerializable(checked: true)
 class PatchEntityChecked {
@@ -151,7 +151,7 @@ PatchNullableStringEntity _$PatchNullableStringEntityFromJson(
 
 Map<String, dynamic> _$PatchNullableStringEntityToJson(
   PatchNullableStringEntity instance,
-) => <String, dynamic>{if (instance.note case final value?) 'note': value};
+) => <String, dynamic>{if (instance.note case final $value?) 'note': $value};
 ''')
 @JsonSerializable()
 class PatchNullableStringEntity {
@@ -171,7 +171,7 @@ PatchWithCustomFromJson _$PatchWithCustomFromJsonFromJson(
 Map<String, dynamic> _$PatchWithCustomFromJsonToJson(
   PatchWithCustomFromJson instance,
 ) => <String, dynamic>{
-  if (instance.value case final value?) 'value': _patchValueToJson(value),
+  if (instance.value case final $value?) 'value': _patchValueToJson($value),
 };
 ''')
 @JsonSerializable()
@@ -272,4 +272,29 @@ class PatchReadValueWithExplicit {
 
   @JsonKey(explicitJsonNullWhenNonNullField: true, readValue: _dummyReadValue)
   final String? note;
+}
+
+class _NonNullableEpochConverter implements JsonConverter<DateTime, int> {
+  const _NonNullableEpochConverter();
+
+  @override
+  DateTime fromJson(int json) => DateTime.fromMillisecondsSinceEpoch(json);
+
+  @override
+  int toJson(DateTime object) => object.millisecondsSinceEpoch;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `when` field. Fields with '
+  '`explicitJsonNullWhenNonNullField` require the `JsonConverter` `fromJson` '
+  'input type to be nullable when the field type is nullable.',
+  element: 'when',
+)
+@JsonSerializable()
+@_NonNullableEpochConverter()
+class PatchBadConverterFromJson {
+  const PatchBadConverterFromJson({this.when});
+
+  @JsonKey(explicitJsonNullWhenNonNullField: true)
+  final DateTime? when;
 }

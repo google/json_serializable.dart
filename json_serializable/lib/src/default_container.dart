@@ -13,8 +13,13 @@ class DefaultContainer extends Expression {
   @override
   final Expression expression;
   final Expression output;
+  final bool checkKeyPresence;
 
-  DefaultContainer(this.expression, this.output);
+  DefaultContainer(
+    this.expression,
+    this.output, {
+    this.checkKeyPresence = false,
+  });
 
   @override
   R accept<R>(ExpressionVisitor<R> visitor, [R? context]) =>
@@ -26,6 +31,23 @@ class DefaultContainer extends Expression {
     String? defaultValue,
   }) {
     if (value is DefaultContainer) {
+      final exprStr = toCodeString(value.expression).trim();
+      final indexMatch = RegExp(
+        r'^json\s*\[\s*(.*?)\s*\]$',
+        dotAll: true,
+      ).firstMatch(exprStr);
+      if (value.checkKeyPresence &&
+          defaultValue != null &&
+          indexMatch != null) {
+        final keyExpr = indexMatch.group(1)!;
+        return refer('json')
+            .property('containsKey')
+            .call([CodeExpression(Code(keyExpr))])
+            .conditional(
+              value.output.parenthesized,
+              CodeExpression(Code(defaultValue)),
+            );
+      }
       if (defaultValue != null || nullable) {
         final ifNull = defaultValue != null
             ? CodeExpression(Code(defaultValue))
@@ -44,11 +66,39 @@ class DefaultContainer extends Expression {
     }
 
     if (defaultValue != null) {
-      return value.ifNullThen(CodeExpression(Code(defaultValue)));
+      return value.ifNullThen(
+        CodeExpression(Code(wrapDefaultValue(defaultValue))),
+      );
     }
     return value;
   }
 
+  static String wrapDefaultValue(String defaultValue) =>
+      _isTopLevelConditional(defaultValue) ? '($defaultValue)' : defaultValue;
+
   @override
   String toString() => toCodeString(deserialize(this));
+}
+
+final _stringLiteralPattern = RegExp(
+  r'''r?('''
+  "'''"
+  r'''[\s\S]*?'''
+  "'''"
+  r'''|"""[\s\S]*?"""|'[^'\\]*(?:\\.[^'\\]*)*'|"[^"\\]*(?:\\.[^"\\]*)*")''',
+);
+final _bracketsPattern = RegExp(r'\([^()]*\)|\[[^\[\]]*\]|\{[^{}]*\}');
+
+String _stripNestedAndStrings(String expression) {
+  var current = expression.replaceAll(_stringLiteralPattern, '');
+  while (true) {
+    final next = current.replaceAll(_bracketsPattern, '');
+    if (next == current) return current;
+    current = next;
+  }
+}
+
+bool _isTopLevelConditional(String expression) {
+  final topLevel = _stripNestedAndStrings(expression);
+  return topLevel.contains('?') && topLevel.contains(':');
 }

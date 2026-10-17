@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:test/test.dart';
 
@@ -306,6 +308,95 @@ void main() {
       ..uriIntMap = {Uri.parse('https://example.com'): 4};
 
     roundTripObject(instance, MapKeyVariety.fromJson);
+  });
+
+  group('MapValueVariety', () {
+    test('Map<String, double>', () {
+      const value = {
+        'stringDoubleMap': {'double': 1.0, 'int': 1},
+      };
+
+      final object = MapValueVariety.fromJson(value);
+      final encoded = loudEncode(object);
+
+      expect(
+        encoded,
+        loudEncode({
+          'stringDoubleMap': {
+            'double': 1.0,
+            // Note! Encoded as a double on output!
+            'int': 1.0,
+          },
+          'stringIntMap': null,
+          'stringNumMap': null,
+          'stringRecordMap': null,
+        }),
+      );
+
+      final object2 = MapValueVariety.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
+      );
+      expect(loudEncode(object2), encoded);
+    });
+
+    test('Map<String, int>', () {
+      const value = {
+        'stringDoubleMap': null,
+        'stringIntMap': {'int': 1},
+        'stringNumMap': null,
+        'stringRecordMap': null,
+      };
+
+      final object = MapValueVariety.fromJson(value);
+      final encoded = loudEncode(object);
+
+      expect(encoded, loudEncode(value));
+
+      final object2 = MapValueVariety.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
+      );
+      expect(loudEncode(object2), encoded);
+    });
+
+    test('Map<String, num>', () {
+      const value = {
+        'stringDoubleMap': null,
+        'stringIntMap': null,
+        'stringNumMap': {'double': 1.0, 'int': 1},
+        'stringRecordMap': null,
+      };
+
+      final object = MapValueVariety.fromJson(value);
+      final encoded = loudEncode(object);
+
+      expect(encoded, loudEncode(value));
+
+      final object2 = MapValueVariety.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
+      );
+      expect(loudEncode(object2), encoded);
+    });
+
+    test('Map<String, Record>', () {
+      const value = {
+        'stringDoubleMap': null,
+        'stringIntMap': null,
+        'stringNumMap': null,
+        'stringRecordMap': {
+          'key': {r'$1': 1, r'$2': 'string', 'truth': false},
+        },
+      };
+
+      final object = MapValueVariety.fromJson(value);
+      final encoded = loudEncode(object);
+
+      expect(encoded, loudEncode(value));
+
+      final object2 = MapValueVariety.fromJson(
+        jsonDecode(encoded) as Map<String, Object?>,
+      );
+      expect(loudEncode(object2), encoded);
+    });
   });
 
   test('UnknownEnumValue', () {

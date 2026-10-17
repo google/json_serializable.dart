@@ -269,7 +269,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_3"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_4"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
@@ -334,6 +334,42 @@ jobs:
       - job_002
       - job_003
   job_007:
+    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test -p chrome --compiler dart2wasm`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_3"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: "3.12.0"
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_008:
     name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -369,7 +405,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_008:
+  job_009:
     name: "unit_test; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
@@ -432,7 +468,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_009:
+  job_010:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -440,7 +476,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_3"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_4"
           restore-keys: |
             os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:dev
@@ -468,7 +504,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_010:
+  job_011:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -504,7 +540,43 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_011:
+  job_012:
+    name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome --compiler dart2wasm`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_3"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: dev
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_013:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome`"
     runs-on: ubuntu-latest
     steps:
@@ -540,7 +612,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_012:
+  job_014:
     name: "ensure_build; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -602,7 +674,9 @@ jobs:
       - job_009
       - job_010
       - job_011
-  job_013:
+      - job_012
+      - job_013
+  job_015:
     name: "ensure_build; Dart dev; PKGS: _test_yaml, checked_yaml, example; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -664,3 +738,5 @@ jobs:
       - job_009
       - job_010
       - job_011
+      - job_012
+      - job_013

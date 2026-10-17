@@ -60,7 +60,9 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
-    if (context.config.explicitToJson || toJsonArgs.isNotEmpty) {
+    if (context.config.explicitToJson ||
+        toJsonArgs.isNotEmpty ||
+        interfaceType.element is ExtensionTypeElement) {
       final prop = interfaceType.isNullableType
           ? expression.nullSafeProperty('toJson')
           : expression.property('toJson');
@@ -82,7 +84,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final classElement = targetType.element;
 
-    final fromJsonCtor = classElement.constructors
+    var fromJsonCtor = classElement.constructors
         .where((ce) => ce.name == 'fromJson')
         .singleOrNull;
 
@@ -90,6 +92,12 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
     var additionalArgs = const <Expression>[];
 
     if (fromJsonCtor != null) {
+      while (fromJsonCtor!.enclosingElement is ClassElement &&
+          (fromJsonCtor.enclosingElement as ClassElement).isMixinApplication &&
+          fromJsonCtor.superConstructor != null) {
+        fromJsonCtor = fromJsonCtor.superConstructor!.baseElement;
+      }
+
       final positionalParams = fromJsonCtor.formalParameters
           .where((element) => element.isPositional)
           .toList();
@@ -102,14 +110,20 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         );
       }
 
-      var asCastType = positionalParams.first.type;
+      final instantiatedTarget =
+          targetType.asInstanceOf(fromJsonCtor.enclosingElement) ?? targetType;
+      final instantiatedCtor = instantiatedTarget.constructors
+          .where((ce) => ce.baseElement == fromJsonCtor!.baseElement)
+          .singleOrNull;
+      final instantiatedPositionalParams = instantiatedCtor?.formalParameters
+          .where((element) => element.isPositional)
+          .toList();
 
-      if (asCastType is InterfaceType) {
-        final instantiated = _instantiate(asCastType, targetType);
-        if (instantiated != null) {
-          asCastType = instantiated;
-        }
-      }
+      final asCastType =
+          instantiatedPositionalParams != null &&
+              instantiatedPositionalParams.isNotEmpty
+          ? instantiatedPositionalParams.first.type
+          : positionalParams.first.type;
 
       output = context.deserialize(asCastType, output)!;
 
@@ -117,7 +131,7 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         context.deserialize,
         _decodeHelper,
         targetType,
-        positionalParams.skip(1),
+        positionalParams.skip(1).where((e) => e.isRequiredPositional),
         fromJsonCtor,
       );
     } else if (_annotation(context.config, targetType)?.createFactory == true) {
@@ -154,6 +168,10 @@ List<Expression> _helperParams(
   final rest = <TypeParameterType>[];
   for (var param in positionalParams) {
     rest.add(paramMapper(param, targetElement));
+  }
+
+  if (targetElement.enclosingElement case final InterfaceElement enclosing) {
+    type = type.asInstanceOf(enclosing) ?? type;
   }
 
   final args = <Expression>[];
@@ -195,8 +213,12 @@ TypeParameterType _decodeHelper(
     if (param.name == fromJsonForName(funcReturnType.element!.name!)) {
       final funcParamType = type.normalParameterTypes.single;
 
-      if ((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
-          funcParamType is DynamicType) {
+      if (((funcParamType.isDartCoreObject && funcParamType.isNullableType) ||
+              funcParamType is DynamicType) &&
+          (targetElement.enclosingElement is! InterfaceElement ||
+              (targetElement.enclosingElement as InterfaceElement)
+                  .typeParameters
+                  .contains(funcReturnType.element))) {
         return funcReturnType as TypeParameterType;
       }
     }
@@ -223,10 +245,12 @@ TypeParameterType _encodeHelper(
       type.normalParameterTypes.length == 1) {
     final funcParamType = type.normalParameterTypes.single;
 
-    if (param.name == toJsonForName(funcParamType.element!.name!)) {
-      if (funcParamType is TypeParameterType) {
-        return funcParamType;
-      }
+    if (funcParamType is TypeParameterType &&
+        param.name == toJsonForName(funcParamType.element.name!) &&
+        (targetElement.enclosingElement is! InterfaceElement ||
+            (targetElement.enclosingElement as InterfaceElement).typeParameters
+                .contains(funcParamType.element))) {
+      return funcParamType;
     }
   }
 
@@ -256,36 +280,6 @@ bool _canSerialize(ClassConfig config, DartType type) {
   return false;
 }
 
-/// Returns an instantiation of [ctorParamType] by providing argument types
-/// derived by matching corresponding type parameters from [classType].
-InterfaceType? _instantiate(
-  InterfaceType ctorParamType,
-  InterfaceType classType,
-) {
-  final argTypes = ctorParamType.typeArguments.map((arg) {
-    final typeParamIndex = classType.element.typeParameters.indexWhere(
-      // TODO: not 100% sure `nullabilitySuffix` is right
-      (e) => e.instantiate(nullabilitySuffix: arg.nullabilitySuffix) == arg,
-    );
-    if (typeParamIndex >= 0) {
-      return classType.typeArguments[typeParamIndex];
-    } else {
-      // TODO: perhaps throw UnsupportedTypeError?
-      return null;
-    }
-  }).toList();
-
-  if (argTypes.any((e) => e == null)) {
-    // TODO: perhaps throw UnsupportedTypeError?
-    return null;
-  }
-
-  return ctorParamType.element.instantiate(
-    typeArguments: argTypes.cast<DartType>(),
-    nullabilitySuffix: ctorParamType.nullabilitySuffix,
-  );
-}
-
 ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   if (source.isEnum) {
     return null;
@@ -306,7 +300,7 @@ ClassConfig? _annotation(ClassConfig config, InterfaceType source) {
   );
 }
 
-MethodElement? _toJsonMethod(DartType type) => type.typeImplementations
-    .map((dt) => dt is InterfaceType ? dt.getMethod('toJson') : null)
-    .where((me) => me != null)
-    .firstOrNull;
+MethodElement? _toJsonMethod(DartType type) => type is InterfaceType
+    ? type.lookUpMethod('toJson', type.element.library, concrete: true) ??
+          type.lookUpMethod('toJson', type.element.library)
+    : null;

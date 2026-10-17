@@ -25,8 +25,9 @@ class CreateFactoryResult {
 mixin DecodeHelper implements HelperCore {
   CreateFactoryResult createFactory(
     Map<String, FieldElement> accessibleFields,
-    Map<String, String> unavailableReasons,
-  ) {
+    Map<String, String> unavailableReasons, {
+    Iterable<FieldElement> explicitToJsonFields = const [],
+  }) {
     assert(config.createFactory);
 
     Expression? lambdaExpr;
@@ -63,6 +64,7 @@ mixin DecodeHelper implements HelperCore {
       accessibleFields.values.where(
         (fe) => data.usedCtorParamsAndFields.contains(fe.name),
       ),
+      explicitToJsonFields: explicitToJsonFields,
     ).toList();
 
     if (config.checked) {
@@ -88,7 +90,7 @@ mixin DecodeHelper implements HelperCore {
                 checkedProperty: true,
               );
 
-              return refer('\$checkedConvert')
+              return refer(r'$checkedConvert')
                   .call(
                     [
                       CodeExpression(Code(safeName)),
@@ -114,14 +116,14 @@ mixin DecodeHelper implements HelperCore {
           ..statements.add(refer('val').returned.statement),
       );
 
-      final checkedCreateCall = refer('\$checkedCreate').call(
+      final checkedCreateCall = refer(r'$checkedCreate').call(
         [
           literal(element.name!),
           refer('json'),
           Method(
             (m) => m
               ..requiredParameters.add(
-                Parameter((p) => p..name = '\$checkedConvert'),
+                Parameter((p) => p..name = r'$checkedConvert'),
               )
               ..body = closureBody,
           ).closure,
@@ -218,14 +220,21 @@ mixin DecodeHelper implements HelperCore {
     return CreateFactoryResult(method, data.usedCtorParamsAndFields);
   }
 
-  Iterable<Code> _checkKeys(Iterable<FieldElement> accessibleFields) sync* {
+  Iterable<Code> _checkKeys(
+    Iterable<FieldElement> accessibleFields, {
+    Iterable<FieldElement> explicitToJsonFields = const [],
+  }) sync* {
     final args = <String, Expression>{};
 
     Expression constantList(Iterable<FieldElement> things) =>
         literalConstList(things.map<String>(nameAccess).toList());
 
     if (config.disallowUnrecognizedKeys) {
-      args['allowedKeys'] = constantList(accessibleFields);
+      final allowedFields = [
+        ...accessibleFields,
+        ...explicitToJsonFields.where((fe) => !accessibleFields.contains(fe)),
+      ];
+      args['allowedKeys'] = constantList(allowedFields);
     }
 
     final requiredKeys = accessibleFields
