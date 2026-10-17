@@ -14,6 +14,13 @@
 - Preserve field declaration order in `toJson` for classes with primary
   constructor declaring parameters.
   ([#1599](https://github.com/google/json_serializable.dart/issues/1599))
+- Fix `Map` key and enum handling, including custom `String`-backed
+  `JsonConverter`s and `dateTimeUtc: true` on `Map` keys, `int`-encoded enum
+  `Map` keys, `Map<Object, V>` / `Map<dynamic, V>`, decoding `null` to
+  `@JsonValue(null)` enum entries on non-nullable fields (preserving explicit
+  `null` over `defaultValue` when the key is present),
+  `@JsonEnum(valueField: 'name')`, and rejecting getter-backed
+  `JsonEnum.valueField`s.
 - `JsonKey.unknownEnumValue`: Added support for `Map` values.
   ([#1093](https://github.com/google/json_serializable.dart/issues/1093))
 - Prefer `JsonConverter`s with matching nullability when both nullable and

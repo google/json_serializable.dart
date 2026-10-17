@@ -11,13 +11,16 @@ import 'package:source_helper/source_helper.dart';
 
 import '../field_helpers.dart';
 import '../lambda_result.dart';
+import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../utils.dart';
 
 /// A [TypeHelper] that supports classes annotated with implementations of
 /// [JsonConverter].
 class JsonConverterHelper extends TypeHelper<TypeHelperContextWithConfig> {
-  const JsonConverterHelper();
+  final bool forMapKey;
+
+  const JsonConverterHelper({this.forMapKey = false});
 
   @override
   Object? serialize(
@@ -28,6 +31,12 @@ class JsonConverterHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final converter = _typeConverter(targetType, context);
 
     if (converter == null) {
+      return null;
+    }
+
+    if (forMapKey &&
+        (!coreStringTypeChecker.isExactlyType(converter.jsonType) ||
+            converter.jsonType.isNullableType)) {
       return null;
     }
 
@@ -61,6 +70,12 @@ Json? $converterToJsonName<Json, Value>(
   ) {
     final converter = _typeConverter(targetType, context);
     if (converter == null) {
+      return null;
+    }
+
+    if (forMapKey &&
+        (!coreStringTypeChecker.isExactlyType(converter.jsonType) ||
+            converter.jsonType.isNullableType)) {
       return null;
     }
 

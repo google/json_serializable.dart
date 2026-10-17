@@ -10,8 +10,13 @@ import 'utils.dart';
 class DefaultContainer {
   final String expression;
   final Object output;
+  final bool checkKeyPresence;
 
-  DefaultContainer(this.expression, this.output);
+  DefaultContainer(
+    this.expression,
+    this.output, {
+    this.checkKeyPresence = false,
+  });
 
   static Object deserialize(
     Object value, {
@@ -19,6 +24,16 @@ class DefaultContainer {
     String? defaultValue,
   }) {
     if (value is DefaultContainer) {
+      if (value.checkKeyPresence &&
+          defaultValue != null &&
+          value.expression.startsWith('json[') &&
+          value.expression.endsWith(']')) {
+        final keyExpr = value.expression.substring(
+          5,
+          value.expression.length - 1,
+        );
+        return 'json.containsKey($keyExpr) ? (${value.output}) : $defaultValue';
+      }
       if (defaultValue != null || nullable) {
         return ifNullOrElse(
           value.expression,

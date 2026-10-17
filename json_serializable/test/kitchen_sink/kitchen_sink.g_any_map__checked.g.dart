@@ -99,7 +99,7 @@ KitchenSink _$KitchenSinkFromJson(Map json) => $checkedCreate(
     );
     $checkedConvert(
       'dynamicIntMap',
-      (v) => val.dynamicIntMap = Map<String, int>.from(v as Map),
+      (v) => val.dynamicIntMap = Map<dynamic, int>.from(v as Map),
     );
     $checkedConvert(
       'objectDateTimeMap',
