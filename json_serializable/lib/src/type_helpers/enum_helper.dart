@@ -51,10 +51,9 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
+    final isMapKey = expression == keyParam;
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
-    final unknownEnumValue = expression == keyParam
-        ? null
-        : jsonKey.unknownEnumValue;
+    final unknownEnumValue = isMapKey ? null : jsonKey.unknownEnumValue;
 
     if (!targetType.isNullableType &&
         unknownEnumValue == jsonKeyNullForUndefinedEnumValueFieldName) {
@@ -66,8 +65,24 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
+    if (isMapKey) {
+      final encodedValues = enumEncodedValues(targetType);
+      if (encodedValues != null && encodedValues.any((v) => v is int)) {
+        final keyString = context.config.anyMap
+            ? '$expression as String'
+            : expression;
+        if (encodedValues.every((v) => v is int || v == null)) {
+          expression = 'int.parse($keyString)';
+        } else {
+          expression = 'int.tryParse($keyString) ?? $keyString';
+        }
+      }
+    }
+
+    final nullEnumValue = enumValueForNull(targetType);
+
     String functionName;
-    if (targetType.isNullableType || defaultProvided) {
+    if (targetType.isNullableType || defaultProvided || nullEnumValue != null) {
       functionName = r'$enumDecodeNullable';
     } else {
       functionName = r'$enumDecode';
@@ -81,6 +96,12 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       if (unknownEnumValue != null) 'unknownValue: $unknownEnumValue',
     ];
 
-    return '$functionName(${args.join(', ')})';
+    final decoded = '$functionName(${args.join(', ')})';
+    if (!targetType.isNullableType &&
+        !defaultProvided &&
+        nullEnumValue != null) {
+      return '$decoded ?? $nullEnumValue';
+    }
+    return decoded;
   }
 }

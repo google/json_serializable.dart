@@ -19,6 +19,11 @@
 - Prefer `JsonConverter`s with matching nullability when both nullable and
   non-nullable converters for the same type are present.
   ([#1339](https://github.com/google/json_serializable.dart/issues/1339))
+- Fix `Map` key and enum handling, including custom `JsonConverter`s and
+  `dateTimeUtc: true` on `Map` keys, `int`-encoded enum `Map` keys,
+  `Map<Object, V>` / `Map<dynamic, V>`, `@JsonValue(null)` enum defaults,
+  `@JsonEnum(valueField: 'name')`, and rejecting getter-backed
+  `JsonEnum.valueField`s.
 
 ## 6.14.1
 

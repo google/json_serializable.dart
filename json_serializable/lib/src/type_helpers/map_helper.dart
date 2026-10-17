@@ -6,10 +6,13 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_helper/source_helper.dart';
 
 import '../constants.dart';
+import '../enum_utils.dart';
+import '../lambda_result.dart';
 import '../shared_checkers.dart';
 import '../type_helper.dart';
 import '../unsupported_type_error.dart';
 import '../utils.dart';
+import 'json_converter_helper.dart';
 import 'to_from_string.dart';
 
 class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
@@ -33,9 +36,23 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     _checkSafeKeyType(expression, keyType);
 
     final subFieldValue = context.serialize(valueType, closureArg);
-    final subKeyValue =
-        _forType(keyType)?.serialize(keyType, keyParam, false) ??
+    final customKeyConverter = const JsonConverterHelper().serialize(
+      keyType,
+      keyParam,
+      context,
+    );
+    var subKeyValue =
+        customKeyConverter ??
+        _forType(
+          keyType,
+          dateTimeUtc: context.config.dateTimeUtc,
+        )?.serialize(keyType, keyParam, false) ??
         context.serialize(keyType, keyParam);
+    if (customKeyConverter == null &&
+        keyType.isEnum &&
+        (enumEncodedValues(keyType)?.any((v) => v is int) ?? false)) {
+      subKeyValue = '$subKeyValue.toString()';
+    }
 
     if (closureArg == subFieldValue && keyParam == subKeyValue) {
       return expression;
@@ -93,8 +110,13 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
               // `toDouble` on input values
               valueArg.isSimpleJsonTypeNotDouble)) {
         // No mapping of the values or null check required!
+        final keyString =
+            context.config.anyMap &&
+                (keyArg.isDartCoreObject || keyArg is DynamicType)
+            ? typeToCode(keyArg)
+            : 'String';
         final valueString = typeToCode(valueArg);
-        return 'Map<String, $valueString>.from($expression as Map)';
+        return 'Map<$keyString, $valueString>.from($expression as Map)';
       }
     }
 
@@ -103,31 +125,55 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     final itemSubVal = context.deserialize(valueArg, closureArg);
 
-    var mapCast = context.config.anyMap ? 'as Map' : 'as Map<String, dynamic>';
+    final isAnyMapKey =
+        context.config.anyMap ||
+        keyArg.isDartCoreObject ||
+        keyArg is DynamicType;
+    var mapCast = isAnyMapKey ? 'as Map' : 'as Map<String, dynamic>';
 
     if (targetTypeIsNullable) {
       mapCast += '?';
     }
 
     String keyUsage;
-    if (keyArg.isEnum) {
+    final customKeyConverter = const JsonConverterHelper().deserialize(
+      keyArg,
+      keyParam,
+      context,
+      false,
+    );
+    if (customKeyConverter != null) {
+      if (!isAnyMapKey &&
+          customKeyConverter is LambdaResult &&
+          customKeyConverter.asContent != null &&
+          coreStringTypeChecker.isExactlyType(customKeyConverter.asContent!)) {
+        keyUsage = '${customKeyConverter.lambda}($keyParam)';
+      } else {
+        keyUsage = customKeyConverter.toString();
+      }
+    } else if (keyArg.isEnum) {
       keyUsage = context.deserialize(keyArg, keyParam).toString();
-    } else if (context.config.anyMap &&
-        !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
-      keyUsage = '$keyParam as String';
-    } else if (context.config.anyMap &&
-        keyArg.isDartCoreObject &&
-        !keyArg.isNullableType) {
-      keyUsage = '$keyParam as Object';
     } else {
-      keyUsage = keyParam;
-    }
+      if (context.config.anyMap &&
+          !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
+        keyUsage = '$keyParam as String';
+      } else if (isAnyMapKey &&
+          keyArg.isDartCoreObject &&
+          !keyArg.isNullableType) {
+        keyUsage = '$keyParam as Object';
+      } else {
+        keyUsage = keyParam;
+      }
 
-    final toFromString = _forType(keyArg);
-    if (toFromString != null) {
-      keyUsage = toFromString
-          .deserialize(keyArg, keyUsage, false, true)
-          .toString();
+      final toFromString = _forType(
+        keyArg,
+        dateTimeUtc: context.config.dateTimeUtc,
+      );
+      if (toFromString != null) {
+        keyUsage = toFromString
+            .deserialize(keyArg, keyUsage, false, true)
+            .toString();
+      }
     }
 
     return '($expression $mapCast)$optionalQuestion.map( '
@@ -141,8 +187,12 @@ final _intString = ToFromStringHelper('int.parse', 'toString()', 'int');
 /// be used as [Map] keys.
 final _instances = [bigIntString, dateTimeString, _intString, uriString];
 
-ToFromStringHelper? _forType(DartType type) =>
-    _instances.where((i) => i.matches(type)).singleOrNull;
+ToFromStringHelper? _forType(DartType type, {bool dateTimeUtc = false}) {
+  if (dateTimeUtc && dateTimeUtcString.matches(type)) {
+    return dateTimeUtcString;
+  }
+  return _instances.where((i) => i.matches(type)).singleOrNull;
+}
 
 /// Returns `true` if [keyType] can be automatically converted to/from String –
 /// and is therefor usable as a key in a [Map].
