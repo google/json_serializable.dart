@@ -10,7 +10,9 @@ BaseResponse<T> _$BaseResponseFromJson<T>(Map<String, dynamic> json) =>
     BaseResponse<T>(
       status: (json['status'] as num?)?.toInt(),
       msg: json['msg'] as String?,
-      data: BaseResponse._dataFromJson(json['data'] as Object),
+      data: json['data'] == null
+          ? null
+          : BaseResponse._dataFromJson(json['data'] as Object),
     );
 
 Article _$ArticleFromJson(Map<String, dynamic> json) => Article(
