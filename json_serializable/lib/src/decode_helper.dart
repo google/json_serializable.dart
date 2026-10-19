@@ -333,7 +333,7 @@ _ConstructorData _writeConstructorInvocation(
 ) {
   final className = classElement.name;
 
-  final ctor = constructorByName(classElement, constructorName);
+  final ctor = constructorByNameJson(classElement, constructorName);
 
   final usedCtorParamsAndFields = <String>{};
   final constructorArguments = <FormalParameterElement>[];

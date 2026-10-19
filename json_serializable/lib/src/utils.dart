@@ -152,13 +152,16 @@ ConstructorElement? _constructorByNameOrNull(
   String name,
 ) {
   try {
-    return constructorByName(classElement, name);
+    return constructorByNameJson(classElement, name);
   } on InvalidGenerationSourceError {
     return null;
   }
 }
 
-ConstructorElement constructorByName(ClassElement classElement, String name) {
+ConstructorElement constructorByNameJson(
+  ClassElement classElement,
+  String name,
+) {
   final className = classElement.name;
 
   ConstructorElement? ctor;
@@ -195,7 +198,7 @@ Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
   return null;
 }
 
-extension DartTypeExtension on DartType {
+extension DartTypeExtensionJsonSerializable on DartType {
   DartType promoteNonNullable() => switch (this) {
     final TypeParameterType t => t.element.instantiate(
       nullabilitySuffix: NullabilitySuffix.none,
@@ -207,12 +210,12 @@ extension DartTypeExtension on DartType {
     ),
     _ => _typeSystemFor(this)?.promoteToNonNull(this) ?? this,
   };
+}
 
-  String toStringNonNullable() {
-    final val = getDisplayString();
-    if (val.endsWith('?')) return val.substring(0, val.length - 1);
-    return val;
-  }
+String toStringNonNullableHelper(DartType type) {
+  final val = type.getDisplayString();
+  if (val.endsWith('?')) return val.substring(0, val.length - 1);
+  return val;
 }
 
 TypeSystem? _typeSystemFor(DartType type) {
@@ -379,10 +382,10 @@ String? defaultDecodeLogic(
   return null;
 }
 
-extension ExecutableElementExtension on ExecutableElement {
+extension ExecutableElementExtensionJsonSerializable on ExecutableElement {
   /// Returns the name of `this` qualified with the class name if it's a
   /// [MethodElement].
-  String get qualifiedName {
+  String get qualifiedNameJson {
     if (this is TopLevelFunctionElement) {
       return name!;
     }

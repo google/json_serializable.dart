@@ -67,7 +67,7 @@ InvalidGenerationSourceError createInvalidGenerationError(
   if (error.type is TypeParameterType) {
     message =
         '$message because of type '
-        '`${error.type.toStringNonNullable()}` '
+        '`${toStringNonNullableHelper(error.type)}` '
         '(type parameter)';
 
     todo =

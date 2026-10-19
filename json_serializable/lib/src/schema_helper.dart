@@ -46,7 +46,7 @@ Iterable<_PropertyInfo> _propertiesFor(
   ClassElement element,
   ClassConfig config,
 ) {
-  final accessibleFields = createSortedFieldSet(element).where((f) {
+  final accessibleFields = createSortedFieldSetJson(element).where((f) {
     final jsonKey = jsonKeyForField(f, config);
 
     if (!f.isPublic &&

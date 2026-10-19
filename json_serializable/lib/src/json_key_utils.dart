@@ -186,7 +186,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
           ? 'const '
           : '';
 
-      return '$invokeConst${functionValue.qualifiedName}()';
+      return '$invokeConst${functionValue.qualifiedNameJson}()';
     }
 
     final enumFields = iterateEnumFields(annotationType);
@@ -221,9 +221,9 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
           throwUnsupported(
             element,
             '`$fieldName` has type '
-            '`${targetEnumType.toStringNonNullable()}`, but '
+            '`${toStringNonNullableHelper(targetEnumType)}`, but '
             'the provided unknownEnumValue is of type '
-            '`${annotationType.toStringNonNullable()}`.',
+            '`${toStringNonNullableHelper(annotationType)}`.',
           );
         }
       }
@@ -284,7 +284,7 @@ KeyConfig _from(FieldElement element, ClassConfig classAnnotation) {
   if (!readValue.isNull) {
     readValueFunctionName = readValue.objectValue
         .toFunctionValue()!
-        .qualifiedName;
+        .qualifiedNameJson;
   }
 
   final ignore = fallbackObjRead('ignore').literalValue as bool?;
