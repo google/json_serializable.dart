@@ -3,8 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/src/dart/element/inheritance_manager3.dart' // ignore: implementation_imports
-    show InheritanceManager3;
 import 'package:source_gen/source_gen.dart';
 
 import 'utils.dart';
@@ -103,9 +101,8 @@ List<FieldElement> createSortedFieldSet(ClassElement element) {
   );
 
   final inheritedFields = <String, List<FieldElement>>{};
-  final manager = InheritanceManager3();
 
-  for (final v in manager.getInheritedConcreteMap(element).values) {
+  for (final v in element.inheritedConcreteMembers.values) {
     assert(v is! FieldElement);
     if (_dartCoreObjectChecker.isExactly(v.enclosingElement!)) {
       continue;
