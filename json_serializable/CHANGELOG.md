@@ -6,6 +6,10 @@
   `String`/`Object?` to `Expression`/`Expression?` (from
   `package:code_builder`).
 
+## 6.15.1
+
+- Fix compilation ambiguity when using `package:source_helper` `>= 1.4.0`.
+
 ## 6.15.0
 
 - Fix `Record` serialization and default value handling, including nullable
