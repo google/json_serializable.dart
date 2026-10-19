@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 
 import 'type_helpers/config_types.dart';
 
@@ -18,11 +19,11 @@ abstract class TypeHelperContext {
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  Object? serialize(DartType fieldType, String expression);
+  Expression? serialize(DartType fieldType, Expression expression);
 
   /// [expression] may be just the name of the field or it may an expression
   /// representing the serialization of a value.
-  Object? deserialize(DartType fieldType, String expression);
+  Expression? deserialize(DartType fieldType, Expression expression);
 
   /// Adds [memberContent] to the set of generated, top-level members.
   void addMember(String memberContent);
@@ -45,41 +46,53 @@ abstract class TypeHelper<T extends TypeHelperContext> {
   /// Let's say you want to serialize a class `Foo` as just its `id` property
   /// of type `int`.
   ///
-  /// Treating [expression] as a opaque Dart expression, the [serialize]
-  /// implementation could be a simple as:
+  /// Treating [expression] as an opaque Dart expression, the [serialize]
+  /// implementation could be as simple as:
   ///
   /// ```dart
-  /// String serialize(DartType targetType, String expression) =>
-  ///   "$expression.id";
-  /// ```.
-  Object? serialize(DartType targetType, String expression, T context);
+  /// Expression? serialize(
+  ///   DartType targetType,
+  ///   Expression expression,
+  ///   T context,
+  /// ) => expression.property('id');
+  /// ```
+  Expression? serialize(DartType targetType, Expression expression, T context);
 
   /// Returns Dart code that deserializes an [expression] representing a JSON
-  /// literal to into [targetType].
+  /// literal into [targetType].
   ///
   /// If [targetType] is not supported, returns `null`.
   ///
   /// Let's say you want to deserialize a class `Foo` by taking an `int` stored
   /// in a JSON literal and calling the `Foo.fromInt` constructor.
   ///
-  /// Treating [expression] as a opaque Dart expression representing a JSON
-  /// literal, the [deserialize] implementation could be a simple as:
+  /// Treating [expression] as an opaque Dart expression representing a JSON
+  /// literal, the [deserialize] implementation could be as simple as:
   ///
   /// ```dart
-  /// String deserialize(DartType targetType, String expression) =>
-  ///   "new Foo.fromInt($expression)";
-  /// ```.
+  /// Expression? deserialize(
+  ///   DartType targetType,
+  ///   Expression expression,
+  ///   T context,
+  ///   bool defaultProvided,
+  /// ) => refer('Foo').newInstanceNamed('fromInt', [expression]);
+  /// ```
   ///
   /// Note that [targetType] is not used here. If you wanted to support many
   /// types of [targetType] you could write:
   ///
   /// ```dart
-  /// String deserialize(DartType targetType, String expression) =>
-  ///   "new ${targetType.name}.fromInt($expression)";
-  /// ```.
-  Object? deserialize(
+  /// Expression? deserialize(
+  ///   DartType targetType,
+  ///   Expression expression,
+  ///   T context,
+  ///   bool defaultProvided,
+  /// ) => refer(targetType.element!.name!)
+  ///     .newInstanceNamed('fromInt', [expression]);
+  /// ```
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     T context,
     bool defaultProvided,
   );

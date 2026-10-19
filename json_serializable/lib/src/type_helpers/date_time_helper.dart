@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import '../default_container.dart';
@@ -13,9 +14,9 @@ class DateTimeHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const DateTimeHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) => context._dateTimeHelper.serialize(
     targetType,
@@ -26,7 +27,7 @@ class DateTimeHelper extends TypeHelper<TypeHelperContextWithConfig> {
   @override
   DefaultContainer? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
     bool defaultProvided,
   ) => dateTimeString.deserialize(

@@ -9,6 +9,8 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/element/type_system.dart';
+import 'package:code_builder/code_builder.dart'
+    hide Enum, FunctionType, RecordType;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -340,40 +342,158 @@ String _recordTypeToCode(RecordType type, bool forceNullable) {
   return buffer.toString();
 }
 
-String? defaultDecodeLogic(
+/// Converts [obj] to a Dart code String, properly evaluating [Expression]s
+/// with [DartEmitter] when present.
+String toCodeString(Object? obj) {
+  if (obj is Expression) {
+    return obj.accept(DartEmitter()).toString();
+  }
+  return obj.toString();
+}
+
+/// Returns an [Expression] representing [value] escaped as a valid Dart string
+/// literal via [escapeDartString].
+Expression escapedStringLiteral(String value) =>
+    CodeExpression(Code(escapeDartString(value)));
+
+/// Returns an [Expression] that emits `<expression> as <typeCode>` without
+/// outer parentheses when standalone, while parenthesizing when chained with
+/// member access or operators.
+Expression castExpression(Expression expression, String typeCode) =>
+    _CastExpression(expression, typeCode);
+
+class _CastExpression extends Expression {
+  @override
+  final Expression expression;
+  final String typeCode;
+
+  const _CastExpression(this.expression, this.typeCode);
+
+  Expression get _unparenthesized =>
+      CodeExpression(Code('${toCodeString(expression)} as $typeCode'));
+
+  @override
+  R accept<R>(ExpressionVisitor<R> visitor, [R? context]) =>
+      _unparenthesized.accept(visitor, context);
+
+  @override
+  ParenthesizedExpression get parenthesized => _unparenthesized.parenthesized;
+
+  @override
+  Expression property(String name) => parenthesized.property(name);
+
+  @override
+  Expression nullSafeProperty(String name) =>
+      parenthesized.nullSafeProperty(name);
+
+  @override
+  Expression get nullChecked => parenthesized.nullChecked;
+
+  @override
+  Expression index(Expression index) => parenthesized.index(index);
+
+  @override
+  Expression call(
+    Iterable<Expression> positionalArguments, [
+    Map<String, Expression> namedArguments = const {},
+    List<Reference> typeArguments = const [],
+  ]) => parenthesized.call(positionalArguments, namedArguments, typeArguments);
+
+  @override
+  Expression asA(Expression other) => parenthesized.asA(other);
+
+  @override
+  Expression isA(Expression other) => parenthesized.isA(other);
+
+  @override
+  Expression isNotA(Expression other) => parenthesized.isNotA(other);
+
+  @override
+  Expression greaterThan(Expression other) => parenthesized.greaterThan(other);
+
+  @override
+  Expression lessThan(Expression other) => parenthesized.lessThan(other);
+
+  @override
+  Expression greaterOrEqualTo(Expression other) =>
+      parenthesized.greaterOrEqualTo(other);
+
+  @override
+  Expression lessOrEqualTo(Expression other) =>
+      parenthesized.lessOrEqualTo(other);
+
+  @override
+  Expression operatorAdd(Expression other) => parenthesized.operatorAdd(other);
+
+  @override
+  Expression operatorSubtract(Expression other) =>
+      parenthesized.operatorSubtract(other);
+
+  @override
+  Expression operatorMultiply(Expression other) =>
+      parenthesized.operatorMultiply(other);
+
+  @override
+  Expression operatorDivide(Expression other) =>
+      parenthesized.operatorDivide(other);
+
+  @override
+  Expression operatorIntDivide(Expression other) =>
+      parenthesized.operatorIntDivide(other);
+
+  @override
+  Expression operatorEuclideanModulo(Expression other) =>
+      parenthesized.operatorEuclideanModulo(other);
+}
+
+Expression? defaultDecodeLogic(
   DartType targetType,
-  String expression, {
+  Expression expression, {
   bool defaultProvided = false,
 }) {
   if (targetType.isDartCoreObject && !targetType.isNullableType) {
     final question = defaultProvided ? '?' : '';
-    return '$expression as Object$question';
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+    // for unparenthesized argument cast.
+    return castExpression(expression, 'Object$question');
   } else if (targetType.isDartCoreObject || targetType is DynamicType) {
     // just return it as-is. We'll hope it's safe.
     return expression;
   } else if (targetType.isDartCoreDouble) {
     final targetTypeNullable = defaultProvided || targetType.isNullableType;
-    final question = targetTypeNullable ? '?' : '';
-    return '($expression as num$question)$question.toDouble()';
+    final numType = targetTypeNullable ? refer('num?') : refer('num');
+    return targetTypeNullable
+        ? expression.asA(numType).nullSafeProperty('toDouble').call([])
+        : expression.asA(numType).property('toDouble').call([]);
   } else if (targetType.isDartCoreInt) {
     final targetTypeNullable = defaultProvided || targetType.isNullableType;
-    final question = targetTypeNullable ? '?' : '';
-    return '($expression as num$question)$question.toInt()';
+    final numType = targetTypeNullable ? refer('num?') : refer('num');
+    return targetTypeNullable
+        ? expression.asA(numType).nullSafeProperty('toInt').call([])
+        : expression.asA(numType).property('toInt').call([]);
   } else if (simpleJsonTypeChecker.isAssignableFromType(targetType)) {
     final typeCode = typeToCode(targetType, forceNullable: defaultProvided);
     final targetTypeNullable = defaultProvided || targetType.isNullableType;
-    final question = targetTypeNullable ? '?' : '';
+    final numType = targetTypeNullable ? refer('num?') : refer('num');
     if (const TypeChecker.fromUrl(
       'dart:core#double',
     ).isAssignableFromType(targetType)) {
-      return '($expression as num$question)$question.toDouble() as $typeCode';
+      final toDoubleExpr = targetTypeNullable
+          ? expression.asA(numType).nullSafeProperty('toDouble').call([])
+          : expression.asA(numType).property('toDouble').call([]);
+      return castExpression(toDoubleExpr, typeCode);
     }
     if (const TypeChecker.fromUrl(
       'dart:core#int',
     ).isAssignableFromType(targetType)) {
-      return '($expression as num$question)$question.toInt() as $typeCode';
+      final toIntExpr = targetTypeNullable
+          ? expression.asA(numType).nullSafeProperty('toInt').call([])
+          : expression.asA(numType).property('toInt').call([]);
+      return castExpression(toIntExpr, typeCode);
     }
-    return '$expression as $typeCode';
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+    // for unparenthesized argument cast.
+    return castExpression(expression, typeCode);
   }
 
   return null;

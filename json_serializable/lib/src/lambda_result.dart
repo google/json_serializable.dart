@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:source_helper/source_helper.dart';
 
 import 'constants.dart' show closureArg;
@@ -15,26 +16,49 @@ import 'utils.dart';
 /// Allows generated code to support the
 /// https://dart-lang.github.io/linter/lints/unnecessary_lambdas.html
 /// lint.
-class LambdaResult {
-  final String expression;
+class LambdaResult extends Expression {
+  @override
+  final Expression expression;
   final String lambda;
   final DartType? asContent;
+  final List<Expression> additionalPositionalArguments;
+  final Expression _fullExpression;
 
-  String get _fullExpression =>
-      asContent != null ? _cast(expression, asContent!) : expression;
+  LambdaResult(
+    this.expression,
+    this.lambda, {
+    this.asContent,
+    this.additionalPositionalArguments = const [],
+  }) : _fullExpression = asContent != null
+           ? _cast(expression, asContent)
+           : expression;
 
-  LambdaResult(this.expression, this.lambda, {this.asContent});
+  Expression get asInvocation =>
+      refer(lambda).call([_fullExpression, ...additionalPositionalArguments]);
 
   @override
-  String toString() => '$lambda($_fullExpression)';
+  R accept<R>(ExpressionVisitor<R> visitor, [R? context]) =>
+      asInvocation.accept(visitor, context);
 
-  static String process(Object subField) =>
-      (subField is LambdaResult && closureArg == subField._fullExpression)
-      ? subField.lambda
-      : '($closureArg) => $subField';
+  @override
+  String toString() => toCodeString(asInvocation);
+
+  static Expression process(Expression subField) {
+    if (subField is LambdaResult &&
+        subField.additionalPositionalArguments.isEmpty &&
+        closureArg == toCodeString(subField._fullExpression)) {
+      return refer(subField.lambda);
+    }
+    return Method(
+      (m) => m
+        ..requiredParameters.add(Parameter((p) => p..name = closureArg))
+        ..lambda = true
+        ..body = subField.code,
+    ).closure;
+  }
 }
 
-String _cast(String expression, DartType targetType) {
+Expression _cast(Expression expression, DartType targetType) {
   if (targetType.isLikeDynamic) {
     return expression;
   }
@@ -44,7 +68,9 @@ String _cast(String expression, DartType targetType) {
   if (coreIterableTypeChecker.isAssignableFromType(targetType)) {
     final itemType = coreIterableGenericType(targetType);
     if (itemType.isLikeDynamic) {
-      return '$expression as List$nullableSuffix';
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+      // for unparenthesized argument cast.
+      return castExpression(expression, 'List$nullableSuffix');
     }
   }
 
@@ -53,7 +79,9 @@ String _cast(String expression, DartType targetType) {
     assert(args.length == 2);
 
     if (args.every((e) => e.isLikeDynamic)) {
-      return '$expression as Map$nullableSuffix';
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+      // for unparenthesized argument cast.
+      return castExpression(expression, 'Map$nullableSuffix');
     }
   }
 
@@ -64,5 +92,7 @@ String _cast(String expression, DartType targetType) {
   }
 
   final typeCode = typeToCode(targetType);
-  return '$expression as $typeCode';
+  // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+  // for unparenthesized argument cast.
+  return castExpression(expression, typeCode);
 }

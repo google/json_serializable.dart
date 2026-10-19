@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart' show TypeChecker;
 import 'package:source_helper/source_helper.dart';
 
@@ -13,30 +14,24 @@ class DurationHelper extends TypeHelper {
   const DurationHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
   ) {
     if (!_matchesType(targetType)) {
       return null;
     }
 
-    final buffer = StringBuffer(expression);
-
-    if (targetType.isNullableType) {
-      buffer.write('?');
-    }
-
-    buffer.write('.inMicroseconds');
-
-    return buffer.toString();
+    return targetType.isNullableType
+        ? expression.nullSafeProperty('inMicroseconds')
+        : expression.property('inMicroseconds');
   }
 
   @override
-  Object? deserialize(
+  DefaultContainer? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
     bool defaultProvided,
   ) {
@@ -44,10 +39,12 @@ class DurationHelper extends TypeHelper {
       return null;
     }
 
-    return DefaultContainer(
-      expression,
-      'Duration(microseconds: ($expression as num).toInt())',
-    );
+    // Duration(microseconds: ($expression as num).toInt())
+    final output = refer('Duration').newInstance([], {
+      'microseconds': expression.asA(refer('num')).property('toInt').call([]),
+    });
+
+    return DefaultContainer(expression, output);
   }
 }
 

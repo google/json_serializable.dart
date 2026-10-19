@@ -3,9 +3,11 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../default_container.dart';
+import '../utils.dart';
 
 final bigIntString = ToFromStringHelper('BigInt.parse', 'toString()', 'BigInt');
 
@@ -46,21 +48,36 @@ class ToFromStringHelper {
 
   bool matches(DartType type) => _checker.isExactlyType(type);
 
-  String? serialize(DartType type, String expression, bool nullable) {
+  Expression? serialize(DartType type, Expression expression, bool nullable) {
     if (!matches(type)) {
       return null;
     }
 
-    if (nullable) {
-      expression = '$expression?';
+    if (_toString.endsWith('()')) {
+      final methodChain = _toString
+          .substring(0, _toString.length - 2)
+          .split('().')
+          .toList();
+      var current = expression;
+      for (var i = 0; i < methodChain.length; i++) {
+        final prop = methodChain[i];
+        if (i == 0 && nullable) {
+          current = current.nullSafeProperty(prop).call([]);
+        } else {
+          current = current.property(prop).call([]);
+        }
+      }
+      return current;
     }
 
-    return '$expression.$_toString';
+    return nullable
+        ? expression.nullSafeProperty(_toString)
+        : expression.property(_toString);
   }
 
   DefaultContainer? deserialize(
     DartType type,
-    String expression,
+    Expression expression,
     bool nullable,
     bool isString,
   ) {
@@ -68,9 +85,13 @@ class ToFromStringHelper {
       return null;
     }
 
-    final parseParam = isString ? expression : '$expression as String';
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
+    // for unparenthesized argument cast in parse calls.
+    final parseParam = isString
+        ? expression
+        : castExpression(expression, 'String');
 
-    final output = '$_parse($parseParam)';
+    final output = refer(_parse).call([parseParam]);
 
     return DefaultContainer(expression, output);
   }

@@ -15,6 +15,7 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
 
 abstract final class _$ModelJsonKeys {
   static const String firstName = 'first-name';
+
   static const String lastName = 'LAST_NAME';
 }
 

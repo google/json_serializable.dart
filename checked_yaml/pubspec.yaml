@@ -25,7 +25,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.10.5
   build_verify: ^3.0.0
-  json_serializable: ^6.0.0
+  json_serializable: '>=6.0.0 <8.0.0'
   path: ^1.9.0
   test: ^1.29.0
   test_process: ^2.0.0

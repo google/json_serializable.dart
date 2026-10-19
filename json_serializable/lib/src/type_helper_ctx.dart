@@ -4,6 +4,8 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart'
+    hide Enum, FunctionType, RecordType;
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -52,16 +54,16 @@ class TypeHelperCtx
   }
 
   @override
-  Object? serialize(DartType targetType, String expression) => _run(
+  Expression? serialize(DartType targetType, Expression expression) => _run(
     targetType,
     expression,
     (TypeHelper th) => th.serialize(targetType, expression, this),
   );
 
   @override
-  Object deserialize(
+  Expression deserialize(
     DartType targetType,
-    String expression, {
+    Expression expression, {
     String? defaultValue,
   }) {
     if (_runDepth == 0 &&
@@ -87,11 +89,16 @@ class TypeHelperCtx
       if (defaultValue != null &&
           !targetType.isNullableType &&
           fromJsonData.returnType.isNullableType) {
-        return ifNullOrElse(
-          expression,
-          defaultValue,
-          '$value ?? ${DefaultContainer.wrapDefaultValue(defaultValue)}',
-        );
+        return expression
+            .equalTo(literalNull)
+            .conditional(
+              CodeExpression(Code(defaultValue)),
+              value.ifNullThen(
+                CodeExpression(
+                  Code(DefaultContainer.wrapDefaultValue(defaultValue)),
+                ),
+              ),
+            );
       }
       if (defaultValue == null &&
           targetType.isNullableType &&
@@ -113,9 +120,9 @@ class TypeHelperCtx
   ///
   /// Used when a JSON key is present (including when its value is JSON `null`)
   /// for PATCH tri-state fields, so explicit `null` is passed to `fromJson`.
-  Object deserializePresentJsonValue(
+  Expression deserializePresentJsonValue(
     DartType targetType,
-    String expression, {
+    Expression expression, {
     String? defaultValue,
   }) {
     final effectiveTargetType =
@@ -142,10 +149,10 @@ class TypeHelperCtx
     );
   }
 
-  Object _run(
+  Expression _run(
     DartType targetType,
-    String expression,
-    Object? Function(TypeHelper) invoke,
+    Expression expression,
+    Expression? Function(TypeHelper) invoke,
   ) {
     _runDepth++;
     try {
@@ -153,10 +160,12 @@ class TypeHelperCtx
               .map(invoke)
               .firstWhere(
                 (r) => r != null,
-                orElse: () =>
-                    throw UnsupportedTypeError(targetType, expression),
+                orElse: () => throw UnsupportedTypeError(
+                  targetType,
+                  toCodeString(expression),
+                ),
               )
-          as Object;
+          as Expression;
     } finally {
       _runDepth--;
     }

@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -11,16 +12,17 @@ import '../default_container.dart';
 import '../enum_utils.dart';
 import '../json_key_utils.dart';
 import '../type_helper.dart';
+import '../utils.dart';
 
-final simpleExpression = RegExp('^[a-zA-Z_]+\$');
+final simpleExpression = RegExp(r'^[a-zA-Z_]+$');
 
 class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const EnumHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     final memberContent = enumValueMapFromType(targetType);
@@ -31,18 +33,20 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     context.addMember(memberContent);
 
+    final map = refer(constMapName(targetType)).index(expression);
+
     if (targetType.isNullableType ||
         enumFieldWithNullInEncodeMap(targetType) == true) {
-      return '${constMapName(targetType)}[$expression]';
+      return map;
     } else {
-      return '${constMapName(targetType)}[$expression]!';
+      return map.nullChecked;
     }
   }
 
   @override
-  Object? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
@@ -52,7 +56,8 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       return null;
     }
 
-    final isMapKey = expression == keyParam;
+    final exprStr = toCodeString(expression);
+    final isMapKey = exprStr == keyParam;
     final jsonKey = jsonKeyForField(context.fieldElement, context.config);
     final unknownEnumValue = isMapKey ? null : jsonKey.unknownEnumValue;
 
@@ -66,46 +71,42 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       );
     }
 
+    var expr = expression;
     if (isMapKey) {
       final encodedValues = enumEncodedValues(targetType);
       if (encodedValues != null && encodedValues.any((v) => v is int)) {
         final keyString = context.config.anyMap
-            ? '$expression as String'
-            : expression;
+            ? castExpression(expr, 'String')
+            : expr;
         if (encodedValues.every((v) => v is int || v == null)) {
-          expression = 'int.parse($keyString)';
+          expr = refer('int.parse').call([keyString]);
         } else {
-          expression = 'int.tryParse($keyString) ?? $keyString';
+          expr = refer('int.tryParse').call([keyString]).ifNullThen(keyString);
         }
       }
     }
 
     final nullEnumValue = enumValueForNull(targetType);
 
-    String functionName;
-    if (targetType.isNullableType || defaultProvided || nullEnumValue != null) {
-      functionName = r'$enumDecodeNullable';
-    } else {
-      functionName = r'$enumDecode';
-    }
+    final functionName =
+        (targetType.isNullableType || defaultProvided || nullEnumValue != null)
+        ? r'$enumDecodeNullable'
+        : r'$enumDecode';
 
     context.addMember(memberContent);
 
-    final args = [
-      constMapName(targetType),
-      expression,
-      if (unknownEnumValue != null) 'unknownValue: $unknownEnumValue',
-    ];
+    final namedArgs = <String, Expression>{
+      if (unknownEnumValue != null)
+        'unknownValue': CodeExpression(Code(unknownEnumValue)),
+    };
 
-    final decoded = '$functionName(${args.join(', ')})';
+    final decoded = refer(
+      functionName,
+    ).call([refer(constMapName(targetType)), expr], namedArgs);
     if (!targetType.isNullableType && nullEnumValue != null) {
-      final withNullEnum = '$decoded ?? $nullEnumValue';
+      final withNullEnum = decoded.ifNullThen(refer(nullEnumValue));
       if (defaultProvided) {
-        return DefaultContainer(
-          expression,
-          withNullEnum,
-          checkKeyPresence: true,
-        );
+        return DefaultContainer(expr, withNullEnum, checkKeyPresence: true);
       }
       return withNullEnum;
     }

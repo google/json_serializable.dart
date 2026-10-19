@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 
 import '../shared_checkers.dart';
 import '../type_helper.dart';
@@ -14,9 +15,9 @@ class ValueHelper extends TypeHelper {
   const ValueHelper();
 
   @override
-  String? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
   ) {
     if (targetType.isDartCoreObject ||
@@ -29,9 +30,9 @@ class ValueHelper extends TypeHelper {
   }
 
   @override
-  String? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContext context,
     bool defaultProvided,
   ) => defaultDecodeLogic(

@@ -1,3 +1,11 @@
+## 7.0.0-wip
+
+- `type_helper.dart`: **BREAKING** Changed `TypeHelper.serialize`,
+  `TypeHelper.deserialize`, `TypeHelperContext.serialize`, and
+  `TypeHelperContext.deserialize` parameter and return types from
+  `String`/`Object?` to `Expression`/`Expression?` (from
+  `package:code_builder`).
+
 ## 6.15.0
 
 - Fix `Record` serialization and default value handling, including nullable

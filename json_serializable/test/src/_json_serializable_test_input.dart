@@ -748,36 +748,43 @@ abstract class _$Issue1124PerFieldAndScopeTestPerFieldToJson {
     List<int>? instance,
     Object? Function(T value) toJsonT,
   ) => instance;
+
   // ignore: unused_element
   static Object? inheritedString<T>(
     String? instance,
     Object? Function(T value) toJsonT,
   ) => instance;
+
   // ignore: unused_element
   static Object? genericNullable<T>(
     T? instance,
     Object? Function(T value) toJsonT,
   ) => _$nullableGenericToJson(instance, toJsonT);
+
   // ignore: unused_element
   static Object? genericNullableList<T>(
     List<T?> instance,
     Object? Function(T value) toJsonT,
   ) => instance.map((e) => _$nullableGenericToJson(e, toJsonT)).toList();
+
   // ignore: unused_element
   static Object? prefixedInts<T>(
     List<int>? instance,
     Object? Function(T value) toJsonT,
   ) => instance;
+
   // ignore: unused_element
   static Object? prefixedIntsMap<T>(
     Map<String, List<int>>? instance,
     Object? Function(T value) toJsonT,
   ) => instance;
+
   // ignore: unused_element
   static Object? prefixedStringMap<T>(
     Map<String, String> instance,
     Object? Function(T value) toJsonT,
   ) => instance;
+
   // ignore: unused_element
   static Object? localAlias<T>(
     StringAlias? instance,

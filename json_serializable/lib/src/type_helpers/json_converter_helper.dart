@@ -5,6 +5,7 @@
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart' hide RecordType;
 import 'package:json_annotation/json_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -23,9 +24,9 @@ class JsonConverterHelper extends TypeHelper<TypeHelperContextWithConfig> {
   const JsonConverterHelper({this.forMapKey = false});
 
   @override
-  Object? serialize(
+  Expression? serialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
   ) {
     final converter = _typeConverter(targetType, context);
@@ -62,9 +63,9 @@ Json? $converterToJsonName<Json, Value>(
   }
 
   @override
-  Object? deserialize(
+  Expression? deserialize(
     DartType targetType,
-    String expression,
+    Expression expression,
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
@@ -93,7 +94,10 @@ Value? $converterFromJsonName<Json, Value>(
         name: converterFromJsonName,
         targetType: targetType,
         expression: converter.jsonType.isDartCoreDouble
-            ? '($expression as num?)?.toDouble()'
+            ? expression
+                  .asA(refer('num?'))
+                  .nullSafeProperty('toDouble')
+                  .call([])
             : expression,
         callback: '${converter.accessString}.fromJson',
       );
@@ -107,11 +111,11 @@ Value? $converterFromJsonName<Json, Value>(
   }
 }
 
-String _nullableJsonConverterLambdaResult(
+Expression _nullableJsonConverterLambdaResult(
   _JsonConvertData converter, {
   required String name,
   required DartType targetType,
-  required String expression,
+  required Expression expression,
   required String callback,
 }) {
   final jsonDisplayString = typeToCode(converter.jsonType);
@@ -119,8 +123,11 @@ String _nullableJsonConverterLambdaResult(
       ? typeToCode(targetType.promoteNonNullable())
       : typeToCode(converter.fieldType.promoteNonNullable());
 
-  return '$name<$jsonDisplayString, $fieldTypeDisplayString>('
-      '$expression, $callback)';
+  return refer(name).call(
+    [expression, refer(callback)],
+    {},
+    [refer(jsonDisplayString), refer(fieldTypeDisplayString)],
+  );
 }
 
 class _JsonConvertData {

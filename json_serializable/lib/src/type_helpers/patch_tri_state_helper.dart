@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
 
@@ -110,23 +111,25 @@ bool _acceptsNullableJsonInput(DartType type) =>
 ///
 /// When the key is present, [presentExpression] must deserialize the JSON
 /// value (including JSON `null`) without treating it as a missing key.
-String wrapPatchTriStateFromJson({
-  required String mapExpression,
-  required String jsonKeyName,
-  required String absentExpression,
-  required String presentExpression,
-}) =>
-    '!$mapExpression.containsKey($jsonKeyName) '
-    '? $absentExpression '
-    ': $presentExpression';
+Expression wrapPatchTriStateFromJson({
+  required Expression mapExpression,
+  required Expression jsonKeyName,
+  required Expression absentExpression,
+  required Expression presentExpression,
+}) => mapExpression
+    .property('containsKey')
+    .call([jsonKeyName])
+    .negate()
+    .conditional(absentExpression, presentExpression);
 
 /// Wraps checked-mode `$checkedConvert` callback with the same logic.
-String wrapPatchTriStateCheckedConvert({
-  required String mapExpression,
-  required String jsonKeyName,
-  required String absentExpression,
-  required String presentExpression,
-}) =>
-    '!$mapExpression.containsKey($jsonKeyName) '
-    '? $absentExpression '
-    ': $presentExpression';
+Expression wrapPatchTriStateCheckedConvert({
+  required Expression mapExpression,
+  required Expression jsonKeyName,
+  required Expression absentExpression,
+  required Expression presentExpression,
+}) => mapExpression
+    .property('containsKey')
+    .call([jsonKeyName])
+    .negate()
+    .conditional(absentExpression, presentExpression);

@@ -30,15 +30,20 @@ Model _$ModelFromJson(Map<String, dynamic> json) => Model(
 abstract class _$ModelPerFieldToJson {
   // ignore: unused_element
   static Object? firstName(String instance) => instance;
+
   // ignore: unused_element
   static Object? lastName(String instance) => instance;
+
   // ignore: unused_element
   static Object? enumValue(EnumValue? instance) => _$EnumValueEnumMap[instance];
+
   // ignore: unused_element
   static Object? nested(Nested? instance) => instance?.toJson();
+
   // ignore: unused_element
   static Object? nestedGeneric(GenericFactory<int>? instance) =>
       instance?.toJson((value) => value);
+
   // ignore: unused_element
   static Object? nestedExcludeIfNull(Nested? instance) => instance?.toJson();
 }
@@ -76,6 +81,7 @@ abstract class _$GenericFactoryPerFieldToJson {
   // ignore: unused_element
   static Object? value<T>(T instance, Object? Function(T value) toJsonT) =>
       toJsonT(instance);
+
   // ignore: unused_element
   static Object? map<T>(
     Map<String, T> instance,
