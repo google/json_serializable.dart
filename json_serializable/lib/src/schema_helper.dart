@@ -52,7 +52,12 @@ Iterable<_PropertyInfo> _propertiesFor(
   ClassElement element,
   ClassConfig config,
 ) {
-  final accessibleFields = createSortedFieldSet(element).where((f) {
+  final sortedFields = createSortedFieldSet(
+    element,
+    keepObjectMemberOverride: hasJsonKeyAnnotation,
+  );
+  recordFieldOverrideChains(element, sortedFields);
+  final accessibleFields = sortedFields.where((f) {
     final jsonKey = jsonKeyForField(f, config);
 
     if (!f.isPublic &&

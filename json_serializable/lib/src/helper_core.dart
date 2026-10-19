@@ -44,10 +44,13 @@ abstract class HelperCore {
   /// Returns a [String] representing the type arguments that exist on
   /// [element].
   ///
-  /// Returns the output of calling [genericClassArguments] with [element].
+  /// Returns the output of calling [typeParameterListCode] (or
+  /// [genericClassArguments] when [withConstraints] is `true`).
   @protected
   String genericClassArgumentsImpl({required bool withConstraints}) =>
-      genericClassArguments(element, withConstraints);
+      withConstraints
+      ? genericClassArguments(element, true)
+      : typeParameterListCode(element, withBounds: false);
 
   /// Returns `code_builder` [Reference]s for the type parameters of [element]
   /// including bounds formatted with [typeToCode].

@@ -91,7 +91,11 @@ class GeneratorHelper extends HelperCore
 
   ({Set<FieldElement> accessibleFields, Spec? fromJsonMethod})
   _processFields() {
-    final sortedFields = createSortedFieldSet(element);
+    final sortedFields = createSortedFieldSet(
+      element,
+      keepObjectMemberOverride: hasJsonKeyAnnotation,
+    );
+    recordFieldOverrideChains(element, sortedFields);
 
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of

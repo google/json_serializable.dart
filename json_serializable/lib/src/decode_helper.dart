@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -350,13 +351,14 @@ mixin DecodeHelper implements HelperCore {
 }
 
 /// [availableConstructorParameters] is checked to see if it is available. If
-/// [availableConstructorParameters] does not contain the parameter name,
-/// an [UnsupportedError] is thrown.
+/// [availableConstructorParameters] does not contain the parameter name of a
+/// required or positional parameter, an [InvalidGenerationSourceError] is
+/// thrown. Unmatched optional named parameters are skipped.
 ///
 /// To improve the error details, [unavailableReasons] is checked for the
 /// unavailable constructor parameter. If the value is not `null`, it is
-/// included in the [UnsupportedError] message; otherwise a default explanation
-/// is provided.
+/// included in the [InvalidGenerationSourceError] message; otherwise a default
+/// explanation is provided.
 ///
 /// [writableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
@@ -376,39 +378,38 @@ _ConstructorData _writeConstructorInvocation(
 
   final ctor = constructorByName(classElement, constructorName);
 
-  final usedCtorParamsAndFields = <String>{};
-  final positionalArgs = <Expression>[];
-  final namedArgs = <String, Expression>{};
+  final plan = planConstruction(ctor, availableConstructorParameters.toSet());
 
-  for (final arg in ctor.formalParameters) {
-    if (!availableConstructorParameters.contains(arg.name)) {
-      if (arg.isRequired) {
-        var msg =
-            'Cannot populate the required constructor '
-            'argument: ${arg.name}.';
+  // Unmatched optional named parameters are skipped. An unmatched positional
+  // parameter cannot be skipped: it would shift every later positional
+  // argument into its slot.
+  final unpopulated = plan.unmatched
+      .where((arg) => arg.isRequired || arg.isPositional)
+      .firstOrNull;
+  if (unpopulated != null) {
+    var msg =
+        'Cannot populate the required constructor '
+        'argument: ${unpopulated.name}.';
 
-        final additionalInfo =
-            unavailableReasons[arg.name] ??
-            'It does not correspond to any field or getter on the class.';
-        msg = '$msg $additionalInfo';
+    final additionalInfo =
+        unavailableReasons[unpopulated.name] ??
+        'It does not correspond to any field or getter on the class.';
+    msg = '$msg $additionalInfo';
 
-        throw InvalidGenerationSourceError(msg, element: ctor);
-      }
-
-      continue;
-    }
-
-    final expr = deserializeForField(arg.name!, ctorParam: arg);
-    if (arg.isNamed) {
-      namedArgs[arg.name!] = expr;
-    } else {
-      positionalArgs.add(expr);
-    }
-    usedCtorParamsAndFields.add(arg.name!);
+    throw InvalidGenerationSourceError(msg, element: ctor);
   }
 
+  final positionalArgs = [
+    for (final arg in plan.positional)
+      deserializeForField(arg.name!, ctorParam: arg),
+  ];
+  final namedArgs = {
+    for (final arg in plan.named)
+      arg.name!: deserializeForField(arg.name!, ctorParam: arg),
+  };
+
   final remainingFieldsForInvocationBody = writableFields.toSet().difference(
-    usedCtorParamsAndFields,
+    plan.consumedNames,
   );
 
   final typeArguments = classElement.typeParameters
@@ -429,12 +430,10 @@ _ConstructorData _writeConstructorInvocation(
     );
   }
 
-  usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
-
   return _ConstructorData(
     constructorInvocation,
     remainingFieldsForInvocationBody,
-    usedCtorParamsAndFields,
+    {...plan.consumedNames, ...remainingFieldsForInvocationBody},
   );
 }
 

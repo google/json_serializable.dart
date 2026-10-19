@@ -193,6 +193,7 @@ const _expectedAnnotatedTests = {
   'SameCtorAndJsonKeyDefaultValue',
   'SetSupport',
   'StandaloneCtorParamClass',
+  'StandaloneOptionalPositionalCtorParamClass',
   'SubclassedJsonKey',
   'SubType',
   'SubTypeWithAnnotatedFieldOverrideExtends',
