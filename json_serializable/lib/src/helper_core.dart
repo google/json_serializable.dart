@@ -4,6 +4,7 @@
 
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:meta/meta.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:source_helper/source_helper.dart';
@@ -47,6 +48,17 @@ abstract class HelperCore {
   @protected
   String genericClassArgumentsImpl({required bool withConstraints}) =>
       genericClassArguments(element, withConstraints);
+
+  /// Returns `code_builder` [Reference]s for the type parameters of [element]
+  /// including bounds formatted with [typeToCode].
+  @protected
+  Iterable<Reference> get genericClassTypeParameters =>
+      element.typeParameters.map((t) {
+        final bound = t.bound;
+        return refer(
+          bound != null ? '${t.name} extends ${typeToCode(bound)}' : t.name!,
+        );
+      });
 
   @protected
   KeyConfig jsonKeyFor(FieldElement field) => jsonKeyForField(field, config);

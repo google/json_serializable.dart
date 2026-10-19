@@ -16,6 +16,7 @@ import 'type_helpers/date_time_helper.dart';
 import 'type_helpers/duration_helper.dart';
 import 'type_helpers/json_helper.dart';
 import 'type_helpers/uri_helper.dart';
+import 'utils.dart';
 
 class JsonSerializableGenerator
     extends GeneratorForAnnotation<JsonSerializable> {
@@ -68,8 +69,12 @@ class JsonSerializableGenerator
     }
 
     final helper = GeneratorHelper(_settings, element, annotation);
-    return helper.generate().map(
-      (spec) => spec.accept(DartEmitter()).toString(),
+    return runWithTargetLibrary(
+      element.library,
+      () => helper
+          .generate()
+          .map((spec) => spec.accept(DartEmitter()).toString())
+          .toList(),
     );
   }
 }

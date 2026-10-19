@@ -351,18 +351,111 @@ String toCodeString(Object? obj) {
   return obj.toString();
 }
 
+/// Returns an [Expression] representing [value] escaped as a valid Dart string
+/// literal via [escapeDartString].
+Expression escapedStringLiteral(String value) =>
+    CodeExpression(Code(escapeDartString(value)));
+
+/// Returns an [Expression] that emits `<expression> as <typeCode>` without
+/// outer parentheses when standalone, while parenthesizing when chained with
+/// member access or operators.
+Expression castExpression(Expression expression, String typeCode) =>
+    _CastExpression(expression, typeCode);
+
+class _CastExpression extends Expression {
+  @override
+  final Expression expression;
+  final String typeCode;
+
+  const _CastExpression(this.expression, this.typeCode);
+
+  Expression get _unparenthesized =>
+      CodeExpression(Code('${toCodeString(expression)} as $typeCode'));
+
+  @override
+  R accept<R>(ExpressionVisitor<R> visitor, [R? context]) =>
+      _unparenthesized.accept(visitor, context);
+
+  @override
+  ParenthesizedExpression get parenthesized => _unparenthesized.parenthesized;
+
+  @override
+  Expression property(String name) => parenthesized.property(name);
+
+  @override
+  Expression nullSafeProperty(String name) =>
+      parenthesized.nullSafeProperty(name);
+
+  @override
+  Expression get nullChecked => parenthesized.nullChecked;
+
+  @override
+  Expression index(Expression index) => parenthesized.index(index);
+
+  @override
+  Expression call(
+    Iterable<Expression> positionalArguments, [
+    Map<String, Expression> namedArguments = const {},
+    List<Reference> typeArguments = const [],
+  ]) => parenthesized.call(positionalArguments, namedArguments, typeArguments);
+
+  @override
+  Expression asA(Expression other) => parenthesized.asA(other);
+
+  @override
+  Expression isA(Expression other) => parenthesized.isA(other);
+
+  @override
+  Expression isNotA(Expression other) => parenthesized.isNotA(other);
+
+  @override
+  Expression greaterThan(Expression other) => parenthesized.greaterThan(other);
+
+  @override
+  Expression lessThan(Expression other) => parenthesized.lessThan(other);
+
+  @override
+  Expression greaterOrEqualTo(Expression other) =>
+      parenthesized.greaterOrEqualTo(other);
+
+  @override
+  Expression lessOrEqualTo(Expression other) =>
+      parenthesized.lessOrEqualTo(other);
+
+  @override
+  Expression operatorAdd(Expression other) => parenthesized.operatorAdd(other);
+
+  @override
+  Expression operatorSubtract(Expression other) =>
+      parenthesized.operatorSubtract(other);
+
+  @override
+  Expression operatorMultiply(Expression other) =>
+      parenthesized.operatorMultiply(other);
+
+  @override
+  Expression operatorDivide(Expression other) =>
+      parenthesized.operatorDivide(other);
+
+  @override
+  Expression operatorIntDivide(Expression other) =>
+      parenthesized.operatorIntDivide(other);
+
+  @override
+  Expression operatorEuclideanModulo(Expression other) =>
+      parenthesized.operatorEuclideanModulo(other);
+}
+
 Expression? defaultDecodeLogic(
   DartType targetType,
   Expression expression, {
   bool defaultProvided = false,
 }) {
-  final exprStr = toCodeString(expression);
-
   if (targetType.isDartCoreObject && !targetType.isNullableType) {
     final question = defaultProvided ? '?' : '';
-    // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
     // for unparenthesized argument cast.
-    return CodeExpression(Code('$exprStr as Object$question'));
+    return castExpression(expression, 'Object$question');
   } else if (targetType.isDartCoreObject || targetType is DynamicType) {
     // just return it as-is. We'll hope it's safe.
     return expression;
@@ -388,7 +481,7 @@ Expression? defaultDecodeLogic(
       final toDoubleExpr = targetTypeNullable
           ? expression.asA(numType).nullSafeProperty('toDouble').call([])
           : expression.asA(numType).property('toDouble').call([]);
-      return CodeExpression(Code('${toCodeString(toDoubleExpr)} as $typeCode'));
+      return castExpression(toDoubleExpr, typeCode);
     }
     if (const TypeChecker.fromUrl(
       'dart:core#int',
@@ -396,11 +489,11 @@ Expression? defaultDecodeLogic(
       final toIntExpr = targetTypeNullable
           ? expression.asA(numType).nullSafeProperty('toInt').call([])
           : expression.asA(numType).property('toInt').call([]);
-      return CodeExpression(Code('${toCodeString(toIntExpr)} as $typeCode'));
+      return castExpression(toIntExpr, typeCode);
     }
-    // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
     // for unparenthesized argument cast.
-    return CodeExpression(Code('$exprStr as $typeCode'));
+    return castExpression(expression, typeCode);
   }
 
   return null;

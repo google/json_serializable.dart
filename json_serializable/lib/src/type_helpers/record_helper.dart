@@ -25,19 +25,17 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var index = 1;
     for (var field in targetType.positionalFields) {
-      final indexer = escapeDartString('\$$index');
       final val = context.deserialize(
         field.type,
-        refer(paramName).index(CodeExpression(Code(indexer))),
+        refer(paramName).index(escapedStringLiteral('\$$index')),
       );
       positionalItems.add(val!);
       index++;
     }
     for (var field in targetType.namedFields) {
-      final indexer = escapeDartString(field.name);
       final val = context.deserialize(
         field.type,
-        refer(paramName).index(CodeExpression(Code(indexer))),
+        refer(paramName).index(escapedStringLiteral(field.name)),
       );
       namedItems[field.name] = val!;
     }
@@ -87,13 +85,13 @@ class RecordHelper extends TypeHelper<TypeHelperContextWithConfig> {
 
     var index = 1;
     for (var field in targetType.positionalFields) {
-      final indexer = literalString('\$$index', raw: true);
+      final indexer = escapedStringLiteral('\$$index');
       final val = context.serialize(field.type, receiver.property('\$$index'));
       mapEntries[indexer] = val!;
       index++;
     }
     for (var field in targetType.namedFields) {
-      final indexer = literalString(field.name);
+      final indexer = escapedStringLiteral(field.name);
       final val = context.serialize(field.type, receiver.property(field.name));
       mapEntries[indexer] = val!;
     }

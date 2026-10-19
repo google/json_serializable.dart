@@ -22,16 +22,16 @@ class LambdaResult extends Expression {
   final String lambda;
   final DartType? asContent;
   final List<Expression> additionalPositionalArguments;
-
-  Expression get _fullExpression =>
-      asContent != null ? _cast(expression, asContent!) : expression;
+  final Expression _fullExpression;
 
   LambdaResult(
     this.expression,
     this.lambda, {
     this.asContent,
     this.additionalPositionalArguments = const [],
-  });
+  }) : _fullExpression = asContent != null
+           ? _cast(expression, asContent)
+           : expression;
 
   Expression get asInvocation =>
       refer(lambda).call([_fullExpression, ...additionalPositionalArguments]);
@@ -63,15 +63,14 @@ Expression _cast(Expression expression, DartType targetType) {
     return expression;
   }
 
-  final exprStr = toCodeString(expression);
   final nullableSuffix = targetType.isNullableType ? '?' : '';
 
   if (coreIterableTypeChecker.isAssignableFromType(targetType)) {
     final itemType = coreIterableGenericType(targetType);
     if (itemType.isLikeDynamic) {
-      // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
       // for unparenthesized argument cast.
-      return CodeExpression(Code('$exprStr as List$nullableSuffix'));
+      return castExpression(expression, 'List$nullableSuffix');
     }
   }
 
@@ -80,9 +79,9 @@ Expression _cast(Expression expression, DartType targetType) {
     assert(args.length == 2);
 
     if (args.every((e) => e.isLikeDynamic)) {
-      // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
       // for unparenthesized argument cast.
-      return CodeExpression(Code('$exprStr as Map$nullableSuffix'));
+      return castExpression(expression, 'Map$nullableSuffix');
     }
   }
 
@@ -93,7 +92,7 @@ Expression _cast(Expression expression, DartType targetType) {
   }
 
   final typeCode = typeToCode(targetType);
-  // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+  // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
   // for unparenthesized argument cast.
-  return CodeExpression(Code('$exprStr as $typeCode'));
+  return castExpression(expression, typeCode);
 }

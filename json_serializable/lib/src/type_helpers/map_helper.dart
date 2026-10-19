@@ -112,17 +112,18 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       if (valueArgIsAny) {
         if (context.config.anyMap) {
           if (keyArg.isLikeDynamic) {
-            // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+            // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
             // for unparenthesized argument cast.
-            return CodeExpression(Code('$exprStr as Map$optionalQuestion'));
+            return castExpression(expression, 'Map$optionalQuestion');
           }
         } else {
           // this is the trivial case. Do a runtime cast to the known type of
           // JSON map values - `Map<String, dynamic>`
-          // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+          // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
           // for unparenthesized argument cast.
-          return CodeExpression(
-            Code('$exprStr as Map<String, dynamic>$optionalQuestion'),
+          return castExpression(
+            expression,
+            'Map<String, dynamic>$optionalQuestion',
           );
         }
       }
@@ -139,11 +140,11 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
             ? typeToCode(keyArg)
             : 'String';
         final valueString = typeToCode(valueArg);
-        // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+        // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
         // for unparenthesized argument cast.
         return refer(
           'Map<$keyString, $valueString>',
-        ).property('from').call([CodeExpression(Code('$exprStr as Map'))]);
+        ).property('from').call([castExpression(expression, 'Map')]);
       }
     }
 
@@ -175,15 +176,15 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
     } else {
       if (context.config.anyMap &&
           !(keyArg.isDartCoreObject || keyArg is DynamicType)) {
-        // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+        // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
         // for unparenthesized argument cast.
-        keyUsage = const CodeExpression(Code('$keyParam as String'));
+        keyUsage = castExpression(refer(keyParam), 'String');
       } else if (isAnyMapKey &&
           keyArg.isDartCoreObject &&
           !keyArg.isNullableType) {
-        // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+        // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
         // for unparenthesized argument cast.
-        keyUsage = const CodeExpression(Code('$keyParam as Object'));
+        keyUsage = castExpression(refer(keyParam), 'Object');
       } else {
         keyUsage = refer(keyParam);
       }

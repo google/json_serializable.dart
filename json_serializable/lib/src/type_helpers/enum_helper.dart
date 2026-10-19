@@ -76,7 +76,7 @@ class EnumHelper extends TypeHelper<TypeHelperContextWithConfig> {
       final encodedValues = enumEncodedValues(targetType);
       if (encodedValues != null && encodedValues.any((v) => v is int)) {
         final keyString = context.config.anyMap
-            ? CodeExpression(Code('$exprStr as String'))
+            ? castExpression(expr, 'String')
             : expr;
         if (encodedValues.every((v) => v is int || v == null)) {
           expr = refer('int.parse').call([keyString]);

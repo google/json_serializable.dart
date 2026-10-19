@@ -6,8 +6,10 @@
 library;
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:code_builder/code_builder.dart';
 import 'package:json_serializable/src/json_serializable_generator.dart';
 import 'package:json_serializable/src/type_helpers/map_helper.dart';
+import 'package:json_serializable/src/utils.dart';
 import 'package:source_gen_test/source_gen_test.dart';
 import 'package:test/test.dart';
 
@@ -19,6 +21,7 @@ const _sharedImports = [
   "import 'package:collection/collection.dart';",
   "import 'package:json_annotation/json_annotation.dart';",
   "import 'aux_types.dart';",
+  "import 'unimported_alias.dart' show parseHiddenStringAlias;",
 ];
 
 const _auxFiles = {
@@ -28,10 +31,15 @@ typedef CrossLibNullable<T> = T?;
 typedef CrossLibList<T> = List<T>;
 typedef CrossLibMap<V> = Map<String, V>;
 ''',
+  'unimported_alias.dart': '''
+typedef HiddenStringAlias = String;
+int parseHiddenStringAlias(HiddenStringAlias s) => int.parse(s);
+''',
 };
 
 const _sharedPreamble = '''
 typedef LocalId<T> = T;
+typedef LocalNumBound = num;
 typedef _PrivateIntAlias = int;
 
 enum FuzzStatus {
@@ -1802,6 +1810,81 @@ if (decoded.kebab != instance.kebab || decoded.byField != instance.byField) {
 }
 ''',
     ),
+    CodegenCase(
+      id: 'extra_escaped_dollar_and_backslash_literals',
+      elementName: r'$EscapedModel',
+      declarations: r'''
+@JsonSerializable(
+  checked: true,
+  disallowUnrecognizedKeys: true,
+  createFieldMap: true,
+  createJsonKeys: true,
+  createPerFieldToJson: true,
+)
+class $EscapedModel<T extends LocalNumBound> {
+  @JsonKey(name: r'k$ey\t"q"', required: true, disallowNullValue: true)
+  final String kind;
+  @JsonKey(name: r'$type')
+  final String aliasKind;
+  final String type;
+  final ({int $id}) rec;
+  @JsonKey(fromJson: parseHiddenStringAlias)
+  final int hiddenAliasVal;
+
+  $EscapedModel(
+    this.kind,
+    this.aliasKind,
+    this.type,
+    this.rec,
+    this.hiddenAliasVal,
+  );
+
+  factory $EscapedModel.fromJson(Map<String, dynamic> json) =>
+      _$$EscapedModelFromJson<T>(json);
+  Map<String, dynamic> toJson() => _$$EscapedModelToJson<T>(this);
+
+  static String get aliasKindKey => _$$EscapedModelJsonKeys.aliasKind;
+  static String get kindKey => _$$EscapedModelJsonKeys.kind;
+  static Map<String, String> get fieldMap => _$$EscapedModelFieldMap;
+}
+''',
+      runtimeCheck: r'''
+if ($EscapedModel.aliasKindKey != r'$type') {
+  throw StateError(
+    'Expected aliasKind key r"\$type", got: ${$EscapedModel.aliasKindKey}',
+  );
+}
+if ($EscapedModel.kindKey != r'k$ey\t"q"') {
+  throw StateError(
+    'Expected kind key r\'k\$ey\\t"q"\', got: ${$EscapedModel.kindKey}',
+  );
+}
+if ($EscapedModel.fieldMap['kind'] != r'k$ey\t"q"' ||
+    $EscapedModel.fieldMap['aliasKind'] != r'$type') {
+  throw StateError('Unexpected fieldMap: ${$EscapedModel.fieldMap}');
+}
+final decoded = $EscapedModel<int>.fromJson(<String, dynamic>{
+  r'k$ey\t"q"': 'v1',
+  r'$type': 'v2',
+  'type': 'v3',
+  'rec': <String, dynamic>{r'$id': 42},
+  'hiddenAliasVal': '19',
+});
+if (decoded.kind != 'v1' ||
+    decoded.aliasKind != 'v2' ||
+    decoded.type != 'v3' ||
+    decoded.rec.$id != 42 ||
+    decoded.hiddenAliasVal != 19) {
+  throw StateError(r'Unexpected decoded $EscapedModel fields');
+}
+final encoded = decoded.toJson();
+if (encoded[r'k$ey\t"q"'] != 'v1' ||
+    encoded[r'$type'] != 'v2' ||
+    (encoded['rec'] as Map)[r'$id'] != 42) {
+  throw StateError('Unexpected encoded \$EscapedModel: $encoded');
+}
+''',
+    ),
   ]);
 
   return cases;
@@ -1995,7 +2078,7 @@ export 'package:json_annotation/json_annotation.dart'
         'slice 5: field matrix visibility/inclusion and extra map edge cases',
         () async {
           final cases = _buildFieldMatrixAndExtraMapCases();
-          expect(cases.length, 27);
+          expect(cases.length, 28);
 
           final report = await verifyGeneratorBatch(
             generator: JsonSerializableGenerator(),
@@ -2005,8 +2088,61 @@ export 'package:json_annotation/json_annotation.dart'
             cases: cases,
           );
 
+          expect(
+            report.issues,
+            isEmpty,
+            reason: formatCodegenBatchReport(report),
+          );
           expect(report.passedCases, report.totalCases);
-          expect(report.issues, isEmpty);
+
+          final escapedCase = cases.singleWhere(
+            (c) => c.id == 'extra_escaped_dollar_and_backslash_literals',
+          );
+          final escapedReader = await initializeLibraryReader({
+            'escaped_input.dart':
+                '''
+${_sharedImports.join('\n')}
+$_sharedPreamble
+${escapedCase.declarations}
+''',
+            ..._auxFiles,
+          }, 'escaped_input.dart');
+          final generatedOutput = await generateForElement(
+            JsonSerializableGenerator(),
+            escapedReader,
+            r'$EscapedModel',
+          );
+          expect(
+            generatedOutput,
+            stringContainsInOrder([
+              '<T extends LocalNumBound>',
+              r"$checkedCreate(r'$EscapedModel',",
+              'parseHiddenStringAlias(v as String)',
+              r"static const String aliasKind = r'$type';",
+              r"r'$id': instance.rec.$id",
+            ]),
+          );
+          expect(generatedOutput.contains('as HiddenStringAlias'), isFalse);
+
+          final castExpr = castExpression(refer('x'), 'String');
+          expect(toCodeString(castExpr), 'x as String');
+          expect(
+            toCodeString(castExpr.property('length')),
+            '(x as String).length',
+          );
+          expect(
+            toCodeString(castExpr.operatorAdd(literalString('!'))),
+            "(x as String) + '!'",
+          );
+          expect(
+            toCodeString(
+              castExpression(
+                refer('x'),
+                'String?',
+              ).ifNullThen(literalString('fallback')),
+            ),
+            "x as String? ?? 'fallback'",
+          );
         },
       );
     },

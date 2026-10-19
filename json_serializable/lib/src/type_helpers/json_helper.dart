@@ -135,13 +135,10 @@ class JsonHelper extends TypeHelper<TypeHelperContextWithConfig> {
         fromJsonCtor,
       );
     } else if (_annotation(context.config, targetType)?.createFactory == true) {
-      if (context.config.anyMap) {
-        output = CodeExpression(Code('${toCodeString(output)} as Map'));
-      } else {
-        output = CodeExpression(
-          Code('${toCodeString(output)} as Map<String, dynamic>'),
-        );
-      }
+      output = castExpression(
+        output,
+        context.config.anyMap ? 'Map' : 'Map<String, dynamic>',
+      );
     } else {
       return null;
     }

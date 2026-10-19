@@ -89,16 +89,15 @@ class IterableHelper extends TypeHelper<TypeHelperContextWithConfig> {
     final itemSubValStr = toCodeString(itemSubVal);
 
     final targetTypeIsNullable = defaultProvided || targetType.isNullableType;
-    final exprStr = toCodeString(expression);
 
     // If `itemSubVal` is the same and it's not a Set, then we don't need to do
     // anything fancy
     if (closureArg == itemSubValStr &&
         !_coreSetChecker.isExactlyType(targetType)) {
       final castType = 'List<dynamic>${targetTypeIsNullable ? '?' : ''}';
-      // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+      // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
       // for unparenthesized argument cast.
-      return CodeExpression(Code('$exprStr as $castType'));
+      return castExpression(expression, castType);
     }
 
     final castType = refer('List<dynamic>${targetTypeIsNullable ? '?' : ''}');

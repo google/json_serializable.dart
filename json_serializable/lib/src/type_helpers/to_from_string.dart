@@ -85,12 +85,11 @@ class ToFromStringHelper {
       return null;
     }
 
-    final exprStr = toCodeString(expression);
-    // TODO: https://github.com/dart-lang/tools/issues/1140 - using CodeExpression
+    // TODO: https://github.com/dart-lang/tools/issues/1140 - using castExpression
     // for unparenthesized argument cast in parse calls.
     final parseParam = isString
         ? expression
-        : CodeExpression(Code('$exprStr as String'));
+        : castExpression(expression, 'String');
 
     final output = refer(_parse).call([parseParam]);
 

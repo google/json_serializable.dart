@@ -7,7 +7,6 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:source_helper/source_helper.dart';
 
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -118,7 +117,7 @@ mixin DecodeHelper implements HelperCore {
 
       final checkedCreateCall = refer(r'$checkedCreate').call(
         [
-          literal(element.name!),
+          escapedStringLiteral(element.name!),
           refer('json'),
           Method(
             (m) => m
@@ -132,9 +131,7 @@ mixin DecodeHelper implements HelperCore {
           if (fieldKeyMap.isNotEmpty)
             'fieldKeyMap': literalConstMap({
               for (final MapEntry(:key, :value) in fieldKeyMap.entries)
-                CodeExpression(Code(escapeDartString(key))): CodeExpression(
-                  Code(escapeDartString(value)),
-                ),
+                escapedStringLiteral(key): escapedStringLiteral(value),
             }),
         },
       );
@@ -175,16 +172,7 @@ mixin DecodeHelper implements HelperCore {
       m
         ..name = '${prefix}FromJson'
         ..returns = refer(targetClassReference)
-        ..types.addAll(
-          element.typeParameters.map((t) {
-            final bound = t.bound;
-            return refer(
-              bound != null
-                  ? '${t.name} extends ${bound.getDisplayString()}'
-                  : t.name!,
-            );
-          }),
-        )
+        ..types.addAll(genericClassTypeParameters)
         ..requiredParameters.add(
           Parameter(
             (p) => p
@@ -226,8 +214,9 @@ mixin DecodeHelper implements HelperCore {
   }) sync* {
     final args = <String, Expression>{};
 
-    Expression constantList(Iterable<FieldElement> things) =>
-        literalConstList(things.map<String>(nameAccess).toList());
+    Expression constantList(Iterable<FieldElement> things) => literalConstList(
+      things.map((fe) => CodeExpression(Code(safeNameAccess(fe)))).toList(),
+    );
 
     if (config.disallowUnrecognizedKeys) {
       final allowedFields = [

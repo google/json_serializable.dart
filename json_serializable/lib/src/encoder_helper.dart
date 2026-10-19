@@ -38,16 +38,7 @@ mixin EncodeHelper implements HelperCore {
                 ..static = true
                 ..docs.add('// ignore: unused_element')
                 ..returns = refer(returnType)
-                ..types.addAll(
-                  element.typeParameters.map((t) {
-                    final bound = t.bound;
-                    return refer(
-                      bound != null
-                          ? '${t.name} extends ${bound.getDisplayString()}'
-                          : t.name!,
-                    );
-                  }),
-                )
+                ..types.addAll(genericClassTypeParameters)
                 ..requiredParameters.add(
                   Parameter(
                     (p) => p
@@ -92,9 +83,12 @@ mixin EncodeHelper implements HelperCore {
         ..name = '_\$${element.name!.nonPrivate}FieldMap'
         ..modifier = FieldModifier.constant
         ..assignment = literalMap(
-          Map.fromEntries(
-            accessibleFieldSet.map((fe) => MapEntry(fe.name!, nameAccess(fe))),
-          ),
+          {
+            for (final fe in accessibleFieldSet)
+              escapedStringLiteral(fe.name!): CodeExpression(
+                Code(safeNameAccess(fe)),
+              ),
+          },
           refer('String'),
           refer('String'),
         ).code,
@@ -119,7 +113,7 @@ mixin EncodeHelper implements HelperCore {
                 ..static = true
                 ..modifier = FieldModifier.constant
                 ..type = refer('String')
-                ..assignment = literalString(nameAccess(fe)).code,
+                ..assignment = Code(safeNameAccess(fe)),
             ),
           ),
         ),
@@ -133,16 +127,7 @@ mixin EncodeHelper implements HelperCore {
       m
         ..name = '${prefix}ToJson'
         ..returns = refer('Map<String, dynamic>')
-        ..types.addAll(
-          element.typeParameters.map((t) {
-            final bound = t.bound;
-            return refer(
-              bound != null
-                  ? '${t.name} extends ${bound.getDisplayString()}'
-                  : t.name!,
-            );
-          }),
-        )
+        ..types.addAll(genericClassTypeParameters)
         ..requiredParameters.add(
           Parameter(
             (p) => p
