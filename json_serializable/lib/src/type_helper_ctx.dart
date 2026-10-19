@@ -7,7 +7,8 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart'
     hide Enum, FunctionType, RecordType;
 import 'package:source_gen/source_gen.dart';
-import 'package:source_helper/source_helper.dart';
+import 'package:source_helper/source_helper.dart'
+    hide ExecutableElementExtension;
 
 import 'default_container.dart';
 import 'helper_core.dart';

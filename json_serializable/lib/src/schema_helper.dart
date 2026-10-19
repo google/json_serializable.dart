@@ -8,7 +8,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:code_builder/code_builder.dart' hide FunctionType;
 import 'package:source_gen/source_gen.dart';
-import 'package:source_helper/source_helper.dart';
+import 'package:source_helper/source_helper.dart' hide createSortedFieldSet;
 
 import 'enum_utils.dart';
 import 'field_helpers.dart';

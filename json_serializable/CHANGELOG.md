@@ -1,5 +1,10 @@
 ## 7.0.0-wip
 
+- Fix the build with `package:source_helper` `1.4.0`, which added
+  `createSortedFieldSet`, `ExecutableElementExtension.qualifiedName` and
+  `DartTypeExtension.toStringNonNullable` with the names of members of this
+  package. Require `package:source_helper` `^1.4.0`.
+  ([#1619](https://github.com/google/json_serializable.dart/issues/1619))
 - `type_helper.dart`: **BREAKING** Changed `TypeHelper.serialize`,
   `TypeHelper.deserialize`, `TypeHelperContext.serialize`, and
   `TypeHelperContext.deserialize` parameter and return types from

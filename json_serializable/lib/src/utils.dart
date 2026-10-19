@@ -209,12 +209,6 @@ extension DartTypeExtension on DartType {
     ),
     _ => _typeSystemFor(this)?.promoteToNonNull(this) ?? this,
   };
-
-  String toStringNonNullable() {
-    final val = getDisplayString();
-    if (val.endsWith('?')) return val.substring(0, val.length - 1);
-    return val;
-  }
 }
 
 TypeSystem? _typeSystemFor(DartType type) {
