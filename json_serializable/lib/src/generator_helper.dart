@@ -53,7 +53,7 @@ class GeneratorHelper extends HelperCore
       );
     }
 
-    final sortedFields = createSortedFieldSet(element);
+    final sortedFields = createSortedFieldSetJson(element);
 
     // Used to keep track of why a field is ignored. Useful for providing
     // helpful errors when generating constructor calls that try to use one of

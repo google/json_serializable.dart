@@ -78,11 +78,11 @@ Object? $_toJsonHelperName<T>(
 ''';
 
 String toJsonForType(TypeParameterType type) =>
-    toJsonForName(type.toStringNonNullable());
+    toJsonForName(toStringNonNullableHelper(type));
 
 String toJsonForName(String genericType) => 'toJson$genericType';
 
 String fromJsonForType(TypeParameterType type) =>
-    fromJsonForName(type.toStringNonNullable());
+    fromJsonForName(toStringNonNullableHelper(type));
 
 String fromJsonForName(String genericType) => 'fromJson$genericType';

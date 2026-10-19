@@ -306,5 +306,5 @@ ConvertData? _convertData(
     }
   }
 
-  return ConvertData(executableElement.qualifiedName, argType, returnType);
+  return ConvertData(executableElement.qualifiedNameJson, argType, returnType);
 }
