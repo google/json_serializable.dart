@@ -160,6 +160,11 @@ ConstructorElement? _constructorByNameOrNull(
   }
 }
 
+/// Returns the constructor of [classElement] named [name]; `''` selects the
+/// unnamed constructor.
+///
+/// Throws an [InvalidGenerationSourceError] if no such constructor exists.
+/// Depends only on `package:analyzer` and `package:source_gen`.
 ConstructorElement constructorByName(ClassElement classElement, String name) {
   final className = classElement.name;
 
