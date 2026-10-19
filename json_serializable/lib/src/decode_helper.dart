@@ -350,13 +350,14 @@ mixin DecodeHelper implements HelperCore {
 }
 
 /// [availableConstructorParameters] is checked to see if it is available. If
-/// [availableConstructorParameters] does not contain the parameter name,
-/// an [UnsupportedError] is thrown.
+/// [availableConstructorParameters] does not contain the parameter name of a
+/// required or positional parameter, an [InvalidGenerationSourceError] is
+/// thrown. Unmatched optional named parameters are skipped.
 ///
 /// To improve the error details, [unavailableReasons] is checked for the
 /// unavailable constructor parameter. If the value is not `null`, it is
-/// included in the [UnsupportedError] message; otherwise a default explanation
-/// is provided.
+/// included in the [InvalidGenerationSourceError] message; otherwise a default
+/// explanation is provided.
 ///
 /// [writableFields] are also populated, but only if they have not already
 /// been defined by a constructor parameter with the same name.
@@ -376,39 +377,38 @@ _ConstructorData _writeConstructorInvocation(
 
   final ctor = constructorByName(classElement, constructorName);
 
-  final usedCtorParamsAndFields = <String>{};
-  final positionalArgs = <Expression>[];
-  final namedArgs = <String, Expression>{};
+  final plan = planConstruction(ctor, availableConstructorParameters.toSet());
 
-  for (final arg in ctor.formalParameters) {
-    if (!availableConstructorParameters.contains(arg.name)) {
-      if (arg.isRequired) {
-        var msg =
-            'Cannot populate the required constructor '
-            'argument: ${arg.name}.';
+  // Unmatched optional named parameters are skipped. An unmatched positional
+  // parameter cannot be skipped: it would shift every later positional
+  // argument into its slot.
+  final unpopulated = plan.unmatched
+      .where((arg) => arg.isRequired || arg.isPositional)
+      .firstOrNull;
+  if (unpopulated != null) {
+    var msg =
+        'Cannot populate the required constructor '
+        'argument: ${unpopulated.name}.';
 
-        final additionalInfo =
-            unavailableReasons[arg.name] ??
-            'It does not correspond to any field or getter on the class.';
-        msg = '$msg $additionalInfo';
+    final additionalInfo =
+        unavailableReasons[unpopulated.name] ??
+        'It does not correspond to any field or getter on the class.';
+    msg = '$msg $additionalInfo';
 
-        throw InvalidGenerationSourceError(msg, element: ctor);
-      }
-
-      continue;
-    }
-
-    final expr = deserializeForField(arg.name!, ctorParam: arg);
-    if (arg.isNamed) {
-      namedArgs[arg.name!] = expr;
-    } else {
-      positionalArgs.add(expr);
-    }
-    usedCtorParamsAndFields.add(arg.name!);
+    throw InvalidGenerationSourceError(msg, element: ctor);
   }
 
+  final positionalArgs = [
+    for (final arg in plan.positional)
+      deserializeForField(arg.name!, ctorParam: arg),
+  ];
+  final namedArgs = {
+    for (final arg in plan.named)
+      arg.name!: deserializeForField(arg.name!, ctorParam: arg),
+  };
+
   final remainingFieldsForInvocationBody = writableFields.toSet().difference(
-    usedCtorParamsAndFields,
+    plan.consumedNames,
   );
 
   final typeArguments = classElement.typeParameters
@@ -429,12 +429,10 @@ _ConstructorData _writeConstructorInvocation(
     );
   }
 
-  usedCtorParamsAndFields.addAll(remainingFieldsForInvocationBody);
-
   return _ConstructorData(
     constructorInvocation,
     remainingFieldsForInvocationBody,
-    usedCtorParamsAndFields,
+    {...plan.consumedNames, ...remainingFieldsForInvocationBody},
   );
 }
 
@@ -447,5 +445,75 @@ class _ConstructorData {
     this.content,
     this.fieldsToSet,
     this.usedCtorParamsAndFields,
+  );
+}
+
+/// How to invoke [constructor] given the names in `availableNames`.
+///
+/// See [planConstruction].
+final class ConstructorPlan {
+  final ConstructorElement constructor;
+
+  /// Every positional parameter, matched or not, in declaration order.
+  final List<FormalParameterElement> positional;
+
+  /// Matched named parameters in declaration order.
+  final List<FormalParameterElement> named;
+
+  /// Parameters with no available name. Positional ones are also present in
+  /// [positional] so a renderer cannot shift later arguments into their slot.
+  final List<FormalParameterElement> unmatched;
+
+  /// Names consumed by the matched entries of [positional] and [named].
+  /// Callers subtract this from their own writable set to get the fields to
+  /// assign after construction.
+  final Set<String> consumedNames;
+
+  ConstructorPlan._({
+    required this.constructor,
+    required this.positional,
+    required this.named,
+    required this.unmatched,
+    required this.consumedNames,
+  });
+}
+
+/// Matches the formal parameters of [constructor] against [availableNames]
+/// by name, in declaration order.
+///
+/// Makes no decision about unmatched parameters: the caller inspects
+/// [ConstructorPlan.unmatched].
+ConstructorPlan planConstruction(
+  ConstructorElement constructor,
+  Set<String> availableNames,
+) {
+  final positional = <FormalParameterElement>[];
+  final named = <FormalParameterElement>[];
+  final unmatched = <FormalParameterElement>[];
+  final consumedNames = <String>{};
+
+  for (final arg in constructor.formalParameters) {
+    final name = arg.name;
+    final matched = name != null && availableNames.contains(name);
+
+    if (arg.isPositional) {
+      positional.add(arg);
+    }
+    if (!matched) {
+      unmatched.add(arg);
+      continue;
+    }
+    if (arg.isNamed) {
+      named.add(arg);
+    }
+    consumedNames.add(name);
+  }
+
+  return ConstructorPlan._(
+    constructor: constructor,
+    positional: positional,
+    named: named,
+    unmatched: unmatched,
+    consumedNames: consumedNames,
   );
 }
