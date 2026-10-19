@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/nullability_suffix.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:source_gen/source_gen.dart';
+import 'package:source_helper/source_helper.dart';
 
 import 'helper_core.dart';
 import 'type_helpers/generic_factory_helper.dart';
@@ -445,75 +446,5 @@ class _ConstructorData {
     this.content,
     this.fieldsToSet,
     this.usedCtorParamsAndFields,
-  );
-}
-
-/// How to invoke [constructor] given the names in `availableNames`.
-///
-/// See [planConstruction].
-final class ConstructorPlan {
-  final ConstructorElement constructor;
-
-  /// Every positional parameter, matched or not, in declaration order.
-  final List<FormalParameterElement> positional;
-
-  /// Matched named parameters in declaration order.
-  final List<FormalParameterElement> named;
-
-  /// Parameters with no available name. Positional ones are also present in
-  /// [positional] so a renderer cannot shift later arguments into their slot.
-  final List<FormalParameterElement> unmatched;
-
-  /// Names consumed by the matched entries of [positional] and [named].
-  /// Callers subtract this from their own writable set to get the fields to
-  /// assign after construction.
-  final Set<String> consumedNames;
-
-  ConstructorPlan._({
-    required this.constructor,
-    required this.positional,
-    required this.named,
-    required this.unmatched,
-    required this.consumedNames,
-  });
-}
-
-/// Matches the formal parameters of [constructor] against [availableNames]
-/// by name, in declaration order.
-///
-/// Makes no decision about unmatched parameters: the caller inspects
-/// [ConstructorPlan.unmatched].
-ConstructorPlan planConstruction(
-  ConstructorElement constructor,
-  Set<String> availableNames,
-) {
-  final positional = <FormalParameterElement>[];
-  final named = <FormalParameterElement>[];
-  final unmatched = <FormalParameterElement>[];
-  final consumedNames = <String>{};
-
-  for (final arg in constructor.formalParameters) {
-    final name = arg.name;
-    final matched = name != null && availableNames.contains(name);
-
-    if (arg.isPositional) {
-      positional.add(arg);
-    }
-    if (!matched) {
-      unmatched.add(arg);
-      continue;
-    }
-    if (arg.isNamed) {
-      named.add(arg);
-    }
-    consumedNames.add(name);
-  }
-
-  return ConstructorPlan._(
-    constructor: constructor,
-    positional: positional,
-    named: named,
-    unmatched: unmatched,
-    consumedNames: consumedNames,
   );
 }

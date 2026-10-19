@@ -44,10 +44,13 @@ abstract class HelperCore {
   /// Returns a [String] representing the type arguments that exist on
   /// [element].
   ///
-  /// Returns the output of calling [typeParameterListCode] with [element].
+  /// Returns the output of calling [typeParameterListCode] (or
+  /// [genericClassArguments] when [withConstraints] is `true`).
   @protected
   String genericClassArgumentsImpl({required bool withConstraints}) =>
-      typeParameterListCode(element, withBounds: withConstraints);
+      withConstraints
+      ? genericClassArguments(element, true)
+      : typeParameterListCode(element, withBounds: false);
 
   /// Returns `code_builder` [Reference]s for the type parameters of [element]
   /// including bounds formatted with [typeToCode].
@@ -147,11 +150,3 @@ String genericClassArguments(ClassElement element, bool? withConstraints) {
       .join(', ');
   return '<$values>';
 }
-
-/// Returns the type parameter list of [element] as Dart source: `<T, S>`
-/// or, with [withBounds], `<T extends num, S>`; `''` when [element] has no
-/// type parameters.
-String typeParameterListCode(
-  ClassElement element, {
-  required bool withBounds,
-}) => genericClassArguments(element, withBounds);

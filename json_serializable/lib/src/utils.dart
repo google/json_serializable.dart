@@ -19,6 +19,8 @@ import 'field_helpers.dart';
 import 'shared_checkers.dart';
 import 'type_helpers/config_types.dart';
 
+export 'package:source_helper/source_helper.dart' show constructorByName;
+
 const _jsonKeyChecker = TypeChecker.typeNamed(
   JsonKey,
   inPackage: 'json_annotation',
@@ -160,47 +162,12 @@ ConstructorElement? _constructorByNameOrNull(
   }
 }
 
-/// Returns the constructor of [classElement] named [name]; `''` selects the
-/// unnamed constructor.
-///
-/// Throws an [InvalidGenerationSourceError] if no such constructor exists.
-/// Depends only on `package:analyzer` and `package:source_gen`.
-ConstructorElement constructorByName(ClassElement classElement, String name) {
-  final className = classElement.name;
-
-  ConstructorElement? ctor;
-  if (name.isEmpty) {
-    ctor = classElement.unnamedConstructor;
-    if (ctor == null) {
-      throw InvalidGenerationSourceError(
-        'The class `$className` has no default constructor.',
-        element: classElement,
-      );
-    }
-  } else {
-    ctor = classElement.getNamedConstructor(name);
-    if (ctor == null) {
-      throw InvalidGenerationSourceError(
-        'The class `$className` does not have a constructor with the name '
-        '`$name`.',
-        element: classElement,
-      );
-    }
-  }
-
-  return ctor;
-}
-
 /// If [targetType] is an enum, returns the [FieldElement] instances associated
 /// with its values.
 ///
 /// Otherwise, `null`.
-Iterable<FieldElement>? iterateEnumFields(DartType targetType) {
-  if (targetType.element is EnumElement) {
-    return (targetType.element as EnumElement).constants;
-  }
-  return null;
-}
+Iterable<FieldElement>? iterateEnumFields(DartType targetType) =>
+    targetType.isEnum ? targetType.enumConstants : null;
 
 extension DartTypeExtension on DartType {
   DartType promoteNonNullable() => switch (this) {
@@ -214,12 +181,6 @@ extension DartTypeExtension on DartType {
     ),
     _ => _typeSystemFor(this)?.promoteToNonNull(this) ?? this,
   };
-
-  String toStringNonNullable() {
-    final val = getDisplayString();
-    if (val.endsWith('?')) return val.substring(0, val.length - 1);
-    return val;
-  }
 }
 
 TypeSystem? _typeSystemFor(DartType type) {
@@ -502,30 +463,6 @@ Expression? defaultDecodeLogic(
   }
 
   return null;
-}
-
-extension ExecutableElementExtension on ExecutableElement {
-  /// Returns the name of `this` qualified with the class name if it's a
-  /// [MethodElement].
-  String get qualifiedName {
-    if (this is TopLevelFunctionElement) {
-      return name!;
-    }
-
-    if (this is MethodElement) {
-      return '${enclosingElement!.name}.$name';
-    }
-
-    if (this is ConstructorElement) {
-      // The default constructor.
-      if (name == 'new') {
-        return enclosingElement!.name!;
-      }
-      return '${enclosingElement!.name}.$name';
-    }
-
-    throw UnsupportedError('Not sure how to support typeof $runtimeType');
-  }
 }
 
 const jsonSerializableChecker = TypeChecker.fromUrl(
