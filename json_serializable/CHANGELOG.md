@@ -1,3 +1,10 @@
+## 6.15.2
+
+- Revert the duplicate `fromJson` key check added in 6.15.0, allowing multiple
+  `fromJson` fields to read from the same JSON key when at most one is included
+  in `toJson` (for example, via `@JsonKey(includeToJson: false)`).
+  ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
+
 ## 6.15.1
 
 - Fix compilation ambiguity when using `package:source_helper` `>= 1.4.0`.

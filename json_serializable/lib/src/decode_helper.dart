@@ -179,8 +179,10 @@ mixin DecodeHelper implements HelperCore {
   }) sync* {
     final args = <String>[];
 
-    String constantList(Iterable<FieldElement> things) =>
-        'const ${jsonLiteralAsDart(things.map<String>(nameAccess).toList())}';
+    String constantList(Iterable<FieldElement> things) {
+      final keys = things.map<String>(nameAccess).toSet().toList();
+      return 'const ${jsonLiteralAsDart(keys)}';
+    }
 
     if (config.disallowUnrecognizedKeys) {
       final allowedFields = [
