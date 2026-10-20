@@ -5,6 +5,18 @@
   `TypeHelperContext.deserialize` parameter and return types from
   `String`/`Object?` to `Expression`/`Expression?` (from
   `package:code_builder`).
+- **BREAKING** Reject classes where multiple `fromJson` fields map to the same
+  JSON key, even when `includeToJson: false` is set. Use `@JsonKey(readValue:
+  ...)` when a field needs to inspect or derive a value from another key in the
+  source map.
+  ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
+
+## 6.15.2
+
+- Revert the duplicate `fromJson` key check added in 6.15.0, allowing multiple
+  `fromJson` fields to read from the same JSON key when at most one is included
+  in `toJson` (for example, via `@JsonKey(includeToJson: false)`).
+  ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
 
 ## 6.15.1
 
