@@ -1,3 +1,10 @@
+## 6.15.2
+
+- Allow multiple `fromJson` fields to read from the same JSON key when only at
+  most one is included in `toJson` (for example, via
+  `@JsonKey(includeToJson: false)`).
+  ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
+
 ## 6.15.1
 
 - Fix compilation ambiguity when using `package:source_helper` `>= 1.4.0`.
@@ -37,8 +44,8 @@
   including covariant and setter-only overrides, `hashCode`/`runtimeType`
   overrides, `createFactory: false` with `includeToJson: true`,
   `disallowUnrecognizedKeys` with `includeFromJson: false`, generic
-  `includeIfNull: false` map entries, duplicate `fromJson` key detection, and
-  `createPerFieldToJson` when a field is named `Object`.
+  `includeIfNull: false` map entries, and `createPerFieldToJson` when a field
+  is named `Object`.
 - Fix `createJsonSchema` default value handling for non-empty `List`, `Set`,
   and `Map` constants, `int` defaults on `num`/`double` fields, and function
   tear-off defaults, as well as nullable self-references and private fields.

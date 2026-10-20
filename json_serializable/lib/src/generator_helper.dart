@@ -91,19 +91,6 @@ class GeneratorHelper extends HelperCore
         )
         .toList();
 
-    void checkForDuplicateKeys(Iterable<FieldElement> fields) {
-      final set = <String>{};
-      for (final fe in fields) {
-        final jsonKey = nameAccess(fe);
-        if (!set.add(jsonKey)) {
-          throw InvalidGenerationSourceError(
-            'More than one field has the JSON key for name "$jsonKey".',
-            element: fe,
-          );
-        }
-      }
-    }
-
     var fieldsToUse = accessibleFields.values.toList();
     if (config.createFactory) {
       final createResult = createFactory(
@@ -119,8 +106,6 @@ class GeneratorHelper extends HelperCore
           .where((e) => createResult.usedFields.contains(e.key))
           .map((e) => e.value)
           .toList();
-
-      checkForDuplicateKeys(fieldsToUse);
     }
 
     // Need to add candidates BACK even if they are not used in the factory if
@@ -137,12 +122,20 @@ class GeneratorHelper extends HelperCore
     );
 
     final accessibleFieldSet = fieldsToUse.toSet()
-      ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson);
-
-    // Check for duplicate JSON keys due to colliding annotations. We do this
-    // now, since we have a final field list after any pruning done by
-    // `_writeCtor`.
-    checkForDuplicateKeys(accessibleFieldSet);
+      ..removeWhere((element) => jsonKeyFor(element).explicitNoToJson)
+      // Check for duplicate JSON keys due to colliding annotations. We do this
+      // now, since we have a final field list after any pruning done by
+      // `_writeCtor`.
+      ..fold(<String>{}, (Set<String> set, fe) {
+        final jsonKey = nameAccess(fe);
+        if (!set.add(jsonKey)) {
+          throw InvalidGenerationSourceError(
+            'More than one field has the JSON key for name "$jsonKey".',
+            element: fe,
+          );
+        }
+        return set;
+      });
 
     if (config.createFieldMap) {
       yield createFieldMap(accessibleFieldSet);

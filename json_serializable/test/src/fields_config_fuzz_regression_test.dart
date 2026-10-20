@@ -179,23 +179,55 @@ class ValueClassWithHashCode {
 }
 ''',
   ),
-  // 6. Duplicate JSON key check bypassed when includeToJson: false
+  // 6. Multiple fromJson fields reading the same JSON key when one sets
+  // includeToJson: false (https://github.com/google/json_serializable.dart/issues/1622)
   CodegenCase(
-    id: 'issue1606_25a_duplicate_from_json_keys_bypass',
+    id: 'issue1622_duplicate_from_json_keys_with_include_to_json_false',
     elementName: 'DuplicateFromJsonKeys',
     declarations: r'''
-@JsonSerializable()
+int _countItems(List<dynamic>? items) => items?.length ?? 0;
+
+@JsonSerializable(
+  disallowUnrecognizedKeys: true,
+  checked: true,
+)
 class DuplicateFromJsonKeys {
-  @JsonKey(name: 'dup', includeToJson: false)
-  final int a;
-  @JsonKey(name: 'dup', includeToJson: false)
-  final String b;
-  DuplicateFromJsonKeys(this.a, this.b);
+  final List<String> items;
+
+  @JsonKey(
+    name: 'items',
+    fromJson: _countItems,
+    includeToJson: false,
+    required: true,
+    disallowNullValue: true,
+  )
+  final int receivedCount;
+
+  DuplicateFromJsonKeys({
+    this.items = const [],
+    this.receivedCount = 0,
+  });
+
   factory DuplicateFromJsonKeys.fromJson(Map<String, dynamic> json) =>
       _$DuplicateFromJsonKeysFromJson(json);
+
+  Map<String, dynamic> toJson() => _$DuplicateFromJsonKeysToJson(this);
 }
 ''',
-    expectedError: 'More than one field has the JSON key',
+    runtimeCheck: r'''
+final decoded = DuplicateFromJsonKeys.fromJson({
+  'items': ['a', 'b', 'c'],
+});
+if (decoded.items.length != 3 || decoded.receivedCount != 3) {
+  throw StateError(
+    'Expected 3 items and receivedCount=3, got ${decoded.items} / ${decoded.receivedCount}',
+  );
+}
+final encoded = decoded.toJson();
+if (encoded.keys.single != 'items') {
+  throw StateError('Expected only items key in toJson(), got $encoded');
+}
+''',
   ),
   // 7. Field named `Object` with createPerFieldToJson: true shadows Object?
   CodegenCase(
