@@ -10,6 +10,9 @@
   ...)` when a field needs to inspect or derive a value from another key in the
   source map.
   ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
+- `createJsonSchema`: nullable types (including collection items and map values)
+  now allow `null` in the generated schema.
+  ([#1626](https://github.com/google/json_serializable.dart/issues/1626))
 
 ## 6.15.2
 

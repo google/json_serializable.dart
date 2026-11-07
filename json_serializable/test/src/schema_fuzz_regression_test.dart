@@ -187,8 +187,10 @@ class SelfNode {
 ''',
     runtimeCheck: r'''
 final props = SelfNode.schema['properties'] as Map;
-final nextSchema = props['next'] as Map;
-if (nextSchema[r'$ref'] != '#' || SelfNode.schema.containsKey(r'$defs')) {
+final nextSchema = (props['next'] as Map)['anyOf'] as List;
+if ((nextSchema.first as Map)[r'$ref'] != '#' ||
+    (nextSchema.last as Map)['type'] != 'null' ||
+    SelfNode.schema.containsKey(r'$defs')) {
   throw StateError('Expected self-ref # for SelfNode?, got: ${SelfNode.schema}');
 }
 ''',

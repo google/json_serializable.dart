@@ -198,7 +198,45 @@ Map<String, dynamic> _getPropertySchema(
   Set<DartType> seenTypes = const {},
   required DartType rootType,
 }) {
-  final type = rawType.promoteNonNullable();
+  final schema = _getNonNullableSchema(
+    rawType.promoteNonNullable(),
+    generatedSchemas,
+    seenTypes: seenTypes,
+    rootType: rootType,
+  );
+  return rawType.isNullableType ? _allowNull(schema) : schema;
+}
+
+/// Returns [schema] modified to also accept `null`.
+Map<String, dynamic> _allowNull(Map<String, dynamic> schema) {
+  if (schema['type'] case final String type) {
+    return {
+      ...schema,
+      'type': [type, 'null'],
+    };
+  }
+  if (schema['enum'] case final List<Object?> values) {
+    return values.contains(null)
+        ? schema
+        : {
+            ...schema,
+            'enum': [...values, null],
+          };
+  }
+  return {
+    'anyOf': [
+      schema,
+      {'type': 'null'},
+    ],
+  };
+}
+
+Map<String, dynamic> _getNonNullableSchema(
+  DartType type,
+  Map<String, Map<String, dynamic>> generatedSchemas, {
+  required Set<DartType> seenTypes,
+  required DartType rootType,
+}) {
   if (seenTypes.contains(type)) {
     if (type == rootType) {
       return {r'$ref': '#'};

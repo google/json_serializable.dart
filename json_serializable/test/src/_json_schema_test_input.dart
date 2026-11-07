@@ -101,7 +101,7 @@ const _$JsonSchemaNullableTestJsonSchema = {
   'type': 'object',
   'properties': {
     'nullableStillRequired': {
-      'type': 'string',
+      'type': ['string', 'null'],
       'description': 'Nullable field is still required!',
     },
   },
@@ -162,14 +162,32 @@ const _$JsonSchemaNonCollectionTestJsonSchema = {
   r'$schema': 'https://json-schema.org/draft/2020-12/schema',
   'type': 'object',
   'properties': {
-    'intField': {'type': 'integer'},
-    'doubleField': {'type': 'number'},
-    'numField': {'type': 'number'},
-    'boolField': {'type': 'boolean'},
-    'stringField': {'type': 'string'},
-    'dateTimeField': {'type': 'string', 'format': 'date-time'},
-    'uriField': {'type': 'string', 'format': 'uri'},
-    'bigIntField': {'type': 'integer'},
+    'intField': {
+      'type': ['integer', 'null'],
+    },
+    'doubleField': {
+      'type': ['number', 'null'],
+    },
+    'numField': {
+      'type': ['number', 'null'],
+    },
+    'boolField': {
+      'type': ['boolean', 'null'],
+    },
+    'stringField': {
+      'type': ['string', 'null'],
+    },
+    'dateTimeField': {
+      'type': ['string', 'null'],
+      'format': 'date-time',
+    },
+    'uriField': {
+      'type': ['string', 'null'],
+      'format': 'uri',
+    },
+    'bigIntField': {
+      'type': ['integer', 'null'],
+    },
   },
 };
 ''')
@@ -198,6 +216,64 @@ class JsonSchemaNonCollectionTest {
     this.uriField,
     this.bigIntField,
   });
+}
+
+@ShouldGenerate(r'''
+const _$JsonSchemaNullableNestedTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'inner': {
+      'anyOf': [
+        {r'$ref': r'#/$defs/InnerClass'},
+        {'type': 'null'},
+      ],
+    },
+    'category': {
+      'enum': ['fruit', 'vegetable', 'grain', null],
+    },
+    'items': {
+      'type': ['array', 'null'],
+      'items': {
+        'type': ['integer', 'null'],
+      },
+    },
+    'values': {
+      'type': 'object',
+      'additionalProperties': {
+        'type': ['string', 'null'],
+      },
+    },
+  },
+  'required': ['inner', 'category', 'items', 'values'],
+  r'$defs': {
+    'InnerClass': {
+      'type': 'object',
+      'properties': {
+        'value': {'type': 'integer'},
+      },
+      'required': ['value'],
+    },
+  },
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaNullableNestedTest {
+  final InnerClass? inner;
+  final JsonSchemaCategory? category;
+  final List<int?>? items;
+  final Map<String, String?> values;
+
+  JsonSchemaNullableNestedTest(
+    this.inner,
+    this.category,
+    this.items,
+    this.values,
+  );
 }
 
 @ShouldGenerate(r'''
