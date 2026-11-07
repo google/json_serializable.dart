@@ -28,7 +28,10 @@ const _$PersonJsonSchema = {
   'properties': {
     'firstName': {'type': 'string'},
     'lastName': {'type': 'string'},
-    'dateOfBirth': {'type': 'string', 'format': 'date-time'},
+    'dateOfBirth': {
+      'type': ['string', 'null'],
+      'format': 'date-time',
+    },
   },
   'required': ['firstName', 'lastName'],
 };

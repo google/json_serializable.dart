@@ -39,6 +39,21 @@ void main() {
       expect(validation.isValid, isTrue, reason: validation.errors.toString());
     });
 
+    test('valid instance - nullable fields set to null', () {
+      final instance = SchemaExample(
+        <SchemaExample>[],
+        null,
+        requiredName: 1.0,
+        nullableNotRequired: null,
+        nullableRequiredName: null,
+        branch: const Branch(length: 1.0, branch: <Branch>[]),
+      );
+
+      final json = jsonDecode(jsonEncode(instance));
+      final validation = schema.validate(json);
+      expect(validation.isValid, isTrue, reason: validation.errors.toString());
+    });
+
     test('invalid instance - missing required', () {
       final json = <String, dynamic>{
         'requiredName': 1.0,

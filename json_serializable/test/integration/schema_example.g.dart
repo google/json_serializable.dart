@@ -58,23 +58,32 @@ const _$SchemaExampleJsonSchema = {
       'description': 'Required named constructor parameter',
     },
     'nullableNotRequired': {
-      'type': 'number',
+      'type': ['number', 'null'],
       'description': 'Nullable required named constructor parameter',
       'default': 3.145,
     },
-    'nullableRequiredPositional': {'type': 'number'},
-    'nullableRequiredName': {'type': 'number'},
+    'nullableRequiredPositional': {
+      'type': ['number', 'null'],
+    },
+    'nullableRequiredName': {
+      'type': ['number', 'null'],
+    },
     'requiredBranch': {
       'type': 'array',
       'items': {r'$ref': '#'},
       'description': 'Required named constructor parameter',
     },
     'optionalNullableFieldWithJsonKeyDefault': {
-      'type': 'number',
+      'type': ['number', 'null'],
       'default': 3.145,
     },
     'branch': {r'$ref': r'#/$defs/Branch'},
-    'nested': {r'$ref': r'#/$defs/ComprehensiveNested'},
+    'nested': {
+      'anyOf': [
+        {r'$ref': r'#/$defs/ComprehensiveNested'},
+        {'type': 'null'},
+      ],
+    },
     'propExtraField': {
       'type': 'boolean',
       'description':
