@@ -500,7 +500,7 @@ String? _formatDefaultAst(AstNode node) {
   return _spliceFormattedChildren(node.toSource(), children, formattedChildren);
 }
 
-String _formatRecordLiteral(RecordLiteral node) {
+String? _formatRecordLiteral(RecordLiteral node) {
   final prefix = node.constKeyword != null ? 'const ' : '';
   final fields = node.fields
       .map((f) => _formatDefaultAst(f) ?? f.toSource())
@@ -511,10 +511,11 @@ String _formatRecordLiteral(RecordLiteral node) {
     _ => false,
   };
   final trailingComma = isSinglePositional ? ',' : '';
-  return '$prefix($fields$trailingComma)';
+  final formatted = '$prefix($fields$trailingComma)';
+  return formatted == node.toSource() ? null : formatted;
 }
 
-String _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
+String? _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
   final positional = node.positionalFields
       .map((f) => _formatDefaultAst(f) ?? f.toSource())
       .join(', ');
@@ -529,7 +530,8 @@ String _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
     _ => positional,
   };
   final suffix = node.question != null ? '?' : '';
-  return '($body)$suffix';
+  final formatted = '($body)$suffix';
+  return formatted == node.toSource() ? null : formatted;
 }
 
 String? _spliceFormattedChildren(
