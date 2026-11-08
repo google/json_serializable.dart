@@ -17,6 +17,27 @@ const _imports = [
 
 const _preamble = r'''
 const bool kCondTrue = true;
+
+Object? _passThrough(Object? value) => value;
+
+class ConstBox {
+  final int v;
+  const ConstBox(this.v);
+  factory ConstBox.fromJson(Map<String, dynamic> json) =>
+      ConstBox((json['v'] as num).toInt());
+  Map<String, dynamic> toJson() => <String, dynamic>{'v': v};
+
+  @override
+  bool operator ==(Object other) => other is ConstBox && other.v == v;
+
+  @override
+  int get hashCode => v.hashCode;
+}
+
+class RecDefaultBase {
+  final (int,) superRec;
+  const RecDefaultBase({this.superRec = const (42,)});
+}
 ''';
 
 List<CodegenCase>
@@ -243,12 +264,73 @@ if (decoded.direct != (1, 'a') ||
 }
 ''',
   ),
+  // 8: Record AST constructor defaults (dart-lang/sdk#64883 & #61390):
+  // const preservation, ConstBox in 1-field record, <(int,)> type args,
+  // super-parameter forwarding, named field wrapping 1-field record, and
+  // string interpolation.
+  CodegenCase(
+    id: 'sdk64883_61390_record_ast_ctor_defaults',
+    elementName: 'RecordAstCtorDefaults',
+    declarations: r'''
+@JsonSerializable()
+class RecordAstCtorDefaults extends RecDefaultBase {
+  final (int, List<int>) constPairWithList;
+  final (ConstBox,) boxed;
+  @JsonKey(fromJson: _passThrough, toJson: _passThrough)
+  final Object? emptyTyped;
+  final List<(ConstBox,)> typedBoxList;
+  final ({(int,) inner}) nestedNamed;
+  final String interp;
+
+  const RecordAstCtorDefaults({
+    super.superRec,
+    this.constPairWithList = const (1, [2, 3]),
+    this.boxed = const (ConstBox(7),),
+    this.emptyTyped = const <(int,)>[],
+    this.typedBoxList = const <(ConstBox,)>[const (ConstBox(9),)],
+    this.nestedNamed = const (inner: (5,)),
+    this.interp = 'eq${const (7,) == const (7,)}',
+  });
+
+  factory RecordAstCtorDefaults.fromJson(Map<String, dynamic> json) =>
+      _$RecordAstCtorDefaultsFromJson(json);
+  Map<String, dynamic> toJson() => _$RecordAstCtorDefaultsToJson(this);
+}
+''',
+    runtimeCheck: r'''
+final decoded = RecordAstCtorDefaults.fromJson(<String, dynamic>{});
+if (!identical(decoded.constPairWithList.$2, const [2, 3])) {
+  throw StateError('Expected canonical const list inside record default');
+}
+if (!identical(decoded.boxed, const (ConstBox(7),))) {
+  throw StateError('Expected const (ConstBox(7),), got ${decoded.boxed}');
+}
+if (decoded.emptyTyped is! List<(int,)> ||
+    !identical(decoded.emptyTyped, const <(int,)>[]) ) {
+  throw StateError(
+    'Expected canonical const <(int,)>[], got ${decoded.emptyTyped.runtimeType}',
+  );
+}
+if (!identical(decoded.typedBoxList, const <(ConstBox,)>[const (ConstBox(9),)])) {
+  throw StateError('Unexpected typedBoxList: ${decoded.typedBoxList}');
+}
+if (!identical(decoded.nestedNamed, const (inner: (5,)))) {
+  throw StateError('Unexpected nestedNamed: ${decoded.nestedNamed}');
+}
+if (!identical(decoded.superRec, const (42,))) {
+  throw StateError('Unexpected superRec: ${decoded.superRec}');
+}
+if (decoded.interp != 'eqtrue') {
+  throw StateError('Unexpected interp: ${decoded.interp}');
+}
+''',
+  ),
 ];
 
 void main() {
   test('records, default literals, and conditional defaults', () async {
     final cases = _buildRecordsAndDefaultsRegressionCases();
-    expect(cases.length, 9);
+    expect(cases.length, 10);
 
     final report = await verifyGeneratorBatch(
       generator: JsonSerializableGenerator(),

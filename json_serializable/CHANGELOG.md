@@ -10,6 +10,8 @@
   ...)` when a field needs to inspect or derive a value from another key in the
   source map.
   ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
+- Preserve `const` and single-positional trailing commas in constructor default
+  values containing `Record` literals or `Record` type annotations.
 
 ## 6.15.2
 

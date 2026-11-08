@@ -236,7 +236,7 @@ DefaultWithRecord _$DefaultWithRecordFromJson(Map<String, dynamic> json) =>
               label: $jsonValue['label'] as String,
             ),
           ) ??
-          (1, label: 'a'),
+          const (1, label: 'a'),
     );
 
 Map<String, dynamic> _$DefaultWithRecordToJson(DefaultWithRecord instance) =>
