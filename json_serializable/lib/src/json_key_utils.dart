@@ -2,6 +2,8 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:analyzer/dart/ast/ast.dart';
+import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
@@ -447,138 +449,158 @@ String? _ctorParamDefault(FormalParameterElement? ctorParam) {
   if (code == null) {
     return null;
   }
-  final constValue = ctorParam!.computeConstantValue();
-  if (constValue != null &&
-      _containsSinglePositionalRecord(ctorParam.type, constValue)) {
-    final formatted = _formatConstantValueWithRecords(constValue);
+  var param = ctorParam;
+  Expression? initializer;
+  while (param != null && initializer == null) {
+    initializer = param.constantInitializer;
+    param = param is SuperFormalParameterElement
+        ? param.superConstructorParameter
+        : null;
+  }
+  if (initializer == null) {
+    return code;
+  }
+  // Work around `RecordLiteral.toSource()` omitting `const` (analyzer
+  // <= 14.6.0) and single-positional trailing commas
+  // (https://github.com/dart-lang/sdk/issues/64883), and
+  // `RecordTypeAnnotation.toSource()` omitting single-positional trailing
+  // commas (https://github.com/dart-lang/sdk/issues/61390).
+  return _formatDefaultAst(initializer) ?? code;
+}
+
+String? _formatDefaultAst(AstNode node) {
+  if (node is RecordLiteral) {
+    return _formatRecordLiteral(node);
+  }
+  if (node is RecordTypeAnnotation) {
+    return _formatRecordTypeAnnotation(node);
+  }
+  final children = <AstNode>[];
+  node.visitChildren(_DirectChildCollector(children));
+  if (children.isEmpty) {
+    return null;
+  }
+  List<String?>? formattedChildren;
+  for (var i = 0; i < children.length; i++) {
+    final formatted = _formatDefaultAst(children[i]);
     if (formatted != null) {
-      return code.startsWith('const ') && !formatted.startsWith('const ')
-          ? 'const $formatted'
-          : formatted;
+      (formattedChildren ??= List<String?>.filled(children.length, null))[i] =
+          formatted;
     }
   }
-  return code;
+  if (formattedChildren == null) {
+    return null;
+  }
+  if (node is StringInterpolation) {
+    return [
+      for (var i = 0; i < children.length; i++)
+        formattedChildren[i] ?? children[i].toSource(),
+    ].join();
+  }
+  return _spliceFormattedChildren(node.toSource(), children, formattedChildren);
 }
 
-bool _containsSinglePositionalRecord(DartType? type, DartObject? value) {
-  if (type is RecordType) {
-    if (type.positionalFields.length == 1 && type.namedFields.isEmpty) {
-      return true;
-    }
-    if (type.positionalFields.any(
-          (f) => _containsSinglePositionalRecord(f.type, null),
-        ) ||
-        type.namedFields.any(
-          (f) => _containsSinglePositionalRecord(f.type, null),
-        )) {
-      return true;
-    }
-  } else if (type is ParameterizedType) {
-    if (type.typeArguments.any(
-      (t) => _containsSinglePositionalRecord(t, null),
-    )) {
-      return true;
-    }
-  }
-  if (value == null || value.isNull) {
-    return false;
-  }
-  final recordVal = value.toRecordValue();
-  if (recordVal != null) {
-    if (recordVal.positional.length == 1 && recordVal.named.isEmpty) {
-      return true;
-    }
-    return recordVal.positional.any(
-          (v) => _containsSinglePositionalRecord(v.type, v),
-        ) ||
-        recordVal.named.values.any(
-          (v) => _containsSinglePositionalRecord(v.type, v),
-        );
-  }
-  final listVal = value.toListValue();
-  if (listVal != null) {
-    return listVal.any((v) => _containsSinglePositionalRecord(v.type, v));
-  }
-  final setVal = value.toSetValue();
-  if (setVal != null) {
-    return setVal.any((v) => _containsSinglePositionalRecord(v.type, v));
-  }
-  final mapVal = value.toMapValue();
-  if (mapVal != null) {
-    return mapVal.entries.any(
-      (e) =>
-          _containsSinglePositionalRecord(e.key?.type, e.key) ||
-          _containsSinglePositionalRecord(e.value?.type, e.value),
-    );
-  }
-  return false;
+String? _formatRecordLiteral(RecordLiteral node) {
+  final prefix = node.constKeyword != null ? 'const ' : '';
+  final fields = node.fields
+      .map((f) => _formatDefaultAst(f) ?? f.toSource())
+      .join(', ');
+  final isSinglePositional = switch (node.staticType) {
+    RecordType(:final positionalFields, :final namedFields) =>
+      positionalFields.length == 1 && namedFields.isEmpty,
+    _ => false,
+  };
+  final trailingComma = isSinglePositional ? ',' : '';
+  final formatted = '$prefix($fields$trailingComma)';
+  return formatted == node.toSource() ? null : formatted;
 }
 
-String? _formatConstantValueWithRecords(DartObject object) {
-  if (object.isNull) {
-    return 'null';
+String? _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
+  final positional = node.positionalFields
+      .map(_formatRecordTypeField)
+      .join(', ');
+  final named = node.namedFields;
+  final namedCode = named == null
+      ? null
+      : '{${named.fields.map(_formatRecordTypeField).join(', ')}}';
+  final body = switch ((node.positionalFields.length, namedCode)) {
+    (1, null) => '$positional,',
+    (> 0, final n?) => '$positional, $n',
+    (_, final n?) => n,
+    _ => positional,
+  };
+  final suffix = node.question != null ? '?' : '';
+  final formatted = '($body)$suffix';
+  return formatted == node.toSource() ? null : formatted;
+}
+
+String _formatRecordTypeField(RecordTypeAnnotationField field) {
+  final type = _formatDefaultAst(field.type) ?? field.type.toSource();
+  final name = field.name?.lexeme;
+  return name == null ? type : '$type $name';
+}
+
+String? _spliceFormattedChildren(
+  String raw,
+  List<AstNode> children,
+  List<String?> formattedChildren,
+) {
+  final buffer = StringBuffer();
+  var cursor = 0;
+  for (var i = 0; i < children.length; i++) {
+    final childRaw = children[i].toSource();
+    final matchIndex = _findChildInSource(raw, childRaw, cursor);
+    if (matchIndex < 0) {
+      return null;
+    }
+    buffer
+      ..write(raw.substring(cursor, matchIndex))
+      ..write(formattedChildren[i] ?? childRaw);
+    cursor = matchIndex + childRaw.length;
   }
-  final reader = ConstantReader(object);
-  if (reader.isBool || reader.isInt || reader.isDouble || reader.isString) {
-    return jsonLiteralAsDart(reader.literalValue);
+  buffer.write(raw.substring(cursor));
+  return buffer.toString();
+}
+
+int _findChildInSource(String raw, String childRaw, int start) {
+  if (childRaw.isEmpty) {
+    return start;
   }
-  final type = object.type;
-  if (type != null) {
-    final enumFields = iterateEnumFields(type);
-    if (enumFields != null) {
-      final enumValueNames = enumFields.map((p) => p.name!).toList();
-      final enumValueName = enumValueForDartObject<String>(
-        object,
-        enumValueNames,
-        (n) => n,
-      );
-      return '${type.element!.name}.$enumValueName';
+  final startsId = _isIdentifierChar(childRaw.codeUnitAt(0));
+  final endsId = _isIdentifierChar(childRaw.codeUnitAt(childRaw.length - 1));
+  for (
+    var index = raw.indexOf(childRaw, start);
+    index >= 0;
+    index = raw.indexOf(childRaw, index + 1)
+  ) {
+    final validStart =
+        !startsId ||
+        index == start ||
+        !_isIdentifierChar(raw.codeUnitAt(index - 1));
+    final end = index + childRaw.length;
+    final validEnd =
+        !endsId || end == raw.length || !_isIdentifierChar(raw.codeUnitAt(end));
+    if (validStart && validEnd) {
+      return index;
     }
   }
-  final recordVal = object.toRecordValue();
-  if (recordVal != null) {
-    final parts = <String>[];
-    for (final pos in recordVal.positional) {
-      final formatted = _formatConstantValueWithRecords(pos);
-      if (formatted == null) return null;
-      parts.add(formatted);
-    }
-    for (final entry in recordVal.named.entries) {
-      final formatted = _formatConstantValueWithRecords(entry.value);
-      if (formatted == null) return null;
-      parts.add('${entry.key}: $formatted');
-    }
-    final trailingComma =
-        recordVal.positional.length == 1 && recordVal.named.isEmpty ? ',' : '';
-    return '(${parts.join(', ')}$trailingComma)';
+  return -1;
+}
+
+bool _isIdentifierChar(int unit) =>
+    (unit >= 0x30 && unit <= 0x39) || // 0-9
+    (unit >= 0x41 && unit <= 0x5A) || // A-Z
+    (unit >= 0x61 && unit <= 0x7A) || // a-z
+    unit == 0x5F || // _
+    unit == 0x24; // $
+
+class _DirectChildCollector extends UnifyingAstVisitor<void> {
+  final List<AstNode> children;
+
+  _DirectChildCollector(this.children);
+
+  @override
+  void visitNode(AstNode node) {
+    children.add(node);
   }
-  if (reader.isList) {
-    final items = <String>[];
-    for (final item in reader.listValue) {
-      final formatted = _formatConstantValueWithRecords(item);
-      if (formatted == null) return null;
-      items.add(formatted);
-    }
-    return '[${items.join(', ')}]';
-  }
-  if (reader.isSet) {
-    final items = <String>[];
-    for (final item in reader.setValue) {
-      final formatted = _formatConstantValueWithRecords(item);
-      if (formatted == null) return null;
-      items.add(formatted);
-    }
-    return '{${items.join(', ')}}';
-  }
-  if (reader.isMap) {
-    final entries = <String>[];
-    for (final entry in reader.mapValue.entries) {
-      final k = _formatConstantValueWithRecords(entry.key!);
-      final v = _formatConstantValueWithRecords(entry.value!);
-      if (k == null || v == null) return null;
-      entries.add('$k: $v');
-    }
-    return '{${entries.join(', ')}}';
-  }
-  return null;
 }
