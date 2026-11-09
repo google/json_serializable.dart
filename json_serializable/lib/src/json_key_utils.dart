@@ -517,12 +517,12 @@ String? _formatRecordLiteral(RecordLiteral node) {
 
 String? _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
   final positional = node.positionalFields
-      .map((f) => _formatDefaultAst(f) ?? f.toSource())
+      .map(_formatRecordTypeField)
       .join(', ');
   final named = node.namedFields;
   final namedCode = named == null
       ? null
-      : (_formatDefaultAst(named) ?? named.toSource());
+      : '{${named.fields.map(_formatRecordTypeField).join(', ')}}';
   final body = switch ((node.positionalFields.length, namedCode)) {
     (1, null) => '$positional,',
     (> 0, final n?) => '$positional, $n',
@@ -532,6 +532,12 @@ String? _formatRecordTypeAnnotation(RecordTypeAnnotation node) {
   final suffix = node.question != null ? '?' : '';
   final formatted = '($body)$suffix';
   return formatted == node.toSource() ? null : formatted;
+}
+
+String _formatRecordTypeField(RecordTypeAnnotationField field) {
+  final type = _formatDefaultAst(field.type) ?? field.type.toSource();
+  final name = field.name?.lexeme;
+  return name == null ? type : '$type $name';
 }
 
 String? _spliceFormattedChildren(

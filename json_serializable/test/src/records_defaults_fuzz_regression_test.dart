@@ -278,6 +278,12 @@ class RecordAstCtorDefaults extends RecDefaultBase {
   final (ConstBox,) boxed;
   @JsonKey(fromJson: _passThrough, toJson: _passThrough)
   final Object? emptyTyped;
+  @JsonKey(fromJson: _passThrough, toJson: _passThrough)
+  final Object? annotatedPositionalTyped;
+  @JsonKey(fromJson: _passThrough, toJson: _passThrough)
+  final Object? annotatedNamedPositionalTyped;
+  @JsonKey(fromJson: _passThrough, toJson: _passThrough)
+  final Object? annotatedNamedTyped;
   final List<(ConstBox,)> typedBoxList;
   final ({(int,) inner}) nestedNamed;
   final String interp;
@@ -287,6 +293,9 @@ class RecordAstCtorDefaults extends RecDefaultBase {
     this.constPairWithList = const (1, [2, 3]),
     this.boxed = const (ConstBox(7),),
     this.emptyTyped = const <(int,)>[],
+    this.annotatedPositionalTyped = const <(@deprecated (int,),)>[],
+    this.annotatedNamedPositionalTyped = const <(@ForwardMeta() (int,) pos,)>[],
+    this.annotatedNamedTyped = const <void Function(({@deprecated (int,) a}))>[],
     this.typedBoxList = const <(ConstBox,)>[const (ConstBox(9),)],
     this.nestedNamed = const (inner: (5,)),
     this.interp = 'eq${const (7,) == const (7,)}',
@@ -295,6 +304,10 @@ class RecordAstCtorDefaults extends RecDefaultBase {
   factory RecordAstCtorDefaults.fromJson(Map<String, dynamic> json) =>
       _$RecordAstCtorDefaultsFromJson(json);
   Map<String, dynamic> toJson() => _$RecordAstCtorDefaultsToJson(this);
+}
+
+class ForwardMeta {
+  const ForwardMeta();
 }
 ''',
     runtimeCheck: r'''
@@ -309,6 +322,27 @@ if (decoded.emptyTyped is! List<(int,)> ||
     !identical(decoded.emptyTyped, const <(int,)>[]) ) {
   throw StateError(
     'Expected canonical const <(int,)>[], got ${decoded.emptyTyped.runtimeType}',
+  );
+}
+if (decoded.annotatedPositionalTyped is! List<((int,),)> ||
+    !identical(decoded.annotatedPositionalTyped, const <((int,),)>[])) {
+  throw StateError(
+    'Expected const <((int,),)>[], got ${decoded.annotatedPositionalTyped.runtimeType}',
+  );
+}
+if (decoded.annotatedNamedPositionalTyped is! List<((int,),)> ||
+    !identical(decoded.annotatedNamedPositionalTyped, const <((int,),)>[])) {
+  throw StateError(
+    'Expected const <((int,),)>[], got ${decoded.annotatedNamedPositionalTyped.runtimeType}',
+  );
+}
+if (decoded.annotatedNamedTyped is! List<void Function(({(int,) a}))> ||
+    !identical(
+      decoded.annotatedNamedTyped,
+      const <void Function(({(int,) a}))>[],
+    )) {
+  throw StateError(
+    'Expected const <void Function(({(int,) a}))>[], got ${decoded.annotatedNamedTyped.runtimeType}',
   );
 }
 if (!identical(decoded.typedBoxList, const <(ConstBox,)>[const (ConstBox(9),)])) {
@@ -341,5 +375,55 @@ void main() {
 
     expect(report.passedCases, report.totalCases);
     expect(report.issues, isEmpty);
+  });
+
+  test('resolves super record defaults across library summaries', () async {
+    final reader = await initializeLibraryReader({
+      'base.dart': r'''
+class SummaryBase {
+  final (int,) superRec;
+  final Object? superPositionalTyped;
+  final Object? superNamedTyped;
+
+  const SummaryBase({
+    this.superRec = const (42,),
+    this.superPositionalTyped = const <(@deprecated (int,),)>[],
+    this.superNamedTyped = const <void Function(({@deprecated (int,) a}))>[],
+  });
+}
+''',
+      'sub.dart': r'''
+import 'package:json_annotation/json_annotation.dart';
+import 'base.dart';
+
+Object? _id(Object? value) => value;
+
+@JsonSerializable()
+class SummarySub extends SummaryBase {
+  @override
+  @JsonKey(fromJson: _id, toJson: _id)
+  Object? get superPositionalTyped => super.superPositionalTyped;
+
+  @override
+  @JsonKey(fromJson: _id, toJson: _id)
+  Object? get superNamedTyped => super.superNamedTyped;
+
+  const SummarySub({
+    super.superRec,
+    super.superPositionalTyped,
+    super.superNamedTyped,
+  });
+}
+''',
+    }, 'sub.dart');
+
+    final output = await generateForElement(
+      JsonSerializableGenerator(),
+      reader,
+      'SummarySub',
+    );
+    expect(output, contains('const (42,)'));
+    expect(output, contains('const <((int,),)>[]'));
+    expect(output, contains('const <void Function(({(int,) a}))>[]'));
   });
 }
