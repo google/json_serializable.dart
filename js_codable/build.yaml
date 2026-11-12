@@ -1,0 +1,8 @@
+# Read about `build.yaml` at https://pub.dev/packages/build_config
+builders:
+  js_codable:
+    import: "package:js_codable/builder.dart"
+    builder_factories: ["jsCodableBuilder"]
+    build_extensions: {".dart": [".js_codable.dart"]}
+    auto_apply: dependents
+    build_to: source

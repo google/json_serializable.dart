@@ -43,16 +43,16 @@ jobs:
       - name: mono_repo self validate
         run: dart pub global run mono_repo generate --validate
   job_002:
-    name: "analyzer_and_format; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart analyze`"
+    name: "analyzer_and_format; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, js_codable, json_annotation, json_serializable; `dart analyze`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:analyze_1"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-js_codable-json_annotation-json_serializable;commands:analyze_1"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-js_codable-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -92,6 +92,15 @@ jobs:
         run: dart analyze
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: js_codable; dart analyze
+        run: dart analyze
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
       - id: json_annotation_pub_upgrade
         name: json_annotation; dart pub upgrade
         run: dart pub upgrade
@@ -111,16 +120,16 @@ jobs:
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
   job_003:
-    name: "analyzer_and_format; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_annotation, json_serializable; `dart format --output=none --set-exit-if-changed .`, `dart analyze --fatal-infos .`"
+    name: "analyzer_and_format; Dart dev; PKGS: _test_yaml, checked_yaml, example, js_codable, json_annotation, json_serializable; `dart format --output=none --set-exit-if-changed .`, `dart analyze --fatal-infos .`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable;commands:format-analyze_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-js_codable-json_annotation-json_serializable;commands:format-analyze_0"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_annotation-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-js_codable-json_annotation-json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -172,6 +181,19 @@ jobs:
         run: dart analyze --fatal-infos .
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart format --output=none --set-exit-if-changed ."
+        run: "dart format --output=none --set-exit-if-changed ."
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart analyze --fatal-infos ."
+        run: dart analyze --fatal-infos .
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
       - id: json_annotation_pub_upgrade
         name: json_annotation; dart pub upgrade
         run: dart pub upgrade
@@ -199,16 +221,16 @@ jobs:
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
   job_004:
-    name: "unit_test; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
+    name: "unit_test; Dart 3.12.0; PKGS: _test_yaml, checked_yaml, example, js_codable, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-js_codable-json_serializable;commands:test_0"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:_test_yaml-checked_yaml-example-js_codable-json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -248,6 +270,15 @@ jobs:
         run: dart test
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: js_codable; dart test
+        run: dart test
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -262,6 +293,96 @@ jobs:
       - job_002
       - job_003
   job_005:
+    name: "unit_test; Dart 3.12.0; PKGS: js_codable, json_serializable; `dart test -p chrome --compiler dart2wasm`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:js_codable-json_serializable;commands:test_3"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:js_codable-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: "3.12.0"
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_006:
+    name: "unit_test; Dart 3.12.0; PKGS: js_codable, json_serializable; `dart test -p chrome`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:js_codable-json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:js_codable-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: "3.12.0"
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart test -p chrome"
+        run: dart test -p chrome
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome"
+        run: dart test -p chrome
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_007:
     name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -297,7 +418,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_006:
+  job_008:
     name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -333,89 +454,17 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_007:
-    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test -p chrome --compiler dart2wasm`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_3"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
-        with:
-          sdk: "3.12.0"
-      - id: checkout
-        name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        run: dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
-        run: dart test -p chrome --compiler dart2wasm
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-    needs:
-      - job_001
-      - job_002
-      - job_003
-  job_008:
-    name: "unit_test; Dart 3.12.0; PKG: json_serializable; `dart test -p chrome`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable;commands:test_2"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:3.12.0
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
-        with:
-          sdk: "3.12.0"
-      - id: checkout
-        name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        run: dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart test -p chrome"
-        run: dart test -p chrome
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-    needs:
-      - job_001
-      - job_002
-      - job_003
   job_009:
-    name: "unit_test; Dart dev; PKGS: _test_yaml, checked_yaml, example, json_serializable; `dart test`"
+    name: "unit_test; Dart dev; PKGS: _test_yaml, checked_yaml, example, js_codable, json_serializable; `dart test`"
     runs-on: ubuntu-latest
     steps:
       - name: Cache Pub hosted dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_serializable;commands:test_0"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-js_codable-json_serializable;commands:test_0"
           restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:_test_yaml-checked_yaml-example-js_codable-json_serializable
             os:ubuntu-latest;pub-cache-hosted;sdk:dev
             os:ubuntu-latest;pub-cache-hosted
             os:ubuntu-latest
@@ -455,6 +504,15 @@ jobs:
         run: dart test
         if: "always() && steps.example_pub_upgrade.conclusion == 'success'"
         working-directory: example
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: js_codable; dart test
+        run: dart test
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
       - id: json_serializable_pub_upgrade
         name: json_serializable; dart pub upgrade
         run: dart pub upgrade
@@ -469,6 +527,96 @@ jobs:
       - job_002
       - job_003
   job_010:
+    name: "unit_test; Dart dev; PKGS: js_codable, json_serializable; `dart test -p chrome --compiler dart2wasm`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:js_codable-json_serializable;commands:test_3"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:js_codable-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: dev
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
+        run: dart test -p chrome --compiler dart2wasm
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_011:
+    name: "unit_test; Dart dev; PKGS: js_codable, json_serializable; `dart test -p chrome`"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache Pub hosted dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+        with:
+          path: "~/.pub-cache/hosted"
+          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:js_codable-json_serializable;commands:test_2"
+          restore-keys: |
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:js_codable-json_serializable
+            os:ubuntu-latest;pub-cache-hosted;sdk:dev
+            os:ubuntu-latest;pub-cache-hosted
+            os:ubuntu-latest
+      - name: Setup Dart SDK
+        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
+        with:
+          sdk: dev
+      - id: checkout
+        name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: js_codable_pub_upgrade
+        name: js_codable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: js_codable
+      - name: "js_codable; dart test -p chrome"
+        run: dart test -p chrome
+        if: "always() && steps.js_codable_pub_upgrade.conclusion == 'success'"
+        working-directory: js_codable
+      - id: json_serializable_pub_upgrade
+        name: json_serializable; dart pub upgrade
+        run: dart pub upgrade
+        if: "always() && steps.checkout.conclusion == 'success'"
+        working-directory: json_serializable
+      - name: "json_serializable; dart test -p chrome"
+        run: dart test -p chrome
+        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
+        working-directory: json_serializable
+    needs:
+      - job_001
+      - job_002
+      - job_003
+  job_012:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/annotation_version_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -504,7 +652,7 @@ jobs:
       - job_001
       - job_002
       - job_003
-  job_011:
+  job_013:
     name: "unit_test; Dart dev; PKG: json_serializable; `dart test --run-skipped -t presubmit-only test/ensure_build_test.dart`"
     runs-on: ubuntu-latest
     steps:
@@ -534,78 +682,6 @@ jobs:
         working-directory: json_serializable
       - name: "json_serializable; dart test --run-skipped -t presubmit-only test/ensure_build_test.dart"
         run: dart test --run-skipped -t presubmit-only test/ensure_build_test.dart
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-    needs:
-      - job_001
-      - job_002
-      - job_003
-  job_012:
-    name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome --compiler dart2wasm`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_3"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
-        with:
-          sdk: dev
-      - id: checkout
-        name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        run: dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart test -p chrome --compiler dart2wasm"
-        run: dart test -p chrome --compiler dart2wasm
-        if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
-        working-directory: json_serializable
-    needs:
-      - job_001
-      - job_002
-      - job_003
-  job_013:
-    name: "unit_test; Dart dev; PKG: json_serializable; `dart test -p chrome`"
-    runs-on: ubuntu-latest
-    steps:
-      - name: Cache Pub hosted dependencies
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
-        with:
-          path: "~/.pub-cache/hosted"
-          key: "os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable;commands:test_2"
-          restore-keys: |
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev;packages:json_serializable
-            os:ubuntu-latest;pub-cache-hosted;sdk:dev
-            os:ubuntu-latest;pub-cache-hosted
-            os:ubuntu-latest
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@6afc89df92d6eb3834022f73cd65adc8cdfcb92d
-        with:
-          sdk: dev
-      - id: checkout
-        name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - id: json_serializable_pub_upgrade
-        name: json_serializable; dart pub upgrade
-        run: dart pub upgrade
-        if: "always() && steps.checkout.conclusion == 'success'"
-        working-directory: json_serializable
-      - name: "json_serializable; dart test -p chrome"
-        run: dart test -p chrome
         if: "always() && steps.json_serializable_pub_upgrade.conclusion == 'success'"
         working-directory: json_serializable
     needs:

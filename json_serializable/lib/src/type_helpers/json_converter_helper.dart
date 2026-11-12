@@ -29,7 +29,7 @@ class JsonConverterHelper extends TypeHelper<TypeHelperContextWithConfig> {
     Expression expression,
     TypeHelperContextWithConfig context,
   ) {
-    final converter = _typeConverter(targetType, context);
+    final converter = typeConverter(targetType, context);
 
     if (converter == null) {
       return null;
@@ -69,7 +69,7 @@ Json? $converterToJsonName<Json, Value>(
     TypeHelperContextWithConfig context,
     bool defaultProvided,
   ) {
-    final converter = _typeConverter(targetType, context);
+    final converter = typeConverter(targetType, context);
     if (converter == null) {
       return null;
     }
@@ -112,7 +112,7 @@ Value? $converterFromJsonName<Json, Value>(
 }
 
 Expression _nullableJsonConverterLambdaResult(
-  _JsonConvertData converter, {
+  JsonConvertData converter, {
   required String name,
   required DartType targetType,
   required Expression expression,
@@ -130,13 +130,13 @@ Expression _nullableJsonConverterLambdaResult(
   );
 }
 
-class _JsonConvertData {
+class JsonConvertData {
   final String accessString;
   final DartType jsonType;
   final DartType fieldType;
   final bool isGeneric;
 
-  _JsonConvertData.className(
+  JsonConvertData.className(
     String className,
     String accessor,
     this.jsonType,
@@ -144,7 +144,7 @@ class _JsonConvertData {
   ) : accessString = 'const $className${_withAccessor(accessor)}()',
       isGeneric = false;
 
-  _JsonConvertData.genericClass(
+  JsonConvertData.genericClass(
     String className,
     String genericTypeArg,
     String accessor,
@@ -153,7 +153,7 @@ class _JsonConvertData {
   ) : accessString = '$className<$genericTypeArg>${_withAccessor(accessor)}()',
       isGeneric = true;
 
-  _JsonConvertData.propertyAccess(
+  JsonConvertData.propertyAccess(
     this.accessString,
     this.jsonType,
     this.fieldType,
@@ -173,7 +173,7 @@ bool? hasConverterNullEncode(
   TypeHelperContextWithConfig ctx, {
   bool forNullCheck = false,
 }) {
-  final data = _typeConverter(targetType, ctx);
+  final data = typeConverter(targetType, ctx);
 
   if (data == null) {
     return null;
@@ -185,7 +185,7 @@ bool? hasConverterNullEncode(
           targetType.isNullableType);
 }
 
-_JsonConvertData? _typeConverter(
+JsonConvertData? typeConverter(
   DartType targetType,
   TypeHelperContextWithConfig ctx,
 ) {
@@ -226,7 +226,7 @@ _JsonConvertData? _typeConverter(
   return _typeConverterFrom(matchingAnnotations, targetType);
 }
 
-_JsonConvertData? _typeConverterFrom(
+JsonConvertData? _typeConverterFrom(
   List<_ConverterMatch> matchingAnnotations,
   DartType targetType,
 ) {
@@ -264,7 +264,7 @@ _JsonConvertData? _typeConverterFrom(
       accessString = '${enclosing.name}.$accessString';
     }
 
-    return _JsonConvertData.propertyAccess(
+    return JsonConvertData.propertyAccess(
       accessString!,
       match.jsonType,
       match.fieldType,
@@ -282,7 +282,7 @@ _JsonConvertData? _typeConverterFrom(
   }
 
   if (match.genericTypeArg != null) {
-    return _JsonConvertData.genericClass(
+    return JsonConvertData.genericClass(
       match.annotation.type!.element!.name!,
       match.genericTypeArg!,
       reviver.accessor,
@@ -291,7 +291,7 @@ _JsonConvertData? _typeConverterFrom(
     );
   }
 
-  return _JsonConvertData.className(
+  return JsonConvertData.className(
     typeToCode(match.annotation.type!),
     reviver.accessor,
     match.jsonType,
