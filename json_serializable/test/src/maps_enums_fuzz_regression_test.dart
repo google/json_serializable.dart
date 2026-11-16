@@ -68,6 +68,36 @@ class EpochIntConverter implements JsonConverter<DateTime, int> {
   @override
   int toJson(DateTime object) => object.millisecondsSinceEpoch;
 }
+
+class BoolAsIntConverter implements JsonConverter<bool, int> {
+  const BoolAsIntConverter();
+
+  @override
+  bool fromJson(int json) => json == 1;
+
+  @override
+  int toJson(bool object) => object ? 1 : 0;
+}
+
+class IntAsStringConverter implements JsonConverter<int, String> {
+  const IntAsStringConverter();
+
+  @override
+  int fromJson(String json) => int.parse(json);
+
+  @override
+  String toJson(int object) => object.toString();
+}
+
+class UpperCaseConverter implements JsonConverter<String, String> {
+  const UpperCaseConverter();
+
+  @override
+  String fromJson(String json) => json.toUpperCase();
+
+  @override
+  String toJson(String object) => object.toUpperCase();
+}
 ''';
 
 void main() {
@@ -376,6 +406,189 @@ if (json['a'] != 'firstVal') {
 final decoded = Audit38d.fromJson(json);
 if (decoded.a != Audit38dEnum.firstVal) {
   throw StateError('Expected Audit38dEnum.firstVal, got ${decoded.a}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_field_level_round_trip',
+        elementName: 'MapValueConverterField',
+        declarations: r'''
+@JsonSerializable()
+class MapValueConverterField {
+  @BoolAsIntConverter()
+  final Map<String, bool> flags;
+  @IntAsStringConverter()
+  final Map<String, int> counts;
+
+  MapValueConverterField(this.flags, this.counts);
+
+  factory MapValueConverterField.fromJson(Map<String, dynamic> json) =>
+      _$MapValueConverterFieldFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueConverterFieldToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final inst = MapValueConverterField({'a': true, 'b': false}, {'c': 3});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map<String, dynamic>;
+if (jsonEncode(json) !=
+    '{"flags":{"a":1,"b":0},"counts":{"c":"3"}}') {
+  throw StateError('Unexpected toJson: ${jsonEncode(json)}');
+}
+final decoded = MapValueConverterField.fromJson(json);
+if (decoded.flags['a'] != true ||
+    decoded.flags['b'] != false ||
+    decoded.counts['c'] != 3) {
+  throw StateError(
+    'Round-trip mismatch: ${decoded.flags} ${decoded.counts}',
+  );
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_class_level_round_trip',
+        elementName: 'MapValueConverterClass',
+        declarations: r'''
+@JsonSerializable(converters: [BoolAsIntConverter()])
+class MapValueConverterClass {
+  final Map<String, bool> flags;
+
+  MapValueConverterClass(this.flags);
+
+  factory MapValueConverterClass.fromJson(Map<String, dynamic> json) =>
+      _$MapValueConverterClassFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueConverterClassToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final inst = MapValueConverterClass({'a': true, 'b': false});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map<String, dynamic>;
+if (jsonEncode(json) != '{"flags":{"a":1,"b":0}}') {
+  throw StateError('Unexpected toJson: ${jsonEncode(json)}');
+}
+final decoded = MapValueConverterClass.fromJson(json);
+if (decoded.flags['a'] != true || decoded.flags['b'] != false) {
+  throw StateError('Round-trip mismatch: ${decoded.flags}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_any_map_round_trip',
+        elementName: 'MapValueConverterAnyMap',
+        declarations: r'''
+@JsonSerializable(anyMap: true)
+class MapValueConverterAnyMap {
+  @BoolAsIntConverter()
+  final Map<String, bool> flags;
+
+  MapValueConverterAnyMap(this.flags);
+
+  factory MapValueConverterAnyMap.fromJson(Map json) =>
+      _$MapValueConverterAnyMapFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueConverterAnyMapToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final inst = MapValueConverterAnyMap({'a': true, 'b': false});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map;
+final decoded = MapValueConverterAnyMap.fromJson(json);
+if (decoded.flags['a'] != true || decoded.flags['b'] != false) {
+  throw StateError('Round-trip mismatch: ${decoded.flags}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_nullable_value_round_trip',
+        elementName: 'MapValueConverterNullableValue',
+        declarations: r'''
+@JsonSerializable()
+class MapValueConverterNullableValue {
+  @BoolAsIntConverter()
+  final Map<String, bool?> flags;
+
+  MapValueConverterNullableValue(this.flags);
+
+  factory MapValueConverterNullableValue.fromJson(Map<String, dynamic> json) =>
+      _$MapValueConverterNullableValueFromJson(json);
+
+  Map<String, dynamic> toJson() =>
+      _$MapValueConverterNullableValueToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final inst = MapValueConverterNullableValue({'a': true, 'b': null});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map<String, dynamic>;
+if (jsonEncode(json) != '{"flags":{"a":1,"b":null}}') {
+  throw StateError('Unexpected toJson: ${jsonEncode(json)}');
+}
+final decoded = MapValueConverterNullableValue.fromJson(json);
+if (decoded.flags['a'] != true ||
+    !decoded.flags.containsKey('b') ||
+    decoded.flags['b'] != null) {
+  throw StateError('Round-trip mismatch: ${decoded.flags}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_nested_map_round_trip',
+        elementName: 'MapValueConverterNested',
+        declarations: r'''
+@JsonSerializable()
+class MapValueConverterNested {
+  @BoolAsIntConverter()
+  final Map<String, Map<String, bool>> flags;
+
+  MapValueConverterNested(this.flags);
+
+  factory MapValueConverterNested.fromJson(Map<String, dynamic> json) =>
+      _$MapValueConverterNestedFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueConverterNestedToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final inst = MapValueConverterNested({
+  'x': {'a': true, 'b': false},
+});
+final json = jsonDecode(jsonEncode(inst.toJson())) as Map<String, dynamic>;
+if (jsonEncode(json) != '{"flags":{"x":{"a":1,"b":0}}}') {
+  throw StateError('Unexpected toJson: ${jsonEncode(json)}');
+}
+final decoded = MapValueConverterNested.fromJson(json);
+if (decoded.flags['x']?['a'] != true || decoded.flags['x']?['b'] != false) {
+  throw StateError('Round-trip mismatch: ${decoded.flags}');
+}
+''',
+      ),
+      CodegenCase(
+        id: 'bug_map_value_converter_same_json_type_applied_on_decode',
+        elementName: 'MapValueConverterSameType',
+        declarations: r'''
+@JsonSerializable()
+class MapValueConverterSameType {
+  @UpperCaseConverter()
+  final Map<String, String> names;
+
+  MapValueConverterSameType(this.names);
+
+  factory MapValueConverterSameType.fromJson(Map<String, dynamic> json) =>
+      _$MapValueConverterSameTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$MapValueConverterSameTypeToJson(this);
+}
+''',
+        runtimeCheck: r'''
+final encoded = MapValueConverterSameType({'a': 'x'}).toJson();
+if (jsonEncode(encoded) != '{"names":{"A":"X"}}') {
+  throw StateError('Unexpected toJson: ${jsonEncode(encoded)}');
+}
+final decoded = MapValueConverterSameType.fromJson(
+  jsonDecode('{"names":{"a":"x"}}') as Map<String, dynamic>,
+);
+if (decoded.names['A'] != 'X' || decoded.names.length != 1) {
+  throw StateError('Converter not applied on decode: ${decoded.names}');
 }
 ''',
       ),

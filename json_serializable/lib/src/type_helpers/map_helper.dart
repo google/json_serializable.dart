@@ -129,6 +129,8 @@ class MapHelper extends TypeHelper<TypeHelperContextWithConfig> {
       }
 
       if (!targetTypeIsNullable &&
+          // A `JsonConverter` for the value type must be applied to each value
+          hasConverterNullEncode(valueArg, context) == null &&
           (valueArgIsAny ||
               // explicitly exclude double since we need to do an explicit
               // `toDouble` on input values

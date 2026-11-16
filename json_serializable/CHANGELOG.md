@@ -12,6 +12,9 @@
   ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
 - Preserve `const` and single-positional trailing commas in constructor default
   values containing `Record` literals or `Record` type annotations.
+- Apply a `JsonConverter` for the value type of a `Map` field in `fromJson`, as
+  `toJson` already does, when the value type is `String`, `int`, `bool`, `num`,
+  `Object?` or `dynamic`.
 
 ## 6.15.2
 
