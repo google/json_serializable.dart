@@ -1,6 +1,7 @@
 ## 4.12.1-wip
 
 - Require `sdk: ^3.12.0`.
+- Reduce the overhead of decoding fields with `checked: true`.
 
 ## 4.12.0
 

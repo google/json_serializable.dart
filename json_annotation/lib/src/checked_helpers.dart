@@ -20,19 +20,28 @@ T $checkedCreate<T>(
   )
   constructor, {
   Map<String, String> fieldKeyMap = const {},
-}) {
+}) => $checkedNew(
+  className,
+  map,
+  () => constructor(_checkedConverter(map)),
+  fieldKeyMap: fieldKeyMap,
+);
+
+// Keep the field converter outside $checkedCreate<T> so calls don't capture
+// the enclosing model's type arguments for every field.
+S Function<S>(
+  String,
+  S Function(Object?), {
+  Object? Function(Map, String)? readValue,
+})
+_checkedConverter(Map map) {
   Q checkedConvert<Q>(
     String key,
     Q Function(Object?) convertFunction, {
     Object? Function(Map, String)? readValue,
   }) => $checkedConvert<Q>(map, key, convertFunction, readValue: readValue);
 
-  return $checkedNew(
-    className,
-    map,
-    () => constructor(checkedConvert),
-    fieldKeyMap: fieldKeyMap,
-  );
+  return checkedConvert;
 }
 
 /// Helper function used in generated code when
