@@ -85,7 +85,9 @@ const _expectedAnnotatedTests = {
   '_BetterPrivateNames',
   'annotatedMethod',
   'BadEnumDefaultValue',
+  'BadFromFuncRecordReturnType',
   'BadFromFuncReturnType',
+  'BadToFuncRecordFieldType',
   'BadPatchEntity',
   'PatchBadConverterFromJson',
   'PatchBadCustomFromJson',
@@ -229,6 +231,7 @@ const _expectedAnnotatedTests = {
 };
 
 const _expectedSchemaTests = {
+  'JsonSchemaAccessorDocsTest',
   'JsonSchemaDocsTest',
   'JsonSchemaCollectionsTest',
   'JsonSchemaDefaultsTest',
