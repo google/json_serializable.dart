@@ -274,6 +274,11 @@ ConvertData? _convertData(
     }
   }
 
+  // `DartType.isAssignableTo` from `source_helper` only checks an
+  // `InterfaceType` receiver, so a record, function or type parameter type
+  // would pass unchecked.
+  final typeSystem = element.library.typeSystem;
+
   if (isFrom) {
     final hasDefaultValue =
         !_fallbackRead(obj, ctorObj, 'defaultValue').isNull ||
@@ -283,8 +288,11 @@ ConvertData? _convertData(
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if (!returnType.isAssignableTo(element.type)) {
-      if (returnType.promoteNonNullable().isAssignableTo(element.type) &&
+    } else if (!typeSystem.isAssignableTo(returnType, element.type)) {
+      if (typeSystem.isAssignableTo(
+            returnType.promoteNonNullable(),
+            element.type,
+          ) &&
           hasDefaultValue) {
         // noop
       } else {
@@ -303,7 +311,7 @@ ConvertData? _convertData(
       // We keep things simple in this case. We rely on inferred type arguments
       // to the `fromJson` function.
       // TODO: consider adding error checking here if there is confusion.
-    } else if (!element.type.isAssignableTo(argType)) {
+    } else if (!typeSystem.isAssignableTo(element.type, argType)) {
       final argTypeCode = typeToCode(argType);
       final elementTypeCode = typeToCode(element.type);
       throwUnsupported(

@@ -18,6 +18,31 @@ Object _toObject(Object input) => throw UnimplementedError();
 
 String _toStringFromObject(Object? input) => throw UnimplementedError();
 
+(int, int) _toRecord(Object? input) => throw UnimplementedError();
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `field` field. The `fromJson` function '
+  '`_toRecord` return type `(int, int)` is not compatible with field type '
+  '`String`.',
+  element: 'field',
+)
+@JsonSerializable(createToJson: false)
+class BadFromFuncRecordReturnType {
+  @JsonKey(fromJson: _toRecord)
+  late String field;
+}
+
+@ShouldThrow(
+  'Error with `@JsonKey` on the `field` field. The `toJson` function `_toInt` '
+  'argument type `bool` is not compatible with field type `(int, int)`.',
+  element: 'field',
+)
+@JsonSerializable(createFactory: false)
+class BadToFuncRecordFieldType {
+  @JsonKey(toJson: _toInt)
+  late (int, int) field;
+}
+
 @ShouldThrow(
   'Error with `@JsonKey` on the `field` field. The `fromJson` function '
   '`_toInt` return type `int` is not compatible with field type `String`.',

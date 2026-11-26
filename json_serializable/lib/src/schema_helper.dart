@@ -116,13 +116,10 @@ Iterable<_PropertyInfo> _propertiesFor(
       defaultValueObj = param.computeConstantValue();
     }
 
-    final description = field.documentationComment
-        ?.replaceAll(RegExp(r'^\s*/// ?', multiLine: true), '')
-        .replaceAll(
-          RegExp(r'^\s*\/\*\*[ \t]*|[ \t]*\*\/\s*$|^\s*\*\s?', multiLine: true),
-          '',
-        )
-        .trim();
+    // A property declared with a getter has no doc comment on its field.
+    final description = _docCommentText(
+      field.documentationComment ?? field.getter?.documentationComment,
+    );
 
     bool calculateIsRequired() {
       if (jsonKey.required) return true;
@@ -143,6 +140,40 @@ Iterable<_PropertyInfo> _propertiesFor(
       description: description,
     );
   }).whereType<_PropertyInfo>();
+}
+
+/// Returns the text of the doc [comment] without its `///` or `/** */`
+/// delimiters.
+String? _docCommentText(String? comment) {
+  if (comment == null) return null;
+
+  var text = comment.trim();
+  final isBlock = text.startsWith('/**');
+  if (isBlock) {
+    text = text.substring(3);
+    if (text.endsWith('*/')) {
+      text = text.substring(0, text.length - 2);
+    }
+  }
+
+  // Only a block comment has a leading `*` on each line. In a `///` comment a
+  // leading `*` is a Markdown list marker.
+  final linePrefix = isBlock ? '*' : '///';
+  return text
+      .trim()
+      .split('\n')
+      .map((line) {
+        line = line.trim();
+        if (line.startsWith(linePrefix)) {
+          line = line.substring(linePrefix.length);
+          if (line.startsWith(' ')) {
+            line = line.substring(1);
+          }
+        }
+        return line;
+      })
+      .join('\n')
+      .trim();
 }
 
 Map<String, dynamic> _generateSchemaForProperties(

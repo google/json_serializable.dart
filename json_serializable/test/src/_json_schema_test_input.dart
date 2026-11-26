@@ -367,3 +367,48 @@ class JsonSchemaEnumTest {
     this.priorityWithDefault,
   );
 }
+
+@ShouldGenerate(r'''
+const _$JsonSchemaAccessorDocsTestJsonSchema = {
+  r'$schema': 'https://json-schema.org/draft/2020-12/schema',
+  'type': 'object',
+  'properties': {
+    'viaAccessors': {
+      'type': 'string',
+      'description': 'Declared with a getter and setter',
+    },
+    'bullets': {
+      'type': 'string',
+      'description': 'Options:\n\n* first\n* second',
+    },
+    'block': {'type': 'string', 'description': 'Block comment\n* item'},
+  },
+  'required': ['viaAccessors'],
+};
+''')
+@JsonSerializable(
+  createJsonSchema: true,
+  createFactory: false,
+  createToJson: false,
+)
+class JsonSchemaAccessorDocsTest {
+  String _viaAccessors = '';
+
+  /// Declared with a getter and setter
+  String get viaAccessors => _viaAccessors;
+
+  set viaAccessors(String value) => _viaAccessors = value.trim();
+
+  /// Options:
+  ///
+  /// * first
+  /// * second
+  String bullets = '';
+
+  // ignore: slash_for_doc_comments
+  /**
+   * Block comment
+   * * item
+   */
+  String block = '';
+}

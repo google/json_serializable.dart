@@ -12,6 +12,12 @@
   ([#1622](https://github.com/google/json_serializable.dart/issues/1622))
 - Preserve `const` and single-positional trailing commas in constructor default
   values containing `Record` literals or `Record` type annotations.
+- `createJsonSchema`: use the doc comment of a property declared with a getter
+  as its `description`, and keep Markdown list markers (`* item`) from `///`
+  doc comments.
+- Report an error when a `JsonKey.fromJson` or `JsonKey.toJson` function is not
+  compatible with a field whose type is a record, function, or type parameter.
+  Previously the generated code did not compile.
 
 ## 6.15.2
 
